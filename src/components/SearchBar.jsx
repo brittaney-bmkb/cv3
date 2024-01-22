@@ -1,6 +1,6 @@
 import { Box, Paper } from "@mui/material";
 
-export default function WebMapView(){
+export default function SearchBar(){
     
     return(
         <Box
@@ -10,12 +10,11 @@ export default function WebMapView(){
             flexWrap:'wrap',
             '& > :not(style)': {
                 width: '100%',
-                height: '90vh',
+                height: 40,
               },
         }}
         >
         <Paper elevation={3}>
-
         </Paper>
         </Box>
 

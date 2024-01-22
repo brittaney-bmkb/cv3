@@ -20,17 +20,17 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{height:'100vh',  display:'flex', flexDirection:'column'}}>
+      <Box sx={{ display:'grid', flexDirection:'column'}}>
         <Box sx={{height:75, display:'flex'}}>
           <NavigationTop/>
         </Box>
         
-        <Box id="container-main">
+        <Box id="container-main" sx={{ display:'grid'}}>
           <Grid container spacing={2}> 
-            <Grid item display={{xs:'none', sm:'none', md:'none', lg:'block'}} lg={3}>
+            <Grid item display={{xs:'none', sm:'none', md:'block', lg:'block'}} md={3} lg={3}>
               <Panel/>
             </Grid>
-            <Grid item xs={12} sm={12} md={9}>
+            <Grid item xs={12} sm={12} md={9} lg={9}>
               <WebMapView/>
             </Grid>
           </Grid>

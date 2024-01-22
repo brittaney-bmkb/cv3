@@ -8,7 +8,7 @@ export default function Panel(){
             display:"flex",
             flexWrap:'wrap',
             '& > :not(style)': {
-                width: 300,
+                width: '100%',
                 height: '90vh',
               },
         }}
