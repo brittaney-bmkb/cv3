@@ -2,6 +2,9 @@
 Cook Viewer Version 3
 
 
+Requirements:
+Node.js version 20.7.0
+
 Create new app
 https://vitejs.dev/guide/
 
