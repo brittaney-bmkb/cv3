@@ -14,6 +14,9 @@ export const theme = createTheme({
         }
     },
     shape: {
-        borderRadius: '20px'
+        borderRadius: 20
+    },
+    typography: {
+        h1: 50
     }
 })

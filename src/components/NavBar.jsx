@@ -13,7 +13,7 @@ const NavBar = () => {
     return(
             <AppBar position="sticky">
                 <StyledToolbar>
-                    <Stack direction={{xs:'column', sm:'row'}} justifyContent="space-between" alignItems="center" width='100%' spacing={2}>
+                    <Stack direction={{xs:'column', sm:'row'}} justifyContent="space-between" alignItems="center" width='100%' gap={2}>
                         <Stack direction="row" alignItems='center'>
                             <IconButton
                                 size="large"
@@ -25,13 +25,13 @@ const NavBar = () => {
                                 <MenuIcon />
                             </IconButton>
                
-                            <Stack direction="row" alignContent="center" spacing={1} height='100%'>
+                            <Stack direction="row" alignContent="center" gap={1} height='100%'>
                                 <Avatar sx={{bgcolor:"orange"}}/>    
                                 <Typography variant="h6">CookViewer</Typography>
                             </Stack>
                         </Stack>
                         <Search/>
-                        <Stack direction="row" spacing={2}> 
+                        <Stack direction="row" gap={2}> 
                             <Button variant="secondary" sx={{display:{xs:'none', sm:'block'}}}>Button</Button>
                             <Button variant="secondary" sx={{display:{xs:'none', sm:'block'}}}>Button</Button>
                         </Stack>

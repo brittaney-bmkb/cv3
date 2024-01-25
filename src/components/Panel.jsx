@@ -1,12 +1,34 @@
 import { Box, Paper } from "@mui/material";
+import ResultsList from "./ResultsList";
 
  const Panel = () => {
     
     return(
-        <Box bgcolor="blueviolet" flex={1} sx={{display:{xs:'none', sm:'block'}}}>
-            Panel
+        <Box bgcolor="blueviolet" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'block'}}}>
+            <ResultsList/>
         </Box>
+    )
+}
 
+export const RightPanel = () => {
+    return(
+    <Box bgcolor="blueviolet" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'none', md: 'block'}}}>
+    Right Panel
+    </Box>
+    )
+}
+
+export const LeftPanel = () => {
+    return(<Box bgcolor="blueviolet" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'block'}}}>
+            <ResultsList/>
+    </Box>)
+}
+
+export const BottomPanel = () => {
+    return(
+    <Box bgcolor="blueviolet" flex={4} flexDirection="column" sx={{display:{xs:'none', sm:'block', md: 'none'}}}>
+    Bottom Panel
+    </Box>
     )
 }
 
