@@ -5,7 +5,7 @@ import { theme } from "../theme";
 
 const Search = () => {
     return(
-        <Box bgcolor="white" display="flex" flexGrow={1} sx={{padding: "0 10px", borderRadius: theme.shape.borderRadius}}>
+        <Box height={40} bgcolor="white" display="flex" sx={{padding: "0 10px", borderRadius: theme.shape.borderRadius}}>
             <InputBase placeholder="Search..."/>
         </Box>
 

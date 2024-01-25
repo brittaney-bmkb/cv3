@@ -13,6 +13,7 @@
     "@arcgis/core": "^4.28.10",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
+    "@esri/calcite-components-react": "^2.3.0",
     "@fontsource/barlow": "^5.0.8",
     "@mui/icons-material": "^5.15.6",
     "@mui/material": "^5.15.6",

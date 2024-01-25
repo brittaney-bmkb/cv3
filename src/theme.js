@@ -12,5 +12,11 @@ export const theme = createTheme({
         otherColor:{
             main:"#72635D"
         }
+    },
+    shape: {
+        borderRadius: 20
+    },
+    typography: {
+        h1: 50
     }
 })
