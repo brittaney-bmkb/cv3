@@ -26,7 +26,7 @@ export const LeftPanel = () => {
 
 export const BottomPanel = () => {
     return(
-    <Box bgcolor="blueviolet" flex={4} flexDirection="column" sx={{display:{xs:'none', sm:'block', md: 'none'}}}>
+    <Box bgcolor="blueviolet" flex={4} flexDirection="column" sx={{display:{xs:'none', sm:'block', md: 'none'}}} width="100%">
     Bottom Panel
     </Box>
     )
