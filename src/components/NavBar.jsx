@@ -24,10 +24,10 @@ const NavBar = () => {
                                 <MenuIcon />
                             </IconButton>
                
-                            <Box display="flex" flexDirection="row" flex={1} alignItems='center' justifyContent="center" zIndex={10}>
+                            <Stack direction="row" flex={1} alignItems='center' justifyContent="center" spacing={1}>
                                 <Avatar sx={{bgcolor:"orange"}}/>    
                                 <Typography variant="h6">CookViewer</Typography>
-                            </Box>
+                            </Stack>
                             {/* <Stack direction="row" spacing={1}> 
                                 <Button variant="secondary" size="small" sx={{display:{xs:'block', sm:'none'}}}>Button</Button>
                                 <Button variant="secondary" size="small" sx={{display:{xs:'block', sm:'none'}}}>Button</Button>
