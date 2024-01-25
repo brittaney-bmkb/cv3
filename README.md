@@ -52,7 +52,7 @@ npm install @arcgis/core
 React component library that implements the [Calcite Design System](https://developers.arcgis.com/calcite-design-system/)
 
 ```
-npm install @esri/calcite-components
+npm install npm install @esri/calcite-components-react
 ```
 
 #### [Material UI](https://mui.com/material-ui/)

@@ -4,6 +4,7 @@ import App from './App.jsx'
 import './index.css'
 import { ThemeProvider } from '@mui/material'
 import { theme } from './theme.js'
+import { setAssetPath } from "@esri/calcite-components/dist/components"
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(

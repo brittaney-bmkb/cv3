@@ -4,6 +4,7 @@ import NavBar from './components/NavBar'
 import WebMapView from './components/WebMapView'
 import { Box, Stack, Grid, ThemeProvider, createTheme } from '@mui/material'
 import Panel from './components/Panel'
+import ToggleButton from './components/ToggleButton'
 
 const theme = createTheme({
   palette:{
@@ -26,6 +27,7 @@ function App() {
           <WebMapView/>
           <Panel/>
         </Stack>
+        <ToggleButton />
       </Box>
   )
 }

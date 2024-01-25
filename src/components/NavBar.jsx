@@ -5,15 +5,16 @@ import BlueButton from "./Button"
 
 const StyledToolbar = styled(Toolbar)({
     display: "flex",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    paddingTop: 10
 })
 
 const NavBar = () => {
     return(
             <AppBar position="sticky">
                 <StyledToolbar>
-                    <Stack direction={{xs:'column', sm:'row'}}  justifyContent="space-between" width='100%' spacing={2}>
-                        <Stack direction="row" alignItems='center' paddingTop={2}>
+                    <Stack direction={{xs:'column', sm:'row'}} justifyContent="space-between" alignItems="center" width='100%' spacing={2}>
+                        <Stack direction="row" alignItems='center'>
                             <IconButton
                                 size="large"
                                 edge="start"
@@ -24,14 +25,10 @@ const NavBar = () => {
                                 <MenuIcon />
                             </IconButton>
                
-                            <Stack direction="row" flex={1} alignItems='center' justifyContent="center" spacing={1}>
+                            <Stack direction="row" alignContent="center" spacing={1} height='100%'>
                                 <Avatar sx={{bgcolor:"orange"}}/>    
                                 <Typography variant="h6">CookViewer</Typography>
                             </Stack>
-                            {/* <Stack direction="row" spacing={1}> 
-                                <Button variant="secondary" size="small" sx={{display:{xs:'block', sm:'none'}}}>Button</Button>
-                                <Button variant="secondary" size="small" sx={{display:{xs:'block', sm:'none'}}}>Button</Button>
-                            </Stack> */}
                         </Stack>
                         <Search/>
                         <Stack direction="row" spacing={2}> 
