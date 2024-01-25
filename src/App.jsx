@@ -26,10 +26,10 @@ function App() {
         <Stack id="main-stack" direction="row" gap={1} justifyContent="space-between" padding={0} height="100%">
           <LeftPanel/>
           <Box flexDirection="column" flex={4} padding={0} display="flex" alignItems="center">
-              <Box flexDirection="column" alignItems="left" width="100%" display={{xs:'none', sm:'none', md:'flex'}}>
+              <Box flexDirection="column" alignItems="left" width="100%" display={{xs:'none', sm:'flex', md:'flex'}}>
                 <MapButtonGroup/>
               </Box>
-              <Box flexDirection="column" alignItems="center" width="100%" display={{xs:'flex', sm:'flex', md:'none'}}>
+              <Box flexDirection="column" alignItems="center" width="100%" display={{xs:'flex', sm:'none', md:'none'}}>
                 <MapButtonGroup/>
               </Box>
               
