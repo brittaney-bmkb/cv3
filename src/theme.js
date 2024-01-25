@@ -12,5 +12,8 @@ export const theme = createTheme({
         otherColor:{
             main:"#72635D"
         }
+    },
+    shape: {
+        borderRadius: '20px'
     }
 })

@@ -8,30 +8,37 @@ const StyledToolbar = styled(Toolbar)({
     justifyContent: "space-between"
 })
 
-
 const NavBar = () => {
     return(
             <AppBar position="sticky">
                 <StyledToolbar>
-                    <Stack direction={{xs:'column', sm:'row'}} justifyContent="space-between" width='100%' spacing={2}>
-                        <Stack direction="row" justifyContent="space-between">
-                        <IconButton
-                            size="large"
-                            edge="start"
-                            color="inherit"
-                            aria-label="menu"
-                            sx={{ mr: 2, display:{xs: 'block', sm: 'none'} }}
-                        >
-                            <MenuIcon />
-                        </IconButton>
+                    <Stack direction={{xs:'column', sm:'row'}}  justifyContent="space-between" width='100%' spacing={2}>
+                        <Stack direction="row" alignItems='center' paddingTop={2}>
+                            <IconButton
+                                size="large"
+                                edge="start"
+                                color="inherit"
+                                aria-label="menu"
+                                sx={{ mr: 2, display:{xs: 'block', sm: 'none'}, position:"absolute" }}
+                            >
+                                <MenuIcon />
+                            </IconButton>
                
-                        <Box display="flex" flexDirection="row" flex={0} width='auto'>
-                        <Avatar sx={{bgcolor:"orange"}}/>    
-                            <Typography variant="h6">CookViewer</Typography>
-                        </Box>
-                        <Button variant="secondary" sx={{display:{xs:'block', sm:'none'}}}>Button</Button>
+                            <Box display="flex" flexDirection="row" flex={1} alignItems='center' justifyContent="center" zIndex={10}>
+                                <Avatar sx={{bgcolor:"orange"}}/>    
+                                <Typography variant="h6">CookViewer</Typography>
+                            </Box>
+                            {/* <Stack direction="row" spacing={1}> 
+                                <Button variant="secondary" size="small" sx={{display:{xs:'block', sm:'none'}}}>Button</Button>
+                                <Button variant="secondary" size="small" sx={{display:{xs:'block', sm:'none'}}}>Button</Button>
+                            </Stack> */}
                         </Stack>
                         <Search/>
+                        <Stack direction="row" spacing={2}> 
+                            <Button variant="secondary" sx={{display:{xs:'none', sm:'block'}}}>Button</Button>
+                            <Button variant="secondary" sx={{display:{xs:'none', sm:'block'}}}>Button</Button>
+                        </Stack>
+                        
                     </Stack>
                 </StyledToolbar>
             </AppBar>
