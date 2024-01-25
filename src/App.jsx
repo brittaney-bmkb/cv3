@@ -25,7 +25,7 @@ function App() {
           <NavBar/>
         <Stack id="main-stack" direction="row" gap={1} justifyContent="space-between" padding={0} height="100%">
           <LeftPanel/>
-          <Box flexDirection="column" flex={4} padding={0} display="flex" alignItems="center">
+          <Box flexDirection="column" flex={4} padding={0} display="flex" alignItems="left">
             <MapButtonGroup/>
             <WebMapView/>
             <BottomPanel/>
