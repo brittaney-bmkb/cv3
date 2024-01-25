@@ -1,23 +1,13 @@
 import { Box, Paper } from "@mui/material";
 
-export default function WebMapView(){
+const WebMapView = () => {
     
     return(
-        <Box
-        id="Box-Webmap"
-        sx={{
-            display:"flex",
-            flexWrap:'wrap',
-            '& > :not(style)': {
-                width: '100%',
-                height: '90vh',
-              },
-        }}
-        >
-        <Paper elevation={3}>
-
-        </Paper>
+        <Box bgcolor="yellow" color="black" flex={4}>
+            Map
         </Box>
 
     )
 }
+
+export default WebMapView

@@ -1,22 +1,13 @@
 import { Box, Paper } from "@mui/material";
 
-export default function Panel(){
+ const Panel = () => {
     
     return(
-        <Box
-        sx={{
-            display:"flex",
-            flexWrap:'wrap',
-            '& > :not(style)': {
-                width: '100%',
-                height: '90vh',
-              },
-        }}
-        >
-            <Paper elevation={3}>
-                Panel
-            </Paper>
+        <Box bgcolor="blueviolet" flex={1} sx={{display:{xs:'none', sm:'block'}}}>
+            Panel
         </Box>
 
     )
 }
+
+export default Panel

@@ -45,3 +45,6 @@ arcgis
 contexts
 data
 reducers
+
+responsive layouts
+utilizing flex box and breakpoints
