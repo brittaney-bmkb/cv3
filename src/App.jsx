@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import './App.css'
 import NavBar from './components/NavBar'
-import WebMapView from './components/WebMapView'
+import WebMapView from './components/WebMapView/WebMapView'
 import { Box, Stack, Grid, ThemeProvider, createTheme, Button } from '@mui/material'
 import Panel, { BottomPanel, LeftPanel, RightPanel } from './components/Panel'
 import ToggleButton from './components/ToggleButton'
 import '@esri/calcite-components/dist/calcite/calcite.css';
 import MapButtonGroup from './components/MapButtonGroup'
+import { AppProvider } from './AppContext'
 
 const theme = createTheme({
   palette:{
@@ -33,7 +34,12 @@ function App() {
                 <MapButtonGroup/>
               </Box>
               
-            <WebMapView/>
+              <AppProvider>
+                <>
+                  <WebMapView/>
+                </>
+              </AppProvider>
+
             <BottomPanel/>
           </Box>
           <RightPanel/>
