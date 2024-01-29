@@ -7,7 +7,7 @@ import Panel, { BottomPanel, LeftPanel, RightPanel } from './components/Panel'
 import ToggleButton from './components/ToggleButton'
 import '@esri/calcite-components/dist/calcite/calcite.css';
 import MapButtonGroup from './components/MapButtonGroup'
-import { AppProvider } from './AppContext'
+import { AppProvider } from './contexts/AppContext'
 
 const theme = createTheme({
   palette:{
@@ -22,6 +22,7 @@ const theme = createTheme({
 
 function App() {
   return (
+    <AppProvider>
       <Box display="flex" flexDirection="column" height="100vh">
           <NavBar/>
         <Stack id="main-stack" direction="row" gap={1} justifyContent="space-between" padding={0} height="100%">
@@ -33,19 +34,16 @@ function App() {
               <Box flexDirection="column" alignItems="center" width="100%" display={{xs:'flex', sm:'none', md:'none'}}>
                 <MapButtonGroup/>
               </Box>
-              
-              <AppProvider>
                 <>
                   <WebMapView/>
                 </>
-              </AppProvider>
-
             <BottomPanel/>
           </Box>
           <RightPanel/>
         </Stack>
         <ToggleButton />
       </Box>
+    </AppProvider>
   )
 }
 

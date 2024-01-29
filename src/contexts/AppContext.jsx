@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from "react";
-import AppReducer, { initialState } from './reducers/AppReducer'
+import AppReducer, { initialState } from '../reducers/AppReducer'
 
 export const AppContext = createContext(initialState)
 
@@ -18,7 +18,7 @@ export const AppProvider = ({children}) => {
 
     const loadMap = async () => {
 
-        const {initializeMap} = await import('./arcgis/webmap')
+        const {initializeMap} = await import('../arcgis/webmap')
         const {mapContainer} = state
 
         await initializeMap(mapContainer)
