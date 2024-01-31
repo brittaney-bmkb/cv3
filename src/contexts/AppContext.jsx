@@ -21,7 +21,7 @@ export const AppProvider = ({children}) => {
         const {initializeMap} = await import('../arcgis/webmap/webmap')
         const {mapContainer} = state
 
-        await initializeMap(mapContainer)
+        let view, searchSources = await initializeMap(mapContainer)
     }
 
 

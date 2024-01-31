@@ -1,6 +1,13 @@
 import Map from "@arcgis/core/Map.js";
 import MapView from "@arcgis/core/views/MapView.js";
-import { createBaseMap } from "../layers/layers";
+import { createBaseMap, createFeatureLayers } from "../layers/layers";
+import { createSearchSources } from "../search/searchSources";
+import { config } from "../../data/config";
+
+let targetLayerView;
+let targetLayer;
+let namedLayers;
+let searchSources
 
 // Create a Map instance
 const map = new Map({
@@ -15,12 +22,22 @@ const map = new Map({
 
 export async function initializeMap(container){
 
-view.container = container
+  //created feature layers based on config layer sources
+  //add layers to map
+  view.container = container
 
-//create new basemap
-const basemap = await createBaseMap();
-map.basemap = basemap
+  //create new basemap
+  const basemap = await createBaseMap();
+  map.basemap = basemap
 
+  namedLayers = await createFeatureLayers(map)
 
-return view
+  //create search sources 
+  searchSources = await createSearchSources(namedLayers)
+
+  //define target layer
+  targetLayer = namedLayers[config.target_layer_name]
+  targetLayerView = await view.whenLayerView(targetLayer)
+
+return view, searchSources
 }  

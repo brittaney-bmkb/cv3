@@ -48,29 +48,6 @@ export const config = {
                }
            ]
        },
-       {   
-           layerName: "addressLayer",
-           url: "https://gis.cookcountyil.gov/traditional/rest/services/addressZipCode/MapServer/0",
-           outFields:["ADDRDELIV","CMPADDABRV"],
-           popupEnabled:true,
-           popupTemplateTitle:"Address {CMPADDABRV}",
-           searchSources: [
-               {
-                   name: "Address",
-                   displayField:"CMPADDABRV",
-                   exactMatch:false,
-                   maxResults:50,
-                   maxSuggestions:50,
-                   minSuggestCharacters:4,
-                   outFields: ["ADDRDELIV","CMPADDABRV"],
-                   orderByFields:["ADDRDELIV","CMPADDABRV"],
-                   searchFields:["ADDRDELIV","CMPADDABRV"],
-                   suggestionsEnabled:true,
-                   autoNavigate:false,
-
-               }
-           ]
-       }
    ],
       // LOCATOR SOURCES CONFIGURATION: Configure the locators for the search widget
       locator_search_sources: [
