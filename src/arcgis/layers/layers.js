@@ -1,14 +1,14 @@
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import PopupTemplate from "@arcgis/core/PopupTemplate.js";
-import { appConfig } from '../config';
 import Basemap from "@arcgis/core/Basemap";
+import { config } from "../../data/config";
 
 
 export async function createFeatureLayers(map){
 
     const namedLayers = {};
 
-    appConfig.LayerSources.forEach(source => {
+    config.layer_sources.forEach(source => {
         const name = source.layerName;
         namedLayers[name] = new FeatureLayer({
           url: source.url,
@@ -30,8 +30,8 @@ export async function createBaseMap(){
 
     return new Basemap({
         portalItem: {
-            id:appConfig.Basemap,
-            portal:appConfig.Portal
+            id:config.basemap_item_id,
+            portal:config.portal
           }
     })
 }

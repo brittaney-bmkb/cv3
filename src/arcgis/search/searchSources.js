@@ -1,12 +1,12 @@
 import LayerSearchSource from "@arcgis/core/widgets/Search/LayerSearchSource.js";
 import LocatorSearchSource from "@arcgis/core/widgets/Search/LocatorSearchSource.js";
-import { appConfig } from "../config";
+import { config } from "../../data/config";
 
 
 export async function createSearchSources(namedLayers){
 
   let searchSources  = []
-  const layerSearchSources = appConfig.LayerSources.flatMap((layerSource) => {
+  const layerSearchSources = config.layer_sources.flatMap((layerSource) => {
 
     return layerSource.searchSources.map(searchSource => {
   
@@ -28,7 +28,7 @@ export async function createSearchSources(namedLayers){
     })
   })
 
-  const locatorSearchSources = appConfig.LocatorSearchSources.map(locatorSource => {
+  const locatorSearchSources = config.locator_search_sources.map(locatorSource => {
     return new LocatorSearchSource({
       apiKey: locatorSource.apiKey,
       autoNavigate: locatorSource.autoNavigate,

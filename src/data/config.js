@@ -1,4 +1,6 @@
 export const config = {
+    // PORTAL URL: Provide the URL to your ArcGIS Online organization or Portal for ArcGIS.
+    portal:"https://cookcountyil.maps.arcgis.com/",
     // BASEMAP ID: Provide the ID of the basemap you want to use in the application.
     basemap_item_id:"7d31919b0623451ea7e576c85c48f52a",
     parcel_feature_service : "",

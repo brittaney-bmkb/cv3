@@ -18,7 +18,7 @@ export const AppProvider = ({children}) => {
 
     const loadMap = async () => {
 
-        const {initializeMap} = await import('../arcgis/webmap')
+        const {initializeMap} = await import('../arcgis/webmap/webmap')
         const {mapContainer} = state
 
         await initializeMap(mapContainer)
