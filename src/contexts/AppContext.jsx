@@ -16,12 +16,23 @@ export const AppProvider = ({children}) => {
         })
     } 
 
+    const setMapView = (view) => {
+        dispatch({
+            type:"SET_MAP_VIEW",
+            payload: {
+                mapView: view
+            }
+        })
+    }
+
     const loadMap = async () => {
 
         const {initializeMap} = await import('../arcgis/webmap/webmap')
         const {mapContainer} = state
 
         let view, searchSources = await initializeMap(mapContainer)
+
+        setMapView(view)
     }
 
 
@@ -29,6 +40,7 @@ export const AppProvider = ({children}) => {
         mapContainer: state.mapContainer,
         loadMap,
         setMapContainer,
+        mapView: state.mapView
     }
 
 
