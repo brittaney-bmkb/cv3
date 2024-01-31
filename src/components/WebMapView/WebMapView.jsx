@@ -1,23 +1,27 @@
-import { Box, Paper, Typography } from "@mui/material";
 
-const WebMapView = () => {
-    
-    return(
-        <Box 
-        bgcolor="yellow" 
-        color="black" 
-        flex={10} 
-        display="flex" 
-        flexDirection="column" 
-        height="100%" 
-        width="100%"
-        justifyContent="center"
-        alignItems="center"
-        >
-            <Typography variant="h1" color="initial">Map</Typography>
-        </Box>
+import { useEffect, useRef } from "react";
+import UseAppContext from "../../contexts/AppContext";
 
-    )
+export default function WebMapView(){
+
+    const { loadMap, setMapContainer, mapContainer} = UseAppContext()
+    const mapDiv = useRef(null)
+
+    useEffect(() => {
+        const createMap = async () => {
+            if(mapDiv.current){
+                await setMapContainer(mapDiv.current) 
+            }
+            if(mapContainer){
+                await loadMap()
+            }
+        }
+
+        createMap();
+
+    }, [mapContainer])
+
+    return (
+        <div id="MAPCONTAINER" ref={mapDiv} style={{width: '100%', height: '100%'}} ></div>
+            )            
 }
-
-export default WebMapView
