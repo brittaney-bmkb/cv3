@@ -1,6 +1,6 @@
 import { AppBar, styled, Box, Toolbar, Typography, Avatar, Stack, IconButton, Button, Link } from "@mui/material"
 import MenuIcon from '@mui/icons-material/Menu';
-import Search from "./Search"
+import Search from "./Search/Search"
 import BlueButton from "./Button"
 
 const StyledToolbar = styled(Toolbar)({

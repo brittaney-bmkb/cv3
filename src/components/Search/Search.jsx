@@ -1,5 +1,5 @@
 import { Box, InputBase, Paper } from "@mui/material";
-import { theme } from "../theme";
+import { theme } from "../../theme";
 
 
 
