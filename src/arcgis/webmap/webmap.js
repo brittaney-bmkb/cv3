@@ -89,11 +89,11 @@ export async function onViewClick(event) {
       const attributeKeys = Object.keys(feature.attributes);
       console.log("Attribute to highlight: ", feature.attributes[attributeKeys[0]]);
 
-      highlightSelect?.remove();
+      //highlightSelect?.remove();
 
 
-      highlightSelect = targetLayerView.highlight(feature.attributes[attributeKeys[0]]);
-      resolve(feature);
+      highlightSelect = layerView.highlight(feature.attributes[attributeKeys[0]]);
+      resolve(queryResult.features);
     } catch (error) {
       reject(error);
     }

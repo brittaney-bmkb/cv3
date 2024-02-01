@@ -48,11 +48,12 @@ export const AppProvider = ({children}) => {
     const mapClickEventHandler = async (event) => {
 
         const { onViewClick } = await import('../arcgis/webmap/webmap')
-
+        const { searchResults } = state
         console.log("Handler Event: ", event)
 
         const selectedFeature = await onViewClick(event)
         setPrimaryResultFeature(selectedFeature)
+        setSearchResults(searchResults, selectedFeature)
     }
 
     const setSearchResults = (results, features) => {
