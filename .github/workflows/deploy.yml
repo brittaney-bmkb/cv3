@@ -1,0 +1,64 @@
+name: Deploy
+on:
+  push:
+    branches:
+      [-working]
+  workflow_dispatch:
+    inputs:
+      deploy_env:
+        description: 'Environment'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+        - dev
+        - tst
+        - prd
+      deploy_audience:
+        description: 'Audience - Internal or Public'
+        required: true
+        default: 'internal'
+        type: choice
+        options:
+        - internal
+        - public
+      deploy_folder:
+        description: 'Folder name under wwwroot'
+        required: true
+        default: 'testdeploy'
+        type: string
+#       logLevel:
+#         description: 'Log level'
+#         required: true
+#         default: 'warning'
+#         type: choice
+#         options:
+#         - info
+#         - warning
+#         - debug
+#       print_tags:
+#         description: 'True to print to STDOUT'
+#         required: true
+#         type: boolean
+env:
+  #SOURCES_DIRECTORY: 's'
+  #BINARIES_DIRECTORY: 'b'
+  #ARTIFACTS_STAGING_DIRECTORY: 'a'
+  VERSION_NUMBER: '1.1.${{ github.run_number }}'
+jobs:
+  build:
+    runs-on: [self-hosted, gis]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build vitejs app
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.7.0 
+      - run: npm install
+      - run: npm run build
+      - name: Deploy to server
+        shell: powershell
+        run: '& "C:\\actions-runner-custom-scripts\\gisdeploy.ps1" -env "${{ inputs.deploy_env }}"  -internalOrPublic "${{ inputs.deploy_audience }}"  -sourcePath "${{ github.workspace }}\dist" -outputFolder "${{ inputs.deploy_folder }}" '
+      #- name: Publish Artifact
+      #  run: Copy-Item -Path "$($env:GITHUB_WORKSPACE)\$($env:ARTIFACTS_STAGING_DIRECTORY)" -Destination "E:\FileShare\Cadastral\Test Build\$($env:VERSION_NUMBER)\drop" -Recurse -Force
