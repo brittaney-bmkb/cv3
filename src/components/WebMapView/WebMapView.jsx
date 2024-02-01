@@ -4,7 +4,7 @@ import UseAppContext from "../../contexts/AppContext";
 
 export default function WebMapView(){
 
-    const { loadMap, setMapContainer, mapContainer, mapClickEventHandler} = UseAppContext()
+    const { renderSearchResults, searchResults, loadMap, setMapContainer, mapContainer, mapClickEventHandler} = UseAppContext()
     const mapDiv = useRef(null)
 
     useEffect(() => {
@@ -20,6 +20,18 @@ export default function WebMapView(){
         createMap();
 
     }, [mapContainer])
+
+
+    useEffect(() => {
+
+        const updateMap = async () => {
+            if(searchResults){
+                renderSearchResults()
+            }
+        }
+
+        updateMap()
+    }, [searchResults])
 
     return (
         <div id="MAPCONTAINER" ref={mapDiv} style={{width: '100%', height: '100%'}} onClick={mapClickEventHandler}></div>

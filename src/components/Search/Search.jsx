@@ -28,7 +28,8 @@ const Search = () => {
                         view: mapView,
                         container: searchDiv.current,
                         sources: searchSources,
-                        resultGraphicEnabled:false
+                        resultGraphicEnabled:false,
+                        autoSelect: true
                     })
                 }
 
@@ -36,8 +37,12 @@ const Search = () => {
                 searchWidget.current.on("select-result", function(event){
                     console.log("The selected search result: ", searchWidget.current.selectedResult)
                     setSearchResults(searchWidget.current.selectedResult)
-    
                 })
+
+                // searchWidget.current.on("search-complete", function(event){
+                //     // The results are stored in the event Object[]
+                //     console.log("Results of the search: ", event);
+                //   });
             }
 
            

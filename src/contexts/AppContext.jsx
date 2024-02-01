@@ -73,6 +73,15 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const renderSearchResults = async () => {
+        const { querySearchResults } = await import('../arcgis/webmap/webmap')
+        const { searchResults } = state
+
+        const features = await querySearchResults(searchResults)
+        //setPinResults(features)
+
+    }
+
 
     const value = {
         mapContainer: state.mapContainer,
@@ -84,7 +93,8 @@ export const AppProvider = ({children}) => {
         setSearchResults,
         searchSources: state.searchSources,
         searchResults: state.searchResults,
-        setSearchSources
+        setSearchSources,
+        renderSearchResults
     }
 
 
