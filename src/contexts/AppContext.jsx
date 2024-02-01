@@ -42,6 +42,7 @@ export const AppProvider = ({children}) => {
         let view, searchSources = await initializeMap(mapContainer)
 
         setMapView(view)
+        setSearchSources(searchSources)
     }
 
     const mapClickEventHandler = async (event) => {
@@ -54,6 +55,24 @@ export const AppProvider = ({children}) => {
         setPrimaryResultFeature(selectedFeature)
     }
 
+    const setSearchResults = (results) => {
+        dispatch({
+            type:"SET_SEARCH_RESULT",
+             payload: {
+                searchResults: results,
+            }
+        })
+    }
+
+    const setSearchSources = (searchSources) => {
+        dispatch({
+            type:"SET_SEARCH_SOURCES",
+             payload: {
+                searchSources: searchSources,
+            }
+        })
+    }
+
 
     const value = {
         mapContainer: state.mapContainer,
@@ -61,7 +80,11 @@ export const AppProvider = ({children}) => {
         setMapContainer,
         mapView: state.mapView,
         mapClickEventHandler,
-        primaryResultFeature: state.primaryResultFeature
+        primaryResultFeature: state.primaryResultFeature,
+        setSearchResults,
+        searchSources: state.searchSources,
+        searchResults: state.searchResults,
+        setSearchSources
     }
 
 
