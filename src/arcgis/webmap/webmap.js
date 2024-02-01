@@ -3,6 +3,8 @@ import MapView from "@arcgis/core/views/MapView.js";
 import { createBaseMap, createFeatureLayers } from "../layers/layers";
 import { createSearchSources } from "../search/searchSources";
 import { config } from "../../data/config";
+import Query from "@arcgis/core/rest/support/Query.js";
+import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 
 let targetLayerView;
 let targetLayer;
@@ -14,11 +16,11 @@ const map = new Map({
     // basemap: "streets-vector"
   });
 
-  const view = new MapView({
-    map: map,
-    center: [-87.8298, 41.8781],
-    zoom: 8
-  })
+const view = new MapView({
+  map: map,
+  center: [-87.8298, 41.8781],
+  zoom: 8
+})
 
 export async function initializeMap(container){
 
@@ -39,5 +41,26 @@ export async function initializeMap(container){
   targetLayer = namedLayers[config.target_layer_name]
   targetLayerView = await view.whenLayerView(targetLayer)
 
-return view, searchSources
+return map, searchSources
 }  
+
+
+export async function onViewClick(event){
+
+  console.log("onViewClick: MAP CLICKED")
+
+  //https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html#highlight
+
+  let query = new Query();
+
+  query.geometry = event.mapPoint
+  query.spatialRelationship = "intersects"
+
+  await reactiveUtils.whenOnce(() => !targetLayerView.updating);
+
+  const attributes = await targetLayerView.queryFeatures(query)
+
+  console.log("ONCLICK ATTRIBUTES: ", attributes)
+
+
+}

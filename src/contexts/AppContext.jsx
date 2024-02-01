@@ -35,12 +35,20 @@ export const AppProvider = ({children}) => {
         setMapView(view)
     }
 
+    const mapClickEventHandler = async (event) => {
+
+        const { onViewClick } = await import('../arcgis/webmap/webmap')
+
+        onViewClick(event)
+    }
+
 
     const value = {
         mapContainer: state.mapContainer,
         loadMap,
         setMapContainer,
-        mapView: state.mapView
+        mapView: state.mapView,
+        mapClickEventHandler
     }
 
 
