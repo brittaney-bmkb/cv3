@@ -141,57 +141,108 @@ async function handleClick() {
   });
 }
 
+export async function onViewClick(event) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const point = await new Promise((resolvePoint) => {
+        view.on("click", (clickEvent) => {
+          resolvePoint(clickEvent.mapPoint);
+        });
+      });
 
-export async function onViewClick(event){
+      console.log("Map Point: ", point);
 
-    //await handleClick()
+      await view.goTo({ target: point });
 
-    view.on("click", function(event){
-      point = event.mapPoint
-    })
+      if (view.zoom < 15) {
+        view.zoom = 15;
+      }
 
-    await sleep(1000)
-    console.log("Map Point: ", point)
-    view.goTo({
-      target: point, 
-    })
+      const layerView = await view.whenLayerView(targetLayer);
+      await reactiveUtils.whenOnce(() => !layerView.updating);
+      console.log("Layer view done loading");
 
-    if(view.zoom < 15){
-      view.zoom = 15
-    } 
-    
-  const layerView = await view.whenLayerView(targetLayer)
-  await reactiveUtils.whenOnce(() => !layerView.updating);
-  console.log("layerview done loading")
+      if (view.zoom < 15) {
+        // If you still need a delay, consider using a proper async sleep function
+        // await sleep(3000);
+        await new Promise((resolveSleep) => setTimeout(resolveSleep, 3000));
+      }
 
-  //TODO find a slicker solution 
-  //waiting for parcel features to become available 
-  //for querying
-  if (view.zoom < 15) {
-    await sleep(3000)
-  }
-  
-  let query = new Query();
-  query.geometry = point
-  query.spatialRelationship = "intersects"
+      const query = new Query();
+      query.geometry = point;
+      query.spatialRelationship = "intersects";
 
-  const query_result = await layerView.queryFeatures(query)
+      const queryResult = await layerView.queryFeatures(query);
 
-  console.log("ONCLICK ATTRIBUTES: ", query_result)
-  const feature = query_result.features[0]
-  
+      console.log("ONCLICK ATTRIBUTES: ", queryResult);
+      const feature = queryResult.features[0];
 
-  const attribute_keys = Object.keys(feature.attributes)
-  console.log("attribute to highlight: ", feature.attributes["Pin10"])
+      const attributeKeys = Object.keys(feature.attributes);
+      console.log("Attribute to highlight: ", feature.attributes[attributeKeys[0]]);
 
-  if (highlightSelect) {
-    highlightSelect.remove();
-  }
+      if (highlightSelect) {
+        highlightSelect.remove();
+      }
 
-  highlightSelect = targetLayerView.highlight(feature.attributes[attribute_keys[0]])
-
-  return feature
+      highlightSelect = targetLayerView.highlight(feature.attributes[attributeKeys[0]]);
+      resolve(feature);
+    } catch (error) {
+      reject(error);
+    }
+  });
 }
+
+
+// export async function onViewClick(event){
+
+//     //await handleClick()
+
+//     view.on("click", function(event){
+//       point = event.mapPoint
+//     })
+
+//     await sleep(1000)
+//     console.log("Map Point: ", point)
+//     view.goTo({
+//       target: point, 
+//     })
+
+//     if(view.zoom < 15){
+//       view.zoom = 15
+//     } 
+
+//   const layerView = await view.whenLayerView(targetLayer)
+//   await reactiveUtils.whenOnce(() => !layerView.updating);
+//   console.log("layerview done loading")
+
+//   //TODO find a slicker solution 
+//   //waiting for parcel features to become available 
+//   //for querying
+//   if (view.zoom < 15) {
+//     await sleep(3000)
+//   }
+  
+//   let query = new Query();
+//   query.geometry = point
+//   query.spatialRelationship = "intersects"
+
+//   const query_result = await layerView.queryFeatures(query)
+
+//   console.log("ONCLICK ATTRIBUTES: ", query_result)
+//   const feature = query_result.features[0]
+  
+
+//   const attribute_keys = Object.keys(feature.attributes)
+//   console.log("attribute to highlight: ", feature.attributes["Pin10"])
+
+//   if (highlightSelect) {
+//     highlightSelect.remove();
+//   }
+
+//   highlightSelect = targetLayerView.highlight(feature.attributes[attribute_keys[0]])
+
+//   return feature
+// }
 
 // // Set up click event listener
 // view.on('click', onViewClick);
