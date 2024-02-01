@@ -25,6 +25,15 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setPrimaryResultFeature = (feature) => {
+        dispatch({
+            type:"SET_PRIMARY_RESULT_FEATURE",
+             payload: {
+                primaryResultFeature: feature,
+            }
+        })
+    } 
+
     const loadMap = async () => {
 
         const {initializeMap} = await import('../arcgis/webmap/webmap')
@@ -41,7 +50,8 @@ export const AppProvider = ({children}) => {
 
         console.log("Handler Event: ", event)
 
-        onViewClick(event)
+        const selectedFeature = await onViewClick(event)
+        setPrimaryResultFeature(selectedFeature)
     }
 
 
@@ -50,7 +60,8 @@ export const AppProvider = ({children}) => {
         loadMap,
         setMapContainer,
         mapView: state.mapView,
-        mapClickEventHandler
+        mapClickEventHandler,
+        primaryResultFeature: state.primaryResultFeature
     }
 
 

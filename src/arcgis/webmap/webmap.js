@@ -11,6 +11,7 @@ let targetLayer;
 let namedLayers;
 let searchSources
 let highlightSelect;
+let point;
 
 // Create a Map instance
 const map = new Map({
@@ -50,32 +51,123 @@ const sleep = ms => new Promise(r => setTimeout(r, ms))
 
 async function queryMap(event){
 
-  //zoom to feature layer scale
-  const point = event.mapPoint
-  console.log("Map Point: ", point)
-  
-  view.goTo({
-    target:point,
-    zoom: 15 
+
+  return new Promise(async(resolve, reject) => {
+     //zoom to feature layer scale
+      const point = event.mapPoint
+      console.log("Map Point: ", point)
+      
+      view.goTo({
+        target:point,
+        zoom: 15 
+      })
+
+      
+      .catch(function(error) {
+        if (error.name != "AbortError") {
+          console.error(error);
+        }
+      });
+
+      console.log("zooming to location")
+      // await reactiveUtils.whenOnce(() => !view.updating);
+
+      // const layerView = await view.whenLayerView(targetLayer)
+
+      await reactiveUtils.whenOnce(() => !targetLayerView.updating);
+      console.log("layerview done loading")
+
+      
+      
+      let query = new Query();
+      query.geometry = point
+      query.spatialRelationship = "intersects"
+
+      const query_result = await targetLayerView.queryFeatures(query)
+
+      console.log("ONCLICK ATTRIBUTES: ", query_result)
+      const feature = query_result.features[0]
+      
+
+      const attribute_keys = Object.keys(feature.attributes)
+      console.log("attribute to highlight: ", feature.attributes[attribute_keys[0]])
+
+      if (highlightSelect) {
+        highlightSelect.remove();
+      }
+
+      highlightSelect = targetLayerView.highlight(feature.attributes[attribute_keys[0]])
+
+      resolve(feature)
+      
   })
-  .catch(function(error) {
-    if (error.name != "AbortError") {
-       console.error(error);
-    }
+ 
+}
+
+// function waitForPoint() {
+//   return new Promise(resolve => point ? resolve(point) : view.once('click', event => (point = event.mapPoint, resolve(point))));
+// }
+
+// // Usage
+// async function handleClickAndContinue() {
+//   const clickedPoint = await waitForPoint();
+//   console.log("Clicked Point:", clickedPoint);
+// }
+
+async function handleClick() {
+  return new Promise(async (resolve, reject) => {
+    view.on('click', async (event) => {
+      point = event.mapPoint;
+
+      try {
+        await view.goTo({
+          target: point,
+          zoom: 15 
+        });
+
+        //TODO find a slicker solution 
+        //waiting for parcel features to become available 
+        //for querying
+       
+        
+        resolve(point);
+      } catch (error) {
+        if (error.name !== "AbortError") {
+          console.error(error);
+          reject(error);
+        }
+      }
+    });
   });
+}
 
-  console.log("zooming to location")
-  // await reactiveUtils.whenOnce(() => !view.updating);
 
-  // const layerView = await view.whenLayerView(targetLayer)
+export async function onViewClick(event){
 
-  await reactiveUtils.whenOnce(() => !targetLayerView.updating);
+    //await handleClick()
+
+    view.on("click", function(event){
+      point = event.mapPoint
+    })
+
+    await sleep(1000)
+    console.log("Map Point: ", point)
+    view.goTo({
+      target: point, 
+    })
+
+    if(view.zoom < 15){
+      view.zoom = 15
+    } 
+    
+  const layerView = await view.whenLayerView(targetLayer)
+  await reactiveUtils.whenOnce(() => !layerView.updating);
   console.log("layerview done loading")
 
   //TODO find a slicker solution 
   //waiting for parcel features to become available 
   //for querying
-  if (view.zoom !== 15) {
+  if (view.zoom < 15) {
     await sleep(3000)
   }
   
@@ -83,14 +175,14 @@ async function queryMap(event){
   query.geometry = point
   query.spatialRelationship = "intersects"
 
-  const query_result = await targetLayerView.queryFeatures(query)
+  const query_result = await layerView.queryFeatures(query)
 
   console.log("ONCLICK ATTRIBUTES: ", query_result)
   const feature = query_result.features[0]
   
 
   const attribute_keys = Object.keys(feature.attributes)
-  console.log("attribute to highlight: ", feature.attributes[attribute_keys[0]])
+  console.log("attribute to highlight: ", feature.attributes["Pin10"])
 
   if (highlightSelect) {
     highlightSelect.remove();
@@ -101,9 +193,6 @@ async function queryMap(event){
   return feature
 }
 
-export async function onViewClick(event){
-
-  view.on('click', queryMap)
-  //https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html#highlight
-
-}
+// // Set up click event listener
+// view.on('click', onViewClick);
+  

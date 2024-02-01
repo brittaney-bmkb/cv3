@@ -2,8 +2,8 @@ export const initialState = {
 
     //MAP
     mapView:null,
-    mapContainer:null
-
+    mapContainer:null,
+    primaryResultFeature: null,
 }
 
 const AppReducer = (state, action) => {
@@ -22,6 +22,12 @@ const AppReducer = (state, action) => {
             return{
                 ...state,
                 mapView:payload.mapView
+            }
+        case "SET_PRIMARY_RESULT_FEATURE":
+            console.log("SET_PRIMARY_RESULT_FEATURE: ", payload.primaryResultFeature)
+            return{
+                ...state,
+                primaryResultFeature:payload.primaryResultFeature
             }
         default:
             throw new Error(`No valid selection made`)
