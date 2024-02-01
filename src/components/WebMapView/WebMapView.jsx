@@ -4,7 +4,7 @@ import UseAppContext from "../../contexts/AppContext";
 
 export default function WebMapView(){
 
-    const { loadMap, setMapContainer, mapContainer} = UseAppContext()
+    const { loadMap, setMapContainer, mapContainer, mapClickEventHandler} = UseAppContext()
     const mapDiv = useRef(null)
 
     useEffect(() => {
@@ -22,6 +22,6 @@ export default function WebMapView(){
     }, [mapContainer])
 
     return (
-        <div id="MAPCONTAINER" ref={mapDiv} style={{width: '100%', height: '100%'}} ></div>
+        <div id="MAPCONTAINER" ref={mapDiv} style={{width: '100%', height: '100%'}} onClick={mapClickEventHandler}></div>
             )            
 }

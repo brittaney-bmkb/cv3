@@ -16,12 +16,42 @@ export const AppProvider = ({children}) => {
         })
     } 
 
+    const setMapView = (view) => {
+        dispatch({
+            type:"SET_MAP_VIEW",
+            payload: {
+                mapView: view
+            }
+        })
+    }
+
+    const setPrimaryResultFeature = (feature) => {
+        dispatch({
+            type:"SET_PRIMARY_RESULT_FEATURE",
+             payload: {
+                primaryResultFeature: feature,
+            }
+        })
+    } 
+
     const loadMap = async () => {
 
-        const {initializeMap} = await import('../arcgis/webmap')
+        const {initializeMap} = await import('../arcgis/webmap/webmap')
         const {mapContainer} = state
 
-        await initializeMap(mapContainer)
+        let view, searchSources = await initializeMap(mapContainer)
+
+        setMapView(view)
+    }
+
+    const mapClickEventHandler = async (event) => {
+
+        const { onViewClick } = await import('../arcgis/webmap/webmap')
+
+        console.log("Handler Event: ", event)
+
+        const selectedFeature = await onViewClick(event)
+        setPrimaryResultFeature(selectedFeature)
     }
 
 
@@ -29,6 +59,9 @@ export const AppProvider = ({children}) => {
         mapContainer: state.mapContainer,
         loadMap,
         setMapContainer,
+        mapView: state.mapView,
+        mapClickEventHandler,
+        primaryResultFeature: state.primaryResultFeature
     }
 
 
