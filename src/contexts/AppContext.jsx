@@ -55,11 +55,12 @@ export const AppProvider = ({children}) => {
         setPrimaryResultFeature(selectedFeature)
     }
 
-    const setSearchResults = (results) => {
+    const setSearchResults = (results, features) => {
         dispatch({
             type:"SET_SEARCH_RESULT",
              payload: {
                 searchResults: results,
+                searchFeatures: features
             }
         })
     }
@@ -78,7 +79,7 @@ export const AppProvider = ({children}) => {
         const { searchResults } = state
 
         const features = await querySearchResults(searchResults)
-        //setPinResults(features)
+        setSearchResults(searchResults, features)
 
     }
 
@@ -101,7 +102,8 @@ export const AppProvider = ({children}) => {
         searchResults: state.searchResults,
         setSearchSources,
         renderSearchResults,
-        clearResults
+        clearResults,
+        searchFeatures: state.searchFeatures
     }
 
 

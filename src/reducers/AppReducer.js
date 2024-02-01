@@ -5,7 +5,8 @@ export const initialState = {
     mapContainer:null,
     primaryResultFeature: null,
     searchResults: null,
-    searchSources: null
+    searchSources: null,
+    searchFeatures: null,
 
 }
 
@@ -32,11 +33,13 @@ const AppReducer = (state, action) => {
                 ...state,
                 primaryResultFeature:payload.primaryResultFeature
             }
+        
         case "SET_SEARCH_RESULT":
             console.log("SET_SEARCH_RESULT")
             return {
                 ...state,
                 searchResults: payload.searchResults,
+                searchFeatures: payload.searchFeatures
             }
         case "SET_SEARCH_SOURCES":
             console.log("SET_SEARCH_SOURCES")

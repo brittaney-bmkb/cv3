@@ -166,13 +166,13 @@ export async function querySearchResults(result){
 
   highlightSelect?.remove();
 
-  let pins = features.map((feature) => {
+  features.map((feature) => {
     
     layerView.highlight(feature.attributes[attributeKeys[0]])
     return feature.attributes["Pin10"]
   })
 
-  return pins
+  return features
 
 }
 
