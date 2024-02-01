@@ -39,6 +39,8 @@ export const AppProvider = ({children}) => {
 
         const { onViewClick } = await import('../arcgis/webmap/webmap')
 
+        console.log("Handler Event: ", event)
+
         onViewClick(event)
     }
 

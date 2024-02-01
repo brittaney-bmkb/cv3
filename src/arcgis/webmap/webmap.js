@@ -10,6 +10,7 @@ let targetLayerView;
 let targetLayer;
 let namedLayers;
 let searchSources
+let highlightSelect;
 
 // Create a Map instance
 const map = new Map({
@@ -45,22 +46,64 @@ return map, searchSources
 }  
 
 
-export async function onViewClick(event){
+const sleep = ms => new Promise(r => setTimeout(r, ms))
 
-  console.log("onViewClick: MAP CLICKED")
+async function queryMap(event){
 
-  //https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html#highlight
+  //zoom to feature layer scale
+  const point = event.mapPoint
+  console.log("Map Point: ", point)
+  
+  view.goTo({
+    target:point,
+    zoom: 15 
+  })
+  .catch(function(error) {
+    if (error.name != "AbortError") {
+       console.error(error);
+    }
+  });
 
-  let query = new Query();
+  console.log("zooming to location")
+  // await reactiveUtils.whenOnce(() => !view.updating);
 
-  query.geometry = event.mapPoint
-  query.spatialRelationship = "intersects"
+  // const layerView = await view.whenLayerView(targetLayer)
 
   await reactiveUtils.whenOnce(() => !targetLayerView.updating);
+  console.log("layerview done loading")
 
-  const attributes = await targetLayerView.queryFeatures(query)
+  //TODO find a slicker solution 
+  //waiting for parcel features to become available 
+  //for querying
+  if (view.zoom !== 15) {
+    await sleep(3000)
+  }
+  
+  let query = new Query();
+  query.geometry = point
+  query.spatialRelationship = "intersects"
 
-  console.log("ONCLICK ATTRIBUTES: ", attributes)
+  const query_result = await targetLayerView.queryFeatures(query)
 
+  console.log("ONCLICK ATTRIBUTES: ", query_result)
+  const feature = query_result.features[0]
+  
+
+  const attribute_keys = Object.keys(feature.attributes)
+  console.log("attribute to highlight: ", feature.attributes[attribute_keys[0]])
+
+  if (highlightSelect) {
+    highlightSelect.remove();
+  }
+
+  highlightSelect = targetLayerView.highlight(feature.attributes[attribute_keys[0]])
+
+  return feature
+}
+
+export async function onViewClick(event){
+
+  view.on('click', queryMap)
+  //https://developers.arcgis.com/javascript/latest/api-reference/esri-views-layers-FeatureLayerView.html#highlight
 
 }

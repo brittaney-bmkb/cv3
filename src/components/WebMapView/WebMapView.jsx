@@ -22,6 +22,6 @@ export default function WebMapView(){
     }, [mapContainer])
 
     return (
-        <div id="MAPCONTAINER" ref={mapDiv} style={{width: '100%', height: '100%'}} onClick={(event) => {mapClickEventHandler(event)}}></div>
+        <div id="MAPCONTAINER" ref={mapDiv} style={{width: '100%', height: '100%'}} onClick={mapClickEventHandler}></div>
             )            
 }

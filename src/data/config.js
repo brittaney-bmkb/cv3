@@ -19,6 +19,13 @@ export const config = {
            outFields: ["Pin10"], // Fields to return in the search results (array of strings).
            popupEnabled:true, // Enable/disable popups for this layer source (boolean).
            popupTemplateTitle:"Parcel pin 10 {Pin10}", // Popup template title with field placeholders.
+           maxScale:0,
+           minScale: 0,
+           opacity: 0,
+           render: {
+                type: "simple",
+                width: 1,
+           },
            searchSources: [
                {
                    name: "Parcel 10 digit pin", // Name of the search source.

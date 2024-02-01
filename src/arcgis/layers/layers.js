@@ -3,20 +3,23 @@ import PopupTemplate from "@arcgis/core/PopupTemplate.js";
 import Basemap from "@arcgis/core/Basemap";
 import { config } from "../../data/config";
 
-
 export async function createFeatureLayers(map){
 
     const namedLayers = {};
 
     config.layer_sources.forEach(source => {
         const name = source.layerName;
+        //https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
         namedLayers[name] = new FeatureLayer({
           url: source.url,
           outFields: source.outFields,
-          popupEnabled: source.popupEnabled,
-          popupTemplate : new PopupTemplate({
-            title: source.popupTemplateTitle
-          })
+          // popupEnabled: source.popupEnabled,
+          // popupTemplate : new PopupTemplate({
+          //   title: source.popupTemplateTitle
+          // }),
+          visible:true,
+          // renderer: source.render
+          
         })
       
         map.add(namedLayers[name])
