@@ -82,6 +82,12 @@ export const AppProvider = ({children}) => {
 
     }
 
+    const clearResults = async () => {
+        const { removeHighlight } = await import('../arcgis/webmap/webmap')
+        
+        removeHighlight();
+    }
+
 
     const value = {
         mapContainer: state.mapContainer,
@@ -94,7 +100,8 @@ export const AppProvider = ({children}) => {
         searchSources: state.searchSources,
         searchResults: state.searchResults,
         setSearchSources,
-        renderSearchResults
+        renderSearchResults,
+        clearResults
     }
 
 

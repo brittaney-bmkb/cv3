@@ -89,9 +89,8 @@ export async function onViewClick(event) {
       const attributeKeys = Object.keys(feature.attributes);
       console.log("Attribute to highlight: ", feature.attributes[attributeKeys[0]]);
 
-      if (highlightSelect) {
-        highlightSelect.remove();
-      }
+      highlightSelect?.remove();
+
 
       highlightSelect = targetLayerView.highlight(feature.attributes[attributeKeys[0]]);
       resolve(feature);
@@ -157,11 +156,15 @@ export async function querySearchResults(result){
   await reactiveUtils.whenOnce(() => !layerView.updating);
   
   let { features } = await targetLayer.queryFeatures(query)
+  await zoomToExtent(features)
   console.log("Queried Features: ", features)
 
   let feature = features[0]
   // //get pin ids 
   const attributeKeys = Object.keys(feature.attributes);
+
+
+  highlightSelect?.remove();
 
   let pins = features.map((feature) => {
     
@@ -169,6 +172,12 @@ export async function querySearchResults(result){
     return feature.attributes["Pin10"]
   })
 
+  return pins
+
+}
+
+export async function removeHighlight(){
+  highlightSelect?.remove();
 }
 
 async function zoomToExtent(features) {

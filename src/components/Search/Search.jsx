@@ -8,7 +8,7 @@ import { useEffect, useRef } from "react";
 
 const Search = () => {
 
-    const { setSearchResults, mapView, searchSources } = UseAppContext()
+    const { setSearchResults, mapView, searchSources, clearResults } = UseAppContext()
 
     //create a reference to the search  DOM  element
     const searchDiv = useRef(null)
@@ -39,10 +39,10 @@ const Search = () => {
                     setSearchResults(searchWidget.current.selectedResult)
                 })
 
-                // searchWidget.current.on("search-complete", function(event){
-                //     // The results are stored in the event Object[]
-                //     console.log("Results of the search: ", event);
-                //   });
+                searchWidget.current.on("search-clear", function(event){
+                    // The results are stored in the event Object[]
+                    clearResults();
+                  });
             }
 
            
