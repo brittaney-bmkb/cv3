@@ -15,6 +15,7 @@
     "@emotion/styled": "^11.11.0",
     "@esri/calcite-components": "^2.3.0",
     "@esri/calcite-components-react": "^2.3.0",
+    "@esri/calcite-ui-icons": "^3.26.0",
     "@fontsource/barlow": "^5.0.8",
     "@mui/icons-material": "^5.15.6",
     "@mui/material": "^5.15.6",

@@ -1,8 +1,10 @@
 import { AppBar, styled, Box, Toolbar, Typography, Avatar, Stack, IconButton, Button, Link } from "@mui/material"
 import MenuIcon from '@mui/icons-material/Menu';
 import Search from "../Search/Search"
-import BlueButton from "../Button"
+import BlueButton, { StyledButtonFilledSecondary } from "../Button/Button"
 import { config } from "../../data/config";
+import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
+import { CalciteIcon } from "@esri/calcite-components-react";
 
 const StyledToolbar = styled(Toolbar)({
     display: "flex",
@@ -46,9 +48,9 @@ const NavBar = () => {
                             
                         </Stack>
                         
-                        <Stack direction="row" gap={2}> 
-                            <Button variant="secondary" sx={{display:{xs:'none', sm:'block'}}}>Button</Button>
-                            <Button variant="secondary" sx={{display:{xs:'none', sm:'block'}}}>Button</Button>
+                        <Stack direction="row" gap={2} display={{xs:'none', sm:'none', md:'flex' }}> 
+                            <StyledButtonFilledSecondary text={"Feedback"} startIcon={<CalciteIcon icon="mega-phone"/> }/>
+                            <StyledButtonFilledSecondary text={"Translate"} startIcon={<CalciteIcon icon="language-translate"/>}/>
                         </Stack>
                         
                     </Stack>
