@@ -33,21 +33,15 @@ const NavBar = () => {
                         <Stack direction="row" alignItems="center" gap={2} flex={5} padding={{xs:1, sm:1, md: 2}}>
                             <Search/>
                             <Stack flex={5} direction="row" alignItems="center" gap={2} display={{xs:'none', sm:'none', md:'flex' }}>
-                                <Link>
-                                <Typography variant="body1" color="white">
-                                    Page Link
-                                </Typography>
-                                </Link>
-                                <Link>
-                                <Typography color="white">
-                                    Page Link
-                                </Typography>
-                                </Link>
-                                <Link>
-                                <Typography color="white">
-                                    Page Link
-                                </Typography>
-                                </Link>
+                                {config.pages.map((page) => {
+                                    return(
+                                        <Link key={page}>
+                                            <Typography variant="body1" color="white">
+                                                {page}
+                                            </Typography>
+                                        </Link>
+                                    )
+                                })}
                             </Stack>
                             
                         </Stack>

@@ -64,10 +64,10 @@ theme.typography.h2 = {
 
 theme.typography.body1 = {
     [theme.breakpoints.up('md')]: {
-        fontSize: 15
+        fontSize: 18
     },
     [theme.breakpoints.down('md')]: {
-        fontSize: 14
+        fontSize: 16
     },
     // [theme.breakpoints.down('sm')]: {
     //     fontSize: 20
