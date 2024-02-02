@@ -7,7 +7,10 @@ export const config = {
     // TARGET LAYER CONFIGURATION: Specify the name of the target layer and the fields to display in results.
     // MAKE SURE THE NAME OF THIS LAYER IS EXACTLY THE SAME IN THE LAYERSOURCES ARRAY
     target_layer_name: "parcelLayer", // Name of the target layer in LayerSources
-    target_layer_out_fields: ["Pin10"],// Fields to display in the results pane (array of strings).
+    target_layer_out_fields: ["Pin10","Address","OBJECTID_1"],// Fields to display in the results pane (array of strings).
+    // NEARBY SEARCH SETTINGS: Configure the buffer distance and unit for nearby searches.
+    buffer_distance: 50,
+    buffer_unit: "feet",
     // LAYER SOURCES CONFIGURATION: Configure the layers and search sources for the search widget
     layer_sources: [
         // First Layer Source: Configure the parcelLayer
@@ -16,7 +19,7 @@ export const config = {
        {
            layerName: "parcelLayer", // Name of the layer source.
            url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/44", // URL to the layer service.
-           outFields: ["Pin10"], // Fields to return in the search results (array of strings).
+           outFields: ["Pin10", "Address","OBJECTID_1"], // Fields to return in the search results (array of strings).
            popupEnabled:true, // Enable/disable popups for this layer source (boolean).
            popupTemplateTitle:"Parcel pin 10 {Pin10}", // Popup template title with field placeholders.
            maxScale:0,

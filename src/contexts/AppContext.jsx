@@ -42,16 +42,52 @@ export const AppProvider = ({children}) => {
         let view, searchSources = await initializeMap(mapContainer)
 
         setMapView(view)
+        setSearchSources(searchSources)
     }
 
     const mapClickEventHandler = async (event) => {
 
         const { onViewClick } = await import('../arcgis/webmap/webmap')
-
+        const { searchResults } = state
         console.log("Handler Event: ", event)
 
         const selectedFeature = await onViewClick(event)
         setPrimaryResultFeature(selectedFeature)
+        setSearchResults(searchResults, selectedFeature)
+    }
+
+    const setSearchResults = (results, features) => {
+        dispatch({
+            type:"SET_SEARCH_RESULT",
+             payload: {
+                searchResults: results,
+                searchFeatures: features
+            }
+        })
+    }
+
+    const setSearchSources = (searchSources) => {
+        dispatch({
+            type:"SET_SEARCH_SOURCES",
+             payload: {
+                searchSources: searchSources,
+            }
+        })
+    }
+
+    const renderSearchResults = async () => {
+        const { querySearchResults } = await import('../arcgis/webmap/webmap')
+        const { searchResults } = state
+
+        const features = await querySearchResults(searchResults)
+        setSearchResults(searchResults, features)
+
+    }
+
+    const clearResults = async () => {
+        const { removeHighlight } = await import('../arcgis/webmap/webmap')
+        
+        removeHighlight();
     }
 
 
@@ -61,7 +97,14 @@ export const AppProvider = ({children}) => {
         setMapContainer,
         mapView: state.mapView,
         mapClickEventHandler,
-        primaryResultFeature: state.primaryResultFeature
+        primaryResultFeature: state.primaryResultFeature,
+        setSearchResults,
+        searchSources: state.searchSources,
+        searchResults: state.searchResults,
+        setSearchSources,
+        renderSearchResults,
+        clearResults,
+        searchFeatures: state.searchFeatures
     }
 
 

@@ -4,6 +4,10 @@ export const initialState = {
     mapView:null,
     mapContainer:null,
     primaryResultFeature: null,
+    searchResults: null,
+    searchSources: null,
+    searchFeatures: null,
+
 }
 
 const AppReducer = (state, action) => {
@@ -28,6 +32,20 @@ const AppReducer = (state, action) => {
             return{
                 ...state,
                 primaryResultFeature:payload.primaryResultFeature
+            }
+        
+        case "SET_SEARCH_RESULT":
+            console.log("SET_SEARCH_RESULT")
+            return {
+                ...state,
+                searchResults: payload.searchResults,
+                searchFeatures: payload.searchFeatures
+            }
+        case "SET_SEARCH_SOURCES":
+            console.log("SET_SEARCH_SOURCES")
+            return {
+                ...state,
+                searchSources: payload.searchSources,
             }
         default:
             throw new Error(`No valid selection made`)

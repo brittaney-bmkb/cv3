@@ -5,6 +5,7 @@ import { createSearchSources } from "../search/searchSources";
 import { config } from "../../data/config";
 import Query from "@arcgis/core/rest/support/Query.js";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
+import * as geometryEngine from "@arcgis/core/geometry/geometryEngine.js";
 
 let targetLayerView;
 let targetLayer;
@@ -46,101 +47,9 @@ export async function initializeMap(container){
 return map, searchSources
 }  
 
-
-const sleep = ms => new Promise(r => setTimeout(r, ms))
-
-async function queryMap(event){
-
-
-  return new Promise(async(resolve, reject) => {
-     //zoom to feature layer scale
-      const point = event.mapPoint
-      console.log("Map Point: ", point)
-      
-      view.goTo({
-        target:point,
-        zoom: 15 
-      })
-
-      
-      .catch(function(error) {
-        if (error.name != "AbortError") {
-          console.error(error);
-        }
-      });
-
-      console.log("zooming to location")
-      // await reactiveUtils.whenOnce(() => !view.updating);
-
-      // const layerView = await view.whenLayerView(targetLayer)
-
-      await reactiveUtils.whenOnce(() => !targetLayerView.updating);
-      console.log("layerview done loading")
-
-      
-      
-      let query = new Query();
-      query.geometry = point
-      query.spatialRelationship = "intersects"
-
-      const query_result = await targetLayerView.queryFeatures(query)
-
-      console.log("ONCLICK ATTRIBUTES: ", query_result)
-      const feature = query_result.features[0]
-      
-
-      const attribute_keys = Object.keys(feature.attributes)
-      console.log("attribute to highlight: ", feature.attributes[attribute_keys[0]])
-
-      if (highlightSelect) {
-        highlightSelect.remove();
-      }
-
-      highlightSelect = targetLayerView.highlight(feature.attributes[attribute_keys[0]])
-
-      resolve(feature)
-      
-  })
- 
-}
-
-// function waitForPoint() {
-//   return new Promise(resolve => point ? resolve(point) : view.once('click', event => (point = event.mapPoint, resolve(point))));
-// }
-
-// // Usage
-// async function handleClickAndContinue() {
-//   const clickedPoint = await waitForPoint();
-//   console.log("Clicked Point:", clickedPoint);
-// }
-
-async function handleClick() {
-  return new Promise(async (resolve, reject) => {
-    view.on('click', async (event) => {
-      point = event.mapPoint;
-
-      try {
-        await view.goTo({
-          target: point,
-          zoom: 15 
-        });
-
-        //TODO find a slicker solution 
-        //waiting for parcel features to become available 
-        //for querying
-       
-        
-        resolve(point);
-      } catch (error) {
-        if (error.name !== "AbortError") {
-          console.error(error);
-          reject(error);
-        }
-      }
-    });
-  });
-}
-
+// async funciton to set define point location from mouse click
+// point location is detected from view onclick event and map point is 
+// accessed from click event.mapPoint
 export async function onViewClick(event) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -180,12 +89,11 @@ export async function onViewClick(event) {
       const attributeKeys = Object.keys(feature.attributes);
       console.log("Attribute to highlight: ", feature.attributes[attributeKeys[0]]);
 
-      if (highlightSelect) {
-        highlightSelect.remove();
-      }
+      //highlightSelect?.remove();
 
-      highlightSelect = targetLayerView.highlight(feature.attributes[attributeKeys[0]]);
-      resolve(feature);
+
+      highlightSelect = layerView.highlight(feature.attributes[attributeKeys[0]]);
+      resolve(queryResult.features);
     } catch (error) {
       reject(error);
     }
@@ -193,57 +101,91 @@ export async function onViewClick(event) {
 }
 
 
-// export async function onViewClick(event){
+export async function querySearchResults(result){
 
-//     //await handleClick()
+  let resultValue
+  let filter
+  let whereString
+  let sourceIndex = result.sourceIndex
+  let resultFeatures = [result.feature]
 
-//     view.on("click", function(event){
-//       point = event.mapPoint
-//     })
+  let searchSource = searchSources[sourceIndex]
+  let searchLayer = searchSource.layer
 
-//     await sleep(1000)
-//     console.log("Map Point: ", point)
-//     view.goTo({
-//       target: point, 
-//     })
+  //check if target layer is the same as search source layer
+  if(searchLayer === namedLayers[config.target_layer_name]){
+    let searchField = searchSource.outFields[0]
+    resultValue = result.feature.attributes[searchField]
 
-//     if(view.zoom < 15){
-//       view.zoom = 15
-//     } 
+    if(resultValue){
+      whereString = `${searchField}='${resultValue}'`
+      console.log(whereString)
+    }
+  }
 
-//   const layerView = await view.whenLayerView(targetLayer)
-//   await reactiveUtils.whenOnce(() => !layerView.updating);
-//   console.log("layerview done loading")
+  //if target layer is different from source layer
+  //perform a spatial intersection
+  let geometry = result.feature.geometry
+  if(geometry){
+    //zoom to result 
+    await zoomToExtent(resultFeatures)
+  } 
 
-//   //TODO find a slicker solution 
-//   //waiting for parcel features to become available 
-//   //for querying
-//   if (view.zoom < 15) {
-//     await sleep(3000)
-//   }
+  //Create target feature layer query 
+  //to query target feature spatial and attribute data
+  //based on search results
+  let query = new Query()
+
+  if(whereString){
+    query.where = whereString
+    query.outFields = ["OBJECTID_1", "Pin10"]
+  }
+  else{
+    query.geometry = geometry
+    query.distance = config.buffer_distance,
+    query.units = config.buffer_unit
+    query.spatialRelationship = "intersects";
+    query.returnGeometry = true;
+    query.outFields = ["OBJECTID_1", "Pin10"]
+  }
+
+  // //get features from query
+  console.log("Query = ", query)
+
+  const layerView = await view.whenLayerView(targetLayer);
+  await reactiveUtils.whenOnce(() => !layerView.updating);
   
-//   let query = new Query();
-//   query.geometry = point
-//   query.spatialRelationship = "intersects"
+  let { features } = await targetLayer.queryFeatures(query)
+  await zoomToExtent(features)
+  console.log("Queried Features: ", features)
 
-//   const query_result = await layerView.queryFeatures(query)
+  let feature = features[0]
+  // //get pin ids 
+  const attributeKeys = Object.keys(feature.attributes);
 
-//   console.log("ONCLICK ATTRIBUTES: ", query_result)
-//   const feature = query_result.features[0]
-  
 
-//   const attribute_keys = Object.keys(feature.attributes)
-//   console.log("attribute to highlight: ", feature.attributes["Pin10"])
+  highlightSelect?.remove();
 
-//   if (highlightSelect) {
-//     highlightSelect.remove();
-//   }
+  features.map((feature) => {
+    
+    layerView.highlight(feature.attributes[attributeKeys[0]])
+    return feature.attributes["Pin10"]
+  })
 
-//   highlightSelect = targetLayerView.highlight(feature.attributes[attribute_keys[0]])
+  return features
 
-//   return feature
-// }
+}
 
-// // Set up click event listener
-// view.on('click', onViewClick);
+export async function removeHighlight(){
+  highlightSelect?.remove();
+}
+
+async function zoomToExtent(features) {
+  const geometries = features.map((feature) => feature.geometry);
+
+  //console.log(geometries)
+  const combinedExtent = geometryEngine.union(geometries);
+  view.goTo(combinedExtent, {
+  });
+}
   

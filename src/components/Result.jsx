@@ -2,14 +2,7 @@ import { Box, Card, CardActionArea, CardContent, CardHeader, Typography } from "
 import UseAppContext from "../contexts/AppContext"
 import { useEffect } from "react"
 
-const Result = () => {
-
-    const { primaryResultFeature } = UseAppContext()
-
-    // console.log("result: ", primaryResultFeature ? primaryResultFeature.attributes: null)
-    useEffect(() => {
-
-    },[primaryResultFeature])
+const Result = ({text}) => {
 
     return(
         <Box flex={4} p={2}>
@@ -17,7 +10,7 @@ const Result = () => {
             <CardHeader title="Result">
             </CardHeader>
             <CardContent>
-                <Typography>{primaryResultFeature ? primaryResultFeature.attributes['Pin10']: 'Result'}</Typography>
+                <Typography>{text ? text: 'No Results'}</Typography>
             </CardContent>
         </Card>
         </Box>
