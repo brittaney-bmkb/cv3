@@ -10,3 +10,14 @@ body{
 calcite-icon {
   --calcite-ui-icon-color: black
 }
+
+.esri-search{
+  width:auto;
+  max-width: 600px;
+}
+
+@media (max-width:500px){
+  .esri-search{
+    width: 90vw;
+  }
+}

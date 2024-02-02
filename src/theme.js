@@ -18,7 +18,8 @@ export const theme = createTheme({
     },
     typography: {
         h1: {
-            fontSize: 50
+            fontSize: 40,
+            fontWeight:"bold",
         },
         h2: {
             fontSize: 36,
@@ -27,7 +28,7 @@ export const theme = createTheme({
         h3: {
             fontSize: 18
         },
-        body: {
+        body1: {
             fontSize: 15
         },
         subtitle1: {
@@ -35,6 +36,19 @@ export const theme = createTheme({
         }
     }
 })
+
+//Response font size for nav bar
+theme.typography.h1 = {
+    [theme.breakpoints.up('md')]: {
+        fontSize: 40
+    },
+    [theme.breakpoints.down('md')]: {
+        fontSize: 30
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: 24
+    }
+}
 
 theme.typography.h2 = {
     [theme.breakpoints.up('md')]: {
@@ -46,4 +60,16 @@ theme.typography.h2 = {
     [theme.breakpoints.down('sm')]: {
         fontSize: 20
     }
+}
+
+theme.typography.body1 = {
+    [theme.breakpoints.up('md')]: {
+        fontSize: 15
+    },
+    [theme.breakpoints.down('md')]: {
+        fontSize: 14
+    },
+    // [theme.breakpoints.down('sm')]: {
+    //     fontSize: 20
+    // }
 }

@@ -1,7 +1,5 @@
 
 :root {
   font-family: "Barlow";
-
+  --mobile-breakpoint: 600px;
 }
-
-

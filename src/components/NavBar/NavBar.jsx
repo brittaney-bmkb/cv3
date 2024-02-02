@@ -14,7 +14,7 @@ const NavBar = () => {
     return(
             <AppBar position="sticky">
                 <StyledToolbar>
-                    <Stack direction={{xs:'column', sm:'row'}} justifyContent="space-between" alignItems="center" width='100%' gap={2}>
+                    <Stack direction={{xs:'column', sm:'row'}} justifyContent="space-between" alignItems="center" width='100%' gap={{xs:0, sm:1, md: 2}}>
                             <IconButton
                                 size="large"
                                 edge="start"
@@ -25,31 +25,29 @@ const NavBar = () => {
                                 <MenuIcon fontSize="large"/>
                             </IconButton>
                         <Stack direction="row" alignItems='center' flex={1} width="auto">
-                            
-               
                             <Stack direction="row" alignContent="center" alignItems="center" gap={1} height='100%' width="auto">
                                 <Avatar alt="Cook County Seal" src={config.logo}/>    
-                                <Typography variant="h2" textAlign="center">CookViewer</Typography>
+                                <Typography variant="h1" textAlign="center">CookViewer</Typography>
                             </Stack>
                         </Stack>
-                        <Stack direction="row" alignItems="center" gap={2} flex={5} padding={2}>
+                        <Stack direction="row" alignItems="center" gap={2} flex={5} padding={{xs:1, sm:1, md: 2}}>
                             <Search/>
                             <Stack flex={5} direction="row" alignItems="center" gap={2} display={{xs:'none', sm:'none', md:'flex' }}>
-                            <Link>
-                            <Typography color="white">
-                                Page Link
-                            </Typography>
-                            </Link>
-                            <Link>
-                            <Typography color="white">
-                                Page Link
-                            </Typography>
-                            </Link>
-                            <Link>
-                            <Typography color="white">
-                                Page Link
-                            </Typography>
-                            </Link>
+                                <Link>
+                                <Typography variant="body1" color="white">
+                                    Page Link
+                                </Typography>
+                                </Link>
+                                <Link>
+                                <Typography color="white">
+                                    Page Link
+                                </Typography>
+                                </Link>
+                                <Link>
+                                <Typography color="white">
+                                    Page Link
+                                </Typography>
+                                </Link>
                             </Stack>
                             
                         </Stack>
