@@ -1,7 +1,8 @@
 import { AppBar, styled, Box, Toolbar, Typography, Avatar, Stack, IconButton, Button, Link } from "@mui/material"
 import MenuIcon from '@mui/icons-material/Menu';
-import Search from "./Search/Search"
-import BlueButton from "./Button"
+import Search from "../Search/Search"
+import BlueButton from "../Button"
+import { config } from "../../data/config";
 
 const StyledToolbar = styled(Toolbar)({
     display: "flex",
@@ -26,9 +27,9 @@ const NavBar = () => {
                         <Stack direction="row" alignItems='center' flex={1} width="auto">
                             
                
-                            <Stack direction="row" alignContent="center" gap={1} height='100%' width="auto">
-                                <Avatar sx={{bgcolor:"orange"}}/>    
-                                <Typography variant="h6">CookViewer</Typography>
+                            <Stack direction="row" alignContent="center" alignItems="center" gap={1} height='100%' width="auto">
+                                <Avatar alt="Cook County Seal" src={config.logo}/>    
+                                <Typography variant="h2" textAlign="center">CookViewer</Typography>
                             </Stack>
                         </Stack>
                         <Stack direction="row" alignItems="center" gap={2} flex={5} padding={2}>

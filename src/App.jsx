@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import NavBar from './components/NavBar'
+import NavBar from './components/NavBar/NavBar'
 import WebMapView from './components/WebMapView/WebMapView'
 import { Box, Stack, Grid, ThemeProvider, createTheme, Button } from '@mui/material'
 import Panel, { BottomPanel, LeftPanel, RightPanel } from './components/Panel'

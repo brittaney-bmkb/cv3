@@ -17,6 +17,33 @@ export const theme = createTheme({
         borderRadius: 20
     },
     typography: {
-        h1: 50
+        h1: {
+            fontSize: 50
+        },
+        h2: {
+            fontSize: 36,
+            fontWeight:"bold",
+        },
+        h3: {
+            fontSize: 18
+        },
+        body: {
+            fontSize: 15
+        },
+        subtitle1: {
+            fontSize: 14
+        }
     }
 })
+
+theme.typography.h2 = {
+    [theme.breakpoints.up('md')]: {
+        fontSize: 36
+    },
+    [theme.breakpoints.down('md')]: {
+        fontSize: 24
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: 20
+    }
+}
