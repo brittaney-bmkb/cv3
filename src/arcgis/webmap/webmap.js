@@ -25,6 +25,8 @@ const view = new MapView({
   zoom: 8
 })
 
+view.ui.move([ "zoom" ], "top-right");
+
 export async function initializeMap(container){
 
   //created feature layers based on config layer sources
