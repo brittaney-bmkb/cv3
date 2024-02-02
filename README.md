@@ -66,6 +66,12 @@ Install cook county font Barlow
 ```
 npm install @fontsource/barlow
 ```
+
+#### [React Router Dom](https://reactrouter.com/en/main)
+React router dom handles url parameters and routing to components while acting as a single page application (SPA)
+```
+npm install react-router-dom
+```
 ---
 ### Installation
 

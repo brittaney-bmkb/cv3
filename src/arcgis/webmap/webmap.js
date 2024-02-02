@@ -112,6 +112,11 @@ export async function querySearchResults(result){
   let searchSource = searchSources[sourceIndex]
   let searchLayer = searchSource.layer
 
+  //Create target feature layer query 
+  //to query target feature spatial and attribute data
+  //based on search results
+  let query = new Query()
+
   //check if target layer is the same as search source layer
   if(searchLayer === namedLayers[config.target_layer_name]){
     let searchField = searchSource.outFields[0]
@@ -120,6 +125,8 @@ export async function querySearchResults(result){
     if(resultValue){
       whereString = `${searchField}='${resultValue}'`
       console.log(whereString)
+      query.where = whereString
+      query.outFields = ["OBJECTID_1", "Pin10"]
     }
   }
 
@@ -129,25 +136,13 @@ export async function querySearchResults(result){
   if(geometry){
     //zoom to result 
     await zoomToExtent(resultFeatures)
-  } 
-
-  //Create target feature layer query 
-  //to query target feature spatial and attribute data
-  //based on search results
-  let query = new Query()
-
-  if(whereString){
-    query.where = whereString
-    query.outFields = ["OBJECTID_1", "Pin10"]
-  }
-  else{
     query.geometry = geometry
     query.distance = config.buffer_distance,
     query.units = config.buffer_unit
     query.spatialRelationship = "intersects";
     query.returnGeometry = true;
     query.outFields = ["OBJECTID_1", "Pin10"]
-  }
+  } 
 
   // //get features from query
   console.log("Query = ", query)

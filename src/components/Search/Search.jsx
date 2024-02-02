@@ -3,12 +3,16 @@ import { theme } from "../../theme";
 import widgetsSearch from "@arcgis/core/widgets/Search.js";
 import UseAppContext from "../../contexts/AppContext";
 import { useEffect, useRef } from "react";
+import { useSearchParams } from "react-router-dom"
 
 
 
 const Search = () => {
 
     const { setSearchResults, mapView, searchSources, clearResults } = UseAppContext()
+
+    //get url parameters
+    const [routeParams] = useSearchParams();
 
     //create a reference to the search  DOM  element
     const searchDiv = useRef(null)
@@ -34,23 +38,45 @@ const Search = () => {
                 }
 
                 await searchWidget.current.when();
+
+                //if url parameter is passed perform search method on search widget
+                if(searchString){
+                    console.log("Searching for ", searchString)
+                    //performing search method automatically selects the first
+                    //result. triggering the setSearchResults function
+                    searchWidget.current.search(searchString)
+                }
+                
                 searchWidget.current.on("select-result", function(event){
                     console.log("The selected search result: ", searchWidget.current.selectedResult)
                     setSearchResults(searchWidget.current.selectedResult)
-                })
 
-                searchWidget.current.on("search-clear", function(event){
-                    // The results are stored in the event Object[]
-                    clearResults();
-                  });
+                    routeParams.set('location', event.result.name)
+                    // Get the updated URL with the new parameter value
+                    const updatedUrl = `${window.location.pathname}?${routeParams.toString()}`;
+
+                    // Use history.pushState to update the URL without refreshing the page
+                    window.history.pushState({ path: updatedUrl }, '', updatedUrl);
+                })
+                
+                //to do enable clear results to empty searchFeatures array
+                // searchWidget.current.on("search-clear", function(event){
+                //     // The results are stored in the event Object[]
+                //     clearResults();
+                //   });
+
+
             }
 
-           
-
+        
         }
 
-        createSearch(null)
-    },[searchDiv, mapView, searchSources])
+        //get url paramters by loccation param
+        const searchString = routeParams.get('location')
+        //execute function search function with url param
+        createSearch(searchString)
+
+    },[searchDiv, mapView, searchSources, routeParams])
 
 
     return(
