@@ -6,6 +6,7 @@ import { config } from "../../data/config";
 import Query from "@arcgis/core/rest/support/Query.js";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine.js";
+import Graphic from "@arcgis/core/Graphic.js";
 
 let targetLayerView;
 let targetLayer;
@@ -184,5 +185,27 @@ async function zoomToExtent(features) {
   const combinedExtent = geometryEngine.union(geometries);
   view.goTo(combinedExtent, {
   });
+
+  createGraphic(features)
 }
   
+
+async function createGraphic(features){
+
+  const geometries = features.map((feature) => feature.geometry);
+
+  geometries.map((geometry) => {
+    let parcelGraphic = new Graphic({
+      geometry: geometry,
+      symbol:{
+        type:"simple-line",
+        size:1,
+        color:"darkblue"
+      }
+    })
+    view.graphics.add(parcelGraphic)
+  
+  })
+  
+  
+}
