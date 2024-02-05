@@ -1,10 +1,11 @@
 import { Button, Typography, styled } from "@mui/material"
 
-const StyledButtonFilledPrimary = ({text, startIcon, endIcon}) => {
+const StyledButtonFilledPrimary = ({text, startIcon, endIcon, onClick}) => {
     return(
         <Button 
         variant="contained" 
         color="primary"
+        onClick={onClick}
         ><Typography variant="body1">
             {text}
         </Typography>

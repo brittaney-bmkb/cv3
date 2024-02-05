@@ -6,6 +6,8 @@ import { config } from "../../data/config";
 import Query from "@arcgis/core/rest/support/Query.js";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine.js";
+import Graphic from "@arcgis/core/Graphic.js";
+import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer.js";
 
 let targetLayerView;
 let targetLayer;
@@ -13,11 +15,26 @@ let namedLayers;
 let searchSources
 let highlightSelect;
 let point;
+let layerGraphics
+
+//create graphics layer to search result
+layerGraphics = new GraphicsLayer()
+
+//create graphics layer to comparable search result
+let layerGraphicsSecondary = new GraphicsLayer()
 
 // Create a Map instance
 const map = new Map({
     // basemap: "streets-vector"
   });
+
+
+
+//add graphics layer to map
+map.add(layerGraphicsSecondary)
+
+//add graphics layer to map
+map.add(layerGraphics)
 
 const view = new MapView({
   map: map,
@@ -65,15 +82,15 @@ export async function onViewClick(event) {
 
       await view.goTo({ target: point });
 
-      if (view.zoom < 15) {
-        view.zoom = 15;
+      if (view.zoom < 16) {
+        view.zoom = 16;
       }
 
       const layerView = await view.whenLayerView(targetLayer);
       await reactiveUtils.whenOnce(() => !layerView.updating);
       console.log("Layer view done loading");
 
-      if (view.zoom < 15) {
+      if (view.zoom < 16) {
         // If you still need a delay, consider using a proper async sleep function
         // await sleep(3000);
         await new Promise((resolveSleep) => setTimeout(resolveSleep, 3000));
@@ -82,20 +99,19 @@ export async function onViewClick(event) {
       const query = new Query();
       query.geometry = point;
       query.spatialRelationship = "intersects";
+      query.returnGeometry = true
 
-      const queryResult = await layerView.queryFeatures(query);
+      const { features } = await layerView.queryFeatures(query);
 
-      console.log("ONCLICK ATTRIBUTES: ", queryResult);
-      const feature = queryResult.features[0];
+      console.log("on click features: ", features)
+      createGraphic(features, true, "darkBlue")
+      // const attributeKeys = Object.keys(feature.attributes);
+      // console.log("Attribute to highlight: ", feature.attributes[attributeKeys[0]]);
 
-      const attributeKeys = Object.keys(feature.attributes);
-      console.log("Attribute to highlight: ", feature.attributes[attributeKeys[0]]);
+      // //highlightSelect?.remove();
 
-      //highlightSelect?.remove();
-
-
-      highlightSelect = layerView.highlight(feature.attributes[attributeKeys[0]]);
-      resolve(queryResult.features);
+      // highlightSelect = layerView.highlight(feature.attributes[attributeKeys[0]]);
+      resolve(features);
     } catch (error) {
       reject(error);
     }
@@ -184,5 +200,60 @@ async function zoomToExtent(features) {
   const combinedExtent = geometryEngine.union(geometries);
   view.goTo(combinedExtent, {
   });
+
+  createGraphic(features, true, "darkBlue")
 }
+  
+
+export async function createGraphic(features, remove, color, secondary){
+
+  if(remove){
+    layerGraphics.removeAll()
+  }
+
+  const geometries = features.map((feature) => feature.geometry);
+  geometries.map((geometry) => {
+    let parcelGraphic = new Graphic({
+      geometry: geometry,
+      symbol:{
+        type:"simple-line",
+        size:1,
+        color:color
+      }
+    })
+
+    if(secondary){
+      layerGraphicsSecondary.add(parcelGraphic)
+    }
+    else{
+      layerGraphics.add(parcelGraphic)
+    }
+    
+  
+  })
+
+}
+
+
+  export async function compareProperities(feature){
+
+    let query = new Query()
+    query.geometry = feature.geometry
+    query.spatialRelationship = "intersects"
+    query.distance = "300"
+    query.units = "feet"
+    query.returnGeometry = true
+
+    let {features} = await targetLayer.queryFeatures(query)
+
+    console.log("queried Features: ", features)
+
+    let filteredFeatures = features.filter((f) => f.attributes['Pin10'] !== feature.attributes['Pin10'])
+
+    createGraphic(filteredFeatures, true, "red", true)
+
+    createGraphic([feature], false, "darkBlue")
+
+  }
+
   

@@ -1,9 +1,10 @@
 import { Box, Paper } from "@mui/material";
 import ResultsList from "./ResultsList";
 import UseAppContext from "../contexts/AppContext";
+import PropertyDetail from "./PropertyDetail/PropertyDetail";
+import ComparablePropertySearch from "./ComparablePropertySearch/ComparablePropertySearch";
 
- const Panel = () => {
-    
+ const Panel = () => {  
     return(
         <Box bgcolor="blueviolet" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'block'}}}>
             <ResultsList/>
@@ -12,20 +13,44 @@ import UseAppContext from "../contexts/AppContext";
 }
 
 export const RightPanel = () => {
-    return(
-    <Box bgcolor="blueviolet" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'none', md: 'block'}}}>
-    Right Panel
-    </Box>
-    )
+
+    const { panelSecondaryVisible, panelDisplaySecondary } = UseAppContext()
+
+    switch(panelDisplaySecondary){
+        case 'comparablePropertySearch':
+            return(
+                <Box bgcolor="white" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'none', md: panelSecondaryVisible ? 'block': null}}}>
+                    <ComparablePropertySearch/>
+                </Box>
+                )
+        default:
+            return(
+                <Box bgcolor="blueviolet" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'none', md: panelSecondaryVisible ? 'block': null}}}>
+                    Right Panel
+                </Box>
+                )
+    }
+    
 }
 
 export const LeftPanel = () => {
 
-    const { searchFeatures } = UseAppContext()
+    const { searchFeatures, panelDisplay } = UseAppContext()
 
-    return(<Box bgcolor="blueviolet" flex={1} flexDirection="column" sx={{display:{xs:'none', sm: searchFeatures ? 'block' : 'none'}}}>
-            <ResultsList/>
-    </Box>)
+    switch(panelDisplay){
+        case 'resultsList':
+            return (
+                <Box bgcolor="white" flex={1} flexDirection="column" sx={{display:{xs:'none', sm: searchFeatures ? 'block' : 'none'}}}>
+                        <ResultsList/>
+                </Box>)
+        case 'propertyDetail':
+            return (
+                <Box bgcolor="white" flex={1} flexDirection="column" sx={{display:{xs:'none', sm: searchFeatures ? 'block' : 'none'}}}>
+                        <PropertyDetail/>
+                </Box>)
+        default:
+            return null
+    }
 }
 
 export const BottomPanel = () => {

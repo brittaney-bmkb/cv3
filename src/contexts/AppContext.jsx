@@ -51,9 +51,13 @@ export const AppProvider = ({children}) => {
         const { searchResults } = state
         console.log("Handler Event: ", event)
 
-        const selectedFeature = await onViewClick(event)
-        setPrimaryResultFeature(selectedFeature)
-        setSearchResults(searchResults, selectedFeature)
+        const selectedFeatures = await onViewClick(event)
+
+       
+
+        setPrimaryResultFeature(selectedFeatures[0])
+        setSearchResults(searchResults, selectedFeatures)
+        setPanelDisplay("resultsList")
     }
 
     const setSearchResults = (results, features) => {
@@ -75,12 +79,57 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setPanelDisplay = (state) => {
+        dispatch({
+            type:"SET_PANEL_DISPLAY",
+             payload: {
+                panelDisplay: state,
+            }
+        })
+    }
+
+    const setPanelSecondaryVisibility = (visible) => {
+        dispatch({
+            type:"SET_PANEL_SECONDARY_VISIBILTIY",
+             payload: {
+                panelSecondaryVisible: visible,
+            }
+        })
+    }
+
+    const setPanelDisplaySecondary = (state) => {
+        dispatch({
+            type:"SET_PANEL_SECONDARY_DISPLAY",
+             payload: {
+                panelDisplaySecondary: state,
+            }
+        })
+    }
+
+    const selectResultFromList = async (result) => {
+        console.log("Result PIN : ", result)
+        const { searchFeatures } = state
+        const selectedFeature = searchFeatures.filter((feature) => feature.attributes['Pin10'] == result)
+        console.log("selectedFeature: ", selectedFeature)
+
+        setPrimaryResultFeature(selectedFeature[0])
+
+        //update graphic in map
+        const { createGraphic } = await import('../arcgis/webmap/webmap')
+
+        createGraphic(selectedFeature, true, "darkBlue")
+
+    }
+
+
     const renderSearchResults = async () => {
         const { querySearchResults } = await import('../arcgis/webmap/webmap')
         const { searchResults } = state
 
         const features = await querySearchResults(searchResults)
         setSearchResults(searchResults, features)
+        setPanelDisplay("resultsList")
+        
 
     }
 
@@ -88,6 +137,15 @@ export const AppProvider = ({children}) => {
         const { removeHighlight } = await import('../arcgis/webmap/webmap')
         
         removeHighlight();
+    }
+
+    const searchComparableProperties = async () => {
+
+        const { compareProperities } = await import('../arcgis/webmap/webmap')
+        const { primaryResultFeature } = state
+
+        compareProperities(primaryResultFeature)
+
     }
 
 
@@ -104,7 +162,15 @@ export const AppProvider = ({children}) => {
         setSearchSources,
         renderSearchResults,
         clearResults,
-        searchFeatures: state.searchFeatures
+        searchFeatures: state.searchFeatures,
+        setPanelDisplay,
+        panelDisplay: state.panelDisplay,
+        setPanelSecondaryVisibility,
+        panelSecondaryVisible: state.panelSecondaryVisible,
+        panelDisplaySecondary: state.panelDisplaySecondary,
+        setPanelDisplaySecondary,
+        selectResultFromList,
+        searchComparableProperties
     }
 
 
