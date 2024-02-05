@@ -1,4 +1,6 @@
 export const config = {
+    //show alert banner
+    //NAVBAR
     //App Logo
     logo:"https://maps.cookcountyil.gov/cdn/cook/cook_logo.png",
     //App Pages
@@ -22,7 +24,7 @@ export const config = {
         // the object's properties
        {
            layerName: "parcelLayer", // Name of the layer source.
-           url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/44", // URL to the layer service.
+           url: "https://gis.cookcountyil.gov/traditional/rest/services//MapServer/44", // URL to the layer service.
            outFields: ["Pin10", "Address","OBJECTID_1"], // Fields to return in the search results (array of strings).
            popupEnabled:true, // Enable/disable popups for this layer source (boolean).
            popupTemplateTitle:"Parcel pin 10 {Pin10}", // Popup template title with field placeholders.
