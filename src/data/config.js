@@ -29,13 +29,13 @@ export const config = {
            popupEnabled:true, // Enable/disable popups for this layer source (boolean).
            popupTemplateTitle:"Parcel pin 14 {Pin14_dash}", // Popup template title with field placeholders.
            maxScale:0,
-           minScale: 0,
+           minScale: 30000,
            opacity: 0,
            render: {
                 type: "simple",
                 symbol: {
-                    type: "simple-marker",
-                    size: 0
+                    type: "simple-line",
+                    size: 1
                 }
            },
            searchSources: [

@@ -19,7 +19,8 @@ export async function createFeatureLayers(map){
           // }),
           //comment
           visible:true,
-          renderer: source.render
+          renderer: source.render,
+          minScale:source.minScale
           
         })
       
