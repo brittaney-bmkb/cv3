@@ -4,10 +4,11 @@ import UseAppContext from "../../contexts/AppContext"
 
 const PropertyDetail = () => {
 
-    const { setPanelSecondaryVisibility } = UseAppContext()
+    const { setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
 
     function handleClick(){
         setPanelSecondaryVisibility(true)
+        setPanelDisplaySecondary("comparablePropertySearch")
     }
 
     return(

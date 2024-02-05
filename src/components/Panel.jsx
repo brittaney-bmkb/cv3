@@ -2,6 +2,7 @@ import { Box, Paper } from "@mui/material";
 import ResultsList from "./ResultsList";
 import UseAppContext from "../contexts/AppContext";
 import PropertyDetail from "./PropertyDetail/PropertyDetail";
+import ComparablePropertySearch from "./ComparablePropertySearch/ComparablePropertySearch";
 
  const Panel = () => {  
     return(
@@ -13,13 +14,23 @@ import PropertyDetail from "./PropertyDetail/PropertyDetail";
 
 export const RightPanel = () => {
 
-    const { panelSecondaryVisible } = UseAppContext()
+    const { panelSecondaryVisible, panelDisplaySecondary } = UseAppContext()
 
-    return(
-    <Box bgcolor="blueviolet" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'none', md: panelSecondaryVisible ? 'block': null}}}>
-        Right Panel
-    </Box>
-    )
+    switch(panelDisplaySecondary){
+        case 'comparablePropertySearch':
+            return(
+                <Box bgcolor="white" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'none', md: panelSecondaryVisible ? 'block': null}}}>
+                    <ComparablePropertySearch/>
+                </Box>
+                )
+        default:
+            return(
+                <Box bgcolor="blueviolet" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'none', md: panelSecondaryVisible ? 'block': null}}}>
+                    Right Panel
+                </Box>
+                )
+    }
+    
 }
 
 export const LeftPanel = () => {

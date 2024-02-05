@@ -76,11 +76,11 @@ export const AppProvider = ({children}) => {
         })
     }
 
-    const setPanelDisplay = (component) => {
+    const setPanelDisplay = (state) => {
         dispatch({
             type:"SET_PANEL_DISPLAY",
              payload: {
-                panelDisplay: component,
+                panelDisplay: state,
             }
         })
     }
@@ -93,6 +93,16 @@ export const AppProvider = ({children}) => {
             }
         })
     }
+
+    const setPanelDisplaySecondary = (state) => {
+        dispatch({
+            type:"SET_PANEL_SECONDARY_DISPLAY",
+             payload: {
+                panelDisplaySecondary: state,
+            }
+        })
+    }
+
 
     const renderSearchResults = async () => {
         const { querySearchResults } = await import('../arcgis/webmap/webmap')
@@ -129,7 +139,9 @@ export const AppProvider = ({children}) => {
         setPanelDisplay,
         panelDisplay: state.panelDisplay,
         setPanelSecondaryVisibility,
-        panelSecondaryVisible: state.panelSecondaryVisible
+        panelSecondaryVisible: state.panelSecondaryVisible,
+        panelDisplaySecondary: state.panelDisplaySecondary,
+        setPanelDisplaySecondary
     }
 
 
