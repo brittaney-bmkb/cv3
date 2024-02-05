@@ -82,15 +82,15 @@ export async function onViewClick(event) {
 
       await view.goTo({ target: point });
 
-      if (view.zoom < 15) {
-        view.zoom = 15;
+      if (view.zoom < 16) {
+        view.zoom = 16;
       }
 
       const layerView = await view.whenLayerView(targetLayer);
       await reactiveUtils.whenOnce(() => !layerView.updating);
       console.log("Layer view done loading");
 
-      if (view.zoom < 15) {
+      if (view.zoom < 16) {
         // If you still need a delay, consider using a proper async sleep function
         // await sleep(3000);
         await new Promise((resolveSleep) => setTimeout(resolveSleep, 3000));
@@ -99,20 +99,19 @@ export async function onViewClick(event) {
       const query = new Query();
       query.geometry = point;
       query.spatialRelationship = "intersects";
+      query.returnGeometry = true
 
-      const queryResult = await layerView.queryFeatures(query);
+      const { features } = await layerView.queryFeatures(query);
 
-      console.log("ONCLICK ATTRIBUTES: ", queryResult);
-      const feature = queryResult.features[0];
+      console.log("on click features: ", features)
+      createGraphic(features, true, "darkBlue")
+      // const attributeKeys = Object.keys(feature.attributes);
+      // console.log("Attribute to highlight: ", feature.attributes[attributeKeys[0]]);
 
-      const attributeKeys = Object.keys(feature.attributes);
-      console.log("Attribute to highlight: ", feature.attributes[attributeKeys[0]]);
+      // //highlightSelect?.remove();
 
-      //highlightSelect?.remove();
-
-
-      highlightSelect = layerView.highlight(feature.attributes[attributeKeys[0]]);
-      resolve(queryResult.features);
+      // highlightSelect = layerView.highlight(feature.attributes[attributeKeys[0]]);
+      resolve(features);
     } catch (error) {
       reject(error);
     }

@@ -51,9 +51,12 @@ export const AppProvider = ({children}) => {
         const { searchResults } = state
         console.log("Handler Event: ", event)
 
-        const selectedFeature = await onViewClick(event)
-        setPrimaryResultFeature(selectedFeature)
-        setSearchResults(searchResults, selectedFeature)
+        const selectedFeatures = await onViewClick(event)
+
+       
+
+        setPrimaryResultFeature(selectedFeatures[0])
+        setSearchResults(searchResults, selectedFeatures)
         setPanelDisplay("resultsList")
     }
 
