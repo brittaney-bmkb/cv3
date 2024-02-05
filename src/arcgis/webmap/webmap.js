@@ -7,6 +7,7 @@ import Query from "@arcgis/core/rest/support/Query.js";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine.js";
 import Graphic from "@arcgis/core/Graphic.js";
+import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer.js";
 
 let targetLayerView;
 let targetLayer;
@@ -14,11 +15,19 @@ let namedLayers;
 let searchSources
 let highlightSelect;
 let point;
+let layerGraphics
+
+//create graphics layer to search result
+layerGraphics = new GraphicsLayer()
 
 // Create a Map instance
 const map = new Map({
     // basemap: "streets-vector"
   });
+
+
+//add graphics layer to map
+map.add(layerGraphics)
 
 const view = new MapView({
   map: map,
@@ -192,8 +201,9 @@ async function zoomToExtent(features) {
 
 async function createGraphic(features){
 
-  const geometries = features.map((feature) => feature.geometry);
+  layerGraphics.removeAll()
 
+  const geometries = features.map((feature) => feature.geometry);
   geometries.map((geometry) => {
     let parcelGraphic = new Graphic({
       geometry: geometry,
@@ -203,9 +213,11 @@ async function createGraphic(features){
         color:"darkblue"
       }
     })
-    view.graphics.add(parcelGraphic)
+    
+    layerGraphics.add(parcelGraphic)
   
   })
+
   
   
 }

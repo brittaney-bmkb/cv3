@@ -4,9 +4,15 @@ import { useEffect } from "react"
 
 const Result = ({text}) => {
 
+    const { setPanelDisplay } = UseAppContext()
+
     return(
         <Box flex={4} p={2}>
-        <Card sx={{display: "flex", flexDirection:"column", justifyContent:"space-between", alignItems:"center"}}>
+        <Card 
+        onClick={() => {
+            setPanelDisplay("propertyDetail")
+        }}
+        sx={{display: "flex", flexDirection:"column", justifyContent:"space-between", alignItems:"center"}}>
             <CardHeader title="Result">
             </CardHeader>
             <CardContent>

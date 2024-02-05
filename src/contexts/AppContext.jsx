@@ -54,6 +54,7 @@ export const AppProvider = ({children}) => {
         const selectedFeature = await onViewClick(event)
         setPrimaryResultFeature(selectedFeature)
         setSearchResults(searchResults, selectedFeature)
+        setPanelDisplay("resultsList")
     }
 
     const setSearchResults = (results, features) => {
@@ -75,12 +76,23 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setPanelDisplay = (component) => {
+        dispatch({
+            type:"SET_PANEL_DISPLAY",
+             payload: {
+                panelDisplay: component,
+            }
+        })
+    }
+
     const renderSearchResults = async () => {
         const { querySearchResults } = await import('../arcgis/webmap/webmap')
         const { searchResults } = state
 
         const features = await querySearchResults(searchResults)
         setSearchResults(searchResults, features)
+        setPanelDisplay("resultsList")
+        
 
     }
 
@@ -104,7 +116,9 @@ export const AppProvider = ({children}) => {
         setSearchSources,
         renderSearchResults,
         clearResults,
-        searchFeatures: state.searchFeatures
+        searchFeatures: state.searchFeatures,
+        setPanelDisplay,
+        panelDisplay: state.panelDisplay
     }
 
 

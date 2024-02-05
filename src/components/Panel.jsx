@@ -1,6 +1,7 @@
 import { Box, Paper } from "@mui/material";
 import ResultsList from "./ResultsList";
 import UseAppContext from "../contexts/AppContext";
+import PropertyDetail from "./PropertyDetail/PropertyDetail";
 
  const Panel = () => {  
     return(
@@ -20,11 +21,22 @@ export const RightPanel = () => {
 
 export const LeftPanel = () => {
 
-    const { searchFeatures } = UseAppContext()
+    const { searchFeatures, panelDisplay } = UseAppContext()
 
-    return(<Box bgcolor="blueviolet" flex={1} flexDirection="column" sx={{display:{xs:'none', sm: searchFeatures ? 'block' : 'none'}}}>
-            <ResultsList/>
-    </Box>)
+    switch(panelDisplay){
+        case 'resultsList':
+            return (
+                <Box bgcolor="blueviolet" flex={1} flexDirection="column" sx={{display:{xs:'none', sm: searchFeatures ? 'block' : 'none'}}}>
+                        <ResultsList/>
+                </Box>)
+        case 'propertyDetail':
+            return (
+                <Box bgcolor="blueviolet" flex={1} flexDirection="column" sx={{display:{xs:'none', sm: searchFeatures ? 'block' : 'none'}}}>
+                        <PropertyDetail/>
+                </Box>)
+        default:
+            return null
+    }
 }
 
 export const BottomPanel = () => {
