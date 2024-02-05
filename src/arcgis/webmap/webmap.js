@@ -144,7 +144,7 @@ export async function querySearchResults(result){
       whereString = `${searchField}='${resultValue}'`
       console.log(whereString)
       query.where = whereString
-      query.outFields = ["OBJECTID_1", "Pin10"]
+      query.outFields = ["OBJECTID", "PIN14"]
     }
   }
 
@@ -159,7 +159,7 @@ export async function querySearchResults(result){
     query.units = config.buffer_unit
     query.spatialRelationship = "intersects";
     query.returnGeometry = true;
-    query.outFields = ["OBJECTID_1", "Pin10"]
+    query.outFields = ["OBJECTID", "PIN14"]
   } 
 
   // //get features from query
@@ -182,7 +182,7 @@ export async function querySearchResults(result){
   features.map((feature) => {
     
     layerView.highlight(feature.attributes[attributeKeys[0]])
-    return feature.attributes["Pin10"]
+    return feature.attributes["PIN14"]
   })
 
   return features
@@ -248,7 +248,7 @@ export async function createGraphic(features, remove, color, secondary){
 
     console.log("queried Features: ", features)
 
-    let filteredFeatures = features.filter((f) => f.attributes['Pin10'] !== feature.attributes['Pin10'])
+    let filteredFeatures = features.filter((f) => f.attributes['PIN14'] !== feature.attributes['PIN14'])
 
     createGraphic(filteredFeatures, true, "red", true)
 

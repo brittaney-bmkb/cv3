@@ -53,8 +53,6 @@ export const AppProvider = ({children}) => {
 
         const selectedFeatures = await onViewClick(event)
 
-       
-
         setPrimaryResultFeature(selectedFeatures[0])
         setSearchResults(searchResults, selectedFeatures)
         setPanelDisplay("resultsList")
@@ -109,7 +107,7 @@ export const AppProvider = ({children}) => {
     const selectResultFromList = async (result) => {
         console.log("Result PIN : ", result)
         const { searchFeatures } = state
-        const selectedFeature = searchFeatures.filter((feature) => feature.attributes['Pin10'] == result)
+        const selectedFeature = searchFeatures.filter((feature) => feature.attributes['PIN14'] == result)
         console.log("selectedFeature: ", selectedFeature)
 
         setPrimaryResultFeature(selectedFeature[0])

@@ -11,8 +11,8 @@ const ResultsList = () => {
             {searchFeatures ? 
             searchFeatures.map((result, i) => {
                 return(
-                    <ListItem key={result.attributes['Pin10']}>
-                        <Result text={result.attributes['Pin10']}/>
+                    <ListItem key={result.attributes['PIN14']}>
+                        <Result text={result.attributes['PIN14']}/>
                     </ListItem>
                 )
             }) : 'null'}
