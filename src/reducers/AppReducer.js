@@ -7,6 +7,7 @@ export const initialState = {
     searchResults: null,
     searchSources: null,
     searchFeatures: null,
+    panelDisplay:null
 
 }
 
@@ -46,6 +47,13 @@ const AppReducer = (state, action) => {
             return {
                 ...state,
                 searchSources: payload.searchSources,
+            }
+
+        case "SET_PANEL_DISPLAY":
+            console.log("SET_PANEL_DISPLAY")
+            return {
+                ...state,
+                panelDisplay: payload.panelDisplay,
             }
         default:
             throw new Error(`No valid selection made`)

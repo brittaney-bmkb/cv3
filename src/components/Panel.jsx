@@ -2,8 +2,7 @@ import { Box, Paper } from "@mui/material";
 import ResultsList from "./ResultsList";
 import UseAppContext from "../contexts/AppContext";
 
- const Panel = () => {
-    
+ const Panel = () => {  
     return(
         <Box bgcolor="blueviolet" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'block'}}}>
             <ResultsList/>
