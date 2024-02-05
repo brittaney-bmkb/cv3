@@ -18,7 +18,7 @@ export async function createFeatureLayers(map){
           //   title: source.popupTemplateTitle
           // }),
           visible:true,
-          // renderer: source.render
+          renderer: source.render
           
         })
       

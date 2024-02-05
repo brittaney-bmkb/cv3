@@ -31,7 +31,10 @@ export const config = {
            opacity: 0,
            render: {
                 type: "simple",
-                width: 1,
+                symbol: {
+                    type: "simple-marker",
+                    size: 0
+                }
            },
            searchSources: [
                {
