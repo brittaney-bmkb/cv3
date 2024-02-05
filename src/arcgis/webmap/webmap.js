@@ -30,11 +30,7 @@ const map = new Map({
 
 
 
-//add graphics layer to map
-map.add(layerGraphicsSecondary)
 
-//add graphics layer to map
-map.add(layerGraphics)
 
 const view = new MapView({
   map: map,
@@ -62,6 +58,12 @@ export async function initializeMap(container){
   //define target layer
   targetLayer = namedLayers[config.target_layer_name]
   targetLayerView = await view.whenLayerView(targetLayer)
+
+  //add graphics layer to map
+  map.add(layerGraphicsSecondary)
+
+  //add graphics layer to map
+  map.add(layerGraphics)
 
 return map, searchSources
 }  
@@ -217,8 +219,9 @@ export async function createGraphic(features, remove, color, secondary){
       geometry: geometry,
       symbol:{
         type:"simple-line",
-        size:1,
-        color:color
+        size:3,
+        color:color,
+        width:3
       }
     })
 
