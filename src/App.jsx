@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import NavBar from './components/NavBar'
+import NavBar from './components/NavBar/NavBar'
 import WebMapView from './components/WebMapView/WebMapView'
 import { Box, Stack, Grid, ThemeProvider, createTheme, Button } from '@mui/material'
 import Panel, { BottomPanel, LeftPanel, RightPanel } from './components/Panel'
@@ -25,7 +25,7 @@ function App() {
     <AppProvider>
       <Box display="flex" flexDirection="column" height="100vh">
           <NavBar/>
-        <Stack id="main-stack" direction="row" gap={1} justifyContent="space-between" padding={0} height="100%">
+        <Stack id="main-stack" direction="row" justifyContent="space-between" padding={0} height="100%">
           <LeftPanel/>
           <Box flexDirection="column" flex={4} padding={0} display="flex" alignItems="center">
               <Box flexDirection="column" alignItems="left" width="100%" display={{xs:'none', sm:'flex', md:'flex'}}>

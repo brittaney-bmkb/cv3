@@ -1,4 +1,8 @@
 export const config = {
+    //App Logo
+    logo:"https://maps.cookcountyil.gov/cdn/cook/cook_logo.png",
+    //App Pages
+    pages: ['Home','Data','Help'],
     // PORTAL URL: Provide the URL to your ArcGIS Online organization or Portal for ArcGIS.
     portal:"https://cookcountyil.maps.arcgis.com/",
     // BASEMAP ID: Provide the ID of the basemap you want to use in the application.

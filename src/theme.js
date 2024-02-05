@@ -17,6 +17,59 @@ export const theme = createTheme({
         borderRadius: 20
     },
     typography: {
-        h1: 50
+        h1: {
+            fontSize: 40,
+            fontWeight:"bold",
+        },
+        h2: {
+            fontSize: 30,
+            fontWeight:"bold",
+        },
+        h3: {
+            fontSize: 18
+        },
+        body1: {
+            fontSize: 15
+        },
+        subtitle1: {
+            fontSize: 14
+        }
     }
 })
+
+//Response font size for nav bar
+theme.typography.h1 = {
+    [theme.breakpoints.up('md')]: {
+        fontSize: 36
+    },
+    [theme.breakpoints.down('md')]: {
+        fontSize: 30
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: 24
+    }
+}
+
+theme.typography.h2 = {
+    [theme.breakpoints.up('md')]: {
+        fontSize: 30
+    },
+    [theme.breakpoints.down('md')]: {
+        fontSize: 24
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: 20
+    }
+}
+
+theme.typography.body1 = {
+    [theme.breakpoints.up('md')]: {
+        fontSize: 16
+    },
+    [theme.breakpoints.down('md')]: {
+        fontSize: 15
+    },
+    // [theme.breakpoints.down('sm')]: {
+    //     fontSize: 20
+    // }
+}

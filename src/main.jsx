@@ -6,7 +6,8 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import { ThemeProvider } from '@mui/material'
 import { theme } from './theme.js'
 import { setAssetPath } from '@esri/calcite-components/dist/components';
-setAssetPath(window.location.href);
+// setAssetPath(window.location.href);
+setAssetPath("https://unpkg.com/@esri/calcite-components/dist/calcite/assets");
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(

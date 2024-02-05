@@ -60,10 +60,17 @@ const Search = () => {
                 })
                 
                 //to do enable clear results to empty searchFeatures array
-                // searchWidget.current.on("search-clear", function(event){
-                //     // The results are stored in the event Object[]
-                //     clearResults();
-                //   });
+                searchWidget.current.on("search-clear", function(event){
+                    // The results are stored in the event Object[]
+                    clearResults();
+
+                    routeParams.set('location', null)
+                    // Get the updated URL with the new parameter value
+                    const updatedUrl = null;
+
+                    // Use history.pushState to update the URL without refreshing the page
+                    window.history.pushState({ path: updatedUrl }, '', updatedUrl);
+                  });
 
 
             }

@@ -8,5 +8,16 @@ body{
 }
 
 calcite-icon {
-  --calcite-ui-icon-color: black
+  --calcite-ui-icon-color: white
+}
+
+.esri-search{
+  width:auto;
+  max-width: 600px;
+}
+
+@media (max-width:500px){
+  .esri-search{
+    width: 90vw;
+  }
 }
