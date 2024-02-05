@@ -8,6 +8,7 @@ import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine.js";
 import Graphic from "@arcgis/core/Graphic.js";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer.js";
+import MapImageLayer from "@arcgis/core/layers/MapImageLayer.js";
 
 let targetLayerView;
 let targetLayer;
@@ -60,8 +61,12 @@ export async function initializeMap(container){
   searchSources = await createSearchSources(namedLayers)
 
   //define target layer
-  targetLayer = namedLayers[config.target_layer_name]
-  targetLayerView = await view.whenLayerView(targetLayer)
+  let mapImageLayer = namedLayers[config.target_layer_name]
+  let subLayer = mapImageLayer.findSublayerById(0)
+  targetLayer = await subLayer.createFeatureLayer()
+
+  console.log("targetLayer from sublayer: ",targetLayer)
+  //targetLayerView = await view.whenLayerView(targetLayer)
 
 return map, searchSources
 }  
@@ -86,9 +91,9 @@ export async function onViewClick(event) {
         view.zoom = 16;
       }
 
-      const layerView = await view.whenLayerView(targetLayer);
-      await reactiveUtils.whenOnce(() => !layerView.updating);
-      console.log("Layer view done loading");
+      // const layerView = await view.whenLayerView(targetLayer);
+      // await reactiveUtils.whenOnce(() => !layerView.updating);
+      // console.log("Layer view done loading");
 
       if (view.zoom < 16) {
         // If you still need a delay, consider using a proper async sleep function
@@ -101,7 +106,7 @@ export async function onViewClick(event) {
       query.spatialRelationship = "intersects";
       query.returnGeometry = true
 
-      const { features } = await layerView.queryFeatures(query);
+      const { features } = await targetLayer.queryFeatures(query);
 
       console.log("on click features: ", features)
       createGraphic(features, true, "darkBlue")
@@ -144,7 +149,7 @@ export async function querySearchResults(result){
       whereString = `${searchField}='${resultValue}'`
       console.log(whereString)
       query.where = whereString
-      query.outFields = ["OBJECTID_1", "Pin10"]
+      query.outFields = config.target_layer_out_fields
     }
   }
 
@@ -159,14 +164,14 @@ export async function querySearchResults(result){
     query.units = config.buffer_unit
     query.spatialRelationship = "intersects";
     query.returnGeometry = true;
-    query.outFields = ["OBJECTID_1", "Pin10"]
+    query.outFields = config.target_layer_out_fields
   } 
 
   // //get features from query
   console.log("Query = ", query)
 
-  const layerView = await view.whenLayerView(targetLayer);
-  await reactiveUtils.whenOnce(() => !layerView.updating);
+  // const layerView = await view.whenLayerView(targetLayer);
+  // await reactiveUtils.whenOnce(() => !layerView.updating);
   
   let { features } = await targetLayer.queryFeatures(query)
   await zoomToExtent(features)
@@ -182,7 +187,7 @@ export async function querySearchResults(result){
   features.map((feature) => {
     
     layerView.highlight(feature.attributes[attributeKeys[0]])
-    return feature.attributes["Pin10"]
+    return feature.attributes["PIN14"]
   })
 
   return features
@@ -248,7 +253,7 @@ export async function createGraphic(features, remove, color, secondary){
 
     console.log("queried Features: ", features)
 
-    let filteredFeatures = features.filter((f) => f.attributes['Pin10'] !== feature.attributes['Pin10'])
+    let filteredFeatures = features.filter((f) => f.attributes['PIN14'] !== feature.attributes['PIN14'])
 
     createGraphic(filteredFeatures, true, "red", true)
 
