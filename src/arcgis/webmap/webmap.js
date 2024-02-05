@@ -199,7 +199,7 @@ async function zoomToExtent(features) {
 }
   
 
-async function createGraphic(features){
+export async function createGraphic(features){
 
   layerGraphics.removeAll()
 
@@ -217,6 +217,13 @@ async function createGraphic(features){
     layerGraphics.add(parcelGraphic)
   
   })
+
+
+  async function compareProperities(feature){
+
+    let query = new Query()
+
+  }
 
   
   

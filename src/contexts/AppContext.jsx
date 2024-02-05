@@ -103,6 +103,21 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const selectResultFromList = async (result) => {
+        console.log("Result PIN : ", result)
+        const { searchFeatures } = state
+        const selectedFeature = searchFeatures.filter((feature) => feature.attributes['Pin10'] == result)
+        console.log("selectedFeature: ", selectedFeature)
+
+        setPrimaryResultFeature(selectedFeature[0])
+
+        //update graphic in map
+        const { createGraphic } = await import('../arcgis/webmap/webmap')
+
+        createGraphic(selectedFeature)
+
+    }
+
 
     const renderSearchResults = async () => {
         const { querySearchResults } = await import('../arcgis/webmap/webmap')
@@ -141,7 +156,8 @@ export const AppProvider = ({children}) => {
         setPanelSecondaryVisibility,
         panelSecondaryVisible: state.panelSecondaryVisible,
         panelDisplaySecondary: state.panelDisplaySecondary,
-        setPanelDisplaySecondary
+        setPanelDisplaySecondary,
+        selectResultFromList
     }
 
 
