@@ -8,7 +8,8 @@ export const initialState = {
     searchSources: null,
     searchFeatures: null,
     panelDisplay:null,
-    panelSecondaryVisible:null
+    panelSecondaryVisible:null,
+    panelDisplaySecondary:null,
 
 }
 
@@ -55,6 +56,12 @@ const AppReducer = (state, action) => {
             return {
                 ...state,
                 panelDisplay: payload.panelDisplay,
+            }
+        case "SET_PANEL_SECONDARY_DISPLAY":
+            console.log("SET_PANEL_SECONDARY_DISPLAY")
+            return {
+                ...state,
+                panelDisplaySecondary: payload.panelDisplaySecondary,
             }
         case "SET_PANEL_SECONDARY_VISIBILTIY":
             console.log("SET_PANEL_SECONDARY_VISIBILTIY")
