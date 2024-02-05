@@ -12,9 +12,12 @@ import PropertyDetail from "./PropertyDetail/PropertyDetail";
 }
 
 export const RightPanel = () => {
+
+    const { panelSecondaryVisible } = UseAppContext()
+
     return(
-    <Box bgcolor="blueviolet" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'none', md: 'block'}}}>
-    Right Panel
+    <Box bgcolor="blueviolet" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'none', md: panelSecondaryVisible ? 'block': null}}}>
+        Right Panel
     </Box>
     )
 }
@@ -26,12 +29,12 @@ export const LeftPanel = () => {
     switch(panelDisplay){
         case 'resultsList':
             return (
-                <Box bgcolor="blueviolet" flex={1} flexDirection="column" sx={{display:{xs:'none', sm: searchFeatures ? 'block' : 'none'}}}>
+                <Box bgcolor="white" flex={1} flexDirection="column" sx={{display:{xs:'none', sm: searchFeatures ? 'block' : 'none'}}}>
                         <ResultsList/>
                 </Box>)
         case 'propertyDetail':
             return (
-                <Box bgcolor="blueviolet" flex={1} flexDirection="column" sx={{display:{xs:'none', sm: searchFeatures ? 'block' : 'none'}}}>
+                <Box bgcolor="white" flex={1} flexDirection="column" sx={{display:{xs:'none', sm: searchFeatures ? 'block' : 'none'}}}>
                         <PropertyDetail/>
                 </Box>)
         default:

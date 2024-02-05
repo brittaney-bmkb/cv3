@@ -85,6 +85,15 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setPanelSecondaryVisibility = (visible) => {
+        dispatch({
+            type:"SET_PANEL_SECONDARY_VISIBILTIY",
+             payload: {
+                panelSecondaryVisible: visible,
+            }
+        })
+    }
+
     const renderSearchResults = async () => {
         const { querySearchResults } = await import('../arcgis/webmap/webmap')
         const { searchResults } = state
@@ -118,7 +127,9 @@ export const AppProvider = ({children}) => {
         clearResults,
         searchFeatures: state.searchFeatures,
         setPanelDisplay,
-        panelDisplay: state.panelDisplay
+        panelDisplay: state.panelDisplay,
+        setPanelSecondaryVisibility,
+        panelSecondaryVisible: state.panelSecondaryVisible
     }
 
 

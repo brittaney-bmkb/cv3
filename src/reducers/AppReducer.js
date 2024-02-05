@@ -7,7 +7,8 @@ export const initialState = {
     searchResults: null,
     searchSources: null,
     searchFeatures: null,
-    panelDisplay:null
+    panelDisplay:null,
+    panelSecondaryVisible:null
 
 }
 
@@ -54,6 +55,12 @@ const AppReducer = (state, action) => {
             return {
                 ...state,
                 panelDisplay: payload.panelDisplay,
+            }
+        case "SET_PANEL_SECONDARY_VISIBILTIY":
+            console.log("SET_PANEL_SECONDARY_VISIBILTIY")
+            return {
+                ...state,
+                panelSecondaryVisible: payload.panelSecondaryVisible,
             }
         default:
             throw new Error(`No valid selection made`)
