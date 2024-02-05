@@ -20,11 +20,18 @@ let layerGraphics
 //create graphics layer to search result
 layerGraphics = new GraphicsLayer()
 
+//create graphics layer to comparable search result
+let layerGraphicsSecondary = new GraphicsLayer()
+
 // Create a Map instance
 const map = new Map({
     // basemap: "streets-vector"
   });
 
+
+
+//add graphics layer to map
+map.add(layerGraphicsSecondary)
 
 //add graphics layer to map
 map.add(layerGraphics)
@@ -195,13 +202,15 @@ async function zoomToExtent(features) {
   view.goTo(combinedExtent, {
   });
 
-  createGraphic(features)
+  createGraphic(features, true, "darkBlue")
 }
   
 
-export async function createGraphic(features){
+export async function createGraphic(features, remove, color, secondary){
 
-  layerGraphics.removeAll()
+  if(remove){
+    layerGraphics.removeAll()
+  }
 
   const geometries = features.map((feature) => feature.geometry);
   geometries.map((geometry) => {
@@ -210,21 +219,42 @@ export async function createGraphic(features){
       symbol:{
         type:"simple-line",
         size:1,
-        color:"darkblue"
+        color:color
       }
     })
+
+    if(secondary){
+      layerGraphicsSecondary.add(parcelGraphic)
+    }
+    else{
+      layerGraphics.add(parcelGraphic)
+    }
     
-    layerGraphics.add(parcelGraphic)
   
   })
 
+}
 
-  async function compareProperities(feature){
+
+  export async function compareProperities(feature){
 
     let query = new Query()
+    query.geometry = feature.geometry
+    query.spatialRelationship = "intersects"
+    query.distance = "300"
+    query.units = "feet"
+    query.returnGeometry = true
+
+    let {features} = await targetLayer.queryFeatures(query)
+
+    console.log("queried Features: ", features)
+
+    let filteredFeatures = features.filter((f) => f.attributes['Pin10'] !== feature.attributes['Pin10'])
+
+    createGraphic(filteredFeatures, true, "red", true)
+
+    createGraphic([feature], false, "darkBlue")
 
   }
 
   
-  
-}

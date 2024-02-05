@@ -114,7 +114,7 @@ export const AppProvider = ({children}) => {
         //update graphic in map
         const { createGraphic } = await import('../arcgis/webmap/webmap')
 
-        createGraphic(selectedFeature)
+        createGraphic(selectedFeature, true, "darkBlue")
 
     }
 
@@ -134,6 +134,15 @@ export const AppProvider = ({children}) => {
         const { removeHighlight } = await import('../arcgis/webmap/webmap')
         
         removeHighlight();
+    }
+
+    const searchComparableProperties = async () => {
+
+        const { compareProperities } = await import('../arcgis/webmap/webmap')
+        const { primaryResultFeature } = state
+
+        compareProperities(primaryResultFeature)
+
     }
 
 
@@ -157,7 +166,8 @@ export const AppProvider = ({children}) => {
         panelSecondaryVisible: state.panelSecondaryVisible,
         panelDisplaySecondary: state.panelDisplaySecondary,
         setPanelDisplaySecondary,
-        selectResultFromList
+        selectResultFromList,
+        searchComparableProperties
     }
 
 
