@@ -17,7 +17,6 @@ let searchSources
 let highlightSelect;
 let point;
 let layerGraphics
-
 //create graphics layer to search result
 layerGraphics = new GraphicsLayer()
 
@@ -31,11 +30,6 @@ const map = new Map({
 
 
 
-//add graphics layer to map
-map.add(layerGraphicsSecondary)
-
-//add graphics layer to map
-map.add(layerGraphics)
 
 const view = new MapView({
   map: map,
@@ -67,6 +61,14 @@ export async function initializeMap(container){
 
   console.log("targetLayer from sublayer: ",targetLayer)
   //targetLayerView = await view.whenLayerView(targetLayer)
+
+
+  //add graphics layer to map
+  map.add(layerGraphicsSecondary)
+
+  //add graphics layer to map
+  map.add(layerGraphics)
+
 
 return map, searchSources
 }  
@@ -222,7 +224,7 @@ export async function createGraphic(features, remove, color, secondary){
       geometry: geometry,
       symbol:{
         type:"simple-line",
-        size:1,
+        width:3,
         color:color
       }
     })
