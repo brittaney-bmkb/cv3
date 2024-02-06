@@ -147,9 +147,10 @@ export const AppProvider = ({children}) => {
     }
 
     const clearResults = async () => {
-        const { removeHighlight } = await import('../arcgis/webmap/webmap')
+        const { removeGraphics } = await import('../arcgis/webmap/webmap')
         
-        removeHighlight();
+        setSearchResults(null, null)
+        removeGraphics();
     }
 
     const searchComparableProperties = async () => {

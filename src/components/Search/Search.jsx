@@ -66,7 +66,7 @@ const Search = () => {
                 searchWidget.current.on("search-clear", function(event){
                     // The results are stored in the event Object[]
                     console.log("Search input textbox was cleared.");
-                    setSearchResults(null, null)
+                    clearResults();
 
                     routeParams.set('location', '')
                     // Get the updated URL with the new parameter value

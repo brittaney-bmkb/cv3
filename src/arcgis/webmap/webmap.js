@@ -235,12 +235,16 @@ async function zoomToExtent(features) {
 
   createGraphic(features, true, "darkBlue")
 }
+
+export async function removeGraphics(){
+  layerGraphics.removeAll()
+}
   
 
 export async function createGraphic(features, remove, color, secondary){
 
   if(remove){
-    layerGraphics.removeAll()
+    removeGraphics
   }
 
   const geometries = features.map((feature) => feature.geometry);

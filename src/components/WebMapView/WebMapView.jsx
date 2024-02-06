@@ -48,7 +48,7 @@ export default function WebMapView(){
                 routeParams.set('location', location)
                 const updatedUrl = `${window.location.pathname}?${routeParams.toString()}`;
                 window.history.pushState({ path: updatedUrl }, '', updatedUrl);
-                    }
+                }
         }
 
         updateUrlParam()
