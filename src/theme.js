@@ -4,13 +4,16 @@ export const theme = createTheme({
     palette:{
         primary:{
             main:"#0D4D96",
-            light: "#59C5D1"
+            light: "#59C5D1",
+            contrastText:"",
         },
         secondary:{
-            main:"#B6006A"
+            main:"#B6006A",
         },
-        otherColor:{
-            main:"#72635D"
+        info:{
+            main:"#928884",
+            light:"#BEB7B3",
+            dark:"#72635D"
         }
     },
     shape: {
@@ -27,6 +30,10 @@ export const theme = createTheme({
         },
         h3: {
             fontSize: 18
+        },
+        h4: {
+            fontSize: 16,
+            fontWeight:"bold"
         },
         body1: {
             fontSize: 15

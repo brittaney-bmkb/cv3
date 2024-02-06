@@ -1,8 +1,8 @@
 import { Box, Card, CardActionArea, CardContent, CardHeader, Typography } from "@mui/material"
-import UseAppContext from "../contexts/AppContext"
+import UseAppContext from "../../contexts/AppContext"
 import { useEffect } from "react"
 
-const Result = ({text}) => {
+const ResultCard = ({text}) => {
 
     const { setPanelDisplay, selectResultFromList } = UseAppContext()
 
@@ -25,4 +25,4 @@ const Result = ({text}) => {
     )
 }
 
-export default Result
+export default ResultCard

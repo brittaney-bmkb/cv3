@@ -10,6 +10,8 @@ export const config = {
     // BASEMAP ID: Provide the ID of the basemap you want to use in the application.
     basemap_item_id:"7d31919b0623451ea7e576c85c48f52a",
     parcel_feature_service : "",
+    //DATA DICTIONARY SERVICE
+    data_dictionary: "https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/arcgis/rest/services/cookviewer_data_dictionary/FeatureServer/0",
     // TARGET LAYER CONFIGURATION: Specify the name of the target layer and the fields to display in results.
     // MAKE SURE THE NAME OF THIS LAYER IS EXACTLY THE SAME IN THE LAYERSOURCES ARRAY
     target_layer_name: "parcelLayer", // Name of the target layer in LayerSources
@@ -17,7 +19,7 @@ export const config = {
     // NEARBY SEARCH SETTINGS: Configure the buffer distance and unit for nearby searches.
     buffer_distance: 50,
     buffer_unit: "feet",
-    // LAYER SOURCES CONFIGURATION: Configure the layers and search sources for the search widget
+    // LAYER SOURCES CONFIGURATION: Configure the layers for map and search sources for the search widget
     layer_sources: [
         // First Layer Source: Configure the parcelLayer
         // To add or remove a layer source copy or delete an object and modify

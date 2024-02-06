@@ -10,7 +10,6 @@ import Graphic from "@arcgis/core/Graphic.js";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer.js";
 import Home from "@arcgis/core/widgets/Home.js";
 import Locate from "@arcgis/core/widgets/Locate.js";
-import Graphic from "@arcgis/core/Graphic.js";
 import ScaleBar from "@arcgis/core/widgets/ScaleBar.js";
 
 let targetLayerView;
@@ -31,10 +30,6 @@ let layerGraphicsSecondary = new GraphicsLayer()
 const map = new Map({
     // basemap: "streets-vector"
   });
-
-
-
-
 
 const view = new MapView({
   map: map,
@@ -65,9 +60,9 @@ let scaleBar = new ScaleBar({
 
 // adds the home widget to the top left corner of the MapView
 // https://github.com/alexlafroscia/ember-cli-stencil/issues/14 
-view.ui.add(homeWidget, "top-left");
+view.ui.add(homeWidget, "top-right");
 // adds the locate widget to the top left corner of the MapView
-view.ui.add(locateWidget, "top-left");
+view.ui.add(locateWidget, "top-right");
 // Add widget to the bottom left corner of the view
 view.ui.add(scaleBar, {
   position: "bottom-left"
