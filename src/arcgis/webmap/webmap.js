@@ -133,8 +133,8 @@ export async function onViewClick(event) {
 
       const { features } = await layerView.queryFeatures(query);
 
-      console.log("on click features: ", features)
-      createGraphic(features, true, "darkBlue")
+      // console.log("on click features: ", features)
+      // createGraphic(features, true, "darkBlue")
       // const attributeKeys = Object.keys(feature.attributes);
       // console.log("Attribute to highlight: ", feature.attributes[attributeKeys[0]]);
 
@@ -221,10 +221,6 @@ export async function querySearchResults(result){
 
 }
 
-export async function removeHighlight(){
-  highlightSelect?.remove();
-}
-
 async function zoomToExtent(features) {
   const geometries = features.map((feature) => feature.geometry);
 
@@ -233,7 +229,7 @@ async function zoomToExtent(features) {
   view.goTo(combinedExtent, {
   });
 
-  createGraphic(features, true, "darkBlue")
+  // createGraphic(features, true, "darkBlue")
 }
 
 export async function removeGraphics(){
