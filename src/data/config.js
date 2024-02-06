@@ -15,7 +15,7 @@ export const config = {
     // TARGET LAYER CONFIGURATION: Specify the name of the target layer and the fields to display in results.
     // MAKE SURE THE NAME OF THIS LAYER IS EXACTLY THE SAME IN THE LAYERSOURCES ARRAY
     target_layer_name: "parcelLayer", // Name of the target layer in LayerSources
-    target_layer_out_fields: ["PIN14","Pin14_dash","street_address","OBJECTID"],// Fields to display in the results pane (array of strings).
+    target_layer_out_fields: ["PIN14","PIN14_dash","street_address","city_state_zip","OBJECTID"],// Fields to display in the results pane (array of strings).
     // NEARBY SEARCH SETTINGS: Configure the buffer distance and unit for nearby searches.
     buffer_distance: 50,
     buffer_unit: "feet",
@@ -27,9 +27,9 @@ export const config = {
        {
            layerName: "parcelLayer", // Name of the layer source.
            url: "https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/arcgis/rest/services/CookViewerParcelsFeatureAGO/FeatureServer/0", // URL to the layer service.
-           outFields: ["PIN14","Pin14_dash", "street_address","OBJECTID"], // Fields to return in the search results (array of strings).
+           outFields: ["PIN14","PIN14_dash", "street_address","OBJECTID","city_state_zip"], // Fields to return in the search results (array of strings).
            popupEnabled:true, // Enable/disable popups for this layer source (boolean).
-           popupTemplateTitle:"Parcel pin 14 {Pin14_dash}", // Popup template title with field placeholders.
+           popupTemplateTitle:"Parcel pin 14 {PIN14_dash}", // Popup template title with field placeholders.
            maxScale:0,
            minScale: 30000,
            opacity: 0,
@@ -56,14 +56,14 @@ export const config = {
             },
                {
                    name: "Parcel 14 digit pin dash", // Name of the search source.
-                   displayField: "Pin14_dash", // Field used for displaying search suggestions.
+                   displayField: "PIN14_dash", // Field used for displaying search suggestions.
                    exactMatch: false, // Exact match search (boolean).
                    maxResults: 50, // Maximum number of search results.
                    maxSuggestions: 50, // Maximum number of search suggestions.
                    minSuggestCharacters: 4, // Minimum characters for search suggestions.
-                   outFields: ["Pin14_dash"], // Fields to return in search results (array of strings).
-                   orderByFields: ["Pin14_dash"], // Fields for sorting search results (array of strings).
-                   searchFields: ["Pin14_dash"], // Fields used for searching (array of strings).
+                   outFields: ["PIN14_dash"], // Fields to return in search results (array of strings).
+                   orderByFields: ["PIN14_dash"], // Fields for sorting search results (array of strings).
+                   searchFields: ["PIN14_dash"], // Fields used for searching (array of strings).
                    suggestionsEnabled: true, // Enable/disable suggestions for this search source (boolean).
                    autoNavigate: false, // Automatically navigate to the result on selection (boolean).
                },
