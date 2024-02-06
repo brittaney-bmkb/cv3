@@ -12,7 +12,7 @@ const Search = () => {
     const { setPanelPrimaryVisibility, setSearchResults, mapView, searchSources, clearResults } = UseAppContext()
 
     //get url parameters
-    const [routeParams] = useSearchParams();
+    const [routeParams, setSearchParams] = useSearchParams();
 
 
     //create a reference to the search  DOM  element
@@ -45,7 +45,10 @@ const Search = () => {
                     console.log("Searching for ", searchString)
                     //performing search method automatically selects the first
                     //result. triggering the setSearchResults function
-                    searchWidget.current.search(searchString)
+                    if(searchString !== 'null'){
+                        searchWidget.current.search(searchString)
+                    }
+                    
                 }
                 
                 searchWidget.current.on("select-result", function(event){
@@ -54,12 +57,7 @@ const Search = () => {
 
                     setPanelPrimaryVisibility(true)
 
-                    routeParams.set('location', event.result.name)
-                    // Get the updated URL with the new parameter value
-                    const updatedUrl = `${window.location.pathname}?${routeParams.toString()}`;
-
-                    // Use history.pushState to update the URL without refreshing the page
-                    window.history.pushState({ path: updatedUrl }, '', updatedUrl);
+                    setSearchParams({'location': event.result.name})
                 })
                 
                 //to do enable clear results to empty searchFeatures array
@@ -68,8 +66,8 @@ const Search = () => {
                     console.log("Search input textbox was cleared.");
                     clearResults();
 
-                    routeParams.set('location', '')
-                    // Get the updated URL with the new parameter value
+                    setSearchParams({'location': null})
+
                     const updatedUrl = `${window.location.pathname}`;
 
                     // Use history.pushState to update the URL without refreshing the page

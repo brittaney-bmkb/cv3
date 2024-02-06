@@ -22,6 +22,11 @@ const PanelHeader = ( {text} ) => {
 
         setSearchParams({'location': null})
 
+        const updatedUrl = `${window.location.pathname}`;
+
+        // Use history.pushState to update the URL without refreshing the page
+        window.history.pushState({ path: updatedUrl }, '', updatedUrl);
+
     }
 
     return(
