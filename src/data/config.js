@@ -16,6 +16,8 @@ export const config = {
     // MAKE SURE THE NAME OF THIS LAYER IS EXACTLY THE SAME IN THE LAYERSOURCES ARRAY
     target_layer_name: "parcelLayer", // Name of the target layer in LayerSources
     target_layer_out_fields: ["PIN14","PIN14_dash","street_address","city_state_zip","OBJECTID"],// Fields to display in the results pane (array of strings).
+    //FIELD TO REFERENCE FOR CREATING URL PARAM WHEN CLICKING IN MAP
+    target_layer_id_field: "PIN14",
     // NEARBY SEARCH SETTINGS: Configure the buffer distance and unit for nearby searches.
     buffer_distance: 50,
     buffer_unit: "feet",
