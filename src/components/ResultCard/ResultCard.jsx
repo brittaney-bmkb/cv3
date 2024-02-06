@@ -41,6 +41,9 @@ const ResultCard = ({pin, address, city_state_zip}) => {
             width:"100%",
             p:1
             }}>
+            <CardActionArea>
+
+            
             <CardContent>
                 <Box display="flex" width="100%" flexDirection="column" justifyContent='center' alignItems="center" rowGap={2}>
                      <Box display="flex" sx={{border:3, borderColor:theme.palette.primary.main }} borderRadius={theme.shape.borderRadius}>
@@ -62,6 +65,7 @@ const ResultCard = ({pin, address, city_state_zip}) => {
                 <Typography align="center" variant="subtitle2" color={theme.palette.info.dark}>Classification</Typography>
                 <Typography align="center" variant="subtitle2" color={theme.palette.info.dark}>Building Sq Ft</Typography>
             </Box>
+            </CardActionArea>
         </Card>
 
     )
