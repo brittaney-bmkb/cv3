@@ -48,6 +48,9 @@ const Search = () => {
                     if(searchString !== 'null'){
                         searchWidget.current.search(searchString)
                     }
+                    else{
+                        searchWidget.current.clear();
+                    }
                     
                 }
                 

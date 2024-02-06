@@ -38,7 +38,7 @@ const PanelHeader = ( {text} ) => {
                         </Box>
                 </Box>
             </Stack>
-            <Stack direction="row" alignItems="center" spacing={1}>
+            <Stack direction="row" alignItems="center" spacing={1} justifyContent="center">
                 <Box display="flex" flexDirection="column">
                     <Typography variant="h5" color={theme.main.text.dark} align="center">
                         {searchFeatures ? searchFeatures.length: 0}
