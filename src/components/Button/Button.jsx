@@ -1,4 +1,5 @@
-import { Button, Typography, styled } from "@mui/material"
+import { Button, IconButton, Typography, styled } from "@mui/material"
+import { theme } from "../../theme"
 
 const StyledButtonFilledPrimary = ({text, startIcon, endIcon, onClick}) => {
     return(
@@ -25,6 +26,15 @@ export const StyledButtonFilledSecondary = ({text, startIcon, endIcon}) => {
         ><Typography p={0} variant="body1">
         {text}
     </Typography></Button>
+    )
+}
+
+export const StyledIconButton = ({text, icon, onClick}) => {
+    return(
+        <IconButton sx={{display:"flex", flexDirection:"column"}} onClick={onClick}>
+            {icon}
+            <Typography variant="h5" color={theme.main.text.dark}>{text}</Typography>
+        </IconButton>
     )
 }
 

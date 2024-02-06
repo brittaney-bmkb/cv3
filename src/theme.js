@@ -1,16 +1,30 @@
 import { createTheme } from "@mui/material";
 
 export const theme = createTheme({
+    main: {
+        backgroundColor:{
+            light: "#59BDE7",
+            dark:"#f5f5f5",
+            grey:"#BEB7B3"
+        },
+        text:{
+            dark:"#111111",
+            light:"#59BDE7"
+        }
+    },
     palette:{
         primary:{
             main:"#0D4D96",
-            light: "#59C5D1"
+            light: "#59BDE7",
+            contrastText:"#f5f5f5",
         },
         secondary:{
-            main:"#B6006A"
+            main:"#B6006A",
         },
-        otherColor:{
-            main:"#72635D"
+        info:{
+            main:"#928884",
+            light:"#BEB7B3",
+            dark:"#72635D"
         }
     },
     shape: {
@@ -27,6 +41,14 @@ export const theme = createTheme({
         },
         h3: {
             fontSize: 18
+        },
+        h4: {
+            fontSize: 16,
+            fontWeight:700
+        },
+        h5: {
+            fontSize: 16,
+            fontWeight:500
         },
         body1: {
             fontSize: 15

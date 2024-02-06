@@ -1,6 +1,6 @@
 import { List, ListItem } from "@mui/material"
-import Result from "./Result"
-import UseAppContext from "../contexts/AppContext"
+import ResultCard from "../ResultCard/ResultCard"
+import UseAppContext from "../../contexts/AppContext"
 
 const ResultsList = () => {
 
@@ -11,8 +11,8 @@ const ResultsList = () => {
             {searchFeatures ? 
             searchFeatures.map((result, i) => {
                 return(
-                    <ListItem key={result.attributes['Pin10']}>
-                        <Result text={result.attributes['Pin10']}/>
+                    <ListItem key={result.attributes['PIN14']}>
+                        <ResultCard text={result.attributes['PIN14']}/>
                     </ListItem>
                 )
             }) : 'null'}

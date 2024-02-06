@@ -8,6 +8,9 @@ import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine.js";
 import Graphic from "@arcgis/core/Graphic.js";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer.js";
+import Home from "@arcgis/core/widgets/Home.js";
+import Locate from "@arcgis/core/widgets/Locate.js";
+import ScaleBar from "@arcgis/core/widgets/ScaleBar.js";
 
 let targetLayerView;
 let targetLayer;
@@ -28,14 +31,6 @@ const map = new Map({
     // basemap: "streets-vector"
   });
 
-
-
-//add graphics layer to map
-map.add(layerGraphicsSecondary)
-
-//add graphics layer to map
-map.add(layerGraphics)
-
 const view = new MapView({
   map: map,
   center: [-87.8298, 41.8781],
@@ -43,6 +38,35 @@ const view = new MapView({
 })
 
 view.ui.move([ "zoom" ], "top-right");
+
+//create home widget
+let homeWidget = new Home({
+  view: view
+});
+
+let locateWidget = new Locate({
+  view: view,   // Attaches the Locate button to the view
+  
+  graphic: new Graphic({
+    symbol: { type: "simple-marker" }  // overwrites the default symbol used for the
+    // graphic placed at the location of the user when found
+  })
+});
+
+let scaleBar = new ScaleBar({
+  view: view
+});
+
+
+// adds the home widget to the top left corner of the MapView
+// https://github.com/alexlafroscia/ember-cli-stencil/issues/14 
+view.ui.add(homeWidget, "top-right");
+// adds the locate widget to the top left corner of the MapView
+view.ui.add(locateWidget, "top-right");
+// Add widget to the bottom left corner of the view
+view.ui.add(scaleBar, {
+  position: "bottom-left"
+});
 
 export async function initializeMap(container){
 
@@ -62,6 +86,12 @@ export async function initializeMap(container){
   //define target layer
   targetLayer = namedLayers[config.target_layer_name]
   targetLayerView = await view.whenLayerView(targetLayer)
+
+  //add graphics layer to map
+  map.add(layerGraphicsSecondary)
+
+  //add graphics layer to map
+  map.add(layerGraphics)
 
 return map, searchSources
 }  
@@ -144,7 +174,7 @@ export async function querySearchResults(result){
       whereString = `${searchField}='${resultValue}'`
       console.log(whereString)
       query.where = whereString
-      query.outFields = ["OBJECTID_1", "Pin10"]
+      query.outFields = config.target_layer_out_fields
     }
   }
 
@@ -159,7 +189,7 @@ export async function querySearchResults(result){
     query.units = config.buffer_unit
     query.spatialRelationship = "intersects";
     query.returnGeometry = true;
-    query.outFields = ["OBJECTID_1", "Pin10"]
+    query.outFields = config.target_layer_out_fields
   } 
 
   // //get features from query
@@ -170,20 +200,22 @@ export async function querySearchResults(result){
   
   let { features } = await targetLayer.queryFeatures(query)
   await zoomToExtent(features)
-  console.log("Queried Features: ", features)
 
-  let feature = features[0]
-  // //get pin ids 
-  const attributeKeys = Object.keys(feature.attributes);
+  createGraphic(features, true, "darkBlue")    
+  // console.log("Queried Features: ", features)
+
+  // let feature = features[0]
+  // // //get pin ids 
+  // const attributeKeys = Object.keys(feature.attributes);
 
 
-  highlightSelect?.remove();
+  // highlightSelect?.remove();
 
-  features.map((feature) => {
+  // features.map((feature) => {
     
-    layerView.highlight(feature.attributes[attributeKeys[0]])
-    return feature.attributes["Pin10"]
-  })
+  //   layerView.highlight(feature.attributes[attributeKeys[0]])
+  //   return feature.attributes["PIN14"]
+  // })
 
   return features
 
@@ -217,8 +249,9 @@ export async function createGraphic(features, remove, color, secondary){
       geometry: geometry,
       symbol:{
         type:"simple-line",
-        size:1,
-        color:color
+        size:3,
+        color:color,
+        width:3
       }
     })
 
@@ -248,7 +281,7 @@ export async function createGraphic(features, remove, color, secondary){
 
     console.log("queried Features: ", features)
 
-    let filteredFeatures = features.filter((f) => f.attributes['Pin10'] !== feature.attributes['Pin10'])
+    let filteredFeatures = features.filter((f) => f.attributes['PIN14'] !== feature.attributes['PIN14'])
 
     createGraphic(filteredFeatures, true, "red", true)
 

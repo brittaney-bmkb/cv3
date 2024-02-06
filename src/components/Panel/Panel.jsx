@@ -1,8 +1,9 @@
 import { Box, Paper } from "@mui/material";
-import ResultsList from "./ResultsList";
-import UseAppContext from "../contexts/AppContext";
-import PropertyDetail from "./PropertyDetail/PropertyDetail";
-import ComparablePropertySearch from "./ComparablePropertySearch/ComparablePropertySearch";
+import ResultsList from "../ResultList/ResultsList";
+import UseAppContext from "../../contexts/AppContext";
+import PropertyDetail from "../PropertyDetail/PropertyDetail";
+import ComparablePropertySearch from "../ComparablePropertySearch/ComparablePropertySearch";
+import PanelHeader from "./PanelHeader";
 
  const Panel = () => {  
     return(
@@ -40,8 +41,21 @@ export const LeftPanel = () => {
     switch(panelDisplay){
         case 'resultsList':
             return (
-                <Box bgcolor="white" flex={1} flexDirection="column" sx={{display:{xs:'none', sm: searchFeatures ? 'block' : 'none'}}}>
+                <Box 
+                component={Paper}
+                square={true}
+                elevation={5}
+                p={2} 
+                bgcolor="white" 
+                flex={1} 
+                flexDirection="column" 
+                sx={{display:{xs:'none', sm: searchFeatures ? 'flex' : 'none'}}}
+                >
+                        <PanelHeader text={"Property Results"} />
+                        <Box sx={{ overflowY:"scroll"}} height='100%'>
                         <ResultsList/>
+                        </Box>
+                        
                 </Box>)
         case 'propertyDetail':
             return (
