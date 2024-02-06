@@ -12,7 +12,11 @@ const ResultsList = () => {
             searchFeatures.map((result, i) => {
                 return(
                     <ListItem key={result.attributes['PIN14']}>
-                        <ResultCard text={result.attributes['PIN14']}/>
+                        <ResultCard 
+                        pin={result.attributes['PIN14']}
+                        address={result.attributes['street_address']}
+                        city_state_zip={result.attributes['city_state_zip']}
+                        />
                     </ListItem>
                 )
             }) : 'null'}
