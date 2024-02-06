@@ -1,7 +1,3 @@
-Certainly! Below is an expanded README documentation for your React component, including additional information about installation, usage, and customization:
-
----
-
 # ResultCard Component
 
 ## Description
