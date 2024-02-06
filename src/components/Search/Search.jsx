@@ -9,10 +9,11 @@ import { useSearchParams } from "react-router-dom"
 
 const Search = () => {
 
-    const { setSearchResults, mapView, searchSources, clearResults } = UseAppContext()
+    const { setPanelPrimaryVisibility, setSearchResults, mapView, searchSources, clearResults } = UseAppContext()
 
     //get url parameters
-    const [routeParams] = useSearchParams();
+    const [routeParams, setSearchParams] = useSearchParams();
+
 
     //create a reference to the search  DOM  element
     const searchDiv = useRef(null)
@@ -44,29 +45,30 @@ const Search = () => {
                     console.log("Searching for ", searchString)
                     //performing search method automatically selects the first
                     //result. triggering the setSearchResults function
-                    searchWidget.current.search(searchString)
+                    if(searchString !== 'null'){
+                        searchWidget.current.search(searchString)
+                    }
+                    
                 }
                 
                 searchWidget.current.on("select-result", function(event){
                     console.log("The selected search result: ", searchWidget.current.selectedResult)
                     setSearchResults(searchWidget.current.selectedResult)
 
-                    routeParams.set('location', event.result.name)
-                    // Get the updated URL with the new parameter value
-                    const updatedUrl = `${window.location.pathname}?${routeParams.toString()}`;
+                    setPanelPrimaryVisibility(true)
 
-                    // Use history.pushState to update the URL without refreshing the page
-                    window.history.pushState({ path: updatedUrl }, '', updatedUrl);
+                    setSearchParams({'location': event.result.name})
                 })
                 
                 //to do enable clear results to empty searchFeatures array
                 searchWidget.current.on("search-clear", function(event){
                     // The results are stored in the event Object[]
+                    console.log("Search input textbox was cleared.");
                     clearResults();
 
-                    routeParams.set('location', null)
-                    // Get the updated URL with the new parameter value
-                    const updatedUrl = null;
+                    setSearchParams({'location': null})
+
+                    const updatedUrl = `${window.location.pathname}`;
 
                     // Use history.pushState to update the URL without refreshing the page
                     window.history.pushState({ path: updatedUrl }, '', updatedUrl);

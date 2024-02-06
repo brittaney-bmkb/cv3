@@ -10,7 +10,7 @@ export default function WebMapView(){
     const mapDiv = useRef(null)
 
     //get url parameters
-    const [routeParams] = useSearchParams()
+    const [routeParams, setSearchParams] = useSearchParams()
 
     useEffect(() => {
         const createMap = async () => {
@@ -45,10 +45,8 @@ export default function WebMapView(){
             if(primaryResultFeature){
                  //update url params for selected feature
                 let location = primaryResultFeature.attributes[config.target_layer_id_field]
-                routeParams.set('location', location)
-                const updatedUrl = `${window.location.pathname}?${routeParams.toString()}`;
-                window.history.pushState({ path: updatedUrl }, '', updatedUrl);
-                    }
+                setSearchParams({'location': location})
+                }
         }
 
         updateUrlParam()

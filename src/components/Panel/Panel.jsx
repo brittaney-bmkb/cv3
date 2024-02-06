@@ -36,7 +36,7 @@ export const RightPanel = () => {
 
 export const LeftPanel = () => {
 
-    const { searchFeatures, panelDisplay } = UseAppContext()
+    const { panelPrimaryVisible, searchFeatures, panelDisplay } = UseAppContext()
 
     switch(panelDisplay){
         case 'resultsList':
@@ -49,7 +49,7 @@ export const LeftPanel = () => {
                 bgcolor="white" 
                 flex={1} 
                 flexDirection="column" 
-                sx={{display:{xs:'none', sm: searchFeatures ? 'flex' : 'none'}}}
+                sx={{display:{xs:'none', sm: panelPrimaryVisible ? 'flex' : 'none'}}}
                 >
                         <PanelHeader text={"Property Results"} />
                         <Box sx={{ overflowY:"scroll"}} height='100%'>

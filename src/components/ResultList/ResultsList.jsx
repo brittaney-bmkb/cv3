@@ -1,6 +1,7 @@
-import { List, ListItem } from "@mui/material"
+import { Box, List, ListItem, Typography } from "@mui/material"
 import ResultCard from "../ResultCard/ResultCard"
 import UseAppContext from "../../contexts/AppContext"
+import { theme } from "../../theme"
 
 const ResultsList = () => {
 
@@ -19,7 +20,9 @@ const ResultsList = () => {
                         />
                     </ListItem>
                 )
-            }) : 'null'}
+            }) : <Box display="flex" width='100%' alignItems="center" justifyContent="center">
+                    <Typography variant="h6" color={theme.palette.primary.main}>Search for a new property</Typography>
+                </Box>}
             
         </List>
     )

@@ -101,6 +101,15 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setPanelPrimaryVisibility = (visible) => {
+        dispatch({
+            type:"SET_PANEL_PRIMARY_VISIBILTIY",
+             payload: {
+                panelPrimaryVisible: visible,
+            }
+        })
+    }
+
     const setPanelDisplaySecondary = (state) => {
         dispatch({
             type:"SET_PANEL_SECONDARY_DISPLAY",
@@ -138,9 +147,10 @@ export const AppProvider = ({children}) => {
     }
 
     const clearResults = async () => {
-        const { removeHighlight } = await import('../arcgis/webmap/webmap')
+        const { removeGraphics } = await import('../arcgis/webmap/webmap')
         
-        removeHighlight();
+        setSearchResults(null, null)
+        removeGraphics();
     }
 
     const searchComparableProperties = async () => {
@@ -174,7 +184,9 @@ export const AppProvider = ({children}) => {
         panelDisplaySecondary: state.panelDisplaySecondary,
         setPanelDisplaySecondary,
         selectResultFromList,
-        searchComparableProperties
+        searchComparableProperties,
+        setPanelPrimaryVisibility,
+        panelPrimaryVisible: state.panelPrimaryVisible
     }
 
 
