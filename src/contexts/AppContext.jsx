@@ -1,5 +1,8 @@
 import { createContext, useContext, useReducer } from "react";
 import AppReducer, { initialState } from '../reducers/AppReducer'
+import { useSearchParams } from "react-router-dom";
+import { config } from "../data/config";
+
 
 export const AppContext = createContext(initialState)
 
@@ -54,6 +57,9 @@ export const AppProvider = ({children}) => {
         const selectedFeatures = await onViewClick(event)
 
         setPrimaryResultFeature(selectedFeatures[0])
+
+       
+
         setSearchResults(searchResults, selectedFeatures)
         setPanelDisplay("resultsList")
     }
