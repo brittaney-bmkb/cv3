@@ -14,6 +14,7 @@ const Search = () => {
     //get url parameters
     const [routeParams] = useSearchParams();
 
+
     //create a reference to the search  DOM  element
     const searchDiv = useRef(null)
     //create a reference to the search widget DOM element
@@ -62,11 +63,12 @@ const Search = () => {
                 //to do enable clear results to empty searchFeatures array
                 searchWidget.current.on("search-clear", function(event){
                     // The results are stored in the event Object[]
-                    clearResults();
+                    console.log("Search input textbox was cleared.");
+                    setSearchResults(null, null)
 
-                    routeParams.set('location', null)
+                    routeParams.set('location', '')
                     // Get the updated URL with the new parameter value
-                    const updatedUrl = null;
+                    const updatedUrl = `${window.location.pathname}`;
 
                     // Use history.pushState to update the URL without refreshing the page
                     window.history.pushState({ path: updatedUrl }, '', updatedUrl);
