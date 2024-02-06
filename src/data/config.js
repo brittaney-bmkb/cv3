@@ -52,19 +52,19 @@ export const config = {
                 suggestionsEnabled: true, // Enable/disable suggestions for this search source (boolean).
                 autoNavigate: false, // Automatically navigate to the result on selection (boolean).
             },
-            //    {
-            //        name: "Parcel 14 digit pin dash", // Name of the search source.
-            //        displayField: "Pin14_dash", // Field used for displaying search suggestions.
-            //        exactMatch: false, // Exact match search (boolean).
-            //        maxResults: 50, // Maximum number of search results.
-            //        maxSuggestions: 50, // Maximum number of search suggestions.
-            //        minSuggestCharacters: 4, // Minimum characters for search suggestions.
-            //        outFields: ["Pin14_dash"], // Fields to return in search results (array of strings).
-            //        orderByFields: ["Pin14_dash"], // Fields for sorting search results (array of strings).
-            //        searchFields: ["Pin14_dash"], // Fields used for searching (array of strings).
-            //        suggestionsEnabled: true, // Enable/disable suggestions for this search source (boolean).
-            //        autoNavigate: false, // Automatically navigate to the result on selection (boolean).
-            //    },
+               {
+                   name: "Parcel 14 digit pin dash", // Name of the search source.
+                   displayField: "Pin14_dash", // Field used for displaying search suggestions.
+                   exactMatch: false, // Exact match search (boolean).
+                   maxResults: 50, // Maximum number of search results.
+                   maxSuggestions: 50, // Maximum number of search suggestions.
+                   minSuggestCharacters: 4, // Minimum characters for search suggestions.
+                   outFields: ["Pin14_dash"], // Fields to return in search results (array of strings).
+                   orderByFields: ["Pin14_dash"], // Fields for sorting search results (array of strings).
+                   searchFields: ["Pin14_dash"], // Fields used for searching (array of strings).
+                   suggestionsEnabled: true, // Enable/disable suggestions for this search source (boolean).
+                   autoNavigate: false, // Automatically navigate to the result on selection (boolean).
+               },
                {
                    name: "Parcel address",
                    displayField:"street_address",
@@ -83,18 +83,6 @@ export const config = {
    ],
       // LOCATOR SOURCES CONFIGURATION: Configure the locators for the search widget
       locator_search_sources: [
-        {
-            apiKey: null,
-            autoNavigate:false,
-            maxResults: 50,
-            maxSuggestions:50,
-            minSuggestCharacters: 4,
-            name: "Cook Address Composite",
-            outFields:["Street", "City", "ZIP"],
-            singleLineFieldName:"SingleLine",
-            suggestionsEnabled:true,
-            url:"https://gis.cookcountyil.gov/traditional/rest/services/AddressLocator/CookAddressComposite/GeocodeServer"
-        },
         {
             apiKey: null,
             autoNavigate:false,
