@@ -19,10 +19,6 @@ const PanelHeader = ( {text} ) => {
                         <Typography variant="h4" color={theme.main.text.dark}>{text}</Typography>
                         </Box>
                 </Box>
-                {/* <IconButton sx={{display:"flex", flexDirection:"column"}}>
-                    <CloseRounded fontSize="small" sx={{color:theme.main.text.dark}}/>
-                    <Typography variant="subtitle1" color={theme.main.text.dark}>Close</Typography>
-                </IconButton> */}
             </Stack>
             <Stack direction="row" alignItems="center" spacing={1}>
                 <Box display="flex" flexDirection="column">
