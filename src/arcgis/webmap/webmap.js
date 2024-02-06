@@ -240,7 +240,7 @@ export async function removeGraphics(){
 export async function createGraphic(features, remove, color, secondary){
 
   if(remove){
-    removeGraphics
+    removeGraphics()
   }
 
   const geometries = features.map((feature) => feature.geometry);
