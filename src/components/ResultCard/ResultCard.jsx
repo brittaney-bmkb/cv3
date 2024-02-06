@@ -20,7 +20,6 @@
 import { Box, Card, CardActionArea, CardContent, CardHeader, Divider, Typography } from "@mui/material"
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import UseAppContext from "../../contexts/AppContext"
-import { useEffect } from "react"
 import { theme } from "../../theme"
 
 const ResultCard = ({pin, address, city_state_zip}) => {
