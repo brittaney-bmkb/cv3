@@ -7,20 +7,24 @@ const ResultCard = ({text}) => {
     const { setPanelDisplay, selectResultFromList } = UseAppContext()
 
     return(
-        <Box flex={4} p={2}>
         <Card 
         onClick={() => {
             setPanelDisplay("propertyDetail")
             selectResultFromList(text)
         }}
-        sx={{display: "flex", flexDirection:"column", justifyContent:"space-between", alignItems:"center"}}>
+        sx={{
+            display: "flex", 
+            flexDirection:"column", 
+            justifyContent:"space-between", 
+            alignItems:"center",
+            width:"100%"
+            }}>
             <CardHeader title="Result">
             </CardHeader>
             <CardContent>
                 <Typography>{text ? text: 'No Results'}</Typography>
             </CardContent>
         </Card>
-        </Box>
 
     )
 }

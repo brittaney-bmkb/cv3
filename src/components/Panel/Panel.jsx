@@ -42,12 +42,15 @@ export const LeftPanel = () => {
         case 'resultsList':
             return (
                 <Box 
+                component={Paper}
+                square={true}
+                elevation={5}
                 p={2} 
                 bgcolor="white" 
                 flex={1} 
                 flexDirection="column" 
-                sx={{display:{xs:'none', sm: searchFeatures ? 'block' : 'none'}}} 
-                height='100%'>
+                sx={{display:{xs:'none', sm: searchFeatures ? 'flex' : 'none'}}}
+                >
                         <PanelHeader text={"Property Results"} />
                         <Box sx={{ overflowY:"scroll"}} height='100%'>
                         <ResultsList/>
