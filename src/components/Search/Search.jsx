@@ -9,7 +9,7 @@ import { useSearchParams } from "react-router-dom"
 
 const Search = () => {
 
-    const { setSearchResults, mapView, searchSources, clearResults } = UseAppContext()
+    const { setPanelPrimaryVisibility, setSearchResults, mapView, searchSources, clearResults } = UseAppContext()
 
     //get url parameters
     const [routeParams] = useSearchParams();
@@ -51,6 +51,8 @@ const Search = () => {
                 searchWidget.current.on("select-result", function(event){
                     console.log("The selected search result: ", searchWidget.current.selectedResult)
                     setSearchResults(searchWidget.current.selectedResult)
+
+                    setPanelPrimaryVisibility(true)
 
                     routeParams.set('location', event.result.name)
                     // Get the updated URL with the new parameter value
