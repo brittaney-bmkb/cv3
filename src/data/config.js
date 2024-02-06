@@ -10,6 +10,8 @@ export const config = {
     // BASEMAP ID: Provide the ID of the basemap you want to use in the application.
     basemap_item_id:"7d31919b0623451ea7e576c85c48f52a",
     parcel_feature_service : "",
+    //PRINT OPTIONS
+    print_orientation_options : ['Landscape', 'Portrait'],
     //DATA DICTIONARY SERVICE
     data_dictionary: "https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/arcgis/rest/services/cookviewer_data_dictionary/FeatureServer/0",
     // TARGET LAYER CONFIGURATION: Specify the name of the target layer and the fields to display in results.
