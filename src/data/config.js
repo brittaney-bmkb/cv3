@@ -13,7 +13,7 @@ export const config = {
     // TARGET LAYER CONFIGURATION: Specify the name of the target layer and the fields to display in results.
     // MAKE SURE THE NAME OF THIS LAYER IS EXACTLY THE SAME IN THE LAYERSOURCES ARRAY
     target_layer_name: "parcelLayer", // Name of the target layer in LayerSources
-    target_layer_out_fields: ["PIN14","Address","OBJECTID"],// Fields to display in the results pane (array of strings).
+    target_layer_out_fields: ["PIN14","Pin14_dash","street_address","OBJECTID"],// Fields to display in the results pane (array of strings).
     // NEARBY SEARCH SETTINGS: Configure the buffer distance and unit for nearby searches.
     buffer_distance: 50,
     buffer_unit: "feet",
@@ -52,19 +52,19 @@ export const config = {
                 suggestionsEnabled: true, // Enable/disable suggestions for this search source (boolean).
                 autoNavigate: false, // Automatically navigate to the result on selection (boolean).
             },
-               {
-                   name: "Parcel 14 digit pin dash", // Name of the search source.
-                   displayField: "Pin14_dash", // Field used for displaying search suggestions.
-                   exactMatch: false, // Exact match search (boolean).
-                   maxResults: 50, // Maximum number of search results.
-                   maxSuggestions: 50, // Maximum number of search suggestions.
-                   minSuggestCharacters: 4, // Minimum characters for search suggestions.
-                   outFields: ["Pin14_dash"], // Fields to return in search results (array of strings).
-                   orderByFields: ["Pin14_dash"], // Fields for sorting search results (array of strings).
-                   searchFields: ["Pin14_dash"], // Fields used for searching (array of strings).
-                   suggestionsEnabled: true, // Enable/disable suggestions for this search source (boolean).
-                   autoNavigate: false, // Automatically navigate to the result on selection (boolean).
-               },
+            //    {
+            //        name: "Parcel 14 digit pin dash", // Name of the search source.
+            //        displayField: "Pin14_dash", // Field used for displaying search suggestions.
+            //        exactMatch: false, // Exact match search (boolean).
+            //        maxResults: 50, // Maximum number of search results.
+            //        maxSuggestions: 50, // Maximum number of search suggestions.
+            //        minSuggestCharacters: 4, // Minimum characters for search suggestions.
+            //        outFields: ["Pin14_dash"], // Fields to return in search results (array of strings).
+            //        orderByFields: ["Pin14_dash"], // Fields for sorting search results (array of strings).
+            //        searchFields: ["Pin14_dash"], // Fields used for searching (array of strings).
+            //        suggestionsEnabled: true, // Enable/disable suggestions for this search source (boolean).
+            //        autoNavigate: false, // Automatically navigate to the result on selection (boolean).
+            //    },
                {
                    name: "Parcel address",
                    displayField:"street_address",

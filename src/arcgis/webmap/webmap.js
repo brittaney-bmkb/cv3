@@ -146,7 +146,7 @@ export async function querySearchResults(result){
       whereString = `${searchField}='${resultValue}'`
       console.log(whereString)
       query.where = whereString
-      query.outFields = ["OBJECTID", "PIN14"]
+      query.outFields = config.target_layer_out_fields
     }
   }
 
@@ -161,7 +161,7 @@ export async function querySearchResults(result){
     query.units = config.buffer_unit
     query.spatialRelationship = "intersects";
     query.returnGeometry = true;
-    query.outFields = ["OBJECTID", "PIN14"]
+    query.outFields = config.target_layer_out_fields
   } 
 
   // //get features from query
@@ -172,20 +172,22 @@ export async function querySearchResults(result){
   
   let { features } = await targetLayer.queryFeatures(query)
   await zoomToExtent(features)
-  console.log("Queried Features: ", features)
 
-  let feature = features[0]
-  // //get pin ids 
-  const attributeKeys = Object.keys(feature.attributes);
+  createGraphic(features, true, "darkBlue")    
+  // console.log("Queried Features: ", features)
+
+  // let feature = features[0]
+  // // //get pin ids 
+  // const attributeKeys = Object.keys(feature.attributes);
 
 
-  highlightSelect?.remove();
+  // highlightSelect?.remove();
 
-  features.map((feature) => {
+  // features.map((feature) => {
     
-    layerView.highlight(feature.attributes[attributeKeys[0]])
-    return feature.attributes["PIN14"]
-  })
+  //   layerView.highlight(feature.attributes[attributeKeys[0]])
+  //   return feature.attributes["PIN14"]
+  // })
 
   return features
 
