@@ -19,7 +19,8 @@ const ResultCard = ({pin, address, city_state_zip}) => {
             flexDirection:"column", 
             justifyContent:"space-between", 
             alignItems:"center",
-            width:"100%"
+            width:"100%",
+            p:1
             }}>
             <CardContent>
                 <Box display="flex" width="100%" flexDirection="column" justifyContent='center' alignItems="center" rowGap={2}>
@@ -31,14 +32,16 @@ const ResultCard = ({pin, address, city_state_zip}) => {
                             <LocationOnOutlinedIcon fontSize="small" sx={{color:theme.main.text.dark}}/>
                             <Typography align="center" variant="h4" color={theme.main.text.dark}>{address}</Typography>
                         </Box>
-                        <Typography align="center" variant="h5" color={theme.main.text.grey}>{city_state_zip}</Typography>
+                        <Typography align="center" variant="subtitle2" color={theme.palette.info.dark}>{city_state_zip}</Typography>
                      </Box>
                 </Box>
                  
             </CardContent>
             <Divider flexItem={true} variant="fullWidth" sx={{color:theme.main.text.grey}}/>   
-            <Box display="flex">
-            <Typography align="center" variant="h5" color={theme.main.text.grey}>Total Value</Typography>
+            <Box display="flex" flexWrap="wrap" gap={1} alignItems="center" justifyContent="center" pt={1}>
+                <Typography align="center" variant="subtitle2" color={theme.palette.info.dark}>Total Value</Typography>
+                <Typography align="center" variant="subtitle2" color={theme.palette.info.dark}>Classification</Typography>
+                <Typography align="center" variant="subtitle2" color={theme.palette.info.dark}>Building Sq Ft</Typography>
             </Box>
         </Card>
 
