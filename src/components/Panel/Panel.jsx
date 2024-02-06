@@ -41,9 +41,18 @@ export const LeftPanel = () => {
     switch(panelDisplay){
         case 'resultsList':
             return (
-                <Box p={2} bgcolor="white" flex={1} flexDirection="column" sx={{display:{xs:'none', sm: searchFeatures ? 'block' : 'none'}}}>
-                        <PanelHeader text={"Property Results"}/>
+                <Box 
+                p={2} 
+                bgcolor="white" 
+                flex={1} 
+                flexDirection="column" 
+                sx={{display:{xs:'none', sm: searchFeatures ? 'block' : 'none'}}} 
+                height='100%'>
+                        <PanelHeader text={"Property Results"} />
+                        <Box sx={{ overflowY:"scroll"}} height='100%'>
                         <ResultsList/>
+                        </Box>
+                        
                 </Box>)
         case 'propertyDetail':
             return (
