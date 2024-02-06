@@ -53,6 +53,7 @@ export const config = {
                    searchFields: ["PIN14_dash"], // Fields used for searching (array of strings).
                    suggestionsEnabled: true, // Enable/disable suggestions for this search source (boolean).
                    autoNavigate: false, // Automatically navigate to the result on selection (boolean).
+                   subLayer:0
                },
                {
                 name: "Parcel 14 digit pin", // Name of the search source.
@@ -66,6 +67,7 @@ export const config = {
                 searchFields: ["PIN14"], // Fields used for searching (array of strings).
                 suggestionsEnabled: true, // Enable/disable suggestions for this search source (boolean).
                 autoNavigate: false, // Automatically navigate to the result on selection (boolean).
+                subLayer:0
             },
                {
                    name: "Parcel address",
@@ -91,23 +93,11 @@ export const config = {
             maxResults: 50,
             maxSuggestions:50,
             minSuggestCharacters: 4,
-            name: "Cook street_address  Composite",
-            outFields:["Street", "City", "ZIP"],
-            singleLineFieldName:"SingleLine",
-            suggestionsEnabled:true,
-            url:"https://gis.cookcountyil.gov/traditional/rest/services/street_address Locator/Cookstreet_address Composite/GeocodeServer"
-        },
-        {
-            apiKey: null,
-            autoNavigate:false,
-            maxResults: 50,
-            maxSuggestions:50,
-            minSuggestCharacters: 4,
             name: "Point Street Multi Role Alt Streent Name No Sub street_address ",
             outFields:["Street", "City", "Postal"],
             singleLineFieldName:"SingleLine",
             suggestionsEnabled:true,
-            url:"https://test-gis.cookcountyil.gov/traditional/rest/services/street_address Locator/pointStreetMultiRoleAltStNameNoSubaddress/GeocodeServer"
+            url:"https://test-gis.cookcountyil.gov/traditional/rest/services/AddressLocator/pointStreetMultiRoleAltStNameNoSubaddress/GeocodeServer"
         }
     ]
 }

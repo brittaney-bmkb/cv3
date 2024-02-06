@@ -178,20 +178,7 @@ export async function querySearchResults(result){
   let { features } = await targetLayer.queryFeatures(query)
   await zoomToExtent(features)
   console.log("Queried Features: ", features)
-
-  let feature = features[0]
-  // //get pin ids 
-  const attributeKeys = Object.keys(feature.attributes);
-
-
-  highlightSelect?.remove();
-
-  features.map((feature) => {
-    
-    layerView.highlight(feature.attributes[attributeKeys[0]])
-    return feature.attributes["PIN14"]
-  })
-
+  
   return features
 
 }
