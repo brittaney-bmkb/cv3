@@ -11,6 +11,8 @@ const PropertyDetail = () => {
         setPanelDisplaySecondary("comparablePropertySearch")
     }
 
+    
+
     return(
         <Box display="flex" flexDirection="column" rowGap={2} p={2}>
         <Box>PropertyDetail</Box>

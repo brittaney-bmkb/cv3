@@ -58,7 +58,7 @@ export const AppProvider = ({children}) => {
 
         setPrimaryResultFeature(selectedFeatures[0])
 
-        setSearchResults(searchResults, selectedFeatures)
+        // setSearchResults(searchResults, selectedFeatures)
         setPanelDisplay("resultsList")
 
         setPanelPrimaryVisibility(true)
