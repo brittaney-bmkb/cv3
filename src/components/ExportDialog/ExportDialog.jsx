@@ -1,8 +1,9 @@
-import { Box, Collapse, Dialog, DialogContent, DialogTitle, Divider, Input, Stack, Switch, TextField, Typography } from "@mui/material"
+import { Box, Collapse, Dialog, DialogContent, DialogTitle, Divider, IconButton, Input, Stack, Switch, TextField, Typography } from "@mui/material"
 import { theme } from "../../theme"
 import { useState } from "react"
 import SelectDropdown from "../SelectDropdown/SelectDropdown"
 import { config } from "../../data/config"
+import { CloseOutlined } from "@mui/icons-material"
 
 const ExportDialog = ({open, onClose}) => {
 
@@ -44,11 +45,11 @@ const ExportDialog = ({open, onClose}) => {
             <Typography variant="h5" sx={{display:"flex", flexGrow:1, pt:1, pb:1}}>Map settings:</Typography>
             <Box display="flex" flexDirection="column" pl={1} rowGap={2}>
             {/* Choose Formats */}
-            <Stack direction="row" sx={{alignItems:"center"}}>
+            <Stack direction="row" sx={{alignItems:"center"}} spacing={2}>
                 <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>Map title</Typography>
                 <TextField id="print-title" label="Title" variant="outlined" size="small"/>
             </Stack> 
-            <Stack direction="row" sx={{alignItems:"center"}}>
+            <Stack direction="row" sx={{alignItems:"center"}}  spacing={2}>
                 <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>Layout orientation</Typography>
                 <SelectDropdown 
                 labelId={'print_layout'} 
@@ -68,7 +69,7 @@ const ExportDialog = ({open, onClose}) => {
         onClose={onClose}
         aria-labelledby="print-dialog-title"
         aria-describedby="print-dialog-description"
-        >
+        >   <IconButton sx={{position:"absolute", right:8, top:8}} onClick={onClose}><CloseOutlined/></IconButton>
             <DialogTitle id="print-dialog-title" sx={{display:"flex", justifyContent:"center", minWidth:300}}>
                 <Box display="flex" bgcolor={theme.main.backgroundColor.grey} p={1} sx={{borderRadius: theme.shape.borderRadius}} width={100} justifyContent="center">
                     <Typography variant="h3" color={theme.main.text.dark} align="center">Export</Typography>

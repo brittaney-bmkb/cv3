@@ -35,7 +35,7 @@ const PanelHeader = ( {text} ) => {
     }
 
     const handleClose = () => {
-        setOpen(false);
+        setOpenExportDialog(false);
     };
 
     return(
@@ -48,11 +48,11 @@ const PanelHeader = ( {text} ) => {
                 </Box>
             </Stack>
             <Stack direction="row" alignItems="center" spacing={1} justifyContent="center">
-                <Box display="flex" flexDirection="column">
-                    <Typography variant="h5" color={theme.main.text.dark} align="center">
+                <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" rowGap={0}>
+                    <Typography variant="subtitle1" color={theme.main.text.dark} align="center" >
                         {searchFeatures ? searchFeatures.length: 0}
                     </Typography>
-                    <Typography variant="h5" color={theme.main.text.dark} align="center">
+                    <Typography variant="subtitle1" color={theme.main.text.dark} align="center">
                         {`Result${searchFeatures?.length > 1 ? 's': ''}`}
                     </Typography>
                 </Box>

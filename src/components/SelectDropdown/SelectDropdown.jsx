@@ -7,7 +7,7 @@ const SelectDropdown = ({labelId, id, value, label, handleChange, items}) => {
     ))
 
     return(
-        <Select labelId={labelId} id={id} value={value} label={label} onChange={handleChange}>
+        <Select labelId={labelId} id={id} value={value} label={label} onChange={handleChange} sx={{width: '100%'}}>
             {menuItems}
         </Select>
     )
