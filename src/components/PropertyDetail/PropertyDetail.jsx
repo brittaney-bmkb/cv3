@@ -55,53 +55,35 @@ const PropertyDetail = () => {
 
         setCategories(propertyDetailCategories)
         console.log(categories)
+
     },[dataDictionary])
 
-    const fetchPropertyDetailData = (category) => {
-        return dataDictionary?.filter((data) => data.attributes['category']===category)
-        .map((filteredData, i) => {
+    const fetchPropertyDetailData = (category, index) => {
+        let filteredData =  dataDictionary?.filter((data) => data.attributes['category']===category && category !== null)
+        return filteredData.map((data, subIndex) => {
             return(
-            <Box 
-            sx={i === 0 ? panelContentTitleMain : panelContentTitleSecondary}
-            key={filteredData.attributes['FID']}
-            >
-            {filteredData.attributes['field']}
-            </Box>
+                <Box key={data.attributes['FID']}>
+                <Box 
+                sx={index === 0 && subIndex===0 ? panelContentTitleMain : category === 'top' ? panelContentTitleSecondary: null}
+                
+                >
+                {data.attributes['field']}
+                </Box>
+
+            { filteredData.length === subIndex+1 ? <Divider/> : null}
+                </Box>
+            
             )
         })
     }
 
     
 
-    const propertyDetailHeader = dataDictionary?.filter((data) => data.attributes['category']==='top')
-                                                .map((filteredData, i) => {
-                                                    return(
-                                                    <Box 
-                                                    sx={i === 0 ? panelContentTitleMain : panelContentTitleSecondary}
-                                                    key={filteredData.attributes['FID']}
-                                                    >
-                                                    {filteredData.attributes['field']}
-                                                    </Box>
-                                                    )
-                                                })
-
-    const propertyLocation =  dataDictionary?.filter((data) => data.attributes['category']==='Location')
-    .map((filteredData, i) => {
-        return(
-        <Box 
-        // sx={i === 0 ? panelContentTitleMain : panelContentTitleSecondary}
-        key={filteredData.attributes['FID']}
-        >
-        {filteredData.attributes['field']}
-        </Box>
-        )
-    })
-
     return(
-        <Box display="flex" flexDirection="column" rowGap={2} p={2}>
-        {categories?.map((category) => {
+        <Box display="flex" flexDirection="column" rowGap={2} p={2} sx={{overflowY:"scroll"}}>
+        {categories?.map((category, index) => {
             return(
-                fetchPropertyDetailData(category)
+                fetchPropertyDetailData(category, index)
             )
             
         })}
