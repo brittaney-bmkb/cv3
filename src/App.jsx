@@ -3,7 +3,7 @@ import './App.css'
 import NavBar from './components/NavBar/NavBar'
 import WebMapView from './components/WebMapView/WebMapView'
 import { Box, Stack, Grid, ThemeProvider, createTheme, Button } from '@mui/material'
-import Panel, { BottomPanel, LeftPanel, RightPanel } from './components/Panel/Panel'
+import Panel, { BottomPanel, LeftPanel, SecondaryPanel } from './components/Panel/Panel'
 import ToggleButton from './components/ToggleButton'
 import '@esri/calcite-components/dist/calcite/calcite.css';
 import MapButtonGroup from './components/MapButtonGroup'
@@ -39,7 +39,9 @@ function App() {
                 </>
             <BottomPanel/>
           </Box>
-          <RightPanel/>
+          <Box>
+            <SecondaryPanel/>
+          </Box>
         </Stack>
         <ToggleButton />
       </Box>

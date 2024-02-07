@@ -6,11 +6,12 @@ const StyledButtonFilledPrimary = ({text, startIcon, endIcon, onClick}) => {
         <Button 
         variant="contained" 
         color="primary"
+        // startIcon={startIcon}
+        // endIcon={endIcon}
         onClick={onClick}
         ><Typography variant="body1">
             {text}
         </Typography>
-            
         </Button>
     )
 }
