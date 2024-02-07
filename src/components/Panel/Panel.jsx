@@ -1,4 +1,4 @@
-import { Box, Paper } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import ResultsList from "../ResultList/ResultsList";
 import UseAppContext from "../../contexts/AppContext";
 import PropertyDetail from "../PropertyDetail/PropertyDetail";
@@ -8,15 +8,9 @@ import LayersWidget from "../Widgets/LayersWidget";
 import MeasureWidget from "../Widgets/MeasureWidget";
 import PrintWidget from "../Widgets/PrintWidget";
 import PanelHeader from "./PanelHeader";
+import { height } from "@mui/system";
+import { theme } from "../../theme";
 
-
-// const Panel = () => {  
-//     return(
-//         <Box bgcolor="blueviolet" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'block'}}}>
-//             <ResultsList/>
-//         </Box>
-//     )
-// }
 
 const Panel = () => {  
     return(
@@ -28,15 +22,15 @@ const Panel = () => {
 
 export const SecondaryPanel = () => {  
     return(
-        <Box bgcolor="blueviolet" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'block'}}}>
+        //sx style this adjust the right left or panel will show up. 
+        //sm is a block 
+        <Box bgcolor="blueviolet" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'none', md:'flex'}}}>
             <SecondaryPanelContent/>
         </Box>
     )
 }
 
 // reuse panel function or do a new panel and replace the csss with the one in the bottom. 
-
-
 
 export const SecondaryPanelContent = () => {
 
@@ -50,7 +44,7 @@ export const SecondaryPanelContent = () => {
                 // replace the bottom panel 
                 // width id set through flex
                 // bottom is set through width. 
-                <Box bgcolor="white" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'none', md: panelSecondaryVisible ? 'block': null}}}>
+                <Box bgcolor="white" flex={1} flexDirection="column">
                     <ComparablePropertySearch/>
                 </Box>
                 )
@@ -59,31 +53,31 @@ export const SecondaryPanelContent = () => {
             // add additional arguments for arguments in there
             // create argument to toggle on and off. 
             return(
-                <Box bgcolor="white" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'none', md: panelSecondaryVisible ? 'block': null}}}>
+                <Box bgcolor="white" flex={1} flexDirection="column">
                     <MeasureWidget/>
                 </Box>
                 )                
         case 'layersWidget':
             return(
-                <Box bgcolor="white" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'none', md: panelSecondaryVisible ? 'block': null}}}>
+                <Box bgcolor="white" flex={1} flexDirection="column">
                     <LayersWidget/>
                 </Box>
             )   
         case 'basemapsWidget':
             return(
-                <Box bgcolor="white" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'none', md: panelSecondaryVisible ? 'block': null}}}>
+                <Box bgcolor="white" flex={1} flexDirection="column">
                     <BasemapWidget/>
                 </Box>
             )                                           
         case 'printWidget':
             return(
-                <Box bgcolor="white" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'none', md: panelSecondaryVisible ? 'block': null}}}>
+                <Box bgcolor="white" flex={1} flexDirection="column">
                     <PrintWidget/>
                 </Box>
             )                                   
         default:
             return(
-                <Box bgcolor="blueviolet" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'none', md: panelSecondaryVisible ? 'block': null}}}>
+                <Box bgcolor="blueviolet" flex={1} flexDirection="column">
                     Right Panel
                 </Box>
                 )
@@ -126,8 +120,12 @@ export const LeftPanel = () => {
 
 export const BottomPanel = () => {
     return(
-    <Box bgcolor="blueviolet" flex={4} flexDirection="column" sx={{display:{xs:'none', sm:'block', md: 'none'}}} width="100%">
-    Bottom Panel
+    <Box bgcolor="blueviolet" flex={4} flexDirection="column" sx={{display:{xs:'none', sm:'block', md: 'none'}}} width="100%" >
+        <SecondaryPanelContent/>
+        
+        {/* <Typography color={theme.palette.primary.main}>
+        Bottom Panel
+        </Typography> */}
     </Box>
     )
 }
