@@ -99,7 +99,7 @@ return map, searchSources
 // async funciton to set define point location from mouse click
 // point location is detected from view onclick event and map point is 
 // accessed from click event.mapPoint
-export async function onViewClick(event) {
+export async function onViewClick() {
   return new Promise(async (resolve, reject) => {
     try {
       const point = await new Promise((resolvePoint) => {
@@ -133,14 +133,6 @@ export async function onViewClick(event) {
 
       const { features } = await layerView.queryFeatures(query);
 
-      // console.log("on click features: ", features)
-      // createGraphic(features, true, "darkBlue")
-      // const attributeKeys = Object.keys(feature.attributes);
-      // console.log("Attribute to highlight: ", feature.attributes[attributeKeys[0]]);
-
-      // //highlightSelect?.remove();
-
-      // highlightSelect = layerView.highlight(feature.attributes[attributeKeys[0]]);
       resolve(features);
     } catch (error) {
       reject(error);
