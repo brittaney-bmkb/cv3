@@ -158,7 +158,7 @@ export const AppProvider = ({children}) => {
     const selectResultFromList = async (result) => {
         console.log("Result PIN : ", result)
         const { searchFeatures } = state
-        const selectedFeature = searchFeatures.filter((feature) => feature.attributes['PIN14'] == result)
+        const selectedFeature = searchFeatures.filter((feature) => feature.attributes['PIN14_dash'] == result)
         console.log("selectedFeature: ", selectedFeature)
 
         setPrimaryResultFeature(selectedFeature[0])

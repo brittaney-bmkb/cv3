@@ -31,7 +31,7 @@ const panelContentSubtitle = {
 
 const PropertyDetail = () => {
 
-    const { dataDictionary, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
+    const { primaryResultFeature, dataDictionary, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
 
     const [ categories, setCategories ] = useState(null)
 
@@ -39,8 +39,6 @@ const PropertyDetail = () => {
         setPanelSecondaryVisibility(true)
         setPanelDisplaySecondary("comparablePropertySearch")
     }
-
-    
 
     useEffect(() => {
         if (dataDictionary) {
@@ -71,7 +69,7 @@ const PropertyDetail = () => {
                 <Box 
                 display="flex"
                 >
-                    <Typography variant="body2">
+                    <Typography variant="h6">
                         {data.attributes['label']}
                     </Typography>
                 
@@ -80,9 +78,11 @@ const PropertyDetail = () => {
                 display="flex"
                 sx={index === 0 && subIndex===0 ? panelContentTitleMain : category === 'top' ? panelContentTitleSecondary: null}
                 >
-                {data.attributes['field']}
+                    <Typography variant={category !== "top" ? "h5": subIndex > 0 ? "h5" : "h3"} sx={{color: category === "top" && subIndex==0 ? theme.palette.primary.main: theme.main.text.dark }}>
+                        {primaryResultFeature?.attributes[data.attributes['field']]}
+                    </Typography>
+                
                 </Box>
-
                     {filteredData.length -1 === subIndex ? <Divider variant="fullWidth" sx={{p: 1}}/> : null}
                 </Box>
             
@@ -92,7 +92,7 @@ const PropertyDetail = () => {
         return(
             <Box display="flex" flexDirection="column" width="100%" pt={1} rowGap={2}>
                 {category !== 'top' ? <Typography variant="h2">{category}</Typography> : null}
-                <Box display="flex" flexDirection="column" width="100%" pl={category === "top" ? 0 :1} rowGap={category === "top" ? 0 : 2}>
+                <Box display="flex" flexDirection="column" width="100%" pl={category === "top" ? 0 :1} rowGap={category === "top" ? 1 : 2}>
                     {data}
                 </Box>
                 
