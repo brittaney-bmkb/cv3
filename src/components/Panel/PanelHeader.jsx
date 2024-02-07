@@ -9,6 +9,7 @@ import FeedbackOutlinedIcon from '@mui/icons-material/FeedbackOutlined';
 import { useSearchParams } from "react-router-dom"
 import ExportDialog from "../ExportDialog/ExportDialog";
 import { useState } from "react";
+import FeedbackDialog from "../FeedBack/Feedback";
 
 const PanelHeader = ( {text} ) => {
 
@@ -17,6 +18,7 @@ const PanelHeader = ( {text} ) => {
     //get url parameters
     const [routeParams , setSearchParams] = useSearchParams()
     const [ openExportDialog, setOpenExportDialog ] = useState(false)
+    const [ openFeedbackDialog, setOpenFeedbackDialog ] = useState(false)
 
     function handleClearResults(){
         clearResults()
@@ -30,12 +32,20 @@ const PanelHeader = ( {text} ) => {
 
     }
 
-    function handleExport(){
+    const handleExport = () =>{
         setOpenExportDialog(true)
     }
 
-    const handleClose = () => {
+    const handleCloseExport = () => {
         setOpenExportDialog(false);
+    };
+
+    const handleFeedback = () => {
+        setOpenFeedbackDialog(true)
+    }
+
+    const handleCloseFeedback = () => {
+        setOpenFeedbackDialog(false);
     };
 
     return(
@@ -58,10 +68,11 @@ const PanelHeader = ( {text} ) => {
                 </Box>
                 <StyledIconButton icon={<HighlightOffIcon fontSize="small" sx={{color: theme.main.text.dark}}/>} text={"Clear"} onClick={handleClearResults}/>
                 <StyledIconButton icon={<FileDownloadOutlinedIcon fontSize="small" sx={{color: theme.main.text.dark}}/>} text={"Export"} onClick={handleExport}/>
-                <StyledIconButton icon={<FeedbackOutlinedIcon fontSize="small" sx={{color: theme.main.text.dark}}/>} text={"Feedback"}/>
+                <StyledIconButton icon={<FeedbackOutlinedIcon fontSize="small" sx={{color: theme.main.text.dark}}/>} text={"Feedback"} onClick={handleFeedback}/>
             </Stack>
 
-            <ExportDialog open={openExportDialog} onClose={handleClose}/>
+            <ExportDialog open={openExportDialog} onClose={handleCloseExport}/>
+            <FeedbackDialog open={openFeedbackDialog} onClose={handleCloseFeedback}/>
 
         </Box>
     )
