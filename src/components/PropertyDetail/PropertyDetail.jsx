@@ -7,7 +7,6 @@ import { theme } from "../../theme"
 
 const panelContentTitleMain = {
     display:"flex",
-    padding: 1,
     border: 3,
     borderColor: theme.palette.primary.main,
     borderRadius: theme.shape.borderRadius,
@@ -46,44 +45,62 @@ const PropertyDetail = () => {
     },[])
 
     useEffect(() => {
-
-        let propertyDetailCategories
-
-        if(dataDictionary){
-            propertyDetailCategories = [...new Set(dataDictionary.map((data) => data.attributes['category']))]
+        if (dataDictionary) {
+            const filteredCategories = [
+                ...new Set(
+                    dataDictionary
+                        .filter(data => data.attributes['category'] !== 'top' && data.attributes['category'] !== null)
+                        .map(data => data.attributes['category'])
+                )
+            ];
+    
+            setCategories(filteredCategories);
         }
-
-        setCategories(propertyDetailCategories)
-        console.log(categories)
-
-    },[dataDictionary])
+    }, [dataDictionary]);
+    
+    useEffect(() => {
+        console.log("categories: ", categories);
+    }, [categories]);
 
     const fetchPropertyDetailData = (category, index) => {
-        let filteredData =  dataDictionary?.filter((data) => data.attributes['category']===category && category !== null)
-        return filteredData.map((data, subIndex) => {
+        let filteredData = dataDictionary
+        ?.filter((data) => data.attributes['category'] === category)
+        .map((data) => data); 
+
+        let data = filteredData?.map((data, subIndex) => {
             return(
-                <Box key={data.attributes['FID']}>
+                <Box key={data.attributes['FID']} display="flex" flexDirection="column">
                 <Box 
+                display="flex"
                 sx={index === 0 && subIndex===0 ? panelContentTitleMain : category === 'top' ? panelContentTitleSecondary: null}
-                
                 >
                 {data.attributes['field']}
                 </Box>
 
-            { filteredData.length === subIndex+1 ? <Divider/> : null}
+                    {filteredData.length -1 === subIndex ? <Divider variant="fullWidth" sx={{p: 1}}/> : null}
                 </Box>
             
             )
         })
+
+        return(
+            <Box display="flex" flexDirection="column" width="100%" pt={1}>
+                {category !== 'top' ? <Typography variant="h2">{category}</Typography> : null}
+                {data}
+            </Box>
+        )
     }
 
-    
-
     return(
-        <Box display="flex" flexDirection="column" rowGap={2} p={2} sx={{overflowY:"scroll"}}>
+        <Box display="flex" flexDirection="column" width="100%" overflow="clip" >
+        <Box display="flex" flexDirection="column" width="100%" justifyContent="center" alignItems="center">
+            {fetchPropertyDetailData('top', 0)}
+        </Box>
+        
+        <Box display="flex" flexDirection="column" flex={1} rowGap={2} p={2} sx={{overflowY:"scroll"}}>
         {categories?.map((category, index) => {
             return(
-                fetchPropertyDetailData(category, index)
+                fetchPropertyDetailData(category, index+1)
             )
             
         })}
@@ -91,6 +108,7 @@ const PropertyDetail = () => {
         text={"Compare Properties"}
         onClick={handleClick}
         />
+        </Box>
         </Box>
         
     )

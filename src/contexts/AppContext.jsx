@@ -172,6 +172,7 @@ export const AppProvider = ({children}) => {
         
         setSearchResults(null, null)
         removeGraphics();
+        setPanelDisplay("resultsList")
     }
 
     const searchComparableProperties = async () => {

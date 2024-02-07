@@ -32,12 +32,12 @@ export const theme = createTheme({
     },
     typography: {
         h1: {
-            fontSize: 40,
+            fontSize: 36,
             fontWeight:"bold",
         },
         h2: {
-            fontSize: 30,
-            fontWeight:"bold",
+            fontSize: 20,
+            fontWeight:400,
         },
         h3: {
             fontSize: 18,
@@ -83,13 +83,16 @@ theme.typography.h1 = {
 
 theme.typography.h2 = {
     [theme.breakpoints.up('md')]: {
-        fontSize: 30
+        fontSize: 20,
+        fontWeight:500,
     },
     [theme.breakpoints.down('md')]: {
-        fontSize: 24
+        fontSize: 18,
+        fontWeight:500,
     },
     [theme.breakpoints.down('sm')]: {
-        fontSize: 20
+        fontSize: 16,
+        fontWeight:500,
     }
 }
 
