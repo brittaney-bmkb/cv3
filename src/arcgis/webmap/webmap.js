@@ -141,7 +141,7 @@ export async function onViewClick() {
 }
 
 
-export async function querySearchResults(result){
+export async function querySearchResults(result, outFields){
 
   let resultValue
   let filter
@@ -166,7 +166,7 @@ export async function querySearchResults(result){
       whereString = `${searchField}='${resultValue}'`
       console.log(whereString)
       query.where = whereString
-      query.outFields = config.target_layer_out_fields
+      query.outFields = outFields
     }
   }
 
@@ -181,7 +181,7 @@ export async function querySearchResults(result){
     query.units = config.buffer_unit
     query.spatialRelationship = "intersects";
     query.returnGeometry = true;
-    query.outFields = config.target_layer_out_fields
+    query.outFields = outFields
   } 
 
   // //get features from query

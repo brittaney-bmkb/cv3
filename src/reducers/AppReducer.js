@@ -11,7 +11,8 @@ export const initialState = {
     panelPrimaryVisible:null,
     panelSecondaryVisible:null,
     panelDisplaySecondary:null,
-    dataDictionary:null
+    dataDictionary:null,
+    parcelQueryFields: null,
 
 }
 
@@ -82,6 +83,13 @@ const AppReducer = (state, action) => {
             return {
                 ...state,
                 dataDictionary: payload.dataDictionary,
+            }
+
+        case "SET_PARCEL_QUERY_FIELDS":
+            console.log("SET_PARCEL_QUERY_FIELDS")
+            return {
+                ...state,
+                parcelQueryFields: payload.parcelQueryFields,
             }
         default:
             throw new Error(`No valid selection made`)

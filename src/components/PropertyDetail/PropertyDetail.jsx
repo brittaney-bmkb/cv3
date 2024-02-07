@@ -31,7 +31,7 @@ const panelContentSubtitle = {
 
 const PropertyDetail = () => {
 
-    const { dataDictionary, setPanelSecondaryVisibility, setPanelDisplaySecondary, loadDataDictionary } = UseAppContext()
+    const { dataDictionary, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
 
     const [ categories, setCategories ] = useState(null)
 
@@ -40,9 +40,7 @@ const PropertyDetail = () => {
         setPanelDisplaySecondary("comparablePropertySearch")
     }
 
-    useEffect( () => {
-      loadDataDictionary()
-    },[])
+    
 
     useEffect(() => {
         if (dataDictionary) {

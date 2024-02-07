@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 import AppReducer, { initialState } from '../reducers/AppReducer'
 import { useSearchParams } from "react-router-dom";
 import { config } from "../data/config";
@@ -44,23 +44,22 @@ export const AppProvider = ({children}) => {
 
         let view, searchSources = await initializeMap(mapContainer)
 
+        await loadDataDictionary()
+
         setMapView(view)
         setSearchSources(searchSources)
-
     }
 
 
     const mapClickEventHandler = async (event) => {
 
         const { onViewClick } = await import('../arcgis/webmap/webmap')
-        const { searchResults } = state
         console.log("Handler Event: ", event)
 
         const selectedFeatures = await onViewClick()
 
         setPrimaryResultFeature(selectedFeatures[0])
 
-        // setSearchResults(searchResults, selectedFeatures)
         setPanelDisplay("resultsList")
 
         setPanelPrimaryVisibility(true)
@@ -130,6 +129,15 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setParcelQueryFields = (fields) => {
+        dispatch({
+            type:"SET_PARCEL_QUERY_FIELDS",
+             payload: {
+                parcelQueryFields: fields,
+            }
+        })
+    }
+
     
     const loadDataDictionary = async () => {
 
@@ -138,6 +146,13 @@ export const AppProvider = ({children}) => {
         let { features } = await readFeatureLayerData(config.data_dictionary, ["*"], "FID IS NOT NULL")
 
         setDataDictionary(features)
+
+        //to do make sure pin10 id field is included
+        //improve this
+        let fields = [config.target_layer_id_field]
+        let queryFields = [...fields, ...new Set(features.filter((feature) => feature.attributes['category'] !== null && feature.attributes['type'] !== "calc")
+                                          .map((feature) => feature.attributes['field'].trim()))]
+        setParcelQueryFields(queryFields)
     }
 
     const selectResultFromList = async (result) => {
@@ -158,9 +173,11 @@ export const AppProvider = ({children}) => {
 
     const renderSearchResults = async () => {
         const { querySearchResults } = await import('../arcgis/webmap/webmap')
-        const { searchResults } = state
+        const { searchResults, parcelQueryFields } = state
 
-        const features = await querySearchResults(searchResults)
+        console.log("Query Fields: ", parcelQueryFields)
+
+        const features = await querySearchResults(searchResults, parcelQueryFields)
         setSearchResults(searchResults, features)
         setPanelDisplay("resultsList")
         
@@ -210,8 +227,11 @@ export const AppProvider = ({children}) => {
         setPanelPrimaryVisibility,
         panelPrimaryVisible: state.panelPrimaryVisible,
         loadDataDictionary,
-        dataDictionary: state.dataDictionary
+        dataDictionary: state.dataDictionary,
+        parcelQueryFields: state.parcelQueryFields, 
+        setParcelQueryFields
     }
+
 
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>
