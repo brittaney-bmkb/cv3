@@ -11,6 +11,7 @@ export const initialState = {
     panelPrimaryVisible:null,
     panelSecondaryVisible:null,
     panelDisplaySecondary:null,
+    dataDictionary:null
 
 }
 
@@ -75,6 +76,12 @@ const AppReducer = (state, action) => {
             return {
                 ...state,
                 panelSecondaryVisible: payload.panelSecondaryVisible,
+            }
+        case "SET_DATA_DICTIONARY":
+            console.log("SET_DATA_DICTIONARY")
+            return {
+                ...state,
+                dataDictionary: payload.dataDictionary,
             }
         default:
             throw new Error(`No valid selection made`)

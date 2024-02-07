@@ -17,7 +17,7 @@ export async function readFeatureLayerData(url, outFields, where){
   query.outFields = ["*"]
 
   let queryResult = await layer.queryFeatures(query)
-  console.log("data dicationary query result ", queryResult)
+  //console.log("data dicationary query result ", queryResult)
 
   return queryResult
 }

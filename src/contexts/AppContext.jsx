@@ -49,14 +49,6 @@ export const AppProvider = ({children}) => {
 
     }
 
-    const loadDataDictionary = async () => {
-
-        const { readFeatureLayerData } = await import('../arcgis/layers/layers')
-
-        let { features } = await readFeatureLayerData(config.data_dictionary, ["*"], "FID IS NOT NULL")
-
-        console.log("data dictionary: ", features)
-    }
 
     const mapClickEventHandler = async (event) => {
 
@@ -129,6 +121,25 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setDataDictionary = (features) => {
+        dispatch({
+            type:"SET_DATA_DICTIONARY",
+             payload: {
+                dataDictionary: features,
+            }
+        })
+    }
+
+    
+    const loadDataDictionary = async () => {
+
+        const { readFeatureLayerData } = await import('../arcgis/layers/layers')
+
+        let { features } = await readFeatureLayerData(config.data_dictionary, ["*"], "FID IS NOT NULL")
+
+        setDataDictionary(features)
+    }
+
     const selectResultFromList = async (result) => {
         console.log("Result PIN : ", result)
         const { searchFeatures } = state
@@ -197,7 +208,8 @@ export const AppProvider = ({children}) => {
         searchComparableProperties,
         setPanelPrimaryVisibility,
         panelPrimaryVisible: state.panelPrimaryVisible,
-        loadDataDictionary
+        loadDataDictionary,
+        dataDictionary: state.dataDictionary
     }
 
 
