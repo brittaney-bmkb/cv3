@@ -60,6 +60,8 @@ export const AppProvider = ({children}) => {
 
         setSearchResults(searchResults, selectedFeatures)
         setPanelDisplay("resultsList")
+
+        setPanelPrimaryVisibility(true)
     }
 
     const setSearchResults = (results, features) => {

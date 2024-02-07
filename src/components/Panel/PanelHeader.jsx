@@ -11,9 +11,9 @@ import ExportDialog from "../ExportDialog/ExportDialog";
 import { useState } from "react";
 import FeedbackDialog from "../FeedBack/Feedback";
 
-const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton} ) => {
+const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton, panel} ) => {
 
-    const { searchFeatures, clearResults, setPanelDisplay, setPanelPrimaryVisibility } = UseAppContext()
+    const { searchFeatures, clearResults, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility } = UseAppContext()
 
     //get url parameters
     const [routeParams , setSearchParams] = useSearchParams()
@@ -52,8 +52,13 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
         setPanelDisplay(backButtonComponent)
     }
 
-    const handleClosePanel = () => {
-        setPanelPrimaryVisibility(false)
+    const handleClosePanel = (panel) => {
+        if(panel==="primary"){
+            setPanelPrimaryVisibility(false)
+        }
+        if(panel==="secondary"){
+            setPanelSecondaryVisibility(false)
+        }
     }
 
     return(
@@ -74,7 +79,7 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
                 </Box>
                 {closeButton ? 
                     <IconButton 
-                        onClick={handleClosePanel}
+                        onClick={() => {handleClosePanel(panel)}}
                         sx={{ display:"flex", flexDirection:"column"}}>
                         <CloseOutlined fontSize="small" sx={{color:theme.main.text.dark}}/>
                     <Typography color={theme.main.text.dark} variant="subtitle1">Close</Typography>

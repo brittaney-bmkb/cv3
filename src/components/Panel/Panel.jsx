@@ -59,7 +59,12 @@ export const LeftPanel = () => {
                 </Box>)
         case 'propertyDetail':
             return (
-                <Box bgcolor="white" flex={1}  p={2} flexDirection="column" sx={{display:{xs:'none', sm: panelPrimaryVisible ? 'flex' : 'none'}}}>
+                <Box 
+                bgcolor="white" 
+                flex={1}  
+                p={2} 
+                flexDirection="column" 
+                sx={{display:{xs:'none', sm: panelPrimaryVisible ? 'flex' : 'none'}}}>
                         <PanelHeader 
                         text={"Property Results"} 
                         exportButton={true} 
@@ -69,6 +74,7 @@ export const LeftPanel = () => {
                         backButton={true}
                         backButtonComponent={'resultsList'}
                         closeButton={true}
+                        panel={"primary"}
                         />
                         <PropertyDetail/>
                 </Box>)
