@@ -1,4 +1,4 @@
-import { ChevronLeft, ClearAllOutlined, CloseRounded } from "@mui/icons-material"
+import { ChevronLeft, ClearAllOutlined, CloseOutlined, CloseRounded } from "@mui/icons-material"
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
 import { Box, IconButton, Stack, Typography } from "@mui/material"
@@ -11,9 +11,9 @@ import ExportDialog from "../ExportDialog/ExportDialog";
 import { useState } from "react";
 import FeedbackDialog from "../FeedBack/Feedback";
 
-const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent} ) => {
+const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton} ) => {
 
-    const { searchFeatures, clearResults, setPanelDisplay } = UseAppContext()
+    const { searchFeatures, clearResults, setPanelDisplay, setPanelPrimaryVisibility } = UseAppContext()
 
     //get url parameters
     const [routeParams , setSearchParams] = useSearchParams()
@@ -52,23 +52,33 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
         setPanelDisplay(backButtonComponent)
     }
 
+    const handleClosePanel = () => {
+        setPanelPrimaryVisibility(false)
+    }
+
     return(
         <Box display="flex" flexDirection="column" rowGap={2}>
             
             <Stack direction="row">
-                <Box display="flex" flex={1} alignItems="center" justifyContent="space-around" p={1}>
-                    {backButton ? 
+            {backButton ? 
                     <IconButton 
                         onClick={handleBack}
-                        sx={{position:"absolute", left:8, display:"flex", flexDirection:"column"}}>
+                        sx={{ display:"flex", flexDirection:"column"}}>
                         <ChevronLeft fontSize="small" sx={{color:theme.main.text.dark}}/>
                     <Typography color={theme.main.text.dark} variant="subtitle1">Back</Typography>
                     </IconButton> : null}
+                <Box display="flex" flex={1} alignItems="center" justifyContent="space-around" p={1} minWidth={150}>
                     <Box bgcolor={theme.main.backgroundColor.grey} p={1} sx={{borderRadius: theme.shape.borderRadius}}>
                         <Typography variant="h4" color={theme.main.text.dark}>{text}</Typography>
-                    </Box>
+                    </Box> 
                 </Box>
-                
+                {closeButton ? 
+                    <IconButton 
+                        onClick={handleClosePanel}
+                        sx={{ display:"flex", flexDirection:"column"}}>
+                        <CloseOutlined fontSize="small" sx={{color:theme.main.text.dark}}/>
+                    <Typography color={theme.main.text.dark} variant="subtitle1">Close</Typography>
+                    </IconButton> : null}
             </Stack>
             <Stack direction="row" alignItems="center" spacing={1} justifyContent="center">
                 {results ? <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" rowGap={0}>

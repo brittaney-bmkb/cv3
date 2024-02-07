@@ -30,7 +30,7 @@ const ResultCard = ({pin, address, city_state_zip}) => {
         <Card 
         onClick={() => {
             setPanelDisplay("propertyDetail")
-            selectResultFromList(text)
+            selectResultFromList(pin)
         }}
         sx={{
             display: "flex", 
