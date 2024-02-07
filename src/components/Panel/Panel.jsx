@@ -51,7 +51,7 @@ export const LeftPanel = () => {
                 flexDirection="column" 
                 sx={{display:{xs:'none', sm: panelPrimaryVisible ? 'flex' : 'none'}}}
                 >
-                        <PanelHeader text={"Property Results"} />
+                        <PanelHeader text={"Property Results"} exportButton={true} clearButton={true} results={true} feedbackButton={true}/>
                         <Box sx={{ overflowY:"scroll"}} height='100%'>
                         <ResultsList/>
                         </Box>
@@ -60,6 +60,15 @@ export const LeftPanel = () => {
         case 'propertyDetail':
             return (
                 <Box bgcolor="white" flex={1} flexDirection="column" sx={{display:{xs:'none', sm: searchFeatures ? 'block' : 'none'}}}>
+                        <PanelHeader 
+                        text={"Property Results"} 
+                        exportButton={true} 
+                        clearButton={true} 
+                        results={true} 
+                        feedbackButton={true} 
+                        backButton={true}
+                        backButtonComponent={'resultsList'}
+                        />
                         <PropertyDetail/>
                 </Box>)
         default:
