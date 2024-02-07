@@ -69,7 +69,15 @@ const PropertyDetail = () => {
 
         let data = filteredData?.map((data, subIndex) => {
             return(
-                <Box key={data.attributes['FID']} display="flex" flexDirection="column">
+                <Box key={data.attributes['FID']} display="flex" flexDirection="column" width="100%">
+                <Box 
+                display="flex"
+                >
+                    <Typography variant="body2">
+                        {data.attributes['label']}
+                    </Typography>
+                
+                </Box>
                 <Box 
                 display="flex"
                 sx={index === 0 && subIndex===0 ? panelContentTitleMain : category === 'top' ? panelContentTitleSecondary: null}
@@ -84,9 +92,12 @@ const PropertyDetail = () => {
         })
 
         return(
-            <Box display="flex" flexDirection="column" width="100%" pt={1}>
+            <Box display="flex" flexDirection="column" width="100%" pt={1} rowGap={2}>
                 {category !== 'top' ? <Typography variant="h2">{category}</Typography> : null}
-                {data}
+                <Box display="flex" flexDirection="column" width="100%" pl={category === "top" ? 0 :1} rowGap={category === "top" ? 0 : 2}>
+                    {data}
+                </Box>
+                
             </Box>
         )
     }

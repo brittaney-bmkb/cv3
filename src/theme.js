@@ -107,3 +107,19 @@ theme.typography.body1 = {
     //     fontSize: 20
     // }
 }
+
+theme.typography.body2 = {
+    [theme.breakpoints.up('md')]: {
+        fontSize: 15,
+        fontWeight: 500,
+        color: theme.palette.info.dark
+    },
+    [theme.breakpoints.down('md')]: {
+        fontSize: 14,
+        fontWeight: 500,
+        color: theme.palette.info.dark
+    },
+    // [theme.breakpoints.down('sm')]: {
+    //     fontSize: 20
+    // }
+}
