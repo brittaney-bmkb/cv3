@@ -46,6 +46,16 @@ export const AppProvider = ({children}) => {
 
         setMapView(view)
         setSearchSources(searchSources)
+
+    }
+
+    const loadDataDictionary = async () => {
+
+        const { readFeatureLayerData } = await import('../arcgis/layers/layers')
+
+        let { features } = await readFeatureLayerData(config.data_dictionary, ["*"], "FID IS NOT NULL")
+
+        console.log("data dictionary: ", features)
     }
 
     const mapClickEventHandler = async (event) => {
@@ -186,7 +196,8 @@ export const AppProvider = ({children}) => {
         selectResultFromList,
         searchComparableProperties,
         setPanelPrimaryVisibility,
-        panelPrimaryVisible: state.panelPrimaryVisible
+        panelPrimaryVisible: state.panelPrimaryVisible,
+        loadDataDictionary
     }
 
 

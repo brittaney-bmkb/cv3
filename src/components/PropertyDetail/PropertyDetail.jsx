@@ -1,16 +1,20 @@
 import { Box } from "@mui/material"
 import StyledButtonFilledPrimary from "../Button/Button"
 import UseAppContext from "../../contexts/AppContext"
+import { useEffect } from "react"
 
 const PropertyDetail = () => {
 
-    const { setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
+    const { setPanelSecondaryVisibility, setPanelDisplaySecondary, loadDataDictionary } = UseAppContext()
 
     function handleClick(){
         setPanelSecondaryVisibility(true)
         setPanelDisplaySecondary("comparablePropertySearch")
     }
 
+    useEffect(() => {
+      loadDataDictionary()
+    },[])
     
 
     return(
