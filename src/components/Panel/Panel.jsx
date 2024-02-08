@@ -11,11 +11,25 @@ import PanelHeader from "./PanelHeader";
 import { height } from "@mui/system";
 import { theme } from "../../theme";
 import PanelContent from "./PanelContent";
+import { useEffect, useState } from "react";
 
 
 const PanelMobile = () => {  
 
-    const { panelDisplay } = UseAppContext()
+    const { setPanelSecondaryVisibility, setPanelDisplaySecondary, panelDisplay, screenWidth, setPanelDisplay, setPanelPrimaryVisibility } = UseAppContext()
+
+    const [ prevDisplay, setPrevDisplay ] = useState(null)
+
+    useEffect(() => {
+
+        if(screenWidth >= 900 && panelDisplay === 'comparablePropertySearch'){
+            setPrevDisplay('comparablePropertySearch')
+            setPanelPrimaryVisibility(true);
+            setPanelDisplay('propertyDetail');
+        }
+
+    },[screenWidth])
+
     return(
         <Box 
             height={200}
@@ -45,7 +59,7 @@ export const SecondaryPanel = () => {
             flex={1} 
             flexDirection="column" 
             height="100%"
-            sx={{display:{xs:'none', sm:'none', md: panelSecondaryVisible ? 'flex' :'none'}}}>
+            sx={{display:{xs:'none', sm:'none', md: 'none', lg: panelSecondaryVisible ? 'flex' :'none'}}}>
             
             <SecondaryPanelContent/>
         </Box>
@@ -114,11 +128,29 @@ export const SecondaryPanelContent = () => {
 
 export const LeftPanel = () => {
 
-    const { panelDisplay, panelPrimaryVisible } = UseAppContext()
+    const { panelPrimaryVisible, setPanelSecondaryVisibility, panelDisplaySecondary, setPanelDisplaySecondary, panelDisplay, screenWidth, setPanelDisplay, setPanelPrimaryVisibility } = UseAppContext()
+
+        useEffect(() => {
+            if(screenWidth >= 1050 && panelDisplay === 'comparablePropertySearch'){
+                setPanelPrimaryVisibility(true);
+                setPanelDisplay('propertyDetail');
+
+                setPanelSecondaryVisibility(true)
+                setPanelDisplaySecondary("comparablePropertySearch")
+            }
+
+            if(screenWidth < 1050 && panelDisplaySecondary ===  'comparablePropertySearch'){
+                setPanelPrimaryVisibility(true);
+                setPanelDisplay('comparablePropertySearch');
+            }
+        }, [screenWidth])
+
+    
+
 
     return(
         <Box 
-            height="90%"
+            height="80%"
             bgcolor="white" 
             flex={1}  
             p={2} 

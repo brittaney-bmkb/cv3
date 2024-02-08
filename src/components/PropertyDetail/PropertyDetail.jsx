@@ -31,7 +31,7 @@ const panelContentSubtitle = {
 
 const PropertyDetail = () => {
 
-    const { primaryResultFeature, dataDictionary, panelDisplay, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
+    const { screenWidth, primaryResultFeature, dataDictionary, panelDisplay, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
 
     const [ categories, setCategories ] = useState(null)
     const [mediumScreenOrHigher, setMediumScreenOrHigher] = useState(
@@ -39,27 +39,26 @@ const PropertyDetail = () => {
       );
 
     function handleClick(){
-        if(mediumScreenOrHigher){
-            setPanelSecondaryVisibility(true)
-            setPanelDisplaySecondary("comparablePropertySearch")
-        }
-        else{
+        if(screenWidth < 900){
             setPanelPrimaryVisibility(true)
             setPanelDisplay("comparablePropertySearch")
-            
+        }
+        else if (screenWidth >= 900){
+            setPanelSecondaryVisibility(true)
+            setPanelDisplaySecondary("comparablePropertySearch")
         }
     }
 
 
-      useEffect(() => {
-        if (!mediumScreenOrHigher && panelDisplay === 'comparablePropertySearch') {
-          setPanelPrimaryVisibility(true);
-          setPanelDisplay('propertyDetail');
+    //   useEffect(() => {
+    //     if (screenWidth >= 600 && panelDisplay === 'comparablePropertySearch') {
+    //       setPanelPrimaryVisibility(true);
+    //       setPanelDisplay('propertyDetail');
     
-          setPanelSecondaryVisibility(true);
-          setPanelDisplaySecondary('comparablePropertySearch');
-        }
-      }, [mediumScreenOrHigher, panelDisplay]);
+    //       setPanelSecondaryVisibility(true);
+    //       setPanelDisplaySecondary('comparablePropertySearch');
+    //     }
+    //   }, [screenWidth]);
 
 
     useEffect(() => {
