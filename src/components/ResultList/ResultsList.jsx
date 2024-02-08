@@ -12,9 +12,9 @@ const ResultsList = () => {
             {searchFeatures ? 
             searchFeatures.map((result, i) => {
                 return(
-                    <ListItem key={result.attributes['PIN14']}>
+                    <ListItem key={result.attributes['PIN14_dash']}>
                         <ResultCard 
-                        pin={result.attributes['PIN14']}
+                        pin={result.attributes['PIN14_dash']}
                         address={result.attributes['street_address']}
                         city_state_zip={result.attributes['city_state_zip']}
                         />

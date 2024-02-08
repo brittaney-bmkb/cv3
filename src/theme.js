@@ -32,12 +32,12 @@ export const theme = createTheme({
     },
     typography: {
         h1: {
-            fontSize: 40,
+            fontSize: 36,
             fontWeight:"bold",
         },
         h2: {
-            fontSize: 30,
-            fontWeight:"bold",
+            fontSize: 20,
+            fontWeight:400,
         },
         h3: {
             fontSize: 18,
@@ -83,22 +83,115 @@ theme.typography.h1 = {
 
 theme.typography.h2 = {
     [theme.breakpoints.up('md')]: {
-        fontSize: 30
+        fontSize: 20,
+        fontWeight:500,
     },
     [theme.breakpoints.down('md')]: {
-        fontSize: 24
+        fontSize: 18,
+        fontWeight:500,
     },
     [theme.breakpoints.down('sm')]: {
-        fontSize: 20
+        fontSize: 16,
+        fontWeight:500,
+    }
+}
+
+theme.typography.h3 = {
+    [theme.breakpoints.up('md')]: {
+        fontSize: 18,
+        fontWeight: 600,
+        //color: theme.main.text.dark
+    },
+    [theme.breakpoints.down('md')]: {
+        fontSize: 17,
+        fontWeight: 600,
+        //color: theme.main.text.dark
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: 16,
+        fontWeight: 600,
+        //color: theme.main.text.dark
+    }
+}
+
+theme.typography.h4 = {
+    [theme.breakpoints.up('md')]: {
+        fontSize: 16,
+        fontWeight: 700,
+        color: theme.main.text.dark
+    },
+    [theme.breakpoints.down('md')]: {
+        fontSize: 15,
+        fontWeight: 700,
+        color: theme.main.text.dark
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: 14,
+        fontWeight: 700,
+        color: theme.main.text.dark
+    }
+}
+
+theme.typography.h5 = {
+    [theme.breakpoints.up('md')]: {
+        fontSize: 16,
+        fontWeight: 600,
+        color: theme.main.text.dark
+    },
+    [theme.breakpoints.down('md')]: {
+        fontSize: 15,
+        fontWeight: 500,
+        color: theme.main.text.dark
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: 14,
+        fontWeight: 500,
+        color: theme.main.text.dark
+    }
+}
+
+theme.typography.h6 = {
+    [theme.breakpoints.up('md')]: {
+        fontSize: 16,
+        fontWeight: 500,
+        color: theme.palette.info.dark
+    },
+    [theme.breakpoints.down('md')]: {
+        fontSize: 15,
+        fontWeight: 500,
+        color: theme.palette.info.dark
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: 14,
+        fontWeight: 500,
+        color: theme.palette.info.dark
     }
 }
 
 theme.typography.body1 = {
     [theme.breakpoints.up('md')]: {
-        fontSize: 16
+        fontSize: 16,
+        color: theme.main.text.dark
     },
     [theme.breakpoints.down('md')]: {
-        fontSize: 15
+        fontSize: 15,
+        color: theme.main.text.dark
+    },
+    // [theme.breakpoints.down('sm')]: {
+    //     fontSize: 20
+    // }
+}
+
+theme.typography.body2 = {
+    [theme.breakpoints.up('md')]: {
+        fontSize: 15,
+        fontWeight: 500,
+        color: theme.palette.info.dark
+    },
+    [theme.breakpoints.down('md')]: {
+        fontSize: 14,
+        fontWeight: 500,
+        color: theme.palette.info.dark
     },
     // [theme.breakpoints.down('sm')]: {
     //     fontSize: 20

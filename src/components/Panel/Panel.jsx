@@ -120,7 +120,6 @@ export const LeftPanel = () => {
                         text={"Property Results"} 
                         exportButton={true} 
                         clearButton={true} 
-                        results={true} 
                         feedbackButton={true} 
                         backButton={true}
                         backButtonComponent={'resultsList'}

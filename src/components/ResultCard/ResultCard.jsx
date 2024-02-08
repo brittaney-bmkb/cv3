@@ -46,7 +46,7 @@ const ResultCard = ({pin, address, city_state_zip}) => {
             <CardContent>
                 <Box display="flex" width="100%" flexDirection="column" justifyContent='center' alignItems="center" rowGap={2}>
                      <Box display="flex" sx={{border:3, borderColor:theme.palette.primary.main }} borderRadius={theme.shape.borderRadius}>
-                        <Typography p={1} color={theme.palette.primary.main} variant="h3">{pin}</Typography>
+                        <Typography color={theme.palette.primary.main} variant="h5">{pin}</Typography>
                      </Box>
                      <Box display="flex" flexDirection="column" alignItems="center">
                         <Box display="flex" flexDirection="row" alignItems="center">

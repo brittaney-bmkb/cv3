@@ -31,7 +31,7 @@ export const config = {
        {
            layerName: "parcelLayer", // Name of the layer source.
            url: "https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/arcgis/rest/services/CookViewerParcelsFeatureAGO/FeatureServer/0", // URL to the layer service.
-           outFields: ["PIN14","PIN14_dash", "street_address","OBJECTID","city_state_zip"], // Fields to return in the search results (array of strings).
+           outFields: ["*"], // Fields to return in the search results (array of strings).
            popupEnabled:true, // Enable/disable popups for this layer source (boolean).
            popupTemplateTitle:"Parcel pin 14 {PIN14_dash}", // Popup template title with field placeholders.
            maxScale:0,
