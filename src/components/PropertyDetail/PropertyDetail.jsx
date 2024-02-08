@@ -51,8 +51,6 @@ const PropertyDetail = () => {
     }
 
 
-
-    
       useEffect(() => {
         if (!mediumScreenOrHigher && panelDisplay === 'comparablePropertySearch') {
           setPanelPrimaryVisibility(true);
