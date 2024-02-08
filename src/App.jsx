@@ -10,6 +10,7 @@ import MapButtonGroup from './components/MapButtonGroup'
 import { AppProvider } from './contexts/AppContext'
 import { ToggleIconButton } from './components/Button/Button'
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
+import PanelMobile from './components/Panel/Panel'
 
 const theme = createTheme({
   palette:{
@@ -41,12 +42,12 @@ function App() {
               <Box flexDirection="column" alignItems="left" width="100%" display={{xs:'none', sm:'flex', md:'flex'}}>
                 <MapButtonGroup/>
               </Box>
-              <Box flexDirection="column" alignItems="center" width="100%" display={{xs:'flex', sm:'none', md:'none'}}>
+              <Box flexDirection="column" alignItems="center" width="100%" display={{xs: mapVisible ? 'flex' : 'none', sm:'none', md:'none'}}>
                 <MapButtonGroup/>
               </Box>
-                <>
-                  <WebMapView/>
-                </>
+
+              { mapVisible ? <WebMapView/> : <PanelMobile/>}
+  
             <BottomPanel/>
           </Box>
           <Box>
@@ -58,7 +59,7 @@ function App() {
             text={ mapVisible ? "Data" : "Map" } 
             icon={ mapVisible ? <TableRowsOutlinedIcon/> : <MapOutlinedIcon/> } 
             onClick={handleClick}
-            />
+          />
         </Box>
         
       </Box>

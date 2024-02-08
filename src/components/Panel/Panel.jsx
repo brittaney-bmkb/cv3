@@ -13,10 +13,19 @@ import { theme } from "../../theme";
 import PanelContent from "./PanelContent";
 
 
-const Panel = () => {  
+const PanelMobile = () => {  
+
+    const { panelDisplay } = UseAppContext()
     return(
-        <Box bgcolor="blueviolet" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'block'}}}>
-            <ResultsList/>
+        <Box 
+            height={200}
+            width="100%"
+            display="flex"
+            bgcolor="white" 
+            pb={3}
+            flexGrow={1}  
+            flexDirection="column">
+                <PanelContent display={panelDisplay}/>
         </Box>
     )
 }
@@ -105,7 +114,7 @@ export const SecondaryPanelContent = () => {
 
 export const LeftPanel = () => {
 
-    const { searchFeatures, panelDisplay, panelPrimaryVisible } = UseAppContext()
+    const { panelDisplay, panelPrimaryVisible } = UseAppContext()
 
     return(
         <Box 
@@ -114,70 +123,11 @@ export const LeftPanel = () => {
             flex={1}  
             p={2} 
             flexDirection="column" 
-            sx={{display:{xs:'none', sm: panelPrimaryVisible ? 'block' : 'none'}, overflowY:"clip"}}>
+            sx={{display:{xs:'none', sm: panelPrimaryVisible ? 'block' : 'none'}}}>
                 <PanelContent display={panelDisplay}/>
-            </Box>
+        </Box>
         
     )
-    // switch(panelDisplay){
-    //     case 'resultsList':
-    //         return (
-    //             <Box 
-    //             component={Paper}
-    //             square={true}
-    //             elevation={5}
-    //             p={2} 
-    //             bgcolor="white" 
-    //             flex={1} 
-    //             flexDirection="column" 
-    //             sx={{display:{xs:'none', sm: panelPrimaryVisible ? 'flex' : 'none'}}}
-    //             >
-    //                 <PanelHeader text={"Property Results"} exportButton={true} clearButton={true} results={true} feedbackButton={true}/>
-    //                 <Box sx={{ overflowY:"scroll"}} height='100%'>
-    //                 <ResultsList/>
-    //                 </Box>
-                        
-    //             </Box>)
-    //     case 'propertyDetail':
-    //         return (
-    //             <Box 
-    //             bgcolor="white" 
-    //             flex={1}  
-    //             p={2} 
-    //             flexDirection="column" 
-    //             sx={{display:{xs:'none', sm: panelPrimaryVisible ? 'flex' : 'none'}}}>
-    //                     <PanelHeader 
-    //                     text={"Property Results"} 
-    //                     exportButton={true} 
-    //                     clearButton={true} 
-    //                     feedbackButton={true} 
-    //                     backButton={true}
-    //                     backButtonComponent={'resultsList'}
-    //                     closeButton={true}
-    //                     panel={"primary"}
-    //                     />
-    //                     <PropertyDetail/>
-    //             </Box>)
-
-    //     case 'comparablePropertySearch':
-    //         return(
-    //             // take out display:{xs:'none', sm:'none', md: panelSecondaryVisible ? 'block': null}  
-    //             // and put them in a wrapper box 
-    //             // replace the bottom panel 
-    //             // width id set through flex
-    //             // bottom is set through width. 
-    //             <Box bgcolor="white" flex={1} flexDirection="column">
-    //                 <PanelHeader 
-    //                 text={"Comparable Property Search"} 
-    //                 closeButton={true}
-    //                 panel={"secondary"}
-    //                 />
-    //                 <ComparablePropertySearch/>
-    //             </Box>
-    //             )
-    //     default:
-    //         return null
-    // }
 }
 
 export const BottomPanel = () => {
@@ -187,12 +137,8 @@ export const BottomPanel = () => {
     return(
     <Box bgcolor="blueviolet" flex={4} flexDirection="column" sx={{display:{xs:'none', sm:panelSecondaryVisible ? 'block' :'none', md: 'none'}}} width="100%" >
         <SecondaryPanelContent/>
-        
-        {/* <Typography color={theme.palette.primary.main}>
-        Bottom Panel
-        </Typography> */}
     </Box>
     )
 }
 
-export default Panel
+export default PanelMobile

@@ -12,16 +12,15 @@ const PanelContent = ({display}) => {
     switch(display){
         case 'resultsList':
             return (
-                <Box display="flex" flexDirection="column" height="100%">
+                <Box display="flex" flexDirection="column" height="100%" >
                     <PanelHeader text={"Property Results"} exportButton={true} clearButton={true} results={true} feedbackButton={true}/>
-                    <Box sx={{ overflowY:"scroll"}} height="100%">
+                    <Box display="flex" flexDirection="column" sx={{ overflowY:"scroll", flexGrow: 1}}>
                         <ResultsList/>
-                    </Box>
-                        
+                    </Box>   
                 </Box>)
         case 'propertyDetail':
             return (
-                <Box  display="flex" flexDirection="column" height="100%">
+                <Box display="flex" flexDirection="column" height="100%">
                         <PanelHeader 
                         text={"Property Results"} 
                         exportButton={true} 
@@ -32,7 +31,10 @@ const PanelContent = ({display}) => {
                         closeButton={true}
                         panel={"primary"}
                         />
-                        <PropertyDetail/>
+                        <Box display="flex" flexDirection="column" height="100%">
+                            <PropertyDetail/>
+                        </Box>
+                        
                 </Box>)
 
         case 'comparablePropertySearch':

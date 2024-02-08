@@ -148,12 +148,12 @@ const PropertyDetail = () => {
     }
 
     return(
-        <Box display="flex" flexDirection="column" width="100%" overflow="clip" >
-        <Box display="flex" flexDirection="column" width="100%" justifyContent="center" alignItems="center">
+        <Box display="flex" flexDirection="column" width="100%" height="100%" >
+        <Box display="flex" flexDirection="column" width="100%" justifyContent="center" alignItems="center" height="auto">
             {fetchPropertyDetailData('top', 0)}
         </Box>
         
-        <Box display="flex" flexDirection="column" flex={1} rowGap={2} p={2} sx={{overflowY:"scroll"}}>
+        <Box display="flex" flexDirection="column" flex={1} rowGap={2} p={2} sx={{overflowY:"scroll"}} height="100%">
         {categories?.map((category, index) => {
             return(
                 fetchPropertyDetailData(category, index+1)
