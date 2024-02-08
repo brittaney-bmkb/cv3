@@ -22,13 +22,6 @@ const panelContentTitleSecondary = {
     justifyContent:"center"
 }
 
-const panelContentSubtitle = {
-    display:"flex",
-    color: theme.main.text.light,
-    fontSize: theme.typography.h4.fontSize,
-    justifyContent:"center"
-}
-
 const PropertyDetail = () => {
 
     const { screenWidth, primaryResultFeature, dataDictionary, panelDisplay, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
@@ -135,18 +128,18 @@ const PropertyDetail = () => {
 
     return(
         <Box display="flex" flexDirection="column" width="100%" height="100%" >
-        <Box display="flex" flexDirection="column" width="100%" justifyContent="center" alignItems="center" height="auto">
-            {fetchPropertyDetailData('top', 0)}
-        </Box>
-        
-        <Box display="flex" flexDirection="column" flex={1} rowGap={2} p={2} sx={{overflowY:"scroll"}} height="100%">
-        {categories?.map((category, index) => {
-            return(
-                fetchPropertyDetailData(category, index+1)
-            )
+            <Box display="flex" flexDirection="column" width="100%" justifyContent="center" alignItems="center" height="auto">
+                {fetchPropertyDetailData('top', 0)}
+            </Box>
             
-        })}
-        </Box>
+            <Box display="flex" flexDirection="column" flex={1} rowGap={2} p={2} sx={{overflowY:"scroll"}} height="100%">
+            {categories?.map((category, index) => {
+                return(
+                    fetchPropertyDetailData(category, index+1)
+                )
+                
+            })}
+            </Box>
         </Box>
         
     )
