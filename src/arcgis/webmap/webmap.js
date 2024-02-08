@@ -20,42 +20,49 @@ let highlightSelect;
 let point;
 let layerGraphics
 
+let map;
+let view
+
 //create graphics layer to search result
 layerGraphics = new GraphicsLayer()
 
 //create graphics layer to comparable search result
 let layerGraphicsSecondary = new GraphicsLayer()
 
-// Create a Map instance
-const map = new Map({
+
+
+export async function initializeMap(container){
+
+  // Create a Map instance
+  map = new Map({
     // basemap: "streets-vector"
   });
 
-const view = new MapView({
+  view = new MapView({
   map: map,
   center: [-87.8298, 41.8781],
   zoom: 8
-})
+  })
 
-view.ui.move([ "zoom" ], "top-right");
+  view.ui.move([ "zoom" ], "top-right");
 
-//create home widget
-let homeWidget = new Home({
+  //create home widget
+  let homeWidget = new Home({
   view: view
-});
+  });
 
-let locateWidget = new Locate({
+  let locateWidget = new Locate({
   view: view,   // Attaches the Locate button to the view
-  
+
   graphic: new Graphic({
     symbol: { type: "simple-marker" }  // overwrites the default symbol used for the
     // graphic placed at the location of the user when found
   })
-});
+  });
 
-let scaleBar = new ScaleBar({
+  let scaleBar = new ScaleBar({
   view: view
-});
+  });
 
 
 // adds the home widget to the top left corner of the MapView
@@ -65,10 +72,8 @@ view.ui.add(homeWidget, "top-right");
 view.ui.add(locateWidget, "top-right");
 // Add widget to the bottom left corner of the view
 view.ui.add(scaleBar, {
-  position: "bottom-left"
+position: "bottom-left"
 });
-
-export async function initializeMap(container){
 
   //created feature layers based on config layer sources
   //add layers to map
@@ -93,7 +98,7 @@ export async function initializeMap(container){
   //add graphics layer to map
   map.add(layerGraphics)
 
-return map, searchSources
+return view, searchSources
 }  
 
 // async funciton to set define point location from mouse click
