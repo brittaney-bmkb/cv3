@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import NavBar from './components/NavBar/NavBar'
 import WebMapView from './components/WebMapView/WebMapView'
@@ -12,24 +12,31 @@ import { ToggleIconButton } from './components/Button/Button'
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import PanelMobile from './components/Panel/Panel'
 
-const theme = createTheme({
-  palette:{
-    primary: {
-      main: '#0D4D96'
-    },
-    secondary: {
-      main:'#009A44'
-    }
-  }
-})
-
 function App() {
 
   const [mapVisible, setMapVisible] = useState(true)
+  const [screenWidth, setScreenWidth] = useState(true)
 
   function handleClick(){
     setMapVisible(!mapVisible)
   }
+
+  useEffect(() => {
+    const handleResize = () => {
+        console.log("Resize event triggered");
+        const width = window.innerWidth
+        console.log("window width: ", width)
+        setScreenWidth(width)
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    handleResize();
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [window.innerWidth]);
 
 
   return (
@@ -46,7 +53,7 @@ function App() {
                 <MapButtonGroup/>
               </Box>
 
-              { mapVisible ? <WebMapView/> : <PanelMobile/>}
+              { mapVisible | screenWidth >= 600  ? <WebMapView/> : <PanelMobile/>}
   
             <BottomPanel/>
           </Box>
