@@ -34,9 +34,7 @@ const PropertyDetail = () => {
     const { screenWidth, primaryResultFeature, dataDictionary, panelDisplay, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
 
     const [ categories, setCategories ] = useState(null)
-    const [mediumScreenOrHigher, setMediumScreenOrHigher] = useState(
-        useMediaQuery(theme.breakpoints.up('md'))
-      );
+
 
     function handleClick(){
         if(screenWidth < theme.breakpoints.values.lg){
