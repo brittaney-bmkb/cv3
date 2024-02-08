@@ -138,6 +138,16 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setScreenWidth = (width) => {
+        dispatch({
+            type:"SET_SCREEN_WIDTH",
+             payload: {
+                screenWidth: width,
+            }
+        })
+    }
+
+
     
     const loadDataDictionary = async () => {
 
@@ -229,7 +239,9 @@ export const AppProvider = ({children}) => {
         loadDataDictionary,
         dataDictionary: state.dataDictionary,
         parcelQueryFields: state.parcelQueryFields, 
-        setParcelQueryFields
+        setParcelQueryFields,
+        screenWidth: state.screenWidth,
+        setScreenWidth
     }
 
 

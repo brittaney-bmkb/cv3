@@ -13,6 +13,7 @@ export const initialState = {
     panelDisplaySecondary:null,
     dataDictionary:null,
     parcelQueryFields: null,
+    screenWidth: null
 
 }
 
@@ -90,6 +91,13 @@ const AppReducer = (state, action) => {
             return {
                 ...state,
                 parcelQueryFields: payload.parcelQueryFields,
+            }
+
+        case "SET_SCREEN_WIDTH":
+            console.log("SET_SCREEN_WIDTH")
+            return {
+                ...state,
+                screenWidth: payload.screenWidth,
             }
         default:
             throw new Error(`No valid selection made`)
