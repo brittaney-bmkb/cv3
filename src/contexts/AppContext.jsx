@@ -150,7 +150,7 @@ export const AppProvider = ({children}) => {
         //to do make sure pin10 id field is included
         //improve this
         let fields = [config.target_layer_id_field]
-        let queryFields = [...fields, ...new Set(features.filter((feature) => feature.attributes['category'] !== null && feature.attributes['type'] !== "calc")
+        let queryFields = [...fields, ...new Set(features.filter((feature) => feature.attributes['category'] !== null && feature.attributes['type'] !== "calc" && feature.attributes['type'] !== "button")
                                           .map((feature) => feature.attributes['field'].trim()))]
         setParcelQueryFields(queryFields)
     }

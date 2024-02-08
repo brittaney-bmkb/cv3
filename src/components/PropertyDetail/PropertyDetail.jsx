@@ -46,6 +46,7 @@ const PropertyDetail = () => {
                 ...new Set(
                     dataDictionary
                         .filter(data => data.attributes['category'] !== 'top' && data.attributes['category'] !== null)
+                        .sort((a, b) => a.attributes['details_category_order'] > b.attributes['details_category_order'] ? 1:-1)
                         .map(data => data.attributes['category'])
                 )
             ];
@@ -58,9 +59,26 @@ const PropertyDetail = () => {
         console.log("categories: ", categories);
     }, [categories]);
 
+    const propertyComparison = (key) => (
+        <StyledButtonFilledPrimary 
+        key={key}
+        text={"Compare Properties"}
+        onClick={handleClick}
+        />
+    )
+
+    const nearbyProperties = (key) =>  (
+        <StyledButtonFilledPrimary 
+        key={key}
+        text={"Nearby Parcels"}
+        onClick={handleClick}
+        />
+    )
+
     const fetchPropertyDetailData = (category, index) => {
         let filteredData = dataDictionary
         ?.filter((data) => data.attributes['category'] === category)
+        .sort((a, b) => a.attributes['category_order'] > b.attributes['category_order'] ? 1:-1)
         .map((data) => data); 
 
         let data = filteredData?.map((data, subIndex) => {
@@ -74,6 +92,13 @@ const PropertyDetail = () => {
                     </Typography>
                 
                 </Box>
+                { 
+                    data.attributes['field'] === "comparable_properties" ? 
+                        propertyComparison(data.attributes['FID']) :
+
+                    data.attributes['field'] === "nearby_properties" ?
+                        nearbyProperties(data.attributes['FID']) :
+
                 <Box 
                 display="flex"
                 sx={index === 0 && subIndex===0 ? panelContentTitleMain : category === 'top' ? panelContentTitleSecondary: null}
@@ -82,7 +107,7 @@ const PropertyDetail = () => {
                         {primaryResultFeature?.attributes[data.attributes['field']]}
                     </Typography>
                 
-                </Box>
+                </Box>}
                     {filteredData.length -1 === subIndex ? <Divider variant="fullWidth" sx={{p: 1}}/> : null}
                 </Box>
             
@@ -113,10 +138,6 @@ const PropertyDetail = () => {
             )
             
         })}
-        <StyledButtonFilledPrimary 
-        text={"Compare Properties"}
-        onClick={handleClick}
-        />
         </Box>
         </Box>
         
