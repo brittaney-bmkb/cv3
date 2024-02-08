@@ -245,6 +245,23 @@ export const AppProvider = ({children}) => {
     }
 
 
+    
+    useEffect(() => {
+        const handleResize = () => {
+            console.log("Resize event triggered");
+            const width = window.innerWidth
+            console.log("window width: ", width)
+            setScreenWidth(width)
+        }
+    
+        window.addEventListener('resize', handleResize);
+
+        handleResize();
+        
+        return () => {
+          window.removeEventListener('resize', handleResize);
+        };
+      }, [window.innerWidth]);
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 
