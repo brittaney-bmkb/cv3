@@ -138,6 +138,16 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setScreenWidth = (width) => {
+        dispatch({
+            type:"SET_SCREEN_WIDTH",
+             payload: {
+                screenWidth: width,
+            }
+        })
+    }
+
+
     
     const loadDataDictionary = async () => {
 
@@ -229,10 +239,29 @@ export const AppProvider = ({children}) => {
         loadDataDictionary,
         dataDictionary: state.dataDictionary,
         parcelQueryFields: state.parcelQueryFields, 
-        setParcelQueryFields
+        setParcelQueryFields,
+        screenWidth: state.screenWidth,
+        setScreenWidth
     }
 
 
+    
+    useEffect(() => {
+        const handleResize = () => {
+            console.log("Resize event triggered");
+            const width = window.innerWidth
+            console.log("window width: ", width)
+            setScreenWidth(width)
+        }
+    
+        window.addEventListener('resize', handleResize);
+
+        handleResize();
+        
+        return () => {
+          window.removeEventListener('resize', handleResize);
+        };
+      }, [window.innerWidth]);
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 

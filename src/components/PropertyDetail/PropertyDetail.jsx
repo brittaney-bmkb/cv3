@@ -1,4 +1,4 @@
-import { Box, Divider, Typography } from "@mui/material"
+import { Box, Divider, Typography, useMediaQuery } from "@mui/material"
 import StyledButtonFilledPrimary from "../Button/Button"
 import UseAppContext from "../../contexts/AppContext"
 import { useEffect, useState } from "react"
@@ -31,14 +31,36 @@ const panelContentSubtitle = {
 
 const PropertyDetail = () => {
 
-    const { primaryResultFeature, dataDictionary, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
+    const { primaryResultFeature, dataDictionary, panelDisplay, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
 
     const [ categories, setCategories ] = useState(null)
+    const [mediumScreenOrHigher, setMediumScreenOrHigher] = useState(
+        useMediaQuery(theme.breakpoints.up('md'))
+      );
 
     function handleClick(){
-        setPanelSecondaryVisibility(true)
-        setPanelDisplaySecondary("comparablePropertySearch")
+        if(mediumScreenOrHigher){
+            setPanelSecondaryVisibility(true)
+            setPanelDisplaySecondary("comparablePropertySearch")
+        }
+        else{
+            setPanelPrimaryVisibility(true)
+            setPanelDisplay("comparablePropertySearch")
+            
+        }
     }
+
+
+      useEffect(() => {
+        if (!mediumScreenOrHigher && panelDisplay === 'comparablePropertySearch') {
+          setPanelPrimaryVisibility(true);
+          setPanelDisplay('propertyDetail');
+    
+          setPanelSecondaryVisibility(true);
+          setPanelDisplaySecondary('comparablePropertySearch');
+        }
+      }, [mediumScreenOrHigher, panelDisplay]);
+
 
     useEffect(() => {
         if (dataDictionary) {
