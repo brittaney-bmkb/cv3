@@ -39,26 +39,15 @@ const PropertyDetail = () => {
       );
 
     function handleClick(){
-        if(screenWidth < 900){
+        if(screenWidth < theme.breakpoints.values.lg){
             setPanelPrimaryVisibility(true)
             setPanelDisplay("comparablePropertySearch")
         }
-        else if (screenWidth >= 900){
+        else if (screenWidth >= theme.breakpoints.values.lg){
             setPanelSecondaryVisibility(true)
             setPanelDisplaySecondary("comparablePropertySearch")
         }
     }
-
-
-    //   useEffect(() => {
-    //     if (screenWidth >= 600 && panelDisplay === 'comparablePropertySearch') {
-    //       setPanelPrimaryVisibility(true);
-    //       setPanelDisplay('propertyDetail');
-    
-    //       setPanelSecondaryVisibility(true);
-    //       setPanelDisplaySecondary('comparablePropertySearch');
-    //     }
-    //   }, [screenWidth]);
 
 
     useEffect(() => {

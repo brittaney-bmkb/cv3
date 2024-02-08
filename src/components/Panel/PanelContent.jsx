@@ -7,8 +7,13 @@ import BasemapWidget from "../Widgets/BasemapWidget";
 import LayersWidget from "../Widgets/LayersWidget";
 import MeasureWidget from "../Widgets/MeasureWidget";
 import PrintWidget from "../Widgets/PrintWidget";
+import UseAppContext from "../../contexts/AppContext"
+import { theme } from "../../theme"
 
 const PanelContent = ({display}) => {
+
+    const { screenWidth } = UseAppContext()
+
     switch(display){
         case 'resultsList':
             return (
@@ -49,6 +54,8 @@ const PanelContent = ({display}) => {
                     text={"Comparable Property Search"} 
                     closeButton={true}
                     panel={"secondary"}
+                    backButton={screenWidth < theme.breakpoints.values.lg}
+                    backButtonComponent={"propertyDetail"}
                     />
                     <ComparablePropertySearch/>
                 </Box>

@@ -16,14 +16,11 @@ import { useEffect, useState } from "react";
 
 const PanelMobile = () => {  
 
-    const { setPanelSecondaryVisibility, setPanelDisplaySecondary, panelDisplay, screenWidth, setPanelDisplay, setPanelPrimaryVisibility } = UseAppContext()
-
-    const [ prevDisplay, setPrevDisplay ] = useState(null)
+    const { panelDisplay, screenWidth, setPanelDisplay, setPanelPrimaryVisibility } = UseAppContext()
 
     useEffect(() => {
 
         if(screenWidth >= 900 && panelDisplay === 'comparablePropertySearch'){
-            setPrevDisplay('comparablePropertySearch')
             setPanelPrimaryVisibility(true);
             setPanelDisplay('propertyDetail');
         }
@@ -131,7 +128,7 @@ export const LeftPanel = () => {
     const { panelPrimaryVisible, setPanelSecondaryVisibility, panelDisplaySecondary, setPanelDisplaySecondary, panelDisplay, screenWidth, setPanelDisplay, setPanelPrimaryVisibility } = UseAppContext()
 
         useEffect(() => {
-            if(screenWidth >= 1050 && panelDisplay === 'comparablePropertySearch'){
+            if(screenWidth >= theme.breakpoints.values.lg && panelDisplay === 'comparablePropertySearch'){
                 setPanelPrimaryVisibility(true);
                 setPanelDisplay('propertyDetail');
 
@@ -139,7 +136,7 @@ export const LeftPanel = () => {
                 setPanelDisplaySecondary("comparablePropertySearch")
             }
 
-            if(screenWidth < 1050 && panelDisplaySecondary ===  'comparablePropertySearch'){
+            if(screenWidth < theme.breakpoints.values.lg && panelDisplaySecondary ===  'comparablePropertySearch'){
                 setPanelPrimaryVisibility(true);
                 setPanelDisplay('comparablePropertySearch');
             }
