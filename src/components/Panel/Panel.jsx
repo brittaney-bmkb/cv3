@@ -21,10 +21,12 @@ const Panel = () => {
 }
 
 export const SecondaryPanel = () => {  
+
+    const { panelSecondaryVisible } = UseAppContext()
     return(
         //sx style this adjust the right left or panel will show up. 
         //sm is a block 
-        <Box bgcolor="blueviolet" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'none', md:'flex'}}}>
+        <Box bgcolor="blueviolet" flex={1} flexDirection="column" sx={{display:{xs:'none', sm:'none', md: panelSecondaryVisible ? 'flex' :'none'}}}>
             <SecondaryPanelContent/>
         </Box>
     )
@@ -34,7 +36,7 @@ export const SecondaryPanel = () => {
 
 export const SecondaryPanelContent = () => {
 
-    const { panelSecondaryVisible, panelDisplaySecondary } = UseAppContext()
+    const { panelDisplaySecondary } = UseAppContext()
 
     switch(panelDisplaySecondary){
         case 'comparablePropertySearch':
@@ -87,7 +89,7 @@ export const SecondaryPanelContent = () => {
 
 export const LeftPanel = () => {
 
-    const { searchFeatures, panelDisplay } = UseAppContext()
+    const { searchFeatures, panelDisplay, panelPrimaryVisible } = UseAppContext()
 
     switch(panelDisplay){
         case 'resultsList':
