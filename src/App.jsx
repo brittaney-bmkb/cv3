@@ -4,10 +4,12 @@ import NavBar from './components/NavBar/NavBar'
 import WebMapView from './components/WebMapView/WebMapView'
 import { Box, Stack, Grid, ThemeProvider, createTheme, Button } from '@mui/material'
 import Panel, { BottomPanel, LeftPanel, SecondaryPanel } from './components/Panel/Panel'
-import ToggleButton from './components/ToggleButton'
+import TableRowsOutlinedIcon from '@mui/icons-material/TableRowsOutlined';
 import '@esri/calcite-components/dist/calcite/calcite.css';
 import MapButtonGroup from './components/MapButtonGroup'
 import { AppProvider } from './contexts/AppContext'
+import { ToggleIconButton } from './components/Button/Button'
+import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 
 const theme = createTheme({
   palette:{
@@ -21,6 +23,14 @@ const theme = createTheme({
 })
 
 function App() {
+
+  const [mapVisible, setMapVisible] = useState(true)
+
+  function handleClick(){
+    setMapVisible(!mapVisible)
+  }
+
+
   return (
     <AppProvider>
       <Box display="flex" flexDirection="column" height="100vh">
@@ -43,7 +53,14 @@ function App() {
             <SecondaryPanel/>
           </Box>
         </Stack>
-        <ToggleButton />
+        <Box width="auto" height="auto" position="absolute" bottom={20} left="45%" display={{xs:"block", sm: "none"}}>
+          <ToggleIconButton 
+            text={ mapVisible ? "Data" : "Map" } 
+            icon={ mapVisible ? <TableRowsOutlinedIcon/> : <MapOutlinedIcon/> } 
+            onClick={handleClick}
+            />
+        </Box>
+        
       </Box>
     </AppProvider>
   )

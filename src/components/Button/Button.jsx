@@ -1,4 +1,4 @@
-import { Button, IconButton, Typography, styled } from "@mui/material"
+import { Button, Fab, IconButton, Typography, styled } from "@mui/material"
 import { theme } from "../../theme"
 
 const StyledButtonFilledPrimary = ({text, startIcon, endIcon, onClick}) => {
@@ -36,6 +36,21 @@ export const StyledIconButton = ({text, icon, onClick}) => {
             {icon}
             <Typography variant="subtitle1" color={theme.main.text.dark}>{text}</Typography>
         </IconButton>
+    )
+}
+
+export const ToggleIconButton = ({icon, text, onClick, ariaLabel}) => {
+
+    return(
+        <Fab
+        color="primary"
+        aria-label={ariaLabel}
+        onClick={onClick}
+        sx= {{display:"flex", flexDirection:"column", textTransform:"none"}}
+        >
+        {icon}
+        <Typography variant="subtitle1">{text}</Typography>
+        </Fab>
     )
 }
 
