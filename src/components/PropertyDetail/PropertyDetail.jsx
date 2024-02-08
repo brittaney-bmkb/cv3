@@ -116,7 +116,7 @@ const PropertyDetail = () => {
         })
 
         return(
-            <Box display="flex" flexDirection="column" width="100%" pt={1} rowGap={2}>
+            <Box key={category} display="flex" flexDirection="column" width="100%" pt={1} rowGap={2}>
                 {category !== 'top' ? <Typography variant="h2">{category}</Typography> : null}
                 <Box display="flex" flexDirection="column" width="100%" pl={category === "top" ? 0 :1} rowGap={category === "top" ? 1 : 2}>
                     {data}
@@ -137,7 +137,6 @@ const PropertyDetail = () => {
                 return(
                     fetchPropertyDetailData(category, index+1)
                 )
-                
             })}
             </Box>
         </Box>
