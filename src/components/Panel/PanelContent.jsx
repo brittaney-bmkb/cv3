@@ -9,22 +9,19 @@ import MeasureWidget from "../Widgets/MeasureWidget";
 import PrintWidget from "../Widgets/PrintWidget";
 
 const PanelContent = ({display}) => {
-    
-    
-
     switch(display){
         case 'resultsList':
             return (
-                <Box>
+                <Box display="flex" flexDirection="column" height="100%">
                     <PanelHeader text={"Property Results"} exportButton={true} clearButton={true} results={true} feedbackButton={true}/>
-                    <Box sx={{ overflowY:"scroll"}} height='100%'>
-                    <ResultsList/>
+                    <Box sx={{ overflowY:"scroll"}} height="100%">
+                        <ResultsList/>
                     </Box>
                         
                 </Box>)
         case 'propertyDetail':
             return (
-                <Box>
+                <Box  display="flex" flexDirection="column" height="100%">
                         <PanelHeader 
                         text={"Property Results"} 
                         exportButton={true} 

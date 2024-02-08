@@ -109,13 +109,14 @@ export const LeftPanel = () => {
 
     return(
         <Box 
-                bgcolor="white" 
-                flex={1}  
-                p={2} 
-                flexDirection="column" 
-                sx={{display:{xs:'none', sm: panelPrimaryVisible ? 'flex' : 'none'}}}>
-<PanelContent display={panelDisplay}/>
-                </Box>
+            height="90%"
+            bgcolor="white" 
+            flex={1}  
+            p={2} 
+            flexDirection="column" 
+            sx={{display:{xs:'none', sm: panelPrimaryVisible ? 'block' : 'none'}, overflowY:"clip"}}>
+                <PanelContent display={panelDisplay}/>
+            </Box>
         
     )
     // switch(panelDisplay){
