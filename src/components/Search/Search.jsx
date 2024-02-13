@@ -4,12 +4,13 @@ import widgetsSearch from "@arcgis/core/widgets/Search.js";
 import UseAppContext from "../../contexts/AppContext";
 import { useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom"
+import { config } from "../../data/config";
 
 
 
 const Search = () => {
 
-    const { setPanelPrimaryVisibility, setSearchResults, mapView, searchSources, clearResults } = UseAppContext()
+    const { setPanelPrimaryVisibility, setSearchResults, mapView, searchSources, clearResults, primaryResultFeature } = UseAppContext()
 
     //get url parameters
     const [routeParams, setSearchParams] = useSearchParams();
@@ -45,10 +46,10 @@ const Search = () => {
                     console.log("Searching for ", searchString)
                     //performing search method automatically selects the first
                     //result. triggering the setSearchResults function
-                    if(searchString !== 'null'){
+                    if(searchString !== 'null' && searchString !== primaryResultFeature.attributes[config.target_layer_id_field]){
                         searchWidget.current.search(searchString)
                     }
-                    else{
+                    if(searchString === null || searchString === "" || searchString === 'null'){
                         searchWidget.current.clear();
                     }
                     
@@ -76,8 +77,6 @@ const Search = () => {
                     // Use history.pushState to update the URL without refreshing the page
                     window.history.pushState({ path: updatedUrl }, '', updatedUrl);
                   });
-
-
             }
 
         
