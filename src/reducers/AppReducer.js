@@ -13,7 +13,8 @@ export const initialState = {
     panelDisplaySecondary:null,
     dataDictionary:null,
     parcelQueryFields: null,
-    screenWidth: null
+    screenWidth: null,
+    newSearch:null
 
 }
 
@@ -38,7 +39,8 @@ const AppReducer = (state, action) => {
             console.log("SET_PRIMARY_RESULT_FEATURE: ", payload.primaryResultFeature)
             return{
                 ...state,
-                primaryResultFeature:payload.primaryResultFeature
+                primaryResultFeature:payload.primaryResultFeature,
+                newSearch:payload.newSearch
             }
         
         case "SET_SEARCH_RESULT":

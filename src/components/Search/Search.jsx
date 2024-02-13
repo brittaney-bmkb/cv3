@@ -10,7 +10,7 @@ import { config } from "../../data/config";
 
 const Search = () => {
 
-    const { setPanelPrimaryVisibility, setSearchResults, mapView, searchSources, clearResults, primaryResultFeature } = UseAppContext()
+    const { newSearch, setPanelPrimaryVisibility, setSearchResults, mapView, searchSources, clearResults, primaryResultFeature } = UseAppContext()
 
     //get url parameters
     const [routeParams, setSearchParams] = useSearchParams();
@@ -44,9 +44,10 @@ const Search = () => {
                 //if url parameter is passed perform search method on search widget
                 if(searchString){
                     console.log("Searching for ", searchString)
+                    console.log("new search ", newSearch)
                     //performing search method automatically selects the first
                     //result. triggering the setSearchResults function
-                    if(searchString !== 'null' && searchString !== primaryResultFeature.attributes[config.target_layer_id_field]){
+                    if(searchString !== 'null' && newSearch){
                         searchWidget.current.search(searchString)
                     }
                     if(searchString === null || searchString === "" || searchString === 'null'){
@@ -87,7 +88,7 @@ const Search = () => {
         //execute function search function with url param
         createSearch(searchString)
 
-    },[searchDiv, mapView, searchSources, routeParams])
+    },[searchDiv, mapView, searchSources, routeParams, newSearch])
 
 
     return(

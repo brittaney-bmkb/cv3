@@ -28,11 +28,12 @@ export const AppProvider = ({children}) => {
         })
     }
 
-    const setPrimaryResultFeature = (feature) => {
+    const setPrimaryResultFeature = (feature, newSearch=true) => {
         dispatch({
             type:"SET_PRIMARY_RESULT_FEATURE",
              payload: {
                 primaryResultFeature: feature,
+                newSearch: newSearch
             }
         })
     } 
@@ -48,6 +49,7 @@ export const AppProvider = ({children}) => {
 
         setMapView(view)
         setSearchSources(searchSources)
+        setPrimaryResultFeature(null, true)
     }
 
 
@@ -58,7 +60,7 @@ export const AppProvider = ({children}) => {
 
         const selectedFeatures = await onViewClick()
 
-        setPrimaryResultFeature(selectedFeatures[0])
+        setPrimaryResultFeature(selectedFeatures[0], true)
 
         setPanelDisplay("resultsList")
 
@@ -171,7 +173,7 @@ export const AppProvider = ({children}) => {
         const selectedFeature = searchFeatures.filter((feature) => feature.attributes['PIN14_dash'] == result)
         console.log("selectedFeature: ", selectedFeature)
 
-        setPrimaryResultFeature(selectedFeature[0])
+        setPrimaryResultFeature(selectedFeature[0], false)
 
         //update graphic in map
         const { createGraphic } = await import('../arcgis/webmap/webmap')
@@ -241,7 +243,8 @@ export const AppProvider = ({children}) => {
         parcelQueryFields: state.parcelQueryFields, 
         setParcelQueryFields,
         screenWidth: state.screenWidth,
-        setScreenWidth
+        setScreenWidth,
+        newSearch: state.newSearch
     }
 
 
