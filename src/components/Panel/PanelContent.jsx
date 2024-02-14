@@ -2,7 +2,7 @@ import { Box, Divider, Paper } from "@mui/material"
 import PanelHeader from "./PanelHeader"
 import ResultsList from "../ResultList/ResultsList"
 import PropertyDetail from "../PropertyDetail/PropertyDetail"
-import ComparablePropertySearch from "../ComparablePropertySearch/ComparablePropertySearch"
+import ComparablePropertySearch from "../ComparableProperty/ComparablePropertySearch"
 import BasemapWidget from "../Widgets/BasemapWidget";
 import LayersWidget from "../Widgets/LayersWidget";
 import MeasureWidget from "../Widgets/MeasureWidget";
@@ -12,7 +12,7 @@ import { theme } from "../../theme"
 
 const PanelContent = ({display}) => {
 
-    const { screenWidth } = UseAppContext()
+    const { screenWidth, primaryResultFeature } = UseAppContext()
 
     switch(display){
         case 'resultsList':
@@ -37,7 +37,7 @@ const PanelContent = ({display}) => {
                         panel={"primary"}
                         />
                         <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
-                            <PropertyDetail/>
+                            <PropertyDetail property={primaryResultFeature}/>
                         </Box>
                         
                 </Box>)

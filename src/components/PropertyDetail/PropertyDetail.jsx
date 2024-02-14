@@ -30,9 +30,9 @@ const prefix = (key) => {
     }
 }
 
-const PropertyDetail = () => {
+const PropertyDetail = ({property}) => {
 
-    const { screenWidth, primaryResultFeature, dataDictionary, panelDisplay, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
+    const { screenWidth, dataDictionary, panelDisplay, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
 
     const [ categories, setCategories ] = useState(null)
     const [ muni, setMuni ] = useState(null)
@@ -68,7 +68,7 @@ const PropertyDetail = () => {
     useEffect(() => {
         console.log("categories: ", categories);
         const getMuniValue = async () => {
-            let muniValue = await returnMunicipality(primaryResultFeature)
+            let muniValue = await returnMunicipality(property)
             setMuni(muniValue)
         }
 
@@ -171,7 +171,7 @@ const PropertyDetail = () => {
                         incorp_unincorp(data) :
 
                     data.attributes['hyperlink_text'] && data.attributes['hyperlink_params'] && data.attributes['hyperlink_url'] ?
-                        returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], primaryResultFeature?.attributes) :
+                        returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], property?.attributes) :
 
                 <Box 
                 width="100%"
@@ -186,8 +186,8 @@ const PropertyDetail = () => {
                         align="left"
                         variant="h5" 
                         sx={{color: category === "top" && subIndex==0 ? theme.palette.primary.main: theme.main.text.dark }}>
-                            {primaryResultFeature?.attributes[data.attributes['field']] ? 
-                            `${prefix(data.attributes['type'])}${primaryResultFeature?.attributes[data.attributes['field']]}`:
+                            {property?.attributes[data.attributes['field']] ? 
+                            `${prefix(data.attributes['type'])}${property?.attributes[data.attributes['field']]}`:
                             "Data unavailable"}
                     </Typography>
                     
