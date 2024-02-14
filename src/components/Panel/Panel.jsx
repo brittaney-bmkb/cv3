@@ -43,23 +43,19 @@ const PanelMobile = () => {
 
 export const SecondaryPanel = () => {  
 
-    const { panelSecondaryVisible } = UseAppContext()
+    const { panelSecondaryVisible, panelDisplaySecondary } = UseAppContext()
     return(
         //sx style this adjust the right left or panel will show up. 
         //sm is a block 
         <Box 
-            component={Paper}
-            square={true}
-            elevation={5}
-            p={2} 
+            id="left-panel"
+            minHeight={0}
             bgcolor="white" 
-            flex={1} 
-            minWidth={300}
+            flex={1}
+            minWidth={300}  
             flexDirection="column" 
-            height="100%"
-            sx={{display:{xs:'none', sm:'none', md: 'none', lg: panelSecondaryVisible ? 'flex' :'none'}}}>
-            
-            <SecondaryPanelContent/>
+            sx={{display:{xs:'none', sm: panelSecondaryVisible ? 'flex' : 'none'}}}>
+                <PanelContent id="panel-content" display={panelDisplaySecondary}/>
         </Box>
     )
 }
@@ -128,23 +124,46 @@ export const LeftPanel = () => {
 
     const { panelPrimaryVisible, setPanelSecondaryVisibility, panelDisplaySecondary, setPanelDisplaySecondary, panelDisplay, screenWidth, setPanelDisplay, setPanelPrimaryVisibility } = UseAppContext()
 
-        useEffect(() => {
-            if(screenWidth >= theme.breakpoints.values.md && panelDisplay === 'comparablePropertySearch'){
+    useEffect(() => {
+        if (['comparablePropertySearch', 'resultsListComparables', 'nearbyProperties'].includes(panelDisplay)) {
+            // Set panelDisplaySecondary based on the current value of panelDisplay
+            const secondaryDisplayValue = panelDisplay;
+
+            if (screenWidth >= theme.breakpoints.values.lg) {
+            setPanelPrimaryVisibility(true);
+            setPanelSecondaryVisibility(true)
+            setPanelDisplaySecondary(secondaryDisplayValue);
+      
+            // Set panelDisplay to 'propertyDetail'
+            setPanelDisplay('propertyDetail');
+          } else if (screenWidth < theme.breakpoints.values.lg) {
+            setPanelPrimaryVisibility(true);
+            setPanelSecondaryVisibility(false);
+            setPanelDisplay(secondaryDisplayValue);
+          }
+        }
+
+        if( ['comparablePropertySearch', 'resultsListComparables', 'nearbyProperties'].includes(panelDisplaySecondary)){
+            console.log("Panel Display Secondary is set to: ", panelDisplaySecondary)
+            // Set panelDisplaySecondary based on the current value of panelDisplay
+            const secondaryDisplayValue = panelDisplaySecondary;
+            if (screenWidth >= theme.breakpoints.values.lg) {
                 setPanelPrimaryVisibility(true);
-                setPanelDisplay('propertyDetail');
 
                 setPanelSecondaryVisibility(true)
-                setPanelDisplaySecondary("comparablePropertySearch")
-            }
-
-            if(screenWidth < theme.breakpoints.values.lg && panelDisplaySecondary ===  'comparablePropertySearch'){
+                setPanelDisplaySecondary(secondaryDisplayValue);
+          
+                // Set panelDisplay to 'propertyDetail'
+                setPanelDisplay('propertyDetail');
+              } else if (screenWidth < theme.breakpoints.values.lg) {
                 setPanelPrimaryVisibility(true);
-                setPanelDisplay('comparablePropertySearch');
+                setPanelSecondaryVisibility(false);
+                setPanelDisplay(panelDisplaySecondary);
+              }
             }
-        }, [screenWidth])
-
-    
-
+        
+      }, [screenWidth]);
+      
 
     return(
         <Box 
