@@ -9,10 +9,11 @@ import MeasureWidget from "../Widgets/MeasureWidget";
 import PrintWidget from "../Widgets/PrintWidget";
 import UseAppContext from "../../contexts/AppContext"
 import { theme } from "../../theme"
+import CompareNearby from "../ComparableProperty/CompareNearby"
 
 const PanelContent = ({display}) => {
 
-    const { screenWidth, primaryResultFeature } = UseAppContext()
+    const { screenWidth, primaryResultFeature, searchFeatures, comparableParcels } = UseAppContext()
 
     switch(display){
         case 'resultsList':
@@ -20,7 +21,7 @@ const PanelContent = ({display}) => {
                 <Box display="flex" flexDirection="column" height="100%" >
                     <PanelHeader text={"Property Results"} exportButton={true} clearButton={true} results={true} feedbackButton={true}/>
                     <Box display="flex" flexDirection="column" sx={{ overflowY:"scroll", flexGrow: 1}}>
-                        <ResultsList/>
+                        <ResultsList results={searchFeatures}/>
                     </Box>   
                 </Box>)
         case 'propertyDetail':
@@ -64,6 +65,36 @@ const PanelContent = ({display}) => {
                     
                 </Box>
                 )
+        case 'nearbyProperties':
+        return(
+            // take out display:{xs:'none', sm:'none', md: panelSecondaryVisible ? 'block': null}  
+            // and put them in a wrapper box 
+            // replace the bottom panel 
+            // width id set through flex
+            // bottom is set through width. 
+            <Box  display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
+                <PanelHeader 
+                text={"Nearby Properties"} 
+                closeButton={true}
+                panel={"secondary"}
+                backButton={screenWidth < theme.breakpoints.values.lg}
+                backButtonComponent={"propertyDetail"}
+                />
+                <Divider/>
+                <Box  display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
+                    <CompareNearby/>
+                </Box>
+                
+            </Box>
+            )
+        case 'resultsListComparables':
+            return (
+                <Box display="flex" flexDirection="column" height="100%" >
+                    <PanelHeader text={"Comparable Results"} exportButton={true} clearButton={true} results={true} feedbackButton={true}/>
+                    <Box display="flex" flexDirection="column" sx={{ overflowY:"scroll", flexGrow: 1}}>
+                        <ResultsList results={comparableParcels}/>
+                    </Box>   
+                </Box>)
         case 'measureWidget':
             // Add panel headers 
             // add additional arguments for arguments in there

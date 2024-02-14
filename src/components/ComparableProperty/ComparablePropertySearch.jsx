@@ -6,7 +6,7 @@ import { useState } from "react";
 
 const textFieldWidth = 175
 
-const CustomStyledTextField = styled(TextField)({
+export const CustomStyledTextField = styled(TextField)({
     '& .MuiInputBase-input': {
       height: 22,
       padding: 2,
@@ -33,6 +33,15 @@ const constructionTypes = [
     "Stucco"
 ]
 
+const radiusTypes = {
+    "None": "None",
+    "Mile": 1,
+    "Half Mile": .5,
+    "Quarter Mile": .25,
+    "Eigth Mile": 125,
+}
+
+
 
 const ComparablePropertySearch= () => {
 
@@ -48,6 +57,8 @@ const ComparablePropertySearch= () => {
 
     const [ ageMax, setAgeMax ] = useState(0)
     const [ ageMin, setAgeMin ] = useState(0)
+
+    const [radiusType, setRadiusType] = useState(Object.keys(radiusTypes)[0])
 
     function handleInput(inputType, event){
 
@@ -70,6 +81,9 @@ const ComparablePropertySearch= () => {
                 setAgeMin(value);
             case "age max":
                 setAgeMax(value); 
+            case "radius type":
+                let radiusValue = event.target.value 
+                setRadiusType(radiusValue); 
             default:
                 null;
         } 
@@ -87,11 +101,13 @@ const ComparablePropertySearch= () => {
                     AND (BLDGSQFT >= ${buildingSqFtMin} AND BLDGSQFT <= ${buildingSqFtMax} ) 
                     AND (LANDSF >= ${landSqFtMin} AND LANDSF <= ${landSqFtMax} )  
                     AND (BLDGAGE >= ${ageMin} AND BLDGAGE <= ${ageMax} )
-                    AND bldg_const_desc = '${constructionTypeSelect}' AND PIN14 <> '${primaryResultFeature.attributes['PIN14']}'`
+                    AND PIN14 <> '${primaryResultFeature.attributes['PIN14']}'`
         
+        query = constructionTypeSelect !== 'None' ? query + `AND bldg_const_desc = '${constructionTypeSelect}'`: query
+
         console.log("Comparable query = ", query)
 
-        searchComparableProperties(query)
+        searchComparableProperties(query, searchDistance)
         return query
     }
 
@@ -126,6 +142,7 @@ const ComparablePropertySearch= () => {
             <Box display="flex" flexDirection="row" alignItems="center" columnGap={1}>
                   <CustomStyledTextField
                   id="building-sqft-min"
+                  required
                   variant="outlined" 
                   fullWidth 
                   margin="dense" 
@@ -139,6 +156,7 @@ const ComparablePropertySearch= () => {
                   <Typography variant="body2">to</Typography>
                   <CustomStyledTextField
                   id="building-sqft-max"
+                  required
                   variant="outlined" 
                   fullWidth 
                   margin="dense" 
@@ -155,6 +173,7 @@ const ComparablePropertySearch= () => {
             <Box display="flex" flexDirection="row" alignItems="center" columnGap={1}>
                   <CustomStyledTextField
                   id="land-sqft-min"
+                  required
                   variant="outlined" 
                   fullWidth 
                   margin="dense" 
@@ -168,6 +187,7 @@ const ComparablePropertySearch= () => {
                   <Typography variant="body2">to</Typography>
                   <CustomStyledTextField
                   id="land-sqft-max"
+                  required
                   variant="outlined" 
                   fullWidth 
                   margin="dense" 
@@ -189,6 +209,7 @@ const ComparablePropertySearch= () => {
                 </Box>
                 <CustomStyledTextField 
                 select
+                required
                 id={"construction-type"}
                 variant="outlined" 
                 fullWidth 
@@ -217,6 +238,7 @@ const ComparablePropertySearch= () => {
                     </Box>
                         <Box display="flex" flexDirection="row" alignItems="center" columnGap={1}>
                         <CustomStyledTextField
+                        required
                         id="age-min"
                         variant="outlined" 
                         fullWidth 
@@ -230,6 +252,7 @@ const ComparablePropertySearch= () => {
                         />
                         <Typography variant="body2">to</Typography>
                         <CustomStyledTextField
+                        required
                         id="age-max"
                         variant="outlined" 
                         fullWidth 
@@ -244,6 +267,35 @@ const ComparablePropertySearch= () => {
                     </Box>
                 </Box>
                 
+            </Box>
+            <Box display="flex" flexDirection="column">
+            <Box display="flex" flex={1}>
+                    <Typography variant="body2" width={122}>Search Radius</Typography>
+                </Box>
+                <CustomStyledTextField 
+                select
+                id={"radius-type"}
+                variant="outlined" 
+                fullWidth 
+                margin="dense" 
+                size="small"
+                type="text"
+                onChange={(event) => {
+                    handleInput("radius type", event)
+                }}
+                SelectProps={{
+                    native: true,
+                  }}
+                >
+                    {Object.entries(radiusTypes).map(([radiusLabel, radiusValue]) => (
+                        <option key={radiusLabel} value={radiusValue}>
+                            <Typography variant="body1" fontFamily="barlow">
+                                {radiusLabel}
+                            </Typography>
+                        </option>
+                    ))}
+                </CustomStyledTextField>
+
             </Box>
 
             <Divider/>

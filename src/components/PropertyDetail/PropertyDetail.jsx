@@ -40,14 +40,14 @@ const PropertyDetail = ({property, pinLableColor}) => {
     }
 
 
-    function handleClick(){
+    function handleClick(display){
         if(screenWidth < theme.breakpoints.values.lg){
             setPanelPrimaryVisibility(true)
-            setPanelDisplay("comparablePropertySearch")
+            setPanelDisplay(display)
         }
         else if (screenWidth >= theme.breakpoints.values.lg){
             setPanelSecondaryVisibility(true)
-            setPanelDisplaySecondary("comparablePropertySearch")
+            setPanelDisplaySecondary(display)
         }
     }
 
@@ -85,7 +85,7 @@ const PropertyDetail = ({property, pinLableColor}) => {
         <StyledButtonFilledPrimary 
         key={key}
         text={"Compare Properties"}
-        onClick={handleClick}
+        onClick={() => {handleClick("comparablePropertySearch")}}
         variant={"h5"}
         />
         </Box>
@@ -97,7 +97,7 @@ const PropertyDetail = ({property, pinLableColor}) => {
         <StyledButtonFilledPrimary 
         key={key}
         text={"Nearby Parcels"}
-        onClick={handleClick}
+        onClick={() => {handleClick("nearbyProperties")}}
         variant={"h5"}
         />
         </Box>

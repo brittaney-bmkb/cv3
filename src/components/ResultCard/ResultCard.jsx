@@ -51,7 +51,7 @@ const ResultCard = ({pin, address, city_state_zip}) => {
                      <Box display="flex" flexDirection="column" alignItems="center">
                         <Box display="flex" flexDirection="row" alignItems="center">
                             <LocationOnOutlinedIcon fontSize="small" sx={{color:theme.main.text.dark}}/>
-                            <Typography align="center" variant="h4" color={theme.main.text.dark}>{address}</Typography>
+                            <Typography align="center" variant="h5" color={theme.main.text.dark}>{address}</Typography>
                         </Box>
                         <Typography align="center" variant="subtitle2" color={theme.palette.info.dark}>{city_state_zip}</Typography>
                      </Box>

@@ -3,9 +3,9 @@ import ResultCard from "../ResultCard/ResultCard"
 import UseAppContext from "../../contexts/AppContext"
 import { theme } from "../../theme"
 
-const ResultsList = () => {
+const ResultsList = ({results}) => {
 
-    const { searchFeatures } = UseAppContext()
+    console.log("results: ", results)
 
     return(
         <List sx={{
@@ -14,8 +14,8 @@ const ResultsList = () => {
             flexDirection:"column", 
             flex: 1
             }}>
-            {searchFeatures ? 
-            searchFeatures.map((result, i) => {
+            {results ? 
+            results.map((result, i) => {
                 return(
                     <ListItem key={result.attributes['PIN14_dash']}>
                         <ResultCard 
