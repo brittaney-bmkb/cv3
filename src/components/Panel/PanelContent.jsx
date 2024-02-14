@@ -37,7 +37,7 @@ const PanelContent = ({display}) => {
                         panel={"primary"}
                         />
                         <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
-                            <PropertyDetail property={primaryResultFeature}/>
+                            <PropertyDetail property={primaryResultFeature} pinLableColor={theme.palette.primary.main}/>
                         </Box>
                         
                 </Box>)

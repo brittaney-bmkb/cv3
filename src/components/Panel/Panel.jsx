@@ -2,7 +2,7 @@ import { Box, Paper, Typography } from "@mui/material";
 import ResultsList from "../ResultList/ResultsList";
 import UseAppContext from "../../contexts/AppContext";
 import PropertyDetail from "../PropertyDetail/PropertyDetail";
-import ComparablePropertySearch from "../ComparablePropertySearch/ComparablePropertySearch";
+import ComparablePropertySearch from "../ComparableProperty/ComparablePropertySearch";
 import BasemapWidget from "../Widgets/BasemapWidget";
 import LayersWidget from "../Widgets/LayersWidget";
 import MeasureWidget from "../Widgets/MeasureWidget";

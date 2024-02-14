@@ -68,10 +68,10 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
             {backButton ? 
                     <IconButton 
                         onClick={handleBack}
-                        sx={{ display:"flex", flexDirection:"column"}}>
+                        sx={{ display:"flex", flexDirection:"column", position:"absolute", left:8}}>
                         <ChevronLeft fontSize="small" sx={{color:theme.main.text.dark}}/>
                     <Typography color={theme.main.text.dark} variant="subtitle1">Back</Typography>
-                    </IconButton> : <Box width={30}></Box>}
+                    </IconButton> : null}
                 <Box display="flex" flex={1} alignItems="center" justifyContent="space-around" p={1} minWidth={150}>
                     <Box bgcolor={theme.main.backgroundColor.grey} p={1} sx={{borderRadius: theme.shape.borderRadius}}>
                         <Typography variant="h5" color={theme.main.text.dark}>{text}</Typography>
@@ -80,10 +80,10 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
                 {closeButton ? 
                     <IconButton 
                         onClick={() => {handleClosePanel(panel)}}
-                        sx={{ display:"flex", flexDirection:"column"}}>
+                        sx={{ display:"flex", flexDirection:"column", position:"absolute", right:8}}>
                         <CloseOutlined fontSize="small" sx={{color:theme.main.text.dark}}/>
                     <Typography color={theme.main.text.dark} variant="subtitle1">Close</Typography>
-                    </IconButton> : <Box width={30}></Box>}
+                    </IconButton> : null}
             </Stack>
             <Stack direction="row" alignItems="center" spacing={1} justifyContent="center" height={30}>
                 {results ? <Box display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" height={35} p={0} m={0}>

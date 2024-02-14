@@ -7,19 +7,7 @@ import { returnMunicipality } from "../../arcgis/geoprocessing/geoprocessing"
 import { Link } from "react-router-dom"
 
 
-const panelContentTitleMain = {
-    display:"flex",
-    border: 3,
-    padding:"2px",
-    borderColor: theme.palette.primary.main,
-    borderRadius: theme.shape.borderRadius,
-    color: theme.palette.primary.main,
-    fontSize: theme.typography.h3.fontSize,
-    justifyContent: "center",
-    alignItems:"center",
-    width:"fit-content",
-    height:"fit-content",
-}
+
 
 const prefix = (key) => {
     switch (key) {
@@ -30,12 +18,26 @@ const prefix = (key) => {
     }
 }
 
-const PropertyDetail = ({property}) => {
+const PropertyDetail = ({property, pinLableColor}) => {
 
     const { screenWidth, dataDictionary, panelDisplay, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
 
     const [ categories, setCategories ] = useState(null)
     const [ muni, setMuni ] = useState(null)
+
+    const panelContentTitleMain = {
+        display:"flex",
+        border: 3,
+        padding:"2px",
+        borderColor: pinLableColor,
+        borderRadius: theme.shape.borderRadius,
+        color: pinLableColor,
+        fontSize: theme.typography.h3.fontSize,
+        justifyContent: "center",
+        alignItems:"center",
+        width:"fit-content",
+        height:"fit-content",
+    }
 
 
     function handleClick(){
@@ -185,7 +187,7 @@ const PropertyDetail = ({property}) => {
                     <Typography 
                         align="left"
                         variant="h5" 
-                        sx={{color: category === "top" && subIndex==0 ? theme.palette.primary.main: theme.main.text.dark }}>
+                        sx={{color: category === "top" && subIndex==0 ? pinLableColor: theme.main.text.dark }}>
                             {property?.attributes[data.attributes['field']] ? 
                             `${prefix(data.attributes['type'])}${property?.attributes[data.attributes['field']]}`:
                             "Data unavailable"}
