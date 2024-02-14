@@ -265,25 +265,39 @@ export async function createGraphic(features, remove, color, secondary){
 }
 
 
-  export async function compareProperities(feature){
+  export async function compareProperities(whereQuery){
 
     let query = new Query()
-    query.geometry = feature.geometry
-    query.spatialRelationship = "intersects"
-    query.distance = "300"
-    query.units = "feet"
+    query.where = whereQuery
     query.returnGeometry = true
 
     let {features} = await targetLayer.queryFeatures(query)
 
     console.log("queried Features: ", features)
 
-    let filteredFeatures = features.filter((f) => f.attributes['PIN14'] !== feature.attributes['PIN14'])
-
-    createGraphic(filteredFeatures, true, "red", true)
-
-    createGraphic([feature], false, "darkBlue")
+    createGraphic(features, false, "red", true)
 
   }
+
+  // export async function compareProperities(feature){
+
+  //   let query = new Query()
+  //   query.geometry = feature.geometry
+  //   query.spatialRelationship = "intersects"
+  //   query.distance = "300"
+  //   query.units = "feet"
+  //   query.returnGeometry = true
+
+  //   let {features} = await targetLayer.queryFeatures(query)
+
+  //   console.log("queried Features: ", features)
+
+  //   let filteredFeatures = features.filter((f) => f.attributes['PIN14'] !== feature.attributes['PIN14'])
+
+  //   createGraphic(filteredFeatures, true, "red", true)
+
+  //   createGraphic([feature], false, "darkBlue")
+
+  // }
 
   

@@ -194,11 +194,11 @@ theme.typography.h6 = {
 theme.typography.body1 = {
     [theme.breakpoints.up('md')]: {
         fontSize: 16,
-        color: theme.main.text.dark
+        
     },
     [theme.breakpoints.down('md')]: {
         fontSize: 15,
-        color: theme.main.text.dark
+        
     },
     // [theme.breakpoints.down('sm')]: {
     //     fontSize: 20

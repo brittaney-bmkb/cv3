@@ -208,12 +208,11 @@ export const AppProvider = ({children}) => {
         setPanelDisplay("resultsList")
     }
 
-    const searchComparableProperties = async () => {
+    const searchComparableProperties = async (whereQuery) => {
 
         const { compareProperities } = await import('../arcgis/webmap/webmap')
-        const { primaryResultFeature } = state
 
-        compareProperities(primaryResultFeature)
+        compareProperities(whereQuery)
 
     }
 

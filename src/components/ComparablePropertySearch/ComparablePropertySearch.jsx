@@ -1,4 +1,4 @@
-import { Box, Divider, TextField, Typography } from "@mui/material"
+import { Box, Button, Divider, TextField, Typography } from "@mui/material"
 import StyledButtonFilledPrimary from "../Button/Button"
 import UseAppContext from "../../contexts/AppContext"
 import styled from "@emotion/styled";
@@ -8,8 +8,8 @@ const textFieldWidth = 175
 
 const CustomStyledTextField = styled(TextField)({
     '& .MuiInputBase-input': {
-      height: 20,
-      padding: 5,
+      height: 22,
+      padding: 2,
       paddingLeft: 10
     },
     display: 'flex',
@@ -21,7 +21,7 @@ const presetTextFields = {
     "Source Pin":"PIN14",
     "Township": "township_name",
     "Neighborhood": "NBHD",
-    "Property Class": "class_info_display"
+    "Property Class": "BCLASS"
 }
 
 const constructionTypes = [
@@ -38,11 +38,16 @@ const ComparablePropertySearch= () => {
 
     const { searchComparableProperties, primaryResultFeature } = UseAppContext()
 
-    const [ buildingSqFtMin, setBuildingSqFtMin ] = useState(null)
-    const [ buildingSqFtMax, setBuildingSqFtMax ] = useState(null)
+    const [ buildingSqFtMin, setBuildingSqFtMin ] = useState(0)
+    const [ buildingSqFtMax, setBuildingSqFtMax ] = useState(0)
 
-    const [ landSqFtMin, setLandSqFtMin ] = useState(null)
-    const [ landSqFtMax, setLandSqFtMax ] = useState(null)
+    const [ landSqFtMin, setLandSqFtMin ] = useState(0)
+    const [ landSqFtMax, setLandSqFtMax ] = useState(0)
+
+    const [constructionType, setConstructionType] = useState(constructionTypes[0])
+
+    const [ ageMax, setAgeMax ] = useState(0)
+    const [ ageMin, setAgeMin ] = useState(0)
 
     function handleInput(inputType, event){
 
@@ -57,7 +62,14 @@ const ComparablePropertySearch= () => {
             case "land sqft min":
                 setLandSqFtMin(value);
             case "land sqft max":
-                setLandSqFtMax(value);          
+                setLandSqFtMax(value);      
+            case "construction type":
+                let constructionValue = event.target.value 
+                setConstructionType(constructionValue);    
+            case "age min":
+                setAgeMin(value);
+            case "age max":
+                setAgeMax(value); 
             default:
                 null;
         } 
@@ -67,8 +79,24 @@ const ComparablePropertySearch= () => {
         searchComparableProperties()
     }
 
+    function handleSetQuery(){
+        let constructionTypeSelect = constructionType === 'Any' ? '*': constructionType
+        let bClass = '200'
+        let query =`township_name = '${primaryResultFeature.attributes['township_name']}' AND
+        NBHD = '${primaryResultFeature.attributes['NBHD']}' AND BCLASS = '${bClass}'
+                    AND (BLDGSQFT >= ${buildingSqFtMin} AND BLDGSQFT <= ${buildingSqFtMax} ) 
+                    AND (LANDSF >= ${landSqFtMin} AND LANDSF <= ${landSqFtMax} )  
+                    AND (BLDGAGE >= ${ageMin} AND BLDGAGE <= ${ageMax} )
+                    AND bldg_const_desc = '${constructionTypeSelect}' AND PIN14 <> '${primaryResultFeature.attributes['PIN14']}'`
+        
+        console.log("Comparable query = ", query)
+
+        searchComparableProperties(query)
+        return query
+    }
+
     return(
-        <Box display="flex" flexDirection="column" rowGap={2} p={2} component="form" sx={{overflowY:"scroll"}} flex={1} minHeight={0} pb="150px"> 
+        <Box display="flex" flexDirection="column" rowGap={2} p={2} component="form" sx={{overflowY:"scroll"}} flex={1} minHeight={0} pb="100px"> 
             <Typography variant="h4">
                 Source Property
             </Typography>
@@ -154,7 +182,7 @@ const ComparablePropertySearch= () => {
             </Box>
             <Divider/>
             <Typography variant="h4">Characteristics</Typography>
-            <Box>
+            <Box display="flex" flexDirection="column" rowGap={1}>
             <Box id="characteristics" display="flex" height={20} alignItems="center" pt={1} columnGap={2} >
                 <Box display="flex" flex={1}>
                     <Typography variant="body2" width={122}>Construction Type</Typography>
@@ -167,23 +195,66 @@ const ComparablePropertySearch= () => {
                 margin="dense" 
                 size="small"
                 type="text"
+                onChange={(event) => {
+                    handleInput("construction type", event)
+                }}
                 SelectProps={{
                     native: true,
                   }}
                 >
                     {constructionTypes.map((constructionType) => (
                         <option key={constructionType} value={constructionType}>
-                            <Typography variant="body1">
+                            <Typography variant="body1" fontFamily="barlow">
                                 {constructionType}
                             </Typography>
                         </option>
                     ))}
                 </CustomStyledTextField>
                 </Box>
+                <Box id="building-age" display="flex" flexDirection="column" pt={1} columnGap={2} >
+                    <Box display="flex" flex={1}>
+                        <Typography variant="body2" width={122}>Building Age</Typography>
+                    </Box>
+                        <Box display="flex" flexDirection="row" alignItems="center" columnGap={1}>
+                        <CustomStyledTextField
+                        id="age-min"
+                        variant="outlined" 
+                        fullWidth 
+                        margin="dense" 
+                        size="small"
+                        type="text"
+                        value={ageMin ? `${ageMin} years`:  `${0} years`}
+                        onInput={(event) => {
+                            handleInput("age min", event)
+                        }}
+                        />
+                        <Typography variant="body2">to</Typography>
+                        <CustomStyledTextField
+                        id="age-max"
+                        variant="outlined" 
+                        fullWidth 
+                        margin="dense" 
+                        size="small"
+                        type="text"
+                        value={ageMax ? `${ageMax} years`: `${0} years`}
+                        onInput={(event) => {
+                            handleInput("age max", event)
+                        }}
+                        />
+                    </Box>
+                </Box>
+                
+            </Box>
+
+            <Divider/>
+            
+            <Box display="flex" width="100%" justifyContent="end" alignItems="center" columnGap={2}>
+                <Button variant="text" sx={{textTransform:"none"}}>
+                    <Typography variant="body1">Cancel</Typography>
+                </Button>
+                <StyledButtonFilledPrimary text={"Search"} onClick={handleSetQuery} textVarient={"body1"}/>
             </Box>
             
-            
-            <StyledButtonFilledPrimary text={"Search"} onClick={handleClick} />
         </Box>
         
     )
