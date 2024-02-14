@@ -71,7 +71,7 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
                         sx={{ display:"flex", flexDirection:"column"}}>
                         <ChevronLeft fontSize="small" sx={{color:theme.main.text.dark}}/>
                     <Typography color={theme.main.text.dark} variant="subtitle1">Back</Typography>
-                    </IconButton> : null}
+                    </IconButton> : <Box width={30}></Box>}
                 <Box display="flex" flex={1} alignItems="center" justifyContent="space-around" p={1} minWidth={150}>
                     <Box bgcolor={theme.main.backgroundColor.grey} p={1} sx={{borderRadius: theme.shape.borderRadius}}>
                         <Typography variant="h4" color={theme.main.text.dark}>{text}</Typography>
@@ -83,7 +83,7 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
                         sx={{ display:"flex", flexDirection:"column"}}>
                         <CloseOutlined fontSize="small" sx={{color:theme.main.text.dark}}/>
                     <Typography color={theme.main.text.dark} variant="subtitle1">Close</Typography>
-                    </IconButton> : <Box width={35}></Box>}
+                    </IconButton> : <Box width={30}></Box>}
             </Stack>
             <Stack direction="row" alignItems="center" spacing={1} justifyContent="center" height={30}>
                 {results ? <Box display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" height={35} p={0} m={0}>
