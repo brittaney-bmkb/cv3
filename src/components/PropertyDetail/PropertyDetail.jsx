@@ -4,23 +4,30 @@ import UseAppContext from "../../contexts/AppContext"
 import { useEffect, useState } from "react"
 import { theme } from "../../theme"
 import { returnMunicipality } from "../../arcgis/geoprocessing/geoprocessing"
+import { Link } from "react-router-dom"
 
 
 const panelContentTitleMain = {
     display:"flex",
     border: 3,
+    padding:"2px",
     borderColor: theme.palette.primary.main,
     borderRadius: theme.shape.borderRadius,
     color: theme.palette.primary.main,
     fontSize: theme.typography.h3.fontSize,
-    justifyContent:"center"
+    justifyContent: "center",
+    alignItems:"center",
+    width:"fit-content",
+    height:"fit-content",
 }
 
-const panelContentTitleSecondary = {
-    display:"flex",
-    color: theme.main.text.dark,
-    fontSize: theme.typography.h4.fontSize,
-    justifyContent:"center"
+const prefix = (key) => {
+    switch (key) {
+        case 'money':
+            return "$";
+        default:
+            return '';
+    }
 }
 
 const PropertyDetail = () => {
@@ -70,19 +77,29 @@ const PropertyDetail = () => {
     }, [categories]);
 
     const propertyComparison = (key) => (
+        <Box
+        pt={1}
+        >
         <StyledButtonFilledPrimary 
         key={key}
         text={"Compare Properties"}
         onClick={handleClick}
+        variant={"h5"}
         />
+        </Box>
+
     )
 
     const nearbyProperties = (key) =>  (
+        <Box pt={1}>
         <StyledButtonFilledPrimary 
         key={key}
         text={"Nearby Parcels"}
         onClick={handleClick}
+        variant={"h5"}
         />
+        </Box>
+
     )
 
     const incorp_unincorp = () => (
@@ -95,6 +112,36 @@ const PropertyDetail = () => {
 
             </Box>
         )
+
+    const returnHyperlink = (text, params, url, attributes) => {
+
+        let urlFormatted = url
+        let paramsValues = params.split(",")
+
+        console.log("url data attributes: ", attributes)
+
+        paramsValues.map((param) => {
+            console.log("Replacing: ", `{${param}}`)
+            urlFormatted = urlFormatted.replace(`{${param}}`, attributes[param])
+        })
+
+        console.log("url text: ", text, urlFormatted)
+
+        return (
+        <Box 
+        display="flex"
+        >   
+        {/* <Link to={urlFormatted} target="_blank"> */}
+            <Typography 
+            variant="h5"
+            component={Link} 
+            to={urlFormatted} 
+            target="_blank"
+            fontFamily={"barlow"} 
+            color={theme.palette.primary.light}>{text}</Typography>
+        {/* </Link> */}
+        </Box>
+    )}
 
     const fetchPropertyDetailData = (category, index) => {
         let filteredData = dataDictionary
@@ -123,15 +170,42 @@ const PropertyDetail = () => {
                     data.attributes['field'] === "incorp_unincorp_state" ?
                         incorp_unincorp(data) :
 
+                    data.attributes['hyperlink_text'] && data.attributes['hyperlink_params'] && data.attributes['hyperlink_url'] ?
+                        returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], primaryResultFeature?.attributes) :
+
                 <Box 
-                display="flex"
-                sx={index === 0 && subIndex===0 ? panelContentTitleMain : category === 'top' ? panelContentTitleSecondary: null}
-                >
-                    <Typography variant={category !== "top" ? "h5": subIndex > 0 ? "h5" : "h3"} sx={{color: category === "top" && subIndex==0 ? theme.palette.primary.main: theme.main.text.dark }}>
-                        {primaryResultFeature?.attributes[data.attributes['field']]}
-                    </Typography>
+                width="100%"
                 
-                </Box>}
+                display="flex" 
+                justifyContent={category === 'top' ? "center" : "left"}>
+                <Box 
+                id="data-field-container"
+                sx={index === 0 && category === 'top' && subIndex ===0 ? panelContentTitleMain : null}
+                >
+                    <Typography 
+                        align="left"
+                        variant="h5" 
+                        sx={{color: category === "top" && subIndex==0 ? theme.palette.primary.main: theme.main.text.dark }}>
+                            {primaryResultFeature?.attributes[data.attributes['field']] ? 
+                            `${prefix(data.attributes['type'])}${primaryResultFeature?.attributes[data.attributes['field']]}`:
+                            "Data unavailable"}
+                    </Typography>
+                    
+                </Box>
+                </Box>
+
+                }
+
+                    <Box>
+                    {
+                        data.attributes['credit'] ? 
+                        <Typography variant="h6">
+                            { data.attributes['credit'] }
+                        </Typography> :
+                        null
+
+                    }
+                </Box>
                     {filteredData.length -1 === subIndex ? <Divider variant="fullWidth" sx={{p: 1}}/> : null}
                 </Box>
             
@@ -139,23 +213,30 @@ const PropertyDetail = () => {
         })
 
         return(
-            <Box key={category} display="flex" flexDirection="column" width="100%" pt={1} rowGap={2}>
+            <Box key={category} display="flex" flexDirection="column" width="100%" pt={1} rowGap={1}>
                 {category !== 'top' ? <Typography variant="h2">{category}</Typography> : null}
-                <Box display="flex" flexDirection="column" width="100%" pl={category === "top" ? 0 :1} rowGap={category === "top" ? 1 : 2}>
+                <Box 
+                id={"property-detail-data-container"} 
+                width="100%"
+                display="flex" flexDirection="column" 
+                pl={category === "top" ? 0 :1} 
+                rowGap={category === "top" ? "1px" : 2}>
                     {data}
+                    
                 </Box>
+                
                 
             </Box>
         )
     }
 
     return(
-        <Box display="flex" flexDirection="column" width="100%" height="100%" >
-            <Box display="flex" flexDirection="column" width="100%" justifyContent="center" alignItems="center" height="auto">
+        <Box display="flex" flexDirection="column" width="100%"  flexGrow={1} minHeight={0}>
+            <Box display="flex" flexDirection="column" flexGrow={1} justifyContent="center" alignItems="center" pt={1}>
                 {fetchPropertyDetailData('top', 0)}
             </Box>
             
-            <Box display="flex" flexDirection="column" flex={1} rowGap={2} p={2} sx={{overflowY:"scroll"}} height="100%">
+            <Box display="flex" flexDirection="column" rowGap={1} sx={{overflowY:"auto", overflowX:"hidden"}}  flexGrow={1} minHeight={0} pl={1} pr={2} boxSizing="content-box">
             {categories?.map((category, index) => {
                 return(
                     fetchPropertyDetailData(category, index+1)

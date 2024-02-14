@@ -38,14 +38,14 @@ const ResultCard = ({pin, address, city_state_zip}) => {
             justifyContent:"space-between", 
             alignItems:"center",
             width:"100%",
-            p:1
+            p:0
             }}>
             <CardActionArea>
 
             
-            <CardContent>
+            <CardContent sx={{p:1, pt:2}}>
                 <Box display="flex" width="100%" flexDirection="column" justifyContent='center' alignItems="center" rowGap={2}>
-                     <Box display="flex" sx={{border:3, borderColor:theme.palette.primary.main }} borderRadius={theme.shape.borderRadius}>
+                     <Box display="flex" sx={{border:3, borderColor:theme.palette.primary.main, padding:"2px" }} borderRadius={theme.shape.borderRadius}>
                         <Typography color={theme.palette.primary.main} variant="h5">{pin}</Typography>
                      </Box>
                      <Box display="flex" flexDirection="column" alignItems="center">
@@ -58,12 +58,12 @@ const ResultCard = ({pin, address, city_state_zip}) => {
                 </Box>
                  
             </CardContent>
-            <Divider flexItem={true} variant="fullWidth" sx={{color:theme.main.text.grey}}/>   
+            {/* <Divider flexItem={true} variant="fullWidth" sx={{color:theme.main.text.grey}}/>   
             <Box display="flex" flexWrap="wrap" gap={1} alignItems="center" justifyContent="center" pt={1}>
                 <Typography align="center" variant="subtitle2" color={theme.palette.info.dark}>Total Value</Typography>
                 <Typography align="center" variant="subtitle2" color={theme.palette.info.dark}>Classification</Typography>
                 <Typography align="center" variant="subtitle2" color={theme.palette.info.dark}>Building Sq Ft</Typography>
-            </Box>
+            </Box> */}
             </CardActionArea>
         </Card>
 

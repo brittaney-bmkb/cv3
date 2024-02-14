@@ -54,6 +54,7 @@ export const SecondaryPanel = () => {
             p={2} 
             bgcolor="white" 
             flex={1} 
+            minWidth={300}
             flexDirection="column" 
             height="100%"
             sx={{display:{xs:'none', sm:'none', md: 'none', lg: panelSecondaryVisible ? 'flex' :'none'}}}>
@@ -128,7 +129,7 @@ export const LeftPanel = () => {
     const { panelPrimaryVisible, setPanelSecondaryVisibility, panelDisplaySecondary, setPanelDisplaySecondary, panelDisplay, screenWidth, setPanelDisplay, setPanelPrimaryVisibility } = UseAppContext()
 
         useEffect(() => {
-            if(screenWidth >= theme.breakpoints.values.lg && panelDisplay === 'comparablePropertySearch'){
+            if(screenWidth >= theme.breakpoints.values.md && panelDisplay === 'comparablePropertySearch'){
                 setPanelPrimaryVisibility(true);
                 setPanelDisplay('propertyDetail');
 
@@ -147,13 +148,14 @@ export const LeftPanel = () => {
 
     return(
         <Box 
-            height="80%"
+            id="left-panel"
+            minHeight={0}
             bgcolor="white" 
-            flex={1}  
-            p={2} 
+            flex={1}
+            minWidth={300}  
             flexDirection="column" 
-            sx={{display:{xs:'none', sm: panelPrimaryVisible ? 'block' : 'none'}}}>
-                <PanelContent display={panelDisplay}/>
+            sx={{display:{xs:'none', sm: panelPrimaryVisible ? 'flex' : 'none'}}}>
+                <PanelContent id="panel-content" display={panelDisplay}/>
         </Box>
         
     )

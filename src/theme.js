@@ -15,7 +15,7 @@ export const theme = createTheme({
     palette:{
         primary:{
             main:"#0D4D96",
-            light: "#59BDE7",
+            light: "#00A5B8",
             contrastText:"#f5f5f5",
         },
         secondary:{
@@ -59,25 +59,45 @@ export const theme = createTheme({
             fontSize: 15
         },
         subtitle1: {
-            fontSize: 14
+            fontSize: 12,
+            fontWeight:400
         },
         subtitle2: {
+            fontSize: 14,
+            fontWeight:500
+        },
+        hyperLink:{
             fontSize: 14,
             fontWeight:500
         }
     }
 })
 
-//Response font size for nav bar
+theme.typography.subtitle1 = {
+    [theme.breakpoints.up('md')]: {
+        fontSize: 12,
+        fontWeight:400,
+        
+    },
+    [theme.breakpoints.down('md')]: {
+        fontSize: 11,
+        fontWeight:400
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: 10,
+        fontWeight:400
+    }
+}
+
 theme.typography.h1 = {
     [theme.breakpoints.up('md')]: {
         fontSize: 36
     },
     [theme.breakpoints.down('md')]: {
-        fontSize: 30
+        fontSize: 24
     },
     [theme.breakpoints.down('sm')]: {
-        fontSize: 24
+        fontSize: 20
     }
 }
 
@@ -136,33 +156,33 @@ theme.typography.h5 = {
     [theme.breakpoints.up('md')]: {
         fontSize: 16,
         fontWeight: 600,
-        color: theme.main.text.dark
+        //color: theme.main.text.dark
     },
     [theme.breakpoints.down('md')]: {
         fontSize: 15,
-        fontWeight: 500,
-        color: theme.main.text.dark
+        fontWeight: 600,
+        //color: theme.main.text.dark
     },
     [theme.breakpoints.down('sm')]: {
         fontSize: 14,
         fontWeight: 500,
-        color: theme.main.text.dark
+        //color: theme.main.text.dark
     }
 }
 
 theme.typography.h6 = {
     [theme.breakpoints.up('md')]: {
-        fontSize: 16,
-        fontWeight: 500,
-        color: theme.palette.info.dark
-    },
-    [theme.breakpoints.down('md')]: {
         fontSize: 15,
         fontWeight: 500,
         color: theme.palette.info.dark
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
         fontSize: 14,
+        fontWeight: 500,
+        color: theme.palette.info.dark
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: 13,
         fontWeight: 500,
         color: theme.palette.info.dark
     }

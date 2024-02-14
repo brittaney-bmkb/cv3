@@ -62,7 +62,7 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
     }
 
     return(
-        <Box display="flex" flexDirection="column" rowGap={0} height="auto">
+        <Box display="flex" flexDirection="column" rowGap={0}>
             
             <Stack direction="row">
             {backButton ? 
@@ -71,10 +71,10 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
                         sx={{ display:"flex", flexDirection:"column"}}>
                         <ChevronLeft fontSize="small" sx={{color:theme.main.text.dark}}/>
                     <Typography color={theme.main.text.dark} variant="subtitle1">Back</Typography>
-                    </IconButton> : null}
+                    </IconButton> : <Box width={30}></Box>}
                 <Box display="flex" flex={1} alignItems="center" justifyContent="space-around" p={1} minWidth={150}>
                     <Box bgcolor={theme.main.backgroundColor.grey} p={1} sx={{borderRadius: theme.shape.borderRadius}}>
-                        <Typography variant="h4" color={theme.main.text.dark}>{text}</Typography>
+                        <Typography variant="h5" color={theme.main.text.dark}>{text}</Typography>
                     </Box> 
                 </Box>
                 {closeButton ? 
@@ -83,11 +83,11 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
                         sx={{ display:"flex", flexDirection:"column"}}>
                         <CloseOutlined fontSize="small" sx={{color:theme.main.text.dark}}/>
                     <Typography color={theme.main.text.dark} variant="subtitle1">Close</Typography>
-                    </IconButton> : null}
+                    </IconButton> : <Box width={30}></Box>}
             </Stack>
-            <Stack direction="row" alignItems="center" spacing={1} justifyContent="center">
-                {results ? <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" rowGap={0}>
-                    <Typography variant="subtitle1" color={theme.main.text.dark} align="center" >
+            <Stack direction="row" alignItems="center" spacing={1} justifyContent="center" height={30}>
+                {results ? <Box display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" height={35} p={0} m={0}>
+                    <Typography variant="subtitle2" color={theme.main.text.dark} align="center" sx={{height:21}}>
                         {searchFeatures ? searchFeatures.length: 0}
                     </Typography>
                     <Typography variant="subtitle1" color={theme.main.text.dark} align="center">
@@ -95,13 +95,13 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
                     </Typography>
                 </Box> : null}
                 {clearButton ? 
-                <StyledIconButton icon={<HighlightOffIcon fontSize="small" sx={{color: theme.main.text.dark}}/>} text={"Clear"} onClick={handleClearResults}/>
+                <StyledIconButton icon={<HighlightOffIcon fontSize="small" sx={{color: theme.main.text.dark, width: 15}}/>} text={"Clear"} onClick={handleClearResults}/>
                 : null}
                 {exportButton ? 
-                <StyledIconButton icon={<FileDownloadOutlinedIcon fontSize="small" sx={{color: theme.main.text.dark}}/>} text={"Export"} onClick={handleExport}/>
+                <StyledIconButton icon={<FileDownloadOutlinedIcon fontSize="small" sx={{color: theme.main.text.dark, width: 15}}/>} text={"Export"} onClick={handleExport}/>
                 : null}
                 {feedbackButton ? 
-                <StyledIconButton icon={<FeedbackOutlinedIcon fontSize="small" sx={{color: theme.main.text.dark}}/>} text={"Feedback"} onClick={handleFeedback}/>
+                <StyledIconButton icon={<FeedbackOutlinedIcon fontSize="small" sx={{color: theme.main.text.dark, width: 15}}/>} text={"Feedback"} onClick={handleFeedback}/>
                 : null}
                 </Stack>
 

@@ -25,7 +25,7 @@ const PanelContent = ({display}) => {
                 </Box>)
         case 'propertyDetail':
             return (
-                <Box display="flex" flexDirection="column" height="100%">
+                <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
                         <PanelHeader 
                         text={"Property Results"} 
                         exportButton={true} 
@@ -33,10 +33,10 @@ const PanelContent = ({display}) => {
                         feedbackButton={true} 
                         backButton={true}
                         backButtonComponent={'resultsList'}
-                        closeButton={true}
+                        closeButton={false}
                         panel={"primary"}
                         />
-                        <Box display="flex" flexDirection="column" height="100%">
+                        <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
                             <PropertyDetail/>
                         </Box>
                         
@@ -51,7 +51,7 @@ const PanelContent = ({display}) => {
                 // bottom is set through width. 
                 <Box bgcolor="white" flex={1} flexDirection="column">
                     <PanelHeader 
-                    text={"Comparable Property Search"} 
+                    text={"Comparable Search"} 
                     closeButton={true}
                     panel={"secondary"}
                     backButton={screenWidth < theme.breakpoints.values.lg}
