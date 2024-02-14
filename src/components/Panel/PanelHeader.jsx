@@ -74,7 +74,7 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
                     </IconButton> : <Box width={30}></Box>}
                 <Box display="flex" flex={1} alignItems="center" justifyContent="space-around" p={1} minWidth={150}>
                     <Box bgcolor={theme.main.backgroundColor.grey} p={1} sx={{borderRadius: theme.shape.borderRadius}}>
-                        <Typography variant="h4" color={theme.main.text.dark}>{text}</Typography>
+                        <Typography variant="h5" color={theme.main.text.dark}>{text}</Typography>
                     </Box> 
                 </Box>
                 {closeButton ? 

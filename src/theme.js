@@ -155,7 +155,7 @@ theme.typography.h4 = {
 theme.typography.h5 = {
     [theme.breakpoints.up('md')]: {
         fontSize: 16,
-        fontWeight: 700,
+        fontWeight: 600,
         //color: theme.main.text.dark
     },
     [theme.breakpoints.down('md')]: {

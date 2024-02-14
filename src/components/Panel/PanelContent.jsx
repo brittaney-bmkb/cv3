@@ -51,7 +51,7 @@ const PanelContent = ({display}) => {
                 // bottom is set through width. 
                 <Box bgcolor="white" flex={1} flexDirection="column">
                     <PanelHeader 
-                    text={"Comparable Property Search"} 
+                    text={"Comparable Search"} 
                     closeButton={true}
                     panel={"secondary"}
                     backButton={screenWidth < theme.breakpoints.values.lg}
