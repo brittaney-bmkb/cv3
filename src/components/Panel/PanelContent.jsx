@@ -21,7 +21,7 @@ const PanelContent = ({display}) => {
                 <Box display="flex" flexDirection="column" height="100%" >
                     <PanelHeader text={"Property Results"} exportButton={true} clearButton={true} results={true} feedbackButton={true}/>
                     <Box display="flex" flexDirection="column" sx={{ overflowY:"scroll", flexGrow: 1}}>
-                        <ResultsList results={searchFeatures}/>
+                        <ResultsList results={searchFeatures} primaryLableColor={theme.palette.primary.main}/>
                     </Box>   
                 </Box>)
         case 'propertyDetail':
@@ -92,7 +92,7 @@ const PanelContent = ({display}) => {
                 <Box display="flex" flexDirection="column" height="100%" >
                     <PanelHeader text={"Comparable Results"} exportButton={true} clearButton={true} results={true} feedbackButton={true}/>
                     <Box display="flex" flexDirection="column" sx={{ overflowY:"scroll"}} flexGrow={1} minHeight={0}>
-                        <ResultsList results={comparableParcels}/>
+                        <ResultsList results={comparableParcels} primaryLableColor={theme.palette.secondary.main}/>
                     </Box>   
                 </Box>)
         case 'measureWidget':

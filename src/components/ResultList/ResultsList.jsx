@@ -3,9 +3,7 @@ import ResultCard from "../ResultCard/ResultCard"
 import UseAppContext from "../../contexts/AppContext"
 import { theme } from "../../theme"
 
-const ResultsList = ({results}) => {
-
-    console.log("results: ", results)
+const ResultsList = ({results, primaryLableColor}) => {
 
     return(
         <List sx={{
@@ -22,6 +20,7 @@ const ResultsList = ({results}) => {
                         pin={result.attributes['PIN14_dash']}
                         address={result.attributes['street_address']}
                         city_state_zip={result.attributes['city_state_zip']}
+                        primaryColor={primaryLableColor}
                         />
                     </ListItem>
                 )
