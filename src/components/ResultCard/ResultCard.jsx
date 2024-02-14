@@ -22,15 +22,22 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import UseAppContext from "../../contexts/AppContext"
 import { theme } from "../../theme"
 
-const ResultCard = ({pin, address, city_state_zip, primaryColor}) => {
+const ResultCard = ({pin, address, city_state_zip, primaryColor, feature}) => {
 
-    const { setPanelDisplay, selectResultFromList } = UseAppContext()
+    const { setPanelDisplay, selectResultFromList, setSecondaryResultFeature, setPanelDisplaySecondary, panelSecondaryVisible, panelDisplay } = UseAppContext()
 
     return(
         <Card 
         onClick={() => {
-            setPanelDisplay("propertyDetail")
-            selectResultFromList(pin)
+            if(primaryColor === theme.palette.primary.main){
+                setPanelDisplay("propertyDetail")
+                selectResultFromList(pin)
+            }
+            else{
+                setPanelDisplaySecondary("propertyDetailComparable")
+                setSecondaryResultFeature(feature)
+            }
+            
         }}
         sx={{
             display: "flex", 

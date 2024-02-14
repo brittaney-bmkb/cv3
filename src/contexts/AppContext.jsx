@@ -38,6 +38,15 @@ export const AppProvider = ({children}) => {
         })
     } 
 
+    const setSecondaryResultFeature = (feature) => {
+        dispatch({
+            type:"SET_SECONDARY_RESULT_FEATURE",
+             payload: {
+                secondaryResultFeature: feature,
+            }
+        })
+    } 
+
     const loadMap = async () => {
 
         const {initializeMap} = await import('../arcgis/webmap/webmap')
@@ -269,7 +278,9 @@ export const AppProvider = ({children}) => {
         setScreenWidth,
         newSearch: state.newSearch,
         searchNearbyProperties,
-        comparableParcels: state.comparableParcels
+        comparableParcels: state.comparableParcels,
+        secondaryResultFeature: state.secondaryResultFeature,
+        setSecondaryResultFeature
     }
 
 

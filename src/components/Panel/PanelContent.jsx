@@ -13,13 +13,18 @@ import CompareNearby from "../ComparableProperty/CompareNearby"
 
 const PanelContent = ({display}) => {
 
-    const { screenWidth, primaryResultFeature, searchFeatures, comparableParcels } = UseAppContext()
+    const { screenWidth, primaryResultFeature, searchFeatures, comparableParcels, secondaryResultFeature } = UseAppContext()
 
     switch(display){
         case 'resultsList':
             return (
                 <Box display="flex" flexDirection="column" height="100%" >
-                    <PanelHeader text={"Property Results"} exportButton={true} clearButton={true} results={true} feedbackButton={true}/>
+                    <PanelHeader
+                     text={"Property Results"} 
+                     exportButton={true} 
+                     clearButton={true} 
+                     results={searchFeatures.length} 
+                     feedbackButton={true}/>
                     <Box display="flex" flexDirection="column" sx={{ overflowY:"scroll", flexGrow: 1}}>
                         <ResultsList results={searchFeatures} primaryLableColor={theme.palette.primary.main}/>
                     </Box>   
@@ -59,7 +64,7 @@ const PanelContent = ({display}) => {
                     backButtonComponent={"propertyDetail"}
                     />
                     <Divider/>
-                    <Box  display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
+                    <Box  display="flex" flexDirection="column" >
                         <ComparablePropertySearch/>
                     </Box>
                     
@@ -72,7 +77,7 @@ const PanelContent = ({display}) => {
             // replace the bottom panel 
             // width id set through flex
             // bottom is set through width. 
-            <Box  display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
+            <Box  display="flex" flexDirection="column" >
                 <PanelHeader 
                 text={"Nearby Properties"} 
                 closeButton={true}
@@ -81,7 +86,7 @@ const PanelContent = ({display}) => {
                 backButtonComponent={"propertyDetail"}
                 />
                 <Divider/>
-                <Box  display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
+                <Box  display="flex" width="100%">
                     <CompareNearby/>
                 </Box>
                 
@@ -90,10 +95,40 @@ const PanelContent = ({display}) => {
         case 'resultsListComparables':
             return (
                 <Box display="flex" flexDirection="column" height="100%" >
-                    <PanelHeader text={"Comparable Results"} exportButton={true} clearButton={true} results={true} feedbackButton={true}/>
+                    <PanelHeader 
+                    text={"Comparable Results"} 
+                    exportButton={true} 
+                    clearButton={true} 
+                    results={comparableParcels? comparableParcels.length: 0} 
+                    feedbackButton={true}
+                    backButton={true}
+                    backButtonComponent={"nearbyProperties"}
+                    panel={"secondary"}
+                    />
                     <Box display="flex" flexDirection="column" sx={{ overflowY:"scroll"}} flexGrow={1} minHeight={0}>
                         <ResultsList results={comparableParcels} primaryLableColor={theme.palette.secondary.main}/>
                     </Box>   
+                </Box>)
+
+        case 'propertyDetailComparable':
+            return (
+                <Box display="flex" flexDirection="column">
+                        <PanelHeader 
+                        text={"Comparable Property"} 
+                        exportButton={true} 
+                        clearButton={true} 
+                        feedbackButton={true} 
+                        backButton={true}
+                        backButtonComponent={'resultsListComparables'}
+                        closeButton={true}
+                        panel={"secondary"}
+                        />
+                       <Box display="flex" width="100%" flexGrow={1} minHeight={0}>
+                        <PropertyDetail property={secondaryResultFeature} pinLableColor={theme.palette.secondary.main}/>
+                       </Box>
+                        
+                        
+                        
                 </Box>)
         case 'measureWidget':
             // Add panel headers 

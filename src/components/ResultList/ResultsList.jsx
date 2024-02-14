@@ -1,6 +1,5 @@
 import { Box, List, ListItem, Typography } from "@mui/material"
 import ResultCard from "../ResultCard/ResultCard"
-import UseAppContext from "../../contexts/AppContext"
 import { theme } from "../../theme"
 
 const ResultsList = ({results, primaryLableColor}) => {
@@ -21,6 +20,7 @@ const ResultsList = ({results, primaryLableColor}) => {
                         address={result.attributes['street_address']}
                         city_state_zip={result.attributes['city_state_zip']}
                         primaryColor={primaryLableColor}
+                        feature={result}
                         />
                     </ListItem>
                 )
