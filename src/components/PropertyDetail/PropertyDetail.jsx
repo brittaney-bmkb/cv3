@@ -1,4 +1,4 @@
-import { Box, Divider, Typography, useMediaQuery } from "@mui/material"
+import { Box, Divider, Link, Typography, useMediaQuery } from "@mui/material"
 import StyledButtonFilledPrimary from "../Button/Button"
 import UseAppContext from "../../contexts/AppContext"
 import { useEffect, useState } from "react"
@@ -96,6 +96,27 @@ const PropertyDetail = () => {
             </Box>
         )
 
+    const returnHyperlink = (text, params, url) => {
+
+        let urlFormatted = url
+        let paramsValues = params.split(",")
+
+        paramsValues.map((param) => {
+            urlFormatted.replace(`{${param}}`)
+        })
+
+        console.log("url text: ", text, urlFormatted)
+
+        return (
+        <Box 
+        display="flex"
+        >   
+        <Link href={urlFormatted} variant="h5">
+                {text}
+        </Link>
+        </Box>
+    )}
+
     const fetchPropertyDetailData = (category, index) => {
         let filteredData = dataDictionary
         ?.filter((data) => data.attributes['category'] === category)
@@ -122,6 +143,9 @@ const PropertyDetail = () => {
 
                     data.attributes['field'] === "incorp_unincorp_state" ?
                         incorp_unincorp(data) :
+
+                    data.attributes['hyperlink_text'] && data.attributes['hyperlink_params'] && data.attributes['hyperlink_url'] ?
+                        returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url']) :
 
                 <Box 
                 display="flex"
