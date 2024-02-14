@@ -33,7 +33,7 @@ const PanelContent = ({display}) => {
                         feedbackButton={true} 
                         backButton={true}
                         backButtonComponent={'resultsList'}
-                        closeButton={true}
+                        closeButton={false}
                         panel={"primary"}
                         />
                         <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0}>

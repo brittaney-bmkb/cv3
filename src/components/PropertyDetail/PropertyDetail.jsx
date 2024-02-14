@@ -21,11 +21,13 @@ const panelContentTitleMain = {
     height:"fit-content",
 }
 
-const panelContentTitleSecondary = {
-    display:"flex",
-    color: theme.main.text.dark,
-    fontSize: theme.typography.h5.fontSize,
-    justifyContent:"center"
+const prefix = (key) => {
+    switch (key) {
+        case 'money':
+            return "$";
+        default:
+            return '';
+    }
 }
 
 const PropertyDetail = () => {
@@ -75,19 +77,29 @@ const PropertyDetail = () => {
     }, [categories]);
 
     const propertyComparison = (key) => (
+        <Box
+        pt={1}
+        >
         <StyledButtonFilledPrimary 
         key={key}
         text={"Compare Properties"}
         onClick={handleClick}
+        variant={"h5"}
         />
+        </Box>
+
     )
 
     const nearbyProperties = (key) =>  (
+        <Box pt={1}>
         <StyledButtonFilledPrimary 
         key={key}
         text={"Nearby Parcels"}
         onClick={handleClick}
+        variant={"h5"}
         />
+        </Box>
+
     )
 
     const incorp_unincorp = () => (
@@ -121,11 +133,12 @@ const PropertyDetail = () => {
         >   
         {/* <Link to={urlFormatted} target="_blank"> */}
             <Typography 
+            variant="h5"
             component={Link} 
             to={urlFormatted} 
             target="_blank"
             fontFamily={"barlow"} 
-            color={theme.palette.primary.light} sx={{color:theme.palette.primary.light}}>{text}</Typography>
+            color={theme.palette.primary.light}>{text}</Typography>
         {/* </Link> */}
         </Box>
     )}
@@ -173,7 +186,9 @@ const PropertyDetail = () => {
                         align="left"
                         variant="h5" 
                         sx={{color: category === "top" && subIndex==0 ? theme.palette.primary.main: theme.main.text.dark }}>
-                            {primaryResultFeature?.attributes[data.attributes['field']]}
+                            {primaryResultFeature?.attributes[data.attributes['field']] ? 
+                            `${prefix(data.attributes['type'])}${primaryResultFeature?.attributes[data.attributes['field']]}`:
+                            "Data unavailable"}
                     </Typography>
                     
                 </Box>

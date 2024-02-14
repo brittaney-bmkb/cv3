@@ -15,7 +15,7 @@ export const theme = createTheme({
     palette:{
         primary:{
             main:"#0D4D96",
-            light: "#59C5D1",
+            light: "#00A5B8",
             contrastText:"#f5f5f5",
         },
         secondary:{
@@ -63,6 +63,10 @@ export const theme = createTheme({
             fontWeight:400
         },
         subtitle2: {
+            fontSize: 14,
+            fontWeight:500
+        },
+        hyperLink:{
             fontSize: 14,
             fontWeight:500
         }

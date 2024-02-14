@@ -63,6 +63,7 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
 
     return(
         <Box display="flex" flexDirection="column" rowGap={0}>
+            
             <Stack direction="row">
             {backButton ? 
                     <IconButton 
@@ -82,7 +83,7 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
                         sx={{ display:"flex", flexDirection:"column"}}>
                         <CloseOutlined fontSize="small" sx={{color:theme.main.text.dark}}/>
                     <Typography color={theme.main.text.dark} variant="subtitle1">Close</Typography>
-                    </IconButton> : null}
+                    </IconButton> : <Box width={35}></Box>}
             </Stack>
             <Stack direction="row" alignItems="center" spacing={1} justifyContent="center" height={30}>
                 {results ? <Box display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" height={35} p={0} m={0}>
