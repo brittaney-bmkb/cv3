@@ -3,6 +3,7 @@ import StyledButtonFilledPrimary from "../Button/Button"
 import UseAppContext from "../../contexts/AppContext"
 import { useEffect, useState } from "react"
 import { theme } from "../../theme"
+import { returnMunicipality } from "../../arcgis/geoprocessing/geoprocessing"
 
 
 const panelContentTitleMain = {
@@ -27,6 +28,7 @@ const PropertyDetail = () => {
     const { screenWidth, primaryResultFeature, dataDictionary, panelDisplay, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
 
     const [ categories, setCategories ] = useState(null)
+    const [ muni, setMuni ] = useState(null)
 
 
     function handleClick(){
@@ -58,6 +60,13 @@ const PropertyDetail = () => {
     
     useEffect(() => {
         console.log("categories: ", categories);
+        const getMuniValue = async () => {
+            let muniValue = await returnMunicipality(primaryResultFeature)
+            setMuni(muniValue)
+        }
+
+        getMuniValue()
+        
     }, [categories]);
 
     const propertyComparison = (key) => (
@@ -75,6 +84,17 @@ const PropertyDetail = () => {
         onClick={handleClick}
         />
     )
+
+    const incorp_unincorp = () => (
+            <Box 
+            display="flex"
+            >
+                <Typography variant="h5" sx={{color: theme.main.text.dark }}>
+                    {muni}
+                </Typography>
+
+            </Box>
+        )
 
     const fetchPropertyDetailData = (category, index) => {
         let filteredData = dataDictionary
@@ -99,6 +119,9 @@ const PropertyDetail = () => {
 
                     data.attributes['field'] === "nearby_properties" ?
                         nearbyProperties(data.attributes['FID']) :
+
+                    data.attributes['field'] === "incorp_unincorp_state" ?
+                        incorp_unincorp(data) :
 
                 <Box 
                 display="flex"
