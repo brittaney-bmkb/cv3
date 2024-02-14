@@ -9,17 +9,21 @@ import { returnMunicipality } from "../../arcgis/geoprocessing/geoprocessing"
 const panelContentTitleMain = {
     display:"flex",
     border: 3,
+    padding:"2px",
     borderColor: theme.palette.primary.main,
     borderRadius: theme.shape.borderRadius,
     color: theme.palette.primary.main,
     fontSize: theme.typography.h3.fontSize,
-    justifyContent:"center"
+    justifyContent: "center",
+    alignItems:"center",
+    width:"fit-content",
+    height:"fit-content",
 }
 
 const panelContentTitleSecondary = {
     display:"flex",
     color: theme.main.text.dark,
-    fontSize: theme.typography.h4.fontSize,
+    fontSize: theme.typography.h5.fontSize,
     justifyContent:"center"
 }
 
@@ -148,14 +152,36 @@ const PropertyDetail = () => {
                         returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url']) :
 
                 <Box 
-                display="flex"
-                sx={index === 0 && subIndex===0 ? panelContentTitleMain : category === 'top' ? panelContentTitleSecondary: null}
-                >
-                    <Typography variant={category !== "top" ? "h5": subIndex > 0 ? "h5" : "h3"} sx={{color: category === "top" && subIndex==0 ? theme.palette.primary.main: theme.main.text.dark }}>
-                        {primaryResultFeature?.attributes[data.attributes['field']]}
-                    </Typography>
+                width="100%"
                 
-                </Box>}
+                display="flex" 
+                justifyContent={category === 'top' ? "center" : "left"}>
+                <Box 
+                id="data-field-container"
+                sx={index === 0 && category === 'top' && subIndex ===0 ? panelContentTitleMain : null}
+                >
+                    <Typography 
+                        align="left"
+                        variant="h5" 
+                        sx={{color: category === "top" && subIndex==0 ? theme.palette.primary.main: theme.main.text.dark }}>
+                            {primaryResultFeature?.attributes[data.attributes['field']]}
+                    </Typography>
+                    
+                </Box>
+                </Box>
+
+                }
+
+                    <Box>
+                    {
+                        data.attributes['credit'] ? 
+                        <Typography variant="h6">
+                            { data.attributes['credit'] }
+                        </Typography> :
+                        null
+
+                    }
+                </Box>
                     {filteredData.length -1 === subIndex ? <Divider variant="fullWidth" sx={{p: 1}}/> : null}
                 </Box>
             
@@ -163,23 +189,30 @@ const PropertyDetail = () => {
         })
 
         return(
-            <Box key={category} display="flex" flexDirection="column" width="100%" pt={1} rowGap={2}>
+            <Box key={category} display="flex" flexDirection="column" width="100%" pt={1} rowGap={1}>
                 {category !== 'top' ? <Typography variant="h2">{category}</Typography> : null}
-                <Box display="flex" flexDirection="column" width="100%" pl={category === "top" ? 0 :1} rowGap={category === "top" ? 1 : 2}>
+                <Box 
+                id={"property-detail-data-container"} 
+                width="100%"
+                display="flex" flexDirection="column" 
+                pl={category === "top" ? 0 :1} 
+                rowGap={category === "top" ? "1px" : 2}>
                     {data}
+                    
                 </Box>
+                
                 
             </Box>
         )
     }
 
     return(
-        <Box display="flex" flexDirection="column" width="100%" height="100%" >
-            <Box display="flex" flexDirection="column" width="100%" justifyContent="center" alignItems="center" height="auto">
+        <Box display="flex" flexDirection="column" width="100%"  flexGrow={1} minHeight={0}>
+            <Box display="flex" flexDirection="column" flexGrow={1} justifyContent="center" alignItems="center" pt={1}>
                 {fetchPropertyDetailData('top', 0)}
             </Box>
             
-            <Box display="flex" flexDirection="column" flex={1} rowGap={2} p={2} sx={{overflowY:"scroll"}} height="100%">
+            <Box display="flex" flexDirection="column" rowGap={1} sx={{overflowY:"auto", overflowX:"hidden"}}  flexGrow={1} minHeight={0}>
             {categories?.map((category, index) => {
                 return(
                     fetchPropertyDetailData(category, index+1)

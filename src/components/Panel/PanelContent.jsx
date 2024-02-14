@@ -25,7 +25,7 @@ const PanelContent = ({display}) => {
                 </Box>)
         case 'propertyDetail':
             return (
-                <Box display="flex" flexDirection="column" height="100%">
+                <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
                         <PanelHeader 
                         text={"Property Results"} 
                         exportButton={true} 
@@ -36,7 +36,7 @@ const PanelContent = ({display}) => {
                         closeButton={true}
                         panel={"primary"}
                         />
-                        <Box display="flex" flexDirection="column" height="100%">
+                        <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
                             <PropertyDetail/>
                         </Box>
                         

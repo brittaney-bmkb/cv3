@@ -147,13 +147,13 @@ export const LeftPanel = () => {
 
     return(
         <Box 
-            height="80%"
+            id="left-panel"
+            minHeight={0}
             bgcolor="white" 
             flex={1}  
-            p={2} 
             flexDirection="column" 
-            sx={{display:{xs:'none', sm: panelPrimaryVisible ? 'block' : 'none'}}}>
-                <PanelContent display={panelDisplay}/>
+            sx={{display:{xs:'none', sm: panelPrimaryVisible ? 'flex' : 'none'}}}>
+                <PanelContent id="panel-content" display={panelDisplay}/>
         </Box>
         
     )

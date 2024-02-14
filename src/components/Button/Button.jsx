@@ -34,7 +34,7 @@ export const StyledIconButton = ({text, icon, onClick}) => {
     return(
         <IconButton sx={{display:"flex", flexDirection:"column"}} onClick={onClick}>
             {icon}
-            <Typography variant="subtitle1" color={theme.main.text.dark}>{text}</Typography>
+            <Typography variant="subtitle1" color={theme.main.text.dark} fontFamily="barlow">{text}</Typography>
         </IconButton>
     )
 }
