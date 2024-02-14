@@ -14,8 +14,7 @@ export const initialState = {
     dataDictionary:null,
     parcelQueryFields: null,
     screenWidth: null,
-    newSearch:null
-
+    newSearch:null,
 }
 
 const AppReducer = (state, action) => {

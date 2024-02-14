@@ -4,7 +4,7 @@ import Basemap from "@arcgis/core/Basemap";
 import { config } from "../../data/config";
 import Query from "@arcgis/core/rest/support/Query";
 
-export async function readFeatureLayerData(url, outFields, where){
+export async function readFeatureLayerData(url, outFields, where, returnGeometry){
 
   let layer = new FeatureLayer({
     url: url,
@@ -13,7 +13,7 @@ export async function readFeatureLayerData(url, outFields, where){
 
   let query = new Query()
   query.where = where
-  query.returnGeometry = false
+  query.returnGeometry = returnGeometry ? true : false
   query.outFields = ["*"]
 
   let queryResult = await layer.queryFeatures(query)
