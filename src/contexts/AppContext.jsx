@@ -163,7 +163,11 @@ export const AppProvider = ({children}) => {
         //improve this
         let fields = [config.target_layer_id_field]
         let queryFields = [...fields, ...new Set(features.filter((feature) => feature.attributes['category'] !== null && feature.attributes['type'] !== "calc" && feature.attributes['type'] !== "button")
-                                          .map((feature) => feature.attributes['field'].trim()))]
+                                          .map((feature) => feature.attributes['field'].trim())),
+                                          ...new Set(features.filter((feature) => feature.attributes['hyperlink_params'] !== null)
+                                          .map((feature) => feature.attributes['hyperlink_params'].trim()))]
+
+        console.log("Query Fields: ", queryFields)
         setParcelQueryFields(queryFields)
     }
 

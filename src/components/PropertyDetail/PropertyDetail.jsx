@@ -1,9 +1,10 @@
-import { Box, Divider, Link, Typography, useMediaQuery } from "@mui/material"
+import { Box, Divider, Typography, useMediaQuery } from "@mui/material"
 import StyledButtonFilledPrimary from "../Button/Button"
 import UseAppContext from "../../contexts/AppContext"
 import { useEffect, useState } from "react"
 import { theme } from "../../theme"
 import { returnMunicipality } from "../../arcgis/geoprocessing/geoprocessing"
+import { Link } from "react-router-dom"
 
 
 const panelContentTitleMain = {
@@ -100,13 +101,16 @@ const PropertyDetail = () => {
             </Box>
         )
 
-    const returnHyperlink = (text, params, url) => {
+    const returnHyperlink = (text, params, url, attributes) => {
 
         let urlFormatted = url
         let paramsValues = params.split(",")
 
+        console.log("url data attributes: ", attributes)
+
         paramsValues.map((param) => {
-            urlFormatted.replace(`{${param}}`)
+            console.log("Replacing: ", `{${param}}`)
+            urlFormatted = urlFormatted.replace(`{${param}}`, attributes[param])
         })
 
         console.log("url text: ", text, urlFormatted)
@@ -115,9 +119,14 @@ const PropertyDetail = () => {
         <Box 
         display="flex"
         >   
-        <Link href={urlFormatted} variant="h5">
-                {text}
-        </Link>
+        {/* <Link to={urlFormatted} target="_blank"> */}
+            <Typography 
+            component={Link} 
+            to={urlFormatted} 
+            target="_blank"
+            fontFamily={"barlow"} 
+            color={theme.palette.primary.light} sx={{color:theme.palette.primary.light}}>{text}</Typography>
+        {/* </Link> */}
         </Box>
     )}
 
@@ -149,7 +158,7 @@ const PropertyDetail = () => {
                         incorp_unincorp(data) :
 
                     data.attributes['hyperlink_text'] && data.attributes['hyperlink_params'] && data.attributes['hyperlink_url'] ?
-                        returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url']) :
+                        returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], primaryResultFeature?.attributes) :
 
                 <Box 
                 width="100%"
@@ -212,7 +221,7 @@ const PropertyDetail = () => {
                 {fetchPropertyDetailData('top', 0)}
             </Box>
             
-            <Box display="flex" flexDirection="column" rowGap={1} sx={{overflowY:"auto", overflowX:"hidden"}}  flexGrow={1} minHeight={0}>
+            <Box display="flex" flexDirection="column" rowGap={1} sx={{overflowY:"auto", overflowX:"hidden"}}  flexGrow={1} minHeight={0} pl={1} pr={2} boxSizing="content-box">
             {categories?.map((category, index) => {
                 return(
                     fetchPropertyDetailData(category, index+1)
