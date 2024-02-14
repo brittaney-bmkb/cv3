@@ -22,44 +22,23 @@ const panelContentTitleSecondary = {
     justifyContent:"center"
 }
 
-const panelContentSubtitle = {
-    display:"flex",
-    color: theme.main.text.light,
-    fontSize: theme.typography.h4.fontSize,
-    justifyContent:"center"
-}
-
 const PropertyDetail = () => {
 
-    const { primaryResultFeature, dataDictionary, panelDisplay, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
+    const { screenWidth, primaryResultFeature, dataDictionary, panelDisplay, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
 
     const [ categories, setCategories ] = useState(null)
-    const [mediumScreenOrHigher, setMediumScreenOrHigher] = useState(
-        useMediaQuery(theme.breakpoints.up('md'))
-      );
+
 
     function handleClick(){
-        if(mediumScreenOrHigher){
+        if(screenWidth < theme.breakpoints.values.lg){
+            setPanelPrimaryVisibility(true)
+            setPanelDisplay("comparablePropertySearch")
+        }
+        else if (screenWidth >= theme.breakpoints.values.lg){
             setPanelSecondaryVisibility(true)
             setPanelDisplaySecondary("comparablePropertySearch")
         }
-        else{
-            setPanelPrimaryVisibility(true)
-            setPanelDisplay("comparablePropertySearch")
-            
-        }
     }
-
-
-      useEffect(() => {
-        if (!mediumScreenOrHigher && panelDisplay === 'comparablePropertySearch') {
-          setPanelPrimaryVisibility(true);
-          setPanelDisplay('propertyDetail');
-    
-          setPanelSecondaryVisibility(true);
-          setPanelDisplaySecondary('comparablePropertySearch');
-        }
-      }, [mediumScreenOrHigher, panelDisplay]);
 
 
     useEffect(() => {
@@ -137,7 +116,7 @@ const PropertyDetail = () => {
         })
 
         return(
-            <Box display="flex" flexDirection="column" width="100%" pt={1} rowGap={2}>
+            <Box key={category} display="flex" flexDirection="column" width="100%" pt={1} rowGap={2}>
                 {category !== 'top' ? <Typography variant="h2">{category}</Typography> : null}
                 <Box display="flex" flexDirection="column" width="100%" pl={category === "top" ? 0 :1} rowGap={category === "top" ? 1 : 2}>
                     {data}
@@ -148,19 +127,18 @@ const PropertyDetail = () => {
     }
 
     return(
-        <Box display="flex" flexDirection="column" width="100%" overflow="clip" >
-        <Box display="flex" flexDirection="column" width="100%" justifyContent="center" alignItems="center">
-            {fetchPropertyDetailData('top', 0)}
-        </Box>
-        
-        <Box display="flex" flexDirection="column" flex={1} rowGap={2} p={2} sx={{overflowY:"scroll"}}>
-        {categories?.map((category, index) => {
-            return(
-                fetchPropertyDetailData(category, index+1)
-            )
+        <Box display="flex" flexDirection="column" width="100%" height="100%" >
+            <Box display="flex" flexDirection="column" width="100%" justifyContent="center" alignItems="center" height="auto">
+                {fetchPropertyDetailData('top', 0)}
+            </Box>
             
-        })}
-        </Box>
+            <Box display="flex" flexDirection="column" flex={1} rowGap={2} p={2} sx={{overflowY:"scroll"}} height="100%">
+            {categories?.map((category, index) => {
+                return(
+                    fetchPropertyDetailData(category, index+1)
+                )
+            })}
+            </Box>
         </Box>
         
     )

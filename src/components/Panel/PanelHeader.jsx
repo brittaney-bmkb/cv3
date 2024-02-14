@@ -62,7 +62,7 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
     }
 
     return(
-        <Box display="flex" flexDirection="column" rowGap={0}>
+        <Box display="flex" flexDirection="column" rowGap={0} height="auto">
             
             <Stack direction="row">
             {backButton ? 

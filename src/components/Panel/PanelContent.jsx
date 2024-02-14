@@ -7,21 +7,25 @@ import BasemapWidget from "../Widgets/BasemapWidget";
 import LayersWidget from "../Widgets/LayersWidget";
 import MeasureWidget from "../Widgets/MeasureWidget";
 import PrintWidget from "../Widgets/PrintWidget";
+import UseAppContext from "../../contexts/AppContext"
+import { theme } from "../../theme"
 
 const PanelContent = ({display}) => {
+
+    const { screenWidth } = UseAppContext()
+
     switch(display){
         case 'resultsList':
             return (
-                <Box display="flex" flexDirection="column" height="100%">
+                <Box display="flex" flexDirection="column" height="100%" >
                     <PanelHeader text={"Property Results"} exportButton={true} clearButton={true} results={true} feedbackButton={true}/>
-                    <Box sx={{ overflowY:"scroll"}} height="100%">
+                    <Box display="flex" flexDirection="column" sx={{ overflowY:"scroll", flexGrow: 1}}>
                         <ResultsList/>
-                    </Box>
-                        
+                    </Box>   
                 </Box>)
         case 'propertyDetail':
             return (
-                <Box  display="flex" flexDirection="column" height="100%">
+                <Box display="flex" flexDirection="column" height="100%">
                         <PanelHeader 
                         text={"Property Results"} 
                         exportButton={true} 
@@ -32,7 +36,10 @@ const PanelContent = ({display}) => {
                         closeButton={true}
                         panel={"primary"}
                         />
-                        <PropertyDetail/>
+                        <Box display="flex" flexDirection="column" height="100%">
+                            <PropertyDetail/>
+                        </Box>
+                        
                 </Box>)
 
         case 'comparablePropertySearch':
@@ -47,6 +54,8 @@ const PanelContent = ({display}) => {
                     text={"Comparable Property Search"} 
                     closeButton={true}
                     panel={"secondary"}
+                    backButton={screenWidth < theme.breakpoints.values.lg}
+                    backButtonComponent={"propertyDetail"}
                     />
                     <ComparablePropertySearch/>
                 </Box>

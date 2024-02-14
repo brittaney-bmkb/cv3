@@ -8,7 +8,12 @@ const ResultsList = () => {
     const { searchFeatures } = UseAppContext()
 
     return(
-        <List>
+        <List sx={{
+            height:"100%", 
+            display: "flex", 
+            flexDirection:"column", 
+            flex: 1
+            }}>
             {searchFeatures ? 
             searchFeatures.map((result, i) => {
                 return(
