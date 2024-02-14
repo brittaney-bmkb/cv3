@@ -43,7 +43,7 @@ function App() {
     <AppProvider>
       <Box display="flex" flexDirection="column" height="100vh">
           <NavBar/>
-        <Stack id="main-stack" direction="row" justifyContent="space-between"   flexGrow={1} minHeight={0}>
+        <Stack id="main-stack" direction="row" justifyContent="space-between"  flexGrow={1} minHeight={0}>
           <LeftPanel/>
           <Box flexDirection="column" flex={4} padding={0} display="flex" alignItems="center">
               <Box flexDirection="column" alignItems="left" width="100%" display={{xs:'none', sm:'flex', md:'flex'}}>
@@ -57,7 +57,7 @@ function App() {
   
             <BottomPanel/>
           </Box>
-          <Box>
+          <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0} flex={1}>
             <SecondaryPanel/>
           </Box>
         </Stack>

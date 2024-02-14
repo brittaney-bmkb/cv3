@@ -48,7 +48,7 @@ export const SecondaryPanel = () => {
         //sx style this adjust the right left or panel will show up. 
         //sm is a block 
         <Box 
-            id="left-panel"
+            id="right-panel"
             minHeight={0}
             bgcolor="white" 
             flex={1}

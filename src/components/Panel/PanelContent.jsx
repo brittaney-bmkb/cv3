@@ -91,7 +91,7 @@ const PanelContent = ({display}) => {
             return (
                 <Box display="flex" flexDirection="column" height="100%" >
                     <PanelHeader text={"Comparable Results"} exportButton={true} clearButton={true} results={true} feedbackButton={true}/>
-                    <Box display="flex" flexDirection="column" sx={{ overflowY:"scroll", flexGrow: 1}}>
+                    <Box display="flex" flexDirection="column" sx={{ overflowY:"scroll"}} flexGrow={1} minHeight={0}>
                         <ResultsList results={comparableParcels}/>
                     </Box>   
                 </Box>)
