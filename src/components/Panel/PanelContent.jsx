@@ -1,4 +1,4 @@
-import { Box, Paper } from "@mui/material"
+import { Box, Divider, Paper } from "@mui/material"
 import PanelHeader from "./PanelHeader"
 import ResultsList from "../ResultList/ResultsList"
 import PropertyDetail from "../PropertyDetail/PropertyDetail"
@@ -49,7 +49,7 @@ const PanelContent = ({display}) => {
                 // replace the bottom panel 
                 // width id set through flex
                 // bottom is set through width. 
-                <Box bgcolor="white" flex={1} flexDirection="column">
+                <Box  display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
                     <PanelHeader 
                     text={"Comparable Search"} 
                     closeButton={true}
@@ -57,7 +57,11 @@ const PanelContent = ({display}) => {
                     backButton={screenWidth < theme.breakpoints.values.lg}
                     backButtonComponent={"propertyDetail"}
                     />
-                    <ComparablePropertySearch/>
+                    <Divider/>
+                    <Box  display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
+                        <ComparablePropertySearch/>
+                    </Box>
+                    
                 </Box>
                 )
         case 'measureWidget':

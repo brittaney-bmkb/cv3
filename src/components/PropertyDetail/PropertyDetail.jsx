@@ -231,7 +231,7 @@ const PropertyDetail = () => {
     }
 
     return(
-        <Box display="flex" flexDirection="column" width="100%"  flexGrow={1} minHeight={0}>
+        <Box display="flex" flexDirection="column" width="100%" flexGrow={1} minHeight={0}>
             <Box display="flex" flexDirection="column" flexGrow={1} justifyContent="center" alignItems="center" pt={1}>
                 {fetchPropertyDetailData('top', 0)}
             </Box>
