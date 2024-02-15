@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 import AppReducer, { initialState } from '../reducers/AppReducer'
 import { useSearchParams } from "react-router-dom";
 import { config } from "../data/config";
+import { zoomToExtent } from "../arcgis/webmap/webmap";
 
 
 export const AppContext = createContext(initialState)
@@ -64,9 +65,10 @@ export const AppProvider = ({children}) => {
 
     const mapClickEventHandler = async (event) => {
 
-        const { onViewClick } = await import('../arcgis/webmap/webmap')
+        const { onViewClick, createGraphic, zoomToExtent } = await import('../arcgis/webmap/webmap')
+        const { theme } = await import ('../theme')
         
-        const { comparableParcels } = state
+        const { comparableParcels, primaryResultFeature } = state
 
         const selectedFeatures = await onViewClick()
         console.log("selectedFeatures: ", selectedFeatures)
@@ -83,6 +85,8 @@ export const AppProvider = ({children}) => {
         if(secondaryFeatures?.length > 0){
             setSecondaryResultFeature(secondaryFeatures[0])
             setPanelDisplaySecondary("propertyDetailNearby")
+            createGraphic(secondaryFeatures, "secondarySelected", theme.palette.primary.light)
+            zoomToExtent([secondaryFeatures[0], primaryResultFeature])
         }
 
         else{
@@ -223,8 +227,20 @@ export const AppProvider = ({children}) => {
         //update graphic in map
         const { createGraphic } = await import('../arcgis/webmap/webmap')
 
-        createGraphic(selectedFeature, true, "darkBlue")
+        createGraphic(selectedFeature, "primary", "darkBlue")
+    }
 
+    const addSecondaryFeatureToMap = async () => {
+        const { secondaryResultFeature, primaryResultFeature } = state
+
+        //update graphic in map
+        const { createGraphic, zoomToExtent } = await import('../arcgis/webmap/webmap')
+        const { theme } = await import ('../theme')
+
+        console.log("creating new graphic for selectedFeature: ", secondaryResultFeature)
+
+        createGraphic([secondaryResultFeature], "secondarySelected", theme.palette.primary.light)
+        zoomToExtent([secondaryResultFeature, primaryResultFeature])
     }
 
 
@@ -316,7 +332,8 @@ export const AppProvider = ({children}) => {
         comparableParcels: state.comparableParcels,
         secondaryResultFeature: state.secondaryResultFeature,
         setSecondaryResultFeature,
-        clearResultsComparables
+        clearResultsComparables,
+        addSecondaryFeatureToMap
     }
 
 

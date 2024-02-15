@@ -29,6 +29,8 @@ layerGraphics = new GraphicsLayer()
 
 //create graphics layer to comparable search result
 let layerGraphicsSecondary = new GraphicsLayer()
+//create graphics layer to comparable search result
+let layerGraphicsSecondarySelected = new GraphicsLayer()
 
 
 
@@ -93,6 +95,8 @@ position: "bottom-left"
   targetLayer = namedLayers[config.target_layer_name]
   targetLayerView = await view.whenLayerView(targetLayer)
 
+  map.add(layerGraphicsSecondarySelected)
+
   //add graphics layer to map
   map.add(layerGraphicsSecondary)
 
@@ -118,7 +122,7 @@ export async function onViewClick() {
 
       console.log("Map Point: ", point);
 
-      await view.goTo({ target: point });
+      //await view.goTo({ target: point });
 
       if (view.zoom < 16) {
         view.zoom = 16;
@@ -203,7 +207,7 @@ export async function querySearchResults(result, outFields){
   let { features } = await targetLayer.queryFeatures(query)
   await zoomToExtent(features)
 
-  createGraphic(features, true, "darkBlue")    
+  createGraphic(features, "primary", "darkBlue")    
   // console.log("Queried Features: ", features)
 
   // let feature = features[0]
@@ -223,7 +227,7 @@ export async function querySearchResults(result, outFields){
 
 }
 
-async function zoomToExtent(features) {
+export async function zoomToExtent(features) {
   const geometries = features.map((feature) => feature.geometry);
 
   //console.log(geometries)
@@ -234,21 +238,27 @@ async function zoomToExtent(features) {
   // createGraphic(features, true, "darkBlue")
 }
 
-export async function removeGraphics(primary){
-  if(primary){
+export async function removeGraphics(graphicName){
+  if(graphicName === "primary"){
     layerGraphics.removeAll()
   }
-  else{
+  if(graphicName === "secondarySelected"){
+    layerGraphicsSecondarySelected.removeAll()
+  }
+  if(graphicName === "secondary"){
     layerGraphicsSecondary.removeAll()
+    layerGraphicsSecondarySelected.removeAll()
   }
   
 }
   
 
-export async function createGraphic(features, remove, color, secondary){
+export async function createGraphic(features, removeGraphicName, color, secondary, styleType, secondarySelected){
 
-  if(remove){
-    removeGraphics()
+  console.log("style type: ", styleType)
+
+  if(removeGraphicName){
+    removeGraphics(removeGraphicName)
   }
 
   const geometries = features.map((feature) => feature.geometry);
@@ -258,15 +268,20 @@ export async function createGraphic(features, remove, color, secondary){
       symbol:{
         type:"simple-line",
         size:3,
+        style: removeGraphicName === "secondary" ? "dash" : "solid",
         color:color,
-        width:3
+        width:removeGraphicName === "secondary" ?  2: removeGraphicName === "secondary" ? 3: 4
       }
     })
 
-    if(secondary){
+    if(removeGraphicName === "secondarySelected"){
+      layerGraphicsSecondarySelected.add(parcelGraphic)
+      layerGraphicsSecondary.opacity=0.7
+    }
+    if(removeGraphicName ==="secondary"){
       layerGraphicsSecondary.add(parcelGraphic)
     }
-    else{
+    if(removeGraphicName ==="primary"){
       layerGraphics.add(parcelGraphic)
     }
     
@@ -293,7 +308,7 @@ export async function createGraphic(features, remove, color, secondary){
 
     console.log("queried Features: ", features)
 
-    createGraphic(features, false, "red", true)
+    createGraphic(features, "secondary", "red", true, "dash")
 
   }
 
@@ -315,9 +330,9 @@ export async function createGraphic(features, remove, color, secondary){
 
     zoomToExtent(filteredFeatures)
 
-    createGraphic(filteredFeatures, true, "red", true)
+    createGraphic(filteredFeatures, "secondary", "#FFDD55", true, "solid")
 
-    createGraphic([feature], false, "darkBlue")
+    createGraphic([feature], "primary", "darkBlue")
 
     return filteredFeatures
 
