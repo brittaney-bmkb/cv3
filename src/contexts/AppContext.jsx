@@ -267,7 +267,7 @@ export const AppProvider = ({children}) => {
         setPanelDisplay("resultsList")
 
         if(["comparablePropertySearch", "nearbyProperties", "resultsListComparables", "resultsListNearby", "propertyDetailComparable", "propertyDetailNearby"].includes(panelDisplaySecondary)){
-            setPanelPrimaryVisibility(false)
+            setPanelSecondaryVisibility(false)
         }
     }
 
