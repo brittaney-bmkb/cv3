@@ -49,7 +49,12 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
     };
 
     const handleBack = () => {
-        setPanelDisplay(backButtonComponent)
+        if(panel==="primary"){
+            setPanelDisplay(backButtonComponent)
+        }
+        if(panel==="secondary"){
+            panelDisplaySecondary(backButtonComponent)
+        }
     }
 
     const handleClosePanel = (panel) => {
@@ -65,33 +70,35 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
         <Box display="flex" flexDirection="column" rowGap={0}>
             
             <Stack direction="row">
-            {backButton ? 
+            
                     <IconButton 
+                        disabled = {backButton ? false : true}
                         onClick={handleBack}
                         sx={{ display:"flex", flexDirection:"column"}}>
                         <ChevronLeft fontSize="small" sx={{color:theme.main.text.dark}}/>
                     <Typography color={theme.main.text.dark} variant="subtitle1">Back</Typography>
-                    </IconButton> : <Box width={30}></Box>}
+                    </IconButton> 
                 <Box display="flex" flex={1} alignItems="center" justifyContent="space-around" p={1} minWidth={150}>
                     <Box bgcolor={theme.main.backgroundColor.grey} p={1} sx={{borderRadius: theme.shape.borderRadius}}>
                         <Typography variant="h5" color={theme.main.text.dark}>{text}</Typography>
                     </Box> 
                 </Box>
-                {closeButton ? 
+                
                     <IconButton 
+                        disabled = {backButton ? false : true}
                         onClick={() => {handleClosePanel(panel)}}
                         sx={{ display:"flex", flexDirection:"column"}}>
                         <CloseOutlined fontSize="small" sx={{color:theme.main.text.dark}}/>
                     <Typography color={theme.main.text.dark} variant="subtitle1">Close</Typography>
-                    </IconButton> : <Box width={30}></Box>}
+                    </IconButton>
             </Stack>
             <Stack direction="row" alignItems="center" spacing={1} justifyContent="center" height={30}>
                 {results ? <Box display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" height={35} p={0} m={0}>
                     <Typography variant="subtitle2" color={theme.main.text.dark} align="center" sx={{height:21}}>
-                        {searchFeatures ? searchFeatures.length: 0}
+                        {results ? results: 0}
                     </Typography>
                     <Typography variant="subtitle1" color={theme.main.text.dark} align="center">
-                        {`Result${searchFeatures?.length > 1 ? 's': ''}`}
+                        {`Result${results?.length > 1 ? 's': ''}`}
                     </Typography>
                 </Box> : null}
                 {clearButton ? 

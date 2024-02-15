@@ -38,6 +38,15 @@ export const AppProvider = ({children}) => {
         })
     } 
 
+    const setSecondaryResultFeature = (feature) => {
+        dispatch({
+            type:"SET_SECONDARY_RESULT_FEATURE",
+             payload: {
+                secondaryResultFeature: feature,
+            }
+        })
+    } 
+
     const loadMap = async () => {
 
         const {initializeMap} = await import('../arcgis/webmap/webmap')
@@ -149,6 +158,16 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setComparableParcels = (features) => {
+        dispatch({
+            type:"SET_COMPARABLE_PARCELS",
+             payload: {
+                comparableParcels: features,
+            }
+        })
+    }
+
+
 
     
     const loadDataDictionary = async () => {
@@ -208,13 +227,22 @@ export const AppProvider = ({children}) => {
         setPanelDisplay("resultsList")
     }
 
-    const searchComparableProperties = async () => {
+    const searchComparableProperties = async (whereQuery, searchDistance) => {
 
         const { compareProperities } = await import('../arcgis/webmap/webmap')
-        const { primaryResultFeature } = state
 
-        compareProperities(primaryResultFeature)
+        const { primaryResultFeature } = state     
+        compareProperities(whereQuery, searchDistance, primaryResultFeature)
 
+    }
+
+    const searchNearbyProperties = async (searchDistance) => {
+
+        const { nearbyProperties } = await import('../arcgis/webmap/webmap')
+        const { primaryResultFeature, parcelQueryFields } = state  
+        console.log(`Searching for properties within ${searchDistance}`)
+        let nearbyParcels = await nearbyProperties( searchDistance, primaryResultFeature, parcelQueryFields)
+        setComparableParcels(nearbyParcels)
     }
 
 
@@ -248,7 +276,11 @@ export const AppProvider = ({children}) => {
         setParcelQueryFields,
         screenWidth: state.screenWidth,
         setScreenWidth,
-        newSearch: state.newSearch
+        newSearch: state.newSearch,
+        searchNearbyProperties,
+        comparableParcels: state.comparableParcels,
+        secondaryResultFeature: state.secondaryResultFeature,
+        setSecondaryResultFeature
     }
 
 

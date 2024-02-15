@@ -134,6 +134,8 @@ export async function onViewClick() {
       const query = new Query();
       query.geometry = point;
       query.spatialRelationship = "intersects";
+      query.distance = 30
+      query.units = "feet"
       query.returnGeometry = true
 
       const { features } = await layerView.queryFeatures(query);
@@ -265,14 +267,36 @@ export async function createGraphic(features, remove, color, secondary){
 }
 
 
-  export async function compareProperities(feature){
+  export async function compareProperities(whereQuery, searchDistance, primaryResultFeature){
+
+    let query = new Query()
+    query.where = whereQuery
+    query.returnGeometry = true
+
+    if(searchDistance){
+      query.geometry = primaryResultFeature.geometry
+      query.spatialRelationship = "intersect"
+      query.distance = searchDistance
+      query.units = "miles"
+    }
+
+    let {features} = await targetLayer.queryFeatures(query)
+
+    console.log("queried Features: ", features)
+
+    createGraphic(features, false, "red", true)
+
+  }
+
+  export async function nearbyProperties(searchDistance, feature, queryFields){
 
     let query = new Query()
     query.geometry = feature.geometry
     query.spatialRelationship = "intersects"
-    query.distance = "300"
-    query.units = "feet"
+    query.distance = searchDistance
+    query.units = "miles"
     query.returnGeometry = true
+    query.outFields = queryFields
 
     let {features} = await targetLayer.queryFeatures(query)
 
@@ -280,9 +304,13 @@ export async function createGraphic(features, remove, color, secondary){
 
     let filteredFeatures = features.filter((f) => f.attributes['PIN14'] !== feature.attributes['PIN14'])
 
+    zoomToExtent(filteredFeatures)
+
     createGraphic(filteredFeatures, true, "red", true)
 
     createGraphic([feature], false, "darkBlue")
+
+    return filteredFeatures
 
   }
 

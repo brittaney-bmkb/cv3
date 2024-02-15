@@ -4,6 +4,7 @@ export const initialState = {
     mapView:null,
     mapContainer:null,
     primaryResultFeature: null,
+    secondaryResultFeature:null,
     searchResults: null,
     searchSources: null,
     searchFeatures: null,
@@ -15,6 +16,7 @@ export const initialState = {
     parcelQueryFields: null,
     screenWidth: null,
     newSearch:null,
+    comparableParcels: null
 }
 
 const AppReducer = (state, action) => {
@@ -40,6 +42,13 @@ const AppReducer = (state, action) => {
                 ...state,
                 primaryResultFeature:payload.primaryResultFeature,
                 newSearch:payload.newSearch
+            }
+
+        case "SET_SECONDARY_RESULT_FEATURE":
+            console.log("SET_SECONDARY_RESULT_FEATURE")
+            return{
+                ...state,
+                secondaryResultFeature:payload.secondaryResultFeature,
             }
         
         case "SET_SEARCH_RESULT":
@@ -99,6 +108,13 @@ const AppReducer = (state, action) => {
             return {
                 ...state,
                 screenWidth: payload.screenWidth,
+            }
+
+        case "SET_COMPARABLE_PARCELS":
+            console.log("SET_COMPARABLE_PARCELS")
+            return {
+                ...state,
+                comparableParcels: payload.comparableParcels,
             }
         default:
             throw new Error(`No valid selection made`)

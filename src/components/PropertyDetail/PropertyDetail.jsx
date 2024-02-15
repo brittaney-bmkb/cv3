@@ -7,19 +7,7 @@ import { returnMunicipality } from "../../arcgis/geoprocessing/geoprocessing"
 import { Link } from "react-router-dom"
 
 
-const panelContentTitleMain = {
-    display:"flex",
-    border: 3,
-    padding:"2px",
-    borderColor: theme.palette.primary.main,
-    borderRadius: theme.shape.borderRadius,
-    color: theme.palette.primary.main,
-    fontSize: theme.typography.h3.fontSize,
-    justifyContent: "center",
-    alignItems:"center",
-    width:"fit-content",
-    height:"fit-content",
-}
+
 
 const prefix = (key) => {
     switch (key) {
@@ -30,22 +18,36 @@ const prefix = (key) => {
     }
 }
 
-const PropertyDetail = () => {
+const PropertyDetail = ({property, pinLableColor}) => {
 
-    const { screenWidth, primaryResultFeature, dataDictionary, panelDisplay, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
+    const { screenWidth, dataDictionary, panelDisplay, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
 
     const [ categories, setCategories ] = useState(null)
     const [ muni, setMuni ] = useState(null)
 
+    const panelContentTitleMain = {
+        display:"flex",
+        border: 3,
+        padding:"2px",
+        borderColor: pinLableColor,
+        borderRadius: theme.shape.borderRadius,
+        color: pinLableColor,
+        fontSize: theme.typography.h3.fontSize,
+        justifyContent: "center",
+        alignItems:"center",
+        width:"fit-content",
+        height:"fit-content",
+    }
 
-    function handleClick(){
+
+    function handleClick(display){
         if(screenWidth < theme.breakpoints.values.lg){
             setPanelPrimaryVisibility(true)
-            setPanelDisplay("comparablePropertySearch")
+            setPanelDisplay(display)
         }
         else if (screenWidth >= theme.breakpoints.values.lg){
             setPanelSecondaryVisibility(true)
-            setPanelDisplaySecondary("comparablePropertySearch")
+            setPanelDisplaySecondary(display)
         }
     }
 
@@ -68,7 +70,7 @@ const PropertyDetail = () => {
     useEffect(() => {
         console.log("categories: ", categories);
         const getMuniValue = async () => {
-            let muniValue = await returnMunicipality(primaryResultFeature)
+            let muniValue = await returnMunicipality(property)
             setMuni(muniValue)
         }
 
@@ -83,7 +85,7 @@ const PropertyDetail = () => {
         <StyledButtonFilledPrimary 
         key={key}
         text={"Compare Properties"}
-        onClick={handleClick}
+        onClick={() => {handleClick("comparablePropertySearch")}}
         variant={"h5"}
         />
         </Box>
@@ -95,7 +97,7 @@ const PropertyDetail = () => {
         <StyledButtonFilledPrimary 
         key={key}
         text={"Nearby Parcels"}
-        onClick={handleClick}
+        onClick={() => {handleClick("nearbyProperties")}}
         variant={"h5"}
         />
         </Box>
@@ -171,7 +173,7 @@ const PropertyDetail = () => {
                         incorp_unincorp(data) :
 
                     data.attributes['hyperlink_text'] && data.attributes['hyperlink_params'] && data.attributes['hyperlink_url'] ?
-                        returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], primaryResultFeature?.attributes) :
+                        returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], property?.attributes) :
 
                 <Box 
                 width="100%"
@@ -185,9 +187,9 @@ const PropertyDetail = () => {
                     <Typography 
                         align="left"
                         variant="h5" 
-                        sx={{color: category === "top" && subIndex==0 ? theme.palette.primary.main: theme.main.text.dark }}>
-                            {primaryResultFeature?.attributes[data.attributes['field']] ? 
-                            `${prefix(data.attributes['type'])}${primaryResultFeature?.attributes[data.attributes['field']]}`:
+                        sx={{color: category === "top" && subIndex==0 ? pinLableColor: theme.main.text.dark }}>
+                            {property?.attributes[data.attributes['field']] ? 
+                            `${prefix(data.attributes['type'])}${property?.attributes[data.attributes['field']]}`:
                             "Data unavailable"}
                     </Typography>
                     
@@ -231,7 +233,7 @@ const PropertyDetail = () => {
     }
 
     return(
-        <Box display="flex" flexDirection="column" width="100%"  flexGrow={1} minHeight={0}>
+        <Box display="flex" flexDirection="column" width="100%" flexGrow={1} minHeight={0}>
             <Box display="flex" flexDirection="column" flexGrow={1} justifyContent="center" alignItems="center" pt={1}>
                 {fetchPropertyDetailData('top', 0)}
             </Box>

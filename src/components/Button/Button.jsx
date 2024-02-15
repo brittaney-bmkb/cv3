@@ -1,7 +1,7 @@
 import { Button, Fab, IconButton, Typography, styled } from "@mui/material"
 import { theme } from "../../theme"
 
-const StyledButtonFilledPrimary = ({text, startIcon, endIcon, onClick, variant}) => {
+const StyledButtonFilledPrimary = ({text, startIcon, endIcon, onClick, textVarient}) => {
     return(
         <Button 
         variant="contained" 
@@ -10,7 +10,7 @@ const StyledButtonFilledPrimary = ({text, startIcon, endIcon, onClick, variant})
         endIcon={endIcon}
         onClick={onClick}
         sx={{textTransform:"none", width:"fit-content", height:30}}
-        ><Typography variant={variant}>
+        ><Typography variant={textVarient} color={theme.palette.primary.contrastText}>
             {text}
         </Typography>
         </Button>

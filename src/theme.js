@@ -58,6 +58,9 @@ export const theme = createTheme({
         body1: {
             fontSize: 15
         },
+        body2: {
+            fontSize: 15
+        },
         subtitle1: {
             fontSize: 12,
             fontWeight:400
@@ -136,17 +139,17 @@ theme.typography.h3 = {
 
 theme.typography.h4 = {
     [theme.breakpoints.up('md')]: {
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: 700,
         color: theme.main.text.dark
     },
     [theme.breakpoints.down('md')]: {
-        fontSize: 15,
+        fontSize: 17,
         fontWeight: 700,
         color: theme.main.text.dark
     },
     [theme.breakpoints.down('sm')]: {
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: 700,
         color: theme.main.text.dark
     }
@@ -191,11 +194,11 @@ theme.typography.h6 = {
 theme.typography.body1 = {
     [theme.breakpoints.up('md')]: {
         fontSize: 16,
-        color: theme.main.text.dark
+        
     },
     [theme.breakpoints.down('md')]: {
         fontSize: 15,
-        color: theme.main.text.dark
+        
     },
     // [theme.breakpoints.down('sm')]: {
     //     fontSize: 20
@@ -206,12 +209,12 @@ theme.typography.body2 = {
     [theme.breakpoints.up('md')]: {
         fontSize: 15,
         fontWeight: 500,
-        color: theme.palette.info.dark
+        
     },
     [theme.breakpoints.down('md')]: {
         fontSize: 14,
         fontWeight: 500,
-        color: theme.palette.info.dark
+
     },
     // [theme.breakpoints.down('sm')]: {
     //     fontSize: 20
