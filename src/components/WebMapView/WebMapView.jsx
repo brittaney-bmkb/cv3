@@ -6,7 +6,7 @@ import { config } from "../../data/config";
 
 export default function WebMapView(){
 
-    const { primaryResultFeature, renderSearchResults, searchResults, loadMap, setMapContainer, mapContainer, mapClickEventHandler} = UseAppContext()
+    const { primaryResultFeature, renderSearchResults, searchResults, loadMap, setMapContainer, mapContainer, mapClickEventHandler, addSecondaryFeatureToMap, secondaryResultFeature} = UseAppContext()
     const mapDiv = useRef(null)
 
     //get url parameters
@@ -51,6 +51,15 @@ export default function WebMapView(){
 
         updateUrlParam()
     }, [primaryResultFeature])
+
+    useEffect(() => {
+        const updateMap = async () => {
+            if(secondaryResultFeature)
+            addSecondaryFeatureToMap()
+        }
+
+        updateMap()
+    },[secondaryResultFeature])
 
     return (
         <div id="MAPCONTAINER" ref={mapDiv} style={{width: '100%', height: '100%'}} onClick={mapClickEventHandler}></div>

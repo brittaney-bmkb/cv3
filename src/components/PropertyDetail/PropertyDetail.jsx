@@ -163,10 +163,10 @@ const PropertyDetail = ({property, pinLableColor}) => {
                 
                 </Box>
                 { 
-                    data.attributes['field'] === "comparable_properties" ? 
+                    data.attributes['field'] === "comparable_properties" && pinLableColor=== theme.palette.primary.main ? 
                         propertyComparison(data.attributes['FID']) :
 
-                    data.attributes['field'] === "nearby_properties" ?
+                    data.attributes['field'] === "nearby_properties"  && pinLableColor=== theme.palette.primary.main  ?
                         nearbyProperties(data.attributes['FID']) :
 
                     data.attributes['field'] === "incorp_unincorp_state" ?

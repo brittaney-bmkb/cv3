@@ -24,7 +24,7 @@ import { theme } from "../../theme"
 
 const ResultCard = ({pin, address, city_state_zip, primaryColor, feature}) => {
 
-    const { setPanelDisplay, selectResultFromList, setSecondaryResultFeature, setPanelDisplaySecondary, panelDisplaySecondary, panelDisplay } = UseAppContext()
+    const { setPanelDisplay, selectResultFromList, setSecondaryResultFeature, setPanelDisplaySecondary, panelDisplaySecondary, selectResultFromComparablesList } = UseAppContext()
 
     return(
         <Card 
@@ -44,6 +44,7 @@ const ResultCard = ({pin, address, city_state_zip, primaryColor, feature}) => {
                 }
                 
                 setSecondaryResultFeature(feature)
+                
             }
             
         }}

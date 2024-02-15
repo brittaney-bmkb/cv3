@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 import AppReducer, { initialState } from '../reducers/AppReducer'
 import { useSearchParams } from "react-router-dom";
 import { config } from "../data/config";
+import { zoomToExtent } from "../arcgis/webmap/webmap";
 
 
 export const AppContext = createContext(initialState)
@@ -64,16 +65,41 @@ export const AppProvider = ({children}) => {
 
     const mapClickEventHandler = async (event) => {
 
-        const { onViewClick } = await import('../arcgis/webmap/webmap')
-        console.log("Handler Event: ", event)
+        const { onViewClick, createGraphic, zoomToExtent } = await import('../arcgis/webmap/webmap')
+        const { theme } = await import ('../theme')
+        
+        const { comparableParcels, primaryResultFeature } = state
 
         const selectedFeatures = await onViewClick()
+        console.log("selectedFeatures: ", selectedFeatures)
+        let secondaryFeatures = []
+        if(comparableParcels){
 
-        setPrimaryResultFeature(selectedFeatures[0], true)
+            secondaryFeatures = comparableParcels.filter((feature) => feature.attributes['PIN14'] === selectedFeatures[0].attributes['PIN14'])
+                                                      .map((feature) => feature)
 
-        setPanelDisplay("resultsList")
+            console.log("Secondary feature selcted: ", secondaryFeatures)
+    
+          };
+        
+        if(secondaryFeatures?.length > 0){
+            setSecondaryResultFeature(secondaryFeatures[0])
+            setPanelDisplaySecondary("propertyDetailNearby")
+            createGraphic(secondaryFeatures, "secondarySelected", theme.palette.primary.light)
+            zoomToExtent([secondaryFeatures[0], primaryResultFeature])
+        }
 
-        setPanelPrimaryVisibility(true)
+        else{
+            setPrimaryResultFeature(selectedFeatures[0], true)
+            setPanelDisplay("resultsList")
+            setPanelPrimaryVisibility(true)
+        }
+
+        
+
+        
+
+        
     }
 
     const setSearchResults = (results, features) => {
@@ -201,8 +227,20 @@ export const AppProvider = ({children}) => {
         //update graphic in map
         const { createGraphic } = await import('../arcgis/webmap/webmap')
 
-        createGraphic(selectedFeature, true, "darkBlue")
+        createGraphic(selectedFeature, "primary", "darkBlue")
+    }
 
+    const addSecondaryFeatureToMap = async () => {
+        const { secondaryResultFeature, primaryResultFeature } = state
+
+        //update graphic in map
+        const { createGraphic, zoomToExtent } = await import('../arcgis/webmap/webmap')
+        const { theme } = await import ('../theme')
+
+        console.log("creating new graphic for selectedFeature: ", secondaryResultFeature)
+
+        createGraphic([secondaryResultFeature], "secondarySelected", theme.palette.primary.light)
+        zoomToExtent([secondaryResultFeature, primaryResultFeature])
     }
 
 
@@ -294,7 +332,8 @@ export const AppProvider = ({children}) => {
         comparableParcels: state.comparableParcels,
         secondaryResultFeature: state.secondaryResultFeature,
         setSecondaryResultFeature,
-        clearResultsComparables
+        clearResultsComparables,
+        addSecondaryFeatureToMap
     }
 
 
