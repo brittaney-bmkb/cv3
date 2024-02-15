@@ -65,7 +65,7 @@ export const AppProvider = ({children}) => {
 
     const mapClickEventHandler = async (event) => {
 
-        const { onViewClick, createGraphic, zoomToExtent } = await import('../arcgis/webmap/webmap')
+        const { onViewClick, createGraphic, zoomToExtent, removeGraphics } = await import('../arcgis/webmap/webmap')
         const { theme } = await import ('../theme')
         
         const { comparableParcels, primaryResultFeature } = state
@@ -90,6 +90,7 @@ export const AppProvider = ({children}) => {
         }
 
         else{
+            removeGraphics("secondary");
             setPrimaryResultFeature(selectedFeatures[0], true)
             setPanelDisplay("resultsList")
             setPanelPrimaryVisibility(true)
@@ -253,15 +254,14 @@ export const AppProvider = ({children}) => {
         const features = await querySearchResults(searchResults, parcelQueryFields)
         setSearchResults(searchResults, features)
         setPanelDisplay("resultsList")
-        
-
     }
 
     const clearResults = async () => {
         const { removeGraphics } = await import('../arcgis/webmap/webmap')
         
         setSearchResults(null, null)
-        removeGraphics(true);
+        removeGraphics("primary");
+        removeGraphics("secondary");
         setPanelDisplay("resultsList")
     }
 
@@ -270,7 +270,7 @@ export const AppProvider = ({children}) => {
 
         const {panelDisplaySecondary} = state
         setComparableParcels(null)
-        removeGraphics(false)
+        removeGraphics("secondary")
 
         if(["nearbyProperties", "comparablePropertySearch", "resultsListComparables", "resultsListNearby", "propertyDetailComparable", "propertyDetailNearby"].includes(panelDisplaySecondary)){
             setPanelSecondaryVisibility(false)
