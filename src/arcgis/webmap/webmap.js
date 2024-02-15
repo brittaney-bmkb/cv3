@@ -11,6 +11,7 @@ import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer.js";
 import Home from "@arcgis/core/widgets/Home.js";
 import Locate from "@arcgis/core/widgets/Locate.js";
 import ScaleBar from "@arcgis/core/widgets/ScaleBar.js";
+import Point from "@arcgis/core/geometry/Point";
 
 let targetLayerView;
 let targetLayer;
@@ -105,6 +106,7 @@ return view, searchSources
 // point location is detected from view onclick event and map point is 
 // accessed from click event.mapPoint
 export async function onViewClick() {
+
   return new Promise(async (resolve, reject) => {
     try {
       const point = await new Promise((resolvePoint) => {
@@ -112,6 +114,7 @@ export async function onViewClick() {
           resolvePoint(clickEvent.mapPoint);
         });
       });
+
 
       console.log("Map Point: ", point);
 

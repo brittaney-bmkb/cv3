@@ -65,15 +65,37 @@ export const AppProvider = ({children}) => {
     const mapClickEventHandler = async (event) => {
 
         const { onViewClick } = await import('../arcgis/webmap/webmap')
-        console.log("Handler Event: ", event)
+        
+        const { comparableParcels } = state
 
         const selectedFeatures = await onViewClick()
+        console.log("selectedFeatures: ", selectedFeatures)
+        let secondaryFeatures = []
+        if(comparableParcels){
 
-        setPrimaryResultFeature(selectedFeatures[0], true)
+            secondaryFeatures = comparableParcels.filter((feature) => feature.attributes['PIN14'] === selectedFeatures[0].attributes['PIN14'])
+                                                      .map((feature) => feature)
 
-        setPanelDisplay("resultsList")
+            console.log("Secondary feature selcted: ", secondaryFeatures)
+    
+          };
+        
+        if(secondaryFeatures?.length > 0){
+            setSecondaryResultFeature(secondaryFeatures[0])
+            setPanelDisplaySecondary("propertyDetailNearby")
+        }
 
-        setPanelPrimaryVisibility(true)
+        else{
+            setPrimaryResultFeature(selectedFeatures[0], true)
+            setPanelDisplay("resultsList")
+            setPanelPrimaryVisibility(true)
+        }
+
+        
+
+        
+
+        
     }
 
     const setSearchResults = (results, features) => {
