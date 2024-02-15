@@ -94,6 +94,7 @@ export const AppProvider = ({children}) => {
             setPrimaryResultFeature(selectedFeatures[0], true)
             setPanelDisplay("resultsList")
             setPanelPrimaryVisibility(true)
+            setPanelSecondaryVisibility(false)
         }
 
         
