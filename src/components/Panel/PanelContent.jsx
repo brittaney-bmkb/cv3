@@ -23,7 +23,7 @@ const PanelContent = ({display}) => {
                      text={"Property Results"} 
                      exportButton={true} 
                      clearButton={true} 
-                     results={searchFeatures.length} 
+                     results={searchFeatures ? searchFeatures.length : 0} 
                      feedbackButton={true}/>
                     <Box display="flex" flexDirection="column" sx={{ overflowY:"scroll", flexGrow: 1}}>
                         <ResultsList results={searchFeatures} primaryLableColor={theme.palette.primary.main}/>

@@ -134,6 +134,8 @@ export async function onViewClick() {
       const query = new Query();
       query.geometry = point;
       query.spatialRelationship = "intersects";
+      query.distance = 30
+      query.units = "feet"
       query.returnGeometry = true
 
       const { features } = await layerView.queryFeatures(query);
