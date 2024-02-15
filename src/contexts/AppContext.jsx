@@ -90,10 +90,11 @@ export const AppProvider = ({children}) => {
         }
 
         else{
-            removeGraphics("secondary");
             setPrimaryResultFeature(selectedFeatures[0], true)
             setPanelDisplay("resultsList")
             setPanelPrimaryVisibility(true)
+
+            clearResultsComparables()
         }
 
         
