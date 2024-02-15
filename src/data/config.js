@@ -32,18 +32,27 @@ export const config = {
         // the object's properties
        {
            layerName: "parcelLayer", // Name of the layer source.
-           url: "https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/arcgis/rest/services/CookViewerParcelsFeatureAGO/FeatureServer/0", // URL to the layer service.
+
+           url: "https://dev-gis.cookcountyil.gov/traditional/rest/services/CookViewerParcels/MapServer", // URL to the layer service.
+           type: 'mapImageLayer',
+           index: 0,
            outFields: ["*"], // Fields to return in the search results (array of strings).
            popupEnabled:true, // Enable/disable popups for this layer source (boolean).
-           popupTemplateTitle:"Parcel pin 14 {PIN14_dash}", // Popup template title with field placeholders.
+           popupTemplateTitle:"Parcel pin 14 {PIN14}", // Popup template title with field placeholders.
            maxScale:0,
            minScale: 30000,
            opacity: 0,
            render: {
                 type: "simple",
                 symbol: {
-                    type: "simple-line",
-                    size: 1
+                    type: "simple-fill",
+                    style:"none",
+                    outline: {
+                        width:1,
+                        color: "#009ADA"
+                    }
+                    
+
                 }
            },
            searchSources: [
@@ -74,7 +83,8 @@ export const config = {
                 autoNavigate: false, // Automatically navigate to the result on selection (boolean).
             },
                {
-                   name: "Parcel 14 digit pin dash", // Name of the search source.
+
+                   name: "Parcel 14 digit pin", // Name of the search source.
                    displayField: "PIN14_dash", // Field used for displaying search suggestions.
                    exactMatch: false, // Exact match search (boolean).
                    maxResults: 50, // Maximum number of search results.
@@ -85,9 +95,11 @@ export const config = {
                    searchFields: ["PIN14_dash"], // Fields used for searching (array of strings).
                    suggestionsEnabled: true, // Enable/disable suggestions for this search source (boolean).
                    autoNavigate: false, // Automatically navigate to the result on selection (boolean).
+                   subLayer:0
                },
                {
-                   name: "Parcel address",
+
+                   name: "Address",
                    displayField:"street_address",
                    exactMatch:false,
                    maxResults:50,
@@ -110,7 +122,8 @@ export const config = {
             maxResults: 50,
             maxSuggestions:50,
             minSuggestCharacters: 4,
-            name: "Point Street Multi Role Alt Streent Name No Sub Address",
+
+            name: "Address",
             outFields:["Street", "City", "Postal"],
             singleLineFieldName:"SingleLine",
             suggestionsEnabled:true,
