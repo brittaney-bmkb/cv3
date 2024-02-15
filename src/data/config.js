@@ -77,7 +77,7 @@ export const config = {
             },
                {
                    name: "Parcel 14 digit pin", // Name of the search source.
-                   displayField: "Parcel 14 digit pin", // Field used for displaying search suggestions.
+                   displayField: "PIN14_dash", // Field used for displaying search suggestions.
                    exactMatch: false, // Exact match search (boolean).
                    maxResults: 50, // Maximum number of search results.
                    maxSuggestions: 50, // Maximum number of search suggestions.
@@ -90,22 +90,8 @@ export const config = {
                    subLayer:0
                },
                {
-                name: "Parcel 14 digit pin", // Name of the search source.
-                displayField: "Parcel 14 digit pin", // Field used for displaying search suggestions.
-                exactMatch: false, // Exact match search (boolean).
-                maxResults: 50, // Maximum number of search results.
-                maxSuggestions: 50, // Maximum number of search suggestions.
-                minSuggestCharacters: 4, // Minimum characters for search suggestions.
-                outFields: ["PIN14"], // Fields to return in search results (array of strings).
-                orderByFields: ["PIN14"], // Fields for sorting search results (array of strings).
-                searchFields: ["PIN14"], // Fields used for searching (array of strings).
-                suggestionsEnabled: true, // Enable/disable suggestions for this search source (boolean).
-                autoNavigate: false, // Automatically navigate to the result on selection (boolean).
-                subLayer:0
-            },
-               {
-                   name: "Parcel address",
-                   displayField:"Address",
+                   name: "Address",
+                   displayField:"street_address",
                    exactMatch:false,
                    maxResults:50,
                    maxSuggestions:50,

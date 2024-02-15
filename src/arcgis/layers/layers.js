@@ -3,6 +3,7 @@ import PopupTemplate from "@arcgis/core/PopupTemplate.js";
 import Basemap from "@arcgis/core/Basemap";
 import { config } from "../../data/config";
 import Query from "@arcgis/core/rest/support/Query";
+import MapImageLayer from "@arcgis/core/layers/MapImageLayer";
 
 export async function readFeatureLayerData(url, outFields, where, returnGeometry){
 
@@ -38,6 +39,7 @@ export async function createFeatureLayers(map){
                 visible:true,
                 minScale:source.minScale,
                 renderer: source.render,
+              
               }
             ]
           })

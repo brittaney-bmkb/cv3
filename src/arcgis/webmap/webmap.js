@@ -97,6 +97,8 @@ position: "bottom-left"
   let subLayer = mapImageLayer.findSublayerById(0)
   targetLayer = await subLayer.createFeatureLayer()
 
+  console.log("targetLayer from sublayer: ",targetLayer)
+
   map.add(layerGraphicsSecondarySelected)
 
   //add graphics layer to map
@@ -112,7 +114,7 @@ return view, searchSources
 // point location is detected from view onclick event and map point is 
 // accessed from click event.mapPoint
 export async function onViewClick() {
-
+  console.log("NEW FEATURE CLICKED")
   return new Promise(async (resolve, reject) => {
     try {
       const point = await new Promise((resolvePoint) => {
@@ -124,7 +126,10 @@ export async function onViewClick() {
 
       console.log("Map Point: ", point);
 
-      //await view.goTo({ target: point });
+      if(layerGraphicsSecondary.graphics.length === 0){
+        await view.goTo({ target: point });
+      }
+      
 
       if (view.zoom < 16) {
         view.zoom = 16;
@@ -146,8 +151,11 @@ export async function onViewClick() {
       query.distance = 30
       query.units = "feet"
       query.returnGeometry = true
+      query.outFields = config.target_layer_out_fields
 
-      const { features } = await layerView.queryFeatures(query);
+      const { features } = await targetLayer.queryFeatures(query);
+
+      console.log("queried features from click: ", features)
 
       resolve(features);
     } catch (error) {
@@ -172,9 +180,11 @@ export async function querySearchResults(result, outFields){
   //to query target feature spatial and attribute data
   //based on search results
   let query = new Query()
-
+  console.log("Search Layer URL: ", searchLayer.url)
+  console.log("Target Layer URL: ", targetLayer.url)
   //check if target layer is the same as search source layer
-  if(searchLayer === namedLayers[config.target_layer_name]){
+  if(searchLayer.url=== targetLayer.url){
+    console.log("Search layer is the same as named layer")
     let searchField = searchSource.outFields[0]
     resultValue = result.feature.attributes[searchField]
 
@@ -183,13 +193,17 @@ export async function querySearchResults(result, outFields){
       console.log(whereString)
       query.where = whereString
       query.outFields = outFields
+      query.returnGeometry = true;
+      query.outFields = outFields
     }
   }
 
+  else{
   //if target layer is different from source layer
   //perform a spatial intersection
   let geometry = result.feature.geometry
   if(geometry){
+    console.log("result does have geometry")
     //zoom to result 
     await zoomToExtent(resultFeatures)
     query.geometry = geometry
@@ -199,6 +213,8 @@ export async function querySearchResults(result, outFields){
     query.returnGeometry = true;
     query.outFields = outFields
   } 
+
+  }
 
   // //get features from query
   console.log("Query = ", query)
