@@ -80,7 +80,7 @@ const PanelContent = ({display}) => {
             // replace the bottom panel 
             // width id set through flex
             // bottom is set through width. 
-            <Box  display="flex" flexDirection="column" >
+            <Box  display="flex" flexDirection="column"  flexGrow={1} minHeight={0} >
                 <PanelHeader 
                 text={"Nearby Properties"} 
                 closeButton={true}

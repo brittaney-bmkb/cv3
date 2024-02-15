@@ -31,11 +31,11 @@ const CompareNearby = () => {
     }
 
     return(
-        <Box display="flex" flexDirection="column" p={2} rowGap={1} component="form">
+        <Box display="flex" flexDirection="column" p={2} rowGap={1} component="form"  flexGrow={1} minHeight={0}>
             <Typography variant="body1">
                  Select surrounding parcels within: 
             </Typography>
-            <Box display="flex" columnGap={2} alignItems="center">
+            <Box display="flex" columnGap={2} alignItems="center" justifyContent="end">
             <CustomStyledTextField
             id="search-radius"
             required

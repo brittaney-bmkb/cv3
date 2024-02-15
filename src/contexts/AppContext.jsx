@@ -229,8 +229,14 @@ export const AppProvider = ({children}) => {
 
     const clearResultsComparables = async () => {
         const { removeGraphics } = await import('../arcgis/webmap/webmap')
+
+        const {panelDisplaySecondary} = state
         setComparableParcels(null)
         removeGraphics(false)
+
+        if(["nearbyProperties", "comparablePropertySearch", "resultsListComparables", "resultsListNearby", "propertyDetailComparable", "propertyDetailNearby"].includes(panelDisplaySecondary)){
+            setPanelSecondaryVisibility(false)
+        }
         
     }
 
