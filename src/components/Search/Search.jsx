@@ -10,7 +10,7 @@ import { config } from "../../data/config";
 
 const Search = () => {
 
-    const { newSearch, setPanelPrimaryVisibility, setSearchResults, mapView, searchSources, clearResults, primaryResultFeature } = UseAppContext()
+    const { newSearch, setPanelPrimaryVisibility, setSearchResults, mapView, searchSources, clearResults, clearResultsComparables } = UseAppContext()
 
     //get url parameters
     const [routeParams, setSearchParams] = useSearchParams();
@@ -70,6 +70,8 @@ const Search = () => {
                     // The results are stored in the event Object[]
                     console.log("Search input textbox was cleared.");
                     clearResults();
+                    clearResultsComparables()
+                   
 
                     setSearchParams({'location': null})
 

@@ -223,8 +223,21 @@ export const AppProvider = ({children}) => {
         const { removeGraphics } = await import('../arcgis/webmap/webmap')
         
         setSearchResults(null, null)
-        removeGraphics();
+        removeGraphics(true);
         setPanelDisplay("resultsList")
+    }
+
+    const clearResultsComparables = async () => {
+        const { removeGraphics } = await import('../arcgis/webmap/webmap')
+
+        const {panelDisplaySecondary} = state
+        setComparableParcels(null)
+        removeGraphics(false)
+
+        if(["nearbyProperties", "comparablePropertySearch", "resultsListComparables", "resultsListNearby", "propertyDetailComparable", "propertyDetailNearby"].includes(panelDisplaySecondary)){
+            setPanelSecondaryVisibility(false)
+        }
+        
     }
 
     const searchComparableProperties = async (whereQuery, searchDistance) => {
@@ -280,7 +293,8 @@ export const AppProvider = ({children}) => {
         searchNearbyProperties,
         comparableParcels: state.comparableParcels,
         secondaryResultFeature: state.secondaryResultFeature,
-        setSecondaryResultFeature
+        setSecondaryResultFeature,
+        clearResultsComparables
     }
 
 

@@ -11,24 +11,31 @@ import ExportDialog from "../ExportDialog/ExportDialog";
 import { useState } from "react";
 import FeedbackDialog from "../FeedBack/Feedback";
 
-const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton, panel} ) => {
+const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton, panel, primary} ) => {
 
-    const { searchFeatures, clearResults, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility } = UseAppContext()
+    const { clearResultsComparables, clearResults, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
 
     //get url parameters
     const [routeParams , setSearchParams] = useSearchParams()
     const [ openExportDialog, setOpenExportDialog ] = useState(false)
     const [ openFeedbackDialog, setOpenFeedbackDialog ] = useState(false)
 
-    function handleClearResults(){
-        clearResults()
+    function handleClearResults(primary){
 
-        setSearchParams({'location': null})
+        if(primary===true){
+            clearResults()
 
-        const updatedUrl = `${window.location.pathname}`;
+            setSearchParams({'location': null})
+    
+            const updatedUrl = `${window.location.pathname}`;
+    
+            // Use history.pushState to update the URL without refreshing the page
+            window.history.pushState({ path: updatedUrl }, '', updatedUrl);
+        }
+        else{
+            clearResultsComparables()
+        }
 
-        // Use history.pushState to update the URL without refreshing the page
-        window.history.pushState({ path: updatedUrl }, '', updatedUrl);
 
     }
 
@@ -49,11 +56,18 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
     };
 
     const handleBack = () => {
+
         if(panel==="primary"){
+            console.log("going back to: ", backButtonComponent)
             setPanelDisplay(backButtonComponent)
         }
         if(panel==="secondary"){
-            panelDisplaySecondary(backButtonComponent)
+            console.log("going back to: ", backButtonComponent)
+            setPanelDisplaySecondary(backButtonComponent)
+
+            if(["nearbyProperties", "comparablePropertySearch"].includes(backButtonComponent)){
+                clearResultsComparables()
+            }
         }
     }
 
@@ -71,26 +85,25 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
             
             <Stack direction="row">
             
-                    <IconButton 
-                        disabled = {backButton ? false : true}
+                    {backButton ? <IconButton 
                         onClick={handleBack}
                         sx={{ display:"flex", flexDirection:"column"}}>
                         <ChevronLeft fontSize="small" sx={{color:theme.main.text.dark}}/>
                     <Typography color={theme.main.text.dark} variant="subtitle1">Back</Typography>
-                    </IconButton> 
+                    </IconButton> : null} 
                 <Box display="flex" flex={1} alignItems="center" justifyContent="space-around" p={1} minWidth={150}>
                     <Box bgcolor={theme.main.backgroundColor.grey} p={1} sx={{borderRadius: theme.shape.borderRadius}}>
                         <Typography variant="h5" color={theme.main.text.dark}>{text}</Typography>
                     </Box> 
                 </Box>
                 
-                    <IconButton 
-                        disabled = {backButton ? false : true}
+                    {closeButton ? <IconButton 
+
                         onClick={() => {handleClosePanel(panel)}}
                         sx={{ display:"flex", flexDirection:"column"}}>
                         <CloseOutlined fontSize="small" sx={{color:theme.main.text.dark}}/>
                     <Typography color={theme.main.text.dark} variant="subtitle1">Close</Typography>
-                    </IconButton>
+                    </IconButton> :null}
             </Stack>
             <Stack direction="row" alignItems="center" spacing={1} justifyContent="center" height={30}>
                 {results ? <Box display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" height={35} p={0} m={0}>
@@ -102,7 +115,7 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
                     </Typography>
                 </Box> : null}
                 {clearButton ? 
-                <StyledIconButton icon={<HighlightOffIcon fontSize="small" sx={{color: theme.main.text.dark, width: 15}}/>} text={"Clear"} onClick={handleClearResults}/>
+                <StyledIconButton icon={<HighlightOffIcon fontSize="small" sx={{color: theme.main.text.dark, width: 15}}/>} text={"Clear"} onClick={() => {handleClearResults(primary)}}/>
                 : null}
                 {exportButton ? 
                 <StyledIconButton icon={<FileDownloadOutlinedIcon fontSize="small" sx={{color: theme.main.text.dark, width: 15}}/>} text={"Export"} onClick={handleExport}/>

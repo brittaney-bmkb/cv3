@@ -21,21 +21,21 @@ const CompareNearby = () => {
 
         if(screenWidth < theme.breakpoints.values.lg){
             setPanelPrimaryVisibility(true)
-            setPanelDisplay("resultsListComparables")
+            setPanelDisplay("resultsListNearby")
         }
         else if (screenWidth >= theme.breakpoints.values.lg){
             setPanelSecondaryVisibility(true)
-            setPanelDisplaySecondary("resultsListComparables")
+            setPanelDisplaySecondary("resultsListNearby")
         }
         
     }
 
     return(
-        <Box display="flex" flexDirection="column" p={2} rowGap={1} component="form">
+        <Box display="flex" flexDirection="column" p={2} rowGap={1} component="form"  flexGrow={1} minHeight={0}>
             <Typography variant="body1">
                  Select surrounding parcels within: 
             </Typography>
-            <Box display="flex" columnGap={2} alignItems="center">
+            <Box display="flex" columnGap={2} alignItems="center" justifyContent="end">
             <CustomStyledTextField
             id="search-radius"
             required
