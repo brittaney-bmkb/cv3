@@ -44,8 +44,13 @@ export const config = {
            render: {
                 type: "simple",
                 symbol: {
-                    type: "simple-line",
-                    width:1
+                    type: "simple-fill",
+                    style:"none",
+                    outline: {
+                        width:1,
+                        color: "#009ADA"
+                    }
+                    
                 }
            },
            searchSources: [
