@@ -1,11 +1,16 @@
 
 import { useEffect, useRef } from "react";
 import UseAppContext from "../../contexts/AppContext";
+import { useSearchParams } from "react-router-dom";
+import { config } from "../../data/config";
 
 export default function WebMapView(){
 
-    const { renderSearchResults, searchResults, loadMap, setMapContainer, mapContainer, mapClickEventHandler} = UseAppContext()
+    const { primaryResultFeature, renderSearchResults, searchResults, loadMap, setMapContainer, mapContainer, mapClickEventHandler, addSecondaryFeatureToMap, secondaryResultFeature} = UseAppContext()
     const mapDiv = useRef(null)
+
+    //get url parameters
+    const [routeParams, setSearchParams] = useSearchParams()
 
     useEffect(() => {
         const createMap = async () => {
@@ -32,6 +37,29 @@ export default function WebMapView(){
 
         updateMap()
     }, [searchResults])
+
+
+    useEffect(() => {
+
+        const updateUrlParam = async () => {
+            if(primaryResultFeature){
+                 //update url params for selected feature
+                let location = primaryResultFeature.attributes[config.target_layer_id_field]
+                setSearchParams({'location': location})
+                }
+        }
+
+        updateUrlParam()
+    }, [primaryResultFeature])
+
+    useEffect(() => {
+        const updateMap = async () => {
+            if(secondaryResultFeature)
+            addSecondaryFeatureToMap()
+        }
+
+        updateMap()
+    },[secondaryResultFeature])
 
     return (
         <div id="MAPCONTAINER" ref={mapDiv} style={{width: '100%', height: '100%'}} onClick={mapClickEventHandler}></div>

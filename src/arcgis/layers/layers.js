@@ -2,7 +2,25 @@ import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import PopupTemplate from "@arcgis/core/PopupTemplate.js";
 import Basemap from "@arcgis/core/Basemap";
 import { config } from "../../data/config";
-import MapImageLayer from "@arcgis/core/layers/MapImageLayer";
+import Query from "@arcgis/core/rest/support/Query";
+
+export async function readFeatureLayerData(url, outFields, where, returnGeometry){
+
+  let layer = new FeatureLayer({
+    url: url,
+    outFields: outFields,
+  })
+
+  let query = new Query()
+  query.where = where
+  query.returnGeometry = returnGeometry ? true : false
+  query.outFields = ["*"]
+
+  let queryResult = await layer.queryFeatures(query)
+  //console.log("data dicationary query result ", queryResult)
+
+  return queryResult
+}
 
 export async function createFeatureLayers(map){
 
@@ -36,7 +54,8 @@ export async function createFeatureLayers(map){
             // }),
             //comment
             visible:true,
-            renderer: source.render
+            renderer: source.render,
+          minScale:source.minScale
             
           })
         }

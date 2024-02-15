@@ -8,6 +8,10 @@ import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine.js";
 import Graphic from "@arcgis/core/Graphic.js";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer.js";
+import Home from "@arcgis/core/widgets/Home.js";
+import Locate from "@arcgis/core/widgets/Locate.js";
+import ScaleBar from "@arcgis/core/widgets/ScaleBar.js";
+import Point from "@arcgis/core/geometry/Point";
 import MapImageLayer from "@arcgis/core/layers/MapImageLayer.js";
 
 let targetLayerView;
@@ -17,29 +21,63 @@ let searchSources
 let highlightSelect;
 let point;
 let layerGraphics
+
+let map;
+let view
+
 //create graphics layer to search result
 layerGraphics = new GraphicsLayer()
 
 //create graphics layer to comparable search result
 let layerGraphicsSecondary = new GraphicsLayer()
+//create graphics layer to comparable search result
+let layerGraphicsSecondarySelected = new GraphicsLayer()
 
-// Create a Map instance
-const map = new Map({
+
+
+export async function initializeMap(container){
+
+  // Create a Map instance
+  map = new Map({
     // basemap: "streets-vector"
   });
 
-
-
-
-const view = new MapView({
+  view = new MapView({
   map: map,
   center: [-87.8298, 41.8781],
   zoom: 8
-})
+  })
 
-view.ui.move([ "zoom" ], "top-right");
+  view.ui.move([ "zoom" ], "top-right");
 
-export async function initializeMap(container){
+  //create home widget
+  let homeWidget = new Home({
+  view: view
+  });
+
+  let locateWidget = new Locate({
+  view: view,   // Attaches the Locate button to the view
+
+  graphic: new Graphic({
+    symbol: { type: "simple-marker" }  // overwrites the default symbol used for the
+    // graphic placed at the location of the user when found
+  })
+  });
+
+  let scaleBar = new ScaleBar({
+  view: view
+  });
+
+
+// adds the home widget to the top left corner of the MapView
+// https://github.com/alexlafroscia/ember-cli-stencil/issues/14 
+view.ui.add(homeWidget, "top-right");
+// adds the locate widget to the top left corner of the MapView
+view.ui.add(locateWidget, "top-right");
+// Add widget to the bottom left corner of the view
+view.ui.add(scaleBar, {
+position: "bottom-left"
+});
 
   //created feature layers based on config layer sources
   //add layers to map
@@ -59,9 +97,7 @@ export async function initializeMap(container){
   let subLayer = mapImageLayer.findSublayerById(0)
   targetLayer = await subLayer.createFeatureLayer()
 
-  console.log("targetLayer from sublayer: ",targetLayer)
-  //targetLayerView = await view.whenLayerView(targetLayer)
-
+  map.add(layerGraphicsSecondarySelected)
 
   //add graphics layer to map
   map.add(layerGraphicsSecondary)
@@ -69,14 +105,14 @@ export async function initializeMap(container){
   //add graphics layer to map
   map.add(layerGraphics)
 
-
-return map, searchSources
+return view, searchSources
 }  
 
 // async funciton to set define point location from mouse click
 // point location is detected from view onclick event and map point is 
 // accessed from click event.mapPoint
-export async function onViewClick(event) {
+export async function onViewClick() {
+
   return new Promise(async (resolve, reject) => {
     try {
       const point = await new Promise((resolvePoint) => {
@@ -85,9 +121,10 @@ export async function onViewClick(event) {
         });
       });
 
+
       console.log("Map Point: ", point);
 
-      await view.goTo({ target: point });
+      //await view.goTo({ target: point });
 
       if (view.zoom < 16) {
         view.zoom = 16;
@@ -106,18 +143,12 @@ export async function onViewClick(event) {
       const query = new Query();
       query.geometry = point;
       query.spatialRelationship = "intersects";
+      query.distance = 30
+      query.units = "feet"
       query.returnGeometry = true
 
-      const { features } = await targetLayer.queryFeatures(query);
+      const { features } = await layerView.queryFeatures(query);
 
-      console.log("on click features: ", features)
-      createGraphic(features, true, "darkBlue")
-      // const attributeKeys = Object.keys(feature.attributes);
-      // console.log("Attribute to highlight: ", feature.attributes[attributeKeys[0]]);
-
-      // //highlightSelect?.remove();
-
-      // highlightSelect = layerView.highlight(feature.attributes[attributeKeys[0]]);
       resolve(features);
     } catch (error) {
       reject(error);
@@ -126,7 +157,7 @@ export async function onViewClick(event) {
 }
 
 
-export async function querySearchResults(result){
+export async function querySearchResults(result, outFields){
 
   let resultValue
   let filter
@@ -151,7 +182,7 @@ export async function querySearchResults(result){
       whereString = `${searchField}='${resultValue}'`
       console.log(whereString)
       query.where = whereString
-      query.outFields = config.target_layer_out_fields
+      query.outFields = outFields
     }
   }
 
@@ -166,7 +197,7 @@ export async function querySearchResults(result){
     query.units = config.buffer_unit
     query.spatialRelationship = "intersects";
     query.returnGeometry = true;
-    query.outFields = config.target_layer_out_fields
+    query.outFields = outFields
   } 
 
   // //get features from query
@@ -177,17 +208,28 @@ export async function querySearchResults(result){
   
   let { features } = await targetLayer.queryFeatures(query)
   await zoomToExtent(features)
-  console.log("Queried Features: ", features)
-  
+
+  createGraphic(features, "primary", "darkBlue")    
+  // console.log("Queried Features: ", features)
+
+  // let feature = features[0]
+  // // //get pin ids 
+  // const attributeKeys = Object.keys(feature.attributes);
+
+
+  // highlightSelect?.remove();
+
+  // features.map((feature) => {
+    
+  //   layerView.highlight(feature.attributes[attributeKeys[0]])
+  //   return feature.attributes["PIN14"]
+  // })
+
   return features
 
 }
 
-export async function removeHighlight(){
-  highlightSelect?.remove();
-}
-
-async function zoomToExtent(features) {
+export async function zoomToExtent(features) {
   const geometries = features.map((feature) => feature.geometry);
 
   //console.log(geometries)
@@ -195,14 +237,30 @@ async function zoomToExtent(features) {
   view.goTo(combinedExtent, {
   });
 
-  createGraphic(features, true, "darkBlue")
+  // createGraphic(features, true, "darkBlue")
+}
+
+export async function removeGraphics(graphicName){
+  if(graphicName === "primary"){
+    layerGraphics.removeAll()
+  }
+  if(graphicName === "secondarySelected"){
+    layerGraphicsSecondarySelected.removeAll()
+  }
+  if(graphicName === "secondary"){
+    layerGraphicsSecondary.removeAll()
+    layerGraphicsSecondarySelected.removeAll()
+  }
+  
 }
   
 
-export async function createGraphic(features, remove, color, secondary){
+export async function createGraphic(features, removeGraphicName, color, secondary, styleType, secondarySelected){
 
-  if(remove){
-    layerGraphics.removeAll()
+  console.log("style type: ", styleType)
+
+  if(removeGraphicName){
+    removeGraphics(removeGraphicName)
   }
 
   const geometries = features.map((feature) => feature.geometry);
@@ -211,15 +269,21 @@ export async function createGraphic(features, remove, color, secondary){
       geometry: geometry,
       symbol:{
         type:"simple-line",
-        width:3,
-        color:color
+        size:3,
+        style: removeGraphicName === "secondary" ? "dash" : "solid",
+        color:color,
+        width:removeGraphicName === "secondary" ?  2: removeGraphicName === "secondary" ? 3: 4
       }
     })
 
-    if(secondary){
+    if(removeGraphicName === "secondarySelected"){
+      layerGraphicsSecondarySelected.add(parcelGraphic)
+      layerGraphicsSecondary.opacity=0.7
+    }
+    if(removeGraphicName ==="secondary"){
       layerGraphicsSecondary.add(parcelGraphic)
     }
-    else{
+    if(removeGraphicName ==="primary"){
       layerGraphics.add(parcelGraphic)
     }
     
@@ -229,14 +293,36 @@ export async function createGraphic(features, remove, color, secondary){
 }
 
 
-  export async function compareProperities(feature){
+  export async function compareProperities(whereQuery, searchDistance, primaryResultFeature){
+
+    let query = new Query()
+    query.where = whereQuery
+    query.returnGeometry = true
+
+    if(searchDistance){
+      query.geometry = primaryResultFeature.geometry
+      query.spatialRelationship = "intersect"
+      query.distance = searchDistance
+      query.units = "miles"
+    }
+
+    let {features} = await targetLayer.queryFeatures(query)
+
+    console.log("queried Features: ", features)
+
+    createGraphic(features, "secondary", "red", true, "dash")
+
+  }
+
+  export async function nearbyProperties(searchDistance, feature, queryFields){
 
     let query = new Query()
     query.geometry = feature.geometry
     query.spatialRelationship = "intersects"
-    query.distance = "300"
-    query.units = "feet"
+    query.distance = searchDistance
+    query.units = "miles"
     query.returnGeometry = true
+    query.outFields = queryFields
 
     let {features} = await targetLayer.queryFeatures(query)
 
@@ -244,9 +330,13 @@ export async function createGraphic(features, remove, color, secondary){
 
     let filteredFeatures = features.filter((f) => f.attributes['PIN14'] !== feature.attributes['PIN14'])
 
-    createGraphic(filteredFeatures, true, "red", true)
+    zoomToExtent(filteredFeatures)
 
-    createGraphic([feature], false, "darkBlue")
+    createGraphic(filteredFeatures, "secondary", "#FFDD55", true, "solid")
+
+    createGraphic([feature], "primary", "darkBlue")
+
+    return filteredFeatures
 
   }
 
