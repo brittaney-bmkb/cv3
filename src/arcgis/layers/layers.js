@@ -5,6 +5,7 @@ import { config } from "../../data/config";
 import Query from "@arcgis/core/rest/support/Query";
 import MapImageLayer from "@arcgis/core/layers/MapImageLayer";
 
+
 export async function readFeatureLayerData(url, outFields, where, returnGeometry){
 
   let layer = new FeatureLayer({
@@ -30,6 +31,7 @@ export async function createFeatureLayers(map){
     config.layer_sources.forEach(source => {
         const name = source.layerName;
         //https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
+
         if(source.type === 'mapImageLayer'){
           namedLayers[name] = new MapImageLayer({
             url: source.url,
@@ -61,7 +63,6 @@ export async function createFeatureLayers(map){
             
           })
         }
-
       
         map.add(namedLayers[name])
       })

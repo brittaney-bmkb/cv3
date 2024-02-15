@@ -32,6 +32,7 @@ export const config = {
         // the object's properties
        {
            layerName: "parcelLayer", // Name of the layer source.
+
            url: "https://dev-gis.cookcountyil.gov/traditional/rest/services/CookViewerParcels/MapServer", // URL to the layer service.
            type: 'mapImageLayer',
            index: 0,
@@ -51,6 +52,7 @@ export const config = {
                         color: "#009ADA"
                     }
                     
+
                 }
            },
            searchSources: [
@@ -81,6 +83,7 @@ export const config = {
                 autoNavigate: false, // Automatically navigate to the result on selection (boolean).
             },
                {
+
                    name: "Parcel 14 digit pin", // Name of the search source.
                    displayField: "PIN14_dash", // Field used for displaying search suggestions.
                    exactMatch: false, // Exact match search (boolean).
@@ -95,6 +98,7 @@ export const config = {
                    subLayer:0
                },
                {
+
                    name: "Address",
                    displayField:"street_address",
                    exactMatch:false,
@@ -118,6 +122,7 @@ export const config = {
             maxResults: 50,
             maxSuggestions:50,
             minSuggestCharacters: 4,
+
             name: "Address",
             outFields:["Street", "City", "Postal"],
             singleLineFieldName:"SingleLine",

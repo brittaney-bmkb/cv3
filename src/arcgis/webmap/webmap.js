@@ -12,7 +12,6 @@ import Home from "@arcgis/core/widgets/Home.js";
 import Locate from "@arcgis/core/widgets/Locate.js";
 import ScaleBar from "@arcgis/core/widgets/ScaleBar.js";
 import Point from "@arcgis/core/geometry/Point";
-import MapImageLayer from "@arcgis/core/layers/MapImageLayer.js";
 
 let targetLayerView;
 let targetLayer;
@@ -69,6 +68,7 @@ export async function initializeMap(container){
   });
 
 
+
 // adds the home widget to the top left corner of the MapView
 // https://github.com/alexlafroscia/ember-cli-stencil/issues/14 
 view.ui.add(homeWidget, "top-right");
@@ -114,7 +114,7 @@ return view, searchSources
 // point location is detected from view onclick event and map point is 
 // accessed from click event.mapPoint
 export async function onViewClick() {
-  console.log("NEW FEATURE CLICKED")
+
   return new Promise(async (resolve, reject) => {
     try {
       const point = await new Promise((resolvePoint) => {
@@ -129,7 +129,6 @@ export async function onViewClick() {
       if(layerGraphicsSecondary.graphics.length === 0){
         await view.goTo({ target: point });
       }
-      
 
       if (view.zoom < 16) {
         view.zoom = 16;
@@ -153,9 +152,11 @@ export async function onViewClick() {
       query.returnGeometry = true
       query.outFields = config.target_layer_out_fields
 
+
       const { features } = await targetLayer.queryFeatures(query);
 
       console.log("queried features from click: ", features)
+
 
       resolve(features);
     } catch (error) {
@@ -195,6 +196,7 @@ export async function querySearchResults(result, outFields){
       query.outFields = outFields
       query.returnGeometry = true;
       query.outFields = outFields
+
     }
   }
 
@@ -231,9 +233,6 @@ export async function querySearchResults(result, outFields){
   // let feature = features[0]
   // // //get pin ids 
   // const attributeKeys = Object.keys(feature.attributes);
-
-
-  // highlightSelect?.remove();
 
   // features.map((feature) => {
     
