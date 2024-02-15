@@ -221,11 +221,7 @@ export const AppProvider = ({children}) => {
     const selectResultFromList = async (result) => {
         console.log("Result PIN : ", result)
         const { searchFeatures } = state
-<<<<<<< HEAD
-        const selectedFeature = searchFeatures.filter((feature) => feature.attributes['PIN14'] == result)
-=======
         const selectedFeature = searchFeatures.filter((feature) => feature.attributes['PIN14_dash'] == result)
->>>>>>> topic-update-application-with-map-service
         console.log("selectedFeature: ", selectedFeature)
 
         setPrimaryResultFeature(selectedFeature[0], false)
