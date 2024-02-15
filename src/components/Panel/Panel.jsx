@@ -52,6 +52,7 @@ export const SecondaryPanel = () => {
             minHeight={0}
             bgcolor="white" 
             flex={1}
+            flexGrow={1}
             minWidth={300}   
             sx={{display:{xs:'none', sm: panelSecondaryVisible ? 'flex' : 'none'}}}>
                 <PanelContent id="panel-content" display={panelDisplaySecondary}/>

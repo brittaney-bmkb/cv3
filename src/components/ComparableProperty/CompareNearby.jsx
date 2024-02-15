@@ -21,11 +21,11 @@ const CompareNearby = () => {
 
         if(screenWidth < theme.breakpoints.values.lg){
             setPanelPrimaryVisibility(true)
-            setPanelDisplay("resultsListComparables")
+            setPanelDisplay("resultsListNearby")
         }
         else if (screenWidth >= theme.breakpoints.values.lg){
             setPanelSecondaryVisibility(true)
-            setPanelDisplaySecondary("resultsListComparables")
+            setPanelDisplaySecondary("resultsListNearby")
         }
         
     }

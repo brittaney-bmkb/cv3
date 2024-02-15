@@ -24,7 +24,7 @@ import { theme } from "../../theme"
 
 const ResultCard = ({pin, address, city_state_zip, primaryColor, feature}) => {
 
-    const { setPanelDisplay, selectResultFromList, setSecondaryResultFeature, setPanelDisplaySecondary, panelSecondaryVisible, panelDisplay } = UseAppContext()
+    const { setPanelDisplay, selectResultFromList, setSecondaryResultFeature, setPanelDisplaySecondary, panelDisplaySecondary, panelDisplay } = UseAppContext()
 
     return(
         <Card 
@@ -34,7 +34,15 @@ const ResultCard = ({pin, address, city_state_zip, primaryColor, feature}) => {
                 selectResultFromList(pin)
             }
             else{
-                setPanelDisplaySecondary("propertyDetailComparable")
+                let currentDisplay = panelDisplaySecondary
+
+                if(currentDisplay === "resultsListNearby"){
+                    setPanelDisplaySecondary("propertyDetailNearby")
+                }
+                if(currentDisplay === "resultsListComparables"){
+                    setPanelDisplaySecondary("propertyDetailComparable")
+                }
+                
                 setSecondaryResultFeature(feature)
             }
             

@@ -231,8 +231,14 @@ async function zoomToExtent(features) {
   // createGraphic(features, true, "darkBlue")
 }
 
-export async function removeGraphics(){
-  layerGraphics.removeAll()
+export async function removeGraphics(primary){
+  if(primary){
+    layerGraphics.removeAll()
+  }
+  else{
+    layerGraphicsSecondary.removeAll()
+  }
+  
 }
   
 
