@@ -57,34 +57,6 @@ export const config = {
            },
            searchSources: [
             {
-                name: "Parcel 14 digit pin", // Name of the search source.
-                displayField: "PIN14", // Field used for displaying search suggestions.
-                exactMatch: false, // Exact match search (boolean).
-                maxResults: 50, // Maximum number of search results.
-                maxSuggestions: 50, // Maximum number of search suggestions.
-                minSuggestCharacters: 4, // Minimum characters for search suggestions.
-                outFields: ["PIN14"], // Fields to return in search results (array of strings).
-                orderByFields: ["PIN14"], // Fields for sorting search results (array of strings).
-                searchFields: ["PIN14"], // Fields used for searching (array of strings).
-                suggestionsEnabled: true, // Enable/disable suggestions for this search source (boolean).
-                autoNavigate: false, // Automatically navigate to the result on selection (boolean).
-            },
-               {
-
-                   name: "Parcel 14 digit pin", // Name of the search source.
-                   displayField: "PIN14_dash", // Field used for displaying search suggestions.
-                   exactMatch: false, // Exact match search (boolean).
-                   maxResults: 50, // Maximum number of search results.
-                   maxSuggestions: 50, // Maximum number of search suggestions.
-                   minSuggestCharacters: 4, // Minimum characters for search suggestions.
-                   outFields: ["PIN14_dash"], // Fields to return in search results (array of strings).
-                   orderByFields: ["PIN14_dash"], // Fields for sorting search results (array of strings).
-                   searchFields: ["PIN14_dash"], // Fields used for searching (array of strings).
-                   suggestionsEnabled: true, // Enable/disable suggestions for this search source (boolean).
-                   autoNavigate: false, // Automatically navigate to the result on selection (boolean).
-                   subLayer:0
-               },
-            {
                 name: "Parcel 10 digit pin", // Name of the search source.
                 displayField: "PIN10", // Field used for displaying search suggestions.
                 exactMatch: false, // Exact match search (boolean).
@@ -97,10 +69,24 @@ export const config = {
                 suggestionsEnabled: true, // Enable/disable suggestions for this search source (boolean).
                 autoNavigate: false, // Automatically navigate to the result on selection (boolean).
             },
-            
+
+            {
+                name: "Parcel 14 digit pin", // Name of the search source.
+                displayField: "PIN14", // Field used for displaying search suggestions.
+                exactMatch: false, // Exact match search (boolean).
+                maxResults: 50, // Maximum number of search results.
+                maxSuggestions: 50, // Maximum number of search suggestions.
+                minSuggestCharacters: 4, // Minimum characters for search suggestions.
+                outFields: ["PIN14"], // Fields to return in search results (array of strings).
+                orderByFields: ["PIN14"], // Fields for sorting search results (array of strings).
+                searchFields: ["PIN14"], // Fields used for searching (array of strings).
+                suggestionsEnabled: true, // Enable/disable suggestions for this search source (boolean).
+                autoNavigate: false, // Automatically navigate to the result on selection (boolean).
+            },
+
                {
 
-                   name: "Parcel Address",
+                   name: "Address",
                    displayField:"street_address",
                    exactMatch:false,
                    maxResults:50,
@@ -124,7 +110,7 @@ export const config = {
             maxSuggestions:50,
             minSuggestCharacters: 4,
 
-            name: "Address Locator",
+            name: "Address",
             outFields:["Street", "City", "Postal"],
             singleLineFieldName:"SingleLine",
             suggestionsEnabled:true,
