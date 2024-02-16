@@ -14,11 +14,11 @@ export async function returnMunicipality(parcel){
 
     console.log("parcel centroid: ", parcelCentroid)
 
-    console.log("parcel lat/long: ", parcelCentroid.latitude, parcelCentroid.longitude )
+    console.log("parcel coordinates: ", parcelCentroid.x, parcelCentroid.y )
 
     let point = new Point({
-        latitude: parcelCentroid.latitude,
-        longitude: parcelCentroid.longitude,
+        x: parcelCentroid.x,
+        y: parcelCentroid.y,
         spatialReference : parcel.geometry.spatialReference
 
     })
@@ -36,7 +36,7 @@ export async function returnMunicipality(parcel){
     console.log("municipality features ", features)
 
     let muniValue = features[0].attributes['MUNICIPALITY']
-    let incorp_unincorp = muniValue ? `Incoporated ${muniValue}` : `Unincorporated ${parcel.attributes['township_name']}`
+    let incorp_unincorp = muniValue ? `Incorporated ${muniValue}` : `Unincorporated ${parcel.attributes['township_name']}`
 
     return incorp_unincorp
 }

@@ -24,6 +24,7 @@ const PropertyDetail = ({property, pinLableColor}) => {
 
     const [ categories, setCategories ] = useState(null)
     const [ muni, setMuni ] = useState(null)
+    const [ zoningMessage, setZoningMessage ] = useState(null)
 
     const panelContentTitleMain = {
         display:"flex",
@@ -72,6 +73,13 @@ const PropertyDetail = ({property, pinLableColor}) => {
         const getMuniValue = async () => {
             let muniValue = await returnMunicipality(property)
             setMuni(muniValue)
+
+            if(muniValue.includes('Incorporated')){
+                setZoningMessage( `Please contact municipality`)
+            }
+            else{
+                setZoningMessage(`Cook County Zone Lookup`)
+            }
         }
 
         getMuniValue()
@@ -172,9 +180,21 @@ const PropertyDetail = ({property, pinLableColor}) => {
                     data.attributes['field'] === "incorp_unincorp_state" ?
                         incorp_unincorp(data) :
 
+                    data.attributes['field'] === "zoning_info" ?
+                        <Box 
+                        display="flex"
+                        >
+                            <Typography variant="h5" sx={{color: theme.main.text.dark }}>
+                            {zoningMessage} 
+                            </Typography>
+
+                        </Box>: 
+
                     data.attributes['hyperlink_text'] && data.attributes['hyperlink_params'] && data.attributes['hyperlink_url'] ?
                         returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], property?.attributes) :
 
+
+                    
                 <Box 
                 width="100%"
                 

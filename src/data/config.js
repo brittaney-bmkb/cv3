@@ -69,6 +69,7 @@ export const config = {
                 suggestionsEnabled: true, // Enable/disable suggestions for this search source (boolean).
                 autoNavigate: false, // Automatically navigate to the result on selection (boolean).
             },
+
             {
                 name: "Parcel 14 digit pin", // Name of the search source.
                 displayField: "PIN14", // Field used for displaying search suggestions.
@@ -82,21 +83,7 @@ export const config = {
                 suggestionsEnabled: true, // Enable/disable suggestions for this search source (boolean).
                 autoNavigate: false, // Automatically navigate to the result on selection (boolean).
             },
-               {
 
-                   name: "Parcel 14 digit pin", // Name of the search source.
-                   displayField: "PIN14_dash", // Field used for displaying search suggestions.
-                   exactMatch: false, // Exact match search (boolean).
-                   maxResults: 50, // Maximum number of search results.
-                   maxSuggestions: 50, // Maximum number of search suggestions.
-                   minSuggestCharacters: 4, // Minimum characters for search suggestions.
-                   outFields: ["PIN14_dash"], // Fields to return in search results (array of strings).
-                   orderByFields: ["PIN14_dash"], // Fields for sorting search results (array of strings).
-                   searchFields: ["PIN14_dash"], // Fields used for searching (array of strings).
-                   suggestionsEnabled: true, // Enable/disable suggestions for this search source (boolean).
-                   autoNavigate: false, // Automatically navigate to the result on selection (boolean).
-                   subLayer:0
-               },
                {
 
                    name: "Address",

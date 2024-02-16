@@ -67,7 +67,7 @@ const PanelContent = ({display}) => {
                     backButtonComponent={"propertyDetail"}
                     />
                     <Divider/>
-                    <Box  display="flex" flexDirection="column" >
+                    <Box  display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
                         <ComparablePropertySearch/>
                     </Box>
                     
