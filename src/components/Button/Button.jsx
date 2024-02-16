@@ -1,9 +1,10 @@
 import { Button, Fab, IconButton, Typography, styled } from "@mui/material"
 import { theme } from "../../theme"
 
-const StyledButtonFilledPrimary = ({text, startIcon, endIcon, onClick, textVarient}) => {
+const StyledButtonFilledPrimary = ({text, startIcon, endIcon, onClick, textVarient, disabled}) => {
     return(
         <Button 
+        disabled={disabled}
         variant="contained" 
         color="primary"
         startIcon={startIcon}

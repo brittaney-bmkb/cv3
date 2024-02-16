@@ -31,6 +31,8 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
     
             // Use history.pushState to update the URL without refreshing the page
             window.history.pushState({ path: updatedUrl }, '', updatedUrl);
+
+            clearResultsComparables()
         }
         else{
             clearResultsComparables()
