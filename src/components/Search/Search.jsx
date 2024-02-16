@@ -10,7 +10,7 @@ import { config } from "../../data/config";
 
 const Search = () => {
 
-    const { newSearch, setPanelPrimaryVisibility, renderSearchResults, mapView, searchSources, clearResults, panelPrimaryVisible } = UseAppContext()
+    const { newSearch, setPanelPrimaryVisibility, renderSearchResults, mapView, searchSources, clearResults, panelPrimaryVisible, primaryResultFeature } = UseAppContext()
 
     //get url parameters
     const [routeParams, setSearchParams] = useSearchParams();
@@ -50,6 +50,10 @@ const Search = () => {
                         console.log("Searching for ", searchString)
                         console.log("new search ", newSearch)
                         searchWidget.current.search(searchString)
+                    }
+                    if(newSearch === false && searchWidget.current.searchTerm !== primaryResultFeature.attributes["PIN14"]){
+                        console.log("SEARCH TERM: ", searchWidget.current.searchTerm)
+                        searchWidget.current.searchTerm = primaryResultFeature.attributes["PIN14"] 
                     }
                     if(searchString === null || searchString === "" || searchString === 'null'){
                         searchWidget.current.clear();
