@@ -36,7 +36,7 @@ export async function returnMunicipality(parcel){
     console.log("municipality features ", features)
 
     let muniValue = features[0].attributes['MUNICIPALITY']
-    let incorp_unincorp = muniValue ? `Incoporated ${muniValue}` : `Unincorporated ${parcel.attributes['township_name']}`
+    let incorp_unincorp = muniValue ? `Incorporated ${muniValue}` : `Unincorporated ${parcel.attributes['township_name']}`
 
     return incorp_unincorp
 }

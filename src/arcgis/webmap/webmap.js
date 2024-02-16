@@ -185,7 +185,7 @@ export async function querySearchResults(result, outFields){
   console.log("Search Layer URL: ", searchLayer?.url)
   console.log("Target Layer URL: ", targetLayer?.url)
   //check if target layer is the same as search source layer
-  if(searchLayer && searchLayer.url=== targetLayer.url){
+  if(searchLayer?.url=== targetLayer?.url){
     console.log("Search layer is the same as named layer")
     let searchField = searchSource.outFields[0]
     resultValue = result.feature.attributes[searchField]
