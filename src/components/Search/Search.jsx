@@ -71,7 +71,7 @@ const Search = () => {
                         setPanelPrimaryVisibility(true)
                     }
                     
-                    setSearchParams({'location': event.result.name})
+                    //setSearchParams({'location': event.result.name})
                     
                 })
                 
@@ -81,12 +81,7 @@ const Search = () => {
                     console.log("Search input textbox was cleared.");
                     clearResults();
 
-                    setSearchParams({'location': null})
-
-                    const updatedUrl = `${window.location.pathname}`;
-
-                    // Use history.pushState to update the URL without refreshing the page
-                    window.history.pushState({ path: updatedUrl }, '', updatedUrl);
+                    
                   });
             }
 

@@ -11,6 +11,9 @@ export const AppProvider = ({children}) => {
 
     const [state, dispatch] = useReducer(AppReducer, initialState)
 
+     //get url parameters
+     const [routeParams, setSearchParams] = useSearchParams()
+
     const setMapContainer = (ref) => {
         dispatch({
             type:"SET_MAP_CONTAINER",
@@ -91,13 +94,18 @@ export const AppProvider = ({children}) => {
 
         else{
             setPrimaryResultFeature(selectedFeatures[0], false)
+
+            //update url param
+            let location = selectedFeatures[0].attributes[config.target_layer_id_field]
+            setSearchParams({'location': location})
+
             setSearchResults(null, selectedFeatures)
             createGraphic(selectedFeatures, "primary", theme.palette.primary.main)
-            if(panelDisplay !== "resultsList"){
+            if(!panelDisplay || panelDisplay !== "resultsList"){
                 setPanelDisplay("resultsList")
             }
             
-            if(panelPrimaryVisible === false){
+            if(!panelPrimaryVisible || panelPrimaryVisible === false){
                 setPanelPrimaryVisibility(true)
             }
             
@@ -285,6 +293,13 @@ export const AppProvider = ({children}) => {
         if(["comparablePropertySearch", "nearbyProperties", "resultsListComparables", "resultsListNearby", "propertyDetailComparable", "propertyDetailNearby"].includes(panelDisplaySecondary)){
             setPanelSecondaryVisibility(false)
         }
+
+        setSearchParams({'location': null})
+
+        const updatedUrl = `${window.location.pathname}`;
+
+        // Use history.pushState to update the URL without refreshing the page
+        window.history.pushState({ path: updatedUrl }, '', updatedUrl);
     }
 
     const clearResultsComparables = async () => {
