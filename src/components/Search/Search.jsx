@@ -10,7 +10,7 @@ import { config } from "../../data/config";
 
 const Search = () => {
 
-    const { newSearch, setPanelPrimaryVisibility, setSearchResults, mapView, searchSources, clearResults, primaryResultFeature } = UseAppContext()
+    const { newSearch, setPanelPrimaryVisibility, renderSearchResults, mapView, searchSources, clearResults, panelPrimaryVisible } = UseAppContext()
 
     //get url parameters
     const [routeParams, setSearchParams] = useSearchParams();
@@ -43,11 +43,12 @@ const Search = () => {
 
                 //if url parameter is passed perform search method on search widget
                 if(searchString){
-                    console.log("Searching for ", searchString)
-                    console.log("new search ", newSearch)
+                    
                     //performing search method automatically selects the first
                     //result. triggering the setSearchResults function
                     if(searchString !== 'null' && newSearch){
+                        console.log("Searching for ", searchString)
+                        console.log("new search ", newSearch)
                         searchWidget.current.search(searchString)
                     }
                     if(searchString === null || searchString === "" || searchString === 'null'){
@@ -58,11 +59,16 @@ const Search = () => {
                 
                 searchWidget.current.on("select-result", function(event){
                     console.log("The selected search result: ", searchWidget.current.selectedResult)
-                    setSearchResults(searchWidget.current.selectedResult)
+                    //setSearchResults(searchWidget.current.selectedResult)
 
-                    setPanelPrimaryVisibility(true)
+                    renderSearchResults(searchWidget.current.selectedResult)
 
+                    if(!panelPrimaryVisible || panelPrimaryVisible === false){
+                        setPanelPrimaryVisibility(true)
+                    }
+                    
                     setSearchParams({'location': event.result.name})
+                    
                 })
                 
                 //to do enable clear results to empty searchFeatures array

@@ -27,16 +27,16 @@ export default function WebMapView(){
     }, [mapContainer])
 
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        const updateMap = async () => {
-            if(searchResults){
-                renderSearchResults()
-            }
-        }
+    //     const updateMap = async () => {
+    //         if(searchResults){
+    //             renderSearchResults()
+    //         }
+    //     }
 
-        updateMap()
-    }, [searchResults])
+    //     updateMap()
+    // }, [searchResults])
 
 
     useEffect(() => {
