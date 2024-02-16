@@ -181,10 +181,11 @@ export async function querySearchResults(result, outFields){
   //to query target feature spatial and attribute data
   //based on search results
   let query = new Query()
-  console.log("Search Layer URL: ", searchLayer.url)
-  console.log("Target Layer URL: ", targetLayer.url)
+  console.log("search source: ", searchSource)
+  console.log("Search Layer URL: ", searchLayer?.url)
+  console.log("Target Layer URL: ", targetLayer?.url)
   //check if target layer is the same as search source layer
-  if(searchLayer.url=== targetLayer.url){
+  if(searchLayer && searchLayer.url=== targetLayer.url){
     console.log("Search layer is the same as named layer")
     let searchField = searchSource.outFields[0]
     resultValue = result.feature.attributes[searchField]
@@ -195,7 +196,7 @@ export async function querySearchResults(result, outFields){
       query.where = whereString
       query.outFields = outFields
       query.returnGeometry = true;
-      query.outFields = outFields
+
 
     }
   }
