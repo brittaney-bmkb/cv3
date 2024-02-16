@@ -11,6 +11,9 @@ export const AppProvider = ({children}) => {
 
     const [state, dispatch] = useReducer(AppReducer, initialState)
 
+     //get url parameters
+     const [routeParams, setSearchParams] = useSearchParams()
+
     const setMapContainer = (ref) => {
         dispatch({
             type:"SET_MAP_CONTAINER",
@@ -68,7 +71,7 @@ export const AppProvider = ({children}) => {
         const { onViewClick, createGraphic, zoomToExtent, removeGraphics } = await import('../arcgis/webmap/webmap')
         const { theme } = await import ('../theme')
         
-        const { comparableParcels, primaryResultFeature } = state
+        const { comparableParcels, primaryResultFeature, panelPrimaryVisible, panelDisplay, } = state
 
         const selectedFeatures = await onViewClick()
         console.log("selectedFeatures: ", selectedFeatures)
@@ -90,11 +93,27 @@ export const AppProvider = ({children}) => {
         }
 
         else{
-            setPrimaryResultFeature(selectedFeatures[0], true)
-            setPanelDisplay("resultsList")
-            setPanelPrimaryVisibility(true)
+            setPrimaryResultFeature(selectedFeatures[0], false)
 
-            clearResultsComparables()
+            //update url param
+            let location = selectedFeatures[0].attributes[config.target_layer_id_field]
+            setSearchParams({'location': location})
+
+            setSearchResults(null, selectedFeatures)
+            createGraphic(selectedFeatures, "primary", theme.palette.primary.main)
+            if(!panelDisplay || panelDisplay !== "resultsList"){
+                setPanelDisplay("resultsList")
+            }
+            
+            if(!panelPrimaryVisible || panelPrimaryVisible === false){
+                setPanelPrimaryVisibility(true)
+            }
+            
+            if(comparableParcels){
+                clearResultsComparables()
+            }
+
+            
         }
 
         
@@ -246,15 +265,19 @@ export const AppProvider = ({children}) => {
     }
 
 
-    const renderSearchResults = async () => {
+    const renderSearchResults = async (searchWidgetResults) => {
         const { querySearchResults } = await import('../arcgis/webmap/webmap')
-        const { searchResults, parcelQueryFields } = state
+        const { parcelQueryFields, panelDisplay } = state
 
         console.log("Query Fields: ", parcelQueryFields)
 
-        const features = await querySearchResults(searchResults, parcelQueryFields)
-        setSearchResults(searchResults, features)
-        setPanelDisplay("resultsList")
+        const features = await querySearchResults(searchWidgetResults, parcelQueryFields)
+        setSearchResults(searchWidgetResults, features)
+
+        if(panelDisplay !== "resultsList"){
+            setPanelDisplay("resultsList")
+        }
+        
     }
 
     const clearResults = async () => {
@@ -270,14 +293,24 @@ export const AppProvider = ({children}) => {
         if(["comparablePropertySearch", "nearbyProperties", "resultsListComparables", "resultsListNearby", "propertyDetailComparable", "propertyDetailNearby"].includes(panelDisplaySecondary)){
             setPanelSecondaryVisibility(false)
         }
+
+        setSearchParams({'location': null})
+
+        const updatedUrl = `${window.location.pathname}`;
+
+        // Use history.pushState to update the URL without refreshing the page
+        window.history.pushState({ path: updatedUrl }, '', updatedUrl);
     }
 
     const clearResultsComparables = async () => {
         const { removeGraphics } = await import('../arcgis/webmap/webmap')
 
-        const {panelDisplaySecondary} = state
-        setComparableParcels(null)
-        removeGraphics("secondary")
+        const {panelDisplaySecondary, comparableParcels} = state
+        if(comparableParcels){
+            setComparableParcels(null)
+            removeGraphics("secondary")
+        }
+       
 
         if(["nearbyProperties", "comparablePropertySearch", "resultsListComparables", "resultsListNearby", "propertyDetailComparable", "propertyDetailNearby"].includes(panelDisplaySecondary)){
             setPanelSecondaryVisibility(false)

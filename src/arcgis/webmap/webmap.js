@@ -126,11 +126,11 @@ export async function onViewClick() {
 
       console.log("Map Point: ", point);
 
-      if(layerGraphicsSecondary.graphics.length === 0){
+      if(view.zoom > 16){
         await view.goTo({ target: point });
       }
 
-      if (view.zoom < 16) {
+      if (view.zoom <= 16) {
         view.zoom = 16;
       }
 
@@ -147,8 +147,6 @@ export async function onViewClick() {
       const query = new Query();
       query.geometry = point;
       query.spatialRelationship = "intersects";
-      query.distance = 30
-      query.units = "feet"
       query.returnGeometry = true
       query.outFields = config.target_layer_out_fields
 

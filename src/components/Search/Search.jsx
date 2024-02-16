@@ -10,7 +10,7 @@ import { config } from "../../data/config";
 
 const Search = () => {
 
-    const { newSearch, setPanelPrimaryVisibility, setSearchResults, mapView, searchSources, clearResults, primaryResultFeature } = UseAppContext()
+    const { newSearch, setPanelPrimaryVisibility, renderSearchResults, mapView, searchSources, clearResults, panelPrimaryVisible, primaryResultFeature } = UseAppContext()
 
     //get url parameters
     const [routeParams, setSearchParams] = useSearchParams();
@@ -43,12 +43,17 @@ const Search = () => {
 
                 //if url parameter is passed perform search method on search widget
                 if(searchString){
-                    console.log("Searching for ", searchString)
-                    console.log("new search ", newSearch)
+                    
                     //performing search method automatically selects the first
                     //result. triggering the setSearchResults function
                     if(searchString !== 'null' && newSearch){
+                        console.log("Searching for ", searchString)
+                        console.log("new search ", newSearch)
                         searchWidget.current.search(searchString)
+                    }
+                    if(newSearch === false && searchWidget.current.searchTerm !== primaryResultFeature.attributes["PIN14"]){
+                        console.log("SEARCH TERM: ", searchWidget.current.searchTerm)
+                        searchWidget.current.searchTerm = primaryResultFeature.attributes["PIN14"] 
                     }
                     if(searchString === null || searchString === "" || searchString === 'null'){
                         searchWidget.current.clear();
@@ -58,11 +63,16 @@ const Search = () => {
                 
                 searchWidget.current.on("select-result", function(event){
                     console.log("The selected search result: ", searchWidget.current.selectedResult)
-                    setSearchResults(searchWidget.current.selectedResult)
+                    //setSearchResults(searchWidget.current.selectedResult)
 
-                    setPanelPrimaryVisibility(true)
+                    renderSearchResults(searchWidget.current.selectedResult)
 
-                    setSearchParams({'location': event.result.name})
+                    if(!panelPrimaryVisible || panelPrimaryVisible === false){
+                        setPanelPrimaryVisibility(true)
+                    }
+                    
+                    //setSearchParams({'location': event.result.name})
+                    
                 })
                 
                 //to do enable clear results to empty searchFeatures array
@@ -71,12 +81,7 @@ const Search = () => {
                     console.log("Search input textbox was cleared.");
                     clearResults();
 
-                    setSearchParams({'location': null})
-
-                    const updatedUrl = `${window.location.pathname}`;
-
-                    // Use history.pushState to update the URL without refreshing the page
-                    window.history.pushState({ path: updatedUrl }, '', updatedUrl);
+                    
                   });
             }
 
