@@ -126,23 +126,23 @@ export async function onViewClick() {
 
       console.log("Map Point: ", point);
 
-      if(view.zoom > 16){
-        await view.goTo({ target: point });
-      }
+      // if(view.zoom > 16){
+      //   await view.goTo({ target: point });
+      // }
 
-      if (view.zoom <= 16) {
-        view.zoom = 16;
-      }
+      // if (view.zoom <= 16) {
+      //   view.zoom = 16;
+      // }
 
-      // const layerView = await view.whenLayerView(targetLayer);
-      // await reactiveUtils.whenOnce(() => !layerView.updating);
-      // console.log("Layer view done loading");
+      // // const layerView = await view.whenLayerView(targetLayer);
+      // // await reactiveUtils.whenOnce(() => !layerView.updating);
+      // // console.log("Layer view done loading");
 
-      if (view.zoom < 16) {
-        // If you still need a delay, consider using a proper async sleep function
-        // await sleep(3000);
-        await new Promise((resolveSleep) => setTimeout(resolveSleep, 3000));
-      }
+      // if (view.zoom < 16) {
+      //   // If you still need a delay, consider using a proper async sleep function
+      //   // await sleep(3000);
+      //   await new Promise((resolveSleep) => setTimeout(resolveSleep, 3000));
+      // }
 
       const query = new Query();
       query.geometry = point;
@@ -155,7 +155,7 @@ export async function onViewClick() {
 
       console.log("queried features from click: ", features)
 
-
+      zoomToExtent(features)
       resolve(features);
     } catch (error) {
       reject(error);

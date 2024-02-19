@@ -125,18 +125,20 @@ export const LeftPanel = () => {
     const { panelPrimaryVisible, setPanelSecondaryVisibility, panelDisplaySecondary, setPanelDisplaySecondary, panelDisplay, screenWidth, setPanelDisplay, setPanelPrimaryVisibility } = UseAppContext()
 
     useEffect(() => {
+        //if primary panel is display comparables and nearby displays
         if (['comparablePropertySearch', 'resultsListComparables', 'nearbyProperties'].includes(panelDisplay)) {
             // Set panelDisplaySecondary based on the current value of panelDisplay
             const secondaryDisplayValue = panelDisplay;
 
-            if (screenWidth >= theme.breakpoints.values.lg) {
+            //and if screen width is greater than or equal to a lg screen ()
+            if (screenWidth >= theme.breakpoints.values.md) {
             setPanelPrimaryVisibility(true);
             setPanelSecondaryVisibility(true)
             setPanelDisplaySecondary(secondaryDisplayValue);
       
             // Set panelDisplay to 'propertyDetail'
             setPanelDisplay('propertyDetail');
-          } else if (screenWidth < theme.breakpoints.values.lg) {
+          } else if (screenWidth < theme.breakpoints.values.md) {
             setPanelPrimaryVisibility(true);
             setPanelSecondaryVisibility(false);
             setPanelDisplay(secondaryDisplayValue);
