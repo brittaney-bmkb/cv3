@@ -20,7 +20,13 @@ const prefix = (key) => {
 
 const PropertyDetail = ({property, pinLableColor}) => {
 
-    const { screenWidth, dataDictionary, panelDisplay, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
+    const { screenWidth, dataDictionary, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
+
+    useEffect(() => {
+
+        console.log("Property: ", property)
+
+    },[property])
 
     const [ categories, setCategories ] = useState(null)
     const [ muni, setMuni ] = useState(null)
@@ -42,14 +48,14 @@ const PropertyDetail = ({property, pinLableColor}) => {
 
 
     function handleClick(display){
-        if(screenWidth < theme.breakpoints.values.lg){
-            setPanelPrimaryVisibility(true)
-            setPanelDisplay(display)
-        }
-        else if (screenWidth >= theme.breakpoints.values.lg){
-            setPanelSecondaryVisibility(true)
+        // if(screenWidth < theme.breakpoints.values.lg){
+        //     setPanelPrimaryVisibility(true)
+        //     setPanelDisplay(display)
+        // }
+        // else if (screenWidth >= theme.breakpoints.values.lg){
+        //     setPanelSecondaryVisibility(true)
             setPanelDisplaySecondary(display)
-        }
+        //}
     }
 
 
@@ -130,12 +136,15 @@ const PropertyDetail = ({property, pinLableColor}) => {
 
         console.log("url data attributes: ", attributes)
 
-        paramsValues.map((param) => {
-            console.log("Replacing: ", `{${param}}`)
-            urlFormatted = urlFormatted.replace(`{${param}}`, attributes[param])
-        })
+        if(attributes){
+            paramsValues.map((param) => {
+                console.log("Replacing: ", `{${param}}`)
+                urlFormatted = urlFormatted.replace(`{${param}}`, attributes[param])
+            })
+    
+            console.log("url text: ", text, urlFormatted)
+        }
 
-        console.log("url text: ", text, urlFormatted)
 
         return (
         <Box 
