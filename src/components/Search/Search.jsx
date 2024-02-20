@@ -99,7 +99,7 @@ const Search = () => {
     return(
         <Box 
         ref={searchDiv}
-        flex={5} 
+        flex={1} 
         height={40} 
         bgcolor="white" 
         display="flex" 

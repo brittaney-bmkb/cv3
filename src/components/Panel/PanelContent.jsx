@@ -58,11 +58,12 @@ const PanelContent = ({display}) => {
                 // replace the bottom panel 
                 // width id set through flex
                 // bottom is set through width. 
+                
                 <Box  display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
                     <PanelHeader 
                     text={"Comparable Search"} 
                     closeButton={true}
-                    panel={"secondary"}
+                    panel={screenWidth < theme.breakpoints.values.lg ? "primary": "secondary"}
                     backButton={screenWidth < theme.breakpoints.values.lg}
                     backButtonComponent={"propertyDetail"}
                     />

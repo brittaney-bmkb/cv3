@@ -17,10 +17,11 @@ calcite-icon {
 .esri-search{
   width:auto;
   max-width: 600px;
+  min-width: 300px;
 }
 
 @media (max-width:500px){
   .esri-search{
-    width: 90vw;
+    width: 95vw;
   }
 }

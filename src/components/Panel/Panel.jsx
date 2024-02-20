@@ -122,47 +122,31 @@ export const SecondaryPanelContent = () => {
 
 export const LeftPanel = () => {
 
-    const { panelPrimaryVisible, setPanelSecondaryVisibility, panelDisplaySecondary, setPanelDisplaySecondary, panelDisplay, screenWidth, setPanelDisplay, setPanelPrimaryVisibility } = UseAppContext()
+    const { panelPrimaryVisible, setPanelSecondaryVisibility, panelDisplaySecondary, setPanelDisplaySecondary, panelDisplay, screenWidth, setPanelDisplay, setPanelPrimaryVisibility, primaryResultFeature, panelSecondaryVisible } = UseAppContext()
 
     useEffect(() => {
-        if (['comparablePropertySearch', 'resultsListComparables', 'nearbyProperties'].includes(panelDisplay)) {
-            // Set panelDisplaySecondary based on the current value of panelDisplay
-            const secondaryDisplayValue = panelDisplay;
-
-            if (screenWidth >= theme.breakpoints.values.lg) {
-            setPanelPrimaryVisibility(true);
-            setPanelSecondaryVisibility(true)
-            setPanelDisplaySecondary(secondaryDisplayValue);
+        const isPrimaryPanel = ['comparablePropertySearch', 'resultsListComparables', 'nearbyProperties'].includes(panelDisplay);
+        const isSecondaryPanel = ['comparablePropertySearch', 'resultsListComparables', 'nearbyProperties'].includes(panelDisplaySecondary);
+        const isLargeScreen = screenWidth >= theme.breakpoints.values.lg
       
-            // Set panelDisplay to 'propertyDetail'
-            setPanelDisplay('propertyDetail');
-          } else if (screenWidth < theme.breakpoints.values.lg) {
-            setPanelPrimaryVisibility(true);
-            setPanelSecondaryVisibility(false);
-            setPanelDisplay(secondaryDisplayValue);
-          }
+        // Determine the display value based on the current panel and screen width
+        const displayValue = (screenWidth >= theme.breakpoints.values.lg && isSecondaryPanel) ? panelDisplay : panelDisplaySecondary;
+      
+        // Set visibility and display values accordingly
+        // setPanelPrimaryVisibility(true);
+        if(isLargeScreen && isPrimaryPanel){
+            setPanelSecondaryVisibility(true)
+            setPanelDisplaySecondary(panelDisplay)
+            setPanelDisplay("propertyDetail")
         }
 
-        if( ['comparablePropertySearch', 'resultsListComparables', 'nearbyProperties'].includes(panelDisplaySecondary)){
-            console.log("Panel Display Secondary is set to: ", panelDisplaySecondary)
-            // Set panelDisplaySecondary based on the current value of panelDisplay
-            const secondaryDisplayValue = panelDisplaySecondary;
-            if (screenWidth >= theme.breakpoints.values.lg) {
-                setPanelPrimaryVisibility(true);
-
-                setPanelSecondaryVisibility(true)
-                setPanelDisplaySecondary(secondaryDisplayValue);
-          
-                // Set panelDisplay to 'propertyDetail'
-                setPanelDisplay('propertyDetail');
-              } else if (screenWidth < theme.breakpoints.values.lg) {
-                setPanelPrimaryVisibility(true);
-                setPanelSecondaryVisibility(false);
-                setPanelDisplay(panelDisplaySecondary);
-              }
-            }
-        
+        if(!isLargeScreen && isSecondaryPanel){
+            setPanelSecondaryVisibility(false)
+            setPanelDisplay(panelDisplaySecondary)
+        }
+      
       }, [screenWidth]);
+      
       
 
     return(
