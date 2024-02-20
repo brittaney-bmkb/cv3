@@ -21,33 +21,19 @@ let highlightSelect;
 let point;
 let layerGraphics
 
-let map;
-let view
 
-//create graphics layer to search result
-layerGraphics = new GraphicsLayer()
+// Create a Map instance
+export const map = new Map({
+  // basemap: "streets-vector"
+});
 
-//create graphics layer to comparable search result
-let layerGraphicsSecondary = new GraphicsLayer()
-//create graphics layer to comparable search result
-let layerGraphicsSecondarySelected = new GraphicsLayer()
+export const view = new MapView({
+map: map,
+center: [-87.8298, 41.8781],
+zoom: 8
+})
 
-
-
-export async function initializeMap(container){
-
-  // Create a Map instance
-  map = new Map({
-    // basemap: "streets-vector"
-  });
-
-  view = new MapView({
-  map: map,
-  center: [-87.8298, 41.8781],
-  zoom: 8
-  })
-
-  view.ui.move([ "zoom" ], "top-right");
+view.ui.move([ "zoom" ], "top-right");
 
   //create home widget
   let homeWidget = new Home({
@@ -79,6 +65,18 @@ view.ui.add(scaleBar, {
 position: "bottom-left"
 });
 
+//create graphics layer to search result
+layerGraphics = new GraphicsLayer()
+
+//create graphics layer to comparable search result
+let layerGraphicsSecondary = new GraphicsLayer()
+//create graphics layer to comparable search result
+let layerGraphicsSecondarySelected = new GraphicsLayer()
+
+
+
+export async function initializeMap(container){
+
   //created feature layers based on config layer sources
   //add layers to map
   view.container = container
@@ -107,13 +105,14 @@ position: "bottom-left"
   //add graphics layer to map
   map.add(layerGraphics)
 
+
 return view, searchSources
 }  
 
 // async funciton to set define point location from mouse click
 // point location is detected from view onclick event and map point is 
 // accessed from click event.mapPoint
-export async function onViewClick() {
+export async function onViewClick(parcelQueryFields) {
 
   return new Promise(async (resolve, reject) => {
     try {
@@ -148,7 +147,7 @@ export async function onViewClick() {
       query.geometry = point;
       query.spatialRelationship = "intersects";
       query.returnGeometry = true
-      query.outFields = config.target_layer_out_fields
+      query.outFields = parcelQueryFields
 
 
       const { features } = await targetLayer.queryFeatures(query);
@@ -307,25 +306,32 @@ export async function createGraphic(features, removeGraphicName, color, secondar
 }
 
 
-  export async function compareProperities(whereQuery, searchDistance, primaryResultFeature){
+  export async function compareProperities(whereQuery, searchDistance, feature, queryFields){
 
     let query = new Query()
     query.where = whereQuery
     query.returnGeometry = true
+    query.outFields = queryFields
 
-    if(searchDistance){
-      query.geometry = primaryResultFeature.geometry
-      query.spatialRelationship = "intersect"
-      query.distance = searchDistance
-      query.units = "miles"
-    }
+    // if(searchDistance && searchDistance > 0){
+    //   console.log("Search Distance: ", searchDistance)
+    //   query.geometry = feature.geometry
+    //   query.spatialRelationship = "intersect"
+    //   query.distance = searchDistance
+    //   query.units = "miles"
+    // }
 
     let {features} = await targetLayer.queryFeatures(query)
 
-    console.log("queried Features: ", features)
+    if(features &&  features.length > 0){
+      zoomToExtent(features)
+      console.log("queried Features: ", features)
+  
+      createGraphic(features, "secondary", "#FFDD55", true, "solid")
+  
+    }
 
-    createGraphic(features, "secondary", "red", true, "dash")
-
+    return features
   }
 
   export async function nearbyProperties(searchDistance, feature, queryFields){

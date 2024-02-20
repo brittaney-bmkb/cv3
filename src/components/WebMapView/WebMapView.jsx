@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import UseAppContext from "../../contexts/AppContext";
 import { useSearchParams } from "react-router-dom";
 import { config } from "../../data/config";
+import { view } from "../../arcgis/webmap/webmap";
 
 export default function WebMapView(){
 

@@ -53,8 +53,8 @@ export const AppProvider = ({children}) => {
 
     const loadMap = async () => {
 
-        const {initializeMap} = await import('../arcgis/webmap/webmap')
-        const {mapContainer} = state
+        const {initializeMap, zoomToExtent} = await import('../arcgis/webmap/webmap')
+        const {mapContainer, primaryResultFeature, comparableParcels} = state
 
         let view, searchSources = await initializeMap(mapContainer)
 
@@ -62,7 +62,13 @@ export const AppProvider = ({children}) => {
 
         setMapView(view)
         setSearchSources(searchSources)
-        setPrimaryResultFeature(null, true)
+        if(!primaryResultFeature){
+            setPrimaryResultFeature(null, true)
+        }
+        else{
+            zoomToExtent(comparableParcels? comparableParcels: [primaryResultFeature])
+        }
+        
     }
 
 
@@ -71,9 +77,9 @@ export const AppProvider = ({children}) => {
         const { onViewClick, createGraphic, zoomToExtent, removeGraphics } = await import('../arcgis/webmap/webmap')
         const { theme } = await import ('../theme')
         
-        const { comparableParcels, primaryResultFeature, panelPrimaryVisible, panelDisplay, } = state
+        const { comparableParcels, panelSecondaryVisible, primaryResultFeature, panelPrimaryVisible, panelDisplay, parcelQueryFields } = state
 
-        const selectedFeatures = await onViewClick()
+        const selectedFeatures = await onViewClick(parcelQueryFields)
         console.log("selectedFeatures: ", selectedFeatures)
         let secondaryFeatures = []
         if(comparableParcels){
@@ -107,6 +113,10 @@ export const AppProvider = ({children}) => {
             
             if(!panelPrimaryVisible || panelPrimaryVisible === false){
                 setPanelPrimaryVisibility(true)
+            }
+
+            if(panelSecondaryVisible === true){
+                setPanelSecondaryVisibility(false)
             }
             
             if(comparableParcels){
@@ -309,26 +319,26 @@ export const AppProvider = ({children}) => {
     const clearResultsComparables = async () => {
         const { removeGraphics } = await import('../arcgis/webmap/webmap')
 
-        const {panelDisplaySecondary, comparableParcels} = state
+        const { comparableParcels} = state
         if(comparableParcels){
             setComparableParcels(null)
             removeGraphics("secondary")
         }
        
-
-        if(["nearbyProperties", "comparablePropertySearch", "resultsListComparables", "resultsListNearby", "propertyDetailComparable", "propertyDetailNearby"].includes(panelDisplaySecondary)){
-            setPanelSecondaryVisibility(false)
-        }
-        
     }
 
     const searchComparableProperties = async (whereQuery, searchDistance) => {
 
         const { compareProperities } = await import('../arcgis/webmap/webmap')
 
-        const { primaryResultFeature } = state     
-        compareProperities(whereQuery, searchDistance, primaryResultFeature)
+        const { primaryResultFeature, parcelQueryFields } = state     
 
+        let features = await compareProperities(whereQuery, searchDistance, primaryResultFeature, parcelQueryFields)
+
+        console.log("New Comparable features: ", features)
+        setComparableParcels(features)
+
+        setPanelDisplaySecondary("resultsListComparables")
     }
 
     const searchNearbyProperties = async (searchDistance) => {
@@ -337,6 +347,7 @@ export const AppProvider = ({children}) => {
         const { primaryResultFeature, parcelQueryFields } = state  
         console.log(`Searching for properties within ${searchDistance}`)
         let nearbyParcels = await nearbyProperties( searchDistance, primaryResultFeature, parcelQueryFields)
+        
         setComparableParcels(nearbyParcels)
     }
 

@@ -25,10 +25,13 @@ const PanelContent = ({display}) => {
                      clearButton={true} 
                      results={searchFeatures ? searchFeatures.length : 0} 
                      feedbackButton={true}
-                     primary={true}
-                     />
+                     primary={true}/>
                     <Box display="flex" flexDirection="column" sx={{ overflowY:"scroll", flexGrow: 1}}>
-                        <ResultsList results={searchFeatures} primaryLableColor={theme.palette.primary.main}/>
+                        <ResultsList 
+                        results={searchFeatures} 
+                        primaryLableColor={theme.palette.primary.main}
+                        noResultsMessage={"Try a new search using the search by or by clicking in the map"}
+                        />
                     </Box>   
                 </Box>)
         case 'propertyDetail':
@@ -85,7 +88,7 @@ const PanelContent = ({display}) => {
                 <PanelHeader 
                 text={"Nearby Properties"} 
                 closeButton={true}
-                panel={"secondary"}
+                panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"}
                 backButton={screenWidth < theme.breakpoints.values.lg}
                 backButtonComponent={"propertyDetail"}
                 />
@@ -103,15 +106,20 @@ const PanelContent = ({display}) => {
                     text={"Comparable Results"} 
                     exportButton={true} 
                     clearButton={true} 
-                    results={comparableParcels? comparableParcels.length: 0} 
+                    results={comparableParcels ? comparableParcels.length : 0} 
                     feedbackButton={true}
                     backButton={true}
                     backButtonComponent={"comparablePropertySearch"}
                     panel={"secondary"}
                     primary={false}
+                    
                     />
                     <Box display="flex" flexDirection="column" sx={{ overflowY:"scroll"}} flexGrow={1} minHeight={0}>
-                        <ResultsList results={comparableParcels} primaryLableColor={theme.palette.secondary.main}/>
+                        <ResultsList 
+                        results={comparableParcels} 
+                        primaryLableColor={theme.palette.secondary.main}
+                        noResultsMessage={"Zero comparable parcels found"}
+                        />
                     </Box>   
                 </Box>)
 
@@ -126,11 +134,15 @@ const PanelContent = ({display}) => {
                     feedbackButton={true}
                     backButton={true}
                     backButtonComponent={"nearbyProperties"}
-                    panel={"secondary"}
+                    panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"}
                     primary={false}
+                    
                     />
                     <Box display="flex" flexDirection="column" sx={{ overflowY:"scroll"}} flexGrow={1} minHeight={0}>
-                        <ResultsList results={comparableParcels} primaryLableColor={theme.palette.secondary.main}/>
+                        <ResultsList 
+                        results={comparableParcels} 
+                        primaryLableColor={theme.palette.secondary.main}
+                        noResultsMessage={"Zero comparable parcels found"}/>
                     </Box>   
                 </Box>)
 

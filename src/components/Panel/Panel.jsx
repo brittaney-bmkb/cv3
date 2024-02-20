@@ -18,15 +18,7 @@ const PanelMobile = () => {
 
     const { panelDisplay, screenWidth, setPanelDisplay, setPanelPrimaryVisibility } = UseAppContext()
 
-    useEffect(() => {
-
-        if(screenWidth >= 900 && panelDisplay === 'comparablePropertySearch'){
-            setPanelPrimaryVisibility(true);
-            setPanelDisplay('propertyDetail');
-        }
-
-    },[screenWidth])
-
+    console.log("Panel display: ", panelDisplay)
     return(
         <Box 
             height={200}
