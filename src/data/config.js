@@ -1,6 +1,8 @@
 export const config = {
     //show alert banner
     showBanner: true,
+    bannerMessage:"Cookviewer beta message",
+    bannerColor:"#ed6c02",
     //NAVBAR
     //App Logo
     logo:"https://maps.cookcountyil.gov/cdn/cook/cook_logo.png",
