@@ -13,7 +13,7 @@ import FeedbackDialog from "../FeedBack/Feedback";
 
 const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton, panel, primary} ) => {
 
-    const { clearResultsComparables, clearResults, panelPrimaryVisible, panelSecondaryVisibility, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
+    const { clearResultsComparables, panelDisplaySecondary, clearResults, panelPrimaryVisible, panelSecondaryVisibility, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
 
     //get url parameters
     const [routeParams , setSearchParams] = useSearchParams()
@@ -33,9 +33,11 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
             window.history.pushState({ path: updatedUrl }, '', updatedUrl);
 
             clearResultsComparables()
+            panelSecondaryVisibility(false)
         }
         else{
             clearResultsComparables()
+            panelSecondaryVisibility(false)
         }
 
 
@@ -59,9 +61,16 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
 
     const handleBack = () => {
 
+        let secondaryParcelsDisplayed= ["nearbyProperties", "comparablePropertySearch","resultsListComparables","resultsListNearby","propertyDetailComparable","propertyDetailNearby"].includes(panelDisplaySecondary)
+
         if(panel==="primary"){
             console.log("going back to: ", backButtonComponent)
             setPanelDisplay(backButtonComponent)
+
+            if(backButtonComponent ==="resultsList" && secondaryParcelsDisplayed){
+                clearResultsComparables()
+                setPanelSecondaryVisibility(false)
+            }
         }
         if(panel==="secondary"){
             console.log("going back to: ", backButtonComponent)
@@ -69,6 +78,7 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
 
             if(["nearbyProperties", "comparablePropertySearch"].includes(backButtonComponent)){
                 clearResultsComparables()
+                
             }
         }
     }
@@ -86,10 +96,14 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
         <Box display="flex" flexDirection="column" rowGap={0}>
             
             <Stack direction="row">
-            
-                    {backButton ? <IconButton 
+                    {backButton ? 
+                    <IconButton 
                         onClick={handleBack}
-                        sx={{ display:"flex", flexDirection:"column"}}>
+                        sx={{ 
+                            display:"flex", 
+                            flexDirection:"column",
+                            position:"absolute"
+                            }}>
                         <ChevronLeft fontSize="small" sx={{color:theme.main.text.dark}}/>
                     <Typography color={theme.main.text.dark} variant="subtitle1">Back</Typography>
                     </IconButton> : null} 
@@ -100,9 +114,12 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
                 </Box>
                 
                     {closeButton ? <IconButton 
-
                         onClick={() => {handleClosePanel(panel)}}
-                        sx={{ display:"flex", flexDirection:"column"}}>
+                        sx={{ 
+                            display:"flex", 
+                            flexDirection:"column",
+                            position:"absolute",
+                            right: 0}}>
                         <CloseOutlined fontSize="small" sx={{color:theme.main.text.dark}}/>
                     <Typography color={theme.main.text.dark} variant="subtitle1">Close</Typography>
                     </IconButton> :null}

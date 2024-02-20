@@ -1,5 +1,6 @@
 export const config = {
     //show alert banner
+    showBanner: true,
     //NAVBAR
     //App Logo
     logo:"https://maps.cookcountyil.gov/cdn/cook/cook_logo.png",
@@ -9,7 +10,11 @@ export const config = {
     portal:"https://cookcountyil.maps.arcgis.com/",
     // BASEMAP ID: Provide the ID of the basemap you want to use in the application.
     basemap_item_id:"7d31919b0623451ea7e576c85c48f52a",
-    parcel_feature_service : "",
+    //MAP selection colors
+    //Primary Color:
+    primary_color:'',
+    //Secondayr Color:
+    secondary_color:'',
     //PRINT OPTIONS
     print_orientation_options : ['Landscape', 'Portrait'],
     //DATA DICTIONARY SERVICE
@@ -41,16 +46,17 @@ export const config = {
            popupTemplateTitle:"Parcel pin 14 {PIN14}", // Popup template title with field placeholders.
            maxScale:0,
            minScale: 30000,
-           opacity: 0,
+           opacity: .5,
            render: {
                 type: "simple",
                 symbol: {
                     type: "simple-fill",
                     style:"none",
                     outline: {
-                        width:1,
+                        width:.5,
                         color: "#009ADA"
-                    }
+                    },
+                    
                     
 
                 }

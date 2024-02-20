@@ -45,7 +45,7 @@ const radiusTypes = {
 
 const ComparablePropertySearch= () => {
 
-    const { searchComparableProperties, primaryResultFeature } = UseAppContext()
+    const { searchComparableProperties, primaryResultFeature, setPanelDisplaySecondary } = UseAppContext()
 
     const [ buildingSqFtMin, setBuildingSqFtMin ] = useState(0)
     const [ buildingSqFtMax, setBuildingSqFtMax ] = useState(0)
@@ -58,56 +58,18 @@ const ComparablePropertySearch= () => {
     const [ ageMax, setAgeMax ] = useState(0)
     const [ ageMin, setAgeMin ] = useState(0)
 
-    const [radiusType, setRadiusType] = useState(Object.keys(radiusTypes)[0])
-
-    function handleInput(inputType, event){
-
-        let value = event.target.text
-        console.log("handling new input: ", event)
-
-        switch (inputType) {
-            case "building sqft min":
-                setBuildingSqFtMin(value);
-            case "building sqft max":
-                setBuildingSqFtMax(value);
-            case "land sqft min":
-                setLandSqFtMin(value);
-            case "land sqft max":
-                setLandSqFtMax(value);      
-            case "construction type":
-                let constructionValue = event.target.value 
-                setConstructionType(constructionValue);    
-            case "age min":
-                setAgeMin(value);
-            case "age max":
-                setAgeMax(value); 
-            case "radius type":
-                let radiusValue = event.target.value 
-                setRadiusType(radiusValue); 
-            default:
-                null;
-        } 
-    }
-
-    function handleClick(){
-        searchComparableProperties()
-    }
+    const [radius, setRadius] = useState(0)
 
     function handleSetQuery(){
-        let constructionTypeSelect = constructionType === 'Any' ? '*': constructionType
-        let bClass = '200'
-        let query =`township_name = '${primaryResultFeature.attributes['township_name']}' AND
-        NBHD = '${primaryResultFeature.attributes['NBHD']}' AND BCLASS = '${bClass}'
-                    AND (BLDGSQFT >= ${buildingSqFtMin} AND BLDGSQFT <= ${buildingSqFtMax} ) 
-                    AND (LANDSF >= ${landSqFtMin} AND LANDSF <= ${landSqFtMax} )  
-                    AND (BLDGAGE >= ${ageMin} AND BLDGAGE <= ${ageMax} )
-                    AND PIN14 <> '${primaryResultFeature.attributes['PIN14']}'`
+        //AND BCLASS = '${bClass}'
+        let query =`township_name = '${primaryResultFeature.attributes['township_name']}' AND NBHD = ${primaryResultFeature.attributes['NBHD']} AND BCLASS = '${primaryResultFeature.attributes['BCLASS']}' AND (BLDGSQFT >= ${buildingSqFtMin} AND BLDGSQFT <= ${buildingSqFtMax}) AND (LANDSF >= ${landSqFtMin} AND LANDSF <= ${landSqFtMax} ) AND (BLDGAGE >= ${ageMin} AND BLDGAGE <= ${ageMax} ) AND PIN14 <> '${primaryResultFeature.attributes['PIN14']}'`
         
-        query = constructionTypeSelect !== 'None' ? query + `AND bldg_const_desc = '${constructionTypeSelect}'`: query
+        query = ['None','Any'].includes(constructionType) ? query :  query + ` AND bldg_const_desc = '${constructionType}'`
 
-        console.log("Comparable query = ", query)
+        console.log("Comparable query = ", query, radius)
 
-        searchComparableProperties(query, searchDistance)
+        searchComparableProperties(query,radius)
+
         return query
     }
 
@@ -147,10 +109,10 @@ const ComparablePropertySearch= () => {
                   fullWidth 
                   margin="dense" 
                   size="small"
-                  type="text"
-                  value={buildingSqFtMin ? `${buildingSqFtMin} sqft` :  `${0} sqft`}
+                  type="number"
+                  value={buildingSqFtMin}
                   onInput={(event) => {
-                    handleInput("building sqft min", event)
+                    setBuildingSqFtMin(event.target.value)
                   }}
                   />
                   <Typography variant="body2">to</Typography>
@@ -161,10 +123,10 @@ const ComparablePropertySearch= () => {
                   fullWidth 
                   margin="dense" 
                   size="small"
-                  type="text"
-                  value={buildingSqFtMax ? `${buildingSqFtMax} sqft`:  `${0} sqft`}
+                  type="number"
+                  value={buildingSqFtMax}
                   onInput={(event) => {
-                    handleInput("building sqft max", event)
+                    setBuildingSqFtMax(event.target.value)
                   }}
                   />
             </Box>
@@ -178,10 +140,10 @@ const ComparablePropertySearch= () => {
                   fullWidth 
                   margin="dense" 
                   size="small"
-                  type="text"
-                  value={landSqFtMin ? `${landSqFtMin} sqft`:  `${0} sqft`}
+                  type="number"
+                  value={landSqFtMin}
                   onInput={(event) => {
-                    handleInput("land sqft min", event)
+                    setLandSqFtMin(event.target.value)
                   }}
                   />
                   <Typography variant="body2">to</Typography>
@@ -193,9 +155,9 @@ const ComparablePropertySearch= () => {
                   margin="dense" 
                   size="small"
                   type="text"
-                  value={landSqFtMax ? `${landSqFtMax} sqft`: `${0} sqft`}
+                  value={landSqFtMax}
                   onInput={(event) => {
-                    handleInput("land sqft max", event)
+                    setLandSqFtMax(event.target.value)
                   }}
                   />
             </Box>
@@ -217,7 +179,7 @@ const ComparablePropertySearch= () => {
                 size="small"
                 type="text"
                 onChange={(event) => {
-                    handleInput("construction type", event)
+                    setConstructionType(event.target.value)
                 }}
                 SelectProps={{
                     native: true,
@@ -244,10 +206,10 @@ const ComparablePropertySearch= () => {
                         fullWidth 
                         margin="dense" 
                         size="small"
-                        type="text"
-                        value={ageMin ? `${ageMin} years`:  `${0} years`}
+                        type="number"
+                        value={ageMin}
                         onInput={(event) => {
-                            handleInput("age min", event)
+                            setAgeMin(event.target.value)
                         }}
                         />
                         <Typography variant="body2">to</Typography>
@@ -258,10 +220,10 @@ const ComparablePropertySearch= () => {
                         fullWidth 
                         margin="dense" 
                         size="small"
-                        type="text"
-                        value={ageMax ? `${ageMax} years`: `${0} years`}
+                        type="number"
+                        value={ageMax}
                         onInput={(event) => {
-                            handleInput("age max", event)
+                            setAgeMax(event.target.value)
                         }}
                         />
                     </Box>
@@ -281,7 +243,8 @@ const ComparablePropertySearch= () => {
                 size="small"
                 type="text"
                 onChange={(event) => {
-                    handleInput("radius type", event)
+                    console.log("radius event: ", event)
+                    setRadius(event.target.value)
                 }}
                 SelectProps={{
                     native: true,

@@ -35,6 +35,7 @@ export async function createFeatureLayers(map){
         if(source.type === 'mapImageLayer'){
           namedLayers[name] = new MapImageLayer({
             url: source.url,
+            opacity: source.opacity,
             sublayers: [
               {
                 id:0,
