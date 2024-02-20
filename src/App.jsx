@@ -11,6 +11,7 @@ import { AppProvider } from './contexts/AppContext'
 import { ToggleIconButton } from './components/Button/Button'
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import PanelMobile from './components/Panel/Panel'
+import Notifications from './components/Notifications/Notifications'
 
 function App() {
 
@@ -42,6 +43,7 @@ function App() {
   return (
     <AppProvider>
       <Box display="flex" flexDirection="column" height="100vh">
+          <Notifications/>
           <NavBar/>
         <Stack id="main-stack" direction="row" justifyContent="space-between" flexGrow={1} minHeight={0}>
           <LeftPanel/>
