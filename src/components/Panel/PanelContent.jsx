@@ -63,8 +63,8 @@ const PanelContent = ({display}) => {
                     <PanelHeader 
                     text={"Comparable Search"} 
                     closeButton={true}
-                    panel={screenWidth > theme.breakpoints.values.md ? "secondary": "primary"}
-                    backButton={screenWidth > theme.breakpoints.values.md}
+                    panel={screenWidth < theme.breakpoints.values.lg ? "primary": "secondary"}
+                    backButton={screenWidth < theme.breakpoints.values.lg}
                     backButtonComponent={"propertyDetail"}
                     />
                     <Divider/>

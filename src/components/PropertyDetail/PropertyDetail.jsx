@@ -48,14 +48,14 @@ const PropertyDetail = ({property, pinLableColor}) => {
 
 
     function handleClick(display){
-        // if(screenWidth < theme.breakpoints.values.lg){
-        //     setPanelPrimaryVisibility(true)
-        //     setPanelDisplay(display)
-        // }
-        // else if (screenWidth >= theme.breakpoints.values.lg){
-        //     setPanelSecondaryVisibility(true)
+        if(screenWidth < theme.breakpoints.values.lg){
+            setPanelPrimaryVisibility(true)
+            setPanelDisplay(display)
+        }
+        else if (screenWidth >= theme.breakpoints.values.lg){
+            setPanelSecondaryVisibility(true)
             setPanelDisplaySecondary(display)
-        //}
+        }
     }
 
 

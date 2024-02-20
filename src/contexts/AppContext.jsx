@@ -267,12 +267,16 @@ export const AppProvider = ({children}) => {
 
     const renderSearchResults = async (searchWidgetResults) => {
         const { querySearchResults } = await import('../arcgis/webmap/webmap')
-        const { parcelQueryFields, panelDisplay } = state
+        const { parcelQueryFields, panelDisplay, primaryResultFeature } = state
 
         console.log("Query Fields: ", parcelQueryFields)
 
         const features = await querySearchResults(searchWidgetResults, parcelQueryFields)
         setSearchResults(searchWidgetResults, features)
+
+        if(!primaryResultFeature){
+            setPrimaryResultFeature(features[0], false)
+        }
 
         if(panelDisplay !== "resultsList"){
             setPanelDisplay("resultsList")
