@@ -21,33 +21,19 @@ let highlightSelect;
 let point;
 let layerGraphics
 
-let map;
-let view
 
-//create graphics layer to search result
-layerGraphics = new GraphicsLayer()
+// Create a Map instance
+export const map = new Map({
+  // basemap: "streets-vector"
+});
 
-//create graphics layer to comparable search result
-let layerGraphicsSecondary = new GraphicsLayer()
-//create graphics layer to comparable search result
-let layerGraphicsSecondarySelected = new GraphicsLayer()
+export const view = new MapView({
+map: map,
+center: [-87.8298, 41.8781],
+zoom: 8
+})
 
-
-
-export async function initializeMap(container){
-
-  // Create a Map instance
-  map = new Map({
-    // basemap: "streets-vector"
-  });
-
-  view = new MapView({
-  map: map,
-  center: [-87.8298, 41.8781],
-  zoom: 8
-  })
-
-  view.ui.move([ "zoom" ], "top-right");
+view.ui.move([ "zoom" ], "top-right");
 
   //create home widget
   let homeWidget = new Home({
@@ -79,6 +65,22 @@ view.ui.add(scaleBar, {
 position: "bottom-left"
 });
 
+//create graphics layer to search result
+layerGraphics = new GraphicsLayer()
+
+//create graphics layer to comparable search result
+let layerGraphicsSecondary = new GraphicsLayer()
+//create graphics layer to comparable search result
+let layerGraphicsSecondarySelected = new GraphicsLayer()
+
+
+
+export async function initializeMap(container){
+
+
+
+  
+
   //created feature layers based on config layer sources
   //add layers to map
   view.container = container
@@ -106,6 +108,7 @@ position: "bottom-left"
 
   //add graphics layer to map
   map.add(layerGraphics)
+
 
 return view, searchSources
 }  

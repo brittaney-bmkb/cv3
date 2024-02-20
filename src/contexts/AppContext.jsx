@@ -53,8 +53,8 @@ export const AppProvider = ({children}) => {
 
     const loadMap = async () => {
 
-        const {initializeMap} = await import('../arcgis/webmap/webmap')
-        const {mapContainer} = state
+        const {initializeMap, zoomToExtent} = await import('../arcgis/webmap/webmap')
+        const {mapContainer, primaryResultFeature, secondaryFeatures} = state
 
         let view, searchSources = await initializeMap(mapContainer)
 
@@ -62,7 +62,13 @@ export const AppProvider = ({children}) => {
 
         setMapView(view)
         setSearchSources(searchSources)
-        setPrimaryResultFeature(null, true)
+        if(!primaryResultFeature){
+            setPrimaryResultFeature(null, true)
+        }
+        else{
+            zoomToExtent(secondaryFeatures? secondaryFeatures: [primaryResultFeature])
+        }
+        
     }
 
 
