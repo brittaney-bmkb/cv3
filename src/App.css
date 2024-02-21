@@ -30,3 +30,7 @@ calcite-icon {
   visibility: hidden;
   display: none;
 }
+
+.esri-measurement-widget-content{
+  background-color: black !important;
+}

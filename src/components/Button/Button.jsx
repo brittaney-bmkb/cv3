@@ -25,27 +25,31 @@ export const StyledPanelButton = ({text1, text2, text3, icon1, icon2, icon3, onC
 
     return(
 
-        <ButtonGroup>
-            <Button
+        <ButtonGroup size="small" sx={{display:"flex", textTransform:"none"}}>
+            <StyledButtonFilledPrimary
             variant="contained"
             color="primary"
-            startIcon={icon1}>
-                <Typography variant="body1">{text1}</Typography>
-            </Button>
+            startIcon={icon1}
+            text={text1}
+            >
+                
+            </StyledButtonFilledPrimary>
             
-            <Button
+            <StyledButtonFilledPrimary
             variant="contained"
             color="primary"
-            startIcon={icon2}>
-                <Typography variant="body1">{text2}</Typography>
-            </Button>
+            startIcon={icon2}
+            text={text2}>
+               
+            </StyledButtonFilledPrimary>
 
-            <Button
+            <StyledButtonFilledPrimary
             variant="contained"
             color="primary"
-            startIcon={icon3}>
-                <Typography variant="body1">{text3}</Typography>
-            </Button>            
+            startIcon={icon3}
+            text={text3}
+            >
+            </StyledButtonFilledPrimary>            
 
         </ButtonGroup>
     )

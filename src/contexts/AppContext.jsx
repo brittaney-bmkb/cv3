@@ -81,8 +81,6 @@ export const AppProvider = ({children}) => {
         const { measureWidgetState, comparableParcels, panelSecondaryVisible, primaryResultFeature, panelPrimaryVisible, panelDisplay, parcelQueryFields } = state
 
         if(measureWidgetState !== "measuring" && measureWidgetState !== "measured"){
-
-        
         const selectedFeatures = await onViewClick(parcelQueryFields)
         console.log("selectedFeatures: ", selectedFeatures)
         let secondaryFeatures = []

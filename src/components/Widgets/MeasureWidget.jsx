@@ -30,32 +30,32 @@ const MeasureWidget = () => {
     const measureDiv = useRef(null)
     const measureWidget = useRef(null)
     const [ measureValue, setMeasureValue ] = useState(0)
-    
+    const [activeTool, setActiveTool] = useState(null)
 
     useEffect(() => {
 
         const createMeasureWidget = () => {
             if(measureDiv.current){
+                if(!measureWidget.current){
+                    measureWidget.current = new Measurement({
+                        areaUnit: "square-us-feet",
+                        linearUnit: "feet",
+                        container: measureDiv.current,
+                        view: view
+                    })
+                }
 
-                measureWidget.current = new Measurement({
-                    areaUnit: "square-us-feet",
-                    linearUnit: "feet",
-                    container: measureDiv.current,
-                    view: view
-                })
-
-                
-
-            }
-
-            
-            else{
-                console.log("View Model updating")
-                measureWidget.current.viewModel.watch("measurement", function(event){
-                    console.log("Watching measure: ", event)
-                    setMeasureWidgetState("measuring")
-                })
-            }
+            }        
+            // else{
+            //     // console.log("View Model updating")
+            //     // document.addEventListener('mousedown', function(){
+            //     //     console.log("ACTIVE VIEW MODEL " ,measureWidget.current.viewModel?.activeViewModel)
+            //     // })
+            //     // measureWidget.current.viewModel.watch("measurement", function(event){
+            //     //     console.log("Watching measure: ", event)
+            //     //     setMeasureWidgetState("measuring")
+            //     // })
+            // }
         }
 
         createMeasureWidget();
@@ -63,39 +63,40 @@ const MeasureWidget = () => {
 
 
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        if(measureWidget.current){
-            let state = measureWidget.current.viewModel.state
-            console.log("State of measure: ", state)
-            setMeasureWidgetState(state)
-            let measurement = measureWidget.current.viewModel?.activeViewModel?.measurement
-            if(measurement){
-                console.log("VALUE: ", measurement.length)
-                setMeasureValue(measurement.length)
-            }
+        // if(measureWidget.current){
+        //     let state = measureWidget.current.viewModel.state
+        //     console.log("State of measure: ", state)
+        //     setMeasureWidgetState(state)
+        //     let measurement = measureWidget.current.viewModel?.activeViewModel?.measurement
+        //     if(measurement){
+        //         console.log("VALUE: ", measurement.length)
+        //         setMeasureValue(measurement.length)
+        //     }
 
             
-        }
+        // }
 
-        if(measureWidgetState === "measuring"){
-            document.addEventListener("mousedown", function(){
-                let activeViewModel = measureWidget.current.viewModel?.activeViewModel
-                let measurement = measureWidget.current.viewModel?.activeViewModel?.measurement
-                console.log("VALUE: ", activeViewModel, measurement?.length)
-                setMeasureValue(measurement.length)
-            })
-        }
+    //     if(measureWidgetState === "measuring"){
+    //         document.addEventListener("mousedown", function(){
+    //             let activeViewModel = measureWidget.current.viewModel?.activeViewModel
+    //             let measurement = measureWidget.current.viewModel?.activeViewModel?.measurement
+    //             console.log("VALUE: ", activeViewModel, measurement?.length)
+    //             setMeasureValue(measurement.length)
+    //         })
+    //     }
         
         
-    }, [measureWidget.current])
+    // }, [measureWidget.current])
 
 
     const handleMeasureToolType = (event) => { 
     }
 
-    const newMeasurement = (event) => {
-        measureWidget.current.activeTool = "area"
+    const newMeasurement = () => {
+        //this need to be dynamic
+        measureWidget.current.activeTool = "area" //activeTool
         measureWidget.current.startMeasurement()
         setMeasureWidgetState("measuring")
     }
@@ -118,8 +119,8 @@ const MeasureWidget = () => {
                 <Box ref={measureDiv}>
                    
                 </Box>
-                <FormControl fullWidth>
-                    <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                {/* <FormControl fullWidth> */}
+                    {/* <InputLabel variant="standard" htmlFor="uncontrolled-native">
                         Unit
                     </InputLabel>
                     <NativeSelect
@@ -131,9 +132,9 @@ const MeasureWidget = () => {
                     >
                         <option value={'Degree'}>Degree</option>
                         <option value={'Feet'}>Feet</option>
-                    </NativeSelect>
+                    </NativeSelect> */}
                     <StyledButtonFilledPrimary text={"measure"} onClick={newMeasurement}/>
-                </FormControl>
+                {/* </FormControl> */}
                 
             </Box>
 
