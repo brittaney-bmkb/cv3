@@ -18,7 +18,7 @@ const MapButtonGroup = () => {
 
     return(
         <Stack direction="row" position="absolute" spacing={1} padding={2} zIndex={100}>
-            <StyledButtonFilledPrimary text={"Measure Tool"} />
+            <StyledButtonFilledPrimary text={"Measure Tool"} onClick={handleClick} />
             {/* <Button variant="contained" sx={{bgcolor:theme.palette.primary}} className="measureWidget">Measure</Button> */}
             <StyledButtonFilledPrimary text={"Layers"}/>
             <StyledButtonFilledPrimary text={"Basemaps"}/>

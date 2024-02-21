@@ -78,8 +78,11 @@ export const AppProvider = ({children}) => {
         const { onViewClick, createGraphic, zoomToExtent, removeGraphics } = await import('../arcgis/webmap/webmap')
         const { theme } = await import ('../theme')
         
-        const { comparableParcels, panelSecondaryVisible, primaryResultFeature, panelPrimaryVisible, panelDisplay, parcelQueryFields } = state
+        const { measureWidgetState, comparableParcels, panelSecondaryVisible, primaryResultFeature, panelPrimaryVisible, panelDisplay, parcelQueryFields } = state
 
+        if(measureWidgetState !== "measuring" && measureWidgetState !== "measured"){
+
+        
         const selectedFeatures = await onViewClick(parcelQueryFields)
         console.log("selectedFeatures: ", selectedFeatures)
         let secondaryFeatures = []
@@ -127,7 +130,7 @@ export const AppProvider = ({children}) => {
             
         }
 
-        
+    }
 
         
 
@@ -225,7 +228,14 @@ export const AppProvider = ({children}) => {
         })
     }
 
-
+    const setMeasureWidgetState = (state) => {
+        dispatch({
+            type:"SET_MEASURE_WIDGET_STATE",
+             payload: {
+                measureWidgetState: state,
+            }
+        })
+    }
 
     
     const loadDataDictionary = async () => {
@@ -396,7 +406,9 @@ export const AppProvider = ({children}) => {
         secondaryResultFeature: state.secondaryResultFeature,
         setSecondaryResultFeature,
         clearResultsComparables,
-        addSecondaryFeatureToMap
+        addSecondaryFeatureToMap,
+        setMeasureWidgetState,
+        measureWidgetState: state.measureWidgetState
     }
 
 

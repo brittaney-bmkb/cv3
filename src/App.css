@@ -25,3 +25,8 @@ calcite-icon {
     width: 95vw;
   }
 }
+
+.esri-measurement-widget-content__actions{
+  visibility: hidden;
+  display: none;
+}

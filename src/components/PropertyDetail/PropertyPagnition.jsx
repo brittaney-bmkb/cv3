@@ -15,7 +15,7 @@ const PropertyPagniation = () => {
     }
      
     return(
-        <Box display="flex" justifyContent="center" flexGrow={1}
+        <Box display="flex" justifyContent="center"
         height={screenWidth <= theme.breakpoints.values.sm ? 350: "fit-content"}
         >
         <Pagination 
