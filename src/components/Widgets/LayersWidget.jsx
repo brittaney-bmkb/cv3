@@ -37,7 +37,10 @@ const MeasureWidget = () => {
                                             <Chip
                                             key={layer.layerName}
                                             label={layer.layerName}
+                                            clickable
                                             onClick={() => {ToggleLayer(layer.layerName)}}
+                                           
+                                            
                                             />
                                             )
                                         })
