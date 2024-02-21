@@ -10,6 +10,7 @@ import PrintWidget from "../Widgets/PrintWidget";
 import UseAppContext from "../../contexts/AppContext"
 import { theme } from "../../theme"
 import CompareNearby from "../ComparableProperty/CompareNearby"
+import PropertyDetailMobile from "../PropertyDetail/PropertyDetailMobile"
 
 const PanelContent = ({display}) => {
 
@@ -49,7 +50,8 @@ const PanelContent = ({display}) => {
                         primary={true}
                         />
                         <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
-                            <PropertyDetail property={primaryResultFeature} pinLableColor={theme.palette.primary.main}/>
+                            {/* <PropertyDetail property={primaryResultFeature} pinLableColor={theme.palette.primary.main}/> */}
+                            <PropertyDetailMobile property1={primaryResultFeature} propertyColor1={theme.palette.primary.main}/>
                         </Box>
                         
                 </Box>)
@@ -110,7 +112,7 @@ const PanelContent = ({display}) => {
                     feedbackButton={true}
                     backButton={true}
                     backButtonComponent={"comparablePropertySearch"}
-                    panel={"secondary"}
+                    panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"}
                     primary={false}
                     
                     />
@@ -148,7 +150,7 @@ const PanelContent = ({display}) => {
 
         case 'propertyDetailComparable':
             return (
-                <Box display="flex" flexDirection="column">
+                <Box display="flex" flexDirection="column"  minHeight={0}>
                         <PanelHeader 
                         text={"Comparable Property"} 
                         exportButton={true} 
@@ -157,16 +159,16 @@ const PanelContent = ({display}) => {
                         backButton={true}
                         backButtonComponent={'resultsListComparables'}
                         closeButton={true}
-                        panel={"secondary"}
+                        panel={screenWidth < theme.breakpoints.values.lg ? "primary":"secondary"}
                         primary={false}
                         />
                        <Box display="flex" width="100%" flexGrow={1} minHeight={0}>
-                        <PropertyDetail property={secondaryResultFeature} pinLableColor={theme.palette.secondary.main}/>
+                        <PropertyDetailMobile property1={screenWidth >= theme.breakpoints.values.lg ? null :primaryResultFeature} property2={secondaryResultFeature} pinLableColor={theme.palette.secondary.main}/>
                        </Box>     
                 </Box>)
         case 'propertyDetailNearby':
             return (
-                <Box display="flex" flexDirection="column">
+                <Box display="flex" flexDirection="column"  minHeight={0}>
                         <PanelHeader 
                         text={"Nearby Property"} 
                         exportButton={true} 
@@ -179,7 +181,7 @@ const PanelContent = ({display}) => {
                         primary={false}
                         />
                        <Box display="flex" width="100%" flexGrow={1} minHeight={0}>
-                        <PropertyDetail property={secondaryResultFeature} pinLableColor={theme.palette.secondary.main}/>
+                       <PropertyDetailMobile property1={screenWidth >= theme.breakpoints.values.lg ? null :primaryResultFeature} property2={secondaryResultFeature} pinLableColor={theme.palette.secondary.main}/>
                        </Box>     
                 </Box>)
         case 'measureWidget':

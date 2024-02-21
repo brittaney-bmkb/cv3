@@ -298,9 +298,7 @@ export async function createGraphic(features, removeGraphicName, color, secondar
     }
     if(removeGraphicName ==="primary"){
       layerGraphics.add(parcelGraphic)
-    }
-    
-  
+    }  
   })
 
 }
@@ -313,13 +311,13 @@ export async function createGraphic(features, removeGraphicName, color, secondar
     query.returnGeometry = true
     query.outFields = queryFields
 
-    // if(searchDistance && searchDistance > 0){
-    //   console.log("Search Distance: ", searchDistance)
-    //   query.geometry = feature.geometry
-    //   query.spatialRelationship = "intersect"
-    //   query.distance = searchDistance
-    //   query.units = "miles"
-    // }
+    if(searchDistance && searchDistance > 0){
+      console.log("Search Distance: ", searchDistance)
+      query.geometry = feature.geometry
+      query.spatialRelationship = "intersect"
+      query.distance = searchDistance
+      query.units = "miles"
+    }
 
     let {features} = await targetLayer.queryFeatures(query)
 
