@@ -39,7 +39,7 @@ export const config = {
         // the object's properties
        {
            layerName: "parcelLayer", // Name of the layer source.
-
+           description:"",
            url: "https://dev-gis.cookcountyil.gov/traditional/rest/services/CookViewerParcels/MapServer", // URL to the layer service.
            type: 'mapImageLayer',
            index: 0,
@@ -49,6 +49,8 @@ export const config = {
            maxScale:0,
            minScale: 30000,
            opacity: .5,
+           visible:true,
+           groupName:"Parcels",
            render: {
                 type: "simple",
                 symbol: {
@@ -58,9 +60,6 @@ export const config = {
                         width:.5,
                         color: "#009ADA"
                     },
-                    
-                    
-
                 }
            },
            searchSources: [
@@ -108,6 +107,68 @@ export const config = {
                }
            ]
        },
+       //Natural Environment and Recreation
+       {
+        layerName:"Fishing Lakes",
+        description: "",
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/6", // URL to the layer service.
+        type: 'featureLayer',
+        outFields: ["*"], // Fields to return in the search results (array of strings).
+        maxScale:null,
+        minScale: null,
+        opacity: null,
+        visible:false,
+        groupName:"Natural Environment and Recreation",
+        render:null,
+        searchSources: []
+       },
+       {
+        layerName:"Trail",
+        description: "",
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/10", // URL to the layer service.
+        type: 'featureLayer',
+        outFields: ["*"], // Fields to return in the search results (array of strings).
+        maxScale:null,
+        minScale: null,
+        opacity: null,
+        visible:false,
+        groupName:"Natural Environment and Recreation",
+        render:null,
+        searchSources: []
+       },
+       {
+        layerName:"Contours",
+        description: "",
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/11", // URL to the layer service.
+        type: 'featureLayer',
+        outFields: ["*"], // Fields to return in the search results (array of strings).
+        maxScale:null,
+        minScale: null,
+        opacity: null,
+        visible:false,
+        groupName:"Natural Environment and Recreation",
+        render:null,
+        searchSources: []
+       },
+       {
+        layerName:"High School Districts",
+        description: "",
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/19", // URL to the layer service.
+        type: 'featureLayer',
+        outFields: ["*"], // Fields to return in the search results (array of strings).
+        maxScale:null,
+        minScale: null,
+        opacity: null,
+        visible:false,
+        groupName:"Tax Districts",
+        render:null,
+        searchSources: []
+       },
+       //Boundaries and Districts
+       //Property & Land Records
+       //Imagery
+       //Places of Interest
+       //Transportation
    ],
       // LOCATOR SOURCES CONFIGURATION: Configure the locators for the search widget
       locator_search_sources: [

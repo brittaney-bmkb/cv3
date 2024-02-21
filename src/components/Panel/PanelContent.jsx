@@ -207,6 +207,11 @@ const PanelContent = ({display}) => {
         case 'layersWidget':
             return(
                 <Box bgcolor="white" flex={1} flexDirection="column">
+                    <PanelHeader
+                    text={"Map Layers"} 
+                    closeButton={true}
+                    panel={screenWidth < theme.breakpoints.values.lg ? "bottom":"secondary"}
+                    />
                     <LayersWidget/>
                 </Box>
             )   

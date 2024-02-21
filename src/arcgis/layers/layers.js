@@ -38,8 +38,8 @@ export async function createFeatureLayers(map){
             opacity: source.opacity,
             sublayers: [
               {
-                id:0,
-                visible:true,
+                id:source.index,
+                visible:source.visible,
                 minScale:source.minScale,
                 renderer: source.render,
               
@@ -53,18 +53,18 @@ export async function createFeatureLayers(map){
           namedLayers[name] = new FeatureLayer({
             url: source.url,
             outFields: source.outFields,
+            title: source.layerName,
             // popupEnabled: source.popupEnabled,
             // popupTemplate : new PopupTemplate({
             //   title: source.popupTemplateTitle
             // }),
             //comment
-            visible:true,
-            renderer: source.render,
-          minScale:source.minScale
+            visible:source.visible,
+            //renderer: source.render,
+            //minScale:source.minScale
             
           })
         }
-      
         map.add(namedLayers[name])
       })
 

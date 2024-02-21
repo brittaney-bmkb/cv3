@@ -283,6 +283,14 @@ export const AppProvider = ({children}) => {
         zoomToExtent([secondaryResultFeature, primaryResultFeature])
     }
 
+    const toggleMapLayer = async (layerName) => {
+
+        //update graphic in map
+        const { toggleLayer } = await import('../arcgis/webmap/webmap')
+
+        toggleLayer(layerName)
+    }
+
 
     const renderSearchResults = async (searchWidgetResults) => {
         const { querySearchResults } = await import('../arcgis/webmap/webmap')
@@ -406,7 +414,8 @@ export const AppProvider = ({children}) => {
         clearResultsComparables,
         addSecondaryFeatureToMap,
         setMeasureWidgetState,
-        measureWidgetState: state.measureWidgetState
+        measureWidgetState: state.measureWidgetState,
+        toggleMapLayer
     }
 
 

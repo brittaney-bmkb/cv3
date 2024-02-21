@@ -13,7 +13,7 @@ import FeedbackDialog from "../FeedBack/Feedback";
 
 const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton, panel, primary} ) => {
 
-    const { clearResultsComparables, panelDisplaySecondary, clearResults, panelPrimaryVisible, panelSecondaryVisibility, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
+    const { clearResultsComparables, panelDisplaySecondary, clearResults, panelPrimaryVisible, panelSecondaryVisible, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
 
     //get url parameters
     const [routeParams , setSearchParams] = useSearchParams()
@@ -86,7 +86,7 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
         if(panel==="primary" && panelPrimaryVisible===true){
             setPanelPrimaryVisibility(false)
         }
-        if(panel==="secondary" && panelSecondaryVisibility===true){
+        if(panel==="secondary" && panelSecondaryVisible===true){
             setPanelSecondaryVisibility(false)
         }
     }

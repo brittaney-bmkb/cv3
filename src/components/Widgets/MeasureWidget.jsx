@@ -100,6 +100,9 @@ const MeasureWidget = () => {
         measureWidget.current.startMeasurement()
         setMeasureWidgetState("measuring")
     }
+
+    //need to create clear button to stop measuring
+
 // Not sure how to pass the measure widget into the component
 
     return (
