@@ -162,7 +162,7 @@ theme.typography.h5 = {
         //color: theme.main.text.dark
     },
     [theme.breakpoints.down('md')]: {
-        fontSize: 15,
+        fontSize: 14,
         fontWeight: 600,
         //color: theme.main.text.dark
     },

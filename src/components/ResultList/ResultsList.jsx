@@ -24,7 +24,7 @@ const ResultsList = ({results, primaryLableColor, noResultsMessage}) => {
                         />
                     </ListItem>
                 )
-            }) : <Box display="flex" width='100%' alignItems="center" justifyContent="center" p={3}>
+            }) : <Box display="flex" width='100%' alignItems="center" justifyContent="center" p={1}>
                     <Typography variant="h6" color={theme.palette.primary.main}>{noResultsMessage}</Typography>
                 </Box>}
             

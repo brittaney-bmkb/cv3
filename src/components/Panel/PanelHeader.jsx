@@ -77,9 +77,8 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
             setPanelDisplaySecondary(backButtonComponent)
 
             if(["nearbyProperties", "comparablePropertySearch"].includes(backButtonComponent)){
-                clearResultsComparables()
-                
-            }
+                clearResultsComparables() 
+            }            
         }
     }
 

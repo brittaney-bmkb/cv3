@@ -117,8 +117,9 @@ export const LeftPanel = () => {
     const { panelPrimaryVisible, setPanelSecondaryVisibility, panelDisplaySecondary, setPanelDisplaySecondary, panelDisplay, screenWidth, setPanelDisplay, setPanelPrimaryVisibility, primaryResultFeature, panelSecondaryVisible } = UseAppContext()
 
     useEffect(() => {
-        const isPrimaryPanel = ['comparablePropertySearch', 'resultsListComparables', 'nearbyProperties'].includes(panelDisplay);
-        const isSecondaryPanel = ['comparablePropertySearch', 'resultsListComparables', 'nearbyProperties'].includes(panelDisplaySecondary);
+        const secondaryDisplays = ["propertyDetailComparable","propertyDetailNearby", "comparablePropertySearch", "resultsListComparables", "nearbyProperties"]
+        const isPrimaryPanel = secondaryDisplays.includes(panelDisplay);
+        const isSecondaryPanel = secondaryDisplays.includes(panelDisplaySecondary);
         const isLargeScreen = screenWidth >= theme.breakpoints.values.lg
       
         // Determine the display value based on the current panel and screen width

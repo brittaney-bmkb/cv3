@@ -1,7 +1,6 @@
 import { Box, Divider, Paper } from "@mui/material"
 import PanelHeader from "./PanelHeader"
 import ResultsList from "../ResultList/ResultsList"
-import PropertyDetail from "../PropertyDetail/PropertyDetail"
 import ComparablePropertySearch from "../ComparableProperty/ComparablePropertySearch"
 import BasemapWidget from "../Widgets/BasemapWidget";
 import LayersWidget from "../Widgets/LayersWidget";
@@ -10,6 +9,8 @@ import PrintWidget from "../Widgets/PrintWidget";
 import UseAppContext from "../../contexts/AppContext"
 import { theme } from "../../theme"
 import CompareNearby from "../ComparableProperty/CompareNearby"
+import PropertyDetail from "../PropertyDetail/PropertyDetail"
+import PropertyPagniation from "../PropertyDetail/PropertyPagnition";
 
 const PanelContent = ({display}) => {
 
@@ -49,7 +50,10 @@ const PanelContent = ({display}) => {
                         primary={true}
                         />
                         <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
-                            <PropertyDetail property={primaryResultFeature} pinLableColor={theme.palette.primary.main}/>
+                            {/* <PropertyDetail property={primaryResultFeature} pinLableColor={theme.palette.primary.main}/> */}
+                            <PropertyDetail 
+                            property1={primaryResultFeature} 
+                            propertyColor1={theme.palette.primary.main}/>
                         </Box>
                         
                 </Box>)
@@ -110,7 +114,7 @@ const PanelContent = ({display}) => {
                     feedbackButton={true}
                     backButton={true}
                     backButtonComponent={"comparablePropertySearch"}
-                    panel={"secondary"}
+                    panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"}
                     primary={false}
                     
                     />
@@ -148,7 +152,7 @@ const PanelContent = ({display}) => {
 
         case 'propertyDetailComparable':
             return (
-                <Box display="flex" flexDirection="column">
+                <Box display="flex" flexDirection="column"  minHeight={0}>
                         <PanelHeader 
                         text={"Comparable Property"} 
                         exportButton={true} 
@@ -157,16 +161,21 @@ const PanelContent = ({display}) => {
                         backButton={true}
                         backButtonComponent={'resultsListComparables'}
                         closeButton={true}
-                        panel={"secondary"}
+                        panel={screenWidth < theme.breakpoints.values.lg ? "primary":"secondary"}
                         primary={false}
                         />
-                       <Box display="flex" width="100%" flexGrow={1} minHeight={0}>
-                        <PropertyDetail property={secondaryResultFeature} pinLableColor={theme.palette.secondary.main}/>
+                       <Box display="flex" flexDirection="column" width="100%" flexGrow={1} minHeight={0}>
+                        <PropertyDetail 
+                        property1={screenWidth >= theme.breakpoints.values.lg ? null :primaryResultFeature} 
+                        property2={secondaryResultFeature} 
+                        propertyColor1={theme.palette.primary.main}
+                        propertyColor2={theme.palette.secondary.main}/>
+                        <PropertyPagniation/>
                        </Box>     
                 </Box>)
         case 'propertyDetailNearby':
             return (
-                <Box display="flex" flexDirection="column">
+                <Box display="flex" flexDirection="column"  minHeight={0}>
                         <PanelHeader 
                         text={"Nearby Property"} 
                         exportButton={true} 
@@ -179,7 +188,11 @@ const PanelContent = ({display}) => {
                         primary={false}
                         />
                        <Box display="flex" width="100%" flexGrow={1} minHeight={0}>
-                        <PropertyDetail property={secondaryResultFeature} pinLableColor={theme.palette.secondary.main}/>
+                       <PropertyDetail 
+                       property1={screenWidth >= theme.breakpoints.values.lg ? null : primaryResultFeature} 
+                       property2={secondaryResultFeature} 
+                       propertyColor1={theme.palette.primary.main}
+                       propertyColor2={theme.palette.secondary.main}/>
                        </Box>     
                 </Box>)
         case 'measureWidget':

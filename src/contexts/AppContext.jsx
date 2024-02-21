@@ -3,6 +3,7 @@ import AppReducer, { initialState } from '../reducers/AppReducer'
 import { useSearchParams } from "react-router-dom";
 import { config } from "../data/config";
 import { zoomToExtent } from "../arcgis/webmap/webmap";
+import { theme } from "../theme";
 
 
 export const AppContext = createContext(initialState)
@@ -331,14 +332,21 @@ export const AppProvider = ({children}) => {
 
         const { compareProperities } = await import('../arcgis/webmap/webmap')
 
-        const { primaryResultFeature, parcelQueryFields } = state     
+        const { primaryResultFeature, parcelQueryFields, screenWidth } = state     
 
         let features = await compareProperities(whereQuery, searchDistance, primaryResultFeature, parcelQueryFields)
 
         console.log("New Comparable features: ", features)
         setComparableParcels(features)
 
-        setPanelDisplaySecondary("resultsListComparables")
+        if(screenWidth < theme.breakpoints.values.lg){
+            setPanelPrimaryVisibility(true)
+            setPanelDisplay("resultsListComparables")
+        }
+        else if (screenWidth >= theme.breakpoints.values.lg){
+            setPanelSecondaryVisibility(true)
+            setPanelDisplaySecondary("resultsListComparables")
+        }
     }
 
     const searchNearbyProperties = async (searchDistance) => {
