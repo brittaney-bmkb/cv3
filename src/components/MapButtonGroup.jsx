@@ -11,16 +11,16 @@ const MapButtonGroup = () => {
     const { setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
     
     
-    function handleClick(){
+    function handleClick(display){
         setPanelSecondaryVisibility(true)
-        setPanelDisplaySecondary("measureWidget")
+        setPanelDisplaySecondary(display)
     }
 
     return(
         <Stack direction="row" position="absolute" spacing={1} padding={2} zIndex={100}>
-            <StyledButtonFilledPrimary text={"Measure Tool"} />
+            <StyledButtonFilledPrimary text={"Measure Tool"} onClick={() => {handleClick("measureWidget")}} />
             {/* <Button variant="contained" sx={{bgcolor:theme.palette.primary}} className="measureWidget">Measure</Button> */}
-            <StyledButtonFilledPrimary text={"Layers"}/>
+            <StyledButtonFilledPrimary text={"Layers"} onClick={() => {handleClick("layersWidget")}}/>
             <StyledButtonFilledPrimary text={"Basemaps"}/>
             <StyledButtonFilledPrimary text={"Print"}/>
         </Stack>

@@ -16,7 +16,8 @@ export const initialState = {
     parcelQueryFields: null,
     screenWidth: null,
     newSearch:null,
-    comparableParcels: null
+    comparableParcels: null,
+    measureWidgetState:null
 }
 
 const AppReducer = (state, action) => {
@@ -115,6 +116,13 @@ const AppReducer = (state, action) => {
             return {
                 ...state,
                 comparableParcels: payload.comparableParcels,
+            }
+
+        case "SET_MEASURE_WIDGET_STATE":
+            console.log("SET_MEASURE_WIDGET_STATE")
+            return {
+                ...state,
+                measureWidgetState: payload.measureWidgetState,
             }
         default:
             throw new Error(`No valid selection made`)

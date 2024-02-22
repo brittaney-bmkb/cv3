@@ -78,8 +78,9 @@ export const AppProvider = ({children}) => {
         const { onViewClick, createGraphic, zoomToExtent, removeGraphics } = await import('../arcgis/webmap/webmap')
         const { theme } = await import ('../theme')
         
-        const { comparableParcels, panelSecondaryVisible, primaryResultFeature, panelPrimaryVisible, panelDisplay, parcelQueryFields } = state
+        const { measureWidgetState, comparableParcels, panelSecondaryVisible, primaryResultFeature, panelPrimaryVisible, panelDisplay, parcelQueryFields, panelDisplaySecondary } = state
 
+        if(measureWidgetState !== "measuring" && measureWidgetState !== "measured"){
         const selectedFeatures = await onViewClick(parcelQueryFields)
         console.log("selectedFeatures: ", selectedFeatures)
         let secondaryFeatures = []
@@ -116,7 +117,7 @@ export const AppProvider = ({children}) => {
                 setPanelPrimaryVisibility(true)
             }
 
-            if(panelSecondaryVisible === true){
+            if(panelSecondaryVisible === true && ["propertyDetailNearby","propertyDetailComparable","resultsListNearby","resultsListComparables","nearbyProperties","comparablePropertySearch"].includes(panelDisplaySecondary)){
                 setPanelSecondaryVisibility(false)
             }
             
@@ -127,7 +128,7 @@ export const AppProvider = ({children}) => {
             
         }
 
-        
+    }
 
         
 
@@ -225,7 +226,14 @@ export const AppProvider = ({children}) => {
         })
     }
 
-
+    const setMeasureWidgetState = (state) => {
+        dispatch({
+            type:"SET_MEASURE_WIDGET_STATE",
+             payload: {
+                measureWidgetState: state,
+            }
+        })
+    }
 
     
     const loadDataDictionary = async () => {
@@ -273,6 +281,14 @@ export const AppProvider = ({children}) => {
 
         createGraphic([secondaryResultFeature], "secondarySelected", theme.palette.primary.light)
         zoomToExtent([secondaryResultFeature, primaryResultFeature])
+    }
+
+    const toggleMapLayer = async (layerName) => {
+
+        //update graphic in map
+        const { toggleLayer } = await import('../arcgis/webmap/webmap')
+
+        toggleLayer(layerName)
     }
 
 
@@ -396,7 +412,10 @@ export const AppProvider = ({children}) => {
         secondaryResultFeature: state.secondaryResultFeature,
         setSecondaryResultFeature,
         clearResultsComparables,
-        addSecondaryFeatureToMap
+        addSecondaryFeatureToMap,
+        setMeasureWidgetState,
+        measureWidgetState: state.measureWidgetState,
+        toggleMapLayer
     }
 
 

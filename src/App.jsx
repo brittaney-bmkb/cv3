@@ -59,9 +59,7 @@ function App() {
   
             <BottomPanel/>
           </Box>
-
           <SecondaryPanel/>
-
         </Stack>
         <Box width="auto" height="auto" position="absolute" bottom={20} left="45%" display={{xs:"block", sm: "none"}}>
           <ToggleIconButton 
@@ -70,7 +68,6 @@ function App() {
             onClick={handleClick}
           />
         </Box>
-        
       </Box>
     </AppProvider>
   )

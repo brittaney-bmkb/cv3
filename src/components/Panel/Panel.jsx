@@ -36,6 +36,9 @@ const PanelMobile = () => {
 export const SecondaryPanel = () => {  
 
     const { panelSecondaryVisible, panelDisplaySecondary } = UseAppContext()
+
+    const widgetDisplayed = ["measureWidget","layersWidget","basemapsWidget","printWidget"].includes(panelDisplaySecondary)
+
     return(
         //sx style this adjust the right left or panel will show up. 
         //sm is a block 
@@ -46,7 +49,7 @@ export const SecondaryPanel = () => {
             flex={1}
             flexGrow={1}
             minWidth={300}   
-            sx={{display:{xs:'none', sm: panelSecondaryVisible ? 'flex' : 'none'}}}>
+            sx={{display:{xs:'none', sm: 'none', md: panelSecondaryVisible? 'flex':"none", lg:panelSecondaryVisible? 'flex':"none"}}}>
                 <PanelContent id="panel-content" display={panelDisplaySecondary}/>
         </Box>
     )
@@ -159,11 +162,26 @@ export const LeftPanel = () => {
 
 export const BottomPanel = () => {
 
-    const { panelSecondaryVisible } = UseAppContext()
+    const { panelSecondaryVisible, panelDisplaySecondary } = UseAppContext()
+
+    const widgetDisplayed = ["measureWidget","layersWidget","basemapsWidget","printWidget"].includes(panelDisplaySecondary)
 
     return(
-    <Box bgcolor="blueviolet" flex={4} flexDirection="column" sx={{display:{xs:'none', sm:panelSecondaryVisible ? 'block' :'none', md: 'none'}}} width="100%" >
-        <SecondaryPanelContent/>
+    <Box 
+    id="bottom-panel"
+    minHeight={0}
+    height="50vh"
+    bgcolor="white" 
+    flexDirection="column"  
+    sx={{
+        display:{
+            xs:panelSecondaryVisible && widgetDisplayed ? 'flex' :'none', 
+            sm:panelSecondaryVisible && widgetDisplayed ? 'flex' :'none', 
+            md: 'none'}}} width="100%" 
+        borderRadius="10px 10px 0px 0px"
+        borderTop={1}
+        borderColor={theme.palette.info.light}>
+        <PanelContent id="panel-content" display={panelDisplaySecondary}/>
     </Box>
     )
 }

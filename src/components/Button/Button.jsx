@@ -1,4 +1,4 @@
-import { Button, Fab, IconButton, Typography, styled } from "@mui/material"
+import { Button, ButtonGroup, Fab, IconButton, Typography, styled } from "@mui/material"
 import { theme } from "../../theme"
 
 const StyledButtonFilledPrimary = ({text, startIcon, endIcon, onClick, textVarient, disabled}) => {
@@ -15,6 +15,43 @@ const StyledButtonFilledPrimary = ({text, startIcon, endIcon, onClick, textVarie
             {text}
         </Typography>
         </Button>
+    )
+}
+
+
+// Add a new compoenent for button group and customize
+export const StyledPanelButton = ({text1, text2, text3, icon1, icon2, icon3, onClick}) => {
+    console.log('StyledPanelButton')
+
+    return(
+
+        <ButtonGroup size="small" sx={{display:"flex", textTransform:"none"}}>
+            <StyledButtonFilledPrimary
+            variant="contained"
+            color="primary"
+            startIcon={icon1}
+            text={text1}
+            >
+                
+            </StyledButtonFilledPrimary>
+            
+            <StyledButtonFilledPrimary
+            variant="contained"
+            color="primary"
+            startIcon={icon2}
+            text={text2}>
+               
+            </StyledButtonFilledPrimary>
+
+            <StyledButtonFilledPrimary
+            variant="contained"
+            color="primary"
+            startIcon={icon3}
+            text={text3}
+            >
+            </StyledButtonFilledPrimary>            
+
+        </ButtonGroup>
     )
 }
 

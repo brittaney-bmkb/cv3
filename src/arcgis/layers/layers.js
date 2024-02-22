@@ -30,18 +30,22 @@ export async function createFeatureLayers(map){
 
     config.layer_sources.forEach(source => {
         const name = source.layerName;
+
         //https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
 
         if(source.type === 'mapImageLayer'){
           namedLayers[name] = new MapImageLayer({
             url: source.url,
             opacity: source.opacity,
+            title: source.layerName,
+            visible: source.visible,
             sublayers: [
               {
-                id:0,
-                visible:true,
+                id:source.index,
+                visible:source.visible,
                 minScale:source.minScale,
                 renderer: source.render,
+                title: source.layerName
               
               }
             ]
@@ -53,19 +57,22 @@ export async function createFeatureLayers(map){
           namedLayers[name] = new FeatureLayer({
             url: source.url,
             outFields: source.outFields,
+            title: source.layerName,
             // popupEnabled: source.popupEnabled,
             // popupTemplate : new PopupTemplate({
             //   title: source.popupTemplateTitle
             // }),
             //comment
-            visible:true,
-            renderer: source.render,
-          minScale:source.minScale
+            visible:source.visible,
+            //renderer: source.render,
+            //minScale:source.minScale
             
           })
         }
-      
-        map.add(namedLayers[name])
+        if(source.visible){
+          map.add(namedLayers[name])
+        }
+        
       })
 
     return namedLayers
