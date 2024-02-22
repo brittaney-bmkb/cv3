@@ -8,7 +8,7 @@ import { StyledIconButton } from "../Button/Button";
 import FeedbackOutlinedIcon from '@mui/icons-material/FeedbackOutlined';
 import { useSearchParams } from "react-router-dom"
 import ExportDialog from "../ExportDialog/ExportDialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FeedbackDialog from "../FeedBack/Feedback";
 
 const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton, panel, primary} ) => {
@@ -19,6 +19,16 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
     const [routeParams , setSearchParams] = useSearchParams()
     const [ openExportDialog, setOpenExportDialog ] = useState(false)
     const [ openFeedbackDialog, setOpenFeedbackDialog ] = useState(false)
+    const [ actionRowVisible, setActionRowVisible ] = useState(false)
+
+    useEffect(() => {
+        if(results ||  exportButton || clearButton || feedbackButton){
+            setActionRowVisible(true)
+        }
+        else{
+            setActionRowVisible(false)
+        }
+    },[results, exportButton, clearButton, feedbackButton])
 
     function handleClearResults(primary){
 
@@ -123,7 +133,7 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
                     <Typography color={theme.main.text.dark} variant="subtitle1">Close</Typography>
                     </IconButton> :null}
             </Stack>
-            <Stack direction="row" alignItems="center" spacing={1} justifyContent="center" height={30}>
+            <Stack direction="row" alignItems="center" spacing={1} justifyContent="center" height={30} sx={{display:actionRowVisible ? "flex" : "none"}}>
                 {results ? <Box display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" height={35} p={0} m={0}>
                     <Typography variant="subtitle2" color={theme.main.text.dark} align="center" sx={{height:21}}>
                         {results ? results: 0}

@@ -272,7 +272,6 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                                 fontSize: theme.typography.h3.fontSize,
                                 justifyContent: "center",
                                 alignItems:"center",
-                                color:"",
                                 borderColor:property===property1 ? propertyColor1 : propertyColor2,
                                 color:property===property1 ? propertyColor1 : propertyColor2
                             }}
