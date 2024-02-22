@@ -187,12 +187,13 @@ const PanelContent = ({display}) => {
                         panel={"secondary"}
                         primary={false}
                         />
-                       <Box display="flex" width="100%" flexGrow={1} minHeight={0}>
+                       <Box display="flex"  flexDirection="column" width="100%" flexGrow={1} minHeight={0}>
                        <PropertyDetail 
                        property1={screenWidth >= theme.breakpoints.values.lg ? null : primaryResultFeature} 
                        property2={secondaryResultFeature} 
                        propertyColor1={theme.palette.primary.main}
                        propertyColor2={theme.palette.secondary.main}/>
+                       <PropertyPagniation/>
                        </Box>     
                 </Box>)
         case 'measureWidget':
