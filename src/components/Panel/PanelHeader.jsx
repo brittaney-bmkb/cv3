@@ -43,11 +43,11 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
             window.history.pushState({ path: updatedUrl }, '', updatedUrl);
 
             clearResultsComparables()
-            panelSecondaryVisibility(false)
+            setPanelSecondaryVisibility(false)
         }
         else{
             clearResultsComparables()
-            panelSecondaryVisibility(false)
+            setPanelSecondaryVisibility(false)
         }
 
 

@@ -167,8 +167,21 @@ export const BottomPanel = () => {
     const widgetDisplayed = ["measureWidget","layersWidget","basemapsWidget","printWidget"].includes(panelDisplaySecondary)
 
     return(
-    <Box bgcolor="blueviolet" flex={4} flexDirection="column" sx={{display:{xs:panelSecondaryVisible && widgetDisplayed ? 'block' :'none', sm:panelSecondaryVisible && widgetDisplayed ? 'block' :'none', md: 'none'}}} width="100%" >
-        <SecondaryPanelContent/>
+    <Box 
+    id="bottom-panel"
+    minHeight={0}
+    height="50vh"
+    bgcolor="white" 
+    flexDirection="column"  
+    sx={{
+        display:{
+            xs:panelSecondaryVisible && widgetDisplayed ? 'flex' :'none', 
+            sm:panelSecondaryVisible && widgetDisplayed ? 'flex' :'none', 
+            md: 'none'}}} width="100%" 
+        borderRadius="10px 10px 0px 0px"
+        borderTop={1}
+        borderColor={theme.palette.info.light}>
+        <PanelContent id="panel-content" display={panelDisplaySecondary}/>
     </Box>
     )
 }

@@ -73,9 +73,29 @@ let layerGraphicsSecondary = new GraphicsLayer()
 //create graphics layer to comparable search result
 let layerGraphicsSecondarySelected = new GraphicsLayer()
 
-export async function toggleLayer(layerName){
-  let layer = namedLayers[layerName]
-  layer.visible = !layer.visible
+export async function toggleLayer(layer){
+
+  let layerToToggle
+
+  if(layer.type === "mapImageLayer"){
+    layerToToggle = namedLayers[layer.layerName]
+    let subLayer = layerToToggle.findSublayerById(layer.index)
+    layerToToggle.visible = !layerToToggle.visible
+    subLayer.visible = !subLayer.visible
+  }
+  else{
+    layerToToggle = namedLayers[layer.layerName]
+    layerToToggle.visible = !layerToToggle.visible
+  }
+
+  let foundLayer = map.allLayers.filter((mapLayer) => {
+    return mapLayer.title === layer.layerName
+  })
+
+  if(foundLayer.items.length <= 0){
+    map.add(layerToToggle)
+  }
+
 }
 
 export async function initializeMap(container){

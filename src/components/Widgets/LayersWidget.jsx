@@ -1,4 +1,4 @@
-import { Box, Chip, List, ListItem, ListItemText } from "@mui/material"
+import { Box, Chip, List, ListItem, ListItemText, Typography } from "@mui/material"
 import StyledButtonFilledPrimary from "../Button/Button"
 import UseAppContext from "../../contexts/AppContext"
 import { config } from "../../data/config"
@@ -22,12 +22,13 @@ const MeasureWidget = () => {
         })
     },[])
 
-    const layerGroups = config.layer_sources.map((layer) => {
-        return layer.groupName
-    })
+    const layerGroups = config.layer_sources.sort((a, b) => a.groupName > b.groupName ? 1:-1)
+                                            .map((layer) => {
+                                                return layer.groupName
+                                            })
 
-    const toggleLayer = (layerName) => {
-        toggleMapLayer(layerName)
+    const toggleLayer = (layer) => {
+        toggleMapLayer(layer)
     }
 
     const handleChipClick = (layerName) => {
@@ -38,13 +39,13 @@ const MeasureWidget = () => {
       };
 
     const layerGroupList = [...new Set(layerGroups)].map((group) => (
-            <ListItem divider>
+            <ListItem divider >
                 <Box diplay="flex" flexDirection="column" rowGap={2}>
-                
-                <ListItemText primary={group}/>
-                <Box display="flex" columnGap={1} pt={1}>
+                <Typography variant="h3">{group}</Typography>
+                <Box display="flex" columnGap={1} pt={1} sx={{display:"flex", flexFlow:"wrap",gap: "10px 5px"}}>
                 {
                     config.layer_sources.filter((layer) => layer.groupName === group)
+                                        .sort((a, b) => a.layerName > b.layerName ? 1:-1)
                                         .map((layer) => {
                                             return(
                                             <Chip
@@ -52,10 +53,11 @@ const MeasureWidget = () => {
                                             label={layer.layerName}
                                             clickable
                                             onClick={() => {
-                                                toggleLayer(layer.layerName)
+                                                toggleLayer(layer)
                                                 handleChipClick(layer.layerName)
                                             }}
                                             color={activeChips[layer.layerName] ? 'primary' : 'info'}
+                                            sx={{fontFamily:"Barlow", fontWeight:500}}
                                             />
                                             )
                                         })
@@ -68,12 +70,9 @@ const MeasureWidget = () => {
         ))
 
     return(
-        <Box display="flex" flexDirection="column" >
-            <List>
+            <List sx={{overflow:"scroll"}}>
                 {layerGroupList}
-            </List>
-        </Box>
-        
+            </List>  
     )
 }
 
