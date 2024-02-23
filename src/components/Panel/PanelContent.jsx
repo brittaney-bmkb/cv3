@@ -105,7 +105,7 @@ const PanelContent = ({display}) => {
             )
         case 'resultsListComparables':
             return (
-                <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0} >
+                <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0} width="100%">
                     <PanelHeader 
                     text={"Comparable Results"} 
                     exportButton={true} 
@@ -129,7 +129,7 @@ const PanelContent = ({display}) => {
 
         case 'resultsListNearby':
             return (
-                <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
+                <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0} width="100%">
                     <PanelHeader 
                     text={"Nearby Results"} 
                     exportButton={true} 
@@ -152,7 +152,7 @@ const PanelContent = ({display}) => {
 
         case 'propertyDetailComparable':
             return (
-                <Box display="flex" flexDirection="column"  minHeight={0}>
+                <Box display="flex" flexDirection="column"  minHeight={0} width="100%">
                         <PanelHeader 
                         text={"Comparable Property"} 
                         exportButton={true} 
@@ -175,7 +175,7 @@ const PanelContent = ({display}) => {
                 </Box>)
         case 'propertyDetailNearby':
             return (
-                <Box display="flex" flexDirection="column"  minHeight={0}>
+                <Box display="flex" flexDirection="column"  minHeight={0} width="100%">
                         <PanelHeader 
                         text={"Nearby Property"} 
                         exportButton={true} 
@@ -201,13 +201,13 @@ const PanelContent = ({display}) => {
             // add additional arguments for arguments in there
             // create argument to toggle on and off. 
             return(
-                <Box bgcolor="white" flex={1} flexDirection="column">
+                <Box bgcolor="white" flex={1} flexDirection="column" width="100%">
                     <MeasureWidget/>
                 </Box>
                 )                
         case 'layersWidget':
             return(
-                <Box display="flex" flexDirection="column"  minHeight={0}>
+                <Box display="flex" flexDirection="column"  minHeight={0} width="100%">
                     <PanelHeader
                     text={"Map Layers"} 
                     closeButton={true}
@@ -218,7 +218,7 @@ const PanelContent = ({display}) => {
             )   
         case 'basemapsWidget':
             return(
-                <Box p={2} display="flex" flexDirection="column" rowGap={3} minHeight={0} justifyContent="center">
+                <Box p={2} display="flex" flexDirection="column" rowGap={3} minHeight={0} width="100%">
                     <PanelHeader
                     text={"Basemaps"} 
                     closeButton={true}
@@ -230,7 +230,13 @@ const PanelContent = ({display}) => {
             )                                           
         case 'printWidget':
             return(
-                <Box bgcolor="white" flex={1} flexDirection="column">
+                <Box p={2} display="flex" flexDirection="column"  minHeight={0} width="100%">
+                    <PanelHeader
+                    text={"Print"} 
+                    closeButton={true}
+                    panel={"secondary"}
+                    // descriptionText={"Print Settings"}
+                    />
                     <PrintWidget/>
                 </Box>
             )                                   
