@@ -167,7 +167,7 @@ theme.typography.h5 = {
         //color: theme.main.text.dark
     },
     [theme.breakpoints.down('sm')]: {
-        fontSize: 14,
+        fontSize: 13,
         fontWeight: 500,
         //color: theme.main.text.dark
     }

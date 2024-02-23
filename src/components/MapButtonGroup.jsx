@@ -18,11 +18,11 @@ const MapButtonGroup = () => {
 
     return(
         <Stack direction="row" position="absolute" spacing={1} padding={2} zIndex={100}>
-            <StyledButtonFilledPrimary text={"Measure Tool"} onClick={() => {handleClick("measureWidget")}} />
+            <StyledButtonFilledPrimary text={"Measure Tool"} onClick={() => {handleClick("measureWidget")}} textVarient="h5"/>
             {/* <Button variant="contained" sx={{bgcolor:theme.palette.primary}} className="measureWidget">Measure</Button> */}
-            <StyledButtonFilledPrimary text={"Layers"} onClick={() => {handleClick("layersWidget")}}/>
-            <StyledButtonFilledPrimary text={"Basemaps"}/>
-            <StyledButtonFilledPrimary text={"Print"}/>
+            <StyledButtonFilledPrimary text={"Layers"} onClick={() => {handleClick("layersWidget")}} textVarient="h5"/>
+            <StyledButtonFilledPrimary text={"Basemaps"} onClick={() => {handleClick("basemapsWidget")}} textVarient="h5"/>
+            <StyledButtonFilledPrimary text={"Print"} textVarient="h5"/>
         </Stack>
     )
 }
