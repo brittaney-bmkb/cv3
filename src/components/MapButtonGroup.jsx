@@ -22,7 +22,7 @@ const MapButtonGroup = () => {
             {/* <Button variant="contained" sx={{bgcolor:theme.palette.primary}} className="measureWidget">Measure</Button> */}
             <StyledButtonFilledPrimary text={"Layers"} onClick={() => {handleClick("layersWidget")}} textVarient="h5"/>
             <StyledButtonFilledPrimary text={"Basemaps"} onClick={() => {handleClick("basemapsWidget")}} textVarient="h5"/>
-            <StyledButtonFilledPrimary text={"Print"} textVarient="h5"/>
+            <StyledButtonFilledPrimary text={"Print"} onClick={() => {handleClick("printWidget")}} textVarient="h5"/>
         </Stack>
     )
 }

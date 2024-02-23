@@ -231,6 +231,12 @@ const PanelContent = ({display}) => {
         case 'printWidget':
             return(
                 <Box bgcolor="white" flex={1} flexDirection="column">
+                    <PanelHeader
+                    text={"Print"} 
+                    closeButton={true}
+                    panel={"secondary"}
+                    descriptionText={"Print Settings"}
+                    />
                     <PrintWidget/>
                 </Box>
             )                                   
