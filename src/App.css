@@ -31,6 +31,15 @@ calcite-icon {
   display: none;
 }
 
-.esri-measurement-widget-content{
+/* .esri-measurement-widget-content{
   background-color: black !important;
-}
+} */
+
+/* .esri-measurement-widget-content__measurement{
+  background-color: lightgrey !important;
+} */
+
+.esri-measurement-widget-content__measurement-item__value{
+  padding: 3%;
+  background-color: lightgrey !important;
+} 
