@@ -10,8 +10,9 @@ import { useSearchParams } from "react-router-dom"
 import ExportDialog from "../ExportDialog/ExportDialog";
 import { useState } from "react";
 import FeedbackDialog from "../FeedBack/Feedback";
+import InfoIcon from '@mui/icons-material/InfoOutlined';
 
-const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton, panel, primary} ) => {
+const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton, infoButton, panel, primary} ) => {
 
     const { clearResultsComparables, panelDisplaySecondary, clearResults, panelPrimaryVisible, panelSecondaryVisibility, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
 
@@ -108,7 +109,10 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
                     </IconButton> : null} 
                 <Box display="flex" flex={1} alignItems="center" justifyContent="space-around" p={1} minWidth={150}>
                     <Box bgcolor={theme.main.backgroundColor.grey} p={1} sx={{borderRadius: theme.shape.borderRadius}}>
-                        <Typography variant="h5" color={theme.main.text.dark}>{text}</Typography>
+                        <Typography variant="h5" color={theme.main.text.dark}>
+                            {text}
+                            { infoButton ?  <IconButton  target="_blank" > {<InfoIcon/>} </IconButton > : null}
+                        </Typography>
                     </Box> 
                 </Box>
                 

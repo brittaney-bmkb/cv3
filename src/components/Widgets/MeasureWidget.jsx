@@ -32,7 +32,7 @@ const MeasureWidget = () => {
     const measureDiv = useRef(null)
     const measureWidget = useRef(null)
     const [ measureValue, setMeasureValue ] = useState(0)
-    const [activeTool, setActiveTool] = useState(null)
+    const [activeTool, setActiveTool] = useState('distance')
 
     const [clearButton, setClearButton] = useState(null)
 
@@ -48,9 +48,7 @@ const MeasureWidget = () => {
                         container: measureDiv.current,
                         view: view
                     })
-                    console.log('measureWidget.current2 ', measureWidget)
-                    console.log('measureWidget.current2 ', measureWidget.current.container)
-                    // console.log('measureWidget.current2 ', measureWidget.current.container.ref)
+                    setMeasureWidgetState('measuring')
                 }
             }        
         }
@@ -60,68 +58,70 @@ const MeasureWidget = () => {
     useEffect(() => {
 
         const updateActiveTool = () =>{
-            if(measureWidget.current){
+            if(measureWidget.current && measureWidgetState === 'measuring'){
                 measureWidget.current.activeTool = activeTool
             }
         }
         updateActiveTool()
 
-    }, [activeTool])
+    }, [activeTool, measureWidgetState])
 
     const newMeasurement = (event) => {
-        let formattedText  =  event.target.textContent.toLowerCase()
-        setActiveTool(formattedText) 
+        // let formattedText  =  event.target.textContent.toLowerCase()
+        // setActiveTool(formattedText) 
+        
         measureWidget.current.startMeasurement()
         setMeasureWidgetState("measuring")
     }
 
     const clearMeasureTool = () => {
-        setActiveTool(null) 
+        // setActiveTool(null) 
         measureWidget.current.clear()
-        // if(measureWidget.current){
-        //     setActiveTool(null) 
-        //     measureWidget.current.clear()
-        // }
+        setMeasureWidgetState(null) 
     }
 
-
-
+    const updateActiveTool = (event) => {
+        let formattedText  =  event.target.textContent.toLowerCase()
+        setActiveTool(formattedText) 
+    }
+    
     return (
         <div id="MEASURECONTAINER" style={{width: '100%', height: '100%'}} >
-            <Box display="flex" flexDirection="column" rowGap={2} p={2}> 
-                <Box>Comparable Property Search</Box>
+            <Stack direction="row" gap={2} display={{xs:'none', sm:'flex', md:'flex', lg:'flex' }}> 
                 <StyledPanelButton
-                text1={'Distance'} text2={'Area'} 
-                // text3={'Clear'} 
-                icon1={<StraightenOutlinedIcon/>} 
-                icon2={<SquareFootOutlinedIcon/>} 
-                // icon3={<DeleteOutlineIcon/>}
-                onClick={newMeasurement} />
+                    text1={'Distance'} text2={'Area'} 
+                    text3={'Location'} 
+                    icon1={<StraightenOutlinedIcon/>} 
+                    icon2={<SquareFootOutlinedIcon/>} 
+                    icon3={<MyLocationOutlinedIcon/>}
+                    onClick={updateActiveTool} 
+                />
+            </Stack>
+            <Box display="flex" flexDirection="column" alignItems="center" rowGap={1} p={1}> 
+                <Box ref={measureDiv}> </Box>
+                {measureWidget.current && measureWidgetState === 'measuring' ? 
+                    <Box >
+                        <StyledButtonFilledPrimary
+                            variant="contained"
+                            color="primary"
+                            startIcon={<ReplayIcon/>}
+                            text={'Clear'}
+                            onClick={clearMeasureTool}
+                        /> 
+                    </Box>
+                    :
+                    <Box >
+                        <Box sx={{ m: 2  }} >Select a new measurement button.</Box>
+                        <StyledButtonFilledPrimary 
+                            variant="contained"
+                            color="primary"
+                            text={'New Measurement'}
+                            onClick={newMeasurement}
+                        />  
+                    </Box>
+                } 
             </Box>
-
-            <Box display="flex" flexDirection="column" rowGap={1} p={1}> 
-                <Box>Select your measurement type above. Remember to reselect after clearing results.</Box>
-                <Box ref={measureDiv}>
-
-                </Box>
-                {/* measureWidget.current.container */}
-                { measureWidget.current !== null ? 
-                    <StyledButtonFilledPrimary
-                    variant="contained"
-                    color="primary"
-                    startIcon={<ReplayIcon/>}
-                    text={'Clear'}
-                    // onClick={() => {clearMeasureTool()}}
-                    onClick={clearMeasureTool}
-                /> 
-                : null } 
-
-
-            </Box>
-
         </div>
-
-        
             )      
 }
 
