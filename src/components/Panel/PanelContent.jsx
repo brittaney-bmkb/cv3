@@ -207,7 +207,7 @@ const PanelContent = ({display}) => {
                 )                
         case 'layersWidget':
             return(
-                <Box display="flex" flexDirection="column" width="100%" flexGrow={1} minHeight={0}>
+                <Box display="flex" flexDirection="column"  minHeight={0}>
                     <PanelHeader
                     text={"Map Layers"} 
                     closeButton={true}
@@ -218,7 +218,13 @@ const PanelContent = ({display}) => {
             )   
         case 'basemapsWidget':
             return(
-                <Box bgcolor="white" flex={1} flexDirection="column">
+                <Box p={2} display="flex" flexDirection="column" rowGap={3} minHeight={0} justifyContent="center">
+                    <PanelHeader
+                    text={"Basemaps"} 
+                    closeButton={true}
+                    panel={"secondary"}
+                    descriptionText={"Select a basemap from the options below to update the map"}
+                    />
                     <BasemapWidget/>
                 </Box>
             )                                           

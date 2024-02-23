@@ -11,7 +11,7 @@ import ExportDialog from "../ExportDialog/ExportDialog";
 import { useEffect, useState } from "react";
 import FeedbackDialog from "../FeedBack/Feedback";
 
-const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton, panel, primary} ) => {
+const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton, panel, primary} ) => {
 
     const { clearResultsComparables, panelDisplaySecondary, clearResults, panelPrimaryVisible, panelSecondaryVisible, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
 
@@ -151,7 +151,9 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
                 {feedbackButton ? 
                 <StyledIconButton icon={<FeedbackOutlinedIcon fontSize="small" sx={{color: theme.main.text.dark, width: 15}}/>} text={"Feedback"} onClick={handleFeedback}/>
                 : null}
-                </Stack>
+            </Stack>
+            {descriptionText ? <Typography pt={1} variant="body">{descriptionText}</Typography>: null}
+            
 
             <ExportDialog open={openExportDialog} onClose={handleCloseExport}/>
             <FeedbackDialog open={openFeedbackDialog} onClose={handleCloseFeedback}/>

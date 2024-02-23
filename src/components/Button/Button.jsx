@@ -1,9 +1,13 @@
 import { Button, ButtonGroup, Fab, IconButton, Typography, styled } from "@mui/material"
 import { theme } from "../../theme"
+import UseAppContext from "../../contexts/AppContext"
 
 const StyledButtonFilledPrimary = ({text, startIcon, endIcon, onClick, textVarient, disabled}) => {
+
+    const {screenWidth} = UseAppContext()
     return(
         <Button 
+        size={screenWidth < theme.breakpoints.values.md ? "small" : "medium"}
         disabled={disabled}
         variant="contained" 
         color="primary"
@@ -31,6 +35,7 @@ export const StyledPanelButton = ({text1, text2, text3, icon1, icon2, icon3, onC
             color="primary"
             startIcon={icon1}
             text={text1}
+            
             >
                 
             </StyledButtonFilledPrimary>
