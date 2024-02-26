@@ -240,7 +240,7 @@ export const AppProvider = ({children}) => {
 
         const { readFeatureLayerData } = await import('../arcgis/layers/layers')
 
-        let { features } = await readFeatureLayerData(config.data_dictionary, ["*"], "FID IS NOT NULL")
+        let { features } = await readFeatureLayerData(config.data_dictionary, ["*"], "field IS NOT NULL")
 
         setDataDictionary(features)
 

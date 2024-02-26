@@ -217,7 +217,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
 
         let data = filteredData?.map((data, subIndex) => {
             return(
-                <Box key={data.attributes['FID']} display="flex" flexDirection="column" width="100%">
+                <Box key={data.attributes['field']} display="flex" flexDirection="column" width="100%">
 
                 <Box 
                 display="flex"
@@ -241,10 +241,10 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                             justifyContent="space-evenly" 
                             alignContent={textAlignment}>
                            { data.attributes['field'] === "comparable_properties"? 
-                            propertyComparison(data.attributes['FID']) :
+                            propertyComparison(data.attributes['field']) :
 
                             data.attributes['field'] === "nearby_properties"? 
-                            nearbyProperties(data.attributes['FID']) :
+                            nearbyProperties(data.attributes['field']) :
 
                             data.attributes['field'] === "incorp_unincorp_state" ?
                             incorp_unincorp(property) :
@@ -262,7 +262,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                         data.attributes['hyperlink_text'] && data.attributes['hyperlink_params'] && data.attributes['hyperlink_url'] ?
                             returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], property1?.attributes) :
                             <Box 
-                            key={data.attributes["FID"]}
+                            key={data.attributes["field"]}
                             id="data-field-container"
                             display="flex"
                             // justifyContent={textAlignment}
