@@ -18,6 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <Route path="/" exact element={ <App />}/>
               {/* Url parameter 'location' added as an optional (?) param */}
               <Route path=":location?" element={ <App />}/>
+              <Route path=":search?" element={ <App />}/>
               <Route path=":pin?" element={ <App />}/>
               <Route path=":address?" element={ <App />}/>
           </Routes>

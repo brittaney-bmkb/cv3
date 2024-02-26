@@ -264,6 +264,7 @@ export const AppProvider = ({children}) => {
         console.log("selectedFeature: ", selectedFeature)
 
         setPrimaryResultFeature(selectedFeature[0], false)
+        setSearchParams({"PIN": selectedFeature[0].attributes["PIN14"]})
 
         //update graphic in map
         const { createGraphic } = await import('../arcgis/webmap/webmap')
@@ -326,7 +327,7 @@ export const AppProvider = ({children}) => {
             setPanelSecondaryVisibility(false)
         }
 
-        setSearchParams({'location': null})
+        //setSearchParams()
 
         const updatedUrl = `${window.location.pathname}`;
 
