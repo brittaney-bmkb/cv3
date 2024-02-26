@@ -152,7 +152,7 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
                 <StyledIconButton icon={<FeedbackOutlinedIcon fontSize="small" sx={{color: theme.main.text.dark, width: 15}}/>} text={"Feedback"} onClick={handleFeedback}/>
                 : null}
             </Stack>
-            {descriptionText ? <Typography pt={1} variant="body">{descriptionText}</Typography>: null}
+            {descriptionText ? <Typography p={2} variant="body">{descriptionText}</Typography>: null}
             
 
             <ExportDialog open={openExportDialog} onClose={handleCloseExport}/>

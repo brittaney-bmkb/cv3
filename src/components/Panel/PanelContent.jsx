@@ -73,6 +73,7 @@ const PanelContent = ({display}) => {
                     panel={screenWidth < theme.breakpoints.values.lg ? "primary": "secondary"}
                     backButton={screenWidth < theme.breakpoints.values.lg}
                     backButtonComponent={"propertyDetail"}
+                    descriptionText={"Complete the comparable search form to view similar properties. Fields maked with an astrisk (*) are required"}
                     />
                     <Divider/>
                     <Box  display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
