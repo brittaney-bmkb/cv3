@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 
 const PanelMobile = () => {  
 
-    const { panelDisplay, screenWidth, setPanelDisplay, setPanelPrimaryVisibility } = UseAppContext()
+    const { panelDisplay } = UseAppContext()
 
     console.log("Panel display: ", panelDisplay)
     return(
@@ -26,6 +26,7 @@ const PanelMobile = () => {
             display="flex"
             bgcolor="white" 
             pb={3}
+            flex={1}
             flexGrow={1}  
             flexDirection="column">
                 <PanelContent display={panelDisplay}/>
@@ -48,7 +49,7 @@ export const SecondaryPanel = () => {
             bgcolor="white" 
             flex={1}
             flexGrow={1}
-            minWidth={300}   
+            minWidth={350}   
             sx={{display:{xs:'none', sm: 'none', md: panelSecondaryVisible? 'flex':"none", lg:panelSecondaryVisible? 'flex':"none"}}}>
                 <PanelContent id="panel-content" display={panelDisplaySecondary}/>
         </Box>
@@ -151,7 +152,7 @@ export const LeftPanel = () => {
             minHeight={0}
             bgcolor="white" 
             flex={1}
-            minWidth={300}  
+            minWidth={350}  
             flexDirection="column" 
             sx={{display:{xs:'none', sm: panelPrimaryVisible ? 'flex' : 'none'}}}>
                 <PanelContent id="panel-content" display={panelDisplay}/>
