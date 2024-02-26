@@ -335,11 +335,11 @@ export async function createGraphic(features, removeGraphicName, color, secondar
     query.outFields = queryFields
 
     if(searchDistance && searchDistance > 0){
-      console.log("Search Distance: ", searchDistance)
       query.geometry = feature.geometry
-      query.spatialRelationship = "intersect"
+      query.spatialRelationship = "intersects"
       query.distance = searchDistance
       query.units = "miles"
+  
     }
 
     let {features} = await targetLayer.queryFeatures(query)

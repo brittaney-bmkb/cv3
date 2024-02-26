@@ -54,6 +54,8 @@ const Search = () => {
                     if(newSearch === false && searchWidget.current.searchTerm !== primaryResultFeature.attributes["PIN14"]){
                         console.log("SEARCH TERM: ", searchWidget.current.searchTerm)
                         searchWidget.current.searchTerm = primaryResultFeature.attributes["PIN14"] 
+
+                        
                     }
                     if(searchString === null || searchString === "" || searchString === 'null'){
                         searchWidget.current.clear();
@@ -74,6 +76,10 @@ const Search = () => {
                     //setSearchParams({'location': event.result.name})
                     
                 })
+
+                searchWidget.current.on("suggest-start", function(event){
+                    console.log("suggest-start", searchWidget.current.suggestions);
+                  });
                 
                 //to do enable clear results to empty searchFeatures array
                 searchWidget.current.on("search-clear", function(event){

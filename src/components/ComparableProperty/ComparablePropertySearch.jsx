@@ -83,6 +83,31 @@ const ComparablePropertySearch= () => {
     }
 
     useEffect(() => {
+        //set ranges for building, land, and age based on primary parcel
+
+        if(primaryResultFeature){
+            let attributes = primaryResultFeature.attributes
+
+            let parcelBldgSqFt = attributes["BLDGSQFT"]
+            let buildingRange= parcelBldgSqFt * .1
+            setBuildingSqFtMax(parcelBldgSqFt+buildingRange)
+            setBuildingSqFtMin(parcelBldgSqFt-buildingRange)
+
+            let parcelLandSqFt = attributes["LANDSF"]
+            let landRange= parcelLandSqFt * .1
+            setLandSqFtMax(parcelLandSqFt+landRange)
+            setLandSqFtMin(parcelLandSqFt-landRange)
+
+            
+            let parcelAge = attributes["BLDGAGE"]
+            let ageRange = 15
+            setAgeMax(parcelAge+ageRange)
+            setAgeMin(parcelAge-ageRange)
+        }
+
+    }, [primaryResultFeature])
+
+    useEffect(() => {
 
         if(buildingSqFtMinError){
             setBuildingSqFtMinError(false)
