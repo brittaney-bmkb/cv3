@@ -115,7 +115,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
     useEffect(() => {
         if (dataDictionary) {
 
-            let categoriesToExclude = !property1 ? ['Property Comparison', 'top', null] : ['top', null] 
+            let categoriesToExclude =  ['top', null] 
             const filteredCategories = [
                 ...new Set(
                     dataDictionary
