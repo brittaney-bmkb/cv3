@@ -3,14 +3,14 @@ import { theme } from "../../theme";
 import widgetsSearch from "@arcgis/core/widgets/Search.js";
 import UseAppContext from "../../contexts/AppContext";
 import { useEffect, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom"
+import { useParams, useSearchParams } from "react-router-dom"
 import { config } from "../../data/config";
 
 
 
 const Search = () => {
 
-    const { newSearch, setPanelPrimaryVisibility, renderSearchResults, mapView, searchSources, clearResults, panelPrimaryVisible, primaryResultFeature } = UseAppContext()
+    const { newSearch, setPanelPrimaryVisibility, renderSearchResults, mapView, searchSources, clearResults, panelPrimaryVisible, primaryResultFeature, searchFeatures } = UseAppContext()
 
     //get url parameters
     const [routeParams, setSearchParams] = useSearchParams();
@@ -30,10 +30,24 @@ const Search = () => {
         routeParams.get("location")
     )
 
+    const { location, search, pin, address } = useParams()
+
     //create a reference to the search  DOM  element
     const searchDiv = useRef(null)
     //create a reference to the search widget DOM element
     const searchWidget = useRef(null)
+
+    useEffect(() => {
+        //When primary feature result changes update the search param
+        //from mouse click
+        if(primaryResultFeature && newSearch === false && searchFeatures.length === 1){
+            setSearchParams({"location" : primaryResultFeature.attributes["PIN14"]})
+        }
+        if(primaryResultFeature && newSearch === false && searchFeatures.length > 1){
+            setSearchParams({"location" : primaryResultFeature.attributes["PIN10"]})
+        }
+
+    }, [routeParams, newSearch,  primaryResultFeature, searchFeatures])
 
 
     useEffect(() => {
@@ -94,6 +108,7 @@ const Search = () => {
                 }
 
                 if(locationSearch && locationSearch !== null){
+                    console.log("Location search = ", locationSearch)
                     if(newSearch === true ){              
                         searchWidget.current.search(locationSearch)
                     }
@@ -116,7 +131,10 @@ const Search = () => {
                         setPanelPrimaryVisibility(true)
                     }
                     
-                    setSearchParams({'search': searchWidget.current.searchTerm})
+                    if(searchWidget.current.searchTerm !== locationSearch){
+                        setSearchParams({'search': searchWidget.current.searchTerm})
+                    }
+                    
                     
                 })
 

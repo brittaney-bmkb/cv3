@@ -101,11 +101,19 @@ export const AppProvider = ({children}) => {
         }
 
         else{
-            setPrimaryResultFeature(selectedFeatures[0], false)
+
+            // if(selectedFeatures.length === 1){
+                setPrimaryResultFeature(selectedFeatures[0], false)
+                //setSearchParams({"location" : selectedFeatures[0].attributes["PIN14"]})
+            // }
+            // else{
+            //     setSearchParams({"location" : selectedFeatures[0].attributes["PIN10"]})
+            // }
+            
 
             //update url param
-            let location = selectedFeatures[0].attributes[config.target_layer_id_field]
-            setSearchParams({'location': location})
+            //let location = selectedFeatures[0].attributes[config.target_layer_id_field]
+            //setSearchParams({'location': location})
 
             setSearchResults(null, selectedFeatures)
             createGraphic(selectedFeatures, "primary", theme.palette.primary.main)
