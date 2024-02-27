@@ -48,14 +48,21 @@ const Search = () => {
             setSearchParams({"location" : primaryResultFeature[0].attributes["PIN10"]})
         }
 
-        if(searchWidget.current && primaryResultFeature){
+        if(searchWidget.current && primaryResultFeature && searchFeatures){
             if(!searchWidget.current.searchTerm){
+                console.log("Updating search term: ", primaryResultFeature)
                 searchWidget.current.searchTerm = primaryResultFeature?.length > 1 ? primaryResultFeature[0].attributes['PIN10'] : primaryResultFeature[0].attributes['PIN14']
             }
         }
 
+        if(searchWidget.current && newSearch === false && primaryResultFeature && locationSearch){
+            let attributes = Array.isArray(primaryResultFeature) ? primaryResultFeature[0].attributes : primaryResultFeature.attributes
+            let isMultiFeatures =  Array.isArray(primaryResultFeature) && primaryResultFeature.length > 1 ? true : false
+            searchWidget.current.searchTerm = isMultiFeatures > 1 ? attributes['PIN10'] : attributes['PIN14']
+        }
 
-    }, [routeParams, newSearch,  primaryResultFeature, searchFeatures])
+
+    }, [routeParams, newSearch, primaryResultFeature, searchFeatures, searchWidget])
 
 
     useEffect(() => {
@@ -97,28 +104,8 @@ const Search = () => {
                     console.log("Location search = ", locationSearch)
                     if(newSearch === true ){              
                         searchWidget.current.search(locationSearch)
-                        if(primaryResultFeature){
-                            if(primaryResultFeature?.length > 1 && searchWidget.current.searchTerm !== primaryResultFeature[0].attributes['PIN10']){
-                                searchWidget.current.searchTerm = primaryResultFeature[0].attributes['PIN10']
-                            }
-                            if(primaryResultFeature?.length === 1 && searchWidget.current.searchTerm !== primaryResultFeature[0].attributes['PIN14']){
-                                searchWidget.current.searchTerm = primaryResultFeature[0].attributes['PIN14']
-                            }
-                        }
-
                     }
-                    if(newSearch === false){
-                        if(!searchWidget.current.searchTerm){
-                            searchWidget.current.searchTerm = primaryResultFeature.length > 1 ? primaryResultFeature[0].attributes['PIN10'] : primaryResultFeature[0].attributes['PIN14']
-                        }
-                        if(primaryResultFeature.length > 1 && searchWidget.current.searchTerm !== primaryResultFeature[0].attributes['PIN10']){
-                            searchWidget.current.searchTerm = primaryResultFeature[0].attributes['PIN10']
-                        }
-                        if(primaryResultFeature.length === 1 && searchWidget.current.searchTerm !== primaryResultFeature[0].attributes['PIN14']){
-                            searchWidget.current.searchTerm = primaryResultFeature[0].attributes['PIN14']
-                        }
-                    }
-                    
+  
                 }
                 
                 searchWidget.current.on("select-result", function(event){
