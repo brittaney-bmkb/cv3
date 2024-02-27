@@ -85,12 +85,22 @@ const Search = () => {
                 }
 
                 if(locationSearch && locationSearch !== null){
+
+
                     console.log("Location search = ", locationSearch)
                     if(newSearch === true ){              
                         searchWidget.current.search(locationSearch)
+                        if(primaryResultFeature){
+                            if(primaryResultFeature?.length > 1 && searchWidget.current.searchTerm !== primaryResultFeature[0].attributes['PIN10']){
+                                searchWidget.current.searchTerm = primaryResultFeature[0].attributes['PIN10']
+                            }
+                            if(primaryResultFeature?.length === 1 && searchWidget.current.searchTerm !== primaryResultFeature[0].attributes['PIN14']){
+                                searchWidget.current.searchTerm = primaryResultFeature[0].attributes['PIN14']
+                            }
+                        }
+
                     }
                     if(newSearch === false){
-                        console.log("NEW SEARCH = FALSE ", searchWidget.current.searchTerm, primaryResultFeature[0].attributes['PIN10'])
                         if(primaryResultFeature.length > 1 && searchWidget.current.searchTerm !== primaryResultFeature[0].attributes['PIN10']){
                             searchWidget.current.searchTerm = primaryResultFeature[0].attributes['PIN10']
                         }
