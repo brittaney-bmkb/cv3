@@ -103,7 +103,7 @@ export const AppProvider = ({children}) => {
         else{
             console.log("App context setting selected parcel", selectedFeatures)
             // if(selectedFeatures.length === 1){
-            setPrimaryResultFeature(selectedFeatures.length > 0 ? selectedFeatures : null, false)
+            setPrimaryResultFeature(selectedFeatures, false)
 
             setSearchResults(null, selectedFeatures)
             createGraphic(selectedFeatures, "primary", theme.palette.primary.main)
@@ -262,8 +262,7 @@ export const AppProvider = ({children}) => {
         console.log("selectedFeature: ", selectedFeature)
 
         setPrimaryResultFeature(selectedFeature[0], false)
-        setSearchParams({"PIN": selectedFeature[0].attributes["PIN14"]})
-
+  
         //update graphic in map
         const { createGraphic } = await import('../arcgis/webmap/webmap')
 
@@ -301,9 +300,9 @@ export const AppProvider = ({children}) => {
         const features = await querySearchResults(searchWidgetResults, parcelQueryFields)
         setSearchResults(searchWidgetResults, features)
 
-        if(!primaryResultFeature){
-            setPrimaryResultFeature(features[0], false)
-        }
+        //if(!primaryResultFeature){
+            setPrimaryResultFeature(features, true)
+        //}
 
         if(panelDisplay !== "resultsList"){
             setPanelDisplay("resultsList")
@@ -316,6 +315,7 @@ export const AppProvider = ({children}) => {
         
         const {panelDisplaySecondary} = state
 
+        setPrimaryResultFeature(null, true)
         setSearchResults(null, null)
         removeGraphics("primary");
         removeGraphics("secondary");

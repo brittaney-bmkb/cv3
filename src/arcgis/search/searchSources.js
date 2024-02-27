@@ -35,7 +35,9 @@ export async function createSearchSources(namedLayers){
         popupEnabled: layerSource.popupEnabled,
         searchFields: searchSource.searchFields,
         suggestionsEnabled: searchSource.suggestionsEnabled,
-        autoNavigate: searchSource.autoNavigate
+        autoNavigate: searchSource.autoNavigate,
+        searchTemplate: searchSource.searchTemplate,
+        suggestionTemplate: searchSource.suggestionTemplate
       })
     })
   })
