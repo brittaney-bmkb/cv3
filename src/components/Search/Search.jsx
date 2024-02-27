@@ -39,27 +39,31 @@ const Search = () => {
     useEffect(() => {
         //When primary feature result changes update the search param
         //from mouse click
-        if(primaryResultFeature?.length === 1 && newSearch === false && searchFeatures){
+
+        if(primaryResultFeature ){
+            let attributes = Array.isArray(primaryResultFeature) ? primaryResultFeature[0].attributes : primaryResultFeature.attributes
+            let isMultiFeatures =  Array.isArray(primaryResultFeature) && primaryResultFeature.length > 1 ? true : false
+        
+        if(isMultiFeatures===false && newSearch === false && searchFeatures){
             setSearchParams({"search" : null})
-            setSearchParams({"location" : primaryResultFeature[0].attributes["PIN14"]})
+            setSearchParams({"location" : attributes["PIN14"]})
         }
-        if(primaryResultFeature?.length > 1 && newSearch === false && searchFeatures){
+        if(isMultiFeatures===true && newSearch === false && searchFeatures){
             setSearchParams({"search" : null})
-            setSearchParams({"location" : primaryResultFeature[0].attributes["PIN10"]})
+            setSearchParams({"location" : attributes["PIN10"]})
         }
 
-        if(searchWidget.current && primaryResultFeature && searchFeatures){
+        if(searchWidget.current && searchFeatures){
             if(!searchWidget.current.searchTerm){
                 console.log("Updating search term: ", primaryResultFeature)
-                searchWidget.current.searchTerm = primaryResultFeature?.length > 1 ? primaryResultFeature[0].attributes['PIN10'] : primaryResultFeature[0].attributes['PIN14']
+                searchWidget.current.searchTerm = primaryResultFeature?.length > 1 ?attributes['PIN10'] : attributes['PIN14']
             }
         }
 
-        if(searchWidget.current && newSearch === false && primaryResultFeature && locationSearch){
-            let attributes = Array.isArray(primaryResultFeature) ? primaryResultFeature[0].attributes : primaryResultFeature.attributes
-            let isMultiFeatures =  Array.isArray(primaryResultFeature) && primaryResultFeature.length > 1 ? true : false
-            searchWidget.current.searchTerm = isMultiFeatures > 1 ? attributes['PIN10'] : attributes['PIN14']
+        if(searchWidget.current && newSearch === false && locationSearch){
+            searchWidget.current.searchTerm = isMultiFeatures === true ? attributes['PIN10'] : attributes['PIN14']
         }
+    }
 
 
     }, [routeParams, newSearch, primaryResultFeature, searchFeatures, searchWidget])

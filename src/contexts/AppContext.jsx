@@ -103,7 +103,7 @@ export const AppProvider = ({children}) => {
         else{
             console.log("App context setting selected parcel", selectedFeatures)
             // if(selectedFeatures.length === 1){
-            setPrimaryResultFeature(selectedFeatures, false)
+            setPrimaryResultFeature(selectedFeatures.length > 0 ? selectedFeatures : null, false)
 
             setSearchResults(null, selectedFeatures)
             createGraphic(selectedFeatures, "primary", theme.palette.primary.main)
