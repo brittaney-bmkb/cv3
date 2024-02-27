@@ -73,7 +73,7 @@ export const AppProvider = ({children}) => {
     }
 
 
-    const mapClickEventHandler = async (event) => {
+    const mapClickEventHandler = async () => {
 
         const { onViewClick, createGraphic, zoomToExtent, removeGraphics } = await import('../arcgis/webmap/webmap')
         const { theme } = await import ('../theme')
@@ -101,19 +101,9 @@ export const AppProvider = ({children}) => {
         }
 
         else{
-
+            console.log("App context setting selected parcel", selectedFeatures)
             // if(selectedFeatures.length === 1){
-                setPrimaryResultFeature(selectedFeatures[0], false)
-                //setSearchParams({"location" : selectedFeatures[0].attributes["PIN14"]})
-            // }
-            // else{
-            //     setSearchParams({"location" : selectedFeatures[0].attributes["PIN10"]})
-            // }
-            
-
-            //update url param
-            //let location = selectedFeatures[0].attributes[config.target_layer_id_field]
-            //setSearchParams({'location': location})
+            setPrimaryResultFeature(selectedFeatures, false)
 
             setSearchResults(null, selectedFeatures)
             createGraphic(selectedFeatures, "primary", theme.palette.primary.main)

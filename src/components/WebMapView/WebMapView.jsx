@@ -7,7 +7,7 @@ import { view } from "../../arcgis/webmap/webmap";
 
 export default function WebMapView(){
 
-    const { primaryResultFeature, renderSearchResults, searchResults, loadMap, setMapContainer, mapContainer, mapClickEventHandler, addSecondaryFeatureToMap, secondaryResultFeature} = UseAppContext()
+    const { loadMap, setMapContainer, mapContainer, mapClickEventHandler, addSecondaryFeatureToMap, secondaryResultFeature} = UseAppContext()
     const mapDiv = useRef(null)
 
     //get url parameters

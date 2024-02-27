@@ -70,7 +70,7 @@ export const config = {
                 maxResults: 50, // Maximum number of search results.
                 maxSuggestions: 50, // Maximum number of search suggestions.
                 minSuggestCharacters: 4, // Minimum characters for search suggestions.
-                outFields: ["PIN10", "PIN14", "PIN14_dash"], // Fields to return in search results (array of strings).
+                outFields: [ "PIN14","PIN10", "PIN14_dash"], // IMPORTANT put the field that will be used to perfrom search query as the first item in the array. Fields to return in search results (array of strings).
                 orderByFields: ["PIN14"], // Fields for sorting search results (array of strings).
                 searchFields: ["PIN10", "PIN14", "PIN14_dash"], // Fields used for searching (array of strings).
                 suggestionsEnabled: true, // Enable/disable suggestions for this search source (boolean).

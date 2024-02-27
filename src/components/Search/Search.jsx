@@ -30,7 +30,6 @@ const Search = () => {
         routeParams.get("location")
     )
 
-    const { location, search, pin, address } = useParams()
 
     //create a reference to the search  DOM  element
     const searchDiv = useRef(null)
@@ -40,11 +39,13 @@ const Search = () => {
     useEffect(() => {
         //When primary feature result changes update the search param
         //from mouse click
-        if(primaryResultFeature && newSearch === false && searchFeatures.length === 1){
-            setSearchParams({"location" : primaryResultFeature.attributes["PIN14"]})
+        if(primaryResultFeature?.length === 1 && newSearch === false){
+            setSearchParams({"search" : null})
+            setSearchParams({"location" : primaryResultFeature[0].attributes["PIN14"]})
         }
-        if(primaryResultFeature && newSearch === false && searchFeatures.length > 1){
-            setSearchParams({"location" : primaryResultFeature.attributes["PIN10"]})
+        if(primaryResultFeature?.length > 1 && newSearch === false){
+            setSearchParams({"search" : null})
+            setSearchParams({"location" : primaryResultFeature[0].attributes["PIN10"]})
         }
 
     }, [routeParams, newSearch,  primaryResultFeature, searchFeatures])
@@ -70,32 +71,8 @@ const Search = () => {
 
                 await searchWidget.current.when();
 
-                //if url parameter is passed perform search method on search widget
-                // if(searchString){
-                //     //performing search method automatically selects the first
-                //     //result. triggering the setSearchResults function
-                //     if(searchString !== 'null' && newSearch){
-                //         console.log("Searching for ", searchString)
-                //         console.log("new search ", newSearch)
-                //         searchWidget.current.search(searchString)
-                //     }
 
-                //     //update search term when user selects a parcel by clicking
-                //     if(newSearch === false && searchWidget.current.searchTerm !== searchString){
-                        
-                //         console.log("SEARCH TERM: ", searchWidget.current.searchTerm)
-                //         searchWidget.current.searchTerm = searchString 
-                    
-                //     }
-
-
-                //     if(searchString === null || searchString === "" || searchString === 'null'){
-                //         searchWidget.current.clear();
-                //     }
-                    
-                // }
-
-                if(genericSearch){
+                if(genericSearch && !locationSearch){
                     searchWidget.current.search(genericSearch)
                 }
 
@@ -113,9 +90,12 @@ const Search = () => {
                         searchWidget.current.search(locationSearch)
                     }
                     if(newSearch === false){
-                        console.log("NEW SEARCH = FALSE ", searchWidget.current.searchTerm, primaryResultFeature.attributes['PIN10'])
-                        if(searchWidget.current.searchTerm !== primaryResultFeature.attributes['PIN10']){
-                            searchWidget.current.searchTerm = primaryResultFeature.attributes['PIN10']
+                        console.log("NEW SEARCH = FALSE ", searchWidget.current.searchTerm, primaryResultFeature[0].attributes['PIN10'])
+                        if(primaryResultFeature.length > 1 && searchWidget.current.searchTerm !== primaryResultFeature[0].attributes['PIN10']){
+                            searchWidget.current.searchTerm = primaryResultFeature[0].attributes['PIN10']
+                        }
+                        if(primaryResultFeature.length === 1 && searchWidget.current.searchTerm !== primaryResultFeature[0].attributes['PIN14']){
+                            searchWidget.current.searchTerm = primaryResultFeature[0].attributes['PIN14']
                         }
                     }
                     
