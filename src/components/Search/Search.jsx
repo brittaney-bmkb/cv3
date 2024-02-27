@@ -2,18 +2,33 @@ import { Box, InputBase, Paper } from "@mui/material";
 import { theme } from "../../theme";
 import widgetsSearch from "@arcgis/core/widgets/Search.js";
 import UseAppContext from "../../contexts/AppContext";
-import { useEffect, useRef } from "react";
-import { useSearchParams } from "react-router-dom"
+import { useEffect, useRef, useState } from "react";
+import { useParams, useSearchParams } from "react-router-dom"
 import { config } from "../../data/config";
 
 
 
 const Search = () => {
 
-    const { newSearch, setPanelPrimaryVisibility, renderSearchResults, mapView, searchSources, clearResults, panelPrimaryVisible, primaryResultFeature } = UseAppContext()
+    const { newSearch, setPanelPrimaryVisibility, renderSearchResults, mapView, searchSources, clearResults, panelPrimaryVisible, primaryResultFeature, searchFeatures } = UseAppContext()
 
     //get url parameters
     const [routeParams, setSearchParams] = useSearchParams();
+
+    let [genericSearch, setGenericSearch] = useState(
+        routeParams.get("search")
+    )
+    let [pinSearch, setPinSearch] = useState(
+        routeParams.get("pin")
+    )
+
+    let [addressSearch, setAddressSearch] = useState(
+        routeParams.get("address")
+    )
+
+    let [locationSearch, setLocationSearch] = useState(
+        routeParams.get("location")
+    )
 
 
     //create a reference to the search  DOM  element
@@ -22,7 +37,40 @@ const Search = () => {
     const searchWidget = useRef(null)
 
     useEffect(() => {
-        const createSearch = async (searchString) => {
+        //When primary feature result changes update the search param
+        //from mouse click
+
+        if(primaryResultFeature ){
+            let attributes = Array.isArray(primaryResultFeature) ? primaryResultFeature[0].attributes : primaryResultFeature.attributes
+            let isMultiFeatures =  Array.isArray(primaryResultFeature) && primaryResultFeature.length > 1 ? true : false
+        
+        if(isMultiFeatures===false && newSearch === false && searchFeatures){
+            setSearchParams({"search" : null})
+            setSearchParams({"location" : attributes["PIN14"]})
+        }
+        if(isMultiFeatures===true && newSearch === false && searchFeatures){
+            setSearchParams({"search" : null})
+            setSearchParams({"location" : attributes["PIN10"]})
+        }
+
+        if(searchWidget.current && searchFeatures){
+            if(!searchWidget.current.searchTerm){
+                console.log("Updating search term: ", primaryResultFeature)
+                searchWidget.current.searchTerm = primaryResultFeature?.length > 1 ?attributes['PIN10'] : attributes['PIN14']
+            }
+        }
+
+        if(searchWidget.current && newSearch === false && locationSearch){
+            searchWidget.current.searchTerm = isMultiFeatures === true ? attributes['PIN10'] : attributes['PIN14']
+        }
+    }
+
+
+    }, [routeParams, newSearch, primaryResultFeature, searchFeatures, searchWidget])
+
+
+    useEffect(() => {
+        const createSearch = async () => {
 
             if(searchDiv.current && searchSources){
 
@@ -41,24 +89,27 @@ const Search = () => {
 
                 await searchWidget.current.when();
 
-                //if url parameter is passed perform search method on search widget
-                if(searchString){
-                    
-                    //performing search method automatically selects the first
-                    //result. triggering the setSearchResults function
-                    if(searchString !== 'null' && newSearch){
-                        console.log("Searching for ", searchString)
-                        console.log("new search ", newSearch)
-                        searchWidget.current.search(searchString)
+
+                if(genericSearch && !locationSearch){
+                    searchWidget.current.search(genericSearch)
+                }
+
+                if(pinSearch){
+                    searchWidget.current.search(pinSearch)
+                }
+
+                if(addressSearch){
+                    searchWidget.current.search(addressSearch)
+                }
+
+                if(locationSearch && locationSearch !== null){
+
+
+                    console.log("Location search = ", locationSearch)
+                    if(newSearch === true ){              
+                        searchWidget.current.search(locationSearch)
                     }
-                    if(newSearch === false && searchWidget.current.searchTerm !== primaryResultFeature.attributes["PIN14"]){
-                        console.log("SEARCH TERM: ", searchWidget.current.searchTerm)
-                        searchWidget.current.searchTerm = primaryResultFeature.attributes["PIN14"] 
-                    }
-                    if(searchString === null || searchString === "" || searchString === 'null'){
-                        searchWidget.current.clear();
-                    }
-                    
+  
                 }
                 
                 searchWidget.current.on("select-result", function(event){
@@ -71,30 +122,31 @@ const Search = () => {
                         setPanelPrimaryVisibility(true)
                     }
                     
-                    //setSearchParams({'location': event.result.name})
+                    if(searchWidget.current.searchTerm !== locationSearch){
+                        setSearchParams({'search': searchWidget.current.searchTerm})
+                    }
+                    
                     
                 })
+
+                // searchWidget.current.on("suggest-start", function(event){
+                //     console.log("suggest-start", searchWidget.current.suggestions);
+                //   });
                 
                 //to do enable clear results to empty searchFeatures array
                 searchWidget.current.on("search-clear", function(event){
                     // The results are stored in the event Object[]
                     console.log("Search input textbox was cleared.");
                     clearResults();
-
-                    
                   });
             }
 
         
         }
-
-        //get url paramters by loccation param
-        const searchString = routeParams.get('location')
         //execute function search function with url param
-        createSearch(searchString)
+        createSearch()
 
-    },[searchDiv, mapView, searchSources, routeParams, newSearch])
-
+    },[searchDiv, mapView, searchSources, newSearch, routeParams])
 
     return(
         <Box 

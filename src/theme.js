@@ -19,7 +19,7 @@ export const theme = createTheme({
             contrastText:"#f5f5f5",
         },
         secondary:{
-            main:"#B6006A",
+            main:"#046f4f",
         },
         info:{
             main:"#928884",
@@ -167,7 +167,7 @@ theme.typography.h5 = {
         //color: theme.main.text.dark
     },
     [theme.breakpoints.down('sm')]: {
-        fontSize: 14,
+        fontSize: 13,
         fontWeight: 500,
         //color: theme.main.text.dark
     }

@@ -15,17 +15,18 @@ const MapButtonGroup = () => {
     const { setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
     
     
-    const handleClick = (buttonName) =>{
+    const handleClick = (display) =>{
         setPanelSecondaryVisibility(true)
-        setPanelDisplaySecondary(buttonName)
+        setPanelDisplaySecondary(display)
     }
 
     return(
         <Stack direction="row" position="absolute" spacing={1} padding={2} zIndex={100}>
-            <StyledButtonFilledPrimary text={"Measure"}  startIcon={<StraightenIcon/>} onClick={ () => {handleClick('measureWidget')} }  />
-            <StyledButtonFilledPrimary text={"Layers"}   startIcon={<LayersOutlinedIcon/>} onClick={ () => {handleClick('layersWidget')} }  />
-            <StyledButtonFilledPrimary text={"Basemaps"} startIcon={<GridViewIcon/>}  onClick={ () => {handleClick('layersWidget')} } />
-            <StyledButtonFilledPrimary text={"Print"}    startIcon={<LocalPrintshopIcon/>} onClick={ () => {handleClick('layersWidget')} }  />            
+
+            <StyledButtonFilledPrimary text={"Measure"}  startIcon={<StraightenIcon/>} onClick={ () => {handleClick('measureWidget')}}  textVarient="h5" />
+            <StyledButtonFilledPrimary text={"Layers"}   startIcon={<LayersOutlinedIcon/>} onClick={ () => {handleClick('layersWidget')} }  textVarient="h5" />
+            <StyledButtonFilledPrimary text={"Basemaps"} startIcon={<GridViewIcon/>}  onClick={ () => {handleClick('basemapsWidget')} }  textVarient="h5" />
+            <StyledButtonFilledPrimary text={"Print"}    startIcon={<LocalPrintshopIcon/>} onClick={ () => {handleClick('printWidget')} }  textVarient="h5" />            
         </Stack>
     )
 }

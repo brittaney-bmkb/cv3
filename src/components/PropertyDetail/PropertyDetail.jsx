@@ -58,9 +58,6 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         borderColor:""
     }
 
-    const [ propertyStyle, setPropertyStyle ] = useState(panelContentTitleMain)
-
-
     function handleClick(display){
         if(screenWidth < theme.breakpoints.values.lg){
             setPanelPrimaryVisibility(true)
@@ -73,8 +70,9 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
     }
 
     useEffect(() => {
-        const propertiesToAdd = [property1, property2].filter(property => property && !properties.includes(property));
-        let properStyleProps = {}
+        const propertiesToAdd = [property1, property2].filter((prop) => {if(prop){ return prop}})
+                                                      .map((prop) => prop)
+        
         if (propertiesToAdd.length > 0) {
           setProperties(propertiesToAdd);
         }
@@ -116,15 +114,17 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
 
     useEffect(() => {
         if (dataDictionary) {
+
+            let categoriesToExclude =  ['top', null] 
             const filteredCategories = [
                 ...new Set(
                     dataDictionary
-                        .filter(data => data.attributes['category'] !== 'top' && data.attributes['category'] !== null)
+                        .filter(data => !categoriesToExclude.includes(data.attributes['category']))
                         .sort((a, b) => a.attributes['details_category_order'] > b.attributes['details_category_order'] ? 1:-1)
                         .map(data => data.attributes['category'])
                 )
             ];
-    
+
             setCategories(filteredCategories);
         }
     }, [dataDictionary]);
@@ -217,7 +217,8 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
 
         let data = filteredData?.map((data, subIndex) => {
             return(
-                <Box key={data.attributes['FID']} display="flex" flexDirection="column" width="100%">
+                <Box key={data.attributes['field']} display="flex" flexDirection="column" width="100%">
+
                 <Box 
                 display="flex"
                 justifyContent={textAlignment}
@@ -226,23 +227,24 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                     <Typography variant="h6">
                         {data.attributes['label']}
                     </Typography>
-                
                 </Box>
-                <Box display="flex" flexDirection="row" columnGap={1} justifyContent={category === "top" ? "center" : textAlignment}>
+                
+                <Box display="flex" flexDirection="row" columnGap={3} justifyContent={category=="top"? "center" : textAlignment}>
                     {properties.map((property, propIndex) => {
                         let color = property === property1 ? propertyColor1 : propertyColor2
                         panelContentTitleMain["color"] = color
                         panelContentTitleMain["borderColor"] = color
                         return(
                             <Box 
+                            key={property.attributes['PIN14']}
                             display="flex" 
                             justifyContent="space-evenly" 
                             alignContent={textAlignment}>
-                           { data.attributes['field'] === "comparable_properties" && property1 && !property2 ? 
-                            propertyComparison(data.attributes['FID']) :
+                           { data.attributes['field'] === "comparable_properties"? 
+                            propertyComparison(data.attributes['field']) :
 
-                            data.attributes['field'] === "nearby_properties" && property1 && !property2 ? 
-                            nearbyProperties(data.attributes['FID']) :
+                            data.attributes['field'] === "nearby_properties"? 
+                            nearbyProperties(data.attributes['field']) :
 
                             data.attributes['field'] === "incorp_unincorp_state" ?
                             incorp_unincorp(property) :
@@ -260,6 +262,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                         data.attributes['hyperlink_text'] && data.attributes['hyperlink_params'] && data.attributes['hyperlink_url'] ?
                             returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], property1?.attributes) :
                             <Box 
+                            key={data.attributes["field"]}
                             id="data-field-container"
                             display="flex"
                             // justifyContent={textAlignment}
@@ -272,7 +275,6 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                                 fontSize: theme.typography.h3.fontSize,
                                 justifyContent: "center",
                                 alignItems:"center",
-                                color:"",
                                 borderColor:property===property1 ? propertyColor1 : propertyColor2,
                                 color:property===property1 ? propertyColor1 : propertyColor2
                             }}
@@ -282,7 +284,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                                     variant="h5" 
                                     sx={{color: category === "top" && subIndex==0 && property===property1 ? propertyColor1 : category === "top" && subIndex==0 && property===property2 ? propertyColor2: theme.main.text.dark }}>
                                         {property?.attributes[data.attributes['field']] ? 
-                                        `${prefix(data.attributes['type'])}${addCommaSeparator(property?.attributes[data.attributes['field']], data.attributes['type'])}`:
+                                        `${prefix(data.attributes['type'])}${addCommaSeparator(property?.attributes[data.attributes['field']], data.attributes['type'])}` :
                                         "Data unavailable"}
                                 </Typography>
                                 
@@ -290,7 +292,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                             
                             }
                             {propIndex === 0 && category !== "top" && properties.length > 1? 
-                            <Divider flexItem orientation="vertical" variant="fullWidth" sx={{color:theme.palette.info.dark, pl:1}}/>
+                            <Divider flexItem orientation="vertical" sx={{color:theme.palette.info.dark, height:'100%', pl:1, pr:1}}/>
                             : null
                             }
                         </Box> 
@@ -317,9 +319,10 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
 
         return(
             <Box key={category} display="flex" flexDirection="column" width="100%" pt={category !== "top" ? 1: 0} rowGap={category !== "top" ? 1: 0}>
-                {category !== 'top' ? <Typography variant="h2">{category}</Typography> : null}
+                {category !== "top"? <Typography variant="h2">{category}</Typography> :
+                null}
                 <Box 
-                id={"property1-detail-data-container"} 
+                id={"property-detail-data-container"} 
                 width="100%"
                 display="flex" flexDirection="column" 
                 pl={category === "top" ? 0 :1} 
@@ -339,9 +342,14 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
             
             <Box display="flex" flexDirection="column" rowGap={1} sx={{overflowY:"auto", overflowX:"hidden"}}  flexGrow={1} minHeight={0} pl={1} pr={2} boxSizing="content-box">
             {categories?.map((category, index) => {
-                return(
-                    fetchpropertyDetailData(category, index+1)
-                )
+
+                if(category === "Property Comparision" && !property1 ){
+                    return null
+                }
+                else{
+                    return fetchpropertyDetailData(category, index+1)
+                }
+
             })}
             </Box>
         </Box>

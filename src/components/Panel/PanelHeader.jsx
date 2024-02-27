@@ -8,18 +8,29 @@ import { StyledIconButton } from "../Button/Button";
 import FeedbackOutlinedIcon from '@mui/icons-material/FeedbackOutlined';
 import { useSearchParams } from "react-router-dom"
 import ExportDialog from "../ExportDialog/ExportDialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FeedbackDialog from "../FeedBack/Feedback";
 import InfoIcon from '@mui/icons-material/InfoOutlined';
 
-const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton, infoButton, panel, primary} ) => {
 
-    const { clearResultsComparables, panelDisplaySecondary, clearResults, panelPrimaryVisible, panelSecondaryVisibility, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
+const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton, panel, primary} ) => {
+
+    const { clearResultsComparables, panelDisplaySecondary, clearResults, panelPrimaryVisible, panelSecondaryVisible, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
 
     //get url parameters
     const [routeParams , setSearchParams] = useSearchParams()
     const [ openExportDialog, setOpenExportDialog ] = useState(false)
     const [ openFeedbackDialog, setOpenFeedbackDialog ] = useState(false)
+    const [ actionRowVisible, setActionRowVisible ] = useState(false)
+
+    useEffect(() => {
+        if(results ||  exportButton || clearButton || feedbackButton){
+            setActionRowVisible(true)
+        }
+        else{
+            setActionRowVisible(false)
+        }
+    },[results, exportButton, clearButton, feedbackButton])
 
     function handleClearResults(primary){
 
@@ -34,11 +45,11 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
             window.history.pushState({ path: updatedUrl }, '', updatedUrl);
 
             clearResultsComparables()
-            panelSecondaryVisibility(false)
+            setPanelSecondaryVisibility(false)
         }
         else{
             clearResultsComparables()
-            panelSecondaryVisibility(false)
+            setPanelSecondaryVisibility(false)
         }
 
 
@@ -87,7 +98,7 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
         if(panel==="primary" && panelPrimaryVisible===true){
             setPanelPrimaryVisibility(false)
         }
-        if(panel==="secondary" && panelSecondaryVisibility===true){
+        if(panel==="secondary" && panelSecondaryVisible===true){
             setPanelSecondaryVisibility(false)
         }
     }
@@ -127,7 +138,7 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
                     <Typography color={theme.main.text.dark} variant="subtitle1">Close</Typography>
                     </IconButton> :null}
             </Stack>
-            <Stack direction="row" alignItems="center" spacing={1} justifyContent="center" height={30}>
+            <Stack direction="row" alignItems="center" spacing={1} justifyContent="center" height={30} sx={{display:actionRowVisible ? "flex" : "none"}}>
                 {results ? <Box display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" height={35} p={0} m={0}>
                     <Typography variant="subtitle2" color={theme.main.text.dark} align="center" sx={{height:21}}>
                         {results ? results: 0}
@@ -145,7 +156,9 @@ const PanelHeader = ( {text, results, exportButton, clearButton, feedbackButton,
                 {feedbackButton ? 
                 <StyledIconButton icon={<FeedbackOutlinedIcon fontSize="small" sx={{color: theme.main.text.dark, width: 15}}/>} text={"Feedback"} onClick={handleFeedback}/>
                 : null}
-                </Stack>
+            </Stack>
+            {descriptionText ? <Typography p={2} variant="body">{descriptionText}</Typography>: null}
+            
 
             <ExportDialog open={openExportDialog} onClose={handleCloseExport}/>
             <FeedbackDialog open={openFeedbackDialog} onClose={handleCloseFeedback}/>

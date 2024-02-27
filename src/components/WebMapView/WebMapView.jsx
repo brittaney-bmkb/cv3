@@ -7,7 +7,7 @@ import { view } from "../../arcgis/webmap/webmap";
 
 export default function WebMapView(){
 
-    const { primaryResultFeature, renderSearchResults, searchResults, loadMap, setMapContainer, mapContainer, mapClickEventHandler, addSecondaryFeatureToMap, secondaryResultFeature} = UseAppContext()
+    const { loadMap, setMapContainer, mapContainer, mapClickEventHandler, addSecondaryFeatureToMap, secondaryResultFeature} = UseAppContext()
     const mapDiv = useRef(null)
 
     //get url parameters
@@ -40,18 +40,18 @@ export default function WebMapView(){
     // }, [searchResults])
 
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        const updateUrlParam = async () => {
-            if(primaryResultFeature){
-                 //update url params for selected feature
-                let location = primaryResultFeature.attributes[config.target_layer_id_field]
-                setSearchParams({'location': location})
-                }
-        }
+    //     const updateUrlParam = async () => {
+    //         if(primaryResultFeature){
+    //              //update url params for selected feature
+    //             let location = primaryResultFeature.attributes[config.target_layer_id_field]
+    //             setSearchParams({'location': location})
+    //             }
+    //     }
 
-        updateUrlParam()
-    }, [primaryResultFeature])
+    //     updateUrlParam()
+    // }, [primaryResultFeature])
 
     useEffect(() => {
         const updateMap = async () => {

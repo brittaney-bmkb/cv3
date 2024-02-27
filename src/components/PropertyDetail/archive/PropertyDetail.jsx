@@ -170,7 +170,7 @@ const PropertyDetail = ({property, pinLableColor}) => {
 
         let data = filteredData?.map((data, subIndex) => {
             return(
-                <Box key={data.attributes['FID']} display="flex" flexDirection="column" width="100%">
+                <Box key={data.attributes['field']} display="flex" flexDirection="column" width="100%">
                 <Box 
                 display="flex"
                 >
@@ -181,10 +181,10 @@ const PropertyDetail = ({property, pinLableColor}) => {
                 </Box>
                 { 
                     data.attributes['field'] === "comparable_properties" && pinLableColor=== theme.palette.primary.main ? 
-                        propertyComparison(data.attributes['FID']) :
+                        propertyComparison(data.attributes['field']) :
 
                     data.attributes['field'] === "nearby_properties"  && pinLableColor=== theme.palette.primary.main  ?
-                        nearbyProperties(data.attributes['FID']) :
+                        nearbyProperties(data.attributes['field']) :
 
                     data.attributes['field'] === "incorp_unincorp_state" ?
                         incorp_unincorp(data) :

@@ -1,9 +1,13 @@
 import { Button, ButtonGroup, Fab, IconButton, Typography, styled } from "@mui/material"
 import { theme } from "../../theme"
+import UseAppContext from "../../contexts/AppContext"
 
 const StyledButtonFilledPrimary = ({text, startIcon, endIcon, onClick, textVarient, disabled}) => {
+
+    const {screenWidth} = UseAppContext()
     return(
         <Button 
+        size={screenWidth < theme.breakpoints.values.md ? "small" : "medium"}
         disabled={disabled}
         variant="contained" 
         color="primary"

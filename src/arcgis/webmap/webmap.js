@@ -73,7 +73,30 @@ let layerGraphicsSecondary = new GraphicsLayer()
 //create graphics layer to comparable search result
 let layerGraphicsSecondarySelected = new GraphicsLayer()
 
+export async function toggleLayer(layer){
 
+  let layerToToggle
+
+  if(layer.type === "mapImageLayer"){
+    layerToToggle = namedLayers[layer.layerName]
+    let subLayer = layerToToggle.findSublayerById(layer.index)
+    layerToToggle.visible = !layerToToggle.visible
+    subLayer.visible = !subLayer.visible
+  }
+  else{
+    layerToToggle = namedLayers[layer.layerName]
+    layerToToggle.visible = !layerToToggle.visible
+  }
+
+  let foundLayer = map.allLayers.filter((mapLayer) => {
+    return mapLayer.title === layer.layerName
+  })
+
+  if(foundLayer.items.length <= 0){
+    map.add(layerToToggle)
+  }
+
+}
 
 export async function initializeMap(container){
 
@@ -312,11 +335,11 @@ export async function createGraphic(features, removeGraphicName, color, secondar
     query.outFields = queryFields
 
     if(searchDistance && searchDistance > 0){
-      console.log("Search Distance: ", searchDistance)
       query.geometry = feature.geometry
-      query.spatialRelationship = "intersect"
+      query.spatialRelationship = "intersects"
       query.distance = searchDistance
       query.units = "miles"
+  
     }
 
     let {features} = await targetLayer.queryFeatures(query)

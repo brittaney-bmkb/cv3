@@ -75,6 +75,7 @@ const PanelContent = ({display}) => {
                     panel={screenWidth < theme.breakpoints.values.lg ? "primary": "secondary"}
                     backButton={screenWidth < theme.breakpoints.values.lg}
                     backButtonComponent={"propertyDetail"}
+                    descriptionText={"Complete the comparable search form to view similar properties. Fields maked with an astrisk (*) are required"}
                     />
                     <Divider/>
                     <Box  display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
@@ -107,7 +108,7 @@ const PanelContent = ({display}) => {
             )
         case 'resultsListComparables':
             return (
-                <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0} >
+                <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
                     <PanelHeader 
                     text={"Comparable Results"} 
                     exportButton={true} 
@@ -190,15 +191,17 @@ const PanelContent = ({display}) => {
                         panel={"secondary"}
                         primary={false}
                     />
-                    
-                    <Box display="flex" width="100%" flexGrow={1} minHeight={0}>
-                        <PropertyDetail 
-                            property1={screenWidth >= theme.breakpoints.values.lg ? null : primaryResultFeature} 
-                            property2={secondaryResultFeature} 
-                            propertyColor1={theme.palette.primary.main}
-                            propertyColor2={theme.palette.secondary.main}
-                        />
-                    </Box>     
+
+                   <Box display="flex"  flexDirection="column" width="100%" flexGrow={1} minHeight={0}>
+                     <PropertyDetail 
+                       property1={screenWidth >= theme.breakpoints.values.lg ? null : primaryResultFeature} 
+                       property2={secondaryResultFeature} 
+                       propertyColor1={theme.palette.primary.main}
+                       propertyColor2={theme.palette.secondary.main}
+                      />
+                     <PropertyPagniation/>
+                   </Box>     
+
                 </Box>)
         case 'measureWidget':
             // Add panel headers 
@@ -220,19 +223,36 @@ const PanelContent = ({display}) => {
                 )                
         case 'layersWidget':
             return(
-                <Box bgcolor="white" flex={1} flexDirection="column">
+                <Box display="flex" flexDirection="column"  minHeight={0}>
+                    <PanelHeader
+                    text={"Map Layers"} 
+                    closeButton={true}
+                    panel={"secondary"}
+                    />
                     <LayersWidget/>
                 </Box>
             )   
         case 'basemapsWidget':
             return(
-                <Box bgcolor="white" flex={1} flexDirection="column">
+                <Box p={2} display="flex" flexDirection="column" rowGap={3} minHeight={0}>
+                    <PanelHeader
+                    text={"Basemaps"} 
+                    closeButton={true}
+                    panel={"secondary"}
+                    descriptionText={"Select a basemap from the options below to update the map"}
+                    />
                     <BasemapWidget/>
                 </Box>
             )                                           
         case 'printWidget':
             return(
-                <Box bgcolor="white" flex={1} flexDirection="column">
+                <Box p={2} display="flex" flexDirection="column"  minHeight={0}>
+                    <PanelHeader
+                    text={"Print"} 
+                    closeButton={true}
+                    panel={"secondary"}
+                    // descriptionText={"Print Settings"}
+                    />
                     <PrintWidget/>
                 </Box>
             )                                   
