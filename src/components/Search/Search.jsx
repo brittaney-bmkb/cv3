@@ -48,6 +48,13 @@ const Search = () => {
             setSearchParams({"location" : primaryResultFeature[0].attributes["PIN10"]})
         }
 
+        if(searchWidget.current && primaryResultFeature){
+            if(!searchWidget.current.searchTerm){
+                searchWidget.current.searchTerm = primaryResultFeature?.length > 1 ? primaryResultFeature[0].attributes['PIN10'] : primaryResultFeature[0].attributes['PIN14']
+            }
+        }
+
+
     }, [routeParams, newSearch,  primaryResultFeature, searchFeatures])
 
 
@@ -101,6 +108,9 @@ const Search = () => {
 
                     }
                     if(newSearch === false){
+                        if(!searchWidget.current.searchTerm){
+                            searchWidget.current.searchTerm = primaryResultFeature.length > 1 ? primaryResultFeature[0].attributes['PIN10'] : primaryResultFeature[0].attributes['PIN14']
+                        }
                         if(primaryResultFeature.length > 1 && searchWidget.current.searchTerm !== primaryResultFeature[0].attributes['PIN10']){
                             searchWidget.current.searchTerm = primaryResultFeature[0].attributes['PIN10']
                         }
