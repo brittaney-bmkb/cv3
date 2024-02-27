@@ -10,6 +10,8 @@ import { useSearchParams } from "react-router-dom"
 import ExportDialog from "../ExportDialog/ExportDialog";
 import { useEffect, useState } from "react";
 import FeedbackDialog from "../FeedBack/Feedback";
+import InfoIcon from '@mui/icons-material/InfoOutlined';
+
 
 const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton, panel, primary} ) => {
 
@@ -118,7 +120,10 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
                     </IconButton> : null} 
                 <Box display="flex" flex={1} alignItems="center" justifyContent="space-around" p={1} minWidth={150}>
                     <Box bgcolor={theme.main.backgroundColor.grey} p={1} sx={{borderRadius: theme.shape.borderRadius}}>
-                        <Typography variant="h5" color={theme.main.text.dark}>{text}</Typography>
+                        <Typography variant="h5" color={theme.main.text.dark}>
+                            {text}
+                            { infoButton ?  <IconButton  target="_blank" > {<InfoIcon/>} </IconButton > : null}
+                        </Typography>
                     </Box> 
                 </Box>
                 

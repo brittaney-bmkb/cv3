@@ -21,12 +21,14 @@ const PanelContent = ({display}) => {
             return (
                 <Box display="flex" flexDirection="column" height="100%" >
                     <PanelHeader
-                     text={"Property Results"} 
-                     exportButton={true} 
-                     clearButton={true} 
-                     results={searchFeatures ? searchFeatures.length : 0} 
-                     feedbackButton={true}
-                     primary={true}/>
+                        text={"Property Results"} 
+                        exportButton={true} 
+                        clearButton={true} 
+                        results={searchFeatures ? searchFeatures.length : 0} 
+                        feedbackButton={true}
+                        primary={true}
+                    />
+
                     <Box display="flex" flexDirection="column" sx={{ overflowY:"scroll", flexGrow: 1}}>
                         <ResultsList 
                         results={searchFeatures} 
@@ -145,9 +147,10 @@ const PanelContent = ({display}) => {
                     />
                     <Box display="flex" flexDirection="column" sx={{ overflowY:"scroll"}} flexGrow={1} minHeight={0}>
                         <ResultsList 
-                        results={comparableParcels} 
-                        primaryLableColor={theme.palette.secondary.main}
-                        noResultsMessage={"Zero comparable parcels found"}/>
+                            results={comparableParcels} 
+                            primaryLableColor={theme.palette.secondary.main}
+                            noResultsMessage={"Zero comparable parcels found"}
+                        />
                     </Box>   
                 </Box>)
 
@@ -165,19 +168,19 @@ const PanelContent = ({display}) => {
                         panel={screenWidth < theme.breakpoints.values.lg ? "primary":"secondary"}
                         primary={false}
                         />
-                       <Box display="flex" flexDirection="column" width="100%" flexGrow={1} minHeight={0}>
-                        <PropertyDetail 
-                        property1={screenWidth >= theme.breakpoints.values.lg ? null :primaryResultFeature} 
-                        property2={secondaryResultFeature} 
-                        propertyColor1={theme.palette.primary.main}
-                        propertyColor2={theme.palette.secondary.main}/>
-                        <PropertyPagniation/>
-                       </Box>     
+                        <Box display="flex" flexDirection="column" width="100%" flexGrow={1} minHeight={0}>
+                            <PropertyDetail 
+                            property1={screenWidth >= theme.breakpoints.values.lg ? null :primaryResultFeature} 
+                            property2={secondaryResultFeature} 
+                            propertyColor1={theme.palette.primary.main}
+                            propertyColor2={theme.palette.secondary.main}/>
+                            <PropertyPagniation/>
+                        </Box>     
                 </Box>)
         case 'propertyDetailNearby':
             return (
                 <Box display="flex" flexDirection="column"  minHeight={0}>
-                        <PanelHeader 
+                    <PanelHeader 
                         text={"Nearby Property"} 
                         exportButton={true} 
                         clearButton={true} 
@@ -187,23 +190,35 @@ const PanelContent = ({display}) => {
                         closeButton={true}
                         panel={"secondary"}
                         primary={false}
-                        />
-                       <Box display="flex"  flexDirection="column" width="100%" flexGrow={1} minHeight={0}>
-                       <PropertyDetail 
+                    />
+
+                   <Box display="flex"  flexDirection="column" width="100%" flexGrow={1} minHeight={0}>
+                     <PropertyDetail 
                        property1={screenWidth >= theme.breakpoints.values.lg ? null : primaryResultFeature} 
                        property2={secondaryResultFeature} 
                        propertyColor1={theme.palette.primary.main}
-                       propertyColor2={theme.palette.secondary.main}/>
-                       <PropertyPagniation/>
-                       </Box>     
+                       propertyColor2={theme.palette.secondary.main}
+                      />
+                     <PropertyPagniation/>
+                   </Box>     
+
                 </Box>)
         case 'measureWidget':
             // Add panel headers 
             // add additional arguments for arguments in there
             // create argument to toggle on and off. 
             return(
-                <Box bgcolor="white" flex={1} flexDirection="column">
-                    <MeasureWidget/>
+                // <Box bgcolor="white" flex={1} flexDirection="column">
+                <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
+
+                    <PanelHeader 
+                        text={"Measure"} 
+                        closeButton={screenWidth < theme.breakpoints.values.lg ?  false : true }
+                        backButton={screenWidth < theme.breakpoints.values.lg ? true : false}
+                    />                    
+                    <MeasureWidget
+                    panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"}
+                    />
                 </Box>
                 )                
         case 'layersWidget':

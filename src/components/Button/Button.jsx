@@ -25,35 +25,38 @@ const StyledButtonFilledPrimary = ({text, startIcon, endIcon, onClick, textVarie
 
 // Add a new compoenent for button group and customize
 export const StyledPanelButton = ({text1, text2, text3, icon1, icon2, icon3, onClick}) => {
-    console.log('StyledPanelButton')
+    // display="flex" flexDirection="column" flexGrow={1} minHeight={0}
 
     return(
-
+        
         <ButtonGroup size="small" sx={{display:"flex", textTransform:"none"}}>
             <StyledButtonFilledPrimary
-            variant="contained"
-            color="primary"
-            startIcon={icon1}
-            text={text1}
-            
+                variant="contained"
+                color="primary"
+                startIcon={icon1}
+                text={text1}
+                onClick={onClick}
             >
                 
             </StyledButtonFilledPrimary>
             
             <StyledButtonFilledPrimary
-            variant="contained"
-            color="primary"
-            startIcon={icon2}
-            text={text2}>
-               
+                variant="contained"
+                color="primary"
+                startIcon={icon2}
+                text={text2}
+                onClick={onClick}
+            >
             </StyledButtonFilledPrimary>
 
             <StyledButtonFilledPrimary
-            variant="contained"
-            color="primary"
-            startIcon={icon3}
-            text={text3}
+                variant="contained"
+                color="primary"
+                startIcon={icon3}
+                text={text3}
+                onClick={onClick}
             >
+                
             </StyledButtonFilledPrimary>            
 
         </ButtonGroup>

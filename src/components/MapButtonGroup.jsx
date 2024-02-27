@@ -5,24 +5,28 @@ import { theme } from "../theme"
 import StyledButtonFilledPrimary from "./Button/Button"
 import UseAppContext from "../contexts/AppContext"
 
+import StraightenIcon from '@mui/icons-material/Straighten';
+import LayersOutlinedIcon from '@mui/icons-material/LayersOutlined';
+import GridViewIcon from '@mui/icons-material/GridView';
+import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 
 const MapButtonGroup = () => {
 
     const { setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
     
     
-    function handleClick(display){
+    const handleClick = (display) =>{
         setPanelSecondaryVisibility(true)
         setPanelDisplaySecondary(display)
     }
 
     return(
         <Stack direction="row" position="absolute" spacing={1} padding={2} zIndex={100}>
-            <StyledButtonFilledPrimary text={"Measure Tool"} onClick={() => {handleClick("measureWidget")}} textVarient="h5"/>
-            {/* <Button variant="contained" sx={{bgcolor:theme.palette.primary}} className="measureWidget">Measure</Button> */}
-            <StyledButtonFilledPrimary text={"Layers"} onClick={() => {handleClick("layersWidget")}} textVarient="h5"/>
-            <StyledButtonFilledPrimary text={"Basemaps"} onClick={() => {handleClick("basemapsWidget")}} textVarient="h5"/>
-            <StyledButtonFilledPrimary text={"Print"} onClick={() => {handleClick("printWidget")}} textVarient="h5"/>
+
+            <StyledButtonFilledPrimary text={"Measure"}  startIcon={<StraightenIcon/>} onClick={ () => {handleClick('measureWidget')}}  textVarient="h5" />
+            <StyledButtonFilledPrimary text={"Layers"}   startIcon={<LayersOutlinedIcon/>} onClick={ () => {handleClick('layersWidget')} }  textVarient="h5" />
+            <StyledButtonFilledPrimary text={"Basemaps"} startIcon={<GridViewIcon/>}  onClick={ () => {handleClick('basemapsWidget')} }  textVarient="h5" />
+            <StyledButtonFilledPrimary text={"Print"}    startIcon={<LocalPrintshopIcon/>} onClick={ () => {handleClick('printWidget')} }  textVarient="h5" />            
         </Stack>
     )
 }
