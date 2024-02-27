@@ -73,7 +73,7 @@ export const AppProvider = ({children}) => {
     }
 
 
-    const mapClickEventHandler = async (event) => {
+    const mapClickEventHandler = async () => {
 
         const { onViewClick, createGraphic, zoomToExtent, removeGraphics } = await import('../arcgis/webmap/webmap')
         const { theme } = await import ('../theme')
@@ -101,11 +101,9 @@ export const AppProvider = ({children}) => {
         }
 
         else{
-            setPrimaryResultFeature(selectedFeatures[0], false)
-
-            //update url param
-            let location = selectedFeatures[0].attributes[config.target_layer_id_field]
-            setSearchParams({'location': location})
+            console.log("App context setting selected parcel", selectedFeatures)
+            // if(selectedFeatures.length === 1){
+            setPrimaryResultFeature(selectedFeatures.length > 0 ? selectedFeatures : null, false)
 
             setSearchResults(null, selectedFeatures)
             createGraphic(selectedFeatures, "primary", theme.palette.primary.main)
@@ -264,6 +262,7 @@ export const AppProvider = ({children}) => {
         console.log("selectedFeature: ", selectedFeature)
 
         setPrimaryResultFeature(selectedFeature[0], false)
+        setSearchParams({"PIN": selectedFeature[0].attributes["PIN14"]})
 
         //update graphic in map
         const { createGraphic } = await import('../arcgis/webmap/webmap')
@@ -326,7 +325,7 @@ export const AppProvider = ({children}) => {
             setPanelSecondaryVisibility(false)
         }
 
-        setSearchParams({'location': null})
+        //setSearchParams()
 
         const updatedUrl = `${window.location.pathname}`;
 
