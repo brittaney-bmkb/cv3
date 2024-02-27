@@ -39,11 +39,11 @@ const Search = () => {
     useEffect(() => {
         //When primary feature result changes update the search param
         //from mouse click
-        if(primaryResultFeature?.length === 1 && newSearch === false){
+        if(primaryResultFeature?.length === 1 && newSearch === false && searchFeatures){
             setSearchParams({"search" : null})
             setSearchParams({"location" : primaryResultFeature[0].attributes["PIN14"]})
         }
-        if(primaryResultFeature?.length > 1 && newSearch === false){
+        if(primaryResultFeature?.length > 1 && newSearch === false && searchFeatures){
             setSearchParams({"search" : null})
             setSearchParams({"location" : primaryResultFeature[0].attributes["PIN10"]})
         }
