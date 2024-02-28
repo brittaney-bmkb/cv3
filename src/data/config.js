@@ -33,6 +33,7 @@ export const config = {
     buffer_distance: 50,
     buffer_unit: "feet",
     //LANGUAGES
+    defaultLanguage: "english",
     languages:["english","spanish"],
     //APP TRANSLATION TEXT
     translation_text:"https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/ArcGIS/rest/services/cookviewer_translated_text/FeatureServer/2",

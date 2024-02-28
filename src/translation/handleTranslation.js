@@ -23,5 +23,6 @@ export async function returnTranslatedText(features){
     })  
 
     console.log("TRANSLATION OBJECT: ", translations)
+    return translations
 }
 

@@ -251,6 +251,15 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setTranslationDictionary = (dictionary) => {
+        dispatch({
+            type:"SET_TRANSLATE_DICTIONARY",
+             payload: {
+                textTranslationDictionary: dictionary,
+            }
+        })
+    }
+
     
     const loadDataDictionary = async () => {
 
@@ -393,6 +402,23 @@ export const AppProvider = ({children}) => {
         setComparableParcels(nearbyParcels)
     }
 
+    const translateText = (text) => {
+
+        const {language, textTranslationDictionary} = state
+
+        console.log("TRANSLATING TEXT: ", text, language)
+        let translatedText = text
+        let translation = Object.values(textTranslationDictionary).filter(textReplace => 
+            textReplace[config.defaultLanguage] === text)
+            .map((textReplace)=> {
+                return textReplace[language]
+            })
+
+        console.log("TRANSLATED TEXT: ", translation)
+        return translation && translation.length > 0 ? translation[0] : text
+
+    }
+
 
     const value = {
         mapContainer: state.mapContainer,
@@ -437,7 +463,10 @@ export const AppProvider = ({children}) => {
         setLanguage,
         language: state.language,
         setTranslateDialogOpen,
-        translateDialogOpen: state.translateDialogOpen
+        translateDialogOpen: state.translateDialogOpen,
+        textTranslationDictionary: state.textTranslationDictionary,
+        setTranslationDictionary,
+        translateText
     }
 
 
@@ -468,14 +497,13 @@ export const AppProvider = ({children}) => {
 
 
             let { features } = await readFeatureLayerData(config.translation_text, ["*"], "english IS NOT NULL", false)
-            returnTranslatedText(features)
+            let text = await returnTranslatedText(features)
+            setTranslationDictionary(text)
         }
     
-        initializeTranslationText();
+         initializeTranslationText();
 
       }, []);
-
-
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 

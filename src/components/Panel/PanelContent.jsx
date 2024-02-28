@@ -14,14 +14,14 @@ import PropertyPagniation from "../PropertyDetail/PropertyPagnition";
 
 const PanelContent = ({display}) => {
 
-    const { screenWidth, primaryResultFeature, searchFeatures, comparableParcels, secondaryResultFeature } = UseAppContext()
+    const { translateText, screenWidth, primaryResultFeature, searchFeatures, comparableParcels, secondaryResultFeature } = UseAppContext()
 
     switch(display){
         case 'resultsList':
             return (
                 <Box display="flex" flexDirection="column" height="100%" >
                     <PanelHeader
-                        text={"Property Results"} 
+                        text={translateText("Property Results")} 
                         exportButton={true} 
                         clearButton={true} 
                         results={searchFeatures ? searchFeatures.length : 0} 
