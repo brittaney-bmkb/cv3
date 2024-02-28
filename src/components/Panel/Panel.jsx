@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 
 const PanelMobile = () => {  
 
-    const { panelDisplay } = UseAppContext()
+    const { panelDisplay, translateText } = UseAppContext()
 
     console.log("Panel display: ", panelDisplay)
     return(
