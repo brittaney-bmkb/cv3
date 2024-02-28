@@ -233,6 +233,24 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setLanguage = (language) => {
+        dispatch({
+            type:"SET_LANGUAGE",
+             payload: {
+                language: language,
+            }
+        })
+    }
+
+    const setTranslateDialogOpen = (open) => {
+        dispatch({
+            type:"SET_TRANSLATE_DIALOG_OPEN",
+             payload: {
+                translateDialogOpen: open,
+            }
+        })
+    }
+
     
     const loadDataDictionary = async () => {
 
@@ -415,7 +433,11 @@ export const AppProvider = ({children}) => {
         addSecondaryFeatureToMap,
         setMeasureWidgetState,
         measureWidgetState: state.measureWidgetState,
-        toggleMapLayer
+        toggleMapLayer,
+        setLanguage,
+        language: state.language,
+        setTranslateDialogOpen,
+        translateDialogOpen: state.translateDialogOpen
     }
 
 
@@ -436,6 +458,24 @@ export const AppProvider = ({children}) => {
           window.removeEventListener('resize', handleResize);
         };
       }, [window.innerWidth]);
+
+
+      useEffect(() => {
+        const initializeTranslationText = async () => {
+            
+            const { returnTranslatedText } = await import ('../translation/handleTranslation')
+            const { readFeatureLayerData } = await import('../arcgis/layers/layers')
+
+
+            let { features } = await readFeatureLayerData(config.translation_text, ["*"], "english IS NOT NULL", false)
+            returnTranslatedText(features)
+        }
+    
+        initializeTranslationText();
+
+      }, []);
+
+
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 

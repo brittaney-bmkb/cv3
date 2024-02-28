@@ -21,8 +21,7 @@ const MapButtonGroup = () => {
     }
 
     return(
-        <Stack direction="row" position="absolute" spacing={1} padding={2} zIndex={100}>
-
+        <Stack direction="row" position="absolute" spacing={1} padding={1} zIndex={100}>
             <StyledButtonFilledPrimary text={"Measure"}  startIcon={<StraightenIcon/>} onClick={ () => {handleClick('measureWidget')}}  textVarient="h5" />
             <StyledButtonFilledPrimary text={"Layers"}   startIcon={<LayersOutlinedIcon/>} onClick={ () => {handleClick('layersWidget')} }  textVarient="h5" />
             <StyledButtonFilledPrimary text={"Basemaps"} startIcon={<GridViewIcon/>}  onClick={ () => {handleClick('basemapsWidget')} }  textVarient="h5" />
