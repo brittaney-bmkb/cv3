@@ -26,10 +26,10 @@ calcite-icon {
   }
 }
 
-.esri-measurement-widget-content__actions{
+/* .esri-measurement-widget-content__actions{
   visibility: hidden;
   display: none;
-}
+} */
 
 /* .esri-measurement-widget-content{
   background-color: black !important;
