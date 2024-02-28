@@ -27,17 +27,9 @@ User clicks within the map to select a parcel.
 - The `primaryResultFeature` property is included in the dependency array of the `Search.jsx` `useEffect` hook (line 39).
 
 #### Step 5: URL Parameter Update in Search.jsx
-- When the `primaryResultFeature` property is updated based on the user's parcel selection, the `useEffect` hook in `Search.jsx` checks if the length of the parcel features is equal to 1, indicating that the parcel does not have multiple units.
-- Updates the URL parameter "location" to the parcel 14-digit PIN.
-- If there are multiple units, the "location" parameter is set to the parcel 10-digit PIN.
-
-#### Step 6: UseSearchParams and RouteParams
-- The URL parameters are accessed using the `useSearchParams` hook and the `routeParams` property.
-
-#### Step 7: Dependency on RouteParams in Search.jsx
-- The `routeParams` is included in the dependency array of the second `useEffect` hook in `Search.jsx`.
-
-#### Step 8: Update of Search Term in Search.jsx
-- When the "location" parameter is updated, the `useEffect` in `Search.jsx` checks if "location" is populated.
-- If `newSearch` is false (indicating that the parcel was selected by clicking in the map and not using the search bar), then the search bar search term or value is compared to the `primaryResultFeature` `pin10` for properties without multiple units or the `pin14` for properties with multiple units.
-- If the search term does not match the value, then the search term is updated with `pin10` or `pin14`.
+-	When the primaryResultFeature property is updated based on the user’s parcel(s) selection, the useEffect hook sets the url parameter and the search term depending on the parcel features that are returned from the selection:
+  - If the features returned only include 1 parcel then the “pin” parameter is set to PIN14
+  - If the features returned include more than one parcel AND the pin10s of all the parcels match then the “pin” parameter is set to PIN10
+  - If the features returned include more than one parcel AND the pin10s do not match BUT the parcel addresses DO match then the “address” parameter is set to the parcel street_address
+  - If the features returned include more than one parcel AND the pin10s AND the street addresses DO NOT match then the “location” parameter is set to the lat/long of the mouse click/tap (will generate lat/long in upcoming issue)
+- If the search term in the search bar is not referencing the selected parcel then the search term will be updated to show the PIN or Address
