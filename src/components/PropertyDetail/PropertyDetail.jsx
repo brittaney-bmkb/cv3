@@ -346,6 +346,9 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                 if(category === "Property Comparision" && !property1 ){
                     return null
                 }
+                else if(category === "Property Comparision" && property1 && property2){
+                    return null
+                }
                 else{
                     return fetchpropertyDetailData(category, index+1)
                 }
