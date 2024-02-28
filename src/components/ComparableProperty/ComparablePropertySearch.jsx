@@ -187,7 +187,7 @@ const ComparablePropertySearch= () => {
             <Typography variant="h4">
                 Source Property
             </Typography>
-            {Object.entries(presetTextFields).map(([key, value]) => (
+            {primaryResultFeature ? Object.entries(presetTextFields).map(([key, value]) => (
                 <Box key={value} id={value} display="flex" height={20} alignItems="center" pt={1} columnGap={2} >
                 <Box display="flex" flex={1}>
                     <Typography variant="body2">{key}</Typography>
@@ -205,7 +205,7 @@ const ComparablePropertySearch= () => {
                 value={primaryResultFeature.attributes[value] ?? ""}
                 />
                 </Box>
-            ))}
+            )): null }
             <Divider/>
             <Typography variant="h4">Property Size</Typography>
             <Box display="flex" flexDirection="column">
