@@ -100,10 +100,6 @@ const Search = () => {
                     console.log("PARAM : ", param)
                     setSearchParams(param)
                     
-                    let addressMatch = searchWidget.current.searchTerm === `${attributes["street_address"]} ${attributes["city_state_zip"]}`
-                    console.log("ADDRESSES", searchWidget.current.searchTerm, `${attributes["street_address"]} ${attributes["city_state_zip"]}`)
-                    console.log("UPDATING SEARCH TERM", addressMatch)
-    
                     if(searchWidget.current && ![attributes["PIN10"], attributes["PIN14"], `${attributes["street_address"]}, ${attributes["city_state_zip"]}`].includes(searchWidget.current.searchTerm)){
                         searchWidget.current.searchTerm = paramValue
                     }
