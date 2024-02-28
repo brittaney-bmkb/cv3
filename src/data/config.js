@@ -69,12 +69,13 @@ export const config = {
                 exactMatch: false, // Exact match search (boolean).
                 maxResults: 50, // Maximum number of search results.
                 maxSuggestions: 50, // Maximum number of search suggestions.
-                minSuggestCharacters: 4, // Minimum characters for search suggestions.
+                minSuggestCharacters: 2, // Minimum characters for search suggestions.
                 outFields: [ "PIN14","PIN10", "PIN14_dash"], // IMPORTANT put the field that will be used to perfrom search query as the first item in the array. Fields to return in search results (array of strings).
                 orderByFields: ["PIN14"], // Fields for sorting search results (array of strings).
                 searchFields: ["PIN10", "PIN14", "PIN14_dash"], // Fields used for searching (array of strings).
                 suggestionsEnabled: true, // Enable/disable suggestions for this search source (boolean).
                 autoNavigate: false, // Automatically navigate to the result on selection (boolean).
+                searchTemplate: "{PIN14_dash}"
             },
 
             // {
@@ -93,17 +94,19 @@ export const config = {
 
                {
 
-                   name: "Address",
+                   name: "Parcel Address",
                    displayField:"street_address",
                    exactMatch:false,
                    maxResults:50,
                    maxSuggestions:50,
-                   minSuggestCharacters:4,
-                   outFields: ["street_address"],
+                   minSuggestCharacters:2,
+                   outFields: ["street_address", "city_state_zip"],
                    orderByFields:["street_address"],
-                   searchFields:["street_address"],
+                   searchFields:["street_address","city_state_zip"],
                    suggestionsEnabled:true,
                    autoNavigate:false,
+                   searchTemplate: "{street_address}, {city_state_zip}",
+                   suggestionTemplate: "{street_address}, {city_state_zip}"
                }
            ]
        },
@@ -1003,9 +1006,8 @@ export const config = {
             autoNavigate:false,
             maxResults: 50,
             maxSuggestions:50,
-            minSuggestCharacters: 4,
-
-            name: "Address",
+            minSuggestCharacters: 2,
+            name: "Address Point",
             outFields:["Street", "City", "Postal"],
             singleLineFieldName:"SingleLine",
             suggestionsEnabled:true,

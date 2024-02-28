@@ -10,7 +10,7 @@ import { config } from "../../data/config";
 
 const Search = () => {
 
-    const { newSearch, setPanelPrimaryVisibility, renderSearchResults, mapView, searchSources, clearResults, panelPrimaryVisible, primaryResultFeature, searchFeatures } = UseAppContext()
+    const {setPrimaryResultFeature,  newSearch, setPanelPrimaryVisibility, renderSearchResults, mapView, searchSources, clearResults, panelPrimaryVisible, primaryResultFeature, searchFeatures } = UseAppContext()
 
     //get url parameters
     const [routeParams, setSearchParams] = useSearchParams();
@@ -26,47 +26,91 @@ const Search = () => {
         routeParams.get("address")
     )
 
-    let [locationSearch, setLocationSearch] = useState(
-        routeParams.get("location")
-    )
+    let [locationSearch, setLocationSearch] = useState()
 
+    const { location, search } = useParams()
 
     //create a reference to the search  DOM  element
     const searchDiv = useRef(null)
     //create a reference to the search widget DOM element
     const searchWidget = useRef(null)
 
+    const arrayAllSame = (array) => {
+        
+          // Use the every method to check if all elements are strictly equal to the previous element
+          return array.every((value, index, arr) => index === 0 || value === arr[index - 1]);
+
+    }
+
+    useEffect(()=>{
+        const updateLocationParam = () => {
+            setLocationSearch(routeParams.get("location"))
+
+            setPinSearch(routeParams.get("pin"))
+        }
+        updateLocationParam()
+    },[routeParams])
+
     useEffect(() => {
         //When primary feature result changes update the search param
         //from mouse click
 
-        if(primaryResultFeature ){
-            let attributes = Array.isArray(primaryResultFeature) ? primaryResultFeature[0].attributes : primaryResultFeature.attributes
-            let isMultiFeatures =  Array.isArray(primaryResultFeature) && primaryResultFeature.length > 1 ? true : false
-        
-        if(isMultiFeatures===false && newSearch === false && searchFeatures){
-            setSearchParams({"search" : null})
-            setSearchParams({"location" : attributes["PIN14"]})
-        }
-        if(isMultiFeatures===true && newSearch === false && searchFeatures){
-            setSearchParams({"search" : null})
-            setSearchParams({"location" : attributes["PIN10"]})
-        }
+        if(primaryResultFeature && newSearch === false){
+            console.log("FEATURES ", primaryResultFeature)
+            
+            //let attributes = Array.isArray(primaryResultFeature) ? primaryResultFeature[0].attributes : primaryResultFeature.attributes
+            let features = Array.isArray(primaryResultFeature) ? primaryResultFeature : [primaryResultFeature]
+            let attributes = features.length > 0 ? features[0].attributes : null
+            let isMultiFeatures =  features.length > 1 ? true : false
 
-        if(searchWidget.current && searchFeatures){
-            if(!searchWidget.current.searchTerm){
-                console.log("Updating search term: ", primaryResultFeature)
-                searchWidget.current.searchTerm = primaryResultFeature?.length > 1 ?attributes['PIN10'] : attributes['PIN14']
+            if(attributes){
+                let pin10s = features?.map((feature) => feature.attributes["PIN10"])
+                let addresses = features?.map((feature) => feature.attributes["street_address"])
+                let pin10Match =  isMultiFeatures === true ? arrayAllSame(pin10s) : true
+                let addressMatch =  isMultiFeatures === true ? arrayAllSame(addresses) : true
+    
+                let paramValue = null
+                let param = {}
+    
+                if(isMultiFeatures === false){
+                    paramValue = attributes["PIN14"]
+                    param = {"pin": paramValue}
+                }
+                else if(isMultiFeatures === true && pin10Match === false){
+
+                    if(addressMatch === true){
+                        paramValue = attributes["street_address"]
+                        param = {"address": paramValue}
+                    }
+                    else{
+                        paramValue = "lat/long"
+                        param = {"location": paramValue}
+                    }
+                }
+                else if(isMultiFeatures === true && pin10Match === true){
+                    paramValue = attributes["PIN10"]
+                    param = {"pin": paramValue}
+                }
+    
+                //not a search event result
+                //map click result or result card result
+                console.log("New Search", newSearch)
+                if(newSearch === false){
+                    setSearchParams()
+                    console.log("PARAM : ", param)
+                    setSearchParams(param)
+                    
+                    if(searchWidget.current && ![attributes["PIN10"], attributes["PIN14"], `${attributes["street_address"]}, ${attributes["city_state_zip"]}`].includes(searchWidget.current.searchTerm)){
+                        searchWidget.current.searchTerm = paramValue
+                    }
+                    
+                }
             }
-        }
-
-        if(searchWidget.current && newSearch === false && locationSearch){
-            searchWidget.current.searchTerm = isMultiFeatures === true ? attributes['PIN10'] : attributes['PIN14']
-        }
+            
     }
 
 
-    }, [routeParams, newSearch, primaryResultFeature, searchFeatures, searchWidget])
+    }, [primaryResultFeature, searchWidget])
 
 
     useEffect(() => {
@@ -89,33 +133,32 @@ const Search = () => {
 
                 await searchWidget.current.when();
 
+                if(newSearch === true){
+                    if(genericSearch && !locationSearch){
+                        searchWidget.current.search(genericSearch)
+                    }
 
-                if(genericSearch && !locationSearch){
-                    searchWidget.current.search(genericSearch)
-                }
+                    if(pinSearch){
+                       console.log("Performing New Search for pin=", pinSearch)           
+                        searchWidget.current.search(pinSearch)
+                    }
 
-                if(pinSearch){
-                    searchWidget.current.search(pinSearch)
-                }
+                    if(addressSearch){
+                        searchWidget.current.search(addressSearch)
+                    }
 
-                if(addressSearch){
-                    searchWidget.current.search(addressSearch)
-                }
-
-                if(locationSearch && locationSearch !== null){
-
-
-                    console.log("Location search = ", locationSearch)
-                    if(newSearch === true ){              
+                    if(locationSearch){
+                        console.log("Location search = ", locationSearch)             
                         searchWidget.current.search(locationSearch)
                     }
-  
                 }
+
                 
-                searchWidget.current.on("select-result", function(event){
+                
+                searchWidget.current.on("select-result", function(){
                     console.log("The selected search result: ", searchWidget.current.selectedResult)
                     //setSearchResults(searchWidget.current.selectedResult)
-
+                    // setPrimaryResultFeature(null, true)
                     renderSearchResults(searchWidget.current.selectedResult)
 
                     if(!panelPrimaryVisible || panelPrimaryVisible === false){
@@ -124,20 +167,65 @@ const Search = () => {
                     
                     if(searchWidget.current.searchTerm !== locationSearch){
                         setSearchParams({'search': searchWidget.current.searchTerm})
-                    }
-                    
-                    
+                    } 
                 })
 
-                // searchWidget.current.on("suggest-start", function(event){
+                // searchWidget.current.on("suggest-start", async function(){
+                //     await searchWidget.current.when();
                 //     console.log("suggest-start", searchWidget.current.suggestions);
-                //   });
+
+                    
+                //     let suggestions = searchWidget.current.suggestions
+
+                //     console.log(" Suggestions ", suggestions)
+                //     if(suggestions){
+                //     const suggestionsLayerResults = suggestions?.filter(item => {
+                //         console.log("Item: ", item)
+                //             const hasAddressLocator =  item.source.hasOwnProperty("url") &&  item.source.url.includes('AddressLocator')
+                //             console.log("Item hasAddressLocator: ", hasAddressLocator)
+                //             //&& item.source.url.includes('AddressLocator');
+                //              if(!hasAddressLocator && item.results.length > 0){
+                //                 return item
+                //              }
+                //         })
+                //         .map(item => {
+                //             return item.results
+                //         })
+
+                //         console.log("Layer Results: ", suggestionsLayerResults)
+
+                //         const filteredSuggestions = suggestions?.filter(item => {
+                //             if(suggestionsLayerResults.length > 0){
+                //                 const hasAddressLocator =  item.source.hasOwnProperty("url") &&  item.source.url.includes('AddressLocator')
+                //                 // Include the item in the filtered array if both conditions are false
+                //                 return (!hasAddressLocator);
+                //             }
+                //             else{
+                //                 return item
+                //             }
+                //           });
+    
+                //         console.log("filtered Suggestions ", filteredSuggestions)
+                //         searchWidget.current.suggestions = filteredSuggestions
+                //         }
+                //     })
+
+                    
+                  
                 
                 //to do enable clear results to empty searchFeatures array
                 searchWidget.current.on("search-clear", function(event){
                     // The results are stored in the event Object[]
                     console.log("Search input textbox was cleared.");
+
+                    setLocationSearch(null)
+                    setPinSearch(null)
+                    setAddressSearch(null)
+                    setGenericSearch(null)
+
                     clearResults();
+
+                    
                   });
             }
 
@@ -146,7 +234,7 @@ const Search = () => {
         //execute function search function with url param
         createSearch()
 
-    },[searchDiv, mapView, searchSources, newSearch, routeParams])
+    },[searchDiv, mapView, searchSources, newSearch, locationSearch])
 
     return(
         <Box 

@@ -180,15 +180,15 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         let urlFormatted = url
         let paramsValues = params.split(",")
 
-        console.log("url data attributes: ", attributes)
+        //console.log("url data attributes: ", attributes)
 
         if(attributes){
             paramsValues.map((param) => {
-                console.log("Replacing: ", `{${param}}`)
+                //console.log("Replacing: ", `{${param}}`)
                 urlFormatted = urlFormatted.replace(`{${param}}`, attributes[param])
             })
     
-            console.log("url text: ", text, urlFormatted)
+            //console.log("url text: ", text, urlFormatted)
         }
 
 
