@@ -94,7 +94,7 @@ export const config = {
 
                {
 
-                   name: "Address",
+                   name: "Parcel Address",
                    displayField:"street_address",
                    exactMatch:false,
                    maxResults:50,
@@ -1007,7 +1007,7 @@ export const config = {
             maxResults: 50,
             maxSuggestions:50,
             minSuggestCharacters: 2,
-            name: "Address",
+            name: "Address Point",
             outFields:["Street", "City", "Postal"],
             singleLineFieldName:"SingleLine",
             suggestionsEnabled:true,
