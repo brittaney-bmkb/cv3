@@ -44,7 +44,7 @@ export async function createFeatureLayers(map){
                 id:source.index,
                 visible:source.visible,
                 minScale:source.minScale,
-                renderer: source.render,
+                renderer: source.render ?? null,
                 title: source.layerName
               
               }
