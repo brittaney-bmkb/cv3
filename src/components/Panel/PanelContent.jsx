@@ -210,10 +210,10 @@ const PanelContent = ({display}) => {
             // create argument to toggle on and off. 
             return(
                 // <Box bgcolor="white" flex={1} flexDirection="column">
-                <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
-
+                <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0} rowGap={1}>
                     <PanelHeader 
                         text={"Measure"} 
+                        descriptionText={translateText("Start by selecting a measure tool.")}
                         closeButton={screenWidth < theme.breakpoints.values.lg ?  false : true }
                         backButton={screenWidth < theme.breakpoints.values.lg ? true : false}
                     />                    

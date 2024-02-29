@@ -23,7 +23,8 @@ export const initialState = {
     language: config.defaultLanguage,
     translateDialogOpen: false,
     textTranslationDictionary: null,
-    showMapMobile: true
+    showMapMobile: true,
+    measureWidgetContainer: null
 }
 
 const AppReducer = (state, action) => {
@@ -154,6 +155,12 @@ const AppReducer = (state, action) => {
             return {
                 ...state,
                 showMapMobile: payload.showMapMobile,
+            }
+        case "SET_MEASURE_WIDGET_CONTAINER":
+            console.log("SET_MEASURE_WIDGET_CONTAINER")
+            return {
+                ...state,
+                measureWidgetContainer: payload.measureWidgetContainer,
             }
         default:
             throw new Error(`No valid selection made`)

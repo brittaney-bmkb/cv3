@@ -57,7 +57,7 @@ export default function WebMapView(){
     },[secondaryResultFeature])
 
     return (
-        <Box width='100%' height='100%' display="flex" justifyContent="center" position="relative">
+        <Box width='100%' height='100%' display="flex" justifyContent="left" position="relative">
         <div id="MAPCONTAINER" ref={mapDiv} style={{width: '100%', height: '100%', zIndex: 1}} onClick={mapClickEventHandler}></div>
                 <Box 
                 display="flex" 

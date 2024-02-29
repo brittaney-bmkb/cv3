@@ -1,6 +1,6 @@
 import { Box, Stack, Typography } from "@mui/material"
 import UseAppContext from "../../contexts/AppContext"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { theme } from "../../theme"
 
 import StraightenOutlinedIcon from '@mui/icons-material/StraightenOutlined';
@@ -30,63 +30,47 @@ import { view } from "../../arcgis/webmap/webmap";
 // this lifted from comparable property search and will needed to be updated for this widget
 const MeasureWidget = () => {
 
-    const {setMeasureWidgetState, measureWidgetState, mapView, setMeasureContainer, loadMeasureTool} = UseAppContext()
+    const {setMeasureWidgetState, panelDisplaySecondary,  measureWidgetState, measureWidgetContainer, loadMeasureWidget, setActiveMeasureTool, setMeasureWidgetContainer} = UseAppContext()
     //use ref for div 
     const measureDiv = useRef(null)
-    const measureWidget = useRef(null)
-    const [ measureValue, setMeasureValue ] = useState(0)
-    const [activeTool, setActiveTool] = useState('distance')
-
-    // const [clearButton, setClearButton] = useState(null)
+    const measurementWidget = useRef(null)
 
     useEffect(() => {
-        const createMeasureWidget = () => {
+        const createMeasureWidget = async () => {
             if(measureDiv.current){
-                if(!measureWidget.current){
-                    measureWidget.current = new Measurement({
-                        areaUnit: "square-us-feet",
-                        linearUnit: "feet",
+                console.log("Setting measure widget container")
+                // setMeasureWidgetContainer(measureDiv.current)
+                if(!measurementWidget.current){
+                    measurementWidget.current = new Measurement({
                         container: measureDiv.current,
-                        view: view,
-                        activeTool: null
+                        view:view
                     })
-                    setMeasureWidgetState('measuring')
-                    // measureWidget.current.renderNow()
                 }
-            }        
+            }  
         }
         createMeasureWidget();
-
-        view.ui.add(measureWidget.current, 'MEASURECONTAINER');
-
-        return () => {
-            // Cleanup function to destroy the measure widget when unmounting
-            if (!measureWidget.current) {
-                measureWidget.current.destroy();
-                measureWidget.current = null;
-            }
-        };
-
-    // }, [measureWidget, measureDiv])
-    // }, [])
-    }, [measureWidget, measureDiv, activeTool, view]);
+    }, [measureDiv]);
 
 
+    const handleToolChange = async (tool) => {
 
-    const handleToolChange = (tool) => {
-        if (measureWidget.current) {
-            measureWidget.current.activeTool = tool;
-            setActiveTool(tool);
+        console.log("measure widget state: ", measureWidgetState)
+
+        if(!measureWidgetState){
+            console.log("loading measure widget")
+            await loadMeasureWidget();
+            setMeasureWidgetState('measuring')
         }
+
+        setActiveMeasureTool(tool);
+   
     };
 
-
     return (
-        <div id="MEASURECONTAINER" style={{width: '100%', height: '100%'}} >
-
-            <Stack direction="row" gap={2}>
+        <Box id="MEASURECONTAINER" display="flex" width="100%" flexDirection="column" justifyContent="center" alignContent="center">
+            <Stack direction="row" gap={1} sx={{justifyContent:"center"}}>
                 <StyledButtonFilledPrimary
-                    variant={activeTool === 'distance' ? 'contained' : 'outlined'}
+                    //variant={activeTool === 'distance' ? 'contained' : 'outlined'}
                     color="primary"
                     startIcon={<StraightenOutlinedIcon/>}
                     text={'Distance'}
@@ -94,7 +78,7 @@ const MeasureWidget = () => {
                 /> 
 
                 <StyledButtonFilledPrimary
-                    variant={activeTool === 'area' ? 'contained' : 'outlined'}
+                    //variant={activeTool === 'area' ? 'contained' : 'outlined'}
                     color="primary"
                     startIcon={<SquareFootOutlinedIcon/>}
                     text={'Area'}
@@ -104,11 +88,9 @@ const MeasureWidget = () => {
             </Stack>
 
             <Box display="flex" flexDirection="column" alignItems="center" rowGap={1} p={1}> 
-                <Box ref={measureDiv}> </Box>
-
-
+                <Box ref={measureDiv} style={{width:"100%"}}> </Box>
             </Box>
-        </div>
+        </Box>
             )      
 }
 
