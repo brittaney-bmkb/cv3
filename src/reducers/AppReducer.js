@@ -22,7 +22,8 @@ export const initialState = {
     measureWidgetState:null,
     language: config.defaultLanguage,
     translateDialogOpen: false,
-    textTranslationDictionary: null
+    textTranslationDictionary: null,
+    showMapMobile: true
 }
 
 const AppReducer = (state, action) => {
@@ -147,6 +148,12 @@ const AppReducer = (state, action) => {
             return {
                 ...state,
                 textTranslationDictionary: payload.textTranslationDictionary,
+            }
+        case "SET_SHOW_MAP_MOBILE":
+            console.log("SET_SHOW_MAP_MOBILE")
+            return {
+                ...state,
+                showMapMobile: payload.showMapMobile,
             }
         default:
             throw new Error(`No valid selection made`)

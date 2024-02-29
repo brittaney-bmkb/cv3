@@ -260,6 +260,16 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setShowMapMoblie = (show) => {
+        dispatch({
+            type:"SET_SHOW_MAP_MOBILE",
+             payload: {
+                showMapMobile: show,
+            }
+        })
+    }
+
+  
     
     const loadDataDictionary = async () => {
 
@@ -471,7 +481,9 @@ export const AppProvider = ({children}) => {
         translateDialogOpen: state.translateDialogOpen,
         textTranslationDictionary: state.textTranslationDictionary,
         setTranslationDictionary,
-        translateText
+        translateText,
+        showMapMobile: state.showMapMobile,
+        setShowMapMoblie
     }
 
 

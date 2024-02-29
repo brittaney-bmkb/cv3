@@ -11,6 +11,7 @@ import { theme } from "../../theme"
 import CompareNearby from "../ComparableProperty/CompareNearby"
 import PropertyDetail from "../PropertyDetail/PropertyDetail"
 import PropertyPagniation from "../PropertyDetail/PropertyPagnition";
+import WebMapView from "../WebMapView/WebMapView";
 
 const PanelContent = ({display}) => {
 

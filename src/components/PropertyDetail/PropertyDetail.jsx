@@ -71,7 +71,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
 
     useEffect(() => {
         const propertiesToAdd = [property1, property2].filter((prop) => {if(prop){ return prop}})
-                                                      .map((prop) => prop)
+                                                      .map((prop) => Array.isArray(prop) ? prop[0] : prop )
         
         if (propertiesToAdd.length > 0) {
           setProperties(propertiesToAdd);
@@ -232,6 +232,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                 
                 <Box display="flex" flexDirection="row" columnGap={3} justifyContent={category=="top"? "center" : textAlignment}>
                     {properties.map((property, propIndex) => {
+                        console.log("property details for: ", property)
                         let color = property === property1 ? propertyColor1 : propertyColor2
                         panelContentTitleMain["color"] = color
                         panelContentTitleMain["borderColor"] = color
@@ -280,14 +281,17 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                                 color:property===property1 ? propertyColor1 : propertyColor2
                             }}
                             >
+                                {property ? 
                                 <Typography 
-                                    align={textAlignment}
-                                    variant="h5" 
-                                    sx={{color: category === "top" && subIndex==0 && property===property1 ? propertyColor1 : category === "top" && subIndex==0 && property===property2 ? propertyColor2: theme.main.text.dark }}>
-                                        {property?.attributes[data.attributes['field']] ? 
-                                        `${prefix(data.attributes['type'])}${addCommaSeparator(property?.attributes[data.attributes['field']], data.attributes['type'])}` :
-                                        translateText("Data unavailable")}
-                                </Typography>
+                                align={textAlignment}
+                                variant="h5" 
+                                sx={{color: category === "top" && subIndex==0 && property===property1 ? propertyColor1 : category === "top" && subIndex==0 && property===property2 ? propertyColor2: theme.main.text.dark }}>
+                                    {property?.attributes[data.attributes['field']] ? 
+                                    `${prefix(data.attributes['type'])}${addCommaSeparator(property?.attributes[data.attributes['field']], data.attributes['type'])}` :
+                                    translateText("Data unavailable")}
+                                </Typography> :null
+                                }
+                                
                                 
                             </Box>
                             
