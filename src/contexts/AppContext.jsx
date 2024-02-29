@@ -406,16 +406,21 @@ export const AppProvider = ({children}) => {
 
         const {language, textTranslationDictionary} = state
 
-        console.log("TRANSLATING TEXT: ", text, language)
-        let translatedText = text
-        let translation = Object.values(textTranslationDictionary).filter(textReplace => 
-            textReplace[config.defaultLanguage] === text)
-            .map((textReplace)=> {
-                return textReplace[language]
-            })
+        if(text && textTranslationDictionary){
+            console.log("TRANSLATING TEXT: ", text, language)
+            let translation = Object.values(textTranslationDictionary).filter(textReplace => 
+                textReplace[config.defaultLanguage] === text)
+                .map((textReplace)=> {
+                    return textReplace[language]
+                })
+    
+            console.log("TRANSLATED TEXT: ", translation)
+            return translation && translation.length > 0 ? translation[0] : text
+        }
+        else{
+            return text
+        }
 
-        console.log("TRANSLATED TEXT: ", translation)
-        return translation && translation.length > 0 ? translation[0] : text
 
     }
 

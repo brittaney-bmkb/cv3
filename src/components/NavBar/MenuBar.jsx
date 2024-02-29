@@ -9,9 +9,11 @@ const MenuBar = ({open, setOpen}) => {
 
     const {setTranslateDialogOpen} = UseAppContext()
     
-    const handleDrawerToggle = () => {
-        setOpen((prevState) => !prevState)
+    const handleDrawerToggle = (open) => {
+        setOpen(open)
     }
+
+
 
     const handleTranslateButton = () => {
         setTranslateDialogOpen(true)
@@ -21,9 +23,9 @@ const MenuBar = ({open, setOpen}) => {
         <Box onClick={handleDrawerToggle}  pt={2} display="flex" flexDirection="column" rowGap={2}>
             <List>
             {
-                config.pages.map((page) => {
+                config.pages.map((page, index) => {
                     return (
-                        <MenuItem sx={{ textAlign: "center" }}>
+                        <MenuItem key={`${page}-${index}`} sx={{ textAlign: "center" }}>
                             <Typography variant="h5" align="center">{page}</Typography>
                         </MenuItem>
                     
@@ -50,10 +52,11 @@ const MenuBar = ({open, setOpen}) => {
     return(
         <Box>
             <SwipeableDrawer
+            onOpen={() => {handleDrawerToggle(true)}}
             anchor="right"
             variant="temporary"
             open={open}
-            onClose={handleDrawerToggle}
+            onClose={() => {handleDrawerToggle(false)}}
             ModalProps={{
                 keepMounted: true
             }}

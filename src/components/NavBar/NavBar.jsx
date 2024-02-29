@@ -19,9 +19,8 @@ const StyledToolbar = styled(Toolbar)({
 const NavBar = () => {
 
 
-    const {setTranslateDialogOpen, translateDialogOpen} = UseAppContext()
+    const {setTranslateDialogOpen, translateText} = UseAppContext()
     const [open, setOpen] = useState(false);
-    const [openDialog, setOpenDialog] = useState(false);
 
     const handleClick = () => {
         setOpen(!open)
@@ -63,7 +62,7 @@ const NavBar = () => {
                                     return(
                                         <Link key={page}>
                                             <Typography variant="body1" color="white">
-                                                {page}
+                                                {translateText(page)}
                                             </Typography>
                                         </Link>
                                     )
@@ -89,11 +88,11 @@ const NavBar = () => {
                         
                         <Stack direction="row" gap={2} display={{xs:'none', sm:'none', md:'none', lg:'flex' }}> 
                             <StyledButtonFilledSecondary 
-                            text={"Feedback"} 
+                            text={translateText("Feedback")} 
                             startIcon={<CalciteIcon icon="mega-phone"/> }/>
                             <StyledButtonFilledSecondary 
                             onClick={handleTranslateButton}
-                            text={"Translate"} 
+                            text={translateText("Translate")} 
                             startIcon={<CalciteIcon icon="language-translate"/>}/>
                         </Stack>
                         

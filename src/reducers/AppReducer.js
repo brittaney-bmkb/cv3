@@ -21,7 +21,7 @@ export const initialState = {
     comparableParcels: null,
     measureWidgetState:null,
     language: config.defaultLanguage,
-    translateDialogOpen: null,
+    translateDialogOpen: false,
     textTranslationDictionary: null
 }
 
