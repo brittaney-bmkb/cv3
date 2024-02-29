@@ -32,14 +32,14 @@ export default function WebMapView(){
 
             }
 
-            if(view){
-                if(!view.ui.find("mapButtonGroup")){
-                    setMapButtonsExist(true)
-                    view.ui.add("mapButtonGroup", "manual")
-                }
+            // if(view){
+            //     if(!view.ui.find("mapButtonGroup")){
+            //         setMapButtonsExist(true)
+            //         view.ui.add("mapButtonGroup", "manual")
+            //     }
                 
-                view.ui.add("toggleButton", "manual")
-            }
+            //     view.ui.add("toggleButton", "manual")
+            // }
         }
 
         createMap();
@@ -70,16 +70,15 @@ export default function WebMapView(){
     },[secondaryResultFeature])
 
     return (
-        <Box width='100%' height='100%'>
+        <Box width='100%' height='100%' display="flex" justifyContent="center" position="relative">
         <div id="MAPCONTAINER" ref={mapDiv} style={{width: '100%', height: '100%'}} onClick={mapClickEventHandler}></div>
-        
                 <Box 
                 display="flex" 
                 id="mapButtonGroup"  ref={mapButtonGroupRef}
                 justifyContent={screenWidth < theme.breakpoints.values.md ? "center" : "left"}
                 p={2}
-                alignContent="center"
                 position="absolute"
+                top={1}
                 // ref={mapButtonGroupRef}
                 >
 
@@ -88,11 +87,11 @@ export default function WebMapView(){
                     </Box>
                    
         <Box 
-        display={{xs:"block", sm: "none"}}
+        display={{xs:"flex", sm: "none"}}
         id="toggleButton" 
         ref={toggleButton} 
-        bottom={20}
-        position="absolute" 
+        position="absolute"
+        bottom={1}
         left="45%">
             <ToggleIconButton 
             text={translateText("Data")}
