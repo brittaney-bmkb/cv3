@@ -56,7 +56,7 @@ function App() {
                 <MapButtonGroup/>
               </Box> */}
 
-              { mapVisible | screenWidth >= 600  ? <WebMapView/> : <PanelMobile/>}
+              { screenWidth >= 600  ? <WebMapView/> : <PanelMobile/>}
   
             <BottomPanel/>
           </Box>

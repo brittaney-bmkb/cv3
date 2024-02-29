@@ -1,5 +1,5 @@
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import UseAppContext from "../../contexts/AppContext";
 import { view } from "../../arcgis/webmap/webmap";
 import StyledButtonFilledPrimary, { ToggleIconButton } from "../Button/Button";
@@ -11,10 +11,16 @@ import { theme } from "../../theme";
 
 export default function WebMapView(){
 
-    const { loadMap, setMapContainer, mapContainer, mapClickEventHandler, addSecondaryFeatureToMap, secondaryResultFeature, translateText, screenWidth} = UseAppContext()
+    const { panelDisplaySecondary, setShowMapMoblie, loadMap, setMapContainer, mapContainer, mapClickEventHandler, addSecondaryFeatureToMap, secondaryResultFeature, translateText, screenWidth} = UseAppContext()
     const mapDiv = useRef(null)
     const mapButtonGroupRef = useRef(null);
     const toggleButton = useRef(null);
+    const [mapButtonsExist, setMapButtonsExist] = useState(false)
+
+    const handleClick = () => {
+        console.log("Setting secondary panel display")
+        setShowMapMoblie( false)
+    }
 
     useEffect(() => {
         const createMap = async () => {
@@ -23,7 +29,15 @@ export default function WebMapView(){
             }
             if(mapContainer){
                 await loadMap()
-                view.ui.add("mapButtonGroup", "manual")
+
+            }
+
+            if(view){
+                if(!view.ui.find("mapButtonGroup")){
+                    setMapButtonsExist(true)
+                    view.ui.add("mapButtonGroup", "manual")
+                }
+                
                 view.ui.add("toggleButton", "manual")
             }
         }
@@ -32,18 +46,19 @@ export default function WebMapView(){
 
     }, [mapContainer])
 
-    useEffect(() => {
-        const updateButtonStyle = async () => {
-            if(mapButtonGroupRef.current){
-                //remove esri widget style
-                mapButtonGroupRef.current.style.boxShadow = "none"
-                mapButtonGroupRef.current.style.position = "relative"
-            }
-        }
+    // useEffect(() => {
+    //     const updateButtonStyle = async () => {
+    //         if(mapButtonGroupRef.current && view.ui.find("mapButtonGroup")){
+    //             //remove esri widget style
+                
+    //             mapButtonGroupRef.current.style.boxShadow = "none"
+    //             mapButtonGroupRef.current.style.position = "relative"
+    //         }
+    //     }
 
-        updateButtonStyle();
+    //     updateButtonStyle();
 
-    }, [mapButtonGroupRef])
+    // }, [mapButtonGroupRef])
 
     useEffect(() => {
         const updateMap = async () => {
@@ -57,23 +72,32 @@ export default function WebMapView(){
     return (
         <Box width='100%' height='100%'>
         <div id="MAPCONTAINER" ref={mapDiv} style={{width: '100%', height: '100%'}} onClick={mapClickEventHandler}></div>
-        <Box 
-        display="flex" 
-        id="mapButtonGroup" 
-        justifyContent={screenWidth < theme.breakpoints.values.md ? "center" : "left"}
-        p={2}
-        alignContent="center"
-        ref={mapButtonGroupRef}>
-            <MapButtonGroup/></Box>
+        
+                <Box 
+                display="flex" 
+                id="mapButtonGroup"  ref={mapButtonGroupRef}
+                justifyContent={screenWidth < theme.breakpoints.values.md ? "center" : "left"}
+                p={2}
+                alignContent="center"
+                position="absolute"
+                // ref={mapButtonGroupRef}
+                >
+
+                    <MapButtonGroup/>
+                    
+                    </Box>
+                   
         <Box 
         display={{xs:"block", sm: "none"}}
         id="toggleButton" 
         ref={toggleButton} 
-        bottom={20} 
+        bottom={20}
+        position="absolute" 
         left="45%">
             <ToggleIconButton 
             text={translateText("Data")}
             icon={<TableRowsOutlinedIcon/>}
+            onClick={handleClick}
             /></Box>
         </Box>
 

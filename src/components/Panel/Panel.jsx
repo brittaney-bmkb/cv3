@@ -12,13 +12,19 @@ import { height } from "@mui/system";
 import { theme } from "../../theme";
 import PanelContent from "./PanelContent";
 import { useEffect, useState } from "react";
+import WebMapView from "../WebMapView/WebMapView";
+import { ToggleIconButton } from "../Button/Button";
+import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 
 
 const PanelMobile = () => {  
 
-    const { panelDisplay, translateText } = UseAppContext()
+    const { panelDisplay, translateText, showMapMobile, setShowMapMoblie } = UseAppContext()
 
-    console.log("Panel display: ", panelDisplay)
+    const handleClick = () => {
+        setShowMapMoblie(true)
+    }
+
     return(
         <Box 
             height={200}
@@ -29,7 +35,16 @@ const PanelMobile = () => {
             flex={1}
             flexGrow={1}  
             flexDirection="column">
-                <PanelContent display={panelDisplay}/>
+                {showMapMobile === true ? <WebMapView/> : 
+                <PanelContent display={panelDisplay}/>}
+                <Box display={showMapMobile === false ? "flex" : "none"} justifyContent="center">
+                    <ToggleIconButton
+                    text={translateText("Map")}
+                    icon={<MapOutlinedIcon/>}
+                    onClick={handleClick}
+                    />
+                </Box>
+                
         </Box>
     )
 }
