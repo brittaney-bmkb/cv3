@@ -46,19 +46,6 @@ export default function WebMapView(){
 
     }, [mapContainer])
 
-    // useEffect(() => {
-    //     const updateButtonStyle = async () => {
-    //         if(mapButtonGroupRef.current && view.ui.find("mapButtonGroup")){
-    //             //remove esri widget style
-                
-    //             mapButtonGroupRef.current.style.boxShadow = "none"
-    //             mapButtonGroupRef.current.style.position = "relative"
-    //         }
-    //     }
-
-    //     updateButtonStyle();
-
-    // }, [mapButtonGroupRef])
 
     useEffect(() => {
         const updateMap = async () => {
@@ -71,14 +58,16 @@ export default function WebMapView(){
 
     return (
         <Box width='100%' height='100%' display="flex" justifyContent="center" position="relative">
-        <div id="MAPCONTAINER" ref={mapDiv} style={{width: '100%', height: '100%'}} onClick={mapClickEventHandler}></div>
+        <div id="MAPCONTAINER" ref={mapDiv} style={{width: '100%', height: '100%', zIndex: 1}} onClick={mapClickEventHandler}></div>
                 <Box 
                 display="flex" 
                 id="mapButtonGroup"  ref={mapButtonGroupRef}
                 justifyContent={screenWidth < theme.breakpoints.values.md ? "center" : "left"}
                 p={2}
                 position="absolute"
+                zIndex={2}
                 top={1}
+                height="auto"
                 // ref={mapButtonGroupRef}
                 >
 
