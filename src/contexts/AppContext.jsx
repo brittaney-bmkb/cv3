@@ -233,6 +233,43 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setLanguage = (language) => {
+        dispatch({
+            type:"SET_LANGUAGE",
+             payload: {
+                language: language,
+            }
+        })
+    }
+
+    const setTranslateDialogOpen = (open) => {
+        dispatch({
+            type:"SET_TRANSLATE_DIALOG_OPEN",
+             payload: {
+                translateDialogOpen: open,
+            }
+        })
+    }
+
+    const setTranslationDictionary = (dictionary) => {
+        dispatch({
+            type:"SET_TRANSLATE_DICTIONARY",
+             payload: {
+                textTranslationDictionary: dictionary,
+            }
+        })
+    }
+
+    const setShowMapMoblie = (show) => {
+        dispatch({
+            type:"SET_SHOW_MAP_MOBILE",
+             payload: {
+                showMapMobile: show,
+            }
+        })
+    }
+
+  
     
     const loadDataDictionary = async () => {
 
@@ -375,6 +412,28 @@ export const AppProvider = ({children}) => {
         setComparableParcels(nearbyParcels)
     }
 
+    const translateText = (text) => {
+
+        const {language, textTranslationDictionary} = state
+
+        if(text && textTranslationDictionary){
+            console.log("TRANSLATING TEXT: ", text, language)
+            let translation = Object.values(textTranslationDictionary).filter(textReplace => 
+                textReplace[config.defaultLanguage] === text)
+                .map((textReplace)=> {
+                    return textReplace[language]
+                })
+    
+            console.log("TRANSLATED TEXT: ", translation)
+            return translation && translation.length > 0 ? translation[0] : text
+        }
+        else{
+            return text
+        }
+
+
+    }
+
 
     const value = {
         mapContainer: state.mapContainer,
@@ -415,7 +474,16 @@ export const AppProvider = ({children}) => {
         addSecondaryFeatureToMap,
         setMeasureWidgetState,
         measureWidgetState: state.measureWidgetState,
-        toggleMapLayer
+        toggleMapLayer,
+        setLanguage,
+        language: state.language,
+        setTranslateDialogOpen,
+        translateDialogOpen: state.translateDialogOpen,
+        textTranslationDictionary: state.textTranslationDictionary,
+        setTranslationDictionary,
+        translateText,
+        showMapMobile: state.showMapMobile,
+        setShowMapMoblie
     }
 
 
@@ -436,6 +504,23 @@ export const AppProvider = ({children}) => {
           window.removeEventListener('resize', handleResize);
         };
       }, [window.innerWidth]);
+
+
+      useEffect(() => {
+        const initializeTranslationText = async () => {
+            
+            const { returnTranslatedText } = await import ('../translation/handleTranslation')
+            const { readFeatureLayerData } = await import('../arcgis/layers/layers')
+
+
+            let { features } = await readFeatureLayerData(config.translation_text, ["*"], "english IS NOT NULL", false)
+            let text = await returnTranslatedText(features)
+            setTranslationDictionary(text)
+        }
+    
+         initializeTranslationText();
+
+      }, []);
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 

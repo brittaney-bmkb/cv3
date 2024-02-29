@@ -30,10 +30,9 @@ export const map = new Map({
 export const view = new MapView({
 map: map,
 center: [-87.8298, 41.8781],
-zoom: 8
+zoom: 8,
 })
 
-view.ui.move([ "zoom" ], "top-right");
 
   //create home widget
   let homeWidget = new Home({
@@ -53,13 +52,14 @@ view.ui.move([ "zoom" ], "top-right");
   view: view
   });
 
-
+  view.ui.move( "zoom", "manual")
+  view.ui.add([homeWidget, locateWidget ], "manual");
 
 // adds the home widget to the top left corner of the MapView
 // https://github.com/alexlafroscia/ember-cli-stencil/issues/14 
-view.ui.add(homeWidget, "top-right");
+// view.ui.add(homeWidget, "top-right");
 // adds the locate widget to the top left corner of the MapView
-view.ui.add(locateWidget, "top-right");
+// view.ui.add(locateWidget, "top-right");
 // Add widget to the bottom left corner of the view
 view.ui.add(scaleBar, {
 position: "bottom-left"

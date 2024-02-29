@@ -7,7 +7,7 @@ import { theme } from "../../theme"
 
 const CompareNearby = () => {
 
-    const { searchNearbyProperties, screenWidth, setPanelPrimaryVisibility, setPanelDisplay, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
+    const { searchNearbyProperties, screenWidth, setPanelPrimaryVisibility, setPanelDisplay, setPanelSecondaryVisibility, setPanelDisplaySecondary, translateText } = UseAppContext()
 
     const [ searchRadius, setSearchRadius ] = useState(0)
 
@@ -33,7 +33,7 @@ const CompareNearby = () => {
     return(
         <Box display="flex" flexDirection="column" p={2} rowGap={1} component="form"  flexGrow={1} minHeight={0}>
             <Typography variant="body1">
-                 Select surrounding parcels within: 
+                 {translateText("Select surrounding parcels within")}: 
             </Typography>
             <Box display="flex" columnGap={2} alignItems="center" justifyContent="end">
             <CustomStyledTextField
@@ -48,15 +48,15 @@ const CompareNearby = () => {
             onInput={handleInput}
             />
             <Typography variant="body1">
-                 miles 
+                 {translateText("miles")} 
             </Typography>
             </Box>
 
             <Box display="flex" width="100%" justifyContent="end" alignItems="center" columnGap={2}>
                 <Button variant="text" sx={{textTransform:"none"}}>
-                    <Typography variant="body1">Cancel</Typography>
+                    <Typography variant="body1">{translateText("Cancel")}</Typography>
                 </Button>
-                <StyledButtonFilledPrimary text={"Search"} onClick={handleSearchRadius} textVarient={"body1"}/>
+                <StyledButtonFilledPrimary text={translateText("Search")} onClick={handleSearchRadius} textVarient={"body1"}/>
             </Box>
             
             

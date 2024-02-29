@@ -34,7 +34,7 @@ function addCommaSeparator(value, type) {
 
 const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) => {
 
-    const {screenWidth, dataDictionary, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
+    const {screenWidth, dataDictionary, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, translateText } = UseAppContext()
 
 
     const [ categories, setCategories ] = useState(null)
@@ -71,7 +71,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
 
     useEffect(() => {
         const propertiesToAdd = [property1, property2].filter((prop) => {if(prop){ return prop}})
-                                                      .map((prop) => prop)
+                                                      .map((prop) => Array.isArray(prop) ? prop[0] : prop )
         
         if (propertiesToAdd.length > 0) {
           setProperties(propertiesToAdd);
@@ -87,18 +87,19 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         
               // Use Promise.all to wait for all asynchronous operations to complete
               await Promise.all(properties.map(async (property) => {
-                const muniValue = await returnMunicipality(property);
+                const muniValueReturned = await returnMunicipality(property);
+                const muniValue = muniValueReturned ? `${translateText('Incorporated')} ${muniValueReturned}` : `${translateText('Unincorporated')} ${property.attributes['township_name']}`
                 const key = property.attributes["PIN14"];
         
                 // Set the muniObj with fetched data
                 muniObj[key] = muniValue;
 
-             if(muniValue.includes('Incorporated')){
+             if(muniValueReturned){
 
-                     zoningMessage[key] =`Please contact municipality`
+                     zoningMessage[key] = translateText(`Please contact municipality`)
              }
              else{
-                zoningMessage[key] =`Cook County Zone Lookup`
+                zoningMessage[key] = translateText(`Cook County Zone Lookup`)
 
              }
             }));
@@ -144,7 +145,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         >
         <StyledButtonFilledPrimary 
         key={key}
-        text={"Compare Properties"}
+        text={translateText("Comparable Properties")}
         onClick={() => {handleClick("comparablePropertySearch")}}
         variant={"h5"}
         />
@@ -156,7 +157,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         <Box pt={1}>
         <StyledButtonFilledPrimary 
         key={key}
-        text={"Nearby Parcels"}
+        text={translateText("Nearby Parcels")}
         onClick={() => {handleClick("nearbyProperties")}}
         variant={"h5"}
         />
@@ -204,7 +205,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
             to={urlFormatted} 
             target="_blank"
             fontFamily={"barlow"} 
-            color={theme.palette.primary.light}>{text}</Typography>
+            color={theme.palette.primary.light}>{translateText(text)}</Typography>
         {/* </Link> */}
         </Box>
     )}
@@ -225,12 +226,13 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                 pb={category !== "top" ? 1 :0}
                 >
                     <Typography variant="h6">
-                        {data.attributes['label']}
+                        {translateText(data.attributes['label'])}
                     </Typography>
                 </Box>
                 
                 <Box display="flex" flexDirection="row" columnGap={3} justifyContent={category=="top"? "center" : textAlignment}>
                     {properties.map((property, propIndex) => {
+                        console.log("property details for: ", property)
                         let color = property === property1 ? propertyColor1 : propertyColor2
                         panelContentTitleMain["color"] = color
                         panelContentTitleMain["borderColor"] = color
@@ -279,14 +281,17 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                                 color:property===property1 ? propertyColor1 : propertyColor2
                             }}
                             >
+                                {property ? 
                                 <Typography 
-                                    align={textAlignment}
-                                    variant="h5" 
-                                    sx={{color: category === "top" && subIndex==0 && property===property1 ? propertyColor1 : category === "top" && subIndex==0 && property===property2 ? propertyColor2: theme.main.text.dark }}>
-                                        {property?.attributes[data.attributes['field']] ? 
-                                        `${prefix(data.attributes['type'])}${addCommaSeparator(property?.attributes[data.attributes['field']], data.attributes['type'])}` :
-                                        "Data unavailable"}
-                                </Typography>
+                                align={textAlignment}
+                                variant="h5" 
+                                sx={{color: category === "top" && subIndex==0 && property===property1 ? propertyColor1 : category === "top" && subIndex==0 && property===property2 ? propertyColor2: theme.main.text.dark }}>
+                                    {property?.attributes[data.attributes['field']] ? 
+                                    `${prefix(data.attributes['type'])}${addCommaSeparator(property?.attributes[data.attributes['field']], data.attributes['type'])}` :
+                                    translateText("Data unavailable")}
+                                </Typography> :null
+                                }
+                                
                                 
                             </Box>
                             
@@ -319,7 +324,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
 
         return(
             <Box key={category} display="flex" flexDirection="column" width="100%" pt={category !== "top" ? 1: 0} rowGap={category !== "top" ? 1: 0}>
-                {category !== "top"? <Typography variant="h2">{category}</Typography> :
+                {category !== "top"? <Typography variant="h2">{translateText(category)}</Typography> :
                 null}
                 <Box 
                 id={"property-detail-data-container"} 

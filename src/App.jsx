@@ -12,6 +12,7 @@ import { ToggleIconButton } from './components/Button/Button'
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import PanelMobile from './components/Panel/Panel'
 import Notifications from './components/Notifications/Notifications'
+import TranslateMenu from './components/NavBar/TranslateMenu'
 
 function App() {
 
@@ -48,26 +49,28 @@ function App() {
         <Stack id="main-stack" direction="row" justifyContent="space-between" flexGrow={1} minHeight={0}>
           <LeftPanel/>
           <Box flexDirection="column" flex={4} padding={0} display="flex" alignItems="center">
-              <Box flexDirection="column" alignItems="left" width="100%" display={{xs:'none', sm:'flex', md:'flex'}}>
+              {/* <Box flexDirection="column" alignItems="left" width="100%" display={{xs:'none', sm:'flex', md:'flex'}}>
                 <MapButtonGroup/>
               </Box>
               <Box flexDirection="column" alignItems="center" width="100%" display={{xs: mapVisible ? 'flex' : 'none', sm:'none', md:'none'}}>
                 <MapButtonGroup/>
-              </Box>
+              </Box> */}
 
-              { mapVisible | screenWidth >= 600  ? <WebMapView/> : <PanelMobile/>}
+              { screenWidth >= 600  ? <WebMapView/> : <PanelMobile/>}
   
             <BottomPanel/>
           </Box>
           <SecondaryPanel/>
         </Stack>
-        <Box width="auto" height="auto" position="absolute" bottom={20} left="45%" display={{xs:"block", sm: "none"}}>
+        {/* <Box width="auto" height="auto" position="absolute" bottom={20} left="45%" display={{xs:"block", sm: "none"}}>
           <ToggleIconButton 
             text={ mapVisible ? "Data" : "Map" } 
             icon={ mapVisible ? <TableRowsOutlinedIcon/> : <MapOutlinedIcon/> } 
             onClick={handleClick}
           />
-        </Box>
+        </Box> */}
+
+        <TranslateMenu/>
       </Box>
     </AppProvider>
   )

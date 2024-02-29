@@ -1,18 +1,36 @@
-import { AppBar, styled, Box, Toolbar, Typography, Avatar, Stack, IconButton, Button, Link } from "@mui/material"
+import { AppBar, styled, Box, Toolbar, Typography, Avatar, Stack, IconButton, Button, Link, Menu, MenuItem, MenuList, Paper } from "@mui/material"
 import MenuIcon from '@mui/icons-material/Menu';
 import Search from "../Search/Search"
 import BlueButton, { StyledButtonFilledSecondary } from "../Button/Button"
 import { config } from "../../data/config";
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import { CalciteIcon } from "@esri/calcite-components-react";
+import { useRef, useState } from "react";
+import MenuBar from "./MenuBar";
+import UseAppContext from "../../contexts/AppContext";
+import TranslateMenu from "./TranslateMenu";
 
 const StyledToolbar = styled(Toolbar)({
     display: "flex",
     justifyContent: "space-between",
-    paddingTop: 10
+    paddingTop: 2
 })
 
 const NavBar = () => {
+
+
+    const {setTranslateDialogOpen, translateText} = UseAppContext()
+    const [open, setOpen] = useState(false);
+
+    const handleClick = () => {
+        setOpen(!open)
+    }
+
+    const handleTranslateButton = () => {
+        console.log("OPENING TRANSLATE BUTTON")
+        setTranslateDialogOpen(true)
+    }
+    
     return(
             <AppBar position="sticky">
                 <StyledToolbar>
@@ -44,7 +62,7 @@ const NavBar = () => {
                                     return(
                                         <Link key={page}>
                                             <Typography variant="body1" color="white">
-                                                {page}
+                                                {translateText(page)}
                                             </Typography>
                                         </Link>
                                     )
@@ -56,8 +74,12 @@ const NavBar = () => {
                                 edge="start"
                                 color="inherit"
                                 aria-label="menu"
+                                onClick={handleClick}
                             >
-                                <MenuIcon fontSize="large"/>
+                                <MenuIcon 
+                                fontSize="large"
+                                />
+                                <MenuBar open={open} setOpen={setOpen}/>
                             </IconButton>
                             </Box>
                             
@@ -65,12 +87,18 @@ const NavBar = () => {
                         </Stack>
                         
                         <Stack direction="row" gap={2} display={{xs:'none', sm:'none', md:'none', lg:'flex' }}> 
-                            <StyledButtonFilledSecondary text={"Feedback"} startIcon={<CalciteIcon icon="mega-phone"/> }/>
-                            <StyledButtonFilledSecondary text={"Translate"} startIcon={<CalciteIcon icon="language-translate"/>}/>
+                            <StyledButtonFilledSecondary 
+                            text={translateText("Feedback")} 
+                            startIcon={<CalciteIcon icon="mega-phone"/> }/>
+                            <StyledButtonFilledSecondary 
+                            onClick={handleTranslateButton}
+                            text={translateText("Translate")} 
+                            startIcon={<CalciteIcon icon="language-translate"/>}/>
                         </Stack>
                         
                     </Stack>
                 </StyledToolbar>
+
             </AppBar>
     )
 }
