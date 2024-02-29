@@ -10,7 +10,7 @@ import { config } from "../../data/config";
 
 const Search = () => {
 
-    const {setPrimaryResultFeature,  newSearch, setPanelPrimaryVisibility, renderSearchResults, mapView, searchSources, clearResults, panelPrimaryVisible, primaryResultFeature, searchFeatures } = UseAppContext()
+    const {language, translateText,  newSearch, setPanelPrimaryVisibility, renderSearchResults, mapView, searchSources, clearResults, panelPrimaryVisible, primaryResultFeature, searchFeatures } = UseAppContext()
 
     //get url parameters
     const [routeParams, setSearchParams] = useSearchParams();
@@ -114,6 +114,15 @@ const Search = () => {
 
 
     useEffect(() => {
+
+        if(searchWidget.current){
+            searchWidget.current.allPlaceholder = translateText('Search by address, pin, or intersection')
+        }
+
+    },[searchWidget, language])
+
+
+    useEffect(() => {
         const createSearch = async () => {
 
             if(searchDiv.current && searchSources){
@@ -121,13 +130,13 @@ const Search = () => {
                 if(!searchWidget.current){
 
                     searchWidget.current = new widgetsSearch({
-
                         includeDefaultSources: false,
                         view: mapView,
                         container: searchDiv.current,
                         sources: searchSources,
                         resultGraphicEnabled:false,
-                        autoSelect: true
+                        autoSelect: true,
+                        allPlaceholder: translateText('Search by address, pin, or intersection')
                     })
                 }
 

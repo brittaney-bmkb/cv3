@@ -12,7 +12,7 @@ import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 
 const MapButtonGroup = () => {
 
-    const { setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
+    const { translateText, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
     
     
     const handleClick = (display) =>{
@@ -21,12 +21,11 @@ const MapButtonGroup = () => {
     }
 
     return(
-        <Stack direction="row" position="absolute" spacing={1} padding={2} zIndex={100}>
-
-            <StyledButtonFilledPrimary text={"Measure"}  startIcon={<StraightenIcon/>} onClick={ () => {handleClick('measureWidget')}}  textVarient="h5" />
-            <StyledButtonFilledPrimary text={"Layers"}   startIcon={<LayersOutlinedIcon/>} onClick={ () => {handleClick('layersWidget')} }  textVarient="h5" />
-            <StyledButtonFilledPrimary text={"Basemaps"} startIcon={<GridViewIcon/>}  onClick={ () => {handleClick('basemapsWidget')} }  textVarient="h5" />
-            <StyledButtonFilledPrimary text={"Print"}    startIcon={<LocalPrintshopIcon/>} onClick={ () => {handleClick('printWidget')} }  textVarient="h5" />            
+        <Stack direction="row" position="absolute" spacing={1} padding={1} zIndex={100}>
+            <StyledButtonFilledPrimary text={translateText("Measure")}  startIcon={<StraightenIcon/>} onClick={ () => {handleClick('measureWidget')}}  textVarient="h5" />
+            <StyledButtonFilledPrimary text={translateText("Layers")}   startIcon={<LayersOutlinedIcon/>} onClick={ () => {handleClick('layersWidget')} }  textVarient="h5" />
+            <StyledButtonFilledPrimary text={translateText("Basemaps")} startIcon={<GridViewIcon/>}  onClick={ () => {handleClick('basemapsWidget')} }  textVarient="h5" />
+            <StyledButtonFilledPrimary text={translateText("Print")}    startIcon={<LocalPrintshopIcon/>} onClick={ () => {handleClick('printWidget')} }  textVarient="h5" />            
         </Stack>
     )
 }

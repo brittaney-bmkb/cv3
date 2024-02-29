@@ -1,3 +1,5 @@
+import { config } from "../data/config"
+
 export const initialState = {
 
     //MAP
@@ -17,7 +19,10 @@ export const initialState = {
     screenWidth: null,
     newSearch:null,
     comparableParcels: null,
-    measureWidgetState:null
+    measureWidgetState:null,
+    language: config.defaultLanguage,
+    translateDialogOpen: false,
+    textTranslationDictionary: null
 }
 
 const AppReducer = (state, action) => {
@@ -123,6 +128,25 @@ const AppReducer = (state, action) => {
             return {
                 ...state,
                 measureWidgetState: payload.measureWidgetState,
+            }
+
+        case "SET_LANGUAGE":
+            console.log("SET_LANGUAGE")
+            return {
+                ...state,
+                language: payload.language,
+            }
+        case "SET_TRANSLATE_DIALOG_OPEN":
+            console.log("SET_TRANSLATE_DIALOG_OPEN")
+            return {
+                ...state,
+                translateDialogOpen: payload.translateDialogOpen,
+            }
+        case "SET_TRANSLATE_DICTIONARY":
+            console.log("SET_TRANSLATE_DICTIONARY")
+            return {
+                ...state,
+                textTranslationDictionary: payload.textTranslationDictionary,
             }
         default:
             throw new Error(`No valid selection made`)

@@ -12,6 +12,7 @@ import { ToggleIconButton } from './components/Button/Button'
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import PanelMobile from './components/Panel/Panel'
 import Notifications from './components/Notifications/Notifications'
+import TranslateMenu from './components/NavBar/TranslateMenu'
 
 function App() {
 
@@ -68,6 +69,8 @@ function App() {
             onClick={handleClick}
           />
         </Box>
+
+        <TranslateMenu/>
       </Box>
     </AppProvider>
   )

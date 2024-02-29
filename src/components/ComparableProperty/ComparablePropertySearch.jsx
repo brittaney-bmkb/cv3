@@ -46,26 +46,26 @@ const radiusTypes = {
 
 const ComparablePropertySearch= () => {
 
-    const { searchComparableProperties, primaryResultFeature } = UseAppContext()
+    const { searchComparableProperties, primaryResultFeature, translateText } = UseAppContext()
 
-    const [ buildingSqFtMin, setBuildingSqFtMin ] = useState(null)
-    const [ buildingSqFtMax, setBuildingSqFtMax ] = useState(null)
-    const [ buildingSqFtMinError, setBuildingSqFtMinError ] = useState(null)
-    const [ buildingSqFtMaxError, setBuildingSqFtMaxError ] = useState(null)
+    const [ buildingSqFtMin, setBuildingSqFtMin ] = useState(0)
+    const [ buildingSqFtMax, setBuildingSqFtMax ] = useState(0)
+    const [ buildingSqFtMinError, setBuildingSqFtMinError ] = useState(false)
+    const [ buildingSqFtMaxError, setBuildingSqFtMaxError ] = useState(false)
 
-    const [ landSqFtMin, setLandSqFtMin ] = useState(null)
-    const [ landSqFtMax, setLandSqFtMax ] = useState(null)
-    const [ landSqFtMinError, setLandSqFtMinError ] = useState(null)
-    const [ landSqFtMaxError, setLandSqFtMaxError ] = useState(null)
+    const [ landSqFtMin, setLandSqFtMin ] = useState(0)
+    const [ landSqFtMax, setLandSqFtMax ] = useState(0)
+    const [ landSqFtMinError, setLandSqFtMinError ] = useState(false)
+    const [ landSqFtMaxError, setLandSqFtMaxError ] = useState(false)
 
     const [constructionType, setConstructionType] = useState(constructionTypes[0])
 
-    const [ ageMax, setAgeMax ] = useState(null)
-    const [ ageMin, setAgeMin ] = useState(null)
-    const [ ageMaxError, setAgeMaxError ] = useState(null)
-    const [ ageMinError, setAgeMinError ] = useState(null)
+    const [ ageMax, setAgeMax ] = useState(0)
+    const [ ageMin, setAgeMin ] = useState(0)
+    const [ ageMaxError, setAgeMaxError ] = useState(false)
+    const [ ageMinError, setAgeMinError ] = useState(false)
 
-    const [radius, setRadius] = useState(null)
+    const [radius, setRadius] = useState(0)
 
     const [errorMessage, setErrorMessage] = useState(false)
 
@@ -91,18 +91,18 @@ const ComparablePropertySearch= () => {
             let parcelBldgSqFt = attributes["BLDGSQFT"]
             let buildingRange= parcelBldgSqFt * .1
             setBuildingSqFtMax(parcelBldgSqFt+buildingRange)
-            setBuildingSqFtMin(parcelBldgSqFt-buildingRange)
+            setBuildingSqFtMin(parcelBldgSqFt-buildingRange  > 0 ? 0 : parcelBldgSqFt-buildingRange)
 
             let parcelLandSqFt = attributes["LANDSF"]
             let landRange= parcelLandSqFt * .1
             setLandSqFtMax(parcelLandSqFt+landRange)
-            setLandSqFtMin(parcelLandSqFt-landRange)
+            setLandSqFtMin(parcelLandSqFt-landRange > 0 ? 0 : parcelLandSqFt-landRange)
 
             
             let parcelAge = attributes["BLDGAGE"]
             let ageRange = 15
             setAgeMax(parcelAge+ageRange)
-            setAgeMin(parcelAge-ageRange)
+            setAgeMin(parcelAge-ageRange > 0 ? 0 : parcelAge-ageRange )
         }
 
     }, [primaryResultFeature])
@@ -181,16 +181,32 @@ const ComparablePropertySearch= () => {
     }
 
 
+    const constructionTypeDropdownOption = constructionTypes.map((constructionType) => (
+        <option key={constructionType} value={constructionType}>
+            <Typography variant="body1" fontFamily="barlow">
+                {translateText(constructionType)}
+            </Typography>
+        </option>
+    ))
+
+    const radiusDropdownOptions = Object.entries(radiusTypes).map(([radiusLabel, radiusValue]) => (
+        <option key={radiusLabel} value={radiusValue}>
+            <Typography variant="body1" fontFamily="barlow">
+                {translateText(radiusLabel)}
+            </Typography>
+        </option>
+    ))
+
 
     return(
         <Box display="flex" flexDirection="column" rowGap={2} p={2} component="form" sx={{overflowY:"scroll"}} flex={1} minHeight={0} pb="100px"> 
             <Typography variant="h4">
-                Source Property
+                {translateText("Source Property")}
             </Typography>
             {primaryResultFeature ? Object.entries(presetTextFields).map(([key, value]) => (
                 <Box key={value} id={value} display="flex" height={20} alignItems="center" pt={1} columnGap={2} >
                 <Box display="flex" flex={1}>
-                    <Typography variant="body2">{key}</Typography>
+                    <Typography variant="body2">{translateText(key)}</Typography>
                 </Box>
                 <CustomStyledTextField 
                 id={value}
@@ -207,9 +223,9 @@ const ComparablePropertySearch= () => {
                 </Box>
             )): null }
             <Divider/>
-            <Typography variant="h4">Property Size</Typography>
+            <Typography variant="h4">{translateText("Property Size")}</Typography>
             <Box display="flex" flexDirection="column">
-            <Typography variant="body2">Building Square Feet*</Typography>
+            <Typography variant="body2">{`${translateText("Building Square Feet")}*`}</Typography>
             <Box display="flex" flexDirection="row" alignItems="center" columnGap={1}>
                   <CustomStyledTextField
                   id="building-sqft-min"
@@ -226,7 +242,7 @@ const ComparablePropertySearch= () => {
                     setBuildingSqFtMin(event.target.value)
                   }}
                   />
-                  <Typography variant="body2">to</Typography>
+                  <Typography variant="body2">{translateText("to")}</Typography>
                   <CustomStyledTextField
                   id="building-sqft-max"
                   required
@@ -244,7 +260,7 @@ const ComparablePropertySearch= () => {
                   />
             </Box>
 
-            <Typography variant="body2">Land Square Feet*</Typography>
+            <Typography variant="body2">{`${translateText("Land Square Feet")}*`}</Typography>
             <Box display="flex" flexDirection="row" alignItems="center" columnGap={1}>
                   <CustomStyledTextField
                   id="land-sqft-min"
@@ -261,7 +277,7 @@ const ComparablePropertySearch= () => {
                     setLandSqFtMin(event.target.value)
                   }}
                   />
-                  <Typography variant="body2">to</Typography>
+                  <Typography variant="body2">{translateText("to")}</Typography>
                   <CustomStyledTextField
                   id="land-sqft-max"
                   required
@@ -280,11 +296,11 @@ const ComparablePropertySearch= () => {
             </Box>
             </Box>
             <Divider/>
-            <Typography variant="h4">Characteristics</Typography>
+            <Typography variant="h4">{translateText("Characteristics")}</Typography>
             <Box display="flex" flexDirection="column" rowGap={1}>
             <Box id="characteristics" display="flex" height={20} alignItems="center" pt={1} columnGap={2} >
                 <Box display="flex" flex={1}>
-                    <Typography variant="body2" width={122}>Construction Type</Typography>
+                    <Typography variant="body2" width={122}>{translateText("Construction Type")}</Typography>
                 </Box>
                 <CustomStyledTextField 
                 select
@@ -302,18 +318,12 @@ const ComparablePropertySearch= () => {
                     native: true,
                   }}
                 >
-                    {constructionTypes.map((constructionType) => (
-                        <option key={constructionType} value={constructionType}>
-                            <Typography variant="body1" fontFamily="barlow">
-                                {constructionType}
-                            </Typography>
-                        </option>
-                    ))}
+                    {constructionTypeDropdownOption}
                 </CustomStyledTextField>
                 </Box>
                 <Box id="building-age" display="flex" flexDirection="column" pt={1} columnGap={2} >
                     <Box display="flex" flex={1}>
-                        <Typography variant="body2" width={122}>Building Age*</Typography>
+                        <Typography variant="body2" width={122}>{`${translateText("Building Age")}*`}</Typography>
                     </Box>
                         <Box display="flex" flexDirection="row" alignItems="center" columnGap={1}>
                         <CustomStyledTextField
@@ -331,7 +341,7 @@ const ComparablePropertySearch= () => {
                             setAgeMin(event.target.value)
                         }}
                         />
-                        <Typography variant="body2">to</Typography>
+                        <Typography variant="body2">{translateText("to")}</Typography>
                         <CustomStyledTextField
                         required
                         id="age-max"
@@ -353,7 +363,7 @@ const ComparablePropertySearch= () => {
             </Box>
             <Box display="flex" flexDirection="column">
             <Box display="flex" flex={1}>
-                    <Typography variant="body2" width={122}>Search Radius</Typography>
+                    <Typography variant="body2" width={122}>{translateText("Search Radius")}</Typography>
                 </Box>
                 <CustomStyledTextField 
                 select
@@ -371,13 +381,7 @@ const ComparablePropertySearch= () => {
                     native: true,
                   }}
                 >
-                    {Object.entries(radiusTypes).map(([radiusLabel, radiusValue]) => (
-                        <option key={radiusLabel} value={radiusValue}>
-                            <Typography variant="body1" fontFamily="barlow">
-                                {radiusLabel}
-                            </Typography>
-                        </option>
-                    ))}
+                    {radiusDropdownOptions}
                 </CustomStyledTextField>
 
             </Box>
@@ -389,9 +393,9 @@ const ComparablePropertySearch= () => {
 
                 <Stack direction="row" justifyContent="end" alignItems="center"  width="100%">
                 <Button variant="text" sx={{textTransform:"none"}}>
-                    <Typography variant="body1">Cancel</Typography>
+                    <Typography variant="body1">{translateText("Cancel")}</Typography>
                 </Button>
-                <StyledButtonFilledPrimary text={"Search"} onClick={handleSubmit} textVarient={"body1"}/>
+                <StyledButtonFilledPrimary text={translateText("Search")} onClick={handleSubmit} textVarient={"body1"}/>
                 </Stack>
 
             </Box>
