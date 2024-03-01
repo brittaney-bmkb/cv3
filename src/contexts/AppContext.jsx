@@ -72,6 +72,34 @@ export const AppProvider = ({children}) => {
         
     }
 
+    const loadMeasureWidget = async () => {
+
+        const {initializeMeasureWidget} = await import('../arcgis/widgets/measurement')
+        const {measureWidgetContainer} = state
+
+        let measureVisible = await initializeMeasureWidget(measureWidgetContainer)
+        console.log("MEASURING STATE: ", measureVisible)
+        setMeasureWidgetState(measureVisible === "true" ? true : null)
+        
+    }
+
+    const setActiveMeasureTool = async (tool) => {
+
+        const {updateMeasureTool} = await import('../arcgis/widgets/measurement')
+
+        updateMeasureTool(tool)
+        
+    }
+
+    const removeMeasureGraphics = async () => {
+
+        const {clearMeasure} = await import('../arcgis/widgets/measurement')
+
+        clearMeasure()
+        
+    }
+
+
 
     const mapClickEventHandler = async () => {
 
@@ -80,7 +108,7 @@ export const AppProvider = ({children}) => {
         
         const { measureWidgetState, comparableParcels, panelSecondaryVisible, primaryResultFeature, panelPrimaryVisible, panelDisplay, parcelQueryFields, panelDisplaySecondary } = state
 
-        if(measureWidgetState !== "measuring" && measureWidgetState !== "measured"){
+        if(!measureWidgetState){
         const selectedFeatures = await onViewClick(parcelQueryFields)
         console.log("selectedFeatures: ", selectedFeatures)
         let secondaryFeatures = []
@@ -269,6 +297,15 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setMeasureWidgetContainer = (container) => {
+        dispatch({
+            type:"SET_MEASURE_WIDGET_CONTAINER",
+             payload: {
+                measureWidgetContainer: container,
+            }
+        })
+    }
+
   
     
     const loadDataDictionary = async () => {
@@ -417,14 +454,14 @@ export const AppProvider = ({children}) => {
         const {language, textTranslationDictionary} = state
 
         if(text && textTranslationDictionary){
-            console.log("TRANSLATING TEXT: ", text, language)
+            //console.log("TRANSLATING TEXT: ", text, language)
             let translation = Object.values(textTranslationDictionary).filter(textReplace => 
                 textReplace[config.defaultLanguage] === text)
                 .map((textReplace)=> {
                     return textReplace[language]
                 })
     
-            console.log("TRANSLATED TEXT: ", translation)
+            //console.log("TRANSLATED TEXT: ", translation)
             return translation && translation.length > 0 ? translation[0] : text
         }
         else{
@@ -483,7 +520,11 @@ export const AppProvider = ({children}) => {
         setTranslationDictionary,
         translateText,
         showMapMobile: state.showMapMobile,
-        setShowMapMoblie
+        setShowMapMoblie,
+        setMeasureWidgetContainer,
+        measureWidgetContainer: state.measureWidgetContainer,
+        loadMeasureWidget,
+        setActiveMeasureTool
     }
 
 
@@ -521,6 +562,17 @@ export const AppProvider = ({children}) => {
          initializeTranslationText();
 
       }, []);
+
+
+      useEffect(() => {
+
+        if(state.panelDisplaySecondary !== "measureWidget" || state.panelSecondaryVisible === false){
+            console.log("Not measure widget: ", state.measureWidgetState)
+            setMeasureWidgetState(null)
+            removeMeasureGraphics()
+        }
+    
+      }, [state.panelDisplaySecondary, state.panelSecondaryVisible])
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 

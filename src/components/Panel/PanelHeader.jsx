@@ -37,12 +37,12 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
         if(primary===true){
             clearResults()
 
-            setSearchParams({'location': null})
+            setSearchParams()
     
-            const updatedUrl = `${window.location.pathname}`;
+            // const updatedUrl = `${window.location.pathname}`;
     
-            // Use history.pushState to update the URL without refreshing the page
-            window.history.pushState({ path: updatedUrl }, '', updatedUrl);
+            // // Use history.pushState to update the URL without refreshing the page
+            // window.history.pushState({ path: updatedUrl }, '', updatedUrl);
 
             clearResultsComparables()
             setPanelSecondaryVisibility(false)

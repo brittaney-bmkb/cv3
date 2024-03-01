@@ -26,10 +26,10 @@ calcite-icon {
   }
 }
 
-.esri-measurement-widget-content__actions{
+/* .esri-measurement-widget-content__actions{
   visibility: hidden;
   display: none;
-}
+} */
 
 /* .esri-measurement-widget-content{
   background-color: black !important;
@@ -74,4 +74,8 @@ calcite-icon {
     right: 10px;
     top: 190px;
   }
+}
+
+.esri-distance-measurement-2d__clear-button{
+  border-radius: 20px !important;
 }
