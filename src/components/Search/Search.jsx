@@ -103,14 +103,19 @@ const Search = () => {
                     if(searchWidget.current && ![attributes["PIN10"], attributes["PIN14"], `${attributes["street_address"]}, ${attributes["city_state_zip"]}`].includes(searchWidget.current.searchTerm)){
                         searchWidget.current.searchTerm = paramValue
                     }
-                    
                 }
             }
             
     }
-    if(!primaryResultFeature && searchWidget.current){
-        searchWidget.current.searchTerm = null
-    }
+    if(!primaryResultFeature){
+            setLocationSearch(null)
+            setPinSearch(null)
+            setAddressSearch(null)
+            setGenericSearch(null)
+            
+        if(searchWidget.current){
+            searchWidget.current.searchTerm = null
+        }}  
 
 
     }, [primaryResultFeature, searchWidget])
@@ -150,16 +155,16 @@ const Search = () => {
                         searchWidget.current.search(genericSearch)
                     }
 
-                    if(pinSearch){
+                    if(pinSearch && pinSearch !== 'null'){
                        console.log("Performing New Search for pin=", pinSearch)           
                         searchWidget.current.search(pinSearch)
                     }
 
-                    if(addressSearch){
+                    if(addressSearch && pinSearch !== 'null'){
                         searchWidget.current.search(addressSearch)
                     }
 
-                    if(locationSearch){
+                    if(locationSearch && pinSearch !== 'null'){
                         console.log("Location search = ", locationSearch)             
                         searchWidget.current.search(locationSearch)
                     }
@@ -246,7 +251,7 @@ const Search = () => {
         //execute function search function with url param
         createSearch()
 
-    },[searchDiv, mapView, searchSources, newSearch, locationSearch])
+    },[searchDiv, mapView, searchSources, newSearch])
 
     return(
         <Box 

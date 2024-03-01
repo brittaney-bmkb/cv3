@@ -37,8 +37,8 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
         if(primary===true){
             clearResults()
 
-            setSearchParams()
-    
+            setSearchParams({"location": null, "pin": null, "search":null, "address":null})
+
             // const updatedUrl = `${window.location.pathname}`;
     
             // // Use history.pushState to update the URL without refreshing the page
