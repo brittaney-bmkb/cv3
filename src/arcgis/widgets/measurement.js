@@ -5,14 +5,17 @@ import Measurement from "@arcgis/core/widgets/Measurement.js";
 import { view } from "../webmap/webmap";
 
 
-let measurement = new Measurement();
-measurement.view = view
-
-
+let measurement 
 
 export async function initializeMeasureWidget(container){
-    measurement.container = container 
-    measurement.activeTool = 'distance'
+    measurement = new Measurement({
+        view:view,
+        container:container,
+        activeTool: "distance"
+    });
+    // measurement.view = view
+    // measurement.container = container 
+    // measurement.activeTool = 'distance'
     console.log('measure widget', measurement)  
 
     return measurement.visible

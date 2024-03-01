@@ -77,9 +77,9 @@ export const AppProvider = ({children}) => {
         const {initializeMeasureWidget} = await import('../arcgis/widgets/measurement')
         const {measureWidgetContainer} = state
 
-        let measureState = await initializeMeasureWidget(measureWidgetContainer)
-        console.log("MEASURING STATE: ", measureState)
-        setMeasureWidgetState(measureState === "true" ? "measuring" : null)
+        let measureVisible = await initializeMeasureWidget(measureWidgetContainer)
+        console.log("MEASURING STATE: ", measureVisible)
+        setMeasureWidgetState(measureVisible === "true" ? true : null)
         
     }
 

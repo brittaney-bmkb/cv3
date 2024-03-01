@@ -39,13 +39,7 @@ const MeasureWidget = () => {
         const createMeasureWidget = async () => {
             if(measureDiv.current){
                 console.log("Setting measure widget container")
-                // setMeasureWidgetContainer(measureDiv.current)
-                if(!measurementWidget.current){
-                    measurementWidget.current = new Measurement({
-                        container: measureDiv.current,
-                        view:view
-                    })
-                }
+                await setMeasureWidgetContainer(measureDiv.current)
             }  
         }
         createMeasureWidget();
@@ -55,19 +49,19 @@ const MeasureWidget = () => {
     const handleToolChange = async (tool) => {
 
         console.log("measure widget state: ", measureWidgetState)
-
         if(!measureWidgetState){
-            console.log("loading measure widget")
-            await loadMeasureWidget();
-            setMeasureWidgetState('measuring')
+            await loadMeasureWidget()
+            setMeasureWidgetState(true)
+            
         }
-
-        setActiveMeasureTool(tool);
+        
+        setActiveMeasureTool(tool)
    
     };
 
+
     return (
-        <Box id="MEASURECONTAINER" display="flex" width="100%" flexDirection="column" justifyContent="center" alignContent="center">
+        <Box id="MEASURECONTAINER" display="flex" width="100%"  height= "auto" flexDirection="column" justifyContent="center" alignContent="center">
             <Stack direction="row" gap={1} sx={{justifyContent:"center"}}>
                 <StyledButtonFilledPrimary
                     //variant={activeTool === 'distance' ? 'contained' : 'outlined'}
@@ -88,7 +82,7 @@ const MeasureWidget = () => {
             </Stack>
 
             <Box display="flex" flexDirection="column" alignItems="center" rowGap={1} p={1}> 
-                <Box ref={measureDiv} style={{width:"100%"}}> </Box>
+                <Box ref={measureDiv} style={{width:"100%", "--calcite-ui-brand" : theme.palette.primary.main}}> </Box>
             </Box>
         </Box>
             )      

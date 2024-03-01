@@ -108,6 +108,9 @@ const Search = () => {
             }
             
     }
+    if(!primaryResultFeature){
+        searchWidget.current.searchTerm = null
+    }
 
 
     }, [primaryResultFeature, searchWidget])

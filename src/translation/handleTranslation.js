@@ -5,7 +5,7 @@ import { config } from "../data/config";
 
 export async function returnTranslatedText(features){
 
-    console.log("TRANSLATION OBJECT BEING CREATED", features)
+    //console.log("TRANSLATION OBJECT BEING CREATED", features)
 
     //create translation object to replace text
     const translations = Object.fromEntries(features.map( feature => [feature.attributes["ID"] , {}]))
@@ -22,7 +22,7 @@ export async function returnTranslatedText(features){
         translations[idKey] = obj
     })  
 
-    console.log("TRANSLATION OBJECT: ", translations)
+    //console.log("TRANSLATION OBJECT: ", translations)
     return translations
 }
 

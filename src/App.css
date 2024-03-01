@@ -75,3 +75,7 @@ calcite-icon {
     top: 190px;
   }
 }
+
+.esri-distance-measurement-2d__clear-button{
+  border-radius: 20px !important;
+}
