@@ -215,7 +215,7 @@ const PanelContent = ({display}) => {
                         text={"Measure"} 
                         descriptionText={translateText("Start by selecting a measure tool.")}
                         closeButton={screenWidth < theme.breakpoints.values.lg ?  false : true }
-                        backButton={screenWidth < theme.breakpoints.values.lg ? true : false}
+                        panel={"secondary"}
                     />                    
                     <MeasureWidget
                     panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"}

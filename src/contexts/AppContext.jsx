@@ -566,13 +566,13 @@ export const AppProvider = ({children}) => {
 
       useEffect(() => {
 
-        if(state.panelDisplaySecondary !== "measureWidget"){
+        if(state.panelDisplaySecondary !== "measureWidget" || state.panelSecondaryVisible === false){
             console.log("Not measure widget: ", state.measureWidgetState)
             setMeasureWidgetState(null)
             removeMeasureGraphics()
         }
     
-      }, [state.panelDisplaySecondary])
+      }, [state.panelDisplaySecondary, state.panelSecondaryVisible])
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 
