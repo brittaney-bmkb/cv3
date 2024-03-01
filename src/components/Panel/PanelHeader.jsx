@@ -37,7 +37,7 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
         if(primary===true){
             clearResults()
 
-            setSearchParams({"location": null, "pin": null, "search":null, "address":null})
+            setSearchParams({"location": "null", "pin": "null", "search":"null", "address":"null"})
 
             // const updatedUrl = `${window.location.pathname}`;
     
