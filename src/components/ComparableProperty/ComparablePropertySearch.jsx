@@ -179,6 +179,7 @@ const ComparablePropertySearch= () => {
             setErrorMessage(messageString)
         }
     }
+    
 
 
     const constructionTypeDropdownOption = constructionTypes.map((constructionType) => (
