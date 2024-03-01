@@ -48,6 +48,7 @@ const ComparablePropertySearch= () => {
 
     const { searchComparableProperties, primaryResultFeature, translateText } = UseAppContext()
 
+    const [ sourceParcel, setSourceParcel ] = useState(null)
     const [ buildingSqFtMin, setBuildingSqFtMin ] = useState(0)
     const [ buildingSqFtMax, setBuildingSqFtMax ] = useState(0)
     const [ buildingSqFtMinError, setBuildingSqFtMinError ] = useState(false)
@@ -69,9 +70,18 @@ const ComparablePropertySearch= () => {
 
     const [errorMessage, setErrorMessage] = useState(false)
 
+    useEffect(() => {
+
+        if(primaryResultFeature){
+            let features = Array.isArray(primaryResultFeature) ? primaryResultFeature[0] : primaryResultFeature
+            setSourceParcel(features)
+        }
+
+    },[primaryResultFeature])
+
     function handleSetQuery(){
         //AND BCLASS = '${bClass}'
-        let query =`township_name = '${primaryResultFeature.attributes['township_name']}' AND NBHD = ${primaryResultFeature.attributes['NBHD']} AND BCLASS = '${primaryResultFeature.attributes['BCLASS']}' AND (BLDGSQFT >= ${buildingSqFtMin} AND BLDGSQFT <= ${buildingSqFtMax}) AND (LANDSF >= ${landSqFtMin} AND LANDSF <= ${landSqFtMax} ) AND (BLDGAGE >= ${ageMin} AND BLDGAGE <= ${ageMax} ) AND PIN14 <> '${primaryResultFeature.attributes['PIN14']}'`
+        let query =`township_name = '${sourceParcel.attributes['township_name']}' AND NBHD = ${sourceParcel.attributes['NBHD']} AND BCLASS = '${sourceParcel.attributes['BCLASS']}' AND (BLDGSQFT >= ${buildingSqFtMin} AND BLDGSQFT <= ${buildingSqFtMax}) AND (LANDSF >= ${landSqFtMin} AND LANDSF <= ${landSqFtMax} ) AND (BLDGAGE >= ${ageMin} AND BLDGAGE <= ${ageMax} ) AND PIN14 <> '${sourceParcel.attributes['PIN14']}'`
         
         query = ['None','Any'].includes(constructionType) ? query :  query + ` AND bldg_const_desc = '${constructionType}'`
 
@@ -85,8 +95,8 @@ const ComparablePropertySearch= () => {
     useEffect(() => {
         //set ranges for building, land, and age based on primary parcel
 
-        if(primaryResultFeature){
-            let attributes = primaryResultFeature.attributes
+        if(sourceParcel){
+            let attributes = sourceParcel.attributes
 
             let parcelBldgSqFt = attributes["BLDGSQFT"]
             let buildingRange= parcelBldgSqFt * .1
@@ -105,7 +115,7 @@ const ComparablePropertySearch= () => {
             setAgeMin(parcelAge-ageRange > 0 ? 0 : parcelAge-ageRange )
         }
 
-    }, [primaryResultFeature])
+    }, [sourceParcel])
 
     useEffect(() => {
 
@@ -204,7 +214,7 @@ const ComparablePropertySearch= () => {
             <Typography variant="h4">
                 {translateText("Source Property")}
             </Typography>
-            {primaryResultFeature ? Object.entries(presetTextFields).map(([key, value]) => (
+            {sourceParcel ? Object.entries(presetTextFields).map(([key, value]) => (
                 <Box key={value} id={value} display="flex" height={20} alignItems="center" pt={1} columnGap={2} >
                 <Box display="flex" flex={1}>
                     <Typography variant="body2">{translateText(key)}</Typography>
@@ -219,7 +229,7 @@ const ComparablePropertySearch= () => {
                 InputProps={{
                     readOnly: true,
                   }}
-                value={primaryResultFeature.attributes[value] ?? ""}
+                value={sourceParcel.attributes[value] ?? ""}
                 />
                 </Box>
             )): null }
