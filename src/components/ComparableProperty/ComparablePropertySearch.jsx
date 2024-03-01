@@ -141,7 +141,7 @@ const ComparablePropertySearch= () => {
         let messageString = "Please provide values for: "
         let messageErrors = []
 
-        if(!buildingSqFtMin){
+        if(!buildingSqFtMin && buildingSqFtMin <0){
             setBuildingSqFtMinError(true)
             messageErrors.push("Building Square Footage minimum")
         }
@@ -151,7 +151,7 @@ const ComparablePropertySearch= () => {
             messageErrors.push("Building Square Footage maximum")
         }
 
-        if(!landSqFtMin){
+        if(!landSqFtMin && landSqFtMin <0){
             setLandSqFtMinError(true)
             messageErrors.push("Land Square Footage minimum")
         }
@@ -161,7 +161,7 @@ const ComparablePropertySearch= () => {
             messageErrors.push("Land Square Footage maximum")
         }
 
-        if(!ageMin){
+        if(!ageMin && ageMin <0){
             setAgeMinError(true)
             messageErrors.push("Building Age minimum")
         }
@@ -171,7 +171,7 @@ const ComparablePropertySearch= () => {
             messageErrors.push("Building Age maximum")
         }
 
-        if(buildingSqFtMin && landSqFtMin && ageMin && buildingSqFtMax > 0 && landSqFtMax > 0 && ageMax > 0){
+        if(buildingSqFtMin >=0 && landSqFtMin >=0  && ageMin >=0  && buildingSqFtMax > 0 && landSqFtMax > 0 && ageMax > 0){
             handleSetQuery()
         }
         else{
