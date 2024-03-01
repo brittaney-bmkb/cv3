@@ -107,11 +107,11 @@ const Search = () => {
             }
             
     }
-    if(!primaryResultFeature){
-            setLocationSearch(null)
-            setPinSearch(null)
-            setAddressSearch(null)
-            setGenericSearch(null)
+    if(!primaryResultFeature ){
+            // setLocationSearch(null)
+            // setPinSearch(null)
+            // setAddressSearch(null)
+            // setGenericSearch(null)
             
         if(searchWidget.current){
             searchWidget.current.searchTerm = null
@@ -160,11 +160,11 @@ const Search = () => {
                         searchWidget.current.search(pinSearch)
                     }
 
-                    if(addressSearch && pinSearch !== 'null'){
+                    if(addressSearch && addressSearch !== 'null'){
                         searchWidget.current.search(addressSearch)
                     }
 
-                    if(locationSearch && pinSearch !== 'null'){
+                    if(locationSearch && locationSearch !== 'null'){
                         console.log("Location search = ", locationSearch)             
                         searchWidget.current.search(locationSearch)
                     }
