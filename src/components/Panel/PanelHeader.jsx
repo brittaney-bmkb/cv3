@@ -122,7 +122,7 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
                     <Box bgcolor={theme.main.backgroundColor.grey} p={1} sx={{borderRadius: theme.shape.borderRadius}}>
                         <Typography variant="h5" color={theme.main.text.dark}>
                             {text}
-                            { infoButton ?  <IconButton  target="_blank" > {<InfoIcon/>} </IconButton > : null}
+                            {/* { infoButton ?  <IconButton  target="_blank" > {<InfoIcon/>} </IconButton > : null} */}
                         </Typography>
                     </Box> 
                 </Box>
