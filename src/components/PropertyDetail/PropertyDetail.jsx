@@ -181,15 +181,15 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         let urlFormatted = url
         let paramsValues = params.split(",")
 
-        //console.log("url data attributes: ", attributes)
+        console.log("url data attributes: ", attributes)
 
         if(attributes){
             paramsValues.map((param) => {
-                //console.log("Replacing: ", `{${param}}`)
+                console.log("Replacing: ", `{${param}}`)
                 urlFormatted = urlFormatted.replace(`{${param}}`, attributes[param])
             })
     
-            //console.log("url text: ", text, urlFormatted)
+            console.log("url text: ", text, urlFormatted)
         }
 
 
@@ -232,7 +232,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                 
                 <Box display="flex" flexDirection="row" columnGap={3} justifyContent={category=="top"? "center" : textAlignment}>
                     {properties.map((property, propIndex) => {
-                        console.log("property details for: ", property)
+                        //console.log("property details for: ", property)
                         let color = property === property1 ? propertyColor1 : propertyColor2
                         panelContentTitleMain["color"] = color
                         panelContentTitleMain["borderColor"] = color
@@ -262,7 +262,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                             </Box>: 
     
                         data.attributes['hyperlink_text'] && data.attributes['hyperlink_params'] && data.attributes['hyperlink_url'] ?
-                            returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], property1?.attributes) :
+                            returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], property?.attributes) :
                             <Box 
                             key={data.attributes["field"]}
                             id="data-field-container"
