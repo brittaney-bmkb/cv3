@@ -63,13 +63,14 @@ export const StyledPanelButton = ({text1, text2, text3, icon1, icon2, icon3, onC
     )
 }
 
-export const StyledButtonFilledSecondary = ({text, startIcon, endIcon}) => {
+export const StyledButtonFilledSecondary = ({text, startIcon, endIcon, onClick}) => {
     return(
         <Button 
         variant="contained" 
         color="secondary"
         startIcon={startIcon}
         endIcon={endIcon}
+        onClick={onClick}
         sx={{paddingTop:'2px', paddingBottom:'2px', textTransform:'none'}}
         ><Typography p={0} variant="body1">
         {text}

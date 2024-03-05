@@ -32,6 +32,11 @@ export const config = {
     // NEARBY SEARCH SETTINGS: Configure the buffer distance and unit for nearby searches.
     buffer_distance: 50,
     buffer_unit: "feet",
+    //LANGUAGES
+    defaultLanguage: "english",
+    languages:["english","spanish"],
+    //APP TRANSLATION TEXT
+    translation_text:"https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/ArcGIS/rest/services/cookviewer_translated_text/FeatureServer/2",
     // LAYER SOURCES CONFIGURATION: Configure the layers for map and search sources for the search widget
     layer_sources: [
         // First Layer Source: Configure the parcelLayer
@@ -69,12 +74,13 @@ export const config = {
                 exactMatch: false, // Exact match search (boolean).
                 maxResults: 50, // Maximum number of search results.
                 maxSuggestions: 50, // Maximum number of search suggestions.
-                minSuggestCharacters: 4, // Minimum characters for search suggestions.
+                minSuggestCharacters: 2, // Minimum characters for search suggestions.
                 outFields: [ "PIN14","PIN10", "PIN14_dash"], // IMPORTANT put the field that will be used to perfrom search query as the first item in the array. Fields to return in search results (array of strings).
                 orderByFields: ["PIN14"], // Fields for sorting search results (array of strings).
                 searchFields: ["PIN10", "PIN14", "PIN14_dash"], // Fields used for searching (array of strings).
                 suggestionsEnabled: true, // Enable/disable suggestions for this search source (boolean).
                 autoNavigate: false, // Automatically navigate to the result on selection (boolean).
+                searchTemplate: "{PIN14_dash}"
             },
 
             // {
@@ -93,113 +99,116 @@ export const config = {
 
                {
 
-                   name: "Address",
+                   name: "Parcel Address",
                    displayField:"street_address",
                    exactMatch:false,
                    maxResults:50,
                    maxSuggestions:50,
-                   minSuggestCharacters:4,
-                   outFields: ["street_address"],
+                   minSuggestCharacters:2,
+                   outFields: ["street_address", "city_state_zip"],
                    orderByFields:["street_address"],
-                   searchFields:["street_address"],
+                   searchFields:["street_address","city_state_zip"],
                    suggestionsEnabled:true,
                    autoNavigate:false,
+                   searchTemplate: "{street_address}, {city_state_zip}",
+                   suggestionTemplate: "{street_address}, {city_state_zip}"
                }
            ]
        },
-       //Natural Environment and Recreation
-       {
-        layerName:"Boat Launch",
-        description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/5", // URL to the layer service.
-        type: 'featureLayer',
-        outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
-        opacity: null,
-        visible:false,
-        groupName:"Natural Environment and Recreation",
-        render:null,
-        searchSources: []
-       },
-       {
-        layerName:"Nature Preserve",
-        description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/7", // URL to the layer service.
-        type: 'featureLayer',
-        outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
-        opacity: null,
-        visible:false,
-        groupName:"Natural Environment and Recreation",
-        render:null,
-        searchSources: []
-       },
-       {
-        layerName:"Recreation",
-        description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/9", // URL to the layer service.
-        type: 'featureLayer',
-        outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
-        opacity: null,
-        visible:false,
-        groupName:"Natural Environment and Recreation",
-        render:null,
-        searchSources: []
-       },
-       {
-        layerName:"Picnic Grove",
-        description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/8", // URL to the layer service.
-        type: 'featureLayer',
-        outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
-        opacity: null,
-        visible:false,
-        groupName:"Natural Environment and Recreation",
-        render:null,
-        searchSources: []
-       },
-       {
-        layerName:"Fishing Lakes",
-        description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/6", // URL to the layer service.
-        type: 'featureLayer',
-        outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
-        opacity: null,
-        visible:false,
-        groupName:"Natural Environment and Recreation",
-        render:null,
-        searchSources: []
-       },
-       {
-        layerName:"Trail",
-        description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/10", // URL to the layer service.
-        type: 'featureLayer',
-        outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
-        opacity: null,
-        visible:false,
-        groupName:"Natural Environment and Recreation",
-        render:null,
-        searchSources: []
-       },
+    //    //Natural Environment and Recreation
+    //    {
+    //     layerName:"Boat Launch",
+    //     description: "",
+    //     url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/5", // URL to the layer service.
+    //     type: 'featureLayer',
+    //     outFields: ["*"], // Fields to return in the search results (array of strings).
+    //     maxScale:null,
+    //     minScale: null,
+    //     opacity: null,
+    //     visible:false,
+    //     groupName:"Natural Environment and Recreation",
+    //     render:null,
+    //     searchSources: []
+    //    },
+    //    {
+    //     layerName:"Nature Preserve",
+    //     description: "",
+    //     url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/7", // URL to the layer service.
+    //     type: 'featureLayer',
+    //     outFields: ["*"], // Fields to return in the search results (array of strings).
+    //     maxScale:null,
+    //     minScale: null,
+    //     opacity: null,
+    //     visible:false,
+    //     groupName:"Natural Environment and Recreation",
+    //     render:null,
+    //     searchSources: []
+    //    },
+    //    {
+    //     layerName:"Recreation",
+    //     description: "",
+    //     url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/9", // URL to the layer service.
+    //     type: 'featureLayer',
+    //     outFields: ["*"], // Fields to return in the search results (array of strings).
+    //     maxScale:null,
+    //     minScale: null,
+    //     opacity: null,
+    //     visible:false,
+    //     groupName:"Natural Environment and Recreation",
+    //     render:null,
+    //     searchSources: []
+    //    },
+    //    {
+    //     layerName:"Picnic Grove",
+    //     description: "",
+    //     url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/8", // URL to the layer service.
+    //     type: 'featureLayer',
+    //     outFields: ["*"], // Fields to return in the search results (array of strings).
+    //     maxScale:null,
+    //     minScale: null,
+    //     opacity: null,
+    //     visible:false,
+    //     groupName:"Natural Environment and Recreation",
+    //     render:null,
+    //     searchSources: []
+    //    },
+    //    {
+    //     layerName:"Fishing Lakes",
+    //     description: "",
+    //     url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/6", // URL to the layer service.
+    //     type: 'featureLayer',
+    //     outFields: ["*"], // Fields to return in the search results (array of strings).
+    //     maxScale:null,
+    //     minScale: null,
+    //     opacity: null,
+    //     visible:false,
+    //     groupName:"Natural Environment and Recreation",
+    //     render:null,
+    //     searchSources: []
+    //    },
+    //    {
+    //     layerName:"Trail",
+    //     description: "",
+    //     url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/10", // URL to the layer service.
+    //     type: 'featureLayer',
+    //     outFields: ["*"], // Fields to return in the search results (array of strings).
+    //     maxScale:null,
+    //     minScale: null,
+    //     opacity: null,
+    //     visible:false,
+    //     groupName:"Natural Environment and Recreation",
+    //     render:null,
+    //     searchSources: []
+    //    },
        {
         layerName:"Contours",
         description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/11", // URL to the layer service.
-        type: 'featureLayer',
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
+        type: 'mapImageLayer',
+        index: 11,
         outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
+        maxScale:0,
+        minScale: 500000,
         opacity: null,
         visible:false,
         groupName:"Natural Environment and Recreation",
@@ -210,11 +219,12 @@ export const config = {
        {
         layerName:"High School",
         description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/19", // URL to the layer service.
-        type: 'featureLayer',
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
+        type: 'mapImageLayer',
+        index: 19,
         outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
+        maxScale:0,
+        minScale: 500000,
         opacity: null,
         visible:false,
         groupName:"Tax Districts",
@@ -224,11 +234,12 @@ export const config = {
        {
         layerName:"Park",
         description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/20", // URL to the layer service.
-        type: 'featureLayer',
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
+        type: 'mapImageLayer',
+        index: 20,
         outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
+        maxScale:0,
+        minScale: 500000,
         opacity: null,
         visible:false,
         groupName:"Tax Districts",
@@ -238,11 +249,12 @@ export const config = {
        {
         layerName:"Library",
         description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/21", // URL to the layer service.
-        type: 'featureLayer',
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/", // URL to the layer service.
+        type: 'mapImageLayer',
+        index: 21,
         outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
+        maxScale:0,
+        minScale: 500000,
         opacity: null,
         visible:false,
         groupName:"Tax Districts",
@@ -252,11 +264,12 @@ export const config = {
        {
         layerName:"Fire Protection",
         description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/22", // URL to the layer service.
-        type: 'featureLayer',
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
+        type: 'mapImageLayer',
+        index: 22,
         outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
+        maxScale:0,
+        minScale: 500000,
         opacity: null,
         visible:false,
         groupName:"Tax Districts",
@@ -266,11 +279,12 @@ export const config = {
        {
         layerName:"Community College",
         description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/23", // URL to the layer service.
-        type: 'featureLayer',
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
+        type: 'mapImageLayer',
+        index: 23,
         outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
+        maxScale:0,
+        minScale: 500000,
         opacity: null,
         visible:false,
         groupName:"Tax Districts",
@@ -280,11 +294,12 @@ export const config = {
        {
         layerName:"Tax Increment Finance (TIF)",
         description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/24", // URL to the layer service.
-        type: 'featureLayer',
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
+        type: 'mapImageLayer',
+        index: 24,
         outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
+        maxScale:0,
+        minScale: 500000,
         opacity: null,
         visible:false,
         groupName:"Tax Districts",
@@ -294,11 +309,12 @@ export const config = {
        {
         layerName:"Elementary School",
         description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/25", // URL to the layer service.
-        type: 'featureLayer',
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/", // URL to the layer service.
+        type: 'mapImageLayer',
+        index: 25,
         outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
+        maxScale:0,
+        minScale: 500000,
         opacity: null,
         visible:false,
         groupName:"Tax Districts",
@@ -308,11 +324,12 @@ export const config = {
        {
         layerName:"Combined School",
         description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/26", // URL to the layer service.
-        type: 'featureLayer',
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
+        type: 'mapImageLayer',
+        index: 26,
         outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
+        maxScale:0,
+        minScale: 500000,
         opacity: null,
         visible:false,
         groupName:"Tax Districts",
@@ -323,11 +340,12 @@ export const config = {
        {
         layerName:"Election Precinct",
         description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/27", // URL to the layer service.
-        type: 'featureLayer',
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/", // URL to the layer service.
+        type: 'mapImageLayer',
+        index: 27,
         outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
+        maxScale:0,
+        minScale: 500000,
         opacity: null,
         visible:false,
         groupName:"Political Boundaries",
@@ -337,11 +355,12 @@ export const config = {
        {
         layerName:"Chicago Ward",
         description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/28", // URL to the layer service.
-        type: 'featureLayer',
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
+        type: 'mapImageLayer',
+        index: 28,
         outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
+        maxScale:0,
+        minScale: 500000,
         opacity: null,
         visible:false,
         groupName:"Political Boundaries",
@@ -351,11 +370,12 @@ export const config = {
        {
         layerName:"Board of Review",
         description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/30", // URL to the layer service.
-        type: 'featureLayer',
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
+        type: 'mapImageLayer',
+        index: 30,
         outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
+        maxScale:0,
+        minScale: 500000,
         opacity: null,
         visible:false,
         groupName:"Political Boundaries",
@@ -365,11 +385,12 @@ export const config = {
        {
         layerName:"Judicial District",
         description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/31", // URL to the layer service.
-        type: 'featureLayer',
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
+        type: 'mapImageLayer',
+        index: 31,
         outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
+        maxScale:0,
+        minScale: 500000,
         opacity: null,
         visible:false,
         groupName:"Political Boundaries",
@@ -379,11 +400,12 @@ export const config = {
        {
         layerName:"Commisioner District",
         description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/32", // URL to the layer service.
-        type: 'featureLayer',
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
+        type: 'mapImageLayer',
+        index: 32,
         outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
+        maxScale:0,
+        minScale: 500000,
         opacity: null,
         visible:false,
         groupName:"Political Boundaries",
@@ -393,11 +415,12 @@ export const config = {
        {
         layerName:"State Senate District",
         description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/34", // URL to the layer service.
-        type: 'featureLayer',
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
+        type: 'mapImageLayer',
+        index: 34,
         outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
+        maxScale:0,
+        minScale: 500000,
         opacity: null,
         visible:false,
         groupName:"Political Boundaries",
@@ -407,11 +430,12 @@ export const config = {
        {
         layerName:"State Representative District",
         description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/35", // URL to the layer service.
-        type: 'featureLayer',
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
+        type: 'mapImageLayer',
+        index: 35,
         outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
+        maxScale:0,
+        minScale: 500000,
         opacity: null,
         visible:false,
         groupName:"Political Boundaries",
@@ -421,11 +445,12 @@ export const config = {
        {
         layerName:"U.S. Congressional District",
         description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/36", // URL to the layer service.
-        type: 'featureLayer',
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
+        type: 'mapImageLayer',
+        index: 36,
         outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
+        maxScale:0,
+        minScale: 500000,
         opacity: null,
         visible:false,
         groupName:"Political Boundaries",
@@ -435,11 +460,12 @@ export const config = {
        {
         layerName:"Political Township",
         description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/43", // URL to the layer service.
-        type: 'featureLayer',
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
+        type: 'mapImageLayer',
+        index: 43,
         outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
+        maxScale:0,
+        minScale: 500000,
         opacity: null,
         visible:false,
         groupName:"Political Boundaries",
@@ -449,203 +475,204 @@ export const config = {
        {
         layerName:"Municipality",
         description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/64", // URL to the layer service.
-        type: 'featureLayer',
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
+        type: 'mapImageLayer',
+        index: 64,
         outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
+        maxScale:0,
+        minScale: 500000,
         opacity: null,
         visible:false,
         groupName:"Political Boundaries",
         render:null,
         searchSources: []
        },
-       //Places of Interest
-       {
-        layerName:"Cemetery",
-        description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/0", // URL to the layer service.
-        type: 'featureLayer',
-        outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
-        opacity: null,
-        visible:false,
-        groupName:"Places of Interest",
-        render:null,
-        searchSources: []
-       },
-       {
-        layerName:"Hospital",
-        description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/1", // URL to the layer service.
-        type: 'featureLayer',
-        outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
-        opacity: null,
-        visible:false,
-        groupName:"Places of Interest",
-        render:null,
-        searchSources: []
-       },
-       {
-        layerName:"County Facility",
-        description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/2", // URL to the layer service.
-        type: 'featureLayer',
-        outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
-        opacity: null,
-        visible:false,
-        groupName:"Places of Interest",
-        render:null,
-        searchSources: []
-       },
-       {
-        layerName:"School",
-        description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/3", // URL to the layer service.
-        type: 'featureLayer',
-        outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
-        opacity: null,
-        visible:false,
-        groupName:"Places of Interest",
-        render:null,
-        searchSources: []
-       },
-       //Transportation
-       {
-        layerName:"Rail Station",
-        description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/12", // URL to the layer service.
-        type: 'featureLayer',
-        outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
-        opacity: null,
-        visible:false,
-        groupName:"Transportation",
-        render:null,
-        searchSources: []
-       },
-       {
-        layerName:"CTA Bus Route",
-        description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/15", // URL to the layer service.
-        type: 'featureLayer',
-        outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
-        opacity: null,
-        visible:false,
-        groupName:"Transportation",
-        render:null,
-        searchSources: []
-       },
-       {
-        layerName:"Pace Bus Route",
-        description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/16", // URL to the layer service.
-        type: 'featureLayer',
-        outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
-        opacity: null,
-        visible:false,
-        groupName:"Transportation",
-        render:null,
-        searchSources: []
-       },
-       {
-        layerName:"Highway System",
-        description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/17", // URL to the layer service.
-        type: 'featureLayer',
-        outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
-        opacity: null,
-        visible:false,
-        groupName:"Transportation",
-        render:null,
-        searchSources: []
-       },
-       //Census Statistical Areas
-       {
-        layerName:"Block",
-        description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/38", // URL to the layer service.
-        type: 'featureLayer',
-        outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
-        opacity: null,
-        visible:false,
-        groupName:"Census Statistical Areas 2010",
-        render:null,
-        searchSources: []
-       },
-       {
-        layerName:"Tract",
-        description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/40", // URL to the layer service.
-        type: 'featureLayer',
-        outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
-        opacity: null,
-        visible:false,
-        groupName:"Census Statistical Areas 2010",
-        render:null,
-        searchSources: []
-       },
-       {
-        layerName:"Block Group",
-        description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/39", // URL to the layer service.
-        type: 'featureLayer',
-        outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
-        opacity: null,
-        visible:false,
-        groupName:"Census Statistical Areas 2010",
-        render:null,
-        searchSources: []
-       },
-       //Zoning
-       {
-        layerName:"Zoning (2011)",
-        description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/66", // URL to the layer service.
-        type: 'featureLayer',
-        outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
-        opacity: null,
-        visible:false,
-        groupName:"Zoning",
-        render:null,
-        searchSources: []
-       },
-       {
-        layerName:"Unincorporated Zoning (current)",
-        description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/65", // URL to the layer service.
-        type: 'featureLayer',
-        outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:null,
-        minScale: null,
-        opacity: null,
-        visible:false,
-        groupName:"Zoning",
-        render:null,
-        searchSources: []
-       },
+    //    //Places of Interest
+    //    {
+    //     layerName:"Cemetery",
+    //     description: "",
+    //     url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/0", // URL to the layer service.
+    //     type: 'featureLayer',
+    //     outFields: ["*"], // Fields to return in the search results (array of strings).
+    //     maxScale:null,
+    //     minScale: null,
+    //     opacity: null,
+    //     visible:false,
+    //     groupName:"Places of Interest",
+    //     render:null,
+    //     searchSources: []
+    //    },
+    //    {
+    //     layerName:"Hospital",
+    //     description: "",
+    //     url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/1", // URL to the layer service.
+    //     type: 'featureLayer',
+    //     outFields: ["*"], // Fields to return in the search results (array of strings).
+    //     maxScale:null,
+    //     minScale: null,
+    //     opacity: null,
+    //     visible:false,
+    //     groupName:"Places of Interest",
+    //     render:null,
+    //     searchSources: []
+    //    },
+    //    {
+    //     layerName:"County Facility",
+    //     description: "",
+    //     url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/2", // URL to the layer service.
+    //     type: 'featureLayer',
+    //     outFields: ["*"], // Fields to return in the search results (array of strings).
+    //     maxScale:null,
+    //     minScale: null,
+    //     opacity: null,
+    //     visible:false,
+    //     groupName:"Places of Interest",
+    //     render:null,
+    //     searchSources: []
+    //    },
+    //    {
+    //     layerName:"School",
+    //     description: "",
+    //     url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/3", // URL to the layer service.
+    //     type: 'featureLayer',
+    //     outFields: ["*"], // Fields to return in the search results (array of strings).
+    //     maxScale:null,
+    //     minScale: null,
+    //     opacity: null,
+    //     visible:false,
+    //     groupName:"Places of Interest",
+    //     render:null,
+    //     searchSources: []
+    //    },
+    //    //Transportation
+    //    {
+    //     layerName:"Rail Station",
+    //     description: "",
+    //     url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/12", // URL to the layer service.
+    //     type: 'featureLayer',
+    //     outFields: ["*"], // Fields to return in the search results (array of strings).
+    //     maxScale:null,
+    //     minScale: null,
+    //     opacity: null,
+    //     visible:false,
+    //     groupName:"Transportation",
+    //     render:null,
+    //     searchSources: []
+    //    },
+    //    {
+    //     layerName:"CTA Bus Route",
+    //     description: "",
+    //     url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/15", // URL to the layer service.
+    //     type: 'featureLayer',
+    //     outFields: ["*"], // Fields to return in the search results (array of strings).
+    //     maxScale:null,
+    //     minScale: null,
+    //     opacity: null,
+    //     visible:false,
+    //     groupName:"Transportation",
+    //     render:null,
+    //     searchSources: []
+    //    },
+    //    {
+    //     layerName:"Pace Bus Route",
+    //     description: "",
+    //     url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/16", // URL to the layer service.
+    //     type: 'featureLayer',
+    //     outFields: ["*"], // Fields to return in the search results (array of strings).
+    //     maxScale:null,
+    //     minScale: null,
+    //     opacity: null,
+    //     visible:false,
+    //     groupName:"Transportation",
+    //     render:null,
+    //     searchSources: []
+    //    },
+    //    {
+    //     layerName:"Highway System",
+    //     description: "",
+    //     url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/17", // URL to the layer service.
+    //     type: 'featureLayer',
+    //     outFields: ["*"], // Fields to return in the search results (array of strings).
+    //     maxScale:null,
+    //     minScale: null,
+    //     opacity: null,
+    //     visible:false,
+    //     groupName:"Transportation",
+    //     render:null,
+    //     searchSources: []
+    //    },
+    //    //Census Statistical Areas
+    //    {
+    //     layerName:"Block",
+    //     description: "",
+    //     url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/38", // URL to the layer service.
+    //     type: 'featureLayer',
+    //     outFields: ["*"], // Fields to return in the search results (array of strings).
+    //     maxScale:null,
+    //     minScale: null,
+    //     opacity: null,
+    //     visible:false,
+    //     groupName:"Census Statistical Areas 2010",
+    //     render:null,
+    //     searchSources: []
+    //    },
+    //    {
+    //     layerName:"Tract",
+    //     description: "",
+    //     url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/40", // URL to the layer service.
+    //     type: 'featureLayer',
+    //     outFields: ["*"], // Fields to return in the search results (array of strings).
+    //     maxScale:null,
+    //     minScale: null,
+    //     opacity: null,
+    //     visible:false,
+    //     groupName:"Census Statistical Areas 2010",
+    //     render:null,
+    //     searchSources: []
+    //    },
+    //    {
+    //     layerName:"Block Group",
+    //     description: "",
+    //     url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/39", // URL to the layer service.
+    //     type: 'featureLayer',
+    //     outFields: ["*"], // Fields to return in the search results (array of strings).
+    //     maxScale:null,
+    //     minScale: null,
+    //     opacity: null,
+    //     visible:false,
+    //     groupName:"Census Statistical Areas 2010",
+    //     render:null,
+    //     searchSources: []
+    //    },
+    //    //Zoning
+    //    {
+    //     layerName:"Zoning (2011)",
+    //     description: "",
+    //     url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/66", // URL to the layer service.
+    //     type: 'featureLayer',
+    //     outFields: ["*"], // Fields to return in the search results (array of strings).
+    //     maxScale:null,
+    //     minScale: null,
+    //     opacity: null,
+    //     visible:false,
+    //     groupName:"Zoning",
+    //     render:null,
+    //     searchSources: []
+    //    },
+    //    {
+    //     layerName:"Unincorporated Zoning (current)",
+    //     description: "",
+    //     url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/65", // URL to the layer service.
+    //     type: 'featureLayer',
+    //     outFields: ["*"], // Fields to return in the search results (array of strings).
+    //     maxScale:null,
+    //     minScale: null,
+    //     opacity: null,
+    //     visible:false,
+    //     groupName:"Zoning",
+    //     render:null,
+    //     searchSources: []
+    //    },
        //Parcel Archive
        {
         layerName:"Parcel 2022",
@@ -1003,9 +1030,8 @@ export const config = {
             autoNavigate:false,
             maxResults: 50,
             maxSuggestions:50,
-            minSuggestCharacters: 4,
-
-            name: "Address",
+            minSuggestCharacters: 2,
+            name: "Address Point",
             outFields:["Street", "City", "Postal"],
             singleLineFieldName:"SingleLine",
             suggestionsEnabled:true,

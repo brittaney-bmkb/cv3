@@ -26,10 +26,10 @@ calcite-icon {
   }
 }
 
-.esri-measurement-widget-content__actions{
+/* .esri-measurement-widget-content__actions{
   visibility: hidden;
   display: none;
-}
+} */
 
 /* .esri-measurement-widget-content{
   background-color: black !important;
@@ -43,3 +43,39 @@ calcite-icon {
   padding: 3%;
   background-color: lightgrey !important;
 } 
+
+.esri-zoom{
+  right: 10px;
+  top: 20px;
+}
+
+.esri-home{
+  right: 10px;
+  top: 90px;
+}
+
+.esri-locate {
+  right: 10px;
+  top: 130px;
+}
+
+@media (max-width:500px){
+  .esri-zoom{
+    right: 10px;
+    top: 80px;
+  }
+
+  .esri-home{
+    right: 10px;
+    top: 150px;
+  }
+
+  .esri-locate {
+    right: 10px;
+    top: 190px;
+  }
+}
+
+.esri-distance-measurement-2d__clear-button{
+  border-radius: 20px !important;
+}

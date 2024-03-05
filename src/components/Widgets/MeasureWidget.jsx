@@ -1,6 +1,6 @@
 import { Box, Stack, Typography } from "@mui/material"
 import UseAppContext from "../../contexts/AppContext"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { theme } from "../../theme"
 
 import StraightenOutlinedIcon from '@mui/icons-material/StraightenOutlined';
@@ -18,110 +18,73 @@ import NativeSelect from '@mui/material/NativeSelect';
 
 import SquareFootIcon from '@mui/icons-material/SquareFoot';
 import StyledButtonFilledPrimary, { StyledPanelButton } from "../Button/Button";
-import { initializeMeasureWidget } from "../../arcgis/widgets/measurement";
+
 
 import Measurement from "@arcgis/core/widgets/Measurement.js";
 import { view } from "../../arcgis/webmap/webmap";
 
 
+// import { initializeMeasureWidget } from "../../arcgis/widgets/measurement";
+
+
 // this lifted from comparable property search and will needed to be updated for this widget
 const MeasureWidget = () => {
 
-    const {setMeasureWidgetState, measureWidgetState, mapView, setMeasureContainer, loadMeasureTool} = UseAppContext()
+    const {setMeasureWidgetState, panelDisplaySecondary,  measureWidgetState, measureWidgetContainer, loadMeasureWidget, setActiveMeasureTool, setMeasureWidgetContainer} = UseAppContext()
     //use ref for div 
     const measureDiv = useRef(null)
-    const measureWidget = useRef(null)
-    const [ measureValue, setMeasureValue ] = useState(0)
-    const [activeTool, setActiveTool] = useState('distance')
-
-    const [clearButton, setClearButton] = useState(null)
+    const measurementWidget = useRef(null)
 
     useEffect(() => {
-
-        const createMeasureWidget = () => {
+        const createMeasureWidget = async () => {
             if(measureDiv.current){
-                if(!measureWidget.current){
-                    console.log('measureWidget.current ', measureWidget)
-                    measureWidget.current = new Measurement({
-                        areaUnit: "square-us-feet",
-                        linearUnit: "feet",
-                        container: measureDiv.current,
-                        view: view
-                    })
-                    setMeasureWidgetState('measuring')
-                }
-            }        
+                console.log("Setting measure widget container")
+                await setMeasureWidgetContainer(measureDiv.current)
+            }  
         }
         createMeasureWidget();
-    }, [measureWidget, measureDiv])
+    }, [measureDiv]);
 
-    useEffect(() => {
 
-        const updateActiveTool = () =>{
-            if(measureWidget.current && measureWidgetState === 'measuring'){
-                measureWidget.current.activeTool = activeTool
-            }
+    const handleToolChange = async (tool) => {
+
+        console.log("measure widget state: ", measureWidgetState)
+        if(!measureWidgetState){
+            await loadMeasureWidget()
+            setMeasureWidgetState(true)
+            
         }
-        updateActiveTool()
-
-    }, [activeTool, measureWidgetState])
-
-    const newMeasurement = (event) => {
-        // let formattedText  =  event.target.textContent.toLowerCase()
-        // setActiveTool(formattedText) 
         
-        measureWidget.current.startMeasurement()
-        setMeasureWidgetState("measuring")
-    }
+        setActiveMeasureTool(tool)
+   
+    };
 
-    const clearMeasureTool = () => {
-        // setActiveTool(null) 
-        measureWidget.current.clear()
-        setMeasureWidgetState(null) 
-    }
 
-    const updateActiveTool = (event) => {
-        let formattedText  =  event.target.textContent.toLowerCase()
-        setActiveTool(formattedText) 
-    }
-    
     return (
-        <div id="MEASURECONTAINER" style={{width: '100%', height: '100%'}} >
-            <Stack direction="row" gap={2} display={{xs:'none', sm:'flex', md:'flex', lg:'flex' }}> 
-                <StyledPanelButton
-                    text1={'Distance'} text2={'Area'} 
-                    text3={'Location'} 
-                    icon1={<StraightenOutlinedIcon/>} 
-                    icon2={<SquareFootOutlinedIcon/>} 
-                    icon3={<MyLocationOutlinedIcon/>}
-                    onClick={updateActiveTool} 
-                />
+        <Box id="MEASURECONTAINER" display="flex" width="100%"  height= "auto" flexDirection="column" justifyContent="center" alignContent="center">
+            <Stack direction="row" gap={1} sx={{justifyContent:"center"}}>
+                <StyledButtonFilledPrimary
+                    //variant={activeTool === 'distance' ? 'contained' : 'outlined'}
+                    color="primary"
+                    startIcon={<StraightenOutlinedIcon/>}
+                    text={'Distance'}
+                    onClick={() => handleToolChange('distance')}
+                /> 
+
+                <StyledButtonFilledPrimary
+                    //variant={activeTool === 'area' ? 'contained' : 'outlined'}
+                    color="primary"
+                    startIcon={<SquareFootOutlinedIcon/>}
+                    text={'Area'}
+                    onClick={() => handleToolChange('area')}
+                /> 
+
             </Stack>
+
             <Box display="flex" flexDirection="column" alignItems="center" rowGap={1} p={1}> 
-                <Box ref={measureDiv}> </Box>
-                {measureWidget.current && measureWidgetState === 'measuring' ? 
-                    <Box >
-                        <StyledButtonFilledPrimary
-                            variant="contained"
-                            color="primary"
-                            startIcon={<ReplayIcon/>}
-                            text={'Clear'}
-                            onClick={clearMeasureTool}
-                        /> 
-                    </Box>
-                    :
-                    <Box >
-                        <Box sx={{ m: 2  }} >Select a new measurement button.</Box>
-                        <StyledButtonFilledPrimary 
-                            variant="contained"
-                            color="primary"
-                            text={'New Measurement'}
-                            onClick={newMeasurement}
-                        />  
-                    </Box>
-                } 
+                <Box ref={measureDiv} style={{width:"100%", "--calcite-ui-brand" : theme.palette.primary.main}}> </Box>
             </Box>
-        </div>
+        </Box>
             )      
 }
 

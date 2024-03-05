@@ -15,7 +15,7 @@ import InfoIcon from '@mui/icons-material/InfoOutlined';
 
 const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton, panel, primary} ) => {
 
-    const { clearResultsComparables, panelDisplaySecondary, clearResults, panelPrimaryVisible, panelSecondaryVisible, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
+    const { translateText, clearResultsComparables, panelDisplaySecondary, clearResults, panelPrimaryVisible, panelSecondaryVisible, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
 
     //get url parameters
     const [routeParams , setSearchParams] = useSearchParams()
@@ -37,12 +37,12 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
         if(primary===true){
             clearResults()
 
-            setSearchParams({'location': null})
+            setSearchParams({"location": "null", "pin": "null", "search":"null", "address":"null"})
+
+            // const updatedUrl = `${window.location.pathname}`;
     
-            const updatedUrl = `${window.location.pathname}`;
-    
-            // Use history.pushState to update the URL without refreshing the page
-            window.history.pushState({ path: updatedUrl }, '', updatedUrl);
+            // // Use history.pushState to update the URL without refreshing the page
+            // window.history.pushState({ path: updatedUrl }, '', updatedUrl);
 
             clearResultsComparables()
             setPanelSecondaryVisibility(false)
@@ -105,7 +105,6 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
 
     return(
         <Box display="flex" flexDirection="column" rowGap={0}>
-            
             <Stack direction="row">
                     {backButton ? 
                     <IconButton 
@@ -116,12 +115,12 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
                             position:"absolute"
                             }}>
                         <ChevronLeft fontSize="small" sx={{color:theme.main.text.dark}}/>
-                    <Typography color={theme.main.text.dark} variant="subtitle1">Back</Typography>
+                    <Typography color={theme.main.text.dark} variant="subtitle1">{translateText("Back")}</Typography>
                     </IconButton> : null} 
                 <Box display="flex" flex={1} alignItems="center" justifyContent="space-around" p={1} minWidth={150}>
                     <Box bgcolor={theme.main.backgroundColor.grey} p={1} sx={{borderRadius: theme.shape.borderRadius}}>
                         <Typography variant="h5" color={theme.main.text.dark}>
-                            {text}
+                            {translateText(text)}
                             {/* { infoButton ?  <IconButton  target="_blank" > {<InfoIcon/>} </IconButton > : null} */}
                         </Typography>
                     </Box> 
@@ -135,7 +134,7 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
                             position:"absolute",
                             right: 0}}>
                         <CloseOutlined fontSize="small" sx={{color:theme.main.text.dark}}/>
-                    <Typography color={theme.main.text.dark} variant="subtitle1">Close</Typography>
+                    <Typography color={theme.main.text.dark} variant="subtitle1">{translateText("Close")}</Typography>
                     </IconButton> :null}
             </Stack>
             <Stack direction="row" alignItems="center" spacing={1} justifyContent="center" height={30} sx={{display:actionRowVisible ? "flex" : "none"}}>
@@ -144,20 +143,20 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
                         {results ? results: 0}
                     </Typography>
                     <Typography variant="subtitle1" color={theme.main.text.dark} align="center">
-                        {`Result${results?.length > 1 ? 's': ''}`}
+                        {translateText(`Result${results?.length > 1 ? 's': ''}`)}
                     </Typography>
                 </Box> : null}
                 {clearButton ? 
-                <StyledIconButton icon={<HighlightOffIcon fontSize="small" sx={{color: theme.main.text.dark, width: 15}}/>} text={"Clear"} onClick={() => {handleClearResults(primary)}}/>
+                <StyledIconButton icon={<HighlightOffIcon fontSize="small" sx={{color: theme.main.text.dark, width: 15}}/>} text={translateText("Clear")} onClick={() => {handleClearResults(primary)}}/>
                 : null}
                 {exportButton ? 
-                <StyledIconButton icon={<FileDownloadOutlinedIcon fontSize="small" sx={{color: theme.main.text.dark, width: 15}}/>} text={"Export"} onClick={handleExport}/>
+                <StyledIconButton icon={<FileDownloadOutlinedIcon fontSize="small" sx={{color: theme.main.text.dark, width: 15}}/>} text={translateText("Export")} onClick={handleExport}/>
                 : null}
                 {feedbackButton ? 
-                <StyledIconButton icon={<FeedbackOutlinedIcon fontSize="small" sx={{color: theme.main.text.dark, width: 15}}/>} text={"Feedback"} onClick={handleFeedback}/>
+                <StyledIconButton icon={<FeedbackOutlinedIcon fontSize="small" sx={{color: theme.main.text.dark, width: 15}}/>} text={translateText("Feedback")} onClick={handleFeedback}/>
                 : null}
             </Stack>
-            {descriptionText ? <Typography p={2} variant="body">{descriptionText}</Typography>: null}
+            {descriptionText ? <Typography p={2} variant="body">{translateText(descriptionText)}</Typography>: null}
             
 
             <ExportDialog open={openExportDialog} onClose={handleCloseExport}/>

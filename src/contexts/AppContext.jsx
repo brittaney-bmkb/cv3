@@ -72,6 +72,34 @@ export const AppProvider = ({children}) => {
         
     }
 
+    const loadMeasureWidget = async () => {
+
+        const {initializeMeasureWidget} = await import('../arcgis/widgets/measurement')
+        const {measureWidgetContainer} = state
+
+        let measureVisible = await initializeMeasureWidget(measureWidgetContainer)
+        console.log("MEASURING STATE: ", measureVisible)
+        setMeasureWidgetState(measureVisible === "true" ? true : null)
+        
+    }
+
+    const setActiveMeasureTool = async (tool) => {
+
+        const {updateMeasureTool} = await import('../arcgis/widgets/measurement')
+
+        updateMeasureTool(tool)
+        
+    }
+
+    const removeMeasureGraphics = async () => {
+
+        const {clearMeasure} = await import('../arcgis/widgets/measurement')
+
+        clearMeasure()
+        
+    }
+
+
 
     const mapClickEventHandler = async () => {
 
@@ -80,7 +108,7 @@ export const AppProvider = ({children}) => {
         
         const { measureWidgetState, comparableParcels, panelSecondaryVisible, primaryResultFeature, panelPrimaryVisible, panelDisplay, parcelQueryFields, panelDisplaySecondary } = state
 
-        if(measureWidgetState !== "measuring" && measureWidgetState !== "measured"){
+        if(!measureWidgetState){
         const selectedFeatures = await onViewClick(parcelQueryFields)
         console.log("selectedFeatures: ", selectedFeatures)
         let secondaryFeatures = []
@@ -103,7 +131,7 @@ export const AppProvider = ({children}) => {
         else{
             console.log("App context setting selected parcel", selectedFeatures)
             // if(selectedFeatures.length === 1){
-            setPrimaryResultFeature(selectedFeatures.length > 0 ? selectedFeatures : null, false)
+            setPrimaryResultFeature(selectedFeatures, false)
 
             setSearchResults(null, selectedFeatures)
             createGraphic(selectedFeatures, "primary", theme.palette.primary.main)
@@ -233,6 +261,52 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setLanguage = (language) => {
+        dispatch({
+            type:"SET_LANGUAGE",
+             payload: {
+                language: language,
+            }
+        })
+    }
+
+    const setTranslateDialogOpen = (open) => {
+        dispatch({
+            type:"SET_TRANSLATE_DIALOG_OPEN",
+             payload: {
+                translateDialogOpen: open,
+            }
+        })
+    }
+
+    const setTranslationDictionary = (dictionary) => {
+        dispatch({
+            type:"SET_TRANSLATE_DICTIONARY",
+             payload: {
+                textTranslationDictionary: dictionary,
+            }
+        })
+    }
+
+    const setShowMapMoblie = (show) => {
+        dispatch({
+            type:"SET_SHOW_MAP_MOBILE",
+             payload: {
+                showMapMobile: show,
+            }
+        })
+    }
+
+    const setMeasureWidgetContainer = (container) => {
+        dispatch({
+            type:"SET_MEASURE_WIDGET_CONTAINER",
+             payload: {
+                measureWidgetContainer: container,
+            }
+        })
+    }
+
+  
     
     const loadDataDictionary = async () => {
 
@@ -262,8 +336,7 @@ export const AppProvider = ({children}) => {
         console.log("selectedFeature: ", selectedFeature)
 
         setPrimaryResultFeature(selectedFeature[0], false)
-        setSearchParams({"PIN": selectedFeature[0].attributes["PIN14"]})
-
+  
         //update graphic in map
         const { createGraphic } = await import('../arcgis/webmap/webmap')
 
@@ -301,9 +374,9 @@ export const AppProvider = ({children}) => {
         const features = await querySearchResults(searchWidgetResults, parcelQueryFields)
         setSearchResults(searchWidgetResults, features)
 
-        if(!primaryResultFeature){
-            setPrimaryResultFeature(features[0], false)
-        }
+        //if(!primaryResultFeature){
+            setPrimaryResultFeature(features, true)
+        //}
 
         if(panelDisplay !== "resultsList"){
             setPanelDisplay("resultsList")
@@ -316,6 +389,7 @@ export const AppProvider = ({children}) => {
         
         const {panelDisplaySecondary} = state
 
+        setPrimaryResultFeature(null, true)
         setSearchResults(null, null)
         removeGraphics("primary");
         removeGraphics("secondary");
@@ -375,6 +449,28 @@ export const AppProvider = ({children}) => {
         setComparableParcels(nearbyParcels)
     }
 
+    const translateText = (text) => {
+
+        const {language, textTranslationDictionary} = state
+
+        if(text && textTranslationDictionary){
+            //console.log("TRANSLATING TEXT: ", text, language)
+            let translation = Object.values(textTranslationDictionary).filter(textReplace => 
+                textReplace[config.defaultLanguage] === text)
+                .map((textReplace)=> {
+                    return textReplace[language]
+                })
+    
+            //console.log("TRANSLATED TEXT: ", translation)
+            return translation && translation.length > 0 ? translation[0] : text
+        }
+        else{
+            return text
+        }
+
+
+    }
+
 
     const value = {
         mapContainer: state.mapContainer,
@@ -415,7 +511,20 @@ export const AppProvider = ({children}) => {
         addSecondaryFeatureToMap,
         setMeasureWidgetState,
         measureWidgetState: state.measureWidgetState,
-        toggleMapLayer
+        toggleMapLayer,
+        setLanguage,
+        language: state.language,
+        setTranslateDialogOpen,
+        translateDialogOpen: state.translateDialogOpen,
+        textTranslationDictionary: state.textTranslationDictionary,
+        setTranslationDictionary,
+        translateText,
+        showMapMobile: state.showMapMobile,
+        setShowMapMoblie,
+        setMeasureWidgetContainer,
+        measureWidgetContainer: state.measureWidgetContainer,
+        loadMeasureWidget,
+        setActiveMeasureTool
     }
 
 
@@ -436,6 +545,34 @@ export const AppProvider = ({children}) => {
           window.removeEventListener('resize', handleResize);
         };
       }, [window.innerWidth]);
+
+
+      useEffect(() => {
+        const initializeTranslationText = async () => {
+            
+            const { returnTranslatedText } = await import ('../translation/handleTranslation')
+            const { readFeatureLayerData } = await import('../arcgis/layers/layers')
+
+
+            let { features } = await readFeatureLayerData(config.translation_text, ["*"], "english IS NOT NULL", false)
+            let text = await returnTranslatedText(features)
+            setTranslationDictionary(text)
+        }
+    
+         initializeTranslationText();
+
+      }, []);
+
+
+      useEffect(() => {
+
+        if(state.panelDisplaySecondary !== "measureWidget" || state.panelSecondaryVisible === false){
+            console.log("Not measure widget: ", state.measureWidgetState)
+            setMeasureWidgetState(null)
+            removeMeasureGraphics()
+        }
+    
+      }, [state.panelDisplaySecondary, state.panelSecondaryVisible])
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 

@@ -11,17 +11,18 @@ import { theme } from "../../theme"
 import CompareNearby from "../ComparableProperty/CompareNearby"
 import PropertyDetail from "../PropertyDetail/PropertyDetail"
 import PropertyPagniation from "../PropertyDetail/PropertyPagnition";
+import WebMapView from "../WebMapView/WebMapView";
 
 const PanelContent = ({display}) => {
 
-    const { screenWidth, primaryResultFeature, searchFeatures, comparableParcels, secondaryResultFeature } = UseAppContext()
+    const { translateText, screenWidth, primaryResultFeature, searchFeatures, comparableParcels, secondaryResultFeature } = UseAppContext()
 
     switch(display){
         case 'resultsList':
             return (
                 <Box display="flex" flexDirection="column" height="100%" >
                     <PanelHeader
-                        text={"Property Results"} 
+                        text={translateText("Property Results")} 
                         exportButton={true} 
                         clearButton={true} 
                         results={searchFeatures ? searchFeatures.length : 0} 
@@ -93,7 +94,7 @@ const PanelContent = ({display}) => {
             // bottom is set through width. 
             <Box  display="flex" flexDirection="column"  flexGrow={1} minHeight={0} >
                 <PanelHeader 
-                text={"Nearby Properties"} 
+                text={"Nearby Parcels"} 
                 closeButton={true}
                 panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"}
                 backButton={screenWidth < theme.breakpoints.values.lg}
@@ -209,12 +210,12 @@ const PanelContent = ({display}) => {
             // create argument to toggle on and off. 
             return(
                 // <Box bgcolor="white" flex={1} flexDirection="column">
-                <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
-
+                <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0} rowGap={1}>
                     <PanelHeader 
                         text={"Measure"} 
+                        descriptionText={translateText("Start by selecting a measure tool.")}
                         closeButton={screenWidth < theme.breakpoints.values.lg ?  false : true }
-                        backButton={screenWidth < theme.breakpoints.values.lg ? true : false}
+                        panel={"secondary"}
                     />                    
                     <MeasureWidget
                     panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"}
