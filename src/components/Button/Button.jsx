@@ -2,7 +2,7 @@ import { Button, ButtonGroup, Fab, IconButton, Typography, styled } from "@mui/m
 import { theme } from "../../theme"
 import UseAppContext from "../../contexts/AppContext"
 
-const StyledButtonFilledPrimary = ({text, startIcon, endIcon, onClick, textVarient, disabled}) => {
+const StyledButtonFilledPrimary = ({text, startIcon, endIcon, onClick, textVarient, disabled, width}) => {
 
     const {screenWidth} = UseAppContext()
     return(
@@ -14,7 +14,7 @@ const StyledButtonFilledPrimary = ({text, startIcon, endIcon, onClick, textVarie
         startIcon={startIcon}
         endIcon={endIcon}
         onClick={onClick}
-        sx={{textTransform:"none", width:"fit-content", height:30}}
+        sx={{textTransform:"none", width: width ?? 115, height:30}}
         ><Typography variant={textVarient} color={theme.palette.primary.contrastText}>
             {text}
         </Typography>

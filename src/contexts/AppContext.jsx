@@ -77,9 +77,11 @@ export const AppProvider = ({children}) => {
         const {initializeMeasureWidget} = await import('../arcgis/widgets/measurement')
         const {measureWidgetContainer} = state
 
-        let measureVisible = await initializeMeasureWidget(measureWidgetContainer)
-        console.log("MEASURING STATE: ", measureVisible)
-        setMeasureWidgetState(measureVisible === "true" ? true : null)
+        let measureWidget = await initializeMeasureWidget(measureWidgetContainer)
+        //console.log("MEASURING STATE: ", measureVisible)
+
+        return measureWidget
+        //setMeasureWidgetState(measureVisible === "true" ? true : null)
         
     }
 
@@ -568,6 +570,7 @@ export const AppProvider = ({children}) => {
 
         if(state.panelDisplaySecondary !== "measureWidget" || state.panelSecondaryVisible === false){
             console.log("Not measure widget: ", state.measureWidgetState)
+            state.measureWidgetContainer.clear()
             setMeasureWidgetState(null)
             removeMeasureGraphics()
         }

@@ -64,8 +64,10 @@ export const SecondaryPanel = () => {
             bgcolor="white" 
             flex={1}
             flexGrow={1}
-            minWidth={350}   
-            sx={{display:{xs:'none', sm: 'none', md: panelSecondaryVisible? 'flex':"none", lg:panelSecondaryVisible? 'flex':"none"}}}>
+            minWidth={350} 
+            p={2}  
+            sx={{boxSizing:"border-box",
+                display:{xs:'none', sm: 'none', md: panelSecondaryVisible? 'flex':"none", lg:panelSecondaryVisible? 'flex':"none"}}}>
                 <PanelContent id="panel-content" display={panelDisplaySecondary}/>
         </Box>
     )
@@ -73,63 +75,63 @@ export const SecondaryPanel = () => {
 
 // reuse panel function or do a new panel and replace the csss with the one in the bottom. 
 
-export const SecondaryPanelContent = () => {
+// export const SecondaryPanelContent = () => {
 
-    const { panelDisplaySecondary } = UseAppContext()
+//     const { panelDisplaySecondary } = UseAppContext()
 
-    switch(panelDisplaySecondary){
-        case 'comparablePropertySearch':
-            return(
-                // take out display:{xs:'none', sm:'none', md: panelSecondaryVisible ? 'block': null}  
-                // and put them in a wrapper box 
-                // replace the bottom panel 
-                // width id set through flex
-                // bottom is set through width. 
-                <Box bgcolor="white" flex={1} flexDirection="column">
-                    <PanelHeader 
-                    text={"Comparable Property Search"} 
-                    closeButton={true}
-                    panel={"secondary"}
-                    />
-                    <ComparablePropertySearch/>
-                </Box>
-                )
-        case 'measureWidget':
-            // Add panel headers 
-            // add additional arguments for arguments in there
-            // create argument to toggle on and off. 
-            return(
-                <Box bgcolor="white" flex={1} flexDirection="column">
-                    <MeasureWidget/>
-                </Box>
-                )                
-        case 'layersWidget':
-            return(
-                <Box bgcolor="white" flex={1} flexDirection="column">
-                    <LayersWidget/>
-                </Box>
-            )   
-        case 'basemapsWidget':
-            return(
-                <Box bgcolor="white" flex={1} flexDirection="column">
-                    <BasemapWidget/>
-                </Box>
-            )                                           
-        case 'printWidget':
-            return(
-                <Box bgcolor="white" flex={1} flexDirection="column">
-                    <PrintWidget/>
-                </Box>
-            )                                   
-        default:
-            return(
-                <Box bgcolor="blueviolet" flex={1} flexDirection="column">
-                    Right Panel
-                </Box>
-                )
-    }
+//     switch(panelDisplaySecondary){
+//         case 'comparablePropertySearch':
+//             return(
+//                 // take out display:{xs:'none', sm:'none', md: panelSecondaryVisible ? 'block': null}  
+//                 // and put them in a wrapper box 
+//                 // replace the bottom panel 
+//                 // width id set through flex
+//                 // bottom is set through width. 
+//                 <Box bgcolor="white" flex={1} flexDirection="column">
+//                     <PanelHeader 
+//                     text={"Comparable Property Search"} 
+//                     closeButton={true}
+//                     panel={"secondary"}
+//                     />
+//                     <ComparablePropertySearch/>
+//                 </Box>
+//                 )
+//         case 'measureWidget':
+//             // Add panel headers 
+//             // add additional arguments for arguments in there
+//             // create argument to toggle on and off. 
+//             return(
+//                 <Box bgcolor="white" flex={1} flexDirection="column">
+//                     <MeasureWidget/>
+//                 </Box>
+//                 )                
+//         case 'layersWidget':
+//             return(
+//                 <Box bgcolor="white" flex={1} flexDirection="column">
+//                     <LayersWidget/>
+//                 </Box>
+//             )   
+//         case 'basemapsWidget':
+//             return(
+//                 <Box bgcolor="white" flex={1} flexDirection="column">
+//                     <BasemapWidget/>
+//                 </Box>
+//             )                                           
+//         case 'printWidget':
+//             return(
+//                 <Box bgcolor="white" flex={1} flexDirection="column">
+//                     <PrintWidget/>
+//                 </Box>
+//             )                                   
+//         default:
+//             return(
+//                 <Box bgcolor="blueviolet" flex={1} flexDirection="column">
+//                     Right Panel
+//                 </Box>
+//                 )
+//     }
     
-}
+// }
 
 export const LeftPanel = () => {
 
@@ -169,7 +171,8 @@ export const LeftPanel = () => {
             flex={1}
             minWidth={350}  
             flexDirection="column" 
-            sx={{display:{xs:'none', sm: panelPrimaryVisible ? 'flex' : 'none'}}}>
+            p={2}  
+            sx={{boxSizing:"border-box", display:{xs:'none', sm: panelPrimaryVisible ? 'flex' : 'none'}}}>
                 <PanelContent id="panel-content" display={panelDisplay}/>
         </Box>
         
