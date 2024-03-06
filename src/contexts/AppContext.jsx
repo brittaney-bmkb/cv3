@@ -412,12 +412,12 @@ export const AppProvider = ({children}) => {
         }
     }
 
-    const searchNearbyProperties = async (searchDistance) => {
+    const searchNearbyProperties = async (searchDistance, units) => {
 
         const { nearbyProperties } = await import('../arcgis/webmap/webmap')
         const { primaryResultFeature, parcelQueryFields } = state  
         console.log(`Searching for properties within ${searchDistance}`)
-        let nearbyParcels = await nearbyProperties( searchDistance, primaryResultFeature, parcelQueryFields)
+        let nearbyParcels = await nearbyProperties( searchDistance, units, primaryResultFeature, parcelQueryFields)
         
         setComparableParcels(nearbyParcels)
     }
