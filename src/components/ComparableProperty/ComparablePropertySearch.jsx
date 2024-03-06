@@ -81,7 +81,49 @@ const ComparablePropertySearch= () => {
 
     function handleSetQuery(){
         //AND BCLASS = '${bClass}'
-        let query =`township_name = '${sourceParcel.attributes['township_name']}' AND NBHD = ${sourceParcel.attributes['NBHD']} AND BCLASS = '${sourceParcel.attributes['BCLASS']}' AND (BLDGSQFT >= ${buildingSqFtMin} AND BLDGSQFT <= ${buildingSqFtMax}) AND (LANDSF >= ${landSqFtMin} AND LANDSF <= ${landSqFtMax} ) AND (BLDGAGE >= ${ageMin} AND BLDGAGE <= ${ageMax} ) AND PIN14 <> '${sourceParcel.attributes['PIN14']}'`
+        let query =`township_name = '${sourceParcel.attributes['township_name']}' AND NBHD = ${sourceParcel.attributes['NBHD']} AND BCLASS = '${sourceParcel.attributes['BCLASS']}' AND PIN14 <> '${sourceParcel.attributes['PIN14']}'` 
+        
+        if(buildingSqFtMin && buildingSqFtMin > 0 && buildingSqFtMax && buildingSqFtMax > 0){
+            query = query + ` AND (BLDGSQFT >= ${buildingSqFtMin} AND BLDGSQFT <= ${buildingSqFtMax})`
+        } 
+        else if(!buildingSqFtMin || buildingSqFtMin === 0){
+            if(buildingSqFtMax && buildingSqFtMax > 0){
+                query = query + ` AND BLDGSQFT <= ${buildingSqFtMax}`
+            }
+        }
+        else if(!buildingSqFtMax || buildingSqFtMax === 0 ){
+            if(buildingSqFtMin && buildingSqFtMin > 0){
+                query = query + ` AND BLDGSQFT >= ${buildingSqFtMin}`
+            }
+        }
+
+        if(landSqFtMin && landSqFtMin > 0 && landSqFtMax && landSqFtMax > 0){
+            query = query + ` AND (LANDSF >= ${landSqFtMin} AND LANDSF <= ${landSqFtMax})`
+        } 
+        else if(!landSqFtMin || landSqFtMin === 0){
+            if(landSqFtMax && landSqFtMax > 0){
+                query = query + ` AND LANDSF <= ${landSqFtMax}`
+            }
+        }
+        else if(!landSqFtMax || landSqFtMax === 0 ){
+            if(landSqFtMin && landSqFtMin > 0){
+                query = query + ` AND LANDSF >= ${landSqFtMin}`
+            }
+        }
+
+        if(ageMin && ageMin > 0 && ageMax && ageMax > 0){
+            query = query + ` AND (BLDGAGE >= ${ageMin} AND BLDGAGE <= ${ageMax})`
+        } 
+        else if(!ageMin || ageMin === 0){
+            if(ageMax && ageMax > 0){
+                query = query + ` AND BLDGAGE <= ${ageMax}`
+            }
+        }
+        else if(!ageMax || ageMax === 0 ){
+            if(ageMin && ageMin > 0){
+                query = query + ` AND BLDGAGE >= ${ageMin}`
+            }
+        }
         
         query = ['None','Any'].includes(constructionType) ? query :  query + ` AND bldg_const_desc = '${constructionType}'`
 
@@ -101,18 +143,18 @@ const ComparablePropertySearch= () => {
             let parcelBldgSqFt = attributes["BLDGSQFT"]
             let buildingRange= parcelBldgSqFt * .1
             setBuildingSqFtMax(parcelBldgSqFt+buildingRange)
-            setBuildingSqFtMin(parcelBldgSqFt-buildingRange  > 0 ? 0 : parcelBldgSqFt-buildingRange)
+            setBuildingSqFtMin(parcelBldgSqFt-buildingRange  < 0 ? 0 : parcelBldgSqFt-buildingRange)
 
             let parcelLandSqFt = attributes["LANDSF"]
             let landRange= parcelLandSqFt * .1
             setLandSqFtMax(parcelLandSqFt+landRange)
-            setLandSqFtMin(parcelLandSqFt-landRange > 0 ? 0 : parcelLandSqFt-landRange)
+            setLandSqFtMin(parcelLandSqFt-landRange < 0 ? 0 : parcelLandSqFt-landRange)
 
             
             let parcelAge = attributes["BLDGAGE"]
             let ageRange = 15
             setAgeMax(parcelAge+ageRange)
-            setAgeMin(parcelAge-ageRange > 0 ? 0 : parcelAge-ageRange )
+            setAgeMin(parcelAge-ageRange < 0 ? 0 : parcelAge-ageRange )
         }
 
     }, [sourceParcel])
@@ -161,7 +203,7 @@ const ComparablePropertySearch= () => {
             messageErrors.push("Building Square Footage maximum")
         }
 
-        if(!landSqFtMin && landSqFtMin <0){
+        if(!landSqFtMin && landSqFtMin < 0){
             setLandSqFtMinError(true)
             messageErrors.push("Land Square Footage minimum")
         }
@@ -181,7 +223,7 @@ const ComparablePropertySearch= () => {
             messageErrors.push("Building Age maximum")
         }
 
-        if(buildingSqFtMin >=0 && landSqFtMin >=0  && ageMin >=0  && buildingSqFtMax > 0 && landSqFtMax > 0 && ageMax > 0){
+        if(buildingSqFtMin >=0 && landSqFtMin >= 0  && ageMin >= 0  && buildingSqFtMax >= 0 && landSqFtMax >= 0 && ageMax >= 0){
             handleSetQuery()
         }
         else{
