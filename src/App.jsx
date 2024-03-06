@@ -13,6 +13,7 @@ import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import PanelMobile from './components/Panel/Panel'
 import Notifications from './components/Notifications/Notifications'
 import TranslateMenu from './components/NavBar/TranslateMenu'
+import { config } from './data/config'
 
 function App() {
 
@@ -44,7 +45,7 @@ function App() {
   return (
     <AppProvider>
       <Box display="flex" flexDirection="column" height="100vh">
-          <Notifications/>
+        {config.showBanner === true ? <Notifications/> : null}
           <NavBar/>
         <Stack id="main-stack" direction="row" justifyContent="space-between" flexGrow={1} minHeight={0}>
           <LeftPanel/>

@@ -72,33 +72,6 @@ export const AppProvider = ({children}) => {
         
     }
 
-    const loadMeasureWidget = async () => {
-
-        const {initializeMeasureWidget} = await import('../arcgis/widgets/measurement')
-        const {measureWidgetContainer} = state
-
-        let measureVisible = await initializeMeasureWidget(measureWidgetContainer)
-        console.log("MEASURING STATE: ", measureVisible)
-        setMeasureWidgetState(measureVisible === "true" ? true : null)
-        
-    }
-
-    const setActiveMeasureTool = async (tool) => {
-
-        const {updateMeasureTool} = await import('../arcgis/widgets/measurement')
-
-        updateMeasureTool(tool)
-        
-    }
-
-    const removeMeasureGraphics = async () => {
-
-        const {clearMeasure} = await import('../arcgis/widgets/measurement')
-
-        clearMeasure()
-        
-    }
-
 
 
     const mapClickEventHandler = async () => {
@@ -297,11 +270,11 @@ export const AppProvider = ({children}) => {
         })
     }
 
-    const setMeasureWidgetContainer = (container) => {
+    const setMeasureWidget = (widget) => {
         dispatch({
-            type:"SET_MEASURE_WIDGET_CONTAINER",
+            type:"SET_MEASURE_WIDGET",
              payload: {
-                measureWidgetContainer: container,
+                measureWidget: widget,
             }
         })
     }
@@ -521,10 +494,9 @@ export const AppProvider = ({children}) => {
         translateText,
         showMapMobile: state.showMapMobile,
         setShowMapMoblie,
-        setMeasureWidgetContainer,
-        measureWidgetContainer: state.measureWidgetContainer,
-        loadMeasureWidget,
-        setActiveMeasureTool
+        setMeasureWidget,
+        measureWidget: state.measureWidget,
+        
     }
 
 
@@ -567,9 +539,12 @@ export const AppProvider = ({children}) => {
       useEffect(() => {
 
         if(state.panelDisplaySecondary !== "measureWidget" || state.panelSecondaryVisible === false){
-            console.log("Not measure widget: ", state.measureWidgetState)
+            console.log("Measure Widget: ", state.measureWidget)
+            if(state.measureWidget){
+                state.measureWidget.clear()
+            }
+            
             setMeasureWidgetState(null)
-            removeMeasureGraphics()
         }
     
       }, [state.panelDisplaySecondary, state.panelSecondaryVisible])

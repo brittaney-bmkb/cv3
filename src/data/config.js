@@ -1,6 +1,6 @@
 export const config = {
     //show alert banner
-    showBanner: true,
+    showBanner: false,
     bannerMessage:"Welcome to the CookViewer 3.0 BETA - This application and the data being presented are still undergoing development and refinement. Please refer to the previous version (link here) of this application for more consistent results.",
     bannerColor:"#EDBE1C",
     //NAVBAR
