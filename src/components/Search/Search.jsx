@@ -170,8 +170,6 @@ const Search = () => {
                     }
                 }
 
-                
-                
                 searchWidget.current.on("select-result", function(){
                     console.log("The selected search result: ", searchWidget.current.selectedResult)
                     //setSearchResults(searchWidget.current.selectedResult)
@@ -187,49 +185,6 @@ const Search = () => {
                     } 
                 })
 
-                // searchWidget.current.on("suggest-start", async function(){
-                //     await searchWidget.current.when();
-                //     console.log("suggest-start", searchWidget.current.suggestions);
-
-                    
-                //     let suggestions = searchWidget.current.suggestions
-
-                //     console.log(" Suggestions ", suggestions)
-                //     if(suggestions){
-                //     const suggestionsLayerResults = suggestions?.filter(item => {
-                //         console.log("Item: ", item)
-                //             const hasAddressLocator =  item.source.hasOwnProperty("url") &&  item.source.url.includes('AddressLocator')
-                //             console.log("Item hasAddressLocator: ", hasAddressLocator)
-                //             //&& item.source.url.includes('AddressLocator');
-                //              if(!hasAddressLocator && item.results.length > 0){
-                //                 return item
-                //              }
-                //         })
-                //         .map(item => {
-                //             return item.results
-                //         })
-
-                //         console.log("Layer Results: ", suggestionsLayerResults)
-
-                //         const filteredSuggestions = suggestions?.filter(item => {
-                //             if(suggestionsLayerResults.length > 0){
-                //                 const hasAddressLocator =  item.source.hasOwnProperty("url") &&  item.source.url.includes('AddressLocator')
-                //                 // Include the item in the filtered array if both conditions are false
-                //                 return (!hasAddressLocator);
-                //             }
-                //             else{
-                //                 return item
-                //             }
-                //           });
-    
-                //         console.log("filtered Suggestions ", filteredSuggestions)
-                //         searchWidget.current.suggestions = filteredSuggestions
-                //         }
-                //     })
-
-                    
-                  
-                
                 //to do enable clear results to empty searchFeatures array
                 searchWidget.current.on("search-clear", function(event){
                     // The results are stored in the event Object[]
