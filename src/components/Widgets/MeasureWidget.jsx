@@ -27,8 +27,8 @@ import AreaMeasurement2D from "@arcgis/core/widgets/AreaMeasurement2D.js";
 
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 
-const linearUnitOptions = [
-    "inches", "us-feet", "yards", "miles", "meters", "kilometers"
+export const linearUnitOptions = [
+    "us-feet", "yards", "miles", "meters", "kilometers"
 ]
 
 const areaUnitOptions = [
