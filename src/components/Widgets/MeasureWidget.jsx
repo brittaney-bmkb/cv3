@@ -209,7 +209,7 @@ const MeasureWidget = () => {
                 <StyledButtonFilledPrimary
                     color="primary"
                     startIcon={<StraightenOutlinedIcon/>}
-                    text={'Distance'}
+                    text={translateText('Distance')}
                     textVarient={"body2"}
                     active={activeTool === "distance" ? true: false}
                     onClick={() => startMeasuring("distance")}
@@ -219,7 +219,7 @@ const MeasureWidget = () => {
                     //variant={activeTool === 'area' ? 'contained' : 'outlined'}
                     color="primary"
                     startIcon={<SquareFootOutlinedIcon/>}
-                    text={'Area'}
+                    text={translateText('Area')}
                     textVarient={"body2"}
                     active={activeTool === "area" ? true: false}
                     onClick={() => startMeasuring("area")}
