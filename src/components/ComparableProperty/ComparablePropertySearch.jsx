@@ -34,7 +34,7 @@ const constructionTypes = [
     "Stucco"
 ]
 
-const radiusTypes = {
+export const radiusTypes = {
     "None": "None",
     "Mile": 1,
     "Half Mile": .5,

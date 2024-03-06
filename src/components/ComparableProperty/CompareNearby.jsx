@@ -1,5 +1,5 @@
 import { Box, Button, TextField, Typography } from "@mui/material"
-import { CustomStyledTextField } from "./ComparablePropertySearch"
+import { CustomStyledTextField, radiusTypes } from "./ComparablePropertySearch"
 import { useState } from "react"
 import UseAppContext from "../../contexts/AppContext"
 import StyledButtonFilledPrimary from "../Button/Button"
@@ -17,6 +17,7 @@ const CompareNearby = () => {
     }
 
     function handleSearchRadius(){
+        console.log("nearby value: ", searchRadius)
         searchNearbyProperties(searchRadius)
 
         if(screenWidth < theme.breakpoints.values.lg){
@@ -30,23 +31,40 @@ const CompareNearby = () => {
         
     }
 
+    const radiusDropdownOptions = Object.entries(radiusTypes)
+    .filter(([radiusLabel, radiusValue]) => (radiusLabel !== "None"))
+    .map(([radiusLabel, radiusValue]) => (
+        <option key={radiusLabel} value={radiusValue}>
+            <Typography variant="body1" fontFamily="barlow">
+                {translateText(radiusLabel)}
+            </Typography>
+        </option>
+    ))
+
     return(
         <Box display="flex" flexDirection="column" p={2} rowGap={1} component="form"  flexGrow={1} minHeight={0}>
             <Typography variant="body1">
                  {translateText("Select surrounding parcels within")}: 
             </Typography>
             <Box display="flex" columnGap={2} alignItems="center" justifyContent="end">
-            <CustomStyledTextField
-            id="search-radius"
-            required
-            variant="outlined" 
-            fullWidth 
-            margin="dense" 
-            size="small"
-            type="number"
-            value={searchRadius}
-            onInput={handleInput}
-            />
+            <CustomStyledTextField 
+                select
+                id={"radius-type"}
+                variant="outlined" 
+                fullWidth 
+                margin="dense" 
+                size="small"
+                type="text"
+                onChange={(event) => {
+                    console.log("radius event: ", event.target.value)
+                    setSearchRadius(parseFloat(event.target.value))
+                }}
+                SelectProps={{
+                    native: true,
+                  }}
+                >
+                    {radiusDropdownOptions}
+                </CustomStyledTextField>
             <Typography variant="body1">
                  {translateText("miles")} 
             </Typography>
