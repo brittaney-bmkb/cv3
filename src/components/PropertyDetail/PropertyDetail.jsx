@@ -145,6 +145,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         >
         <StyledButtonFilledPrimary 
         key={key}
+        width={200}
         text={translateText("Comparable Properties")}
         onClick={() => {handleClick("comparablePropertySearch")}}
         variant={"h5"}
@@ -157,6 +158,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         <Box pt={1}>
         <StyledButtonFilledPrimary 
         key={key}
+        width={200}
         text={translateText("Nearby Parcels")}
         onClick={() => {handleClick("nearbyProperties")}}
         variant={"h5"}
@@ -251,17 +253,18 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                             data.attributes['field'] === "incorp_unincorp_state" ?
                             incorp_unincorp(property) :
 
-                            data.attributes['field'] === "zoning_info" ?
+                            data.attributes['field'] === "zoning_info"?
+                            
                             <Box 
                             display="flex"
                             >
                                 <Typography align={textAlignment} variant="h5" sx={{color: theme.main.text.dark }}>
-                                {zoningMessage[property.attributes["PIN14"]]} 
+                                {zoningMessage[property.attributes["PIN14"]] !== "Please contact municipality" ? returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], property?.attributes) : zoningMessage[property.attributes["PIN14"]]} 
                                 </Typography>
     
                             </Box>: 
-    
-                        data.attributes['hyperlink_text'] && data.attributes['hyperlink_params'] && data.attributes['hyperlink_url'] ?
+                        data.attributes['field'] === "find_my_district_link" ?
+                        // data.attributes['hyperlink_text'] && data.attributes['hyperlink_params'] && data.attributes['hyperlink_url'] ?
                             returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], property?.attributes) :
                             <Box 
                             key={data.attributes["field"]}
