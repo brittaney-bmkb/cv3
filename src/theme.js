@@ -67,7 +67,7 @@ export const theme = createTheme({
         },
         subtitle2: {
             fontSize: 14,
-            fontWeight:500
+            fontWeight:400
         },
         hyperLink:{
             fontSize: 14,
@@ -193,16 +193,16 @@ theme.typography.h6 = {
 
 theme.typography.body1 = {
     [theme.breakpoints.up('md')]: {
-        fontSize: 16,
-        
-    },
-    [theme.breakpoints.down('md')]: {
         fontSize: 15,
         
     },
-    // [theme.breakpoints.down('sm')]: {
-    //     fontSize: 20
-    // }
+    [theme.breakpoints.down('md')]: {
+        fontSize: 14,
+        
+    },
+    [theme.breakpoints.down('sm')]: {
+        fontSize: 13
+    }
 }
 
 theme.typography.body2 = {
@@ -216,7 +216,8 @@ theme.typography.body2 = {
         fontWeight: 500,
 
     },
-    // [theme.breakpoints.down('sm')]: {
-    //     fontSize: 20
-    // }
+    [theme.breakpoints.down('sm')]: {
+        fontSize: 13,
+        fontWeight: 500,
+    }
 }

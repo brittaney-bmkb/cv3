@@ -189,10 +189,11 @@ export const BottomPanel = () => {
     <Box 
     id="bottom-panel"
     minHeight={0}
-    height="50vh"
+    height="40vh"
     bgcolor="white" 
     flexDirection="column"  
-    sx={{
+    p={2}  
+    sx={{boxSizing:"border-box",
         display:{
             xs:panelSecondaryVisible && widgetDisplayed ? 'flex' :'none', 
             sm:panelSecondaryVisible && widgetDisplayed ? 'flex' :'none', 
