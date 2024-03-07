@@ -378,6 +378,7 @@ export const AppProvider = ({children}) => {
         setPanelDisplay("resultsList")
 
         if(["comparablePropertySearch", "nearbyProperties", "resultsListComparables", "resultsListNearby", "propertyDetailComparable", "propertyDetailNearby"].includes(panelDisplaySecondary)){
+            console.log("CLEAR RESULTS: closing secondary panel. Secondary Panel =", panelDisplaySecondary )
             setPanelSecondaryVisibility(false)
         }
 
@@ -556,9 +557,10 @@ export const AppProvider = ({children}) => {
             console.log("Measure Widget: ", state.measureWidget)
             if(state.measureWidget){
                 state.measureWidget.clear()
+                setMeasureWidgetState(null)
             }
             
-            setMeasureWidgetState(null)
+            
         }
     
       }, [state.panelDisplaySecondary, state.panelSecondaryVisible])

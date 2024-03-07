@@ -15,7 +15,7 @@ import InfoIcon from '@mui/icons-material/InfoOutlined';
 
 const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton, panel, primary} ) => {
 
-    const { translateText, clearResultsComparables, panelDisplaySecondary, clearResults, panelPrimaryVisible, panelSecondaryVisible, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
+    const { translateText, clearResultsComparables, panelDisplaySecondary, clearResults, panelPrimaryVisible, panelSecondaryVisible, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, comparableParcels } = UseAppContext()
 
     //get url parameters
     const [routeParams , setSearchParams] = useSearchParams()
@@ -32,24 +32,25 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
         }
     },[results, exportButton, clearButton, feedbackButton])
 
-    function handleClearResults(primary){
+    const handleClearResults = async (primary) => {
 
         if(primary===true){
-            clearResults()
+            await clearResults()
+            console.log("CLEARING SEARCH RESULTS FROM HEADER BUTTON")
+            setSearchParams({"search": ""})
+            setSearchParams({"pin": ""})
+            setSearchParams({"address": ""})
+            setSearchParams({"location": ""})
 
-            setSearchParams({"location": "null", "pin": "null", "search":"null", "address":"null"})
-
-            // const updatedUrl = `${window.location.pathname}`;
+            const updatedUrl = `${window.location.pathname}`;
     
             // // Use history.pushState to update the URL without refreshing the page
-            // window.history.pushState({ path: updatedUrl }, '', updatedUrl);
+            window.history.pushState({ path: updatedUrl }, '', updatedUrl);
 
-            clearResultsComparables()
-            setPanelSecondaryVisibility(false)
         }
-        else{
+
+        if(comparableParcels && comparableParcels.length > 0){
             clearResultsComparables()
-            setPanelSecondaryVisibility(false)
         }
 
 
