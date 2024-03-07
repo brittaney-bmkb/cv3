@@ -27,12 +27,12 @@ import AreaMeasurement2D from "@arcgis/core/widgets/AreaMeasurement2D.js";
 
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 
-const linearUnitOptions = [
-    "inches", "us-feet", "yards", "miles", "meters", "kilometers"
+export const linearUnitOptions = [
+    "feet", "yards", "miles", "meters", "kilometers"
 ]
 
 const areaUnitOptions = [
-    "square-inches", "square-us-feet", "square-yards", "square-miles", "square-meters", "square-kilometers", "acres"
+    "square-inches", "square-feet", "square-yards", "square-miles", "square-meters", "square-kilometers", "acres"
 ]
 
 // this lifted from comparable property search and will needed to be updated for this widget

@@ -279,6 +279,15 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setIsQuerying = (quering) => {
+        dispatch({
+            type:"SET_IS_QUERYING",
+            payload: {
+                isQuerying: quering 
+            }
+        })
+    }
+
   
     
     const loadDataDictionary = async () => {
@@ -412,14 +421,17 @@ export const AppProvider = ({children}) => {
         }
     }
 
-    const searchNearbyProperties = async (searchDistance) => {
-
+    const searchNearbyProperties = async (searchDistance, units) => {
+        setIsQuerying(true)
         const { nearbyProperties } = await import('../arcgis/webmap/webmap')
         const { primaryResultFeature, parcelQueryFields } = state  
         console.log(`Searching for properties within ${searchDistance}`)
-        let nearbyParcels = await nearbyProperties( searchDistance, primaryResultFeature, parcelQueryFields)
+
         
+        let nearbyParcels = await nearbyProperties( searchDistance, units, primaryResultFeature, parcelQueryFields)
+    
         setComparableParcels(nearbyParcels)
+        setIsQuerying(false)
     }
 
     const translateText = (text) => {
@@ -496,6 +508,8 @@ export const AppProvider = ({children}) => {
         setShowMapMoblie,
         setMeasureWidget,
         measureWidget: state.measureWidget,
+        isQuerying: state.isQuerying,
+        setIsQuerying
         
     }
 

@@ -24,7 +24,8 @@ export const initialState = {
     translateDialogOpen: false,
     textTranslationDictionary: null,
     showMapMobile: true,
-    measureWidget: null
+    measureWidget: null,
+    isQuerying: null
 }
 
 const AppReducer = (state, action) => {
@@ -161,6 +162,12 @@ const AppReducer = (state, action) => {
             return {
                 ...state,
                 measureWidget: payload.measureWidget,
+            }
+        case "SET_IS_QUERYING":
+            console.log("SET_IS_QUERYING")
+            return {
+                ...state,
+                isQuerying: payload.isQuerying,
             }
         default:
             throw new Error(`No valid selection made`)

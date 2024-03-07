@@ -1,9 +1,13 @@
-import { Box, List, ListItem, Typography } from "@mui/material"
+import { Box, List, ListItem, Stack, Typography } from "@mui/material"
 import ResultCard from "../ResultCard/ResultCard"
 import { theme } from "../../theme"
+import UseAppContext from "../../contexts/AppContext"
+import LinearProgress from '@mui/material/LinearProgress';
+import { CalciteLoader } from "@esri/calcite-components-react";
 
 const ResultsList = ({results, primaryLableColor, noResultsMessage}) => {
 
+    const { isQuerying, translateText } = UseAppContext()
     return(
         <List sx={{
             height:"100%", 
@@ -11,7 +15,13 @@ const ResultsList = ({results, primaryLableColor, noResultsMessage}) => {
             flexDirection:"column", 
             flex: 1
             }}>
-            {results && results.length > 0 ? 
+            {
+            // isQuerying === true ? 
+            //     <Box display="flex" width='100%' alignItems="center" justifyContent="center" p={1}>
+                    
+            //     </Box>
+            //     : 
+            results && results.length > 0 ? 
             results.map((result, i) => {
                 return(
                     <ListItem key={result.attributes['PIN14_dash']}>
@@ -24,8 +34,16 @@ const ResultsList = ({results, primaryLableColor, noResultsMessage}) => {
                         />
                     </ListItem>
                 )
-            }) : <Box display="flex" width='100%' alignItems="center" justifyContent="center" p={1}>
+            }) : <Box display="flex" width='100%' alignItems="center" justifyContent="center" flexDirection="column" p={1}>
+                    {isQuerying === true ? 
+                    <Stack direction="column" >
+                    <CalciteLoader/>
+                    <Typography variant="h6" color={theme.palette.primary.main}>{translateText("Querying parcels")}</Typography>
+                    </Stack>
+                    :
                     <Typography variant="h6" color={theme.palette.primary.main}>{noResultsMessage}</Typography>
+                    }
+                    
                 </Box>}
             
         </List>

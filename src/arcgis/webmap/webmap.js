@@ -249,17 +249,6 @@ export async function querySearchResults(result, outFields){
   await zoomToExtent(features)
 
   createGraphic(features, "primary", "darkBlue")    
-  // console.log("Queried Features: ", features)
-
-  // let feature = features[0]
-  // // //get pin ids 
-  // const attributeKeys = Object.keys(feature.attributes);
-
-  // features.map((feature) => {
-    
-  //   layerView.highlight(feature.attributes[attributeKeys[0]])
-  //   return feature.attributes["PIN14"]
-  // })
 
   return features
 
@@ -355,13 +344,13 @@ export async function createGraphic(features, removeGraphicName, color, secondar
     return features
   }
 
-  export async function nearbyProperties(searchDistance, feature, queryFields){
+  export async function nearbyProperties(searchDistance, units, feature, queryFields){
 
     let query = new Query()
     query.geometry = feature.geometry
     query.spatialRelationship = "intersects"
     query.distance = searchDistance
-    query.units = "miles"
+    query.units = units
     query.returnGeometry = true
     query.outFields = queryFields
 
