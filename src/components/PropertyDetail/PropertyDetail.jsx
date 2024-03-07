@@ -222,7 +222,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
             return(
                 <Box key={data.attributes['field']} display="flex" flexDirection="column" width="100%">
 
-                <Box 
+                {index !== 0 ? <Box 
                 display="flex"
                 justifyContent={textAlignment}
                 pb={category !== "top" ? 1 :0}
@@ -230,7 +230,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                     <Typography variant="h6">
                         {translateText(data.attributes['label'])}
                     </Typography>
-                </Box>
+                </Box>: null}
                 
                 <Box display="flex" flexDirection="row" columnGap={3} justifyContent={category=="top"? "center" : textAlignment}>
                     {properties.map((property, propIndex) => {
