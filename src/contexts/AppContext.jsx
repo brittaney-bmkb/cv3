@@ -295,7 +295,7 @@ export const AppProvider = ({children}) => {
         const { readFeatureLayerData } = await import('../arcgis/layers/layers')
 
         let { features } = await readFeatureLayerData(config.data_dictionary, ["*"], "field IS NOT NULL")
-
+        console.log("DATA DICTIONARY: ", features)
         setDataDictionary(features)
 
         //to do make sure pin10 id field is included

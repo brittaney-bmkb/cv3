@@ -3,7 +3,7 @@ import { MenuItem, Select } from "@mui/material"
 const SelectDropdown = ({labelId, id, value, label, handleChange, items}) => {
 
     const menuItems = items.map((item) => (
-        <MenuItem value={item}>{item}</MenuItem>
+        <MenuItem key={item} value={item}>{item}</MenuItem>
     ))
 
     return(

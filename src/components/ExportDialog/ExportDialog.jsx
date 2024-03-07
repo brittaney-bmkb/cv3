@@ -1,12 +1,17 @@
-import { Box, Collapse, Dialog, DialogContent, DialogTitle, Divider, IconButton, Input, Stack, Switch, TextField, Typography } from "@mui/material"
+import { Box, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Input, Stack, Switch, TextField, Typography } from "@mui/material"
 import { theme } from "../../theme"
 import { useState } from "react"
 import SelectDropdown from "../SelectDropdown/SelectDropdown"
 import { config } from "../../data/config"
 import { CloseOutlined } from "@mui/icons-material"
+import UseAppContext from "../../contexts/AppContext"
+import { prepareDataForExport } from "../../export/export"
+import StyledButtonFilledPrimary from "../Button/Button"
 
 const ExportDialog = ({open, onClose}) => {
 
+    const { primaryResultFeature, dataDictionary, translateText } = UseAppContext()
+    const [isExporting, setIsExporting] = useState(false)
     const [ includeResults, setIncludeResults ] = useState(false)
     const [ includePdf, setIncludePdf ] = useState(false)
     const [ includeExcel, setIncludeExcel ] = useState(false)
@@ -18,6 +23,13 @@ const ExportDialog = ({open, onClose}) => {
     function handleLayoutOptionChange(event){
         setLayoutValue(event.target.value)
     }
+
+    const performExport = async () => {
+        setIsExporting(true)
+        await prepareDataForExport(primaryResultFeature, dataDictionary, "CookviewerResults")
+        setIsExporting(false)
+    }
+    
     const exportOptions = (
         <Box display={"flex"} flexDirection="column" >
             <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>Choose format:</Typography>
@@ -95,6 +107,11 @@ const ExportDialog = ({open, onClose}) => {
                 </Box>
             </DialogContent>
             
+            <DialogActions>
+                <StyledButtonFilledPrimary 
+                text={translateText(isExporting ? "Exporting..." : "Export")} 
+                onClick={performExport}/>
+            </DialogActions>
     
         </Dialog>
     )
