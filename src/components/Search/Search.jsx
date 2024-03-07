@@ -15,20 +15,10 @@ const Search = () => {
     //get url parameters
     const [routeParams, setSearchParams] = useSearchParams();
 
-    let [genericSearch, setGenericSearch] = useState(
-        routeParams.get("search")
-    )
-    let [pinSearch, setPinSearch] = useState(
-        routeParams.get("pin")
-    )
-
-    let [addressSearch, setAddressSearch] = useState(
-        routeParams.get("address")
-    )
-
-    let [locationSearch, setLocationSearch] = useState()
-
-    const { location, search } = useParams()
+    let [genericSearch, setGenericSearch] = useState(null)
+    let [pinSearch, setPinSearch] = useState(null)
+    let [addressSearch, setAddressSearch] = useState(null)
+    let [locationSearch, setLocationSearch] = useState(null)
 
     //create a reference to the search  DOM  element
     const searchDiv = useRef(null)
@@ -44,19 +34,28 @@ const Search = () => {
 
     useEffect(()=>{
         const updateLocationParam = () => {
+
+            console.log("GETTING URL PARAM")
+
             setLocationSearch(routeParams.get("location"))
 
             setPinSearch(routeParams.get("pin"))
+
+            setGenericSearch(routeParams.get("search"))
+
+            setAddressSearch(routeParams.get("address"))
         }
+
         updateLocationParam()
-    },[routeParams])
+
+    },[])
 
     useEffect(() => {
         //When primary feature result changes update the search param
         //from mouse click
-
+        console.log("USE EFFECT: checking for primary result feature and new search")
         if(primaryResultFeature && newSearch === false){
-            console.log("FEATURES ", primaryResultFeature)
+            console.log("USE EFFECT FEATURES found: ", primaryResultFeature)
             
             //let attributes = Array.isArray(primaryResultFeature) ? primaryResultFeature[0].attributes : primaryResultFeature.attributes
             let features = Array.isArray(primaryResultFeature) ? primaryResultFeature : [primaryResultFeature]
@@ -94,25 +93,34 @@ const Search = () => {
     
                 //not a search event result
                 //map click result or result card result
-                console.log("New Search", newSearch)
-                if(newSearch === false){
-                    setSearchParams()
-                    console.log("PARAM : ", param)
-                    setSearchParams(param)
-                    
-                    if(searchWidget.current && ![attributes["PIN10"], attributes["PIN14"], `${attributes["street_address"]}, ${attributes["city_state_zip"]}`].includes(searchWidget.current.searchTerm)){
-                        searchWidget.current.searchTerm = paramValue
-                    }
+                // console.log("Checking if New Search is false ", newSearch)
+                // if(newSearch === false){
+                // setSearchParams()
+                console.log("USE EFFECT PARAM : ", param)
+                setSearchParams(param)
+                
+                if(searchWidget.current && ![attributes["PIN10"], attributes["PIN14"], `${attributes["street_address"]}, ${attributes["city_state_zip"]}`].includes(searchWidget.current.searchTerm)){
+                    searchWidget.current.searchTerm = paramValue
                 }
+                //}
             }
             
     }
-    if(!primaryResultFeature ){
-            // setLocationSearch(null)
-            // setPinSearch(null)
-            // setAddressSearch(null)
-            // setGenericSearch(null)
-            
+    if(!primaryResultFeature){
+
+        setLocationSearch(routeParams.get("location"))
+
+        setPinSearch(routeParams.get("pin"))
+
+        setGenericSearch(routeParams.get("search"))
+
+        setAddressSearch(routeParams.get("address"))
+
+        console.log("USE EFFECT No feature Found")
+        console.log("USE EFFECT GENERIC SEARCH: ", genericSearch)
+        console.log("USE EFFECT PIN SEARCH: ", pinSearch)
+        console.log("USE EFFECT Address SEARCH: ", addressSearch)
+
         if(searchWidget.current){
             searchWidget.current.searchTerm = null
         }}  
@@ -152,6 +160,7 @@ const Search = () => {
 
                 if(newSearch === true){
                     if(genericSearch && !locationSearch){
+                        console.log("DETECTED GENERIC SEARCH PARAM: ", genericSearch)
                         searchWidget.current.search(genericSearch)
                     }
 
@@ -161,6 +170,7 @@ const Search = () => {
                     }
 
                     if(addressSearch && addressSearch !== 'null'){
+                        console.log("DETECTED Address SEARCH PARAM: ", addressSearch)
                         searchWidget.current.search(addressSearch)
                     }
 
