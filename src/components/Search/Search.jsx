@@ -10,7 +10,7 @@ import { config } from "../../data/config";
 
 const Search = () => {
 
-    const {language, translateText,  newSearch, setPanelPrimaryVisibility, renderSearchResults, mapView, searchSources, clearResults, panelPrimaryVisible, primaryResultFeature, searchFeatures } = UseAppContext()
+    const {x, y, returnLocationFeatures,  language, translateText,  newSearch, setPanelPrimaryVisibility, renderSearchResults, mapView, searchSources, clearResults, panelPrimaryVisible, primaryResultFeature, searchFeatures } = UseAppContext()
 
     //get url parameters
     const [routeParams, setSearchParams] = useSearchParams();
@@ -82,7 +82,7 @@ const Search = () => {
                         param = {"address": paramValue}
                     }
                     else{
-                        paramValue = "lat/long"
+                        paramValue = `${x},${y}`
                         param = {"location": paramValue}
                     }
                 }
@@ -91,11 +91,6 @@ const Search = () => {
                     param = {"pin": paramValue}
                 }
     
-                //not a search event result
-                //map click result or result card result
-                // console.log("Checking if New Search is false ", newSearch)
-                // if(newSearch === false){
-                // setSearchParams()
                 console.log("USE EFFECT PARAM : ", param)
                 setSearchParams(param)
                 
@@ -176,7 +171,9 @@ const Search = () => {
 
                     if(locationSearch && locationSearch !== 'null'){
                         console.log("Location search = ", locationSearch)             
-                        searchWidget.current.search(locationSearch)
+                        //searchWidget.current.search(locationSearch)
+                        returnLocationFeatures(locationSearch)
+
                     }
                 }
 
