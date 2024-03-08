@@ -288,6 +288,19 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setMapPrintProps = (mapLayout, mapFormat, mapTitle) => {
+        dispatch({
+            type:"SET_MAP_PRINT_PROPS",
+            payload: {
+                mapLayout: mapLayout,
+                mapFormat: mapFormat,
+                mapTitle: mapTitle
+
+            }
+        })
+    }
+
+
   
     
     const loadDataDictionary = async () => {
@@ -510,7 +523,11 @@ export const AppProvider = ({children}) => {
         setMeasureWidget,
         measureWidget: state.measureWidget,
         isQuerying: state.isQuerying,
-        setIsQuerying
+        setIsQuerying,
+        setMapPrintProps,
+        mapTitle: state.mapTitle,
+        mapLayout: state.mapLayout,
+        mapFormat: state.mapFormat
         
     }
 

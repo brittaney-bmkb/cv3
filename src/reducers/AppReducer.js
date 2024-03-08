@@ -25,7 +25,10 @@ export const initialState = {
     textTranslationDictionary: null,
     showMapMobile: true,
     measureWidget: null,
-    isQuerying: null
+    isQuerying: null,
+    mapLayout: null,
+    mapFormat: null,
+    mapTitle: null
 }
 
 const AppReducer = (state, action) => {
@@ -168,6 +171,14 @@ const AppReducer = (state, action) => {
             return {
                 ...state,
                 isQuerying: payload.isQuerying,
+            }
+        case "SET_MAP_PRINT_PROPS":
+            console.log("SET_MAP_PRINT_PROPS")
+            return {
+                ...state,
+                mapLayout: payload.mapLayout,
+                mapFormat: payload.mapFormat,
+                mapTitle: payload.mapTitle
             }
         default:
             throw new Error(`No valid selection made`)
