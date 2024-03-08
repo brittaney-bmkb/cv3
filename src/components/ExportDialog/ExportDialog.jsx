@@ -1,44 +1,97 @@
-import { Box, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Input, Stack, Switch, TextField, Typography } from "@mui/material"
+import { Box, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Input, Link, Stack, Switch, TextField, Typography } from "@mui/material"
 import { theme } from "../../theme"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import SelectDropdown from "../SelectDropdown/SelectDropdown"
 import { config } from "../../data/config"
 import { CloseOutlined } from "@mui/icons-material"
 import UseAppContext from "../../contexts/AppContext"
-import { prepareDataForExport } from "../../export/export"
+import { exportToCsv, exportToExcel, prepareDataForExport } from "../../export/export"
 import StyledButtonFilledPrimary from "../Button/Button"
+import { printMap } from "../../export/print"
+import PrintWidgetCustom from "../Widgets/PrintWidgetCustom"
 
-const ExportDialog = ({open, onClose}) => {
+const ExportDialog = ({open, onClose, dataDescription}) => {
 
-    const { primaryResultFeature, dataDictionary, translateText } = UseAppContext()
+    const { searchFeatures, primaryResultFeature, comparableParcels, secondaryResultFeature, dataDictionary, translateText, mapLayout, mapFormat, mapTitle } = UseAppContext()
+    
     const [isExporting, setIsExporting] = useState(false)
     const [ includeResults, setIncludeResults ] = useState(false)
-    const [ includePdf, setIncludePdf ] = useState(false)
+    const [ printJobs, setPrintJobs ] = useState({})
     const [ includeExcel, setIncludeExcel ] = useState(false)
     const [ includeCsv, setIncludeCsv ] = useState(false)
-
     const [ includeMap, setIncludeMap ] = useState(false)
 
-    const [ layoutValue, setLayoutValue ] = useState(config.print_orientation_options[0])
-    function handleLayoutOptionChange(event){
-        setLayoutValue(event.target.value)
+    useEffect(() => {
+        setPrintJobs({})
+    },[open])
+
+    const featuresToExport = async () => {
+        let features;
+
+        if(dataDescription === "Property Results"){
+            features = searchFeatures
+            
+        }
+
+        else if(dataDescription === "Property Detail"){
+            features = primaryResultFeature
+        }
+
+        else if(dataDescription === "Comparable Results" || dataDescription === "Nearby Results" ){
+            features = comparableParcels
+        }
+
+        else if(dataDescription === "Comparable Property" || dataDescription === "Nearby Property"){
+            features = secondaryResultFeature
+        }
+
+        return features
     }
 
     const performExport = async () => {
-        setIsExporting(true)
-        await prepareDataForExport(primaryResultFeature, dataDictionary, "CookviewerResults")
-        setIsExporting(false)
+
+        let filename = `CookViewer_${dataDescription.replace(" ","_")}`
+        let features = await featuresToExport()
+
+        console.log("exporting features: ", features)
+
+        if(includeCsv === true){
+            console.log("Include csv: ", includeCsv)
+            setIsExporting(true)
+            await exportToCsv(features, dataDictionary, filename)
+            setIsExporting(false)
+        }
+
+        if(includeExcel === true){
+            console.log("Include csv: ", includeCsv)
+            setIsExporting(true)
+            await exportToExcel(features, dataDictionary, filename)
+            setIsExporting(false)
+        }
+
+        if(includeMap === true){
+            setIsExporting(true)
+            let file = await printMap(mapLayout, mapFormat, mapTitle)
+            setIsExporting(false)
+
+            if(file){
+                let fileName = `${mapTitle}.${mapFormat}`
+                // setPrintFileUrl(file)
+                // setPrintFileName(fileName)
+
+                setPrintJobs((prev) => ({
+                    ...prev,
+                    [fileName]: file
+                }))
+            }
+        }
+
     }
     
     const exportOptions = (
         <Box display={"flex"} flexDirection="column" >
             <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>Choose format:</Typography>
             <Box display="flex" flexDirection="column" pl={1}>
-            {/* Choose Formats */}
-            <Stack direction="row" sx={{alignItems:"center"}}>
-                <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>pdf</Typography>
-                <Switch onClick={() => {setIncludePdf(!includePdf)}}/>
-            </Stack> 
             <Stack direction="row" sx={{alignItems:"center"}}>
                 <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>csv</Typography>
                 <Switch onClick={() => {setIncludeCsv(!includeCsv)}}/>
@@ -46,30 +99,6 @@ const ExportDialog = ({open, onClose}) => {
             <Stack direction="row" sx={{alignItems:"center"}}>
                 <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>excel</Typography>
                 <Switch onClick={() => {setIncludeExcel(!includeExcel)}}/>
-            </Stack> 
-            </Box>
-        </Box>
-    )
-
-    const printOptions = (
-        <Box display={"flex"} flexDirection="column"  rowGap={1}>
-            <Divider/>
-            <Typography variant="h5" sx={{display:"flex", flexGrow:1, pt:1, pb:1}}>Map settings:</Typography>
-            <Box display="flex" flexDirection="column" pl={1} rowGap={2}>
-            {/* Choose Formats */}
-            <Stack direction="row" sx={{alignItems:"center"}} spacing={2}>
-                <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>Map title</Typography>
-                <TextField id="print-title" label="Title" variant="outlined" size="small"/>
-            </Stack> 
-            <Stack direction="row" sx={{alignItems:"center"}}  spacing={2}>
-                <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>Layout orientation</Typography>
-                <SelectDropdown 
-                labelId={'print_layout'} 
-                id={"print_layout"} 
-                value={layoutValue} 
-                handleChange={handleLayoutOptionChange}
-                items={config.print_orientation_options}
-                />
             </Stack> 
             </Box>
         </Box>
@@ -93,18 +122,36 @@ const ExportDialog = ({open, onClose}) => {
                         <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>Include results</Typography>
                         <Switch onClick={() => {setIncludeResults(!includeResults)}}/>
                     </Stack> 
-                    <Divider/>
+                    
                     <Collapse in={includeResults}>{exportOptions}</Collapse>
                 </Box>
-
-                <Box display="flex" flexDirection="column" rowGap={1}>
+                <Divider/>
+                <Box display="flex" flexDirection="column" rowGap={1} pt={2}>
                 <Stack direction="row" sx={{alignItems:"center"}}>
                     <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>Include map</Typography>
                     <Switch onClick={() => {setIncludeMap(!includeMap)}}/>
                 </Stack> 
                 
-                <Collapse in={includeMap}>{printOptions}</Collapse>
+                <Collapse in={includeMap}>{<PrintWidgetCustom/>}</Collapse>
                 </Box>
+                { printJobs && Object.entries(printJobs).length > 0 ? 
+                <Box display="flex" flexDirection="column" rowGap={1} p={1} pt={2}>
+                    <Divider/>
+                    <Typography variant="body2">{`${translateText("Print Jobs")}:`}</Typography>
+                    {
+                        Object.entries(printJobs).map(([filename, fileurl]) => (
+                            <Link
+                                key={filename}
+                                href={fileurl}
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <Typography variant="body2">{filename}</Typography>
+                            </Link>
+                        ))
+                    }
+                    
+                </Box> : null}
             </DialogContent>
             
             <DialogActions>

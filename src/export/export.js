@@ -1,4 +1,6 @@
 import { returnMunicipality } from "../arcgis/geoprocessing/geoprocessing"
+import * as FileSaver from "file-saver";
+import * as XlSX from "xlsx"
 
 // Function to convert an object to a CSV string
 function arrayToCsv(data) {
@@ -7,14 +9,17 @@ function arrayToCsv(data) {
     return `${header}\n${rows}`;
 }
 
-export const prepareDataForExport = async (primaryResultFeature, dataDictionary, filename) => {
+const getDataFieldsForExport = async (dataDictionary) => {
 
-    let features = Array.isArray(primaryResultFeature) ? primaryResultFeature : [primaryResultFeature]
-
+    //excludes these fields from the export
     let fieldsToExclude = [null, "comparable_properties","nearby_properties","assessor_link", "find_my_district_link", "zoning_info","hist_assessval_link","oblique_link","clerk_prop_records_link","historical_photo_link","property_portal_link","hist_sf_mf_imp_chars_link","res_condo_chars_link"]
+    //array to hold object containing the field and field alias (label)
     let preparedHeaderFieldsObj = []
+    //categories to exclude from data dictionary
     let categoriesToExclude =  [null]
 
+
+    //get categories and sort by category order
     let categories = [
         ...new Set(
             dataDictionary
@@ -24,6 +29,7 @@ export const prepareDataForExport = async (primaryResultFeature, dataDictionary,
         )
     ]
 
+    //push header fields 
     categories.map((category) => {
         let filteredData = dataDictionary
                        ?.filter((data) => data.attributes['category'] === category && !fieldsToExclude.includes(data.attributes['field']))
@@ -41,6 +47,12 @@ export const prepareDataForExport = async (primaryResultFeature, dataDictionary,
         }) 
     })
 
+    return preparedHeaderFieldsObj
+}
+
+export const prepareDataForExport = async (featuresToExport, preparedHeaderFieldsObj) => {
+
+    let features = Array.isArray(featuresToExport) ? featuresToExport : [featuresToExport]
 
     let dataRows = await Promise.all(features.map(async (feature, i) => {
 
@@ -73,6 +85,16 @@ export const prepareDataForExport = async (primaryResultFeature, dataDictionary,
 
     }))
 
+    return dataRows
+
+
+}
+
+export const exportToCsv = async (featuresToExport, dataDictionary, filename) => {
+
+    let preparedHeaderFieldsObj = await getDataFieldsForExport(dataDictionary)
+    let dataRows = await prepareDataForExport(featuresToExport, preparedHeaderFieldsObj)
+    
     console.log("DATA TO EXPORT: ", dataRows)
 
     // Convert the combined object to CSV
@@ -92,24 +114,27 @@ export const prepareDataForExport = async (primaryResultFeature, dataDictionary,
 
     // Remove the link from the body
     document.body.removeChild(downloadLink);
-    
-    return dataRows
 }
 
-export const exportToCsv = (data, fields) => {
-    
-    const titleKeys = Object.keys(ourData[0])
+export const exportToExcel = async (featuresToExport, dataDictionary, fileName) => {
 
-    const refinedData = []
-    refinedData.push(titleKeys)
+    let preparedHeaderFieldsObj = await getDataFieldsForExport(dataDictionary)
+    let dataRows = await prepareDataForExport(featuresToExport, preparedHeaderFieldsObj)
 
-    ourData.forEach(item => {
-    refinedData.push(Object.values(item))  
-    })
+    // let fields = Object.keys(dataRows)
+    // let values = Object.values(dataRows)
+    // let data = [
+    //     ...fields,
+    //     ...values
+    // ]
 
-    let csvContent = ''
+    const fileType =
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+    const fileExtension = ".xlsx";
 
-    refinedData.forEach(row => {
-    csvContent += row.join(',') + '\n'
-    })
+    const worksheet = XlSX.utils.json_to_sheet(dataRows);
+    const workbook = { Sheets: { data: worksheet}, SheetNames: ["data"]};
+    const excelBuffer = XlSX.write(workbook, { bookType: "xlsx", type: "array"});
+    const data = new Blob([excelBuffer], { type: fileType });
+    FileSaver.saveAs(data, fileName + fileExtension);
 }

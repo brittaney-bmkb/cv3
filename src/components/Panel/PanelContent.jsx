@@ -42,7 +42,7 @@ const PanelContent = ({display}) => {
             return (
                 <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
                         <PanelHeader 
-                        text={"Property Results"} 
+                        text={"Property Detail"} 
                         exportButton={true} 
                         clearButton={true} 
                         feedbackButton={true} 

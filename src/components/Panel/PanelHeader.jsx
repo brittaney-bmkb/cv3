@@ -160,7 +160,7 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
             {descriptionText ? <Typography p={2} variant="body">{translateText(descriptionText)}</Typography>: null}
             
 
-            <ExportDialog open={openExportDialog} onClose={handleCloseExport}/>
+            <ExportDialog open={openExportDialog} onClose={handleCloseExport} dataDescription={text}/>
             <FeedbackDialog open={openFeedbackDialog} onClose={handleCloseFeedback}/>
 
         </Box>
