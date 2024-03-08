@@ -263,7 +263,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                                 </Typography>
     
                             </Box>: 
-                        data.attributes['field'] === "find_my_district_link" ?
+                        data.attributes['field'].endsWith("_link")  ?
                         // data.attributes['hyperlink_text'] && data.attributes['hyperlink_params'] && data.attributes['hyperlink_url'] ?
                             returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], property?.attributes) :
                             <Box 
