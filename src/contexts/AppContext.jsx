@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 import AppReducer, { initialState } from '../reducers/AppReducer'
 import { useSearchParams } from "react-router-dom";
 import { config } from "../data/config";
-import { zoomToExtent } from "../arcgis/webmap/webmap";
+import { returnLatLong, zoomToExtent } from "../arcgis/webmap/webmap";
 import { theme } from "../theme";
 
 
@@ -52,87 +52,17 @@ export const AppProvider = ({children}) => {
         })
     } 
 
-    const loadMap = async () => {
+    const setCoordinates = (x, y) => {
+        dispatch({
+            type:"SET_COORDINATES",
+             payload: {
+                x: x,
+                y: y
+            }
+        })
+    } 
 
-        const {initializeMap, zoomToExtent} = await import('../arcgis/webmap/webmap')
-        const {mapContainer, primaryResultFeature, comparableParcels} = state
-
-        let view, searchSources = await initializeMap(mapContainer)
-
-        await loadDataDictionary()
-
-        setMapView(view)
-        setSearchSources(searchSources)
-        if(!primaryResultFeature){
-            setPrimaryResultFeature(null, true)
-        }
-        else{
-            zoomToExtent(comparableParcels? comparableParcels: [primaryResultFeature])
-        }
-        
-    }
-
-
-
-    const mapClickEventHandler = async () => {
-
-        const { onViewClick, createGraphic, zoomToExtent, removeGraphics } = await import('../arcgis/webmap/webmap')
-        const { theme } = await import ('../theme')
-        
-        const { measureWidgetState, comparableParcels, panelSecondaryVisible, primaryResultFeature, panelPrimaryVisible, panelDisplay, parcelQueryFields, panelDisplaySecondary } = state
-
-        if(!measureWidgetState){
-        const selectedFeatures = await onViewClick(parcelQueryFields)
-        console.log("selectedFeatures: ", selectedFeatures)
-        let secondaryFeatures = []
-        if(comparableParcels){
-
-            secondaryFeatures = comparableParcels.filter((feature) => feature.attributes['PIN14'] === selectedFeatures[0].attributes['PIN14'])
-                                                      .map((feature) => feature)
-
-            console.log("Secondary feature selcted: ", secondaryFeatures)
     
-          };
-        
-        if(secondaryFeatures?.length > 0){
-            setSecondaryResultFeature(secondaryFeatures[0])
-            setPanelDisplaySecondary("propertyDetailNearby")
-            createGraphic(secondaryFeatures, "secondarySelected", theme.palette.primary.light)
-            zoomToExtent([secondaryFeatures[0], primaryResultFeature])
-        }
-
-        else{
-            console.log("App context setting selected parcel", selectedFeatures)
-            // if(selectedFeatures.length === 1){
-            setPrimaryResultFeature(selectedFeatures, false)
-
-            setSearchResults(null, selectedFeatures)
-            createGraphic(selectedFeatures, "primary", theme.palette.primary.main)
-            if(!panelDisplay || panelDisplay !== "resultsList"){
-                setPanelDisplay("resultsList")
-            }
-            
-            if(!panelPrimaryVisible || panelPrimaryVisible === false){
-                setPanelPrimaryVisibility(true)
-            }
-
-            if(panelSecondaryVisible === true && ["propertyDetailNearby","propertyDetailComparable","resultsListNearby","resultsListComparables","nearbyProperties","comparablePropertySearch"].includes(panelDisplaySecondary)){
-                setPanelSecondaryVisibility(false)
-            }
-            
-            if(comparableParcels){
-                clearResultsComparables()
-            }
-
-            
-        }
-
-    }
-
-        
-
-        
-    }
 
     const setSearchResults = (results, features) => {
         dispatch({
@@ -301,6 +231,100 @@ export const AppProvider = ({children}) => {
     }
 
 
+
+    const loadMap = async () => {
+
+        const {initializeMap, zoomToExtent} = await import('../arcgis/webmap/webmap')
+        const {mapContainer, primaryResultFeature, comparableParcels} = state
+
+        let view, searchSources = await initializeMap(mapContainer)
+
+        await loadDataDictionary()
+
+        setMapView(view)
+        setSearchSources(searchSources)
+        if(!primaryResultFeature){
+            setPrimaryResultFeature(null, true)
+        }
+        else{
+            zoomToExtent(comparableParcels? comparableParcels: [primaryResultFeature])
+        }
+        
+    }
+
+
+
+    const mapClickEventHandler = async () => {
+
+        const { onViewClick, createGraphic, zoomToExtent, removeGraphics } = await import('../arcgis/webmap/webmap')
+        const { theme } = await import ('../theme')
+        
+        const { measureWidgetState, comparableParcels, panelSecondaryVisible, primaryResultFeature, panelPrimaryVisible, panelDisplay, parcelQueryFields, panelDisplaySecondary } = state
+
+        if(!measureWidgetState){
+        const point = await returnLatLong()
+        
+        setCoordinates(point.x, point.y)
+        console.log("x/y", point.x, point.y)
+
+        const selectedFeatures = await onViewClick(parcelQueryFields)
+        console.log("selectedFeatures: ", selectedFeatures)
+        let secondaryFeatures = []
+        if(comparableParcels){
+
+            secondaryFeatures = comparableParcels.filter((feature) => feature.attributes['PIN14'] === selectedFeatures[0].attributes['PIN14'])
+                                                      .map((feature) => feature)
+
+            console.log("Secondary feature selcted: ", secondaryFeatures)
+    
+          };
+        
+        if(secondaryFeatures?.length > 0){
+            setSecondaryResultFeature(secondaryFeatures[0])
+            setPanelDisplaySecondary("propertyDetailNearby")
+            createGraphic(secondaryFeatures, "secondarySelected", theme.palette.primary.light)
+            zoomToExtent([secondaryFeatures[0], primaryResultFeature])
+        }
+
+        else{
+            console.log("App context setting selected parcel", selectedFeatures)
+            // if(selectedFeatures.length === 1){
+            setPrimaryResultFeature(selectedFeatures, false)
+
+            setSearchResults(null, selectedFeatures)
+            createGraphic(selectedFeatures, "primary", theme.palette.primary.main)
+            if(!panelDisplay || panelDisplay !== "resultsList"){
+                setPanelDisplay("resultsList")
+            }
+            
+            if(!panelPrimaryVisible || panelPrimaryVisible === false){
+                setPanelPrimaryVisibility(true)
+            }
+
+            if(panelSecondaryVisible === true && ["propertyDetailNearby","propertyDetailComparable","resultsListNearby","resultsListComparables","nearbyProperties","comparablePropertySearch"].includes(panelDisplaySecondary)){
+                setPanelSecondaryVisibility(false)
+            }
+            
+            if(comparableParcels){
+                clearResultsComparables()
+            } 
+        }
+
+    }   
+    }
+
+    const returnLocationFeatures = async (coordinates) => {
+
+        const { queryLocationResults, createGraphic } = await import("../arcgis/webmap/webmap")
+
+        const {parcelQueryFields} = state
+
+        let features = await queryLocationResults(coordinates, parcelQueryFields)
+
+        setPrimaryResultFeature(features, true)
+        setSearchResults(null, features)
+        createGraphic(features, "primary", theme.palette.primary.main)
+    }
   
     
     const loadDataDictionary = async () => {
@@ -527,7 +551,11 @@ export const AppProvider = ({children}) => {
         setMapPrintProps,
         mapTitle: state.mapTitle,
         mapLayout: state.mapLayout,
-        mapFormat: state.mapFormat
+        mapFormat: state.mapFormat,
+        setCoordinates,
+        x: state.x,
+        y: state.y,
+        returnLocationFeatures
         
     }
 

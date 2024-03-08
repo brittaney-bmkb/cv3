@@ -28,7 +28,9 @@ export const initialState = {
     isQuerying: null,
     mapLayout: null,
     mapFormat: null,
-    mapTitle: null
+    mapTitle: null,
+    x: null,
+    y: null
 }
 
 const AppReducer = (state, action) => {
@@ -179,6 +181,13 @@ const AppReducer = (state, action) => {
                 mapLayout: payload.mapLayout,
                 mapFormat: payload.mapFormat,
                 mapTitle: payload.mapTitle
+            }
+        case "SET_COORDINATES":
+            console.log("SET_COORDINATES")
+            return {
+                ...state,
+                x: payload.x,
+                y: payload.y,
             }
         default:
             throw new Error(`No valid selection made`)

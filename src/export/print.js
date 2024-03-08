@@ -5,11 +5,11 @@ import { view } from "../arcgis/webmap/webmap";
 import { config } from "../data/config";
 
 
-function printResult(result) {
-    console.log(result.url);
-    //window.open(result.url);
-    return result.url
-  }
+// function printResult(result) {
+//     console.log(result.url);
+//     //window.open(result.url);
+//     return result.url
+//   }
 
   function printError(err) {
     console.log("Something broke: ", err);
@@ -27,7 +27,6 @@ export const printMap = async (mapLayout, mapFormat, mapTitle) => {
         layout: mapLayout,
         layoutOptions: {
             titleText: mapTitle,
-            //authorText: "test"
         }
     })
 
@@ -42,9 +41,7 @@ export const printMap = async (mapLayout, mapFormat, mapTitle) => {
     }
     catch (e) {
         printError()
-    }
-
-     
+    } 
 }
 
 

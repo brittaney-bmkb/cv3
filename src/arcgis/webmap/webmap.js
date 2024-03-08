@@ -135,6 +135,61 @@ return view, searchSources
 // async funciton to set define point location from mouse click
 // point location is detected from view onclick event and map point is 
 // accessed from click event.mapPoint
+export async function returnLatLong(){
+
+  const point = await new Promise((resolvePoint) => {
+    view.on("click", (clickEvent) => {
+      resolvePoint(clickEvent.mapPoint);
+    });
+  });
+
+  return point
+}
+
+async function peformQueryFeatures(point, parcelQueryFields){
+
+      console.log("Point: ", point)
+      const query = new Query();
+      query.geometry = point;
+      query.spatialRelationship = "intersects";
+      query.returnGeometry = true
+      query.outFields = parcelQueryFields
+
+
+      const { features } = await targetLayer.queryFeatures(query);
+
+      console.log("queried features from click: ", features)
+
+      
+
+      return features
+}
+
+export async function queryLocationResults(coordinates, parcelQueryFields){
+
+  let x = String(coordinates).split(",")[0]
+  let y = String(coordinates).split(",")[1]
+  
+  console.log("X, Y: ", x, y)
+
+  targetLayer.when()
+  console.log("Target layer: ", targetLayer)
+  let point = new Point({
+    x: x,
+    y: y,
+    spatialReference: {
+      wkid: 102671
+    }
+  })
+
+  let features = await peformQueryFeatures(point, parcelQueryFields)
+
+  console.log("queryLocationResults: zooming to features: ", features)
+  zoomToExtent(features)
+
+  return features
+}
+
 export async function onViewClick(parcelQueryFields) {
 
   return new Promise(async (resolve, reject) => {
@@ -147,25 +202,6 @@ export async function onViewClick(parcelQueryFields) {
 
 
       console.log("Map Point: ", point);
-
-      // if(view.zoom > 16){
-      //   await view.goTo({ target: point });
-      // }
-
-      // if (view.zoom <= 16) {
-      //   view.zoom = 16;
-      // }
-
-      // // const layerView = await view.whenLayerView(targetLayer);
-      // // await reactiveUtils.whenOnce(() => !layerView.updating);
-      // // console.log("Layer view done loading");
-
-      // if (view.zoom < 16) {
-      //   // If you still need a delay, consider using a proper async sleep function
-      //   // await sleep(3000);
-      //   await new Promise((resolveSleep) => setTimeout(resolveSleep, 3000));
-      // }
-
       const query = new Query();
       query.geometry = point;
       query.spatialRelationship = "intersects";
@@ -257,12 +293,20 @@ export async function querySearchResults(result, outFields){
 export async function zoomToExtent(features) {
   const geometries = features.map((feature) => feature.geometry);
 
-  //console.log(geometries)
+ 
+  view.when()
   const combinedExtent = geometryEngine.union(geometries);
-  view.goTo(combinedExtent, {
-  });
 
-  // createGraphic(features, true, "darkBlue")
+  reactiveUtils.when(
+    () => !view.updating,
+    () => {
+      console.log("zooming to: ", combinedExtent)
+      view.goTo(combinedExtent, {
+      });
+    },
+    { once: true }
+  )
+
 }
 
 export async function removeGraphics(graphicName){
