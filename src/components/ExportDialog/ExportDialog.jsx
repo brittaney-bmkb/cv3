@@ -8,9 +8,10 @@ import UseAppContext from "../../contexts/AppContext"
 import { prepareDataForExport } from "../../export/export"
 import StyledButtonFilledPrimary from "../Button/Button"
 
-const ExportDialog = ({open, onClose}) => {
+const ExportDialog = ({open, onClose, dataDescription}) => {
 
-    const { primaryResultFeature, dataDictionary, translateText } = UseAppContext()
+    const { searchFeatures, primaryResultFeature,  comparableParcels, secondaryResultFeature, dataDictionary, translateText } = UseAppContext()
+    
     const [isExporting, setIsExporting] = useState(false)
     const [ includeResults, setIncludeResults ] = useState(false)
     const [ includePdf, setIncludePdf ] = useState(false)
@@ -24,10 +25,43 @@ const ExportDialog = ({open, onClose}) => {
         setLayoutValue(event.target.value)
     }
 
+    const featuresToExport = async () => {
+        let features;
+
+        if(dataDescription === "Property Results"){
+            features = searchFeatures
+            
+        }
+
+        else if(dataDescription === "Property Detail"){
+            features = primaryResultFeature
+        }
+
+        else if(dataDescription === "Comparable Results" || dataDescription === "Nearby Results" ){
+            features = comparableParcels
+        }
+
+        else if(dataDescription === "Comparable Property" || dataDescription === "Nearby Property"){
+            features = secondaryResultFeature
+        }
+
+        return features
+    }
+
     const performExport = async () => {
-        setIsExporting(true)
-        await prepareDataForExport(primaryResultFeature, dataDictionary, "CookviewerResults")
-        setIsExporting(false)
+
+        let filename = `CookViewer_${dataDescription.replace(" ","_")}`
+        let features = await featuresToExport()
+
+        console.log("exporting features: ", features)
+
+        if(includeCsv === true){
+            console.log("Include csv: ", includeCsv)
+            setIsExporting(true)
+            await prepareDataForExport(features, dataDictionary, filename)
+            setIsExporting(false)
+        }
+
     }
     
     const exportOptions = (
@@ -35,10 +69,10 @@ const ExportDialog = ({open, onClose}) => {
             <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>Choose format:</Typography>
             <Box display="flex" flexDirection="column" pl={1}>
             {/* Choose Formats */}
-            <Stack direction="row" sx={{alignItems:"center"}}>
+            {/* <Stack direction="row" sx={{alignItems:"center"}}>
                 <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>pdf</Typography>
                 <Switch onClick={() => {setIncludePdf(!includePdf)}}/>
-            </Stack> 
+            </Stack>  */}
             <Stack direction="row" sx={{alignItems:"center"}}>
                 <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>csv</Typography>
                 <Switch onClick={() => {setIncludeCsv(!includeCsv)}}/>
