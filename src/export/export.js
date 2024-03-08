@@ -1,4 +1,6 @@
 import { returnMunicipality } from "../arcgis/geoprocessing/geoprocessing"
+import * as FileSaver from "file-saver";
+import * as XlSX from "xlsx"
 
 // Function to convert an object to a CSV string
 function arrayToCsv(data) {
@@ -114,6 +116,25 @@ export const exportToCsv = async (featuresToExport, dataDictionary, filename) =>
     document.body.removeChild(downloadLink);
 }
 
-export const exportToExcel = async () => {
-    
+export const exportToExcel = async (featuresToExport, dataDictionary, fileName) => {
+
+    let preparedHeaderFieldsObj = await getDataFieldsForExport(dataDictionary)
+    let dataRows = await prepareDataForExport(featuresToExport, preparedHeaderFieldsObj)
+
+    // let fields = Object.keys(dataRows)
+    // let values = Object.values(dataRows)
+    // let data = [
+    //     ...fields,
+    //     ...values
+    // ]
+
+    const fileType =
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+    const fileExtension = ".xlsx";
+
+    const worksheet = XlSX.utils.json_to_sheet(dataRows);
+    const workbook = { Sheets: { data: worksheet}, SheetNames: ["data"]};
+    const excelBuffer = XlSX.write(workbook, { bookType: "xlsx", type: "array"});
+    const data = new Blob([excelBuffer], { type: fileType });
+    FileSaver.saveAs(data, fileName + fileExtension);
 }

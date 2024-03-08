@@ -5,7 +5,7 @@ import SelectDropdown from "../SelectDropdown/SelectDropdown"
 import { config } from "../../data/config"
 import { CloseOutlined } from "@mui/icons-material"
 import UseAppContext from "../../contexts/AppContext"
-import { exportToCsv, prepareDataForExport } from "../../export/export"
+import { exportToCsv, exportToExcel, prepareDataForExport } from "../../export/export"
 import StyledButtonFilledPrimary from "../Button/Button"
 
 const ExportDialog = ({open, onClose, dataDescription}) => {
@@ -59,6 +59,13 @@ const ExportDialog = ({open, onClose, dataDescription}) => {
             console.log("Include csv: ", includeCsv)
             setIsExporting(true)
             await exportToCsv(features, dataDictionary, filename)
+            setIsExporting(false)
+        }
+
+        if(includeExcel === true){
+            console.log("Include csv: ", includeCsv)
+            setIsExporting(true)
+            await exportToExcel(features, dataDictionary, filename)
             setIsExporting(false)
         }
 
