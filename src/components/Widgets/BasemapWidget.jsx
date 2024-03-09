@@ -22,7 +22,12 @@ const BasemapWidget = () => {
                     basemapWidget.current = new BasemapGallery({
                         view: view,
                         container: basemapDiv.current,
-                        source: new Portal({url: config.portal})
+                        source: {
+                                    portal: config.portal,
+                                    query: {
+                                    id: config.basemap_group_id
+                                    }
+                                }
                     })
                 }
             }

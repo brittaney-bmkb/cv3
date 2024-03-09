@@ -17,6 +17,8 @@ export const config = {
     print_service_url: "https://gis.cookcountyil.gov/hosting/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task",
     // BASEMAP ID: Provide the ID of the basemap you want to use in the application.
     basemap_item_id:"7d31919b0623451ea7e576c85c48f52a",
+    // BASEMAP GROUP ID: Provide the ID of the group you want to use for basemaps
+    basemap_group_id: '6ce214380e7144acb42d348cef7985d7',
     //MAP selection colors
     //Primary Color:
     primary_color:'',
