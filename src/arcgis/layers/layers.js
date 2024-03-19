@@ -69,17 +69,17 @@ export async function createFeatureLayers(map){
             
           })
         }
-        if(source.visible){
-          let foundLayer = map.allLayers.filter((mapLayer) => {
-            return mapLayer.title === name
-          })
+        //if(source.visible){
+        let foundLayer = map.allLayers.filter((mapLayer) => {
+          return mapLayer.title === name
+        })
 
-          console.log("Found layer = ", foundLayer)
-          if(foundLayer.items.length <= 0){
-            map.add(namedLayers[name])
-          }
-          
+        console.log("Found layer = ", foundLayer)
+        if(foundLayer.items.length <= 0){
+          map.add(namedLayers[name])
         }
+        
+      //}
         
       })
 

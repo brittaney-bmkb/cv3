@@ -12,6 +12,7 @@ import CompareNearby from "../ComparableProperty/CompareNearby"
 import PropertyDetail from "../PropertyDetail/PropertyDetail"
 import PropertyPagniation from "../PropertyDetail/PropertyPagnition";
 import WebMapView from "../WebMapView/WebMapView";
+import LayerListWidgetCustom from "../Widgets/LayerListWidgetCustom";
 
 const PanelContent = ({display}) => {
 
@@ -234,7 +235,8 @@ const PanelContent = ({display}) => {
                     closeButton={true}
                     panel={"secondary"}
                     />
-                    <LayersWidget/>
+                    {/* <LayersWidget/> */}
+                    <LayerListWidgetCustom/>
                 </Box>
             )   
         case 'basemapsWidget':
