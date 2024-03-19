@@ -86,6 +86,21 @@ export const StyledButtonFilledSecondary = ({text, startIcon, endIcon, onClick})
     )
 }
 
+export const StyledButtonFilledPrimaryLight = ({text, startIcon, endIcon, onClick}) => {
+    return(
+        <Button 
+        variant="contained" 
+        startIcon={startIcon}
+        endIcon={endIcon}
+        onClick={onClick}
+        sx={{paddingTop:'2px', paddingBottom:'2px', textTransform:'none', bgcolor: theme.palette.primary.light}}
+        ><Typography p={0} variant="body1">
+        {text}
+    </Typography></Button>
+    )
+}
+
+
 export const StyledIconButton = ({text, icon, onClick}) => {
     return(
         <IconButton sx={{display:"flex", flexDirection:"column"}} onClick={onClick}>
