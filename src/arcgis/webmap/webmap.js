@@ -12,6 +12,8 @@ import Home from "@arcgis/core/widgets/Home.js";
 import Locate from "@arcgis/core/widgets/Locate.js";
 import ScaleBar from "@arcgis/core/widgets/ScaleBar.js";
 import Point from "@arcgis/core/geometry/Point";
+import { theme } from "../../theme";
+import FeatureEffect from "@arcgis/core/layers/support/FeatureEffect.js";
 
 let targetLayerView;
 let targetLayer;
@@ -32,6 +34,8 @@ map: map,
 center: [-87.8298, 41.8781],
 zoom: 8,
 })
+
+console.log("View Scale: ", view.scale)
 
 
   //create home widget
@@ -67,11 +71,15 @@ position: "bottom-left"
 
 //create graphics layer to search result
 layerGraphics = new GraphicsLayer()
+layerGraphics.effect = "drop-shadow(3px, 3px, 4px, #1B1D1F) brightness(150%)"
+
 
 //create graphics layer to comparable search result
 let layerGraphicsSecondary = new GraphicsLayer()
+//layerGraphicsSecondary.effect = "drop-shadow(1px, 1px, 1px, #4c4e57) brightness(110%)"
 //create graphics layer to comparable search result
 let layerGraphicsSecondarySelected = new GraphicsLayer()
+layerGraphicsSecondarySelected.effect = "drop-shadow(3px, 3px, 4px, #1B1D1F) brightness(120%)"
 
 export async function toggleLayer(layer){
 
@@ -284,7 +292,7 @@ export async function querySearchResults(result, outFields){
   let { features } = await targetLayer.queryFeatures(query)
   await zoomToExtent(features)
 
-  createGraphic(features, "primary", "darkBlue")    
+  createGraphic(features, "primary", theme.palette.primary.main)    
 
   return features
 
@@ -324,9 +332,7 @@ export async function removeGraphics(graphicName){
 }
   
 
-export async function createGraphic(features, removeGraphicName, color, secondary, styleType, secondarySelected){
-
-  console.log("style type: ", styleType)
+export async function createGraphic(features, removeGraphicName, color){
 
   if(removeGraphicName){
     removeGraphics(removeGraphicName)
@@ -338,26 +344,32 @@ export async function createGraphic(features, removeGraphicName, color, secondar
       geometry: geometry,
       symbol:{
         type:"simple-line",
-        size:3,
-        style: removeGraphicName === "secondary" ? "dash" : "solid",
+        size:.5,
+        style: "solid",
         color:color,
         width:removeGraphicName === "secondary" ?  2: removeGraphicName === "secondary" ? 3: 4
-      }
+      },
+      
+
+      
     })
+
 
     if(removeGraphicName === "secondarySelected"){
       layerGraphicsSecondarySelected.add(parcelGraphic)
-      layerGraphicsSecondary.opacity=0.7
+      //layerGraphicsSecondary.opacity=0.7
     }
     if(removeGraphicName ==="secondary"){
       layerGraphicsSecondary.add(parcelGraphic)
     }
     if(removeGraphicName ==="primary"){
       layerGraphics.add(parcelGraphic)
+      
     }  
   })
 
 }
+
 
 
   export async function compareProperities(whereQuery, searchDistance, feature, queryFields){
@@ -381,7 +393,7 @@ export async function createGraphic(features, removeGraphicName, color, secondar
       zoomToExtent(features)
       console.log("queried Features: ", features)
   
-      createGraphic(features, "secondary", "#FFDD55", true, "solid")
+      createGraphic(features, "secondary", theme.palette.secondary.main, true, "solid")
   
     }
 

@@ -69,10 +69,19 @@ export const config = {
                     type: "simple-fill",
                     style:"none",
                     outline: {
-                        width:.5,
-                        color: "#009ADA"
+                        width:1,
+                        color: "#0D4D96"
                     },
-                }
+                },
+                visualVariables: [{
+                    type: "size",
+                    valueExpression: "$view.scale",
+                    target: "outline",
+                    stops: [
+                        { size: 2, value: 0 },
+                        { size: 0.05, value: 5000 }
+                    ]
+                }]
            },
            searchSources: [
             {

@@ -282,7 +282,7 @@ export const AppProvider = ({children}) => {
         if(secondaryFeatures?.length > 0){
             setSecondaryResultFeature(secondaryFeatures[0])
             setPanelDisplaySecondary("propertyDetailNearby")
-            createGraphic(secondaryFeatures, "secondarySelected", theme.palette.primary.light)
+            createGraphic(secondaryFeatures, "secondarySelected", theme.palette.secondary.main)
             zoomToExtent([secondaryFeatures[0], primaryResultFeature])
         }
 
@@ -359,19 +359,25 @@ export const AppProvider = ({children}) => {
         //update graphic in map
         const { createGraphic } = await import('../arcgis/webmap/webmap')
 
-        createGraphic(selectedFeature, "primary", "darkBlue")
+        createGraphic(selectedFeature, "primary", theme.palette.primary.main)
     }
 
     const addSecondaryFeatureToMap = async () => {
-        const { secondaryResultFeature, primaryResultFeature } = state
+        const { secondaryResultFeature, primaryResultFeature, comparableParcels } = state
 
         //update graphic in map
-        const { createGraphic, zoomToExtent } = await import('../arcgis/webmap/webmap')
+        const { createGraphic, zoomToExtent, updateSecondaryGraphic } = await import('../arcgis/webmap/webmap')
         const { theme } = await import ('../theme')
 
         console.log("creating new graphic for selectedFeature: ", secondaryResultFeature)
 
-        createGraphic([secondaryResultFeature], "secondarySelected", theme.palette.primary.light)
+        const secondaryPIN14 = secondaryResultFeature.attributes['PIN14']
+
+        const secondaryParcels = comparableParcels.filter(parcel => parcel.attributes["PIN14"] !== secondaryPIN14 )
+        createGraphic(secondaryParcels, "secondary", theme.palette.secondary.main)
+
+        createGraphic([secondaryResultFeature], "secondarySelected", theme.palette.secondary.main)
+        //updateSecondaryGraphic(whereQuery)
         zoomToExtent([secondaryResultFeature, primaryResultFeature])
     }
 

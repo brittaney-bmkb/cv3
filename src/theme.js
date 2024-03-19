@@ -15,11 +15,12 @@ export const theme = createTheme({
     palette:{
         primary:{
             main:"#0D4D96",
-            light: "#00A5B8",
+            light: "#009ADA",
             contrastText:"#f5f5f5",
         },
         secondary:{
-            main:"#009ADA",
+            main:"#E58F65",
+            light:"#009ADA"
         },
         info:{
             main:"#928884",
@@ -157,17 +158,17 @@ theme.typography.h4 = {
 
 theme.typography.h5 = {
     [theme.breakpoints.up('md')]: {
-        fontSize: 16,
+        fontSize: 15,
         fontWeight: 600,
         //color: theme.main.text.dark
     },
     [theme.breakpoints.down('md')]: {
         fontSize: 14,
-        fontWeight: 600,
+        fontWeight: 500,
         //color: theme.main.text.dark
     },
     [theme.breakpoints.down('sm')]: {
-        fontSize: 13,
+        fontSize: 13.5,
         fontWeight: 500,
         //color: theme.main.text.dark
     }
@@ -185,7 +186,7 @@ theme.typography.h6 = {
         color: theme.palette.info.dark
     },
     [theme.breakpoints.down('sm')]: {
-        fontSize: 13,
+        fontSize: 13.5,
         fontWeight: 500,
         color: theme.palette.info.dark
     }
