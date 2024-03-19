@@ -12,7 +12,7 @@ import PrintWidgetCustom from "../Widgets/PrintWidgetCustom"
 
 const ExportDialog = ({open, onClose, dataDescription}) => {
 
-    const { searchFeatures, primaryResultFeature, comparableParcels, secondaryResultFeature, dataDictionary, translateText, mapLayout, mapFormat, mapTitle } = UseAppContext()
+    const { searchFeatures, primaryResultFeature, comparableParcels, secondaryResultFeature, dataDictionary, translateText, mapLayout, mapFormat, mapTitle, screenWidth } = UseAppContext()
     
     const [isExporting, setIsExporting] = useState(false)
     const [ includeResults, setIncludeResults ] = useState(false)
@@ -110,8 +110,9 @@ const ExportDialog = ({open, onClose, dataDescription}) => {
         onClose={onClose}
         aria-labelledby="print-dialog-title"
         aria-describedby="print-dialog-description"
+        fullWidth
         >   <IconButton sx={{position:"absolute", right:8, top:8}} onClick={onClose}><CloseOutlined/></IconButton>
-            <DialogTitle id="print-dialog-title" sx={{display:"flex", justifyContent:"center", minWidth:300}}>
+            <DialogTitle id="print-dialog-title" sx={{display:"flex", justifyContent:"center"}}>
                 <Box display="flex" bgcolor={theme.main.backgroundColor.grey} p={1} sx={{borderRadius: theme.shape.borderRadius}} width={100} justifyContent="center">
                     <Typography variant="h3" color={theme.main.text.dark} align="center">Export</Typography>
                 </Box>
@@ -126,14 +127,17 @@ const ExportDialog = ({open, onClose, dataDescription}) => {
                     <Collapse in={includeResults}>{exportOptions}</Collapse>
                 </Box>
                 <Divider/>
+                {screenWidth >= theme.breakpoints.values.sm ?
                 <Box display="flex" flexDirection="column" rowGap={1} pt={2}>
                 <Stack direction="row" sx={{alignItems:"center"}}>
                     <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>Include map</Typography>
                     <Switch onClick={() => {setIncludeMap(!includeMap)}}/>
                 </Stack> 
-                
+
                 <Collapse in={includeMap}>{<PrintWidgetCustom/>}</Collapse>
+
                 </Box>
+                : null}
                 { printJobs && Object.entries(printJobs).length > 0 ? 
                 <Box display="flex" flexDirection="column" rowGap={1} p={1} pt={2}>
                     <Divider/>
@@ -152,6 +156,7 @@ const ExportDialog = ({open, onClose, dataDescription}) => {
                     }
                     
                 </Box> : null}
+               
             </DialogContent>
             
             <DialogActions>
