@@ -229,10 +229,10 @@ const PanelContent = ({display}) => {
                 )                
         case 'layersWidget':
             return(
-                <Box display="flex" flexDirection="column"  minHeight={0}>
+                <Box display="flex" flexDirection="column" minHeight={0} p={1}>
                     <PanelHeader
                     text={"Map Layers"} 
-                    closeButton={true}
+                    //closeButton={true}
                     panel={"secondary"}
                     />
                     {/* <LayersWidget/> */}

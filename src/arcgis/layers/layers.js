@@ -39,6 +39,7 @@ export async function createFeatureLayers(map){
             opacity: source.opacity,
             title: name,
             visible: source.visible,
+            minScale: source.minScale,
             sublayers: [
               {
                 id:source.index,
