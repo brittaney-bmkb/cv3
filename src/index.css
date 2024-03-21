@@ -2,6 +2,7 @@
 :root {
   font-family: "Barlow";
   --mobile-breakpoint: 600px;
+  --doc-height: 100%;
 }
 
 ::-webkit-scrollbar {
