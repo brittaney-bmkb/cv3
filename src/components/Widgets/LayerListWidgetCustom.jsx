@@ -7,6 +7,7 @@ import UseAppContext from "../../contexts/AppContext";
 
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 import { theme } from "../../theme";
+import { CalciteLoader } from "@esri/calcite-components-react";
 
 
 
@@ -16,7 +17,7 @@ const LayerListWidgetCustom = () => {
     const layerListDiv = useRef(null)
     const [layerSources, setLayerSources] = useState(config.layer_sources);
     const [layerListItems, setLayerListItems] = useState([])
-    const { toggleMapLayer, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
+    const { toggleMapLayer, translateText } = UseAppContext()
     
     const [activeChips, setActiveChips] = useState({});
 
@@ -118,7 +119,7 @@ const LayerListWidgetCustom = () => {
 
     const layerGroupList = [...new Set(layerGroups)].map((group) => (
         <Box key={group} pt={2}>
-                <Typography key={group} variant="h5">{group}</Typography>
+                <Typography key={group} variant="h5">{translateText(group)}</Typography>
                 {
                     layerSources.filter((layer) => layer.groupName === group)
                                         .sort((a, b) => a.layerName > b.layerName ? 1:-1)
@@ -140,7 +141,7 @@ const LayerListWidgetCustom = () => {
                                                 >
                                                 <ListItemText  sx={{display:"flex", flex:4}}>
                                                     <Typography variant="body2">
-                                                        {layer.layerName}
+                                                        {translateText(layer.layerName)}
                                                     </Typography>
                                                     
                                                     </ListItemText>
@@ -159,14 +160,12 @@ const LayerListWidgetCustom = () => {
     ))
 
     return(
-        
-
-        <Box display={"flex"} sx={{ width: '100%', height:"100%", overflow:"auto"}}>
+        <Box display="flex" sx={{ width: '100%', height:"100%", overflow:"auto"}}>
         {
             layerSources &&  layerSources.length > 0 ? 
              <List disablePadding sx={{ width:"100%", height:"100%"}}>
                 {layerGroupList}
-        </List>:"null"
+            </List> : <CalciteLoader/>
         }
            
         </Box>

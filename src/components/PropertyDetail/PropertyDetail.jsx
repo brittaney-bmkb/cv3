@@ -34,7 +34,7 @@ function addCommaSeparator(value, type) {
 
 const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) => {
 
-    const {screenWidth, dataDictionary, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, translateText } = UseAppContext()
+    const { panelWidgetVisible, setPanelWidgetVisibility, screenWidth, dataDictionary, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, translateText } = UseAppContext()
 
 
     const [ categories, setCategories ] = useState(null)
@@ -62,10 +62,17 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         if(screenWidth < theme.breakpoints.values.lg){
             setPanelPrimaryVisibility(true)
             setPanelDisplay(display)
+
+            
+
         }
         else if (screenWidth >= theme.breakpoints.values.lg){
             setPanelSecondaryVisibility(true)
             setPanelDisplaySecondary(display)
+
+            if(panelWidgetVisible === true){
+                setPanelWidgetVisibility(false)
+            }
         }
     }
 
@@ -145,7 +152,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         >
         <StyledButtonFilledPrimary 
         key={key}
-        width={200}
+        //width={200}
         text={translateText("Comparable Properties")}
         onClick={() => {handleClick("comparablePropertySearch")}}
         variant={"h5"}
@@ -158,7 +165,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         <Box pt={1}>
         <StyledButtonFilledPrimary 
         key={key}
-        width={200}
+        //width={200}
         text={translateText("Nearby Parcels")}
         onClick={() => {handleClick("nearbyProperties")}}
         variant={"h5"}

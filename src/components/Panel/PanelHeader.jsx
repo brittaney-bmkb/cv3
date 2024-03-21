@@ -15,7 +15,7 @@ import InfoIcon from '@mui/icons-material/InfoOutlined';
 
 const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton, panel, primary} ) => {
 
-    const { translateText, clearResultsComparables, panelDisplaySecondary, clearResults, panelPrimaryVisible, panelSecondaryVisible, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, comparableParcels } = UseAppContext()
+    const { panelWidgetVisible, setPanelWidgetVisibility, translateText, clearResultsComparables, panelDisplaySecondary, clearResults, panelPrimaryVisible, panelSecondaryVisible, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, comparableParcels } = UseAppContext()
 
     //get url parameters
     const [routeParams , setSearchParams] = useSearchParams()
@@ -96,11 +96,17 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
     }
 
     const handleClosePanel = (panel) => {
+
+        console.log("Closing panel: ", panel)
+
         if(panel==="primary" && panelPrimaryVisible===true){
             setPanelPrimaryVisibility(false)
         }
         if(panel==="secondary" && panelSecondaryVisible===true){
             setPanelSecondaryVisibility(false)
+        }
+        if(panel==="widget" && panelWidgetVisible===true){
+            setPanelWidgetVisibility(false)
         }
     }
 

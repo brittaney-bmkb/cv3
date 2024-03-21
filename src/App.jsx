@@ -3,7 +3,7 @@ import './App.css'
 import NavBar from './components/NavBar/NavBar'
 import WebMapView from './components/WebMapView/WebMapView'
 import { Box, Stack, Grid, ThemeProvider, createTheme, Button } from '@mui/material'
-import Panel, { BottomPanel, LeftPanel, SecondaryPanel } from './components/Panel/Panel'
+import Panel, { BottomPanel, LeftPanel, SecondaryPanel, WidgetPanel } from './components/Panel/Panel'
 import TableRowsOutlinedIcon from '@mui/icons-material/TableRowsOutlined';
 import '@esri/calcite-components/dist/calcite/calcite.css';
 import MapButtonGroup from './components/MapButtonGroup'
@@ -62,6 +62,7 @@ function App() {
             <BottomPanel/>
           </Box>
           <SecondaryPanel/>
+          <WidgetPanel/>
         </Stack>
         {/* <Box width="auto" height="auto" position="absolute" bottom={20} left="45%" display={{xs:"block", sm: "none"}}>
           <ToggleIconButton 

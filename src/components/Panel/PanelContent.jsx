@@ -216,14 +216,15 @@ const PanelContent = ({display}) => {
                 flexDirection="column" 
                 flexGrow={1} 
                 minHeight={0} 
-                rowGap={1}>
+                rowGap={1}
+                >
                     <PanelHeader 
                         text={translateText("Measure")}
-                        closeButton={screenWidth < theme.breakpoints.values.lg ?  false : true }
-                        panel={"secondary"}
+                        closeButton={true}
+                        panel={"widget"}
                     />                    
                     <MeasureWidget
-                    panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"}
+                        panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"}
                     />
                 </Box>
                 )                
@@ -234,7 +235,7 @@ const PanelContent = ({display}) => {
                     text={translateText("Layers")} 
                     closeButton={true}
                     descriptionText={translateText("Select layers to update the map. Layers that are greyed out are not visible at current map zoom level.")}
-                    panel={"secondary"}
+                    panel={"widget"}
                     />
                     {/* <LayersWidget/> */}
                     <LayerListWidgetCustom/>
@@ -246,7 +247,7 @@ const PanelContent = ({display}) => {
                     <PanelHeader
                     text={translateText("Basemaps")} 
                     closeButton={true}
-                    panel={"secondary"}
+                    panel={"widget"}
                     descriptionText={translateText("Select a basemap from the options below to update the map")}
                     />
                     <BasemapWidget/>
@@ -258,7 +259,7 @@ const PanelContent = ({display}) => {
                     <PanelHeader
                     text={translateText("Print")} 
                     closeButton={true}
-                    panel={"secondary"}
+                    panel={"widget"}
                     // descriptionText={"Print Settings"}
                     />
                     <PrintWidget/>

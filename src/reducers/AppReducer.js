@@ -11,9 +11,11 @@ export const initialState = {
     searchSources: null,
     searchFeatures: null,
     panelDisplay:null,
+    panelDisplaySecondary:null,
+    panelDisplayWidget:null,
     panelPrimaryVisible:null,
     panelSecondaryVisible:null,
-    panelDisplaySecondary:null,
+    panelWidgetVisible:null,
     dataDictionary:null,
     parcelQueryFields: null,
     screenWidth: null,
@@ -102,6 +104,18 @@ const AppReducer = (state, action) => {
             return {
                 ...state,
                 panelSecondaryVisible: payload.panelSecondaryVisible,
+            }
+        case "SET_PANEL_WIDGET_VISIBILTIY":
+            console.log("SET_PANEL_WIDGET_VISIBILTIY")
+            return {
+                ...state,
+                panelWidgetVisible: payload.panelWidgetVisible,
+            }
+        case "SET_PANEL_WIDGET_DISPLAY":
+            console.log("SET_PANEL_WIDGET_DISPLAY")
+            return {
+                ...state,
+                panelDisplayWidget: payload.panelDisplayWidget,
             }
         case "SET_DATA_DICTIONARY":
             console.log("SET_DATA_DICTIONARY")
