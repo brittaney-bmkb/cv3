@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Paper, Slide, Typography } from "@mui/material";
 import ResultsList from "../ResultList/ResultsList";
 import UseAppContext from "../../contexts/AppContext";
 import PropertyDetail from "../PropertyDetail/PropertyDetail";
@@ -153,24 +153,29 @@ export const BottomPanel = () => {
     const widgetDisplayed = ["measureWidget","layersWidget","basemapsWidget","printWidget"].includes(panelDisplayWidget)
 
     return(
-    <Box 
-    id="bottom-panel"
-    minHeight={0}
-    height="40vh"
-    bgcolor="white" 
-    flexDirection="column"  
-    p={2}  
-    sx={{boxSizing:"border-box",
-        display:{
-            xs:panelWidgetVisible && widgetDisplayed ? 'flex' :'none', 
-            sm:panelWidgetVisible && widgetDisplayed ? 'flex' :'none', 
-            md: 'none'}}} width="100%" 
-        //borderRadius="10px 10px 0px 0px"
-        //borderTop={1}
-        boxShadow={3}
-        >
-        <PanelContent id="panel-content" display={panelDisplayWidget}/>
-    </Box>
+        <Slide direction="up" in={panelWidgetVisible} mountOnEnter unmountOnExit>
+            <Box 
+            id="bottom-panel"
+            // minHeight={0}
+            height="auto"
+            maxHeight="50vh"
+            minHeight={250}
+            bgcolor="white" 
+            flexDirection="column"  
+            p={2}  
+            sx={{
+                boxSizing:"border-box",
+                display:{
+                    xs:panelWidgetVisible && widgetDisplayed ? 'flex' :'none', 
+                    sm:panelWidgetVisible && widgetDisplayed ? 'flex' :'none', 
+                    md: 'none'}, 
+                }} 
+                width="100%" 
+                >
+                <PanelContent id="panel-content" display={panelDisplayWidget}/>
+            </Box>
+        </Slide>
+
     )
 }
 
