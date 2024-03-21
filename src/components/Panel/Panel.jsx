@@ -148,7 +148,7 @@ export const LeftPanel = () => {
 
 export const BottomPanel = () => {
 
-    const { panelSecondaryVisible, panelDisplaySecondary, panelWidgetVisible, panelDisplayWidget } = UseAppContext()
+    const { panelWidgetVisible, panelDisplayWidget } = UseAppContext()
 
     const widgetDisplayed = ["measureWidget","layersWidget","basemapsWidget","printWidget"].includes(panelDisplayWidget)
 
