@@ -194,15 +194,15 @@ theme.typography.h6 = {
 
 theme.typography.body1 = {
     [theme.breakpoints.up('md')]: {
-        fontSize: 15,
-        
-    },
-    [theme.breakpoints.down('md')]: {
         fontSize: 14,
         
     },
+    [theme.breakpoints.down('md')]: {
+        fontSize: 13,
+        
+    },
     [theme.breakpoints.down('sm')]: {
-        fontSize: 13
+        fontSize: 12
     }
 }
 

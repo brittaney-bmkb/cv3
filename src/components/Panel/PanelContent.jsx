@@ -218,7 +218,7 @@ const PanelContent = ({display}) => {
                 minHeight={0} 
                 rowGap={1}>
                     <PanelHeader 
-                        text={"Measure"}
+                        text={translateText("Measure")}
                         closeButton={screenWidth < theme.breakpoints.values.lg ?  false : true }
                         panel={"secondary"}
                     />                    
@@ -231,8 +231,9 @@ const PanelContent = ({display}) => {
             return(
                 <Box display="flex" flexDirection="column" minHeight={0} p={1}>
                     <PanelHeader
-                    text={"Map Layers"} 
-                    //closeButton={true}
+                    text={translateText("Layers")} 
+                    closeButton={true}
+                    descriptionText={translateText("Select layers to update the map. Layers that are greyed out are not visible at current map zoom level.")}
                     panel={"secondary"}
                     />
                     {/* <LayersWidget/> */}
@@ -243,10 +244,10 @@ const PanelContent = ({display}) => {
             return(
                 <Box p={2} display="flex" flexDirection="column" rowGap={3} minHeight={0}>
                     <PanelHeader
-                    text={"Basemaps"} 
+                    text={translateText("Basemaps")} 
                     closeButton={true}
                     panel={"secondary"}
-                    descriptionText={"Select a basemap from the options below to update the map"}
+                    descriptionText={translateText("Select a basemap from the options below to update the map")}
                     />
                     <BasemapWidget/>
                 </Box>
@@ -255,7 +256,7 @@ const PanelContent = ({display}) => {
             return(
                 <Box p={2} display="flex" flexDirection="column"  minHeight={0}>
                     <PanelHeader
-                    text={"Print"} 
+                    text={translateText("Print")} 
                     closeButton={true}
                     panel={"secondary"}
                     // descriptionText={"Print Settings"}

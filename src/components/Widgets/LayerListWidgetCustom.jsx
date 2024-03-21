@@ -6,6 +6,7 @@ import { config } from "../../data/config";
 import UseAppContext from "../../contexts/AppContext";
 
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
+import { theme } from "../../theme";
 
 
 
@@ -107,20 +108,6 @@ const LayerListWidgetCustom = () => {
         );
     }, []);
 
-    const checkVisibility = (layerName) => {
-        let visible
-        // if(layerListItems > 0){
-            visible = layerListItems.filter(item => item.layer.title === layerName)
-            .map((item) => item.visibleAtCurrentScale
-            )
-
-            //console.log("Layer: ", layer)
-       // }
-
-        return visible[0]
-        
-    }
-
     const layerGroups = config.layer_sources.sort((a, b) => a.groupName > b.groupName ? 1:-1)
                                             .map((layer) => {
                                                 return layer.groupName
@@ -151,8 +138,14 @@ const LayerListWidgetCustom = () => {
                                                     disabled={layer.visibleScale === true ? false : true}
                                                     onClick={() => handleClick(layer.layerName)}
                                                 >
-                                                <ListItemText variant="body1">{layer.layerName}</ListItemText>
+                                                <ListItemText  sx={{display:"flex", flex:4}}>
+                                                    <Typography variant="body2">
+                                                        {layer.layerName}
+                                                    </Typography>
+                                                    
+                                                    </ListItemText>
                                                 <Checkbox
+                                                    color="primary"
                                                     checked={layer.visible}
                                                 />
                                                 </ListItemButton>
@@ -168,11 +161,11 @@ const LayerListWidgetCustom = () => {
     return(
         
 
-        <Box display={"flex"} sx={{ width: '100%', height:"100%", maxWidth: 360}}>
+        <Box display={"flex"} sx={{ width: '100%', height:"100%", overflow:"auto"}}>
         {
             layerSources &&  layerSources.length > 0 ? 
-             <List sx={{overflowY:"auto", minWidth:300, width:"100%"}}>
-            {layerGroupList}
+             <List disablePadding sx={{ width:"100%", height:"100%"}}>
+                {layerGroupList}
         </List>:"null"
         }
            
