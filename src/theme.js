@@ -63,6 +63,7 @@ export const theme = createTheme({
             fontSize: 15
         },
         subtitle1: {
+            
             fontSize: 12,
             fontWeight:400
         },
@@ -88,7 +89,7 @@ theme.typography.subtitle1 = {
         fontWeight:400
     },
     [theme.breakpoints.down('sm')]: {
-        fontSize: 10,
+        fontSize: ".7rem",
         fontWeight:400
     }
 }
@@ -202,7 +203,7 @@ theme.typography.body1 = {
         
     },
     [theme.breakpoints.down('sm')]: {
-        fontSize: 12
+        fontSize: ".75rem"
     }
 }
 

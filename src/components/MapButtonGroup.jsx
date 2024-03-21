@@ -21,7 +21,19 @@ const MapButtonGroup = () => {
     }
 
     return(
-        <Box display="flex" direction="row" spacing={1} sx={{flexFlow:"wrap", gap: "3px 1px"}}>
+        <Box 
+            display="flex" 
+            flexDirection="row" 
+            columnGap={1}
+            width={"100%"}
+            sx={{
+                overflow:"auto",
+                overflowX: "hidden",
+                scrollBehavior:"smooth",
+                whiteSpace:"nowrap"
+            }}
+        // sx={{flexFlow:"wrap", gap: "3px 1px"}}
+        >
             <StyledButtonFilledPrimary text={translateText("Measure")}  startIcon={<StraightenIcon/>} onClick={ () => {handleClick('measureWidget')}}  textVarient="subTitle1" />
             <StyledButtonFilledPrimary text={translateText("Layers")}   startIcon={<LayersOutlinedIcon/>} onClick={ () => {handleClick('layersWidget')} }  textVarient="subTitle1" />
             <StyledButtonFilledPrimary text={translateText("Basemaps")} startIcon={<GridViewIcon/>}  onClick={ () => {handleClick('basemapsWidget')} }  textVarient="subTitle1" />
