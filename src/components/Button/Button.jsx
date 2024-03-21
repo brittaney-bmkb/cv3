@@ -18,7 +18,7 @@ const StyledButtonFilledPrimary = ({text, startIcon, endIcon, onClick, textVarie
         onClick={onClick}
         sx={{
             textTransform:"none", 
-            width: width ?? 115, 
+            width: width ?? "auto", 
             height:30,
             backgroundColor: active ? theme.palette.primary.dark: theme.palette.primary.main,
             boxShadow:  active ? 0: 2

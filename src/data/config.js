@@ -224,7 +224,7 @@ export const config = {
         index: 11,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 500000,
+        minScale: 30000,
         opacity: null,
         visible:false,
         groupName:"Natural Environment and Recreation",
@@ -698,7 +698,7 @@ export const config = {
         index: 72,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 500000,
+        minScale: 30000,
         opacity: 1,
         visible:false,
         groupName:"Parcel Archive",
