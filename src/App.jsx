@@ -32,26 +32,25 @@ function App() {
         setScreenWidth(width)
     }
 
+    const resizeOps = () => {
+      document.documentElement.style.setProperty("--vh", window.innerHeight * 0.01 + "px");
+    };
+
     window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", resizeOps);
 
     handleResize();
+    resizeOps();
     
     return () => {
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', resizeOps);
     };
   }, [window.innerWidth]);
 
-  const resizeOps = () => {
-    document.documentElement.style.setProperty("--vh", window.innerHeight * 0.01 + "px");
-  };
-
-  resizeOps();
-  window.addEventListener("resize", resizeOps);
-
-
   return (
     <AppProvider>
-      <Box display="flex" flexDirection="column" height="100vh">
+      <Box display="flex" flexDirection="column" height="100vh" >
         {config.showBanner === true ? <Notifications/> : null}
           <NavBar/>
         <Stack id="main-stack" direction="row" justifyContent="space-between" flexGrow={1} minHeight={0}>
