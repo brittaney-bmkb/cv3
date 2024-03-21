@@ -60,17 +60,20 @@ export default function WebMapView(){
     },[secondaryResultFeature])
 
     return (
-        <Box width='100%' height='100%' display="flex" alignItems={screenWidth <= theme.breakpoints.values.sm ? "center" : "left"} justifyContent={screenWidth <= theme.breakpoints.values.sm ? "center" : "left"} position="relative">
+        <Box width='100%' height='100%' display="flex" alignItems={screenWidth <= theme.breakpoints.values.md ? "center" : "left"} justifyContent={screenWidth <= theme.breakpoints.values.md ? "center" : "left"} position="relative">
         <div id="MAPCONTAINER" ref={mapDiv} style={{width: '100%', height: '100%', zIndex: 1}} onClick={mapClickEventHandler}></div>
                 <Box 
                 display="flex" 
-                id="mapButtonGroup"  ref={mapButtonGroupRef}
+                id="mapButtonGroup"  
+                ref={mapButtonGroupRef}
                 justifyContent={screenWidth < theme.breakpoints.values.md ? "center" : "left"}
-                p={2}
+                pt={2}
+                sx={{boxSizing:"border-box"}}
                 position="absolute"
                 zIndex={2}
                 top={1}
                 height="auto"
+                width="100%"
                 // ref={mapButtonGroupRef}
                 >
 
