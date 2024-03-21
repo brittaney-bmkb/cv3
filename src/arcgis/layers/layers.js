@@ -75,7 +75,7 @@ export async function createFeatureLayers(map){
           return mapLayer.title === name
         })
 
-        console.log("Found layer = ", foundLayer)
+        //console.log("Found layer = ", foundLayer)
         if(foundLayer.items.length <= 0){
           map.add(namedLayers[name])
         }

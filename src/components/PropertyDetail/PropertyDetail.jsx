@@ -227,7 +227,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
 
         let data = filteredData?.map((data, subIndex) => {
             return(
-                <Box key={data.attributes['field']} display="flex" flexDirection="column" width="100%">
+                <Box id={`${data.attributes['field']}-BOX`} key={data.attributes['field']} display="flex" flexDirection="column" width="100%">
 
                 {index !== 0 ? <Box 
                 display="flex"
@@ -239,7 +239,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                     </Typography>
                 </Box>: null}
                 
-                <Box display="flex" flexDirection="row" columnGap={3} justifyContent={category=="top"? "center" : textAlignment}>
+                <Box id="propertyDetailsBox" display="flex" flexDirection="row" columnGap={3} justifyContent={category==="top"? "space-around" : textAlignment}>
                     {properties.map((property, propIndex) => {
                         //console.log("property details for: ", property)
                         let color = property === property1 ? propertyColor1 : propertyColor2
@@ -247,9 +247,10 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                         panelContentTitleMain["borderColor"] = color
                         return(
                             <Box 
+                            id={`property-${propIndex}`}
                             key={property.attributes['PIN14']}
                             display="flex" 
-                            justifyContent="space-evenly" 
+                            justifyContent="center" 
                             alignContent={textAlignment}>
                            { data.attributes['field'] === "comparable_properties"? 
                             propertyComparison(data.attributes['field']) :
@@ -277,32 +278,38 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                             key={data.attributes["field"]}
                             id="data-field-container"
                             display="flex"
-                            // justifyContent={textAlignment}
-                            alignContent="center"
                             sx={{
-                                display:"flex",
                                 border: category==="top" && subIndex ===0 ? 3: 0,
                                 padding:"2px",
+                                boxSizing:"border-box",
                                 borderRadius: theme.shape.borderRadius,
                                 fontSize: theme.typography.h3.fontSize,
-                                justifyContent: "center",
-                                alignItems:"center",
+                                // justifyContent: "center",
+                                // alignItems:"center",
                                 borderColor:property===property1 ? propertyColor1 : propertyColor2,
                                 color:property===property1 ? propertyColor1 : propertyColor2
                             }}
                             >
                                 {property ? 
+
                                 <Typography 
-                                align={textAlignment}
-                                variant="h5" 
-                                sx={{color: category === "top" && subIndex==0 && property===property1 ? propertyColor1 : category === "top" && subIndex==0 && property===property2 ? propertyColor2: theme.main.text.dark }}>
-                                    {property?.attributes[data.attributes['field']] ? 
-                                    `${prefix(data.attributes['type'])}${addCommaSeparator(property?.attributes[data.attributes['field']], data.attributes['type'])}` :
-                                    translateText("Data unavailable")}
-                                </Typography> :null
+                                    id={data.attributes['field']}
+                                    align={textAlignment}
+                                    variant="h5" 
+                                    sx={{
+                                        width:"100%",
+                                        color: category === "top" && subIndex==0 && property===property1 ? propertyColor1 : category === "top" && subIndex==0 && property===property2 ? propertyColor2: theme.main.text.dark 
+                                        }}>
+                                        {
+                                            property?.attributes[data.attributes['field']] ? 
+                                            `${prefix(data.attributes['type'])}${addCommaSeparator(property?.attributes[data.attributes['field']], data.attributes['type'])}` :
+                                            translateText("Data unavailable")
+                                        }
+                                </Typography> 
+
+                                : null
                                 }
-                                
-                                
+  
                             </Box>
                             
                             }
@@ -333,15 +340,17 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         })
 
         return(
-            <Box key={category} display="flex" flexDirection="column" width="100%" pt={category !== "top" ? 1: 0} rowGap={category !== "top" ? 1: 0}>
+            <Box id={category} key={category} display="flex" flexDirection="column" width="100%" pt={category !== "top" ? 1: 0} rowGap={category !== "top" ? 1: 0}>
                 {category !== "top"? <Typography variant="h2">{translateText(category)}</Typography> :
                 null}
                 <Box 
                 id={"property-detail-data-container"} 
                 width="100%"
-                display="flex" flexDirection="column" 
+                display="flex" 
+                flexDirection="column" 
                 pl={category === "top" ? 0 :1} 
-                rowGap={category === "top" ? 0 : 2}>
+                rowGap={category === "top" ? 0 : 2}
+                >
                     {data}
                     
                 </Box> 
@@ -359,7 +368,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         p={1} 
         // pb={screenWidth <= theme.breakpoints.values.sm ? 6 : 0}
         sx={{boxSizing:"border-box"}}>
-            <Box display="flex" flexDirection="column" flexGrow={1} justifyContent="center" alignItems="center" pt={1}>
+            <Box id="Top-Details" display="flex" flexDirection="column" flexGrow={1} justifyContent="center" alignItems="center" pt={1}>
                 {fetchpropertyDetailData('top', 0)}
             </Box>
             
