@@ -27,11 +27,12 @@ const PanelMobile = () => {
 
     return(
         <Box 
+            id="mobile-panel"
             height={200}
             width="100%"
             display="flex"
             bgcolor="white" 
-            pb={3}
+            //pb={3}
             flex={1}
             flexGrow={1}  
             flexDirection="column">
@@ -53,8 +54,6 @@ export const SecondaryPanel = () => {
 
     const { panelSecondaryVisible, panelDisplaySecondary } = UseAppContext()
 
-    const widgetDisplayed = ["measureWidget","layersWidget","basemapsWidget","printWidget"].includes(panelDisplaySecondary)
-
     return(
         //sx style this adjust the right left or panel will show up. 
         //sm is a block 
@@ -73,65 +72,33 @@ export const SecondaryPanel = () => {
     )
 }
 
-// reuse panel function or do a new panel and replace the csss with the one in the bottom. 
+export const WidgetPanel = () => {
 
-// export const SecondaryPanelContent = () => {
+    const { panelDisplayWidget, panelWidgetVisible } = UseAppContext()
 
-//     const { panelDisplaySecondary } = UseAppContext()
+    return(
+        <Box
+            id="widget-panel"
+            minHeight={0}
+            bgcolor="white" 
+            flex={1}
+            flexGrow={1}
+            width={350} 
+            height={"100%"}
+            p={2} 
+            sx={{boxSizing:"border-box",
+            zIndex:"modal",
+            position:"fixed",
+            right:0,
+            display:{xs:'none', sm: 'none', md: panelWidgetVisible? 'flex':"none", lg:panelWidgetVisible? 'flex':"none"}
+            }}
+            >
+            <PanelContent id="panel-widget" display={panelDisplayWidget}/>
+        </Box>
+    )
+}
 
-//     switch(panelDisplaySecondary){
-//         case 'comparablePropertySearch':
-//             return(
-//                 // take out display:{xs:'none', sm:'none', md: panelSecondaryVisible ? 'block': null}  
-//                 // and put them in a wrapper box 
-//                 // replace the bottom panel 
-//                 // width id set through flex
-//                 // bottom is set through width. 
-//                 <Box bgcolor="white" flex={1} flexDirection="column">
-//                     <PanelHeader 
-//                     text={"Comparable Property Search"} 
-//                     closeButton={true}
-//                     panel={"secondary"}
-//                     />
-//                     <ComparablePropertySearch/>
-//                 </Box>
-//                 )
-//         case 'measureWidget':
-//             // Add panel headers 
-//             // add additional arguments for arguments in there
-//             // create argument to toggle on and off. 
-//             return(
-//                 <Box bgcolor="white" flex={1} flexDirection="column">
-//                     <MeasureWidget/>
-//                 </Box>
-//                 )                
-//         case 'layersWidget':
-//             return(
-//                 <Box bgcolor="white" flex={1} flexDirection="column">
-//                     <LayersWidget/>
-//                 </Box>
-//             )   
-//         case 'basemapsWidget':
-//             return(
-//                 <Box bgcolor="white" flex={1} flexDirection="column">
-//                     <BasemapWidget/>
-//                 </Box>
-//             )                                           
-//         case 'printWidget':
-//             return(
-//                 <Box bgcolor="white" flex={1} flexDirection="column">
-//                     <PrintWidget/>
-//                 </Box>
-//             )                                   
-//         default:
-//             return(
-//                 <Box bgcolor="blueviolet" flex={1} flexDirection="column">
-//                     Right Panel
-//                 </Box>
-//                 )
-//     }
-    
-// }
+
 
 export const LeftPanel = () => {
 
@@ -181,9 +148,9 @@ export const LeftPanel = () => {
 
 export const BottomPanel = () => {
 
-    const { panelSecondaryVisible, panelDisplaySecondary } = UseAppContext()
+    const { panelSecondaryVisible, panelDisplaySecondary, panelWidgetVisible, panelDisplayWidget } = UseAppContext()
 
-    const widgetDisplayed = ["measureWidget","layersWidget","basemapsWidget","printWidget"].includes(panelDisplaySecondary)
+    const widgetDisplayed = ["measureWidget","layersWidget","basemapsWidget","printWidget"].includes(panelDisplayWidget)
 
     return(
     <Box 
@@ -195,13 +162,14 @@ export const BottomPanel = () => {
     p={2}  
     sx={{boxSizing:"border-box",
         display:{
-            xs:panelSecondaryVisible && widgetDisplayed ? 'flex' :'none', 
-            sm:panelSecondaryVisible && widgetDisplayed ? 'flex' :'none', 
+            xs:panelWidgetVisible && widgetDisplayed ? 'flex' :'none', 
+            sm:panelWidgetVisible && widgetDisplayed ? 'flex' :'none', 
             md: 'none'}}} width="100%" 
-        borderRadius="10px 10px 0px 0px"
-        borderTop={1}
-        borderColor={theme.palette.info.light}>
-        <PanelContent id="panel-content" display={panelDisplaySecondary}/>
+        //borderRadius="10px 10px 0px 0px"
+        //borderTop={1}
+        boxShadow={3}
+        >
+        <PanelContent id="panel-content" display={panelDisplayWidget}/>
     </Box>
     )
 }

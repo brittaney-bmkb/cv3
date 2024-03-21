@@ -12,12 +12,12 @@ import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 
 const MapButtonGroup = () => {
 
-    const { translateText, setPanelSecondaryVisibility, setPanelDisplaySecondary } = UseAppContext()
+    const { translateText, setPanelWidgetVisibility, setPanelDisplayWidget } = UseAppContext()
     
     
     const handleClick = (display) =>{
-        setPanelSecondaryVisibility(true)
-        setPanelDisplaySecondary(display)
+        setPanelWidgetVisibility(true)
+        setPanelDisplayWidget(display)
     }
 
     return(

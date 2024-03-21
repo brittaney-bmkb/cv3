@@ -1,8 +1,7 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
 import AppReducer, { initialState } from '../reducers/AppReducer'
-import { useSearchParams } from "react-router-dom";
 import { config } from "../data/config";
-import { returnLatLong, zoomToExtent } from "../arcgis/webmap/webmap";
+import { returnLatLong } from "../arcgis/webmap/webmap";
 import { theme } from "../theme";
 
 
@@ -11,9 +10,6 @@ export const AppContext = createContext(initialState)
 export const AppProvider = ({children}) => {
 
     const [state, dispatch] = useReducer(AppReducer, initialState)
-
-     //get url parameters
-     const [routeParams, setSearchParams] = useSearchParams()
 
     const setMapContainer = (ref) => {
         dispatch({
@@ -115,6 +111,24 @@ export const AppProvider = ({children}) => {
             type:"SET_PANEL_SECONDARY_DISPLAY",
              payload: {
                 panelDisplaySecondary: state,
+            }
+        })
+    }
+
+    const setPanelWidgetVisibility = (visible) => {
+        dispatch({
+            type:"SET_PANEL_WIDGET_VISIBILTIY",
+             payload: {
+                panelWidgetVisible: visible,
+            }
+        })
+    }
+
+    const setPanelDisplayWidget = (state) => {
+        dispatch({
+            type:"SET_PANEL_WIDGET_DISPLAY",
+             payload: {
+                panelDisplayWidget: state,
             }
         })
     }
@@ -561,7 +575,11 @@ export const AppProvider = ({children}) => {
         setCoordinates,
         x: state.x,
         y: state.y,
-        returnLocationFeatures
+        returnLocationFeatures,
+        setPanelWidgetVisibility,
+        setPanelDisplayWidget,
+        panelWidgetVisible: state.panelWidgetVisible,
+        panelDisplayWidget: state.panelDisplayWidget
         
     }
 
