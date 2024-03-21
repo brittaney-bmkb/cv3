@@ -21,7 +21,7 @@ const PanelContent = ({display}) => {
     switch(display){
         case 'resultsList':
             return (
-                <Box display="flex" flexDirection="column" height="100%" >
+                <Box display="flex" flexDirection="column" height="100%" width="100%">
                     <PanelHeader
                         text={translateText("Property Results")} 
                         exportButton={true} 
@@ -41,7 +41,7 @@ const PanelContent = ({display}) => {
                 </Box>)
         case 'propertyDetail':
             return (
-                <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
+                <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0} height="100%" width="100%">
                         <PanelHeader 
                         text={"Property Detail"} 
                         exportButton={true} 

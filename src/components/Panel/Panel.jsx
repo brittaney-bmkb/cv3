@@ -1,19 +1,9 @@
-import { Box, Paper, Slide, Typography } from "@mui/material";
-import ResultsList from "../ResultList/ResultsList";
+import { Box, Fade, IconButton, Paper, Slide, Typography } from "@mui/material";
 import UseAppContext from "../../contexts/AppContext";
-import PropertyDetail from "../PropertyDetail/PropertyDetail";
-import ComparablePropertySearch from "../ComparableProperty/ComparablePropertySearch";
-import BasemapWidget from "../Widgets/BasemapWidget";
-import LayersWidget from "../Widgets/LayersWidget";
-import MeasureWidget from "../Widgets/MeasureWidget";
-import PrintWidget from "../Widgets/PrintWidget";
-import PanelHeader from "./PanelHeader";
-import { height } from "@mui/system";
 import { theme } from "../../theme";
 import PanelContent from "./PanelContent";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import WebMapView from "../WebMapView/WebMapView";
-import { ToggleIconButton } from "../Button/Button";
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 
 
@@ -28,23 +18,57 @@ const PanelMobile = () => {
     return(
         <Box 
             id="mobile-panel"
-            height={200}
-            width="100%"
+            height="100%"
+            width="100vw"
             display="flex"
             bgcolor="white" 
-            //pb={3}
+            alignItems="center" 
+            justifyContent="center"
             flex={1}
             flexGrow={1}  
             flexDirection="column">
-                {showMapMobile === true ? <WebMapView/> : 
-                <PanelContent display={panelDisplay}/>}
-                <Box display={showMapMobile === false ? "flex" : "none"} justifyContent="center">
+                <Box
+                 display="flex"
+                 pb={!showMapMobile? 6 : 0}
+                 height="100%"
+                 width="100vw"
+                 sx={{boxSizing:"border-box"}}
+                >
+                {
+                showMapMobile === true ? <WebMapView/> : 
+                <PanelContent display={panelDisplay}/>
+                }
+                </Box>
+                
+                <Fade
+                appear
+                in={!showMapMobile}
+                >
+                    <IconButton 
+                        onClick={handleClick}
+                        sx={{
+                            position: "absolute",
+                            bgcolor:theme.palette.primary.main, 
+                            zIndex:"modal",
+                            display:!showMapMobile ? "flex" : "none",
+                            width:50,
+                            height:50,
+                            flexDirection:"column",
+                            bottom:20,
+                            //left:"45%",
+                            boxShadow:5
+                            }}>
+                            <MapOutlinedIcon htmlColor="white"/>
+                            <Typography variant="subtitle1" color="white">{translateText("Map")}</Typography>
+                    </IconButton>
+                </Fade>
+                {/* <Box display={showMapMobile === false ? "flex" : "none"} justifyContent="center">
                     <ToggleIconButton
                     text={translateText("Map")}
                     icon={<MapOutlinedIcon/>}
                     onClick={handleClick}
                     />
-                </Box>
+                </Box> */}
                 
         </Box>
     )
@@ -113,8 +137,6 @@ export const LeftPanel = () => {
         // Determine the display value based on the current panel and screen width
         const displayValue = (screenWidth >= theme.breakpoints.values.lg && isSecondaryPanel) ? panelDisplay : panelDisplaySecondary;
       
-        // Set visibility and display values accordingly
-        // setPanelPrimaryVisibility(true);
         if(isLargeScreen && isPrimaryPanel){
             setPanelSecondaryVisibility(true)
             setPanelDisplaySecondary(panelDisplay)

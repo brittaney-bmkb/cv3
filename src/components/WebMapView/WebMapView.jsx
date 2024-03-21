@@ -60,7 +60,7 @@ export default function WebMapView(){
     },[secondaryResultFeature])
 
     return (
-        <Box width='100%' height='100%' display="flex" alignItems="center" justifyContent="center" position="relative">
+        <Box width='100%' height='100%' display="flex" alignItems={screenWidth <= theme.breakpoints.values.sm ? "center" : "left"} justifyContent={screenWidth <= theme.breakpoints.values.sm ? "center" : "left"} position="relative">
         <div id="MAPCONTAINER" ref={mapDiv} style={{width: '100%', height: '100%', zIndex: 1}} onClick={mapClickEventHandler}></div>
                 <Box 
                 display="flex" 
@@ -82,11 +82,12 @@ export default function WebMapView(){
         appear
         in={!panelWidgetVisible}>
             <IconButton 
+            onClick={handleClick}
             sx={{
                 position: "absolute",
                 bgcolor:theme.palette.primary.main, 
                 zIndex:"modal",
-                display:!panelWidgetVisible ? "flex" : "none",
+                display:!panelWidgetVisible && screenWidth <= theme.breakpoints.values.sm ? "flex" : "none",
                 width:50,
                 height:50,
                 flexDirection:"column",
