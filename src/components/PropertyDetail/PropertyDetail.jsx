@@ -350,7 +350,15 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
     }
 
     return(
-        <Box display="flex" flexDirection="column" width="100%" flexGrow={1} minHeight={0} p={1}>
+        <Box 
+        display="flex" 
+        flexDirection="column" 
+        width="100%" 
+        flexGrow={1} 
+        minHeight={0} 
+        p={1} 
+        // pb={screenWidth <= theme.breakpoints.values.sm ? 6 : 0}
+        sx={{boxSizing:"border-box"}}>
             <Box display="flex" flexDirection="column" flexGrow={1} justifyContent="center" alignItems="center" pt={1}>
                 {fetchpropertyDetailData('top', 0)}
             </Box>
