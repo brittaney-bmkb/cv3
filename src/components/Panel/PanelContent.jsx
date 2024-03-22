@@ -13,6 +13,7 @@ import PropertyDetail from "../PropertyDetail/PropertyDetail"
 import PropertyPagniation from "../PropertyDetail/PropertyPagnition";
 import WebMapView from "../WebMapView/WebMapView";
 import LayerListWidgetCustom from "../Widgets/LayerListWidgetCustom";
+import PrintWidgetCustom, { PrintWidgetPane } from "../Widgets/PrintWidgetCustom";
 
 const PanelContent = ({display}) => {
 
@@ -230,7 +231,7 @@ const PanelContent = ({display}) => {
                 )                
         case 'layersWidget':
             return(
-                <Box display="flex" flexDirection="column" minHeight={0} p={1}>
+                <Box display="flex" flexDirection="column" minHeight={0}>
                     <PanelHeader
                     text={translateText("Layers")} 
                     closeButton={true}
@@ -243,7 +244,7 @@ const PanelContent = ({display}) => {
             )   
         case 'basemapsWidget':
             return(
-                <Box p={2} display="flex" flexDirection="column" rowGap={3} minHeight={0}>
+                <Box display="flex" flexDirection="column" rowGap={3} minHeight={0}>
                     <PanelHeader
                     text={translateText("Basemaps")} 
                     closeButton={true}
@@ -255,14 +256,21 @@ const PanelContent = ({display}) => {
             )                                           
         case 'printWidget':
             return(
-                <Box p={2} display="flex" flexDirection="column"  minHeight={0}>
+                <Box 
+                display="flex" 
+                flexDirection="column"  
+                minHeight={0} 
+                width="100%"
+                sx={{boxSizing:"border-box"}}
+                >
                     <PanelHeader
                     text={translateText("Print")} 
                     closeButton={true}
                     panel={"widget"}
                     // descriptionText={"Print Settings"}
                     />
-                    <PrintWidget/>
+                    {/* <PrintWidget/> */}
+                    <PrintWidgetPane/>
                 </Box>
             )                                   
         default:
