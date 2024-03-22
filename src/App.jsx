@@ -19,6 +19,7 @@ function App() {
 
   const [mapVisible, setMapVisible] = useState(true)
   const [screenWidth, setScreenWidth] = useState(true)
+  const [componentHeight, setComponentHeight] = useState(window.innerHeight);
 
   function handleClick(){
     setMapVisible(!mapVisible)
@@ -30,6 +31,7 @@ function App() {
         const width = window.innerWidth
         console.log("window width: ", width)
         setScreenWidth(width)
+        setComponentHeight(window.innerHeight);
     }
 
     // const resizeOps = () => {
@@ -49,11 +51,11 @@ function App() {
     };
 
     //window.innerHeight
-  }, [window.innerWidth]);
+  }, [window.innerWidth, window.innerWidth]);
 
   return (
     <AppProvider>
-      <Box id="main" display="flex" flexDirection="column"  className="main">
+      <Box id="main" display="flex" flexDirection="column"  style={{height: `calc(${componentHeight}px - var(--safe-area-height))`}}>
         {config.showBanner === true ? <Notifications/> : null}
           <NavBar/>
         <Stack id="main-stack" direction="row" justifyContent="space-between" flexGrow={1} minHeight={0}>
