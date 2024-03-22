@@ -1,36 +1,35 @@
 import { Box, Checkbox, Chip, List, ListItem, ListItemButton, ListItemText, Typography } from "@mui/material"
 import { useEffect, useRef, useState } from "react"
 import LayerList from "@arcgis/core/widgets/LayerList.js";
-import { view } from "../../arcgis/webmap/webmap";
+import { map, view } from "../../arcgis/webmap/webmap";
 import { config } from "../../data/config";
 import UseAppContext from "../../contexts/AppContext";
 
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 import { theme } from "../../theme";
 import { CalciteLoader } from "@esri/calcite-components-react";
+import { createFeatureLayers } from "../../arcgis/layers/layers";
 
 
 
 const LayerListWidgetCustom = () => {
 
     const layerListWidget = useRef(null)
-    const layerListDiv = useRef(null)
     const [layerSources, setLayerSources] = useState(config.layer_sources);
-    const [layerListItems, setLayerListItems] = useState([])
     const { toggleMapLayer, translateText } = UseAppContext()
     
     const [activeChips, setActiveChips] = useState({});
 
-    const toggleLayer = (layer) => {
-        toggleMapLayer(layer)
-    }
+    // const toggleLayer = (layer) => {
+    //     toggleMapLayer(layer)
+    // }
 
-    const handleChipClick = (layerName) => {
-        setActiveChips((prevActiveChips) => ({
-          ...prevActiveChips,
-          [layerName]: !prevActiveChips[layerName]
-        }));
-      };
+    // const handleChipClick = (layerName) => {
+    //     setActiveChips((prevActiveChips) => ({
+    //       ...prevActiveChips,
+    //       [layerName]: !prevActiveChips[layerName]
+    //     }));
+    //   };
 
 
     const handleClick = (layerName) => {
@@ -58,6 +57,9 @@ const LayerListWidgetCustom = () => {
 
     useEffect(() => {
         const createLayerListWidget = async () => {
+
+            await createFeatureLayers(map, true)
+            
             if(!layerListWidget.current){
                 layerListWidget.current = new LayerList({
                     view:view,
