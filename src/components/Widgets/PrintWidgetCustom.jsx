@@ -1,8 +1,10 @@
-import { Box, Typography, Stack, TextField, MenuItem, Select } from "@mui/material"
+import { Box, Typography, Stack, TextField, MenuItem, Select, Divider, Link } from "@mui/material"
 import SelectDropdown from "../SelectDropdown/SelectDropdown"
 import { useEffect, useState } from "react"
 import { config } from "../../data/config"
 import UseAppContext from "../../contexts/AppContext"
+import StyledButtonFilledPrimary from "../Button/Button"
+import { printMap } from "../../export/print"
 
 const outputFormats = [
     "pdf",
@@ -54,7 +56,7 @@ const PrintWidgetCustom = () => {
 
     const formatDropdownOptions = outputFormats.map((format) => (
         <MenuItem key={format} value={format}>
-            {format}
+            {translateText(format)}
         </MenuItem>
     ))
 
@@ -64,15 +66,14 @@ const PrintWidgetCustom = () => {
         </MenuItem>
     ))
 
-  
 
     return(
-        <Box display={"flex"} flexDirection="column"  rowGap={1}>
+        <Box display="flex" flexDirection="column"  rowGap={1}>
             <Typography variant="h5" sx={{display:"flex", flexGrow:1, pt:1, pb:1}}>{`${translateText("Map settings")}:`}</Typography>
             <Box display="flex" flexDirection="column" pl={1} rowGap={2}>
             {/* Choose Formats */}
             <Stack direction="row" sx={{alignItems:"center"}} spacing={2}>
-                <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>{translateText("Map title")}</Typography>
+                <Typography variant="body2" sx={{display:"flex", flexGrow:1}}>{translateText("Map title")}</Typography>
                 <TextField 
                     id="print-title" 
                     //label="Title" 
@@ -85,7 +86,7 @@ const PrintWidgetCustom = () => {
                 />
             </Stack> 
             <Stack direction="row" sx={{alignItems:"center"}}  spacing={2}>
-                <Typography variant="h5" sx={{display:"flex", flexGrow:1, width: 150}}>{translateText("Layout orientation")}</Typography>
+                <Typography variant="body2" sx={{display:"flex", flexGrow:1}}>{translateText("Layout orientation")}</Typography>
                 <Select
                 value={layoutValue}
                 onChange={handleLayoutOptionChange}
@@ -95,7 +96,7 @@ const PrintWidgetCustom = () => {
                 </Select>
             </Stack> 
             <Stack direction="row" sx={{alignItems:"center"}}  spacing={2}>
-                <Typography variant="h5" sx={{display:"flex", flexGrow:1, width: 150}}>{translateText("Output format")}</Typography>
+                <Typography variant="body2" sx={{display:"flex", flexGrow:1}}>{translateText("Output format")}</Typography>
                 <Select
                 value={formatValue}
                 onChange={handleFormatOptionChange}
@@ -107,6 +108,81 @@ const PrintWidgetCustom = () => {
             </Box>
         </Box>
     )
+}
+
+
+export const PrintWidgetPane = () => {
+
+    const { mapLayout, mapFormat, mapTitle, translateText } = UseAppContext()
+
+    const [isPrinting, setIsPrinting] = useState(false)
+    const [ printJobs, setPrintJobs ] = useState({})
+
+
+    useEffect(() => {
+        setPrintJobs({})
+    },[])
+
+    const executePrint = async () => {
+        
+        setIsPrinting(true)
+
+        let file = await printMap(mapLayout, mapFormat, mapTitle)
+        setIsPrinting(false)
+
+        if(file){
+            let fileName = `${mapTitle}.${mapFormat}`
+            
+             // Check if the file name already exists in printJobs
+            if (printJobs.hasOwnProperty(fileName)) {
+                let count = 1;
+                let newFileName;
+                // Increment the count until a unique file name is found
+                do {
+                    newFileName = `${mapTitle}_${count}.${mapFormat}`;
+                    count++;
+                } while (printJobs.hasOwnProperty(newFileName));
+                fileName = newFileName;
+            }
+
+            setPrintJobs((prev) => ({
+                ...prev,
+                [fileName]: file
+            }))
+        }
+    }
+
+    return (
+
+        <Box display="flex" flexDirection="column" rowGap={2}>
+            <PrintWidgetCustom/>
+
+            <Box width="100%" display="flex" justifyContent="end">
+                <StyledButtonFilledPrimary text={translateText(isPrinting ? "Printing..." : "Print")} onClick={executePrint}/>
+            </Box>
+
+            { printJobs && Object.entries(printJobs).length > 0 ? 
+                <Box display="flex" flexDirection="column" rowGap={1} p={1} pt={2}>
+                    <Divider/>
+                    <Typography variant="body2">{`${translateText("Print Jobs")}:`}</Typography>
+                    {
+                        Object.entries(printJobs).map(([filename, fileurl]) => (
+                            <Link
+                                key={filename}
+                                href={fileurl}
+                                target="_blank"
+                                rel="noopener"
+                            >
+                                <Typography variant="body2">{filename}</Typography>
+                            </Link>
+                        ))
+                    }
+                    
+                </Box> : null}
+        </Box>
+    )
+
+
 }
 
 export default PrintWidgetCustom
