@@ -24,7 +24,7 @@ export async function readFeatureLayerData(url, outFields, where, returnGeometry
   return queryResult
 }
 
-export async function createFeatureLayers(map){
+export async function createFeatureLayers(map, loadAll){
 
     const namedLayers = {};
 
@@ -33,54 +33,56 @@ export async function createFeatureLayers(map){
 
         //https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-FeatureLayer.html
 
-        if(source.type === 'mapImageLayer'){
-          namedLayers[name] = new MapImageLayer({
-            url: source.url,
-            opacity: source.opacity,
-            title: name,
-            visible: source.visible,
-            minScale: source.minScale,
-            sublayers: [
-              {
-                id:source.index,
-                visible:source.visible,
-                minScale:source.minScale,
-                renderer: source.render ?? null,
-                title: source.layerName
+        if(source.visible || loadAll){
+          if(source.type === 'mapImageLayer'){
+            namedLayers[name] = new MapImageLayer({
+              url: source.url,
+              opacity: source.opacity,
+              title: name,
+              visible: source.visible,
+              minScale: source.minScale,
+              sublayers: [
+                {
+                  id:source.index,
+                  visible:source.visible,
+                  minScale:source.minScale,
+                  renderer: source.render ?? null,
+                  title: source.layerName
+                
+                }
+              ]
+            })
+  
+            // namedLayers[name] = mapImageLayer.findSublayerById(source.id)
+          }
+          else{
+            namedLayers[name] = new FeatureLayer({
+              url: source.url,
+              outFields: source.outFields,
+              title: name,
+              // popupEnabled: source.popupEnabled,
+              // popupTemplate : new PopupTemplate({
+              //   title: source.popupTemplateTitle
+              // }),
+              //comment
+              visible:source.visible,
+              //renderer: source.render,
+              //minScale:source.minScale
               
-              }
-            ]
+            })
+          }
+          let foundLayer = map.allLayers.filter((mapLayer) => {
+            return mapLayer.title === name
           })
+  
+          //console.log("Found layer = ", foundLayer)
+          if(foundLayer.items.length <= 0){
+            map.add(namedLayers[name])
+          }
+        }
 
-          // namedLayers[name] = mapImageLayer.findSublayerById(source.id)
-        }
-        else{
-          namedLayers[name] = new FeatureLayer({
-            url: source.url,
-            outFields: source.outFields,
-            title: name,
-            // popupEnabled: source.popupEnabled,
-            // popupTemplate : new PopupTemplate({
-            //   title: source.popupTemplateTitle
-            // }),
-            //comment
-            visible:source.visible,
-            //renderer: source.render,
-            //minScale:source.minScale
-            
-          })
-        }
-        //if(source.visible){
-        let foundLayer = map.allLayers.filter((mapLayer) => {
-          return mapLayer.title === name
-        })
-
-        //console.log("Found layer = ", foundLayer)
-        if(foundLayer.items.length <= 0){
-          map.add(namedLayers[name])
-        }
         
-      //}
+    
         
       })
 
