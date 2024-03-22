@@ -285,11 +285,11 @@ export const AppProvider = ({children}) => {
         console.log("selectedFeatures: ", selectedFeatures)
         let secondaryFeatures = []
         if(comparableParcels){
-
+            console.log("Secondary feature selected: ", secondaryFeatures)
             secondaryFeatures = comparableParcels.filter((feature) => feature.attributes['PIN14'] === selectedFeatures[0].attributes['PIN14'])
                                                       .map((feature) => feature)
 
-            console.log("Secondary feature selcted: ", secondaryFeatures)
+            
     
           };
         
