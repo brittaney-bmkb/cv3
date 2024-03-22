@@ -23,17 +23,6 @@ const MenuBar = ({open, setOpen}) => {
     const drawer = (
         <Box onClick={handleDrawerToggle}  pt={2} display="flex" flexDirection="column" rowGap={2}>
             <List>
-            {/* {
-                config.pages.map((page, index) => {
-                    return (
-                        <MenuItem key={`${page}-${index}`} sx={{ textAlign: "center" }}>
-                            <Typography variant="h5" align="center">{page}</Typography>
-                        </MenuItem>
-                    
-                    )
-                })
-            } */}
-        {/* <Divider/> */}
             <MenuItem>
                 <Stack direction="row" spacing={1} alignItems="center">
                     <CalciteIcon icon="mega-phone"/>
