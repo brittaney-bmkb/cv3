@@ -3,9 +3,8 @@
 
 html,
 body{
-  padding: 0;
+  padding: calc(env(safe-area-inset-bottom)) + calc(env(safe-area-inset-top));
   margin:0;
-  position:fixed;
   height: 100%;
   width: calc(100%);
   box-sizing: border-box;
