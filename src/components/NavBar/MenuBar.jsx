@@ -4,10 +4,11 @@ import { Box, Divider, Drawer, Icon, List, ListItem, Menu, MenuItem, MenuList, S
 import { CalciteIcon } from "@esri/calcite-components-react";
 import TranslateMenu from "./TranslateMenu";
 import UseAppContext from "../../contexts/AppContext";
+import { theme } from "../../theme";
 
 const MenuBar = ({open, setOpen}) => {
 
-    const {setTranslateDialogOpen} = UseAppContext()
+    const {setTranslateDialogOpen, screenWidth} = UseAppContext()
     
     const handleDrawerToggle = (open) => {
         setOpen(open)
@@ -22,7 +23,7 @@ const MenuBar = ({open, setOpen}) => {
     const drawer = (
         <Box onClick={handleDrawerToggle}  pt={2} display="flex" flexDirection="column" rowGap={2}>
             <List>
-            {
+            {/* {
                 config.pages.map((page, index) => {
                     return (
                         <MenuItem key={`${page}-${index}`} sx={{ textAlign: "center" }}>
@@ -31,8 +32,8 @@ const MenuBar = ({open, setOpen}) => {
                     
                     )
                 })
-            }
-        <Divider/>
+            } */}
+        {/* <Divider/> */}
             <MenuItem>
                 <Stack direction="row" spacing={1} alignItems="center">
                     <CalciteIcon icon="mega-phone"/>
@@ -53,7 +54,7 @@ const MenuBar = ({open, setOpen}) => {
         <Box>
             <SwipeableDrawer
             onOpen={() => {handleDrawerToggle(true)}}
-            anchor="right"
+            anchor={ screenWidth < theme.breakpoints.values.sm ? "bottom" : "right"}
             variant="temporary"
             open={open}
             onClose={() => {handleDrawerToggle(false)}}
@@ -67,7 +68,14 @@ const MenuBar = ({open, setOpen}) => {
                     md: "flex",
                     lg: "none"
                 },
-                '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 200 },
+                p:0,
+                zIndex: "modal",
+                
+                '& .MuiDrawer-paper': 
+                { 
+                    boxSizing: 'border-box', 
+                    width: screenWidth < theme.breakpoints.values.sm ? screenWidth : 200,
+                },
             }}
             >
                 {drawer}
