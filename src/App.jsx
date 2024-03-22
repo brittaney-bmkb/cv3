@@ -14,6 +14,7 @@ import PanelMobile from './components/Panel/Panel'
 import Notifications from './components/Notifications/Notifications'
 import TranslateMenu from './components/NavBar/TranslateMenu'
 import { config } from './data/config'
+import HelpDialog from './components/HelpDialog/HelpDialog'
 
 function App() {
 
@@ -70,8 +71,9 @@ function App() {
             onClick={handleClick}
           />
         </Box> */}
-
+        
         <TranslateMenu/>
+        <HelpDialog/>
       </Box>
     </AppProvider>
   )

@@ -230,6 +230,15 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setOpenHelpDialog = (open) => {
+        dispatch({
+            type:"SET_OPEN_HELP_DIALOG",
+            payload:{
+                openHelpDialog: open,
+            }
+        })
+    }
+
 
 
     const loadMap = async () => {
@@ -555,7 +564,9 @@ export const AppProvider = ({children}) => {
         setCoordinates,
         x: state.x,
         y: state.y,
-        returnLocationFeatures
+        returnLocationFeatures, 
+        setOpenHelpDialog,
+        openHelpDialog: state.openHelpDialog
         
     }
 

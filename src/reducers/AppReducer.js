@@ -30,7 +30,8 @@ export const initialState = {
     mapFormat: null,
     mapTitle: null,
     x: null,
-    y: null
+    y: null, 
+    openHelpDialog: false
 }
 
 const AppReducer = (state, action) => {
@@ -188,6 +189,12 @@ const AppReducer = (state, action) => {
                 ...state,
                 x: payload.x,
                 y: payload.y,
+            }
+        case "SET_OPEN_HELP_DIALOG":
+            console.log("SET_OPEN_HELP_DIALOG")
+            return {
+                ...state, 
+                openHelpDialog: payload.openHelpDialog
             }
         default:
             throw new Error(`No valid selection made`)

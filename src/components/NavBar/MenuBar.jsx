@@ -2,27 +2,31 @@ import { useState } from "react"
 import { config } from "../../data/config";
 import { Box, Divider, Drawer, Icon, List, ListItem, Menu, MenuItem, MenuList, Stack, SwipeableDrawer, Typography } from "@mui/material";
 import { CalciteIcon } from "@esri/calcite-components-react";
+
 import TranslateMenu from "./TranslateMenu";
 import UseAppContext from "../../contexts/AppContext";
 
 const MenuBar = ({open, setOpen}) => {
 
-    const {setTranslateDialogOpen} = UseAppContext()
+    const {setTranslateDialogOpen, setOpenHelpDialog} = UseAppContext()
     
     const handleDrawerToggle = (open) => {
         setOpen(open)
     }
 
-
-
     const handleTranslateButton = () => {
         setTranslateDialogOpen(true)
+    }
+
+    const handleHelp = () => {
+        console.log("Setting Open Help Dialog True");
+        setOpenHelpDialog(true)
     }
 
     const drawer = (
         <Box onClick={handleDrawerToggle}  pt={2} display="flex" flexDirection="column" rowGap={2}>
             <List>
-            {
+            {/* {
                 config.pages.map((page, index) => {
                     return (
                         <MenuItem key={`${page}-${index}`} sx={{ textAlign: "center" }}>
@@ -31,20 +35,27 @@ const MenuBar = ({open, setOpen}) => {
                     
                     )
                 })
-            }
-        <Divider/>
-            <MenuItem>
-                <Stack direction="row" spacing={1} alignItems="center">
-                    <CalciteIcon icon="mega-phone"/>
-                    <Typography variant="h5">Feedback</Typography>
-                </Stack>
-            </MenuItem>
-            <MenuItem onClick={handleTranslateButton}>
-                <Stack direction="row" spacing={1} alignItems="center">
-                    <CalciteIcon icon="language-translate"/>
-                    <Typography variant="h5">Translate</Typography>
-                </Stack>
-            </MenuItem>
+            } 
+            <Divider/>
+            */}
+                <MenuItem onClick={handleHelp}>
+                    <Stack direction="row" spacing={1} alignItems="center">
+                        <CalciteIcon icon="question-mark"/>
+                        <Typography variant="h5">Help</Typography>
+                    </Stack>
+                </MenuItem>            
+                <MenuItem>
+                    <Stack direction="row" spacing={1} alignItems="center">
+                        <CalciteIcon icon="mega-phone"/>
+                        <Typography variant="h5">Feedback</Typography>
+                    </Stack>
+                </MenuItem>
+                <MenuItem onClick={handleTranslateButton}>
+                    <Stack direction="row" spacing={1} alignItems="center">
+                        <CalciteIcon icon="language-translate"/>
+                        <Typography variant="h5">Translate</Typography>
+                    </Stack>
+                </MenuItem>
             
             </List>
         </Box>
