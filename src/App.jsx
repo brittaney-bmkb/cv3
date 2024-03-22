@@ -55,7 +55,7 @@ function App() {
 
   return (
     <AppProvider>
-      <Box id="main" display="flex" flexDirection="column"  style={{height: `calc(${componentHeight}px - var(--safe-area-height))`}}>
+      <Box id="main" display="flex" flexDirection="column"  style={{height: `calc(${componentHeight}px - (var(--safe-area-top) + var(--safe-area-bottom)))`}}>
         {config.showBanner === true ? <Notifications/> : null}
           <NavBar/>
         <Stack id="main-stack" direction="row" justifyContent="space-between" flexGrow={1} minHeight={0}>
