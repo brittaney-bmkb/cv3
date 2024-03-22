@@ -9,6 +9,7 @@ import { useRef, useState } from "react";
 import MenuBar from "./MenuBar";
 import UseAppContext from "../../contexts/AppContext";
 import TranslateMenu from "./TranslateMenu";
+import { FeedbackExtended, FeedbackGeneral } from "../FeedBack/Feedback";
 
 const StyledToolbar = styled(Toolbar)({
     display: "flex",
@@ -20,7 +21,9 @@ const NavBar = () => {
 
 
     const {setTranslateDialogOpen, translateText} = UseAppContext()
+
     const [open, setOpen] = useState(false);
+    const [openFeedback, setOpenFeedback] = useState(false)
 
     const handleClick = () => {
         setOpen(!open)
@@ -29,6 +32,10 @@ const NavBar = () => {
     const handleTranslateButton = () => {
         console.log("OPENING TRANSLATE BUTTON")
         setTranslateDialogOpen(true)
+    }
+
+    const openFeedbackDialog = () => {
+        setOpenFeedback(true)
     }
     
     return(
@@ -56,19 +63,6 @@ const NavBar = () => {
                             <Box display="flex" flex={5} > 
                                 <Search/>
                             </Box>
-                            
-                            {/* Page Links displayed  */}
-                            {/* <Stack flex={5} direction="row" alignItems="center" gap={2} display={{xs:'none', sm:'none', md:'none', lg:'flex' }}>
-                                {config.pages.map((page) => {
-                                    return(
-                                        <Link key={page}>
-                                            <Typography variant="body1" color="white">
-                                                {translateText(page)}
-                                            </Typography>
-                                        </Link>
-                                    )
-                                })}
-                            </Stack> */}
                             <Box display="flex" flex={1} sx={{display:{xs: 'none', sm: 'flex', md:'flex', lg:'none'}, alignItems:"center", justifyContent:"flex-end"}}>
                             <IconButton
                                 size="large"
@@ -89,6 +83,7 @@ const NavBar = () => {
                         
                         <Stack direction="row" gap={2} display={{xs:'none', sm:'none', md:'none', lg:'flex' }}> 
                             <StyledButtonFilledPrimaryLight
+                            onClick={openFeedbackDialog}
                             text={translateText("Feedback")} 
                             startIcon={<CalciteIcon icon="mega-phone"/> }/>
                             <StyledButtonFilledPrimaryLight 
@@ -96,6 +91,8 @@ const NavBar = () => {
                             text={translateText("Translate")} 
                             startIcon={<CalciteIcon icon="language-translate"/>}/>
                         </Stack>
+
+                        <FeedbackExtended open={openFeedback} onClose={setOpenFeedback}/>
                         
                     </Stack>
                 </StyledToolbar>

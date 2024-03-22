@@ -5,8 +5,11 @@ import { CalciteIcon } from "@esri/calcite-components-react";
 import TranslateMenu from "./TranslateMenu";
 import UseAppContext from "../../contexts/AppContext";
 import { theme } from "../../theme";
+import { FeedbackExtended, FeedbackGeneral } from "../FeedBack/Feedback";
 
 const MenuBar = ({open, setOpen}) => {
+
+    const [openFeedback, setOpenFeedback] = useState(false)
 
     const {setTranslateDialogOpen, screenWidth} = UseAppContext()
     
@@ -14,16 +17,18 @@ const MenuBar = ({open, setOpen}) => {
         setOpen(open)
     }
 
-
-
     const handleTranslateButton = () => {
         setTranslateDialogOpen(true)
+    }
+
+    const openFeedbackDialog = () => {
+        setOpenFeedback(true)
     }
 
     const drawer = (
         <Box onClick={handleDrawerToggle}  pt={2} display="flex" flexDirection="column" rowGap={2}>
             <List>
-            <MenuItem>
+            <MenuItem onClick={openFeedbackDialog}>
                 <Stack direction="row" spacing={1} alignItems="center">
                     <CalciteIcon icon="mega-phone"/>
                     <Typography variant="h5">Feedback</Typography>
@@ -69,6 +74,8 @@ const MenuBar = ({open, setOpen}) => {
             >
                 {drawer}
             </SwipeableDrawer>
+
+            <FeedbackExtended open={openFeedback} onClose={setOpenFeedback}/>
         </Box>
 
     )
