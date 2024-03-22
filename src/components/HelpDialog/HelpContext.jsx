@@ -119,7 +119,7 @@ const HelpContent = ({display}) => {
                                 : <Typography variant="body1" color={theme.main.text.dark}>
                                     The navigation bar at the top of the screen includes:
                                 </Typography> } 
-                                
+
                                 <ul>
                                     <li> <Typography variant="body1" color={theme.main.text.dark}> Search bar - description below. </Typography> </li>
                                     
@@ -170,7 +170,7 @@ const HelpContent = ({display}) => {
                                         The results of your search will be displayed in the Property Results panel. Click on the desired result to view its details and the map will zoom to that location.
                                     </Typography>                                    
                             </Box>
-                        <Box flex={2} display="flex" justifyContent="center" alignItems="center">
+                        <Box flex={6} display="flex" justifyContent="center" padding= '20px' alignItems="center">
                             <img 
                                 src={isMobile ? AppImages.widget_search_mobile : AppImages.widget_search_desktop} 
                                 alt="Horizontal Search Bar that allows users to search by pin or address. Image" 
@@ -220,7 +220,7 @@ const HelpContent = ({display}) => {
                                     </ul>                                  
                             </Box>
 
-                        <Box flex={2} display="flex" justifyContent="center" alignItems="center">
+                        <Box flex={6} display="flex" justifyContent="center" padding= '20px' alignItems="center">
                             <img 
                                 src={isMobile ? AppImages.property_results_mobile : AppImages.property_results_desktop} 
                                 alt="Property Results Image" 
@@ -253,13 +253,14 @@ const HelpContent = ({display}) => {
                                 <li> <Typography variant="body1" color={theme.main.text.dark}>Export: export the property results. Choose to export property details, a map of the property, or both.</Typography> </li>
                                 <li> <Typography variant="body1" color={theme.main.text.dark}> Feedback: opens a survey to submit feedback. </Typography> </li>
                             </ul> */}
+                            <br/>
                             <Typography variant="body1" color={theme.main.text.dark}>
                                 Selecting a property will open the Property Details that can be compared to the originally selected property. 
                                 At the bottom of the pane, there are back and next arrows that allow the user to flip between the details of each comparable property.
                                 </Typography>                                    
                             </Box>
 
-                        <Box flex={2} display="flex" justifyContent="center" alignItems="center">
+                        <Box flex={6} display="flex" justifyContent="center" padding= '20px' alignItems="center">
                             <img 
                                 src={isMobile ? AppImages.compare_mobile : AppImages.compare_desktop} 
                                 alt="Compare Properties Image" 
@@ -297,7 +298,7 @@ const HelpContent = ({display}) => {
                                     style={{ maxWidth: "110%" }} 
                                 />
                             </Box> */}
-                        <Box flex={2} display="flex" justifyContent="center" alignItems="center">
+                        <Box flex={6} display="flex" justifyContent="center" padding= '20px' alignItems="center">
                             <img 
                                 src={isMobile ? AppImages.widget_measure_mobile : AppImages.widget_measure_desktop} 
                                 alt="Measure Widget Image" 
@@ -326,7 +327,7 @@ const HelpContent = ({display}) => {
                             </Typography>                                  
                             </Box>
 
-                        <Box flex={2} display="flex" justifyContent="center" alignItems="center">
+                        <Box flex={6} display="flex" justifyContent="center" padding= '20px' alignItems="center">
                             <img 
                                 src={isMobile ? AppImages.widget_layers_mobile : AppImages.widget_layers_desktop} 
                                 alt="Layers Widget Image" 
@@ -355,7 +356,7 @@ const HelpContent = ({display}) => {
                             </Typography>                                  
                             </Box>
 
-                        <Box flex={2} display="flex" justifyContent="center" alignItems="center">
+                        <Box flex={6} display="flex" justifyContent="center" padding= '20px' alignItems="center">
                             <img 
                                 src={isMobile ? AppImages.widget_basemaps_mobile : AppImages.widget_basemaps_desktop} 
                                 alt="Basemaps Widget Image" 
@@ -384,7 +385,7 @@ const HelpContent = ({display}) => {
                             </Typography>                                   
                             </Box>
 
-                        <Box flex={2} display="flex" justifyContent="center" alignItems="center">
+                        <Box flex={6} display="flex" justifyContent="center" padding= '20px' alignItems="center">
                             <img 
                                 src={isMobile ? AppImages.widget_print_mobile : AppImages.widget_print_desktop} 
                                 alt="Print Widget Image" 
@@ -418,7 +419,7 @@ const HelpContent = ({display}) => {
                                     </ul> 
                                 </Box>
     
-                            <Box flex={2} display="flex" justifyContent="center" alignItems="center">
+                            <Box flex={6} display="flex" justifyContent="center" padding= '20px' alignItems="center">
                                 <img 
                                     src={isMobile ? AppImages.user_buttons_desktop : AppImages.user_buttons_desktop} 
                                     alt="Clear, Export, & Feedback Button Image" 
