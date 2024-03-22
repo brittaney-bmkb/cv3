@@ -32,26 +32,28 @@ function App() {
         setScreenWidth(width)
     }
 
-    const resizeOps = () => {
-      console.log("Setting inner window height: ", window.innerHeight)
-      document.documentElement.style.setProperty("--doc-height", `${window.innerHeight}px`);
-    };
+    // const resizeOps = () => {
+    //   console.log("Setting inner window height: ", window.innerHeight)
+    //   document.documentElement.style.setProperty("--doc-height", `${window.innerHeight}px`);
+    // };
 
     window.addEventListener('resize', handleResize);
-    window.addEventListener("resize", resizeOps);
+    //window.addEventListener("resize", resizeOps);
 
     handleResize();
-    resizeOps();
+    //resizeOps();
     
     return () => {
       window.removeEventListener('resize', handleResize);
-      window.removeEventListener('resize', resizeOps);
+      //window.removeEventListener('resize', resizeOps);
     };
-  }, [window.innerWidth, window.innerHeight]);
+
+    //window.innerHeight
+  }, [window.innerWidth]);
 
   return (
     <AppProvider>
-      <Box display="flex" flexDirection="column" height="100vh" >
+      <Box id="main" display="flex" flexDirection="column"  className="main">
         {config.showBanner === true ? <Notifications/> : null}
           <NavBar/>
         <Stack id="main-stack" direction="row" justifyContent="space-between" flexGrow={1} minHeight={0}>
