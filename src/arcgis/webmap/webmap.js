@@ -192,7 +192,7 @@ export async function queryLocationResults(coordinates, parcelQueryFields){
 
   let features = await peformQueryFeatures(point, parcelQueryFields)
 
-  console.log("queryLocationResults: zooming to features: ", features)
+  //console.log("queryLocationResults: zooming to features: ", features)
   zoomToExtent(features)
 
   return features

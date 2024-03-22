@@ -38,16 +38,16 @@ export default function WebMapView(){
 
     }, [mapContainer])
 
-    useEffect(() => {
-        //watch for clicks in the mapview
-        reactiveUtils.on(
-            () => view,
-            "click",
-            (event) => {
-                console.log("WEBMAPVIEW: Click event emitted: ", event)
-            }
-        )
-    })
+    // useEffect(() => {
+    //     //watch for clicks in the mapview
+    //     reactiveUtils.on(
+    //         () => view,
+    //         "click",
+    //         (event) => {
+    //             console.log("WEBMAPVIEW: Click event emitted: ", event)
+    //         }
+    //     )
+    // })
 
 
     useEffect(() => {

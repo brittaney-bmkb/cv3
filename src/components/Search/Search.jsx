@@ -91,8 +91,9 @@ const Search = () => {
                     param = {"pin": paramValue}
                 }
     
-                console.log("USE EFFECT PARAM : ", param)
+                
                 setSearchParams(param)
+                console.log("USE EFFECT PARAM : ", routeParams.get("search"), routeParams.get("pin"))
                 
                 if(searchWidget.current && ![attributes["PIN10"], attributes["PIN14"], `${attributes["street_address"]}, ${attributes["city_state_zip"]}`].includes(searchWidget.current.searchTerm)){
                     searchWidget.current.searchTerm = paramValue
@@ -102,6 +103,7 @@ const Search = () => {
             
     }
     if(!primaryResultFeature){
+        console.log("No Primary Result Selected. Querying url parameters")
 
         setLocationSearch(routeParams.get("location"))
 
@@ -112,9 +114,9 @@ const Search = () => {
         setAddressSearch(routeParams.get("address"))
 
         console.log("USE EFFECT No feature Found")
-        console.log("USE EFFECT GENERIC SEARCH: ", genericSearch)
-        console.log("USE EFFECT PIN SEARCH: ", pinSearch)
-        console.log("USE EFFECT Address SEARCH: ", addressSearch)
+        console.log("USE EFFECT GENERIC SEARCH: ", routeParams.get("search"))
+        console.log("USE EFFECT PIN SEARCH: ", routeParams.get("pin"))
+        console.log("USE EFFECT Address SEARCH: ", routeParams.get("address"))
 
         if(searchWidget.current){
             searchWidget.current.searchTerm = null
@@ -213,7 +215,7 @@ const Search = () => {
         //execute function search function with url param
         createSearch()
 
-    },[searchDiv, mapView, searchSources, newSearch])
+    },[searchDiv, mapView, searchSources])
 
     return(
         <Box 
