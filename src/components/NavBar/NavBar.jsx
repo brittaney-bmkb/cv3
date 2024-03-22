@@ -9,6 +9,7 @@ import { useRef, useState } from "react";
 import MenuBar from "./MenuBar";
 import UseAppContext from "../../contexts/AppContext";
 import TranslateMenu from "./TranslateMenu";
+import { FeedbackExtended, FeedbackGeneral } from "../FeedBack/Feedback";
 
 const StyledToolbar = styled(Toolbar)({
     display: "flex",
@@ -20,7 +21,9 @@ const NavBar = () => {
 
 
     const {setTranslateDialogOpen, translateText} = UseAppContext()
+
     const [open, setOpen] = useState(false);
+    const [openFeedback, setOpenFeedback] = useState(false)
 
     const handleClick = () => {
         setOpen(!open)
@@ -30,6 +33,10 @@ const NavBar = () => {
         console.log("OPENING TRANSLATE BUTTON")
         setTranslateDialogOpen(true)
     }
+
+    const openFeedbackDialog = () => {
+        setOpenFeedback(true)
+    }
     
     return(
             <AppBar position="sticky">
@@ -37,13 +44,14 @@ const NavBar = () => {
                     <Stack direction={{xs:'column', sm:'row'}} justifyContent="space-between" alignItems="center" width='100%' gap={{xs:0, sm:1, md: 2}}>
                             
                         <Stack direction="row" alignItems='center' flex={1} width="auto">
-                            <Stack direction="row" alignContent="center" alignItems="center" gap={1} height='100%' width="auto">
+                            <Stack direction="row" alignItems="center" gap={1} height='100%' width="auto">
                             <IconButton
                                 size="large"
                                 edge="start"
                                 color="inherit"
                                 aria-label="menu"
-                                sx={{ mr: 2, display:{xs: 'flex', sm: 'none', md:'none', lg:'none'}, alignItems:"center", position:"absolute", left:10}}
+                                onClick={handleClick}
+                                sx={{ display:{xs: 'flex', sm: 'none', md:'none', lg:'none'}, alignItems:"center", position:"absolute",  left:10 }}
                             >
                                 <MenuIcon fontSize="large"/>
                             </IconButton>
@@ -51,23 +59,10 @@ const NavBar = () => {
                                 <Typography variant="h1" textAlign="center">CookViewer</Typography>
                             </Stack>
                         </Stack>
-                        <Stack direction="row" alignItems="center" gap={2} flex={5} padding={{xs:1, sm:1, md: 2}} justifyContent="space-between">
+                        <Stack direction="row" alignItems="center" flex={5} padding={{xs:1, sm:1, md: 2}} justifyContent="space-between">
                             <Box display="flex" flex={5} > 
                                 <Search/>
                             </Box>
-                            
-                            {/* Page Links displayed  */}
-                            <Stack flex={5} direction="row" alignItems="center" gap={2} display={{xs:'none', sm:'none', md:'none', lg:'flex' }}>
-                                {config.pages.map((page) => {
-                                    return(
-                                        <Link key={page}>
-                                            <Typography variant="body1" color="white">
-                                                {translateText(page)}
-                                            </Typography>
-                                        </Link>
-                                    )
-                                })}
-                            </Stack>
                             <Box display="flex" flex={1} sx={{display:{xs: 'none', sm: 'flex', md:'flex', lg:'none'}, alignItems:"center", justifyContent:"flex-end"}}>
                             <IconButton
                                 size="large"
@@ -79,15 +74,16 @@ const NavBar = () => {
                                 <MenuIcon 
                                 fontSize="large"
                                 />
-                                <MenuBar open={open} setOpen={setOpen}/>
+                                
                             </IconButton>
                             </Box>
                             
-                            
+                            <MenuBar open={open} setOpen={setOpen}/>
                         </Stack>
                         
                         <Stack direction="row" gap={2} display={{xs:'none', sm:'none', md:'none', lg:'flex' }}> 
                             <StyledButtonFilledPrimaryLight
+                            onClick={openFeedbackDialog}
                             text={translateText("Feedback")} 
                             startIcon={<CalciteIcon icon="mega-phone"/> }/>
                             <StyledButtonFilledPrimaryLight 
@@ -95,6 +91,8 @@ const NavBar = () => {
                             text={translateText("Translate")} 
                             startIcon={<CalciteIcon icon="language-translate"/>}/>
                         </Stack>
+
+                        <FeedbackExtended open={openFeedback} onClose={setOpenFeedback}/>
                         
                     </Stack>
                 </StyledToolbar>
