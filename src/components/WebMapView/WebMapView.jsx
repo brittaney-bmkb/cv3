@@ -3,15 +3,16 @@ import { useEffect, useRef, useState } from "react";
 import UseAppContext from "../../contexts/AppContext";
 import { view } from "../../arcgis/webmap/webmap";
 import StyledButtonFilledPrimary, { ToggleIconButton } from "../Button/Button";
-import { Box } from "@mui/material";
+import { Box, Fade, IconButton, Typography } from "@mui/material";
 import TableRowsOutlinedIcon from '@mui/icons-material/TableRowsOutlined';
 import MapButtonGroup from "../MapButtonGroup";
 import { theme } from "../../theme";
+import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 
 
 export default function WebMapView(){
 
-    const { panelDisplaySecondary, setShowMapMoblie, loadMap, setMapContainer, mapContainer, mapClickEventHandler, addSecondaryFeatureToMap, secondaryResultFeature, translateText, screenWidth} = UseAppContext()
+    const { panelWidgetVisible, setShowMapMoblie, loadMap, setMapContainer, mapContainer, mapClickEventHandler, addSecondaryFeatureToMap, secondaryResultFeature, translateText, screenWidth} = UseAppContext()
     const mapDiv = useRef(null)
     const mapButtonGroupRef = useRef(null);
     const toggleButton = useRef(null);
@@ -31,20 +32,22 @@ export default function WebMapView(){
                 await loadMap()
 
             }
-
-            // if(view){
-            //     if(!view.ui.find("mapButtonGroup")){
-            //         setMapButtonsExist(true)
-            //         view.ui.add("mapButtonGroup", "manual")
-            //     }
-                
-            //     view.ui.add("toggleButton", "manual")
-            // }
         }
 
         createMap();
 
     }, [mapContainer])
+
+    useEffect(() => {
+        //watch for clicks in the mapview
+        reactiveUtils.on(
+            () => view,
+            "click",
+            (event) => {
+                console.log("WEBMAPVIEW: Click event emitted: ", event)
+            }
+        )
+    })
 
 
     useEffect(() => {
@@ -57,17 +60,20 @@ export default function WebMapView(){
     },[secondaryResultFeature])
 
     return (
-        <Box width='100%' height='100%' display="flex" justifyContent="left" position="relative">
+        <Box width='100%' height='100%' display="flex" alignItems={screenWidth <= theme.breakpoints.values.md ? "center" : "left"} justifyContent={screenWidth <= theme.breakpoints.values.md ? "center" : "left"} position="relative">
         <div id="MAPCONTAINER" ref={mapDiv} style={{width: '100%', height: '100%', zIndex: 1}} onClick={mapClickEventHandler}></div>
                 <Box 
                 display="flex" 
-                id="mapButtonGroup"  ref={mapButtonGroupRef}
+                id="mapButtonGroup"  
+                ref={mapButtonGroupRef}
                 justifyContent={screenWidth < theme.breakpoints.values.md ? "center" : "left"}
-                p={2}
+                pt={2}
+                sx={{boxSizing:"border-box"}}
                 position="absolute"
                 zIndex={2}
                 top={1}
                 height="auto"
+                width="100%"
                 // ref={mapButtonGroupRef}
                 >
 
@@ -75,18 +81,27 @@ export default function WebMapView(){
                     
                     </Box>
                    
-        <Box 
-        display={{xs:"flex", sm: "none"}}
-        id="toggleButton" 
-        ref={toggleButton} 
-        position="absolute"
-        bottom={1}
-        left="45%">
-            <ToggleIconButton 
-            text={translateText("Data")}
-            icon={<TableRowsOutlinedIcon/>}
+        <Fade 
+        appear
+        in={!panelWidgetVisible}>
+            <IconButton 
             onClick={handleClick}
-            /></Box>
+            sx={{
+                position: "absolute",
+                bgcolor:theme.palette.primary.main, 
+                zIndex:"modal",
+                display:!panelWidgetVisible && screenWidth <= theme.breakpoints.values.sm ? "flex" : "none",
+                width:50,
+                height:50,
+                flexDirection:"column",
+                bottom:20,
+                boxShadow:5
+                }}>
+                <TableRowsOutlinedIcon htmlColor="white"/>
+                <Typography variant="subtitle1" color="white">{translateText("Data")}</Typography>
+            </IconButton>
+        </Fade>
+
         </Box>
 
             )            

@@ -18,12 +18,13 @@ const StyledButtonFilledPrimary = ({text, startIcon, endIcon, onClick, textVarie
         onClick={onClick}
         sx={{
             textTransform:"none", 
-            width: width ?? 115, 
+            width: width ?? "auto", 
             height:30,
             backgroundColor: active ? theme.palette.primary.dark: theme.palette.primary.main,
-            boxShadow:  active ? 0: 2
+            boxShadow:  active ? 0: 2,
+            fontFamily:"barlow"
             }}
-        ><Typography variant={textVarient} color={theme.palette.primary.contrastText}>
+        ><Typography variant={textVarient} color={theme.palette.primary.contrastText} fontFamily="barlow">
             {text}
         </Typography>
         </Button>
@@ -85,6 +86,27 @@ export const StyledButtonFilledSecondary = ({text, startIcon, endIcon, onClick})
     </Typography></Button>
     )
 }
+
+export const StyledButtonFilledPrimaryLight = ({text, startIcon, endIcon, onClick}) => {
+    return(
+        <Button 
+        variant="contained" 
+        startIcon={startIcon}
+        endIcon={endIcon}
+        onClick={onClick}
+        sx={{
+            paddingTop:'2px', 
+            paddingBottom:'2px', 
+            textTransform:'none', 
+            bgcolor: theme.palette.primary.light,
+            fontFamily:"barlow"
+        }}
+        ><Typography p={0} variant="body1">
+        {text}
+    </Typography></Button>
+    )
+}
+
 
 export const StyledIconButton = ({text, icon, onClick}) => {
     return(

@@ -3,7 +3,7 @@ import './App.css'
 import NavBar from './components/NavBar/NavBar'
 import WebMapView from './components/WebMapView/WebMapView'
 import { Box, Stack, Grid, ThemeProvider, createTheme, Button } from '@mui/material'
-import Panel, { BottomPanel, LeftPanel, SecondaryPanel } from './components/Panel/Panel'
+import Panel, { BottomPanel, LeftPanel, SecondaryPanel, WidgetPanel } from './components/Panel/Panel'
 import TableRowsOutlinedIcon from '@mui/icons-material/TableRowsOutlined';
 import '@esri/calcite-components/dist/calcite/calcite.css';
 import MapButtonGroup from './components/MapButtonGroup'
@@ -33,19 +33,28 @@ function App() {
         setScreenWidth(width)
     }
 
+    // const resizeOps = () => {
+    //   console.log("Setting inner window height: ", window.innerHeight)
+    //   document.documentElement.style.setProperty("--doc-height", `${window.innerHeight}px`);
+    // };
+
     window.addEventListener('resize', handleResize);
+    //window.addEventListener("resize", resizeOps);
 
     handleResize();
+    //resizeOps();
     
     return () => {
       window.removeEventListener('resize', handleResize);
+      //window.removeEventListener('resize', resizeOps);
     };
-  }, [window.innerWidth]);
 
+    //window.innerHeight
+  }, [window.innerWidth]);
 
   return (
     <AppProvider>
-      <Box display="flex" flexDirection="column" height="100vh">
+      <Box id="main" display="flex" flexDirection="column"  className="main">
         {config.showBanner === true ? <Notifications/> : null}
           <NavBar/>
         <Stack id="main-stack" direction="row" justifyContent="space-between" flexGrow={1} minHeight={0}>
@@ -63,6 +72,7 @@ function App() {
             <BottomPanel/>
           </Box>
           <SecondaryPanel/>
+          <WidgetPanel/>
         </Stack>
         {/* <Box width="auto" height="auto" position="absolute" bottom={20} left="45%" display={{xs:"block", sm: "none"}}>
           <ToggleIconButton 

@@ -12,6 +12,7 @@ import CompareNearby from "../ComparableProperty/CompareNearby"
 import PropertyDetail from "../PropertyDetail/PropertyDetail"
 import PropertyPagniation from "../PropertyDetail/PropertyPagnition";
 import WebMapView from "../WebMapView/WebMapView";
+import LayerListWidgetCustom from "../Widgets/LayerListWidgetCustom";
 
 const PanelContent = ({display}) => {
 
@@ -20,7 +21,7 @@ const PanelContent = ({display}) => {
     switch(display){
         case 'resultsList':
             return (
-                <Box display="flex" flexDirection="column" height="100%" >
+                <Box display="flex" flexDirection="column" height="100%" width="100%">
                     <PanelHeader
                         text={translateText("Property Results")} 
                         exportButton={true} 
@@ -40,7 +41,7 @@ const PanelContent = ({display}) => {
                 </Box>)
         case 'propertyDetail':
             return (
-                <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
+                <Box display="flex" flexDirection="column" flexGrow={1} minHeight={0} height="100%" width="100%">
                         <PanelHeader 
                         text={"Property Detail"} 
                         exportButton={true} 
@@ -215,36 +216,39 @@ const PanelContent = ({display}) => {
                 flexDirection="column" 
                 flexGrow={1} 
                 minHeight={0} 
-                rowGap={1}>
+                rowGap={1}
+                >
                     <PanelHeader 
-                        text={"Measure"}
-                        closeButton={screenWidth < theme.breakpoints.values.lg ?  false : true }
-                        panel={"secondary"}
+                        text={translateText("Measure")}
+                        closeButton={true}
+                        panel={"widget"}
                     />                    
                     <MeasureWidget
-                    panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"}
+                        panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"}
                     />
                 </Box>
                 )                
         case 'layersWidget':
             return(
-                <Box display="flex" flexDirection="column"  minHeight={0}>
+                <Box display="flex" flexDirection="column" minHeight={0} p={1}>
                     <PanelHeader
-                    text={"Map Layers"} 
+                    text={translateText("Layers")} 
                     closeButton={true}
-                    panel={"secondary"}
+                    descriptionText={translateText("Select layers to update the map. Layers that are greyed out are not visible at current map zoom level.")}
+                    panel={"widget"}
                     />
-                    <LayersWidget/>
+                    {/* <LayersWidget/> */}
+                    <LayerListWidgetCustom/>
                 </Box>
             )   
         case 'basemapsWidget':
             return(
                 <Box p={2} display="flex" flexDirection="column" rowGap={3} minHeight={0}>
                     <PanelHeader
-                    text={"Basemaps"} 
+                    text={translateText("Basemaps")} 
                     closeButton={true}
-                    panel={"secondary"}
-                    descriptionText={"Select a basemap from the options below to update the map"}
+                    panel={"widget"}
+                    descriptionText={translateText("Select a basemap from the options below to update the map")}
                     />
                     <BasemapWidget/>
                 </Box>
@@ -253,9 +257,9 @@ const PanelContent = ({display}) => {
             return(
                 <Box p={2} display="flex" flexDirection="column"  minHeight={0}>
                     <PanelHeader
-                    text={"Print"} 
+                    text={translateText("Print")} 
                     closeButton={true}
-                    panel={"secondary"}
+                    panel={"widget"}
                     // descriptionText={"Print Settings"}
                     />
                     <PrintWidget/>

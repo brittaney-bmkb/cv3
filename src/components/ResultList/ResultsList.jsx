@@ -34,14 +34,14 @@ const ResultsList = ({results, primaryLableColor, noResultsMessage}) => {
                         />
                     </ListItem>
                 )
-            }) : <Box display="flex" width='100%' alignItems="center" justifyContent="center" flexDirection="column" p={1}>
+            }) : <Box display="flex" width='100%' alignItems="center" justifyContent="center" flexDirection="column" p={1} sx={{boxSizing:"border-box"}}>
                     {isQuerying === true ? 
                     <Stack direction="column" >
                     <CalciteLoader/>
                     <Typography variant="h6" color={theme.palette.primary.main}>{translateText("Querying parcels")}</Typography>
                     </Stack>
                     :
-                    <Typography variant="h6" color={theme.palette.primary.main}>{noResultsMessage}</Typography>
+                    <Typography align="center" variant="h6" color={theme.palette.primary.main}>{translateText(noResultsMessage)}</Typography>
                     }
                     
                 </Box>}

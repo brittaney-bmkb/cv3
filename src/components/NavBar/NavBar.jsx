@@ -3,7 +3,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 
 import Search from "../Search/Search"
-import BlueButton, { StyledButtonFilledSecondary } from "../Button/Button"
+import BlueButton, { StyledButtonFilledPrimaryLight, StyledButtonFilledSecondary } from "../Button/Button"
 import { config } from "../../data/config";
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import { CalciteIcon } from "@esri/calcite-components-react";

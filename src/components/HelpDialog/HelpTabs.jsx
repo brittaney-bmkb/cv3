@@ -4,6 +4,7 @@ import { theme } from "../../theme"
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import HelpContent from "./HelpContext";
+import UseAppContext from "../../contexts/AppContext";
 
 
 function TabPanel(props) {
@@ -41,6 +42,7 @@ function a11yProps(index) {
 const HelpTabs = () => {
 
     const [value, setValue] = React.useState(0);
+    const {translateText} = UseAppContext()
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -56,16 +58,17 @@ const HelpTabs = () => {
                     onChange={handleChange}
                     aria-label="help navigation bars"
                 >
-                <Tab label="Overview" sx={{ textTransform: "none" }} {...a11yProps(0)}  />
-                <Tab label="Navigation"  sx={{ textTransform: "none" }} {...a11yProps(1)}  />
-                <Tab label="Search " sx={{ textTransform: "none" }} {...a11yProps(2)} />
-                <Tab label="Property Results"  sx={{ textTransform: "none" }}{...a11yProps(3)} />
-                <Tab label="Compare Properties" sx={{ textTransform: "none" }} {...a11yProps(4)} wrapped />
-                <Tab label="Measure" sx={{ textTransform: "none" }} {...a11yProps(5)} />
-                <Tab label="Layers" sx={{ textTransform: "none" }} {...a11yProps(6)} />
-                <Tab label="Basemaps" sx={{ textTransform: "none" }} {...a11yProps(7)} />
-                <Tab label="Print" sx={{ textTransform: "none" }} {...a11yProps(8)} />
-                <Tab label="Clear, Export, Feedback" sx={{ textTransform: "none" }} {...a11yProps(9)} />
+                
+                    <Tab label={translateText("Overview")} sx={{ textTransform: "none" }} {...a11yProps(0)}  />
+                    <Tab label={translateText("Navigation")}  sx={{ textTransform: "none" }} {...a11yProps(1)}  />
+                    <Tab label={translateText("Search ")} sx={{ textTransform: "none" }} {...a11yProps(2)} />
+                    <Tab label={translateText("Property Results")}  sx={{ textTransform: "none" }}{...a11yProps(3)} />
+                    <Tab label={translateText("Compare Properties")} sx={{ textTransform: "none" }} {...a11yProps(4)} wrapped />
+                    <Tab label={translateText("Measure")} sx={{ textTransform: "none" }} {...a11yProps(5)} />
+                    <Tab label={translateText("Layers")} sx={{ textTransform: "none" }} {...a11yProps(6)} />
+                    <Tab label={translateText("Basemaps")} sx={{ textTransform: "none" }} {...a11yProps(7)} />
+                    <Tab label={translateText("Print")} sx={{ textTransform: "none" }} {...a11yProps(8)} />
+                    <Tab label={translateText("Clear, Export, Feedback")} sx={{ textTransform: "none" }} {...a11yProps(9)} />
                 
                 </Tabs>
             </Box>

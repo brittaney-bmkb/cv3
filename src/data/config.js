@@ -69,10 +69,19 @@ export const config = {
                     type: "simple-fill",
                     style:"none",
                     outline: {
-                        width:.5,
-                        color: "#009ADA"
+                        width:1,
+                        color: "#0D4D96"
                     },
-                }
+                },
+                visualVariables: [{
+                    type: "size",
+                    valueExpression: "$view.scale",
+                    target: "outline",
+                    stops: [
+                        { size: 2, value: 0 },
+                        { size: 0.05, value: 5000 }
+                    ]
+                }]
            },
            searchSources: [
             {
@@ -215,7 +224,7 @@ export const config = {
         index: 11,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 500000,
+        minScale: 30000,
         opacity: null,
         visible:false,
         groupName:"Natural Environment and Recreation",
@@ -689,7 +698,7 @@ export const config = {
         index: 72,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 500000,
+        minScale: 30000,
         opacity: 1,
         visible:false,
         groupName:"Parcel Archive",

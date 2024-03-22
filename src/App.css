@@ -5,10 +5,17 @@ html,
 body{
   padding: 0;
   margin:0;
-  height: calc(100%);
+  position:fixed;
+  height: 100%;
   width: calc(100%);
-  box-sizing: "border-box";
+  box-sizing: border-box;
 }
+
+
+.main {
+  height: calc(100vh - var(--safe-area-height));
+}
+
 
 calcite-icon {
   --calcite-ui-icon-color: black
@@ -25,19 +32,6 @@ calcite-icon {
     width: 95vw;
   }
 }
-
-/* .esri-measurement-widget-content__actions{
-  visibility: hidden;
-  display: none;
-} */
-
-/* .esri-measurement-widget-content{
-  background-color: black !important;
-} */
-
-/* .esri-measurement-widget-content__measurement{
-  background-color: lightgrey !important;
-} */
 
 .esri-measurement-widget-content__measurement-item__value{
   padding: 3%;

@@ -1,29 +1,16 @@
-import { Box, MenuItem, Select, Stack, Typography } from "@mui/material"
+import { Box, MenuItem, Select, Typography } from "@mui/material"
 import UseAppContext from "../../contexts/AppContext"
-import { useEffect, useMemo, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { theme } from "../../theme"
 
 import StraightenOutlinedIcon from '@mui/icons-material/StraightenOutlined';
 import SquareFootOutlinedIcon from '@mui/icons-material/SquareFootOutlined';
-import MyLocationOutlinedIcon from '@mui/icons-material/MyLocationOutlined';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import ReplayIcon from '@mui/icons-material/Replay';
-
-import { StyledIconButton } from "../Button/Button";
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import NativeSelect from '@mui/material/NativeSelect';
-
-import SquareFootIcon from '@mui/icons-material/SquareFoot';
 import StyledButtonFilledPrimary, { StyledPanelButton } from "../Button/Button";
 
 
 import Measurement from "@arcgis/core/widgets/Measurement.js";
 import { view } from "../../arcgis/webmap/webmap";
 
-import AreaMeasurement2D from "@arcgis/core/widgets/AreaMeasurement2D.js";
 
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 
@@ -42,8 +29,8 @@ const MeasureWidget = () => {
     // //use ref for div 
     const measureWidget = useRef(null)
 
-    const [areaUnit, setAreaUnit] = useState("square-us-feet")
-    const [linearUnit, setLinearUnit] = useState("us-feet")
+    const [areaUnit, setAreaUnit] = useState(areaUnitOptions[0])
+    const [linearUnit, setLinearUnit] = useState(linearUnitOptions[0])
     const [measurementValue, setMeasurementValue] = useState(0)
     const [activeTool, setActiveTool] = useState(null)
 
@@ -186,6 +173,8 @@ const MeasureWidget = () => {
             measureWidget.current.clear()
             setMeasurementValue(0)
             setActiveTool(null)  
+            setAreaUnit(areaUnitOptions[0])
+            setLinearUnit(linearUnitOptions[0])
         }
         
     }
@@ -237,7 +226,7 @@ const MeasureWidget = () => {
                 <Select
                     disabled = {!activeTool}
                     id="unit-selector"
-                    value={activeTool === "area" ? areaUnit : linearUnit}
+                    value={activeTool && activeTool === "area" ? areaUnit : linearUnit}
                     onChange={handleUnitChange}
                     sx={{height:30, display:"flex", flex:2}}
                 >

@@ -1,8 +1,7 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
 import AppReducer, { initialState } from '../reducers/AppReducer'
-import { useSearchParams } from "react-router-dom";
 import { config } from "../data/config";
-import { returnLatLong, zoomToExtent } from "../arcgis/webmap/webmap";
+import { returnLatLong } from "../arcgis/webmap/webmap";
 import { theme } from "../theme";
 
 
@@ -11,9 +10,6 @@ export const AppContext = createContext(initialState)
 export const AppProvider = ({children}) => {
 
     const [state, dispatch] = useReducer(AppReducer, initialState)
-
-     //get url parameters
-     const [routeParams, setSearchParams] = useSearchParams()
 
     const setMapContainer = (ref) => {
         dispatch({
@@ -115,6 +111,24 @@ export const AppProvider = ({children}) => {
             type:"SET_PANEL_SECONDARY_DISPLAY",
              payload: {
                 panelDisplaySecondary: state,
+            }
+        })
+    }
+
+    const setPanelWidgetVisibility = (visible) => {
+        dispatch({
+            type:"SET_PANEL_WIDGET_VISIBILTIY",
+             payload: {
+                panelWidgetVisible: visible,
+            }
+        })
+    }
+
+    const setPanelDisplayWidget = (state) => {
+        dispatch({
+            type:"SET_PANEL_WIDGET_DISPLAY",
+             payload: {
+                panelDisplayWidget: state,
             }
         })
     }
@@ -280,18 +294,18 @@ export const AppProvider = ({children}) => {
         console.log("selectedFeatures: ", selectedFeatures)
         let secondaryFeatures = []
         if(comparableParcels){
-
+            console.log("Secondary feature selected: ", secondaryFeatures)
             secondaryFeatures = comparableParcels.filter((feature) => feature.attributes['PIN14'] === selectedFeatures[0].attributes['PIN14'])
                                                       .map((feature) => feature)
 
-            console.log("Secondary feature selcted: ", secondaryFeatures)
+            
     
           };
         
         if(secondaryFeatures?.length > 0){
             setSecondaryResultFeature(secondaryFeatures[0])
             setPanelDisplaySecondary("propertyDetailNearby")
-            createGraphic(secondaryFeatures, "secondarySelected", theme.palette.primary.light)
+            createGraphic(secondaryFeatures, "secondarySelected", theme.palette.secondary.main)
             zoomToExtent([secondaryFeatures[0], primaryResultFeature])
         }
 
@@ -368,19 +382,25 @@ export const AppProvider = ({children}) => {
         //update graphic in map
         const { createGraphic } = await import('../arcgis/webmap/webmap')
 
-        createGraphic(selectedFeature, "primary", "darkBlue")
+        createGraphic(selectedFeature, "primary", theme.palette.primary.main)
     }
 
     const addSecondaryFeatureToMap = async () => {
-        const { secondaryResultFeature, primaryResultFeature } = state
+        const { secondaryResultFeature, primaryResultFeature, comparableParcels } = state
 
         //update graphic in map
-        const { createGraphic, zoomToExtent } = await import('../arcgis/webmap/webmap')
+        const { createGraphic, zoomToExtent, updateSecondaryGraphic } = await import('../arcgis/webmap/webmap')
         const { theme } = await import ('../theme')
 
         console.log("creating new graphic for selectedFeature: ", secondaryResultFeature)
 
-        createGraphic([secondaryResultFeature], "secondarySelected", theme.palette.primary.light)
+        const secondaryPIN14 = secondaryResultFeature.attributes['PIN14']
+
+        const secondaryParcels = comparableParcels.filter(parcel => parcel.attributes["PIN14"] !== secondaryPIN14 )
+        createGraphic(secondaryParcels, "secondary", theme.palette.secondary.main)
+
+        createGraphic([secondaryResultFeature], "secondarySelected", theme.palette.secondary.main)
+        //updateSecondaryGraphic(whereQuery)
         zoomToExtent([secondaryResultFeature, primaryResultFeature])
     }
 
@@ -566,7 +586,11 @@ export const AppProvider = ({children}) => {
         y: state.y,
         returnLocationFeatures, 
         setOpenHelpDialog,
-        openHelpDialog: state.openHelpDialog
+        openHelpDialog: state.openHelpDialog,
+        setPanelWidgetVisibility,
+        setPanelDisplayWidget,
+        panelWidgetVisible: state.panelWidgetVisible,
+        panelDisplayWidget: state.panelDisplayWidget
         
     }
 

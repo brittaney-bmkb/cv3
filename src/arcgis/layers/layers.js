@@ -37,8 +37,9 @@ export async function createFeatureLayers(map){
           namedLayers[name] = new MapImageLayer({
             url: source.url,
             opacity: source.opacity,
-            title: source.layerName,
+            title: name,
             visible: source.visible,
+            minScale: source.minScale,
             sublayers: [
               {
                 id:source.index,
@@ -57,7 +58,7 @@ export async function createFeatureLayers(map){
           namedLayers[name] = new FeatureLayer({
             url: source.url,
             outFields: source.outFields,
-            title: source.layerName,
+            title: name,
             // popupEnabled: source.popupEnabled,
             // popupTemplate : new PopupTemplate({
             //   title: source.popupTemplateTitle
@@ -69,9 +70,17 @@ export async function createFeatureLayers(map){
             
           })
         }
-        if(source.visible){
+        //if(source.visible){
+        let foundLayer = map.allLayers.filter((mapLayer) => {
+          return mapLayer.title === name
+        })
+
+        //console.log("Found layer = ", foundLayer)
+        if(foundLayer.items.length <= 0){
           map.add(namedLayers[name])
         }
+        
+      //}
         
       })
 

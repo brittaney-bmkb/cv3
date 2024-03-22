@@ -112,31 +112,38 @@ const HelpContent = ({display}) => {
                     <DialogContent>
                         <Box display="flex" flexDirection={{ xs: 'column', md: 'column' }} alignItems="center">
                             <Box flex={1} mr={{ xs: 2, md: 0 }}>
-                                <Typography variant="body1" color={theme.main.text.dark}>
+                            {isMobile 
+                                ? <Typography variant="body1" color={theme.main.text.dark}> In the navigation bar you can find the search bar, and 
+                                    <Box component="span" sx={{fontWeight: 'bold'}}> Help - Feedback - Translate 
+                                    </Box> can be found in the top left hamburger icon. </Typography>  
+                                : <Typography variant="body1" color={theme.main.text.dark}>
                                     The navigation bar at the top of the screen includes:
-                                </Typography>
-
+                                </Typography> } 
+                                
                                 <ul>
                                     <li> <Typography variant="body1" color={theme.main.text.dark}> Search bar - description below. </Typography> </li>
+                                    
                                     <li> <Typography variant="body1" color={theme.main.text.dark}> Help button - this dialog box you are currently viewing.</Typography> </li>
                                     <li> <Typography variant="body1" color={theme.main.text.dark}> Feedback button - opens a survey to submit feedback.</Typography> </li>
                                     <li> <Typography variant="body1" color={theme.main.text.dark}> Translate button - which allows the user to select the language used in the map. </Typography> </li>
+                                    
+                                    
 
                                 </ul>
                             </Box>
                             <Box flex={6} display="flex" justifyContent="center" padding= '20px' alignItems="center">
                                 <img 
-                                    src={isMobile ? AppImages.navbar_desktop : AppImages.navbar_desktop} 
+                                    src={isMobile ? AppImages.navbar_mobile : AppImages.navbar_desktop} 
                                     alt="Navigation Bar Image" 
                                     style={{ maxWidth: "100%", height: "auto" }}
-                                    onClick={() => handleImageClick(isMobile ? AppImages.navbar_mobile_large : AppImages.navbar_desktop_large)}
+                                    onClick={() => handleImageClick(isMobile ? AppImages.navbar_mobile : AppImages.navbar_desktop)}
                                 />
                             </Box> 
 
                         </Box>
                     </DialogContent>
                         {/* Modal Component */}
-                {modalOpen && <Modal imageUrl={isMobile ? AppImages.navbar_desktop : AppImages.navbar_desktop}  onClose={() => setModalOpen(false)} />}   
+                {modalOpen && <Modal imageUrl={isMobile ? AppImages.navbar_mobile : AppImages.navbar_desktop}  onClose={() => setModalOpen(false)} />}   
                 </Box>
             )
 
@@ -165,16 +172,16 @@ const HelpContent = ({display}) => {
                             </Box>
                         <Box flex={2} display="flex" justifyContent="center" alignItems="center">
                             <img 
-                                src={isMobile ? AppImages.search_widget_desktop : AppImages.search_widget_desktop} 
-                                alt="Search Bar Image" 
+                                src={isMobile ? AppImages.widget_search_mobile : AppImages.widget_search_desktop} 
+                                alt="Horizontal Search Bar that allows users to search by pin or address. Image" 
                                 style={{ width: "100%", height: "auto", cursor: "pointer" }}
-                                onClick={() => handleImageClick(isMobile ? AppImages.search_widget_desktop : AppImages.search_widget_desktop)} // Call handleImageClick when the image is clicked
+                                onClick={() => handleImageClick(isMobile ? AppImages.widget_search_mobile : AppImages.widget_search_desktop)} // Call handleImageClick when the image is clicked
                             />
                         </Box>
                         </Box>
                     </DialogContent>
                 {/* Modal Component */}
-                {modalOpen && <Modal imageUrl={isMobile ? AppImages.search_widget_desktop : AppImages.search_widget_desktop}  onClose={() => setModalOpen(false)} />}                    
+                {modalOpen && <Modal imageUrl={isMobile ? AppImages.widget_search_mobile : AppImages.widget_search_desktop}  onClose={() => setModalOpen(false)} />}                    
                 </Box>
             )
 
@@ -215,16 +222,16 @@ const HelpContent = ({display}) => {
 
                         <Box flex={2} display="flex" justifyContent="center" alignItems="center">
                             <img 
-                                src={isMobile ? AppImages.property_results_desktop : AppImages.property_results_desktop} 
+                                src={isMobile ? AppImages.property_results_mobile : AppImages.property_results_desktop} 
                                 alt="Property Results Image" 
                                 style={{ width: "100%", height: "auto", cursor: "pointer" }}
-                                onClick={() => handleImageClick(isMobile ? AppImages.property_results_desktop : AppImages.property_results_desktop)} // Call handleImageClick when the image is clicked
+                                onClick={() => handleImageClick(isMobile ? AppImages.property_results_mobile : AppImages.property_results_desktop)} // Call handleImageClick when the image is clicked
                             />
                         </Box>
                         </Box>
                     </DialogContent>
                 {/* Modal Component */}
-                {modalOpen && <Modal imageUrl={isMobile ? AppImages.property_results_desktop : AppImages.property_results_desktop}  onClose={() => setModalOpen(false)} />}                    
+                {modalOpen && <Modal imageUrl={isMobile ? AppImages.property_results_mobile : AppImages.property_results_desktop}  onClose={() => setModalOpen(false)} />}                    
                 </Box>
             )
 
@@ -254,16 +261,16 @@ const HelpContent = ({display}) => {
 
                         <Box flex={2} display="flex" justifyContent="center" alignItems="center">
                             <img 
-                                src={isMobile ? AppImages.compare_desktop : AppImages.compare_desktop} 
+                                src={isMobile ? AppImages.compare_mobile : AppImages.compare_desktop} 
                                 alt="Compare Properties Image" 
                                 style={{ width: "100%", height: "auto", cursor: "pointer" }}
-                                onClick={() => handleImageClick(isMobile ? AppImages.compare_desktop : AppImages.compare_desktop)} // Call handleImageClick when the image is clicked
+                                onClick={() => handleImageClick(isMobile ? AppImages.compare_mobile : AppImages.compare_desktop)} // Call handleImageClick when the image is clicked
                             />
                         </Box>
                         </Box>
                     </DialogContent>
                 {/* Modal Component */}
-                {modalOpen && <Modal imageUrl={isMobile ? AppImages.compare_desktop : AppImages.compare_desktop}  onClose={() => setModalOpen(false)} />}                    
+                {modalOpen && <Modal imageUrl={isMobile ? AppImages.compare_mobile : AppImages.compare_desktop}  onClose={() => setModalOpen(false)} />}                    
                 </Box>
             )
 
@@ -285,23 +292,23 @@ const HelpContent = ({display}) => {
 
                             {/* <Box flex={2} display="flex" justifyContent="center" alignItems="center" padding= '10px'>
                                 <img 
-                                    src={isMobile ? AppImages.navbar_mobile : AppImages.search_widget_desktop} 
+                                    src={isMobile ? AppImages.navbar_mobile : AppImages.widget_search_desktop} 
                                     alt="Navigation Bar Image" 
                                     style={{ maxWidth: "110%" }} 
                                 />
                             </Box> */}
                         <Box flex={2} display="flex" justifyContent="center" alignItems="center">
                             <img 
-                                src={isMobile ? AppImages.search_widget_desktop : AppImages.search_widget_desktop} 
+                                src={isMobile ? AppImages.widget_measure_mobile : AppImages.widget_measure_desktop} 
                                 alt="Measure Widget Image" 
                                 style={{ width: "100%", height: "auto", cursor: "pointer" }}
-                                onClick={() => handleImageClick(isMobile ? AppImages.search_widget_desktop : AppImages.search_widget_desktop)} // Call handleImageClick when the image is clicked
+                                onClick={() => handleImageClick(isMobile ? AppImages.widget_measure_mobile : AppImages.widget_measure_desktop)} // Call handleImageClick when the image is clicked
                             />
                         </Box>
                         </Box>
                     </DialogContent>
                 {/* Modal Component */}
-                {modalOpen && <Modal imageUrl={isMobile ? AppImages.search_widget_desktop : AppImages.search_widget_desktop}  onClose={() => setModalOpen(false)} />}                    
+                {modalOpen && <Modal imageUrl={isMobile ? AppImages.widget_measure_mobile : AppImages.widget_measure_desktop}  onClose={() => setModalOpen(false)} />}                    
                 </Box>
             )
 
@@ -321,16 +328,16 @@ const HelpContent = ({display}) => {
 
                         <Box flex={2} display="flex" justifyContent="center" alignItems="center">
                             <img 
-                                src={isMobile ? AppImages.search_widget_desktop : AppImages.search_widget_desktop} 
+                                src={isMobile ? AppImages.widget_layers_mobile : AppImages.widget_layers_desktop} 
                                 alt="Layers Widget Image" 
                                 style={{ width: "100%", height: "auto", cursor: "pointer" }}
-                                onClick={() => handleImageClick(isMobile ? AppImages.search_widget_desktop : AppImages.search_widget_desktop)} // Call handleImageClick when the image is clicked
+                                onClick={() => handleImageClick(isMobile ? AppImages.widget_layers_mobile : AppImages.widget_layers_desktop)} // Call handleImageClick when the image is clicked
                             />
                         </Box>
                         </Box>
                     </DialogContent>
                 {/* Modal Component */}
-                {modalOpen && <Modal imageUrl={isMobile ? AppImages.search_widget_desktop : AppImages.search_widget_desktop}  onClose={() => setModalOpen(false)} />}                    
+                {modalOpen && <Modal imageUrl={isMobile ? AppImages.widget_layers_mobile : AppImages.widget_layers_desktop}  onClose={() => setModalOpen(false)} />}                    
                 </Box>
             )
 
@@ -350,16 +357,16 @@ const HelpContent = ({display}) => {
 
                         <Box flex={2} display="flex" justifyContent="center" alignItems="center">
                             <img 
-                                src={isMobile ? AppImages.search_widget_desktop : AppImages.search_widget_desktop} 
+                                src={isMobile ? AppImages.widget_basemaps_mobile : AppImages.widget_basemaps_desktop} 
                                 alt="Basemaps Widget Image" 
                                 style={{ width: "100%", height: "auto", cursor: "pointer" }}
-                                onClick={() => handleImageClick(isMobile ? AppImages.search_widget_desktop : AppImages.search_widget_desktop)} // Call handleImageClick when the image is clicked
+                                onClick={() => handleImageClick(isMobile ? AppImages.widget_basemaps_mobile : AppImages.widget_basemaps_desktop)} // Call handleImageClick when the image is clicked
                             />
                         </Box>
                         </Box>
                     </DialogContent>
                 {/* Modal Component */}
-                {modalOpen && <Modal imageUrl={isMobile ? AppImages.search_widget_desktop : AppImages.search_widget_desktop}  onClose={() => setModalOpen(false)} />}                    
+                {modalOpen && <Modal imageUrl={isMobile ? AppImages.widget_basemaps_mobile : AppImages.widget_basemaps_desktop}  onClose={() => setModalOpen(false)} />}                    
                 </Box>
             )
         case 8:
@@ -377,19 +384,18 @@ const HelpContent = ({display}) => {
                             </Typography>                                   
                             </Box>
 
-
                         <Box flex={2} display="flex" justifyContent="center" alignItems="center">
                             <img 
-                                src={isMobile ? AppImages.print_widget_desktop : AppImages.print_widget_desktop} 
+                                src={isMobile ? AppImages.widget_print_mobile : AppImages.widget_print_desktop} 
                                 alt="Print Widget Image" 
                                 style={{ width: "100%", height: "auto", cursor: "pointer" }}
-                                onClick={() => handleImageClick(isMobile ? AppImages.print_widget_desktop : AppImages.print_widget_desktop)} // Call handleImageClick when the image is clicked
+                                onClick={() => handleImageClick(isMobile ? AppImages.widget_print_mobile : AppImages.widget_print_desktop)} // Call handleImageClick when the image is clicked
                             />
                         </Box>
                         </Box>
                     </DialogContent>
                 {/* Modal Component */}
-                {modalOpen && <Modal imageUrl={isMobile ? AppImages.print_widget_desktop : AppImages.print_widget_desktop}  onClose={() => setModalOpen(false)} />}                    
+                {modalOpen && <Modal imageUrl={isMobile ? AppImages.widget_print_mobile : AppImages.widget_print_desktop}  onClose={() => setModalOpen(false)} />}                    
                 </Box>
             )
             case 9:
