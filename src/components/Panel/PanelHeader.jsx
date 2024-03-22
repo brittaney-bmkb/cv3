@@ -9,8 +9,7 @@ import FeedbackOutlinedIcon from '@mui/icons-material/FeedbackOutlined';
 import { useSearchParams } from "react-router-dom"
 import ExportDialog from "../ExportDialog/ExportDialog";
 import { useEffect, useState } from "react";
-import FeedbackDialog from "../FeedBack/Feedback";
-import InfoIcon from '@mui/icons-material/InfoOutlined';
+import FeedbackDialog, { FeedbackGeneral, FeedbackSearch } from "../FeedBack/Feedback";
 
 
 const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton, panel, primary} ) => {
@@ -167,7 +166,14 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
             
 
             <ExportDialog open={openExportDialog} onClose={handleCloseExport} dataDescription={text}/>
-            <FeedbackDialog open={openFeedbackDialog} onClose={handleCloseFeedback}/>
+            
+            {
+                ["Property Results" ,"Comparable Results","Nearby Results"].includes(text) ? 
+                    <FeedbackSearch open={openFeedbackDialog} onClose={handleCloseFeedback}/> :
+                    <FeedbackGeneral open={openFeedbackDialog} onClose={handleCloseFeedback}/>
+            }
+            
+            
 
         </Box>
     )

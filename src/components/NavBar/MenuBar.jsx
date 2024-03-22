@@ -5,10 +5,16 @@ import { CalciteIcon } from "@esri/calcite-components-react";
 
 import TranslateMenu from "./TranslateMenu";
 import UseAppContext from "../../contexts/AppContext";
+import { theme } from "../../theme";
+import { FeedbackExtended, FeedbackGeneral } from "../FeedBack/Feedback";
 
 const MenuBar = ({open, setOpen}) => {
 
-    const {setTranslateDialogOpen, setOpenHelpDialog} = UseAppContext()
+
+    const {setTranslateDialogOpen, setOpenHelpDialog, screenWidth} = UseAppContext()
+
+    const [openFeedback, setOpenFeedback] = useState(false)
+
     
     const handleDrawerToggle = (open) => {
         setOpen(open)
@@ -18,33 +24,26 @@ const MenuBar = ({open, setOpen}) => {
         setTranslateDialogOpen(true)
     }
 
+
     const handleHelp = () => {
         console.log("Setting Open Help Dialog True");
         setOpenHelpDialog(true)
+
+    const openFeedbackDialog = () => {
+        setOpenFeedback(true)
     }
 
     const drawer = (
         <Box onClick={handleDrawerToggle}  pt={2} display="flex" flexDirection="column" rowGap={2}>
             <List>
-            {/* {
-                config.pages.map((page, index) => {
-                    return (
-                        <MenuItem key={`${page}-${index}`} sx={{ textAlign: "center" }}>
-                            <Typography variant="h5" align="center">{page}</Typography>
-                        </MenuItem>
-                    
-                    )
-                })
-            } 
-            <Divider/>
-            */}
                 <MenuItem onClick={handleHelp}>
                     <Stack direction="row" spacing={1} alignItems="center">
                         <CalciteIcon icon="question-mark"/>
                         <Typography variant="h5">Help</Typography>
                     </Stack>
-                </MenuItem>            
-                <MenuItem>
+                </MenuItem>    
+  
+                <MenuItem onClick={openFeedbackDialog}>
                     <Stack direction="row" spacing={1} alignItems="center">
                         <CalciteIcon icon="mega-phone"/>
                         <Typography variant="h5">Feedback</Typography>
@@ -56,6 +55,7 @@ const MenuBar = ({open, setOpen}) => {
                         <Typography variant="h5">Translate</Typography>
                     </Stack>
                 </MenuItem>
+
             
             </List>
         </Box>
@@ -64,7 +64,7 @@ const MenuBar = ({open, setOpen}) => {
         <Box>
             <SwipeableDrawer
             onOpen={() => {handleDrawerToggle(true)}}
-            anchor="right"
+            anchor={ screenWidth < theme.breakpoints.values.sm ? "bottom" : "right"}
             variant="temporary"
             open={open}
             onClose={() => {handleDrawerToggle(false)}}
@@ -78,11 +78,20 @@ const MenuBar = ({open, setOpen}) => {
                     md: "flex",
                     lg: "none"
                 },
-                '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 200 },
+                p:0,
+                zIndex: "modal",
+                
+                '& .MuiDrawer-paper': 
+                { 
+                    boxSizing: 'border-box', 
+                    width: screenWidth < theme.breakpoints.values.sm ? screenWidth : 200,
+                },
             }}
             >
                 {drawer}
             </SwipeableDrawer>
+
+            <FeedbackExtended open={openFeedback} onClose={setOpenFeedback}/>
         </Box>
 
     )

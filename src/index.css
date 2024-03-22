@@ -2,8 +2,10 @@
 :root {
   font-family: "Barlow";
   --mobile-breakpoint: 600px;
-  --safe-area-height: constant(safe-area-inset-bottom); /* For iOS */
-  --safe-area-height: env(safe-area-inset-bottom); /* For modern browsers */
+  --safe-area-bottom: constant(safe-area-inset-bottom); /* For iOS */
+  --safe-area-bottom: env(safe-area-inset-bottom); /* For modern browsers */
+  --safe-area-top: constant(safe-area-inset-top); /* For iOS */
+  --safe-area-top: env(safe-area-inset-top); /* For modern browsers */
 }
 
 ::-webkit-scrollbar {
