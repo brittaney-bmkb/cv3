@@ -82,7 +82,7 @@ const PrintWidgetCustom = () => {
                     value={mapTitle}
                     placeholder="Title"
                     onChange={handleInput}
-                    sx={{width: 200, height:40}}
+                    sx={{width: 'auto', height:40}}
                 />
             </Stack> 
             <Stack direction="row" sx={{alignItems:"center"}}  spacing={2}>
@@ -90,7 +90,7 @@ const PrintWidgetCustom = () => {
                 <Select
                 value={layoutValue}
                 onChange={handleLayoutOptionChange}
-                sx={{width: 200, height:40}}
+                sx={{width: 'auto', height:40}}
                 >
                     {formatLayoutOptions}
                 </Select>
@@ -100,7 +100,7 @@ const PrintWidgetCustom = () => {
                 <Select
                 value={formatValue}
                 onChange={handleFormatOptionChange}
-                sx={{width: 200, height:40}}
+                sx={{width: 'auto', height:40}}
                 >
                     {formatDropdownOptions}
                 </Select>
