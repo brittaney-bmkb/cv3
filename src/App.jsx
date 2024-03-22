@@ -33,7 +33,8 @@ function App() {
     }
 
     const resizeOps = () => {
-      document.documentElement.style.setProperty("--vh", window.innerHeight * 0.01 + "px");
+      console.log("Setting inner window height: ", window.innerHeight)
+      document.documentElement.style.setProperty("--doc-height", `${window.innerHeight}px`);
     };
 
     window.addEventListener('resize', handleResize);
@@ -46,7 +47,7 @@ function App() {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('resize', resizeOps);
     };
-  }, [window.innerWidth]);
+  }, [window.innerWidth, window.innerHeight]);
 
   return (
     <AppProvider>
