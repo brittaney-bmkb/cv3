@@ -27,9 +27,9 @@ function App() {
 
   useEffect(() => {
     const handleResize = () => {
-        console.log("Resize event triggered");
+        //console.log("Resize event triggered");
         const width = window.innerWidth
-        console.log("window width: ", width)
+        //console.log("window width: ", width)
         setScreenWidth(width)
         setComponentHeight(window.innerHeight);
     }

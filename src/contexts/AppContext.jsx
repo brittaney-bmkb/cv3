@@ -275,14 +275,16 @@ export const AppProvider = ({children}) => {
         
         const { measureWidgetState, comparableParcels, panelSecondaryVisible, primaryResultFeature, panelPrimaryVisible, panelDisplay, parcelQueryFields, panelDisplaySecondary } = state
 
-        if(!measureWidgetState){
-        const point = await returnLatLong()
+        if(measureWidgetState !== true){
+            const point = await returnLatLong()
+
+        const selectedFeatures = await onViewClick(parcelQueryFields)
+        console.log("selectedFeatures: ", selectedFeatures)
         
         setCoordinates(point.x, point.y)
         console.log("x/y", point.x, point.y)
 
-        const selectedFeatures = await onViewClick(parcelQueryFields)
-        console.log("selectedFeatures: ", selectedFeatures)
+        
         let secondaryFeatures = []
         if(comparableParcels){
             console.log("Secondary feature selected: ", secondaryFeatures)
