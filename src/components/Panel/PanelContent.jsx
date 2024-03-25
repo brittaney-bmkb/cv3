@@ -71,14 +71,14 @@ const PanelContent = ({display}) => {
                 // width id set through flex
                 // bottom is set through width. 
                 
-                <Box  display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
+                <Box  display="flex" flexDirection="column" flexGrow={1} minHeight={0} rowGap={1}>
                     <PanelHeader 
                     text={"Comparable Search"} 
                     closeButton={true}
                     panel={screenWidth < theme.breakpoints.values.lg ? "primary": "secondary"}
                     backButton={screenWidth < theme.breakpoints.values.lg}
                     backButtonComponent={"propertyDetail"}
-                    descriptionText={"Complete the comparable search form to view similar properties. Fields maked with an astrisk (*) are required"}
+                    descriptionText={"Complete the comparable search form to view similar properties"}
                     />
                     <Divider/>
                     <Box  display="flex" flexDirection="column" flexGrow={1} minHeight={0}>

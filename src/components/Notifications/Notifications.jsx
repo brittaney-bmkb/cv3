@@ -18,12 +18,11 @@ const Notifications = () => {
 
     const hyperlink = (
                 <Link
-                    variant="string"
+                    variant="body1"
                     href="https://maps.cookcountyil.gov/cookviewer/"
                     target="_blank"
                     rel="noreferrer"
                     sx={{
-                        fontFamily: "barlow",
                         fontWeight: 600, 
                         color:theme.palette.primary.main, }}
                 >

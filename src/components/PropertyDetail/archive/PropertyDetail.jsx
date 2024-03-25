@@ -156,7 +156,6 @@ const PropertyDetail = ({property, pinLableColor}) => {
             component={Link} 
             to={urlFormatted} 
             target="_blank"
-            fontFamily={"barlow"} 
             color={theme.palette.primary.light}>{text}</Typography>
         {/* </Link> */}
         </Box>
