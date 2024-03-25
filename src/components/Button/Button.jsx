@@ -22,9 +22,8 @@ const StyledButtonFilledPrimary = ({text, startIcon, endIcon, onClick, textVarie
             height:30,
             backgroundColor: active ? theme.palette.primary.dark: theme.palette.primary.main,
             boxShadow:  active ? 0: 2,
-            fontFamily:"barlow"
             }}
-        ><Typography variant={textVarient} color={theme.palette.primary.contrastText} fontFamily="barlow">
+        ><Typography variant={textVarient} color={theme.palette.primary.contrastText}>
             {text}
         </Typography>
         </Button>
@@ -99,7 +98,6 @@ export const StyledButtonFilledPrimaryLight = ({text, startIcon, endIcon, onClic
             paddingBottom:'2px', 
             textTransform:'none', 
             bgcolor: theme.palette.primary.light,
-            fontFamily:"barlow"
         }}
         ><Typography p={0} variant="body1">
         {text}
@@ -112,7 +110,7 @@ export const StyledIconButton = ({text, icon, onClick}) => {
     return(
         <IconButton sx={{display:"flex", flexDirection:"column"}} onClick={onClick}>
             {icon}
-            <Typography variant="subtitle1" color={theme.main.text.dark} fontFamily="barlow">{text}</Typography>
+            <Typography variant="subtitle1" color={theme.main.text.dark}>{text}</Typography>
         </IconButton>
     )
 }

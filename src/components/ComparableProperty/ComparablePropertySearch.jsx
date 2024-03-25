@@ -13,6 +13,7 @@ export const CustomStyledTextField = styled(TextField)({
       padding: 2,
       paddingLeft: 10
     },
+    autoFocus: false,
     display: 'flex',
     width: "100%",
     maxWidth: 150 // You can set the width as per your requirements
@@ -35,11 +36,14 @@ const constructionTypes = [
 ]
 
 export const radiusTypes = {
-    "None": "None",
-    "Mile": 1,
-    "Half Mile": .5,
-    "Quarter Mile": .25,
     "Eigth Mile": .125,
+    "Quarter Mile": .25,
+    "Half Mile": .5,
+    "Mile": 1,
+    "None": "None",
+    
+    
+    
 }
 
 
@@ -66,7 +70,7 @@ const ComparablePropertySearch= () => {
     const [ ageMaxError, setAgeMaxError ] = useState(false)
     const [ ageMinError, setAgeMinError ] = useState(false)
 
-    const [radius, setRadius] = useState(0)
+    const [radius, setRadius] = useState(.125)
 
     const [errorMessage, setErrorMessage] = useState(false)
 
@@ -155,6 +159,10 @@ const ComparablePropertySearch= () => {
             let ageRange = 15
             setAgeMax(parcelAge+ageRange)
             setAgeMin(parcelAge-ageRange < 0 ? 0 : parcelAge-ageRange )
+
+            //set construction type
+            console.log("Building construction: ", attributes['bldg_const_desc'] )
+            setConstructionType(attributes['bldg_const_desc'] !== "Data Unavailable" ? attributes['bldg_const_desc']: "Any")
         }
 
     }, [sourceParcel])
@@ -236,7 +244,7 @@ const ComparablePropertySearch= () => {
 
     const constructionTypeDropdownOption = constructionTypes.map((constructionType) => (
         <option key={constructionType} value={constructionType}>
-            <Typography variant="body1" fontFamily="barlow">
+            <Typography variant="body1">
                 {translateText(constructionType)}
             </Typography>
         </option>
@@ -244,7 +252,7 @@ const ComparablePropertySearch= () => {
 
     const radiusDropdownOptions = Object.entries(radiusTypes).map(([radiusLabel, radiusValue]) => (
         <option key={radiusLabel} value={radiusValue}>
-            <Typography variant="body1" fontFamily="barlow">
+            <Typography variant="body1">
                 {translateText(radiusLabel)}
             </Typography>
         </option>
@@ -278,7 +286,7 @@ const ComparablePropertySearch= () => {
             <Divider/>
             <Typography variant="h4">{translateText("Property Size")}</Typography>
             <Box display="flex" flexDirection="column">
-            <Typography variant="body2">{`${translateText("Building Square Feet")}*`}</Typography>
+            <Typography variant="body2">{`${translateText("Building Square Feet")}`}</Typography>
             <Box display="flex" flexDirection="row" alignItems="center" columnGap={1}>
                   <CustomStyledTextField
                   id="building-sqft-min"
@@ -313,7 +321,7 @@ const ComparablePropertySearch= () => {
                   />
             </Box>
 
-            <Typography variant="body2">{`${translateText("Land Square Feet")}*`}</Typography>
+            <Typography variant="body2">{`${translateText("Land Square Feet")}`}</Typography>
             <Box display="flex" flexDirection="row" alignItems="center" columnGap={1}>
                   <CustomStyledTextField
                   id="land-sqft-min"
@@ -364,6 +372,8 @@ const ComparablePropertySearch= () => {
                 margin="dense" 
                 size="small"
                 type="text"
+                placeholder={constructionType}
+                value={constructionType}
                 onChange={(event) => {
                     setConstructionType(event.target.value)
                 }}
@@ -376,7 +386,7 @@ const ComparablePropertySearch= () => {
                 </Box>
                 <Box id="building-age" display="flex" flexDirection="column" pt={1} columnGap={2} >
                     <Box display="flex" flex={1}>
-                        <Typography variant="body2" width={122}>{`${translateText("Building Age")}*`}</Typography>
+                        <Typography variant="body2" width={122}>{`${translateText("Building Age")}`}</Typography>
                     </Box>
                         <Box display="flex" flexDirection="row" alignItems="center" columnGap={1}>
                         <CustomStyledTextField
@@ -426,6 +436,7 @@ const ComparablePropertySearch= () => {
                 margin="dense" 
                 size="small"
                 type="text"
+                value={radius}
                 onChange={(event) => {
                     console.log("radius event: ", event)
                     setRadius(event.target.value)

@@ -213,7 +213,6 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
             component={Link} 
             to={urlFormatted} 
             target="_blank"
-            fontFamily={"barlow"} 
             color={theme.palette.primary.light}>{translateText(text)}</Typography>
         {/* </Link> */}
         </Box>

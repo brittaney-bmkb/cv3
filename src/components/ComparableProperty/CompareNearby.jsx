@@ -75,7 +75,7 @@ const CompareNearby = () => {
     .filter(([radiusLabel, radiusValue]) => (radiusLabel !== "None"))
     .map(([radiusLabel, radiusValue]) => (
         <option key={radiusLabel} value={radiusValue}>
-            <Typography variant="body1" fontFamily="barlow">
+            <Typography variant="body1">
                 {translateText(radiusLabel)}
             </Typography>
         </option>
@@ -84,7 +84,7 @@ const CompareNearby = () => {
     const units = linearUnitOptions
     .map((unit) => (
         <option key={unit} value={unit}>
-            <Typography variant="body1" fontFamily="barlow">
+            <Typography variant="body1">
                 {translateText(unit)}
             </Typography>
         </option>
