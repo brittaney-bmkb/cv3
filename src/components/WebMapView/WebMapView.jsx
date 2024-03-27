@@ -73,7 +73,7 @@ export default function WebMapView(){
                 zIndex={2}
                 top={1}
                 height="auto"
-                width="100%"
+                width="auto"
                 // ref={mapButtonGroupRef}
                 >
 
