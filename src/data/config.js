@@ -6,11 +6,13 @@ export const config = {
     bannerLinkText: "open CookViewer Classic",
     bannerLinkHtml:"https://maps.cookcountyil.gov/cookviewer/", 
     bannerColor:"#EDBE1C",
+    //IMAGES ROOT DIRECTORY
+    image_directory: "https://maps.cookcountyil.gov/files/apps/cookviewer/images",
     //NAVBAR
     //App Logo
     logo:"https://maps.cookcountyil.gov/cdn/cook/cook_logo.png",
     //App Pages
-    pages: ['Home','Data','Help'],
+    // pages: ['Home','Data','Help'], // removed for now. 
     // PORTAL URL: Provide the URL to your ArcGIS Online organization or Portal for ArcGIS.
     portal:"https://cookcountyil.maps.arcgis.com/",
     //PRINT URL

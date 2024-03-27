@@ -1,15 +1,21 @@
 import { AppBar, styled, Box, Toolbar, Typography, Avatar, Stack, IconButton, Button, Link, Menu, MenuItem, MenuList, Paper } from "@mui/material"
 import MenuIcon from '@mui/icons-material/Menu';
+import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
+
 import Search from "../Search/Search"
 import BlueButton, { StyledButtonFilledPrimaryLight, StyledButtonFilledSecondary } from "../Button/Button"
 import { config } from "../../data/config";
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import { CalciteIcon } from "@esri/calcite-components-react";
-import { useRef, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import MenuBar from "./MenuBar";
 import UseAppContext from "../../contexts/AppContext";
 import TranslateMenu from "./TranslateMenu";
 import { FeedbackExtended, FeedbackGeneral } from "../FeedBack/Feedback";
+
+import HelpDialog from "../HelpDialog/HelpDialog";
+import ExportDialog from "../ExportDialog/ExportDialog";
+
 
 const StyledToolbar = styled(Toolbar)({
     display: "flex",
@@ -22,11 +28,19 @@ const NavBar = () => {
 
     const {setTranslateDialogOpen, translateText} = UseAppContext()
 
+    const {openHelpDialog, setOpenHelpDialog} = UseAppContext()
     const [open, setOpen] = useState(false);
     const [openFeedback, setOpenFeedback] = useState(false)
 
     const handleClick = () => {
         setOpen(!open)
+    }
+
+    const handleHelp = () => {
+        console.log("Setting Open Help Dialog True");
+        console.log(openHelpDialog)
+        setOpenHelpDialog(true)
+        console.log(openHelpDialog)
     }
 
     const handleTranslateButton = () => {
@@ -63,6 +77,7 @@ const NavBar = () => {
                             <Box display="flex" flex={5} > 
                                 <Search/>
                             </Box>
+
                             <Box display="flex" flex={1} sx={{display:{xs: 'none', sm: 'flex', md:'flex', lg:'none'}, alignItems:"center", justifyContent:"flex-end"}}>
                             <IconButton
                                 size="large"
@@ -82,14 +97,22 @@ const NavBar = () => {
                         </Stack>
                         
                         <Stack direction="row" gap={2} display={{xs:'none', sm:'none', md:'none', lg:'flex' }}> 
-                            <StyledButtonFilledPrimaryLight
-                            onClick={openFeedbackDialog}
-                            text={translateText("Feedback")} 
-                            startIcon={<CalciteIcon icon="mega-phone"/> }/>
+
                             <StyledButtonFilledPrimaryLight 
-                            onClick={handleTranslateButton}
-                            text={translateText("Translate")} 
-                            startIcon={<CalciteIcon icon="language-translate"/>}/>
+                                onClick={handleHelp}
+                                text={translateText("Help")} 
+                                startIcon={<HelpOutlineOutlinedIcon/> }/>                        
+                            
+                            <StyledButtonFilledPrimaryLight 
+                                onClick={openFeedbackDialog}
+                                text={translateText("Feedback")} 
+                                startIcon={<CalciteIcon icon="mega-phone"/> }/>
+                            
+                            <StyledButtonFilledPrimaryLight 
+                                onClick={handleTranslateButton}
+                                text={translateText("Translate")} 
+                                startIcon={<CalciteIcon icon="language-translate"/>}/>
+
                         </Stack>
 
                         <FeedbackExtended open={openFeedback} onClose={setOpenFeedback}/>
