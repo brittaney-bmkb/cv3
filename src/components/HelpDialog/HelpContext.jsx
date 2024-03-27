@@ -1,5 +1,5 @@
 import { Box, Collapse, Dialog, DialogContent, DialogTitle, 
-    Divider, IconButton, Input, Stack, Switch, TextField, Typography, Button, useTheme } from "@mui/material"
+    Divider, IconButton, Input, Stack, Switch, TextField, Typography, Button, useTheme, DialogActions } from "@mui/material"
 
 import { theme } from "../../theme"
 import SelectDropdown from "../SelectDropdown/SelectDropdown"
@@ -13,60 +13,62 @@ import React, { useEffect, useState } from 'react';
 import UseAppContext from "../../contexts/AppContext"
 
 
-const Modal = ({ imageName, onClose }) => {
+const Modal = ({ open, imageUrl, onClose }) => {
 
-    const { translateText, language } = UseAppContext()
-
-    //adding imageDirectory and Image
-    const [imageDirectory, setImageDirectory] = useState(`${config.image_directory}/${language}`)
-    const [ imageUrl, setImageUrl ] = useState(`${imageDirectory}/${imageName}`)
-
-    useEffect(() => {
-        // Update the image directory based on the language change
-        setImageDirectory(`${config.image_directory}/${language}`);
-    }, [language]);
-
-    useEffect(() => {
-        // Update the imageUrl when the imageDirectory or imageName changes
-        setImageUrl(`${imageDirectory}/${imageName}`);
-    }, [imageDirectory, imageName]);
-
+    const { translateText } = UseAppContext()
     return (
-        <div style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.7)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 9999
-        }}>
-            <div style={{
-                backgroundColor: '#fff',
-                padding: '20px',
-                borderRadius: '5px',
-                maxWidth: '80%',
-                maxHeight: '80%',
-                overflow: 'auto',
-                display: 'flex',
-                flexDirection: 'column', // Change to column layout
-                position: 'relative' // Add this to set the position for the close button
-            }}>
-                <img src={imageUrl} alt="Enlarged Image" style={{ maxWidth: '100%', maxHeight: 'calc(80% - 20px)'  }} />
-                <Divider style={{ margin: '10px 0' }} /> {/* Add margin to the divider */}
-                <div style={{ marginTop: '10px', alignSelf: 'flex-end' }}> {/* Position close button on the right */}
-                    <Button variant="text" onClick={onClose} sx={{ textTransform: 'none' }}>
+        <Dialog 
+        open={open}
+        onClose={onClose}
+        >
+            <DialogContent>
+                <img src={imageUrl} alt="Enlarged Image" style={{ maxWidth: '100%', maxHeight: 'calc(80% - 20px)'  }} />    
+            </DialogContent>
+            <DialogActions>
+            <Button variant="text" onClick={onClose} sx={{ textTransform: 'none' }}>
                         <Typography variant="h5" color={theme.palette.primary.main}>
                             {translateText("Close")}
                         </Typography>
                     </Button>
-                </div>                
-            </div>
+            </DialogActions>
+        </Dialog>
+
+
+        // <div style={{
+        //     position: 'fixed',
+        //     top: 0,
+        //     left: 0,
+        //     right: 0,
+        //     bottom: 0,
+        //     backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        //     display: 'flex',
+        //     justifyContent: 'center',
+        //     alignItems: 'center',
+        //     zIndex: 9999
+        // }}>
+        //     <div style={{
+        //         backgroundColor: '#fff',
+        //         padding: '20px',
+        //         borderRadius: '5px',
+        //         maxWidth: '80%',
+        //         maxHeight: '80%',
+        //         overflow: 'auto',
+        //         display: 'flex',
+        //         flexDirection: 'column', // Change to column layout
+        //         position: 'relative' // Add this to set the position for the close button
+        //     }}>
+        //         <img src={imageUrl} alt="Enlarged Image" style={{ maxWidth: '100%', maxHeight: 'calc(80% - 20px)'  }} />
+        //         <Divider style={{ margin: '10px 0' }} /> {/* Add margin to the divider */}
+        //         <div style={{ marginTop: '10px', alignSelf: 'flex-end' }}> {/* Position close button on the right */}
+        //             <Button variant="text" onClick={onClose} sx={{ textTransform: 'none' }}>
+        //                 <Typography variant="h5" color={theme.palette.primary.main}>
+        //                     {translateText("Close")}
+        //                 </Typography>
+        //             </Button>
+        //         </div>                
+        //     </div>
             
-        </div>
+        // </div>
     );
 }
 
@@ -93,6 +95,9 @@ const HelpContent = ({display}) => {
         setModalOpen(true);
     };    
 
+    const handleClose = () => {
+        setModalOpen(false)
+    }
 
 
     switch(display){
@@ -150,13 +155,9 @@ const HelpContent = ({display}) => {
 
                                 <ul>
                                     <li> <Typography variant="body1" color={theme.main.text.dark}> Search bar - description below. </Typography> </li>
-                                    
                                     <li> <Typography variant="body1" color={theme.main.text.dark}> Help button - this dialog box you are currently viewing.</Typography> </li>
                                     <li> <Typography variant="body1" color={theme.main.text.dark}> Feedback button - opens a survey to submit feedback.</Typography> </li>
                                     <li> <Typography variant="body1" color={theme.main.text.dark}> Translate button - which allows the user to select the language used in the map. </Typography> </li>
-                                    
-                                    
-
                                 </ul>
                             </Box>
                             <Box flex={6} display="flex" justifyContent="center" padding= '20px' alignItems="center">
@@ -171,7 +172,12 @@ const HelpContent = ({display}) => {
                         </Box>
                     </DialogContent>
                         {/* Modal Component */}
-                {modalOpen && <Modal imageUrl={isMobile ? `${imageDirectory}/${AppImages.navbar_mobile}` : `${imageDirectory}/${AppImages.navbar_desktop}`}  onClose={() => setModalOpen(false)} />}   
+
+                <Modal 
+                    open={modalOpen}
+                    onClose={handleClose}
+                    imageUrl={enlargedImageUrl} 
+                />  
                 </Box>
             )
 
@@ -209,7 +215,7 @@ const HelpContent = ({display}) => {
                         </Box>
                     </DialogContent>
                 {/* Modal Component */}
-                {modalOpen && <Modal imageUrl={isMobile ? `${imageDirectory}/${AppImages.widget_search_mobile}` : `${imageDirectory}/${AppImages.widget_search_desktop}`}  onClose={() => setModalOpen(false)} />}                    
+                <Modal open={modalOpen} imageUrl={isMobile ? `${imageDirectory}/${AppImages.widget_search_mobile}` : `${imageDirectory}/${AppImages.widget_search_desktop}`}  onClose={handleClose} />                    
                 </Box>
             )
 
@@ -259,7 +265,7 @@ const HelpContent = ({display}) => {
                         </Box>
                     </DialogContent>
                 {/* Modal Component */}
-                {modalOpen && <Modal imageUrl={isMobile ? `${imageDirectory}/${AppImages.property_results_mobile}` : `${imageDirectory}/${AppImages.property_results_desktop}`}  onClose={() => setModalOpen(false)} />}                    
+                <Modal open={modalOpen} imageUrl={isMobile ? `${imageDirectory}/${AppImages.property_results_mobile}` : `${imageDirectory}/${AppImages.property_results_desktop}`}  onClose={handleClose}/>                   
                 </Box>
             )
 
@@ -299,7 +305,7 @@ const HelpContent = ({display}) => {
                         </Box>
                     </DialogContent>
                 {/* Modal Component */}
-                {modalOpen && <Modal imageUrl={isMobile ? `${imageDirectory}/${AppImages.compare_mobile}` : `${imageDirectory}/${AppImages.compare_desktop}`}  onClose={() => setModalOpen(false)} />}                    
+                <Modal open={modalOpen} imageUrl={isMobile ? `${imageDirectory}/${AppImages.compare_mobile}` : `${imageDirectory}/${AppImages.compare_desktop}`}  onClose={handleClose} />                   
                 </Box>
             )
 
@@ -337,7 +343,7 @@ const HelpContent = ({display}) => {
                         </Box>
                     </DialogContent>
                 {/* Modal Component */}
-                {modalOpen && <Modal imageUrl={isMobile ? `${imageDirectory}/${AppImages.widget_measure_mobile}` : `${imageDirectory}/${AppImages.widget_measure_desktop}`}  onClose={() => setModalOpen(false)} />}                    
+                <Modal open={modalOpen} imageUrl={isMobile ? `${imageDirectory}/${AppImages.widget_measure_mobile}` : `${imageDirectory}/${AppImages.widget_measure_desktop}`}  onClose={handleClose}/>                    
                 </Box>
             )
 
@@ -366,7 +372,7 @@ const HelpContent = ({display}) => {
                         </Box>
                     </DialogContent>
                 {/* Modal Component */}
-                {modalOpen && <Modal imageUrl={isMobile ? `${imageDirectory}/${AppImages.widget_layers_mobile}` : `${imageDirectory}/${AppImages.widget_layers_desktop}`}  onClose={() => setModalOpen(false)} />}                    
+                <Modal open={modalOpen} imageUrl={isMobile ? `${imageDirectory}/${AppImages.widget_layers_mobile}` : `${imageDirectory}/${AppImages.widget_layers_desktop}`}  onClose={handleClose} />                    
                 </Box>
             )
 
@@ -395,7 +401,7 @@ const HelpContent = ({display}) => {
                         </Box>
                     </DialogContent>
                 {/* Modal Component */}
-                {modalOpen && <Modal imageUrl={isMobile ? `${imageDirectory}/${AppImages.widget_basemaps_mobile}` : `${imageDirectory}/${AppImages.widget_basemaps_desktop}`}  onClose={() => setModalOpen(false)} />}                    
+                <Modal open={modalOpen} imageUrl={isMobile ? `${imageDirectory}/${AppImages.widget_basemaps_mobile}` : `${imageDirectory}/${AppImages.widget_basemaps_desktop}`}  onClose={handleClose} />                    
                 </Box>
             )
         case 8:
@@ -424,7 +430,7 @@ const HelpContent = ({display}) => {
                         </Box>
                     </DialogContent>
                 {/* Modal Component */}
-                {modalOpen && <Modal imageUrl={isMobile ? `${imageDirectory}/${AppImages.widget_print_mobile}` : `${imageDirectory}/${AppImages.widget_print_desktop}`}  onClose={() => setModalOpen(false)} />}                    
+                <Modal open={modalOpen} imageUrl={isMobile ? `${imageDirectory}/${AppImages.widget_print_mobile}` : `${imageDirectory}/${AppImages.widget_print_desktop}`}  onClose={handleClose} />                    
                 </Box>
             )
             case 9:
@@ -458,7 +464,7 @@ const HelpContent = ({display}) => {
                             </Box>
                         </DialogContent>
                     {/* Modal Component */}
-                    {modalOpen && <Modal imageUrl={isMobile ? `${imageDirectory}/${AppImages.user_buttons_desktop}` : `${imageDirectory}/${AppImages.user_buttons_desktop}`}  onClose={() => setModalOpen(false)} />}                    
+                    <Modal open={modalOpen} imageUrl={isMobile ? `${imageDirectory}/${AppImages.user_buttons_desktop}` : `${imageDirectory}/${AppImages.user_buttons_desktop}`}  onClose={handleClose} />                    
                     </Box>
                 )
         default:
