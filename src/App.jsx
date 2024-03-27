@@ -73,8 +73,9 @@ function App() {
   
             <BottomPanel/>
           </Box>
-          <SecondaryPanel/>
           <WidgetPanel/>
+          <SecondaryPanel/>
+          
         </Stack>
         {/* <Box width="auto" height="auto" position="absolute" bottom={20} left="45%" display={{xs:"block", sm: "none"}}>
           <ToggleIconButton 

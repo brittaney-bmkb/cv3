@@ -98,7 +98,7 @@ export const SecondaryPanel = () => {
 
 export const WidgetPanel = () => {
 
-    const { panelDisplayWidget, panelWidgetVisible } = UseAppContext()
+    const { panelDisplayWidget, panelWidgetVisible, panelSecondaryVisible } = UseAppContext()
 
     return(
         <Box
@@ -111,8 +111,8 @@ export const WidgetPanel = () => {
             height={"100%"}
             p={2} 
             sx={{boxSizing:"border-box",
-            zIndex:"modal",
-            position:"fixed",
+            zIndex:100,
+            position:panelSecondaryVisible ? "absolute": "relative",
             right:0,
             display:{xs:'none', sm: 'none', md: panelWidgetVisible? 'flex':"none", lg:panelWidgetVisible? 'flex':"none"}
             }}
