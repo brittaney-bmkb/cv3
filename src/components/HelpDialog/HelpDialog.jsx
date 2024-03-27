@@ -19,7 +19,7 @@ import { returnTranslatedText } from "../../translation/handleTranslation"
 const HelpDialog = ({}) => {
     console.log("help dialog component")
     
-    const {openHelpDialog, setOpenHelpDialog, translateText} = UseAppContext()
+    const {openHelpDialog, setOpenHelpDialog, translateText, screenWidth} = UseAppContext()
 
     const onClose = () => {
         setOpenHelpDialog(false)
@@ -32,6 +32,7 @@ const HelpDialog = ({}) => {
         <Dialog 
             open={openHelpDialog}
             onClose={onClose}
+            fullScreen={screenWidth <= theme.breakpoints.values.sm}
             fullWidth
             sx={{}}
             > 
