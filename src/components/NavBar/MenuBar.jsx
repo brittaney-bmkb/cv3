@@ -28,7 +28,8 @@ const MenuBar = ({open, setOpen}) => {
     const handleHelp = () => {
         console.log("Setting Open Help Dialog True");
         setOpenHelpDialog(true)
-
+    }
+    
     const openFeedbackDialog = () => {
         setOpenFeedback(true)
     }

@@ -7,8 +7,6 @@ import { returnMunicipality } from "../../arcgis/geoprocessing/geoprocessing"
 import { Link } from "react-router-dom"
 
 
-
-
 const prefix = (key) => {
     switch (key) {
         case 'money':
@@ -200,8 +198,6 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
     
             console.log("url text: ", text, urlFormatted)
         }
-
-
         return (
         <Box 
         display="flex"

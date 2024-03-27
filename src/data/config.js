@@ -6,6 +6,8 @@ export const config = {
     bannerLinkText: "open CookViewer Classic",
     bannerLinkHtml:"https://maps.cookcountyil.gov/cookviewer/", 
     bannerColor:"#EDBE1C",
+    //IMAGES ROOT DIRECTORY
+    image_directory: "https://maps.cookcountyil.gov/files/apps/cookviewer/images",
     //NAVBAR
     //App Logo
     logo:"https://maps.cookcountyil.gov/cdn/cook/cook_logo.png",
