@@ -45,7 +45,8 @@ export const config = {
     defaultLanguage: "english",
     languages:["english","spanish"],
     //APP TRANSLATION TEXT
-    translation_text:"https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/ArcGIS/rest/services/cookviewer_translated_text/FeatureServer/2",
+    translation_text:"https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/ArcGIS/rest/services/cookviewer_translated_text/FeatureServer/1",
+    translation_text_help:"https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/ArcGIS/rest/services/cookviewer_translated_text/FeatureServer/4",
     // LAYER SOURCES CONFIGURATION: Configure the layers for map and search sources for the search widget
     layer_sources: [
         // First Layer Source: Configure the parcelLayer

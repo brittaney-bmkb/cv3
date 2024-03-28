@@ -275,8 +275,6 @@ export const AppProvider = ({children}) => {
         
     }
 
-
-
     const mapClickEventHandler = async () => {
 
         const { onViewClick, createGraphic, zoomToExtent, removeGraphics } = await import('../arcgis/webmap/webmap')
@@ -508,21 +506,27 @@ export const AppProvider = ({children}) => {
         const {language, textTranslationDictionary} = state
 
         if(text && textTranslationDictionary){
-            //console.log("TRANSLATING TEXT: ", text, language)
-            let translation = Object.values(textTranslationDictionary).filter(textReplace => 
-                textReplace[config.defaultLanguage] === text)
-                .map((textReplace)=> {
-                    return textReplace[language]
-                })
+            
+            if(Object.keys(textTranslationDictionary).includes(text)){
+                return textTranslationDictionary[text][language]
+            }
+
+            else{
+                let translation = Object.values(textTranslationDictionary).filter(textReplace => 
+                    textReplace[config.defaultLanguage] === text)
+                    .map((textReplace)=> {
+                        return textReplace[language]
+                    })
+
+                //console.log("TRANSLATED TEXT: ", translation)
+                return translation && translation.length > 0 ? translation[0] : text
+            }
     
-            //console.log("TRANSLATED TEXT: ", translation)
-            return translation && translation.length > 0 ? translation[0] : text
+            
         }
         else{
             return text
         }
-
-
     }
 
 
@@ -622,9 +626,21 @@ export const AppProvider = ({children}) => {
             const { returnTranslatedText } = await import ('../translation/handleTranslation')
             const { readFeatureLayerData } = await import('../arcgis/layers/layers')
 
-
+            //general translated text
             let { features } = await readFeatureLayerData(config.translation_text, ["*"], "english IS NOT NULL", false)
-            let text = await returnTranslatedText(features)
+            let generalText = await returnTranslatedText(features)
+
+            //help translated text
+            let helpData = await readFeatureLayerData(config.translation_text_help, ["*"], "english IS NOT NULL", false)
+            let helpText = await returnTranslatedText(helpData.features)
+
+            console.log("translated help text: ", helpText)
+
+            let text = {
+                ...generalText,
+                ...helpText
+            }
+
             setTranslationDictionary(text)
         }
     
