@@ -154,7 +154,7 @@ export async function returnLatLong(){
   return point
 }
 
-async function peformQueryFeatures(point, parcelQueryFields){
+export async function peformQueryFeatures(point, parcelQueryFields){
 
       console.log("Point: ", point)
       const query = new Query();
@@ -197,6 +197,7 @@ export async function queryLocationResults(coordinates, parcelQueryFields){
 
   return features
 }
+
 
 export async function onViewClick(parcelQueryFields) {
 

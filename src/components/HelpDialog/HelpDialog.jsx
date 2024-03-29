@@ -17,7 +17,7 @@ import { returnTranslatedText } from "../../translation/handleTranslation"
 
 
 const HelpDialog = ({}) => {
-    console.log("help dialog component")
+    //console.log("help dialog component")
     
     const {openHelpDialog, setOpenHelpDialog, translateText, screenWidth} = UseAppContext()
 
@@ -26,7 +26,7 @@ const HelpDialog = ({}) => {
     }
 
 
-    console.log(openHelpDialog)
+    //console.log(openHelpDialog)
 
     return(
         <Dialog 

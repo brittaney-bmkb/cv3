@@ -70,7 +70,7 @@ const MeasureWidget = () => {
     }, [measureWidget]);
 
 
-    useEffect(() => {
+    useEffect( () => {
            reactiveUtils.watch( 
                 () => measureWidget.current?.viewModel?.activeViewModel?.measurementLabel,
                 (label) => {
@@ -120,24 +120,45 @@ const MeasureWidget = () => {
                     }
                 }
             )
-    
-            reactiveUtils.watch( 
-                () => measureWidget.current.viewModel.state,
-                (state) => {
-                    if(state !== "disabled"){
-                        setMeasureWidgetState(true)
-                        console.log(
-                            "State: ", state               
-                        );
-                    }
-
-                    else{
-                        setMeasureWidgetState(null)
-                    }
-                }
-            )
         
     }, [measureWidget])
+
+    // useEffect(() => {
+
+    //     reactiveUtils.watch( 
+    //         () => measureWidget.current.viewModel.state,
+    //         (state) => {
+    //             console.log("measure state: ", state)
+    //             if(state){
+    //                 setMeasureWidgetState(true)
+    //                 console.log(
+    //                     "State: ", state               
+    //                 );
+    //             }
+    //         }
+    //     )
+        
+    // })
+
+    useEffect(() => {
+        const updateMeasureState = (state) => {
+            console.log("measure state: ", state);
+            if (state) {
+                setMeasureWidgetState(true);
+                console.log("State: ", state);
+            }
+        };
+    
+        const watcher = reactiveUtils.watch(
+            () => measureWidget.current.viewModel.state,
+            updateMeasureState
+        );
+    
+        // Cleanup function
+        return () => {
+            watcher.remove();
+        };
+    }, [measureWidget.current?.viewModel?.state]);
 
     useEffect(() => {
         const setAreaToolMeasure = () => {
@@ -154,6 +175,7 @@ const MeasureWidget = () => {
 
 
     const startMeasuring = async (tool) => {
+        //setMeasureWidgetState(true)
         setActiveTool(tool) 
         if( measureWidget.current){
             console.log("Starting measurement Tool: ", measureWidget.current)

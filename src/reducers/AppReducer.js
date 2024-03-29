@@ -147,7 +147,7 @@ const AppReducer = (state, action) => {
             }
 
         case "SET_MEASURE_WIDGET_STATE":
-            console.log("SET_MEASURE_WIDGET_STATE")
+            console.log("SET_MEASURE_WIDGET_STATE: ", payload.measureWidgetState)
             return {
                 ...state,
                 measureWidgetState: payload.measureWidgetState,
