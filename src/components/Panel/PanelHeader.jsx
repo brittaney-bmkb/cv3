@@ -79,9 +79,8 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
             console.log("going back to: ", backButtonComponent)
             setPanelDisplay(backButtonComponent)
 
-            if(backButtonComponent ==="resultsList" && secondaryParcelsDisplayed){
+            if(["nearbyProperties", "comparablePropertySearch","resultsList"].includes(backButtonComponent)){
                 clearResultsComparables()
-                setPanelSecondaryVisibility(false)
             }
         }
         if(panel==="secondary"){
@@ -103,6 +102,12 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
         }
         if(panel==="secondary" && panelSecondaryVisible===true){
             setPanelSecondaryVisibility(false)
+
+            if(["nearbyProperties", "comparablePropertySearch","propertyDetailComparable","propertyDetailNearby"].includes(panelDisplaySecondary)){
+                clearResultsComparables() 
+                setPanelDisplaySecondary(null)
+            } 
+
         }
         if(panel==="widget" && panelWidgetVisible===true){
             setPanelWidgetVisibility(false)
