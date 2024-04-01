@@ -1,10 +1,11 @@
-import { Box, Divider, Typography, useMediaQuery } from "@mui/material"
+import { Box, CircularProgress, Divider, Typography, useMediaQuery } from "@mui/material"
 import StyledButtonFilledPrimary from "../Button/Button"
 import UseAppContext from "../../contexts/AppContext"
 import { useEffect, useState } from "react"
 import { theme } from "../../theme"
 import { returnMunicipality } from "../../arcgis/geoprocessing/geoprocessing"
 import { Link } from "react-router-dom"
+import { CalciteLoader } from "@esri/calcite-components-react"
 
 
 const prefix = (key) => {
@@ -37,9 +38,11 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
 
     const [ categories, setCategories ] = useState(null)
     const [ muni, setMuni ] = useState({})
+    const [muniLoading, setMuniLoading] = useState(false)
     const [ zoningMessage, setZoningMessage ] = useState({})
     const [ properties, setProperties ] = useState([])
     const [ textAlignment, setTextAlignment ] = useState("left")
+    //const [ zoningInfo, setZoningInfo ] = useState()
     
 
     const panelContentTitleMain = {
@@ -87,26 +90,28 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
     useEffect(() => {
         const fetchMuniData = async () => {
             if (properties && properties.length > 0) {
-              let muniObj = {};
-              let zoningMessage = {}
+                setMuniLoading(true)
+                let muniObj = {};
+                let zoningMessage = {}
         
-              // Use Promise.all to wait for all asynchronous operations to complete
-              await Promise.all(properties.map(async (property) => {
-                const muniValueReturned = await returnMunicipality(property);
-                const muniValue = muniValueReturned ? `${translateText('Incorporated')} ${muniValueReturned}` : `${translateText('Unincorporated')} ${property.attributes['township_name']}`
-                const key = property.attributes["PIN14"];
-        
-                // Set the muniObj with fetched data
-                muniObj[key] = muniValue;
+                // Use Promise.all to wait for all asynchronous operations to complete
+                await Promise.all(properties.map(async (property) => {
+                    const muniValueReturned = await returnMunicipality(property);
+                    const muniValue = muniValueReturned ? `${translateText('Incorporated')} ${muniValueReturned}` : `${translateText('Unincorporated')} ${property.attributes['township_name']}`
+                    const key = property.attributes["PIN14"];
+            
+                    // Set the muniObj with fetched data
+                    muniObj[key] = muniValue;
 
-             if(muniValueReturned){
+                if(muniValueReturned){
 
-                     zoningMessage[key] = translateText(`Please contact municipality`)
-             }
-             else{
-                zoningMessage[key] = translateText(`Cook County Zone Lookup`)
+                        zoningMessage[key] = `Please contact municipality`
+                }
+                else{
+                    zoningMessage[key] = `Cook County Zone Lookup`
 
-             }
+                }
+                setMuniLoading(false)
             }));
         
               setMuni(muniObj);
@@ -214,6 +219,25 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         </Box>
     )}
 
+
+    const zoningInfo = (property, data) => {
+
+        let msg = zoningMessage[property.attributes["PIN14"]]
+        console.log("muni message ", msg)
+        
+        if(msg === "Cook County Zone Lookup"){
+            return returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], property?.attributes)
+        }
+        else{
+            return(
+            <Typography align={textAlignment} variant="h5" sx={{color: theme.main.text.dark }}>
+               {translateText(zoningMessage[property.attributes["PIN14"]])}
+            </Typography>
+            )
+        }
+
+    }
+    
     const fetchpropertyDetailData = (category, index) => {
         let filteredData = dataDictionary
         ?.filter((data) => data.attributes['category'] === category)
@@ -261,9 +285,9 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                             <Box 
                             display="flex"
                             >
-                                <Typography align={textAlignment} variant="h5" sx={{color: theme.main.text.dark }}>
-                                {zoningMessage[property.attributes["PIN14"]] !== "Please contact municipality" ? returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], property?.attributes) : zoningMessage[property.attributes["PIN14"]]} 
-                                </Typography>
+                                {/* <Typography align={textAlignment} variant="h5" sx={{color: theme.main.text.dark }}> */}
+                                    { muniLoading ? <CircularProgress size={5}/> :  zoningInfo(property, data)} 
+                                {/* </Typography> */}
     
                             </Box>: 
                         data.attributes['field'].endsWith("_link")  ?
