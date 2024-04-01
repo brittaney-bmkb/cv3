@@ -224,7 +224,7 @@ const PanelContent = ({display}) => {
                         text={translateText("Measure")}
                         closeButton={true}
                         panel={"widget"}
-                        descriptionText={translateText("Measure Widget Comming Soon")}
+                        descriptionText={translateText("Measure Widget Coming Soon")}
                     />                    
                     {/* <MeasureWidget
                         panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"}
