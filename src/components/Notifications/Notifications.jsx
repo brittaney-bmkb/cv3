@@ -45,7 +45,7 @@ const Notifications = () => {
                 sx={{display:"flex"}}
                 >
                     <Box display="flex" flexDirection={screenWidth <= theme.breakpoints.values.md ? "column" : "row"} columnGap="4px"> 
-                    {translateText(config.bannerMessage.replace(config.bannerLinkText,""))}
+                    {translateText(config.bannerMessage).replace(translateText(config.bannerLinkText),"")}
                     {hyperlink}
                     </Box>
                 </Typography>

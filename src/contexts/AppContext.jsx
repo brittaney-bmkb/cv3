@@ -604,12 +604,12 @@ export const AppProvider = ({children}) => {
 
                 //console.log("TRANSLATED TEXT: ", translation)
                 if(translation && translation.length){
-                    if(numericValues){
+                    if(numericValues && text !== config.bannerHeader){
                         if(text.match(/[()]/g)){
                             return `${numericValues} (${ translation[0]})`
                         }
-                        else{
-                            return `${numericValues} ${ translation[0]}`
+                        else {
+                            return `${numericValues} ${translation[0]}`
                         }
                         
                     }
