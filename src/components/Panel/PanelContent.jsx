@@ -24,7 +24,7 @@ const PanelContent = ({display}) => {
             return (
                 <Box display="flex" flexDirection="column" height="100%" width="100%">
                     <PanelHeader
-                        text={translateText("Property Results")} 
+                        text={"Property Results"} 
                         exportButton={true} 
                         clearButton={true} 
                         results={searchFeatures ? searchFeatures.length : 0} 
