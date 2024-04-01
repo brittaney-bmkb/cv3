@@ -1052,11 +1052,11 @@ export const config = {
             maxResults: 50,
             maxSuggestions:50,
             minSuggestCharacters: 2,
-            name: "Address Point",
-            outFields:["Street", "City", "Postal"],
+            name: "Address Locator",
+            outFields:["StAddr", "City", "Postal"],
             singleLineFieldName:"SingleLine",
             suggestionsEnabled:true,
-            url:"https://test-gis.cookcountyil.gov/traditional/rest/services/AddressLocator/pointStreetMultiRoleAltStNameNoSubaddress/GeocodeServer"
+            url:"https://gis.cookcountyil.gov/traditional/rest/services/Locator/CookAddressMultirole/GeocodeServer"
         }
     ]
 }
