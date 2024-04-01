@@ -28,6 +28,8 @@ const ExportDialog = ({open, onClose, dataDescription}) => {
     const featuresToExport = async () => {
         let features;
 
+        console.log("Export dialog: ", dataDescription)
+
         if(dataDescription === "Property Results"){
             features = searchFeatures
             
@@ -49,8 +51,8 @@ const ExportDialog = ({open, onClose, dataDescription}) => {
     }
 
     const performExport = async () => {
-
-        let filename = `CookViewer_${dataDescription.replace(" ","_")}`
+        
+        let filename = `CookViewer_${translateText(dataDescription).replace(" ","_")}`
         let features = await featuresToExport()
 
         console.log("exporting features: ", features)
@@ -90,14 +92,14 @@ const ExportDialog = ({open, onClose, dataDescription}) => {
     
     const exportOptions = (
         <Box display={"flex"} flexDirection="column" >
-            <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>Choose format:</Typography>
+            <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>{`${translateText("Choose format")}:`}</Typography>
             <Box display="flex" flexDirection="column" pl={1}>
             <Stack direction="row" sx={{alignItems:"center"}}>
-                <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>csv</Typography>
+                <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>{translateText("csv")}</Typography>
                 <Switch onClick={() => {setIncludeCsv(!includeCsv)}}/>
             </Stack> 
             <Stack direction="row" sx={{alignItems:"center"}}>
-                <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>excel</Typography>
+                <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>{translateText("excel")}</Typography>
                 <Switch onClick={() => {setIncludeExcel(!includeExcel)}}/>
             </Stack> 
             </Box>
@@ -114,13 +116,13 @@ const ExportDialog = ({open, onClose, dataDescription}) => {
         >   <IconButton sx={{position:"absolute", right:8, top:8}} onClick={onClose}><CloseOutlined/></IconButton>
             <DialogTitle id="print-dialog-title" sx={{display:"flex", justifyContent:"center"}}>
                 <Box display="flex" bgcolor={theme.main.backgroundColor.grey} p={1} sx={{borderRadius: theme.shape.borderRadius}} width={100} justifyContent="center">
-                    <Typography variant="h3" color={theme.main.text.dark} align="center">Export</Typography>
+                    <Typography variant="h3" color={theme.main.text.dark} align="center">{translateText("Export")}</Typography>
                 </Box>
             </DialogTitle>
             <DialogContent>
                 <Box display="flex" flexDirection="column" rowGap={1}>
                     <Stack direction="row" sx={{alignItems:"center"}}>
-                        <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>Include results</Typography>
+                        <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>{translateText("Include results")}</Typography>
                         <Switch onClick={() => {setIncludeResults(!includeResults)}}/>
                     </Stack> 
                     
@@ -130,7 +132,7 @@ const ExportDialog = ({open, onClose, dataDescription}) => {
                 {screenWidth >= theme.breakpoints.values.sm ?
                 <Box display="flex" flexDirection="column" rowGap={1} pt={2}>
                 <Stack direction="row" sx={{alignItems:"center"}}>
-                    <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>Include map</Typography>
+                    <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>{translateText("Include map")}</Typography>
                     <Switch onClick={() => {setIncludeMap(!includeMap)}}/>
                 </Stack> 
 
@@ -161,7 +163,7 @@ const ExportDialog = ({open, onClose, dataDescription}) => {
             
             <DialogActions>
                 <StyledButtonFilledPrimary 
-                text={translateText(isExporting ? "Exporting..." : "Export")} 
+                text={translateText(isExporting ? `${translateText("Exporting")}...` : translateText("Export"))} 
                 onClick={performExport}/>
             </DialogActions>
     

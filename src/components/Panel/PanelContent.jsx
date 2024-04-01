@@ -14,6 +14,7 @@ import PropertyPagniation from "../PropertyDetail/PropertyPagnition";
 import WebMapView from "../WebMapView/WebMapView";
 import LayerListWidgetCustom from "../Widgets/LayerListWidgetCustom";
 import PrintWidgetCustom, { PrintWidgetPane } from "../Widgets/PrintWidgetCustom";
+import { config } from "../../data/config";
 
 const PanelContent = ({display}) => {
 
@@ -24,7 +25,7 @@ const PanelContent = ({display}) => {
             return (
                 <Box display="flex" flexDirection="column" height="100%" width="100%">
                     <PanelHeader
-                        text={translateText("Property Results")} 
+                        text={"Property Results"} 
                         exportButton={true} 
                         clearButton={true} 
                         results={searchFeatures ? searchFeatures.length : 0} 
@@ -36,7 +37,7 @@ const PanelContent = ({display}) => {
                         <ResultsList 
                         results={searchFeatures} 
                         primaryLableColor={theme.palette.primary.main}
-                        noResultsMessage={"Try a new search using the search by or by clicking in the map"}
+                        noResultsMessage={config.no_results_message}
                         />
                     </Box>   
                 </Box>)

@@ -41,6 +41,8 @@ export const config = {
     // NEARBY SEARCH SETTINGS: Configure the buffer distance and unit for nearby searches.
     buffer_distance: 50,
     buffer_unit: "feet",
+    //No results Message
+    no_results_message: "Try a new search using the search bar or by clicking in the map",
     //LANGUAGES
     defaultLanguage: "english",
     languages:["english","spanish"],

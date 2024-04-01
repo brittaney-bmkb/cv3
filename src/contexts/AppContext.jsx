@@ -583,14 +583,47 @@ export const AppProvider = ({children}) => {
             }
 
             else{
+
+                let numericValues
+                let textToReplace = text
+                if(text.match(/\d+/g)){
+                //&& text.match(/[()]/g)){
+                    numericValues = text.match(/\d+/g)
+
+                    //replace numeric and parentheses 
+                    textToReplace = text.replace(numericValues, "").replace(/[()]/g, "").trim()
+
+                    console.log("Found numeric values: ", numericValues, textToReplace)
+                }
+
                 let translation = Object.values(textTranslationDictionary).filter(textReplace => 
-                    textReplace[config.defaultLanguage] === text)
+                    textReplace[config.defaultLanguage] === textToReplace)
                     .map((textReplace)=> {
                         return textReplace[language]
                     })
 
                 //console.log("TRANSLATED TEXT: ", translation)
-                return translation && translation.length > 0 ? translation[0] : text
+                if(translation && translation.length){
+                    if(numericValues && text !== config.bannerHeader){
+                        if(text.match(/[()]/g)){
+                            return `${numericValues} (${ translation[0]})`
+                        }
+                        else {
+                            return `${numericValues} ${translation[0]}`
+                        }
+                        
+                    }
+                    else{
+                        return translation[0]
+                    }
+
+                }
+                else{
+                    return text
+                }
+                
+
+                //return translation && translation.length > 0 ? translation[0] : text
             }
     
             
