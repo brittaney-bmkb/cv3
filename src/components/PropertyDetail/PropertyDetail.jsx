@@ -224,7 +224,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
 
         let msg = zoningMessage[property.attributes["PIN14"]]
         console.log("muni message ", msg)
-        
+
         if(msg === "Cook County Zone Lookup"){
             return returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], property?.attributes)
         }
@@ -320,6 +320,8 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                                         color: category === "top" && subIndex==0 && property===property1 ? propertyColor1 : category === "top" && subIndex==0 && property===property2 ? propertyColor2: theme.main.text.dark 
                                         }}>
                                         {
+                                            property?.attributes[data.attributes['field']] && data.attributes['type'] === "text" ? 
+                                            translateText(property?.attributes[data.attributes['field']]) : 
                                             property?.attributes[data.attributes['field']] ? 
                                             `${prefix(data.attributes['type'])}${addCommaSeparator(property?.attributes[data.attributes['field']], data.attributes['type'])}` :
                                             translateText("Data unavailable")
@@ -346,7 +348,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                     {
                         data.attributes['credit'] ? 
                         <Typography variant="h6" align={textAlignment}>
-                            { data.attributes['credit'] }
+                            { translateText(data.attributes['credit']) }
                         </Typography> :
                         null
 
