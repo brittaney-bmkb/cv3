@@ -11,7 +11,7 @@ import { FeedbackExtended, FeedbackGeneral } from "../FeedBack/Feedback";
 const MenuBar = ({open, setOpen}) => {
 
 
-    const {setTranslateDialogOpen, setOpenHelpDialog, screenWidth} = UseAppContext()
+    const {setTranslateDialogOpen, setOpenHelpDialog, screenWidth, translateText} = UseAppContext()
 
     const [openFeedback, setOpenFeedback] = useState(false)
 
@@ -40,20 +40,20 @@ const MenuBar = ({open, setOpen}) => {
                 <MenuItem onClick={handleHelp}>
                     <Stack direction="row" spacing={1} alignItems="center">
                         <CalciteIcon icon="question-mark"/>
-                        <Typography variant="h5">Help</Typography>
+                        <Typography variant="h5">{translateText("Help")}</Typography>
                     </Stack>
                 </MenuItem>    
   
                 <MenuItem onClick={openFeedbackDialog}>
                     <Stack direction="row" spacing={1} alignItems="center">
                         <CalciteIcon icon="mega-phone"/>
-                        <Typography variant="h5">Feedback</Typography>
+                        <Typography variant="h5">{translateText("Feedback")}</Typography>
                     </Stack>
                 </MenuItem>
                 <MenuItem onClick={handleTranslateButton}>
                     <Stack direction="row" spacing={1} alignItems="center">
                         <CalciteIcon icon="language-translate"/>
-                        <Typography variant="h5">Translate</Typography>
+                        <Typography variant="h5">{translateText("Translate")}</Typography>
                     </Stack>
                 </MenuItem>
 
