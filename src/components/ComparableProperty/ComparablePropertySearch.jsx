@@ -83,7 +83,7 @@ const ComparablePropertySearch= () => {
 
     },[primaryResultFeature])
 
-    function handleSetQuery(){
+    const handleSetQuery = async () => {
         //AND BCLASS = '${bClass}'
         let query =`township_name = '${sourceParcel.attributes['township_name']}' AND NBHD = ${sourceParcel.attributes['NBHD']} AND BCLASS = '${sourceParcel.attributes['BCLASS']}' AND PIN14 <> '${sourceParcel.attributes['PIN14']}'` 
         
@@ -133,9 +133,9 @@ const ComparablePropertySearch= () => {
 
         console.log("Comparable query = ", query, radius)
 
-        searchComparableProperties(query,radius)
+        await searchComparableProperties(query,radius)
 
-        return query
+        //return query
     }
 
     useEffect(() => {

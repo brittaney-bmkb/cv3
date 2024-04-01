@@ -419,7 +419,7 @@ export async function createGraphic(features, removeGraphicName, color){
 
     zoomToExtent(filteredFeatures)
 
-    createGraphic(filteredFeatures, "secondary", "#FFDD55", true, "solid")
+    createGraphic(filteredFeatures, "secondary", theme.palette.secondary.main, true, "solid")
 
     createGraphic([feature], "primary", "darkBlue")
 
