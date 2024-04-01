@@ -184,6 +184,10 @@ const Search = () => {
                     //setSearchResults(searchWidget.current.selectedResult)
                     // setPrimaryResultFeature(null, true)
                     renderSearchResults(searchWidget.current.selectedResult)
+                    setLocationSearch(null)
+                    setPinSearch(null)
+                    setAddressSearch(null)
+                    setGenericSearch(null)
 
                     if(!panelPrimaryVisible || panelPrimaryVisible === false){
                         setPanelPrimaryVisibility(true)
