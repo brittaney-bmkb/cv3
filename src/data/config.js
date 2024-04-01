@@ -62,7 +62,7 @@ export const config = {
            popupEnabled:true, // Enable/disable popups for this layer source (boolean).
            popupTemplateTitle:"Parcel pin 14 {PIN14}", // Popup template title with field placeholders.
            maxScale:0,
-           minScale: 30000,
+           minScale: 20000,
            opacity: 1,
            visible:true,
            groupName:"Parcels",
@@ -227,7 +227,7 @@ export const config = {
         index: 11,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 30000,
+        minScale: 2500,
         opacity: null,
         visible:false,
         groupName:"Natural Environment and Recreation",
@@ -236,7 +236,7 @@ export const config = {
        },
        //TAX DISTRICTS
        {
-        layerName:"High School",
+        layerName:"High School District",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -251,7 +251,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Park",
+        layerName:"Park District",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -266,7 +266,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Library",
+        layerName:"Library District",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/", // URL to the layer service.
         type: 'mapImageLayer',
@@ -281,7 +281,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Fire Protection",
+        layerName:"Fire Protection District",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -296,7 +296,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Community College",
+        layerName:"Community College District",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -311,7 +311,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Tax Increment Finance (TIF)",
+        layerName:"Tax Increment Finance (TIF) District",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -326,7 +326,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Elementary School",
+        layerName:"Elementary School District",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/", // URL to the layer service.
         type: 'mapImageLayer',
@@ -341,7 +341,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Combined School",
+        layerName:"Combined School District",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -356,21 +356,21 @@ export const config = {
         searchSources: []
        },
        //Political Districts
-       {
-        layerName:"Election Precinct",
-        description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/", // URL to the layer service.
-        type: 'mapImageLayer',
-        index: 27,
-        outFields: ["*"], // Fields to return in the search results (array of strings).
-        maxScale:0,
-        minScale: 500000,
-        opacity: null,
-        visible:false,
-        groupName:"Political Boundaries",
-        render:null,
-        searchSources: []
-       },
+    //    {
+    //     layerName:"Election Precinct",
+    //     description: "",
+    //     url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/", // URL to the layer service.
+    //     type: 'mapImageLayer',
+    //     index: 27,
+    //     outFields: ["*"], // Fields to return in the search results (array of strings).
+    //     maxScale:0,
+    //     minScale: 500000,
+    //     opacity: null,
+    //     visible:false,
+    //     groupName:"Political Boundaries",
+    //     render:null,
+    //     searchSources: []
+    //    },
        {
         layerName:"Chicago Ward",
         description: "",
@@ -379,7 +379,7 @@ export const config = {
         index: 28,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 500000,
+        minScale: 250000,
         opacity: null,
         visible:false,
         groupName:"Political Boundaries",
@@ -394,7 +394,7 @@ export const config = {
         index: 30,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 500000,
+        minScale: 400000,
         opacity: null,
         visible:false,
         groupName:"Political Boundaries",
@@ -409,7 +409,7 @@ export const config = {
         index: 31,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 500000,
+        minScale: 400000,
         opacity: null,
         visible:false,
         groupName:"Political Boundaries",
@@ -424,7 +424,7 @@ export const config = {
         index: 32,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 500000,
+        minScale: 400000,
         opacity: null,
         visible:false,
         groupName:"Political Boundaries",
@@ -439,7 +439,7 @@ export const config = {
         index: 34,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 500000,
+        minScale: 400000,
         opacity: null,
         visible:false,
         groupName:"Political Boundaries",
@@ -454,7 +454,7 @@ export const config = {
         index: 35,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 500000,
+        minScale: 400000,
         opacity: null,
         visible:false,
         groupName:"Political Boundaries",
@@ -469,7 +469,7 @@ export const config = {
         index: 36,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 500000,
+        minScale: 400000,
         opacity: null,
         visible:false,
         groupName:"Political Boundaries",
@@ -484,7 +484,7 @@ export const config = {
         index: 43,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 500000,
+        minScale: 400000,
         opacity: null,
         visible:false,
         groupName:"Political Boundaries",
@@ -499,7 +499,7 @@ export const config = {
         index: 64,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 500000,
+        minScale: 35001,
         opacity: null,
         visible:false,
         groupName:"Political Boundaries",
@@ -535,20 +535,20 @@ export const config = {
     //     render:null,
     //     searchSources: []
     //    },
-    //    {
-    //     layerName:"County Facility",
-    //     description: "",
-    //     url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/2", // URL to the layer service.
-    //     type: 'featureLayer',
-    //     outFields: ["*"], // Fields to return in the search results (array of strings).
-    //     maxScale:null,
-    //     minScale: null,
-    //     opacity: null,
-    //     visible:false,
-    //     groupName:"Places of Interest",
-    //     render:null,
-    //     searchSources: []
-    //    },
+       {
+        layerName:"County Facility",
+        description: "",
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/2", // URL to the layer service.
+        type: 'mapImageLayer',
+        outFields: ["*"], // Fields to return in the search results (array of strings).
+        maxScale:null,
+        minScale: 190000,
+        opacity: null,
+        visible:false,
+        groupName:"Places of Interest",
+        render:null,
+        searchSources: []
+       },
     //    {
     //     layerName:"School",
     //     description: "",
@@ -606,20 +606,20 @@ export const config = {
     //     render:null,
     //     searchSources: []
     //    },
-    //    {
-    //     layerName:"Highway System",
-    //     description: "",
-    //     url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/17", // URL to the layer service.
-    //     type: 'featureLayer',
-    //     outFields: ["*"], // Fields to return in the search results (array of strings).
-    //     maxScale:null,
-    //     minScale: null,
-    //     opacity: null,
-    //     visible:false,
-    //     groupName:"Transportation",
-    //     render:null,
-    //     searchSources: []
-    //    },
+       {
+        layerName:"Highway System",
+        description: "",
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/17", // URL to the layer service.
+        type: 'mapImageLayer',
+        outFields: ["*"], // Fields to return in the search results (array of strings).
+        maxScale:null,
+        minScale: 150000,
+        opacity: null,
+        visible:false,
+        groupName:"Transportation",
+        render:null,
+        searchSources: []
+       },
     //    //Census Statistical Areas
     //    {
     //     layerName:"Block",
@@ -678,20 +678,20 @@ export const config = {
     //     render:null,
     //     searchSources: []
     //    },
-    //    {
-    //     layerName:"Unincorporated Zoning (current)",
-    //     description: "",
-    //     url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/65", // URL to the layer service.
-    //     type: 'featureLayer',
-    //     outFields: ["*"], // Fields to return in the search results (array of strings).
-    //     maxScale:null,
-    //     minScale: null,
-    //     opacity: null,
-    //     visible:false,
-    //     groupName:"Zoning",
-    //     render:null,
-    //     searchSources: []
-    //    },
+       {
+        layerName:"Unincorporated Zoning (current)",
+        description: "",
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/65", // URL to the layer service.
+        type: 'mapImageLayer',
+        outFields: ["*"], // Fields to return in the search results (array of strings).
+        maxScale:null,
+        minScale: 2501,
+        opacity: null,
+        visible:false,
+        groupName:"Zoning",
+        render:null,
+        searchSources: []
+       },
        //Parcel Archive
        {
         layerName:"Parcel 2022",
@@ -701,7 +701,7 @@ export const config = {
         index: 72,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 30000,
+        minScale: 5001,
         opacity: 1,
         visible:false,
         groupName:"Parcel Archive",
@@ -716,7 +716,7 @@ export const config = {
         index: 71,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 30000,
+        minScale: 5001,
         opacity: null,
         visible:false,
         groupName:"Parcel Archive",
@@ -731,7 +731,7 @@ export const config = {
         index: 70,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 30000,
+        minScale: 5001,
         opacity: null,
         visible:false,
         groupName:"Parcel Archive",
@@ -746,7 +746,7 @@ export const config = {
         index: 69,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 30000,
+        minScale: 5001,
         opacity: null,
         visible:false,
         groupName:"Parcel Archive",
@@ -761,7 +761,7 @@ export const config = {
         index: 68,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 30000,
+        minScale: 5001,
         opacity: null,
         visible:false,
         groupName:"Parcel Archive",
@@ -776,7 +776,7 @@ export const config = {
         index: 57,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 30000,
+        minScale: 5001,
         opacity: null,
         visible:false,
         groupName:"Parcel Archive",
@@ -791,7 +791,7 @@ export const config = {
         index: 46,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 30000,
+        minScale: 5001,
         opacity: null,
         visible:false,
         groupName:"Parcel Archive",
@@ -806,7 +806,7 @@ export const config = {
         index: 47,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 30000,
+        minScale: 5001,
         opacity: null,
         visible:false,
         groupName:"Parcel Archive",
@@ -821,7 +821,7 @@ export const config = {
         index: 48,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 30000,
+        minScale: 5001,
         opacity: null,
         visible:false,
         groupName:"Parcel Archive",
@@ -836,7 +836,7 @@ export const config = {
         index: 49,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 30000,
+        minScale: 5001,
         opacity: null,
         visible:false,
         groupName:"Parcel Archive",
@@ -851,7 +851,7 @@ export const config = {
         index: 50,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 30000,
+        minScale: 5001,
         opacity: null,
         visible:false,
         groupName:"Parcel Archive",
@@ -866,7 +866,7 @@ export const config = {
         index: 51,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 30000,
+        minScale: 5001,
         opacity: null,
         visible:false,
         groupName:"Parcel Archive",
@@ -881,7 +881,7 @@ export const config = {
         index: 52,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 30000,
+        minScale: 5001,
         opacity: null,
         visible:false,
         groupName:"Parcel Archive",
@@ -896,7 +896,7 @@ export const config = {
         index: 53,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 30000,
+        minScale: 5001,
         opacity: null,
         visible:false,
         groupName:"Parcel Archive",
@@ -911,7 +911,7 @@ export const config = {
         index: 54,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 30000,
+        minScale: 5001,
         opacity: null,
         visible:false,
         groupName:"Parcel Archive",
@@ -926,7 +926,7 @@ export const config = {
         index: 55,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 30000,
+        minScale: 5001,
         opacity: null,
         visible:false,
         groupName:"Parcel Archive",
@@ -941,7 +941,7 @@ export const config = {
         index: 56,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 30000,
+        minScale: 5001,
         opacity: null,
         visible:false,
         groupName:"Parcel Archive",
@@ -956,7 +956,7 @@ export const config = {
         index: 57,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 30000,
+        minScale: 5001,
         opacity: null,
         visible:false,
         groupName:"Parcel Archive",
@@ -971,7 +971,7 @@ export const config = {
         index: 58,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 30000,
+        minScale: 5001,
         opacity: null,
         visible:false,
         groupName:"Parcel Archive",
@@ -986,7 +986,7 @@ export const config = {
         index: 59,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 30000,
+        minScale: 5001,
         opacity: null,
         visible:false,
         groupName:"Parcel Archive",
@@ -1001,7 +1001,7 @@ export const config = {
         index: 60,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 30000,
+        minScale: 5001,
         opacity: null,
         visible:false,
         groupName:"Parcel Archive",
@@ -1016,7 +1016,7 @@ export const config = {
         index: 61,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 30000,
+        minScale: 5001,
         opacity: null,
         visible:false,
         groupName:"Parcel Archive",
@@ -1031,7 +1031,7 @@ export const config = {
         index: 56,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:0,
-        minScale: 30000,
+        minScale: 5001,
         opacity: null,
         visible:false,
         groupName:"Parcel Archive",
