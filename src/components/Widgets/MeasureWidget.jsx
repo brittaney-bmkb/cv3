@@ -25,7 +25,7 @@ const areaUnitOptions = [
 // this lifted from comparable property search and will needed to be updated for this widget
 const MeasureWidget = () => {
 
-    const {setMeasureWidgetState, translateText, setMeasureWidget, panelSecondaryVisible, screenWidth} = UseAppContext()
+    const { panelDisplayWidget, setMeasureWidgetState, translateText, setMeasureWidget, panelSecondaryVisible, screenWidth} = UseAppContext()
     // //use ref for div 
     const measureWidget = useRef(null)
 
@@ -45,11 +45,23 @@ const MeasureWidget = () => {
 
     useEffect(() => {
         setMeasurementValue(0)
-    },[panelSecondaryVisible])
+        setActiveTool(null)
+
+        if(measureWidget.current){
+            measureWidget.current.clear()
+        }
+
+    },[panelSecondaryVisible, panelDisplayWidget, measureWidget.current])
+
+    useEffect(() => {
+        setActiveTool(null)
+        setMeasurementValue(0)
+    },[])
 
     useEffect(() => {
         const createmeasureWidget = async () => {
                 if(!measureWidget.current){
+                    console.log("initializing new measure widget startup")
                     measureWidget.current = new Measurement({
                         view:view,
                         activeTool: activeTool,
@@ -64,80 +76,173 @@ const MeasureWidget = () => {
                     })
                     setMeasureWidget(measureWidget.current)
                 }
+
+                // else{
+                //     setActiveTool(null)
+                //     setMeasurementValue(0)
+                //     measureWidget.current.clear()
+                // }
             }  
         
         createmeasureWidget();
-    }, [measureWidget]);
 
+        // return () => {
+        //     if (measureWidget.current) {
+        //         console.log("destroying widget")
+        //         setActiveTool(null)
+        //         setMeasurementValue(0)
+        //         measureWidget.current.destroy()
+        //         measureWidget.current.clear()
+        //     }
+        // };
+    }, []);
 
     useEffect(() => {
-           reactiveUtils.watch( 
-                () => measureWidget.current?.viewModel?.activeViewModel?.measurementLabel,
-                (label) => {
-                    if(label){
-
-                        if(label?.area){
-                            console.log(
-                                "active tool: ", activeTool, 
-                                "Area: ", label.area,
-                                "Perimeter: ", label.perimeter                
-                            );
-                            setMeasurementValue(label.area)
-                        }
-                        else{
-                            console.log(
-                                "active tool: ", activeTool,
-                                "Distance: ", label,            
-                            );
-                            setMeasurementValue(label)
-                        }
-    
-                        
-                    }
-                }
-            )
-
-            reactiveUtils.watch( 
-                () => measureWidget.current?.viewModel?.activeViewModel?.unit,
-                (unit) => {
-                    if(unit){
-                        let measurementLabel = measureWidget.current?.viewModel?.activeViewModel?.measurementLabel
-                        if(measurementLabel?.area){
-                            console.log(
-                                "Area: ", measurementLabel.area,
-                                "Perimeter: ", measurementLabel.perimeter                
-                            );
-                            setMeasurementValue(measurementLabel.area)
-                        }
-                        else{
-                            console.log(
-                                "Distance: ", measurementLabel,            
-                            );
-                            setMeasurementValue(measurementLabel)
-                        }
-    
-                        
-                    }
-                }
-            )
-    
-            reactiveUtils.watch( 
-                () => measureWidget.current.viewModel.state,
-                (state) => {
-                    if(state !== "disabled"){
-                        setMeasureWidgetState(true)
+        const watcher = reactiveUtils.watch(
+            () => measureWidget.current?.viewModel?.activeViewModel?.measurementLabel,
+            (label) => {
+                if (label) {
+                    if (label?.area) {
                         console.log(
-                            "State: ", state               
+                            "active tool: ", activeTool,
+                            "Area: ", label.area,
+                            "Perimeter: ", label.perimeter
                         );
-                    }
-
-                    else{
-                        setMeasureWidgetState(null)
+                        setMeasurementValue(label.area);
+                    } else {
+                        console.log(
+                            "active tool: ", activeTool,
+                            "Distance: ", label
+                        );
+                        setMeasurementValue(label);
                     }
                 }
-            )
+            }
+        );
+    
+        const unitWatcher = reactiveUtils.watch(
+            () => measureWidget.current?.viewModel?.activeViewModel?.unit,
+            (unit) => {
+                if (unit) {
+                    let measurementLabel = measureWidget.current?.viewModel?.activeViewModel?.measurementLabel;
+                    if (measurementLabel?.area) {
+                        console.log(
+                            "Area: ", measurementLabel.area,
+                            "Perimeter: ", measurementLabel.perimeter
+                        );
+                        setMeasurementValue(measurementLabel.area);
+                    } else {
+                        console.log(
+                            "Distance: ", measurementLabel
+                        );
+                        setMeasurementValue(measurementLabel);
+                    }
+                }
+            }
+        );
+    
+        // Cleanup function
+        return () => {
+            watcher.remove();
+            unitWatcher.remove();
+            // Reset measurementValue and activeTool to their initial values
+        };
+    }, [measureWidget.current]);
+    
+    // useEffect( () => {
+    //        reactiveUtils.watch( 
+    //             () => measureWidget.current?.viewModel?.activeViewModel?.measurementLabel,
+    //             (label) => {
+    //                 if(label){
+    //                     if(label?.area){
+    //                         console.log(
+    //                             "active tool: ", activeTool, 
+    //                             "Area: ", label.area,
+    //                             "Perimeter: ", label.perimeter                
+    //                         );
+    //                         setMeasurementValue(label.area)
+    //                     }
+    //                     else{
+    //                         console.log(
+    //                             "active tool: ", activeTool,
+    //                             "Distance: ", label,            
+    //                         );
+    //                         setMeasurementValue(label)
+    //                     }
+    
+                        
+    //                 }
+    //             }
+    //         )
+
+    //         reactiveUtils.watch( 
+    //             () => measureWidget.current?.viewModel?.activeViewModel?.unit,
+    //             (unit) => {
+    //                 if(unit){
+    //                     let measurementLabel = measureWidget.current?.viewModel?.activeViewModel?.measurementLabel
+    //                     if(measurementLabel?.area){
+    //                         console.log(
+    //                             "Area: ", measurementLabel.area,
+    //                             "Perimeter: ", measurementLabel.perimeter                
+    //                         );
+    //                         setMeasurementValue(measurementLabel.area)
+    //                     }
+    //                     else{
+    //                         console.log(
+    //                             "Distance: ", measurementLabel,            
+    //                         );
+    //                         setMeasurementValue(measurementLabel)
+    //                     }
+    
+                        
+    //                 }
+    //             }
+    //         )
         
-    }, [measureWidget])
+    // }, [measureWidget])
+
+    // useEffect(() => {
+
+    //     reactiveUtils.watch( 
+    //         () => measureWidget.current.viewModel.state,
+    //         (state) => {
+    //             console.log("measure state: ", state)
+    //             if(state){
+    //                 setMeasureWidgetState(true)
+    //                 console.log(
+    //                     "State: ", state               
+    //                 );
+    //             }
+    //         }
+    //     )
+        
+    // })
+
+
+    
+
+    useEffect(() => {
+        const updateMeasureState = (state) => {
+            console.log("measure state: ", state);
+            if (state && state !== "disabled") {
+                setMeasureWidgetState(true);
+                console.log("State: ", state);
+            }
+            else{
+                measureWidget.current.clear();
+            }
+        };
+    
+        const watcher = reactiveUtils.watch(
+            () => measureWidget.current.viewModel.state,
+            updateMeasureState
+        );
+    
+        // Cleanup function
+        return () => {
+            watcher.remove();
+        };
+    }, [measureWidget.current?.viewModel?.state]);
 
     useEffect(() => {
         const setAreaToolMeasure = () => {
@@ -154,6 +259,7 @@ const MeasureWidget = () => {
 
 
     const startMeasuring = async (tool) => {
+        setMeasureWidgetState(true)
         setActiveTool(tool) 
         if( measureWidget.current){
             console.log("Starting measurement Tool: ", measureWidget.current)

@@ -223,10 +223,11 @@ const PanelContent = ({display}) => {
                         text={translateText("Measure")}
                         closeButton={true}
                         panel={"widget"}
+                        descriptionText={translateText("Measure Widget Comming Soon")}
                     />                    
-                    <MeasureWidget
+                    {/* <MeasureWidget
                         panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"}
-                    />
+                    /> */}
                 </Box>
                 )                
         case 'layersWidget':

@@ -12,7 +12,7 @@ import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 
 export default function WebMapView(){
 
-    const { panelWidgetVisible, setShowMapMoblie, loadMap, setMapContainer, mapContainer, mapClickEventHandler, addSecondaryFeatureToMap, secondaryResultFeature, translateText, screenWidth} = UseAppContext()
+    const { measureWidgetState, measureWidget, queryMapPoint, panelWidgetVisible, setShowMapMoblie, loadMap, setMapContainer, mapContainer, mapClickEventHandler, addSecondaryFeatureToMap, secondaryResultFeature, translateText, screenWidth} = UseAppContext()
     const mapDiv = useRef(null)
     const mapButtonGroupRef = useRef(null);
     const toggleButton = useRef(null);
@@ -40,14 +40,56 @@ export default function WebMapView(){
 
     // useEffect(() => {
     //     //watch for clicks in the mapview
+
     //     reactiveUtils.on(
     //         () => view,
     //         "click",
     //         (event) => {
-    //             console.log("WEBMAPVIEW: Click event emitted: ", event)
+    //             console.log("measure widget state: ", measureWidgetState)
+    //             console.log("measure widget: ", measureWidget)
+    //             if(measureWidgetState){
+    //                 console.log("Measure session. Blocking map view click")
+    //             }
+    //             else{
+    //                 console.log("WEBMAPVIEW: Click event emitted: ", event)
+    //                 console.log("measure widget state: ", measureWidgetState)
+    //                 let point = event.mapPoint
+    
+    //                 console.log("View Map Point", point)
+    //             }
     //         }
     //     )
     // })
+
+    useEffect(() => {
+        // Define event handler function
+        const handleClick = async (event) => {
+            // console.log("measure widget state: ", measureWidgetState);
+            // console.log("measure widget: ", measureWidget);
+            // if (measureWidget && measureWidgetState) {
+            //     console.log("Measure session. Blocking map view click");
+            // } else {
+            //     console.log("WEBMAPVIEW: Click event emitted: ", event);
+            //     console.log("measure widget state: ", measureWidgetState);
+                let point = event.mapPoint;
+                console.log("View Map Point", point);
+
+                await queryMapPoint(point)
+            //}
+        };
+    
+        // Watch for the click event on the view
+        const watcher = reactiveUtils.on(
+            () => view,
+            "click",
+            handleClick // Pass the handleClick function directly
+        );
+    
+        // Cleanup function
+        return () => {
+            watcher.remove();
+        };
+    },[measureWidgetState, measureWidget]);
 
 
     useEffect(() => {
@@ -61,7 +103,14 @@ export default function WebMapView(){
 
     return (
         <Box width='100%' height='100%' display="flex" alignItems={screenWidth <= theme.breakpoints.values.md ? "center" : "left"} justifyContent={screenWidth <= theme.breakpoints.values.md ? "center" : "left"} position="relative">
-        <div id="MAPCONTAINER" ref={mapDiv} style={{width: '100%', height: '100%', zIndex: 1}} onClick={mapClickEventHandler}></div>
+        <div 
+        id="MAPCONTAINER" 
+        ref={mapDiv} 
+        style={{width: '100%', height: '100%', zIndex: 1}} 
+        // onClick={mapClickEventHandler}
+        >
+
+        </div>
                 <Box 
                 display="flex" 
                 id="mapButtonGroup"  

@@ -154,9 +154,9 @@ export async function returnLatLong(){
   return point
 }
 
-async function peformQueryFeatures(point, parcelQueryFields){
+export async function peformQueryFeatures(point, parcelQueryFields){
 
-      console.log("Point: ", point)
+      console.log("Point: ", point, parcelQueryFields)
       const query = new Query();
       query.geometry = point;
       query.spatialRelationship = "intersects";
@@ -197,6 +197,7 @@ export async function queryLocationResults(coordinates, parcelQueryFields){
 
   return features
 }
+
 
 export async function onViewClick(parcelQueryFields) {
 
