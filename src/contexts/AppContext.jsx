@@ -262,7 +262,7 @@ export const AppProvider = ({children}) => {
 
         let view, searchSources = await initializeMap(mapContainer)
 
-        await loadDataDictionary()
+        //await loadDataDictionary()
 
         setMapView(view)
         setSearchSources(searchSources)
@@ -276,14 +276,23 @@ export const AppProvider = ({children}) => {
     }
 
     const queryMapPoint = async (point) => {
-        
+        let fields 
         setCoordinates(point.x, point.y)
         console.log("x/y", point.x, point.y)
 
         const { panelSecondaryVisible, panelPrimaryVisible, panelDisplay, parcelQueryFields, comparableParcels, primaryResultFeature} = state
         const { peformQueryFeatures, createGraphic, zoomToExtent, removeGraphics } = await import('../arcgis/webmap/webmap')
 
-        let selectedFeatures = await peformQueryFeatures(point, parcelQueryFields)
+
+        console.log("Passing query fields: ", parcelQueryFields)
+
+        if(!parcelQueryFields){
+            fields = await loadDataDictionary()
+        }
+        else{
+            fields = parcelQueryFields
+        }
+        let selectedFeatures = await peformQueryFeatures(point, fields)
 
         console.log("Queried Features: ", selectedFeatures)
 
@@ -389,7 +398,7 @@ export const AppProvider = ({children}) => {
 
         const { queryLocationResults, createGraphic } = await import("../arcgis/webmap/webmap")
 
-        const {parcelQueryFields} = state
+        const { parcelQueryFields } = state
 
         let features = await queryLocationResults(coordinates, parcelQueryFields)
 
@@ -403,8 +412,11 @@ export const AppProvider = ({children}) => {
 
         const { readFeatureLayerData } = await import('../arcgis/layers/layers')
 
+        //const { parcelQueryFields } = state
+
         let { features } = await readFeatureLayerData(config.data_dictionary, ["*"], "field IS NOT NULL")
-        //console.log("DATA DICTIONARY: ", features)
+
+        console.log("DATA DICTIONARY: ", features)
         setDataDictionary(features)
 
         //to do make sure pin10 id field is included
@@ -416,8 +428,11 @@ export const AppProvider = ({children}) => {
                                           ...new Set(features.filter((feature) => feature.attributes['hyperlink_params'] !== null)
                                           .map((feature) => feature.attributes['hyperlink_params'].trim()))]
 
-        //console.log("Query Fields: ", queryFields)
-        setParcelQueryFields(queryFields)
+        console.log("Query Fields: ", queryFields)
+        //setParcelQueryFields(queryFields)
+
+        //console.log("loadDataDictionary - parcel query fields: ", parcelQueryFields)
+        return queryFields
     }
 
     const selectResultFromList = async (result) => {
@@ -463,12 +478,19 @@ export const AppProvider = ({children}) => {
 
 
     const renderSearchResults = async (searchWidgetResults) => {
+        let fields
         const { querySearchResults } = await import('../arcgis/webmap/webmap')
         const { parcelQueryFields, panelDisplay, primaryResultFeature } = state
 
         console.log("Query Fields: ", parcelQueryFields)
+        if(!parcelQueryFields){
+            fields = await loadDataDictionary()
+        }
+        else{
+            fields = parcelQueryFields
+        }
 
-        const features = await querySearchResults(searchWidgetResults, parcelQueryFields)
+        const features = await querySearchResults(searchWidgetResults, fields)
         setSearchResults(searchWidgetResults, features)
 
         //if(!primaryResultFeature){
@@ -650,6 +672,17 @@ export const AppProvider = ({children}) => {
         
     }
 
+    useEffect(() => {
+        const loadParcelFields = async () => {
+            let fields = await loadDataDictionary()
+            setParcelQueryFields(fields)
+            console.log("Parcel query fields: ", fields)
+        }
+
+        loadParcelFields();
+        console.log("Parcel query fields: ", state.parcelQueryFields)
+      },[])
+
 
     
     useEffect(() => {
@@ -699,19 +732,42 @@ export const AppProvider = ({children}) => {
       }, []);
 
 
-      useEffect(() => {
 
-        if(state.panelDisplayWidget !== "measureWidget" || state.panelWidgetVisible === false){
-            console.log("Measure Widget: ", state.measureWidget)
-            if(state.measureWidgetState && state.measureWidget){
-                setMeasureWidgetState(null)
-                state.measureWidget.clear()
-            }
+
+    //   useEffect(() => {
+
+    //     if(state.panelDisplayWidget !== "measureWidget" || state.panelWidgetVisible === false){
+    //         console.log("Measure Widget: ", state.measureWidget)
+    //         if(state.measureWidgetState && state.measureWidget){
+    //             await setMeasureWidgetState(null)
+    //             await state.measureWidget.when()
+    //             await state.measureWidget.clear()
+    //         }
             
             
-        }
+    //     }
     
-      }, [state.panelDisplayWidget, state.panelWidgetVisible])
+    //   }, [state.panelDisplayWidget, state.panelWidgetVisible])
+
+    // useEffect(() => {
+    //     const clearMeasureWidget = async () => {
+    //         if (state.panelDisplayWidget !== "measureWidget" || state.panelWidgetVisible === false) {
+    //             //console.log("Measure Widget: ", state.measureWidget);
+    //             if (state.measureWidget) {
+    //                 console.log("Measure Widget: ", state.measureWidget);
+    //                 // await state.measureWidget.when();
+    //                 state.measureWidget.clear();
+    //                 console.log("Destroying Measure Widget: ");
+    //                 state.measureWidget.destroy();
+    //                 //setMeasureWidget(null)
+    //                 setMeasureWidgetState(null);
+    //             }
+    //         }
+    //     };
+    
+    //     clearMeasureWidget();
+    // }, [state.panelDisplayWidget, state.panelWidgetVisible, state.measureWidget]);
+    
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 

@@ -64,18 +64,18 @@ export default function WebMapView(){
     useEffect(() => {
         // Define event handler function
         const handleClick = async (event) => {
-            console.log("measure widget state: ", measureWidgetState);
-            console.log("measure widget: ", measureWidget);
-            if (measureWidget && measureWidgetState) {
-                console.log("Measure session. Blocking map view click");
-            } else {
-                console.log("WEBMAPVIEW: Click event emitted: ", event);
-                console.log("measure widget state: ", measureWidgetState);
+            // console.log("measure widget state: ", measureWidgetState);
+            // console.log("measure widget: ", measureWidget);
+            // if (measureWidget && measureWidgetState) {
+            //     console.log("Measure session. Blocking map view click");
+            // } else {
+            //     console.log("WEBMAPVIEW: Click event emitted: ", event);
+            //     console.log("measure widget state: ", measureWidgetState);
                 let point = event.mapPoint;
                 console.log("View Map Point", point);
 
                 await queryMapPoint(point)
-            }
+            //}
         };
     
         // Watch for the click event on the view
@@ -89,7 +89,7 @@ export default function WebMapView(){
         return () => {
             watcher.remove();
         };
-    });
+    },[measureWidgetState, measureWidget]);
 
 
     useEffect(() => {
