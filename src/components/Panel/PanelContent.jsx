@@ -191,7 +191,7 @@ const PanelContent = ({display}) => {
                         backButton={true}
                         backButtonComponent={'resultsListNearby'}
                         closeButton={true}
-                        panel={"secondary"}
+                        panel={screenWidth < theme.breakpoints.values.lg ? "primary":"secondary"}
                         primary={false}
                     />
 
