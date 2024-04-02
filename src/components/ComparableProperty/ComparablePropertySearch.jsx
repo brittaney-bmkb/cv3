@@ -36,7 +36,7 @@ const constructionTypes = [
 ]
 
 export const radiusTypes = {
-    "Eigth Mile": .125,
+    "Eighth Mile": .125,
     "Quarter Mile": .25,
     "Half Mile": .5,
     "Mile": 1,

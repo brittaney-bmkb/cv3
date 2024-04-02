@@ -2,6 +2,8 @@ import { useState } from "react"
 import { config } from "../../data/config";
 import { Box, Divider, Drawer, Icon, List, ListItem, Menu, MenuItem, MenuList, Stack, SwipeableDrawer, Typography } from "@mui/material";
 import { CalciteIcon } from "@esri/calcite-components-react";
+import FeedbackIcon from '@mui/icons-material/Feedback';
+import TranslateIcon from '@mui/icons-material/Translate';
 
 import TranslateMenu from "./TranslateMenu";
 import UseAppContext from "../../contexts/AppContext";
@@ -46,13 +48,13 @@ const MenuBar = ({open, setOpen}) => {
   
                 <MenuItem onClick={openFeedbackDialog}>
                     <Stack direction="row" spacing={1} alignItems="center">
-                        <CalciteIcon icon="mega-phone"/>
+                        <FeedbackIcon />
                         <Typography variant="h5">{translateText("Feedback")}</Typography>
                     </Stack>
                 </MenuItem>
                 <MenuItem onClick={handleTranslateButton}>
                     <Stack direction="row" spacing={1} alignItems="center">
-                        <CalciteIcon icon="language-translate"/>
+                        <TranslateIcon />
                         <Typography variant="h5">{translateText("Translate")}</Typography>
                     </Stack>
                 </MenuItem>
