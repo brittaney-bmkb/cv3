@@ -2,6 +2,7 @@ import { CloseOutlined } from "@mui/icons-material"
 import { Dialog, DialogContent, DialogTitle, IconButton, Typography } from "@mui/material"
 import UseAppContext from "../../contexts/AppContext"
 import { theme } from "../../theme"
+import { useEffect, useState } from "react"
 
 const FeedbackDialog = ({open, onClose}) => {
 
@@ -21,6 +22,21 @@ const FeedbackDialog = ({open, onClose}) => {
 export const FeedbackGeneral = ({open, onClose}) => {
 
     const { translateText, screenWidth } = UseAppContext()
+    const [ deviceType, setDeviceType ] = useState()
+
+    useEffect(() => {
+
+        if(screenWidth < theme.breakpoints.values.sm){
+            setDeviceType("mobile")
+        }
+        else if(screenWidth < theme.breakpoints.values.md && screenWidth >= theme.breakpoints.values.sm){
+            setDeviceType("tablet")
+        }
+        else{
+            setDeviceType("desktop")
+        }
+
+    }, [screenWidth])
 
     const embedContainerStyle = {
         position: 'relative',
@@ -58,7 +74,7 @@ export const FeedbackGeneral = ({open, onClose}) => {
                 <iframe 
                     name="survey123webform"
                     title="CookViewer 3.0 Simple Feedback"
-                    src="//survey123.arcgis.com/share/ba8f1d610701420abc33612ef1d3378a?hide=navbar,footer"
+                    src={`//survey123.arcgis.com/share/ba8f1d610701420abc33612ef1d3378a?hide=navbar,footer&field:device_type=${deviceType}`}
                     allow="geolocation https://survey123.arcgis.com; camera https://survey123.arcgis.com"
                     style={iframeStyle}
                 />
@@ -71,6 +87,24 @@ export const FeedbackGeneral = ({open, onClose}) => {
 export const FeedbackExtended = ({open, onClose}) => {
 
     const { translateText, screenWidth } = UseAppContext()
+
+    const [ deviceType, setDeviceType ] = useState()
+
+    useEffect(() => {
+
+        if(screenWidth < theme.breakpoints.values.sm){
+            setDeviceType("mobile")
+        }
+        else if(screenWidth < theme.breakpoints.values.md && screenWidth >= theme.breakpoints.values.sm){
+            setDeviceType("tablet")
+        }
+        else{
+            setDeviceType("desktop")
+        }
+
+        console.log("Device type: ", deviceType)
+
+    }, [screenWidth])
 
     const embedContainerStyle = {
         position: 'relative',
@@ -114,7 +148,7 @@ export const FeedbackExtended = ({open, onClose}) => {
                 <iframe 
                     name="survey123webform"
                     title="CookViewer 3.0 Extended Feedback"
-                    src="//survey123.arcgis.com/share/640dd8fd0d064eb880b65cc3d238f87f?hide=navbar,footer"
+                    src={`//survey123.arcgis.com/share/640dd8fd0d064eb880b65cc3d238f87f?hide=navbar,footer&field:device_type=${deviceType}`}
                     allow="geolocation https://survey123.arcgis.com; camera https://survey123.arcgis.com"
                     style={iframeStyle}
                 />
@@ -127,6 +161,25 @@ export const FeedbackExtended = ({open, onClose}) => {
 export const FeedbackSearch = ({open, onClose}) => {
 
     const { translateText, screenWidth } = UseAppContext()
+
+    
+    const [ deviceType, setDeviceType ] = useState()
+
+    useEffect(() => {
+
+        if(screenWidth < theme.breakpoints.values.sm){
+            setDeviceType("mobile")
+        }
+        else if(screenWidth < theme.breakpoints.values.md && screenWidth >= theme.breakpoints.values.sm){
+            setDeviceType("tablet")
+        }
+        else{
+            setDeviceType("desktop")
+        }
+
+        console.log("Device type: ", deviceType)
+
+    }, [screenWidth])
 
     const embedContainerStyle = {
         position: 'relative',
@@ -170,7 +223,7 @@ export const FeedbackSearch = ({open, onClose}) => {
                 <iframe 
                     name="survey123webform"
                     title="CookViewer 3.0 Search Feedback"
-                    src="//survey123.arcgis.com/share/6c24e84d3ac24024a311b7e81045c382?hide=navbar,footer"
+                    src={`//survey123.arcgis.com/share/6c24e84d3ac24024a311b7e81045c382?hide=navbar,footer&field:device_type=${deviceType}`}
                     allow="geolocation https://survey123.arcgis.com; camera https://survey123.arcgis.com"
                     style={iframeStyle}
                 />
