@@ -391,8 +391,8 @@ export async function createGraphic(features, removeGraphicName, color){
     let {features} = await targetLayer.queryFeatures(query)
 
     if(features &&  features.length > 0){
-      zoomToExtent(features)
-      console.log("queried Features: ", features)
+      //zoomToExtent(features)
+      //console.log("queried Features: ", features)
   
       createGraphic(features, "secondary", theme.palette.secondary.main, true, "solid")
   
@@ -417,7 +417,7 @@ export async function createGraphic(features, removeGraphicName, color){
 
     let filteredFeatures = features.filter((f) => f.attributes['PIN14'] !== feature.attributes['PIN14'])
 
-    zoomToExtent(filteredFeatures)
+    //zoomToExtent(filteredFeatures)
 
     createGraphic(filteredFeatures, "secondary", theme.palette.secondary.main, true, "solid")
 

@@ -21,6 +21,7 @@ export const initialState = {
     screenWidth: null,
     newSearch:null,
     comparableParcels: null,
+    nearbyParcels:null,
     measureWidgetState:null,
     language: config.defaultLanguage,
     translateDialogOpen: false,
@@ -144,6 +145,12 @@ const AppReducer = (state, action) => {
             return {
                 ...state,
                 comparableParcels: payload.comparableParcels,
+            }
+        case "SET_NEARBY_PARCELS":
+            console.log("SET_NEARBY_PARCELS")
+            return {
+                ...state,
+                nearbyParcels: payload.nearbyParcels,
             }
 
         case "SET_MEASURE_WIDGET_STATE":

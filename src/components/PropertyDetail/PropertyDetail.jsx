@@ -33,7 +33,7 @@ function addCommaSeparator(value, type) {
 
 const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) => {
 
-    const { panelWidgetVisible, setPanelWidgetVisibility, screenWidth, dataDictionary, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, translateText } = UseAppContext()
+    const { clearResultsComparables, panelWidgetVisible, setPanelWidgetVisibility, screenWidth, dataDictionary, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, translateText } = UseAppContext()
 
 
     const [ categories, setCategories ] = useState(null)
@@ -60,12 +60,12 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
     }
 
     function handleClick(display){
+
+        clearResultsComparables()
+
         if(screenWidth < theme.breakpoints.values.lg){
             setPanelPrimaryVisibility(true)
             setPanelDisplay(display)
-
-            
-
         }
         else if (screenWidth >= theme.breakpoints.values.lg){
             setPanelSecondaryVisibility(true)
