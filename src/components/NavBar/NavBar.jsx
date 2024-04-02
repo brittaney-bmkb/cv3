@@ -1,6 +1,8 @@
 import { AppBar, styled, Box, Toolbar, Typography, Avatar, Stack, IconButton, Button, Link, Menu, MenuItem, MenuList, Paper } from "@mui/material"
 import MenuIcon from '@mui/icons-material/Menu';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
+import FeedbackIcon from '@mui/icons-material/Feedback';
+import TranslateIcon from '@mui/icons-material/Translate';
 
 import Search from "../Search/Search"
 import BlueButton, { StyledButtonFilledPrimaryLight, StyledButtonFilledSecondary } from "../Button/Button"
@@ -106,12 +108,12 @@ const NavBar = () => {
                             <StyledButtonFilledPrimaryLight 
                                 onClick={openFeedbackDialog}
                                 text={translateText("Feedback")} 
-                                startIcon={<CalciteIcon icon="mega-phone"/> }/>
+                                startIcon={<FeedbackIcon/> }/>
                             
                             <StyledButtonFilledPrimaryLight 
                                 onClick={handleTranslateButton}
                                 text={translateText("Translate")} 
-                                startIcon={<CalciteIcon icon="language-translate"/>}/>
+                                startIcon={<TranslateIcon />}/>
 
                         </Stack>
 
