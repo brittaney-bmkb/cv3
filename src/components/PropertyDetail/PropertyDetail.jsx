@@ -33,7 +33,7 @@ function addCommaSeparator(value, type) {
 
 const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) => {
 
-    const { panelWidgetVisible, setPanelWidgetVisibility, screenWidth, dataDictionary, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, translateText } = UseAppContext()
+    const { clearResultsComparables, panelWidgetVisible, setPanelWidgetVisibility, screenWidth, dataDictionary, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, translateText } = UseAppContext()
 
 
     const [ categories, setCategories ] = useState(null)
@@ -60,12 +60,12 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
     }
 
     function handleClick(display){
+
+        clearResultsComparables()
+
         if(screenWidth < theme.breakpoints.values.lg){
             setPanelPrimaryVisibility(true)
             setPanelDisplay(display)
-
-            
-
         }
         else if (screenWidth >= theme.breakpoints.values.lg){
             setPanelSecondaryVisibility(true)
@@ -193,15 +193,15 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         let urlFormatted = url
         let paramsValues = params.split(",")
 
-        console.log("url data attributes: ", attributes)
+        //console.log("url data attributes: ", attributes)
 
         if(attributes){
             paramsValues.map((param) => {
-                console.log("Replacing: ", `{${param}}`)
+                //console.log("Replacing: ", `{${param}}`)
                 urlFormatted = urlFormatted.replace(`{${param}}`, attributes[param])
             })
     
-            console.log("url text: ", text, urlFormatted)
+            //console.log("url text: ", text, urlFormatted)
         }
         return (
         <Box 
@@ -223,7 +223,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
     const zoningInfo = (property, data) => {
 
         let msg = zoningMessage[property.attributes["PIN14"]]
-        console.log("muni message ", msg)
+        //console.log("muni message ", msg)
 
         if(msg === "Cook County Zone Lookup"){
             return returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], property?.attributes)
@@ -260,7 +260,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                 
                 <Box id="propertyDetailsBox" display="flex" flexDirection="row" columnGap={3} justifyContent={category==="top"? "space-around" : textAlignment}>
                     {properties.map((property, propIndex) => {
-                        //console.log("property details for: ", property)
+                        ////console.log("property details for: ", property)
                         let color = property === property1 ? propertyColor1 : propertyColor2
                         panelContentTitleMain["color"] = color
                         panelContentTitleMain["borderColor"] = color

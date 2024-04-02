@@ -12,7 +12,7 @@ import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 
 export default function WebMapView(){
 
-    const { measureWidgetState, measureWidget, queryMapPoint, panelWidgetVisible, setShowMapMoblie, loadMap, setMapContainer, mapContainer, mapClickEventHandler, addSecondaryFeatureToMap, secondaryResultFeature, translateText, screenWidth} = UseAppContext()
+    const { comparableParcels, measureWidgetState, measureWidget, queryMapPoint, panelWidgetVisible, setShowMapMoblie, loadMap, setMapContainer, mapContainer, addSecondaryFeatureToMap, secondaryResultFeature, translateText, screenWidth} = UseAppContext()
     const mapDiv = useRef(null)
     const mapButtonGroupRef = useRef(null);
     const toggleButton = useRef(null);
@@ -74,7 +74,14 @@ export default function WebMapView(){
                 let point = event.mapPoint;
                 console.log("View Map Point", point);
 
-                await queryMapPoint(point)
+                // if(comparableParcels){
+                //     console.log("comparable parcels detected")
+                //     await querySecondaryPoint(point)
+                // }
+                //else{
+                    await queryMapPoint(point, comparableParcels)
+                //}
+                
             //}
         };
     
@@ -89,7 +96,7 @@ export default function WebMapView(){
         return () => {
             watcher.remove();
         };
-    },[measureWidgetState, measureWidget]);
+    },[comparableParcels]);
 
 
     useEffect(() => {

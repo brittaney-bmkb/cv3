@@ -169,6 +169,15 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setNearbyParcels = (features) => {
+        dispatch({
+            type:"SET_NEARBY_PARCELS",
+             payload: {
+                nearby: features,
+            }
+        })
+    }
+
     const setMeasureWidgetState = (state) => {
         dispatch({
             type:"SET_MEASURE_WIDGET_STATE",
@@ -275,12 +284,14 @@ export const AppProvider = ({children}) => {
         
     }
 
+
     const queryMapPoint = async (point) => {
+        
         let fields 
         setCoordinates(point.x, point.y)
         console.log("x/y", point.x, point.y)
 
-        const { panelSecondaryVisible, panelPrimaryVisible, panelDisplay, parcelQueryFields, comparableParcels, primaryResultFeature} = state
+        const { screenWidth, panelSecondaryVisible, panelPrimaryVisible, panelDisplay, parcelQueryFields, comparableParcels, primaryResultFeature} = state
         const { peformQueryFeatures, createGraphic, zoomToExtent, removeGraphics } = await import('../arcgis/webmap/webmap')
 
 
@@ -292,23 +303,32 @@ export const AppProvider = ({children}) => {
         else{
             fields = parcelQueryFields
         }
+
         let selectedFeatures = await peformQueryFeatures(point, fields)
 
         console.log("Queried Features: ", selectedFeatures)
 
         //check if queried features are secondary comparables
+        console.log("comparableParcels: ", comparableParcels)
+
         let secondaryFeatures = []
         if(comparableParcels){
+            secondaryFeatures = comparableParcels.filter((feature) => feature.attributes['PIN14'] === selectedFeatures[0].attributes['PIN14'])
             console.log("Secondary feature selected: ", secondaryFeatures)
-            secondaryFeatures = comparableParcels.filter((feature) => feature.attributes['PIN10'] === selectedFeatures[0].attributes['PIN10'] || feature.attributes['PIN14'] === selectedFeatures[0].attributes['PIN14'])
-
-        };
-
-        if(secondaryFeatures?.length > 0){
-            setSecondaryResultFeature(secondaryFeatures[0])
-            setPanelDisplaySecondary("propertyDetailNearby")
-            createGraphic(secondaryFeatures, "secondarySelected", theme.palette.secondary.main)
-            zoomToExtent([secondaryFeatures[0], primaryResultFeature])
+        
+            if(secondaryFeatures?.length > 0){
+                setSecondaryResultFeature(secondaryFeatures[0])
+                if(screenWidth < theme.breakpoints.values.lg){
+                    setPanelDisplay("propertyDetailNearby")
+                }
+                else{
+                    setPanelDisplaySecondary("propertyDetailNearby")
+                }
+                
+                createGraphic(secondaryFeatures, "secondarySelected", theme.palette.secondary.main)
+                zoomToExtent([secondaryFeatures[0], primaryResultFeature])
+            }
+        
         }
 
         else{
@@ -336,63 +356,63 @@ export const AppProvider = ({children}) => {
 
     }
 
-    const mapClickEventHandler = async () => {
+    // const mapClickEventHandler = async () => {
 
-        const { onViewClick, createGraphic, zoomToExtent, removeGraphics } = await import('../arcgis/webmap/webmap')
-        const { theme } = await import ('../theme')
+    //     const { onViewClick, createGraphic, zoomToExtent, removeGraphics } = await import('../arcgis/webmap/webmap')
+    //     const { theme } = await import ('../theme')
         
-        const { measureWidgetState, comparableParcels, panelSecondaryVisible, primaryResultFeature, panelPrimaryVisible, panelDisplay, parcelQueryFields, panelDisplaySecondary } = state
+    //     const { measureWidgetState, comparableParcels, panelSecondaryVisible, primaryResultFeature, panelPrimaryVisible, panelDisplay, parcelQueryFields, panelDisplaySecondary } = state
 
-        if(measureWidgetState !== true){
-            const point = await returnLatLong()
+    //     if(measureWidgetState !== true){
+    //         const point = await returnLatLong()
 
-            const selectedFeatures = await onViewClick(parcelQueryFields)
-            console.log("selectedFeatures: ", selectedFeatures)
+    //         const selectedFeatures = await onViewClick(parcelQueryFields)
+    //         console.log("selectedFeatures: ", selectedFeatures)
             
-            setCoordinates(point.x, point.y)
-            console.log("x/y", point.x, point.y)
+    //         setCoordinates(point.x, point.y)
+    //         console.log("x/y", point.x, point.y)
 
             
-            let secondaryFeatures = []
-            if(comparableParcels){
-                console.log("Secondary feature selected: ", secondaryFeatures)
-                secondaryFeatures = comparableParcels.filter((feature) => feature.attributes['PIN14'] === selectedFeatures[0].attributes['PIN14'])
+    //         let secondaryFeatures = []
+    //         if(comparableParcels){
+    //             console.log("Secondary feature selected: ", secondaryFeatures)
+    //             secondaryFeatures = comparableParcels.filter((feature) => feature.attributes['PIN14'] === selectedFeatures[0].attributes['PIN14'])
 
-            };
+    //         };
             
-            if(secondaryFeatures?.length > 0){
-                setSecondaryResultFeature(secondaryFeatures[0])
-                setPanelDisplaySecondary("propertyDetailNearby")
-                createGraphic(secondaryFeatures, "secondarySelected", theme.palette.secondary.main)
-                zoomToExtent([secondaryFeatures[0], primaryResultFeature])
-            }
+    //         if(secondaryFeatures?.length > 0){
+    //             setSecondaryResultFeature(secondaryFeatures[0])
+    //             setPanelDisplaySecondary("propertyDetailNearby")
+    //             createGraphic(secondaryFeatures, "secondarySelected", theme.palette.secondary.main)
+    //             //zoomToExtent([secondaryFeatures[0], primaryResultFeature])
+    //         }
 
-            else{
-                console.log("App context setting selected parcel", selectedFeatures)
-                // if(selectedFeatures.length === 1){
-                setPrimaryResultFeature(selectedFeatures, false)
+    //         else{
+    //             console.log("App context setting selected parcel", selectedFeatures)
+    //             // if(selectedFeatures.length === 1){
+    //             setPrimaryResultFeature(selectedFeatures, false)
 
-                setSearchResults(null, selectedFeatures)
-                createGraphic(selectedFeatures, "primary", theme.palette.primary.main)
-                if(!panelDisplay || panelDisplay !== "resultsList"){
-                    setPanelDisplay("resultsList")
-                }
+    //             setSearchResults(null, selectedFeatures)
+    //             createGraphic(selectedFeatures, "primary", theme.palette.primary.main)
+    //             if(!panelDisplay || panelDisplay !== "resultsList"){
+    //                 setPanelDisplay("resultsList")
+    //             }
                 
-                if(!panelPrimaryVisible || panelPrimaryVisible === false){
-                    setPanelPrimaryVisibility(true)
-                }
+    //             if(!panelPrimaryVisible || panelPrimaryVisible === false){
+    //                 setPanelPrimaryVisibility(true)
+    //             }
 
-                if(panelSecondaryVisible === true && ["propertyDetailNearby","propertyDetailComparable","resultsListNearby","resultsListComparables","nearbyProperties","comparablePropertySearch"].includes(panelDisplaySecondary)){
-                    setPanelSecondaryVisibility(false)
-                }
+    //             if(panelSecondaryVisible === true && ["propertyDetailNearby","propertyDetailComparable","resultsListNearby","resultsListComparables","nearbyProperties","comparablePropertySearch"].includes(panelDisplaySecondary)){
+    //                 setPanelSecondaryVisibility(false)
+    //             }
                 
-                if(comparableParcels){
-                    clearResultsComparables()
-                } 
-            }
+    //             if(comparableParcels){
+    //                 clearResultsComparables()
+    //             } 
+    //         }
 
-    }   
-    }
+    // }   
+    // }
 
     const returnLocationFeatures = async (coordinates) => {
 
@@ -416,7 +436,7 @@ export const AppProvider = ({children}) => {
 
         let { features } = await readFeatureLayerData(config.data_dictionary, ["*"], "field IS NOT NULL")
 
-        console.log("DATA DICTIONARY: ", features)
+        //console.log("DATA DICTIONARY: ", features)
         setDataDictionary(features)
 
         //to do make sure pin10 id field is included
@@ -428,7 +448,7 @@ export const AppProvider = ({children}) => {
                                           ...new Set(features.filter((feature) => feature.attributes['hyperlink_params'] !== null)
                                           .map((feature) => feature.attributes['hyperlink_params'].trim()))]
 
-        console.log("Query Fields: ", queryFields)
+        //console.log("Query Fields: ", queryFields)
         //setParcelQueryFields(queryFields)
 
         //console.log("loadDataDictionary - parcel query fields: ", parcelQueryFields)
@@ -531,23 +551,30 @@ export const AppProvider = ({children}) => {
         const { removeGraphics } = await import('../arcgis/webmap/webmap')
 
         const { comparableParcels} = state
-        if(comparableParcels){
-            setComparableParcels(null)
-            removeGraphics("secondary")
-        }
+        setComparableParcels(null)
+        removeGraphics("secondary")
+
        
     }
 
     const searchComparableProperties = async (whereQuery, searchDistance) => {
 
-        const { compareProperities } = await import('../arcgis/webmap/webmap')
+        const { compareProperities, zoomToExtent } = await import('../arcgis/webmap/webmap')
 
-        const { primaryResultFeature, parcelQueryFields, screenWidth } = state     
+        const { primaryResultFeature, parcelQueryFields, screenWidth, comparableParcels } = state     
 
         let features = await compareProperities(whereQuery, searchDistance, primaryResultFeature, parcelQueryFields)
 
-        console.log("New Comparable features: ", features)
         setComparableParcels(features)
+
+        let zoomFeatures = [
+            ...[primaryResultFeature],
+            ...features
+        ]
+
+        zoomToExtent(zoomFeatures)
+
+        console.log("New Comparable features: ", state.comparableParcels)
 
         if(screenWidth < theme.breakpoints.values.lg){
             setPanelPrimaryVisibility(true)
@@ -561,13 +588,20 @@ export const AppProvider = ({children}) => {
 
     const searchNearbyProperties = async (searchDistance, units) => {
         setIsQuerying(true)
-        const { nearbyProperties } = await import('../arcgis/webmap/webmap')
+        const { nearbyProperties, zoomToExtent } = await import('../arcgis/webmap/webmap')
         const { primaryResultFeature, parcelQueryFields } = state  
         console.log(`Searching for properties within ${searchDistance}`)
 
         
         let nearbyParcels = await nearbyProperties( searchDistance, units, primaryResultFeature, parcelQueryFields)
-    
+        
+        let zoomFeatures = [
+            ...[primaryResultFeature],
+            ...nearbyParcels
+        ]
+
+        zoomToExtent(zoomFeatures)
+
         setComparableParcels(nearbyParcels)
         setIsQuerying(false)
     }
@@ -593,7 +627,7 @@ export const AppProvider = ({children}) => {
                     //replace numeric and parentheses 
                     textToReplace = text.replace(numericValues, "").replace(/[()]/g, "").trim()
 
-                    console.log("Found numeric values: ", numericValues, textToReplace)
+                    //console.log("Found numeric values: ", numericValues, textToReplace)
                 }
 
                 let translation = Object.values(textTranslationDictionary).filter(textReplace => 
@@ -639,7 +673,6 @@ export const AppProvider = ({children}) => {
         loadMap,
         setMapContainer,
         mapView: state.mapView,
-        mapClickEventHandler,
         primaryResultFeature: state.primaryResultFeature,
         setSearchResults,
         searchSources: state.searchSources,
@@ -701,9 +734,16 @@ export const AppProvider = ({children}) => {
         setPanelDisplayWidget,
         panelWidgetVisible: state.panelWidgetVisible,
         panelDisplayWidget: state.panelDisplayWidget,
-        queryMapPoint
+        queryMapPoint,
+        setComparableParcels,
+        clearResultsComparables
         
     }
+
+    useEffect(() => {
+
+        console.log("comparable parcels updated", state.comparableParcels)
+    }, [state.comparableParcels])
 
     useEffect(() => {
         const loadParcelFields = async () => {
