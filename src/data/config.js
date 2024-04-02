@@ -419,7 +419,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Commisioner District",
+        layerName:"Commissioner District",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -699,7 +699,7 @@ export const config = {
        },
        //Parcel Archive
        {
-        layerName:"Parcel 2022",
+        layerName:"Parcels 2022",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -714,7 +714,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Parcel 2021",
+        layerName:"Parcels 2021",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/", // URL to the layer service.
         type: 'mapImageLayer',
@@ -729,7 +729,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Parcel 2020",
+        layerName:"Parcels 2020",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -744,7 +744,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Parcel 2019",
+        layerName:"Parcels 2019",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -759,7 +759,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Parcel 2018",
+        layerName:"Parcels 2018",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -774,7 +774,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Parcel 2017",
+        layerName:"Parcels 2017",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -789,7 +789,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Parcel 2016",
+        layerName:"Parcels 2016",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -804,7 +804,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Parcel 2015",
+        layerName:"Parcels 2015",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -819,7 +819,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Parcel 2014",
+        layerName:"Parcels 2014",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -834,7 +834,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Parcel 2013",
+        layerName:"Parcels 2013",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -849,7 +849,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Parcel 2012",
+        layerName:"Parcels 2012",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -864,7 +864,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Parcel 2011",
+        layerName:"Parcels 2011",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -879,7 +879,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Parcel 2010",
+        layerName:"Parcels 2010",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -894,7 +894,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Parcel 2009",
+        layerName:"Parcels 2009",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -909,7 +909,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Parcel 2008",
+        layerName:"Parcels 2008",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -924,7 +924,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Parcel 2007",
+        layerName:"Parcels 2007",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -939,7 +939,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Parcel 2006",
+        layerName:"Parcels 2006",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -954,7 +954,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Parcel 2005",
+        layerName:"Parcels 2005",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -969,7 +969,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Parcel 2004",
+        layerName:"Parcels 2004",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -984,7 +984,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Parcel 2003",
+        layerName:"Parcels 2003",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -999,7 +999,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Parcel 2002",
+        layerName:"Parcels 2002",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -1014,7 +1014,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Parcel 2001",
+        layerName:"Parcels 2001",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',
@@ -1029,7 +1029,7 @@ export const config = {
         searchSources: []
        },
        {
-        layerName:"Parcel 2000",
+        layerName:"Parcels 2000",
         description: "",
         url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
         type: 'mapImageLayer',

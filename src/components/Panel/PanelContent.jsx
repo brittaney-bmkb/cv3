@@ -223,10 +223,10 @@ const PanelContent = ({display}) => {
                 divider={true}
                 >
                     <PanelHeader 
-                        text={translateText("Measure")}
+                        text="Measure"
                         closeButton={true}
                         panel={"widget"}
-                        descriptionText={translateText("Measure Widget Coming Soon")}
+                        descriptionText={"Measure Widget Coming Soon"}
                     />                    
                     {/* <MeasureWidget
                         panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"}
@@ -237,9 +237,9 @@ const PanelContent = ({display}) => {
             return(
                 <Box display="flex" flexDirection="column" minHeight={0}>
                     <PanelHeader
-                    text={translateText("Layers")} 
+                    text="Layers" 
                     closeButton={true}
-                    descriptionText={translateText("Select layers to update the map. Layers that are greyed out are not visible at current map zoom level.")}
+                    descriptionText="Select layers to update the map. Layers that are greyed out are not visible at current map zoom level."
                     panel={"widget"}
                     divider={true}
                     />
@@ -251,10 +251,10 @@ const PanelContent = ({display}) => {
             return(
                 <Box display="flex" flexDirection="column" rowGap={3} minHeight={0}>
                     <PanelHeader
-                    text={translateText("Basemaps")} 
+                    text="Basemaps" 
                     closeButton={true}
                     panel={"widget"}
-                    descriptionText={translateText("Select a basemap from the options below to update the map")}
+                    descriptionText="Select a basemap from the options below to update the map"
                     divider={true}
                     />
                     <BasemapWidget/>
@@ -271,7 +271,7 @@ const PanelContent = ({display}) => {
                 divider={true}
                 >
                     <PanelHeader
-                    text={translateText("Print")} 
+                    text="Print"
                     closeButton={true}
                     panel={"widget"}
                     // descriptionText={"Print Settings"}

@@ -23,6 +23,11 @@ const ExportDialog = ({open, onClose, dataDescription}) => {
 
     useEffect(() => {
         setPrintJobs({})
+
+        if(!open){
+            setIncludeResults(false)
+            setIncludeMap(false)
+        }
     },[open])
 
     const featuresToExport = async () => {

@@ -62,7 +62,7 @@ const PrintWidgetCustom = () => {
 
     const formatLayoutOptions = layoutOptions.map((layout) => (
         <MenuItem key={layout} value={layout}>
-            {layout}
+            {translateText(layout)}
         </MenuItem>
     ))
 
@@ -158,7 +158,7 @@ export const PrintWidgetPane = () => {
             <PrintWidgetCustom/>
 
             <Box width="100%" display="flex" justifyContent="end">
-                <StyledButtonFilledPrimary text={translateText(isPrinting ? "Printing..." : "Print")} onClick={executePrint}/>
+                <StyledButtonFilledPrimary text={isPrinting ? `${translateText("Printing")}...` : translateText("Print")} onClick={executePrint}/>
             </Box>
 
             { printJobs && Object.entries(printJobs).length > 0 ? 

@@ -21,23 +21,23 @@ const CompareNearby = () => {
         const validateSearchRadius = () => {
             if(searchUnit === "miles" && parseFloat(searchRadius) > 1){
                 setSearchRadiusError(true)
-                setSearchRadiusHelperText("Please enter a search radius less than or equal to 1 mile")
+                setSearchRadiusHelperText(translateText("Please enter a search radius less than or equal to 1 mile"))
             }
             else if(searchUnit === "us-feet" && parseFloat(searchRadius) > 5280){
                 setSearchRadiusError(true)
-                setSearchRadiusHelperText("Please enter a search radius less than or equal to 5280 feet")
+                setSearchRadiusHelperText(translateText("Please enter a search radius less than or equal to 5280 feet"))
             }
             else if(searchUnit === "kilometers" && parseFloat(searchRadius) > 1.60934){
                 setSearchRadiusError(true)
-                setSearchRadiusHelperText("Please enter a search radius less than or equal to 1.60934 kilometers")
+                setSearchRadiusHelperText(translateText("Please enter a search radius less than or equal to 1.60934 kilometers"))
             }
             else if(searchUnit === "meters" && parseFloat(searchRadius) > 1609.34){
                 setSearchRadiusError(true)
-                setSearchRadiusHelperText("Please enter a search radius less than or equal to 1609.34 meters")
+                setSearchRadiusHelperText(translateText("Please enter a search radius less than or equal to 1609.34 meters"))
             }
             else if(searchUnit === "yards" && parseFloat(searchRadius) > 1760){
                 setSearchRadiusError(true)
-                setSearchRadiusHelperText("Please enter a search radius less than or equal to 1760 yards")
+                setSearchRadiusHelperText(translateText("Please enter a search radius less than or equal to 1760 yards"))
             }
             else{
                 setSearchRadiusError(false)

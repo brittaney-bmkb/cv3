@@ -620,7 +620,7 @@ export const AppProvider = ({children}) => {
 
                 let numericValues
                 let textToReplace = text
-                if(text.match(/\d+/g)){
+                if(text.match(/\d+/g) && !text.includes("-")){
                 //&& text.match(/[()]/g)){
                     numericValues = text.match(/\d+/g)
 
@@ -638,10 +638,11 @@ export const AppProvider = ({children}) => {
 
                 //console.log("TRANSLATED TEXT: ", translation)
                 if(translation && translation.length){
-                    if(numericValues && text !== config.bannerHeader){
+                    if(numericValues && text !== config.bannerHeader ){
                         if(text.match(/[()]/g)){
                             return `${numericValues} (${ translation[0]})`
                         }
+                        
                         else {
                             return `${numericValues} ${translation[0]}`
                         }
