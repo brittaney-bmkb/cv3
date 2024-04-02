@@ -540,8 +540,9 @@ export const config = {
        {
         layerName:"County Facility",
         description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/2", // URL to the layer service.
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/", // URL to the layer service.
         type: 'mapImageLayer',
+        index: 2,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:null,
         minScale: 190000,
@@ -611,8 +612,9 @@ export const config = {
        {
         layerName:"Highway System",
         description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/17", // URL to the layer service.
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/", // URL to the layer service.
         type: 'mapImageLayer',
+        index:17,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:null,
         minScale: 150000,
@@ -683,8 +685,9 @@ export const config = {
        {
         layerName:"Unincorporated Zoning (current)",
         description: "",
-        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/65", // URL to the layer service.
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer/", // URL to the layer service.
         type: 'mapImageLayer',
+        index: 65,
         outFields: ["*"], // Fields to return in the search results (array of strings).
         maxScale:null,
         minScale: 2501,
