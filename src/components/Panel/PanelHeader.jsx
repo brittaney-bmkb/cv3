@@ -1,7 +1,7 @@
 import { ChevronLeft, ClearAllOutlined, CloseOutlined, CloseRounded } from "@mui/icons-material"
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import FileDownloadOutlinedIcon from '@mui/icons-material/FileDownloadOutlined';
-import { Box, IconButton, Stack, Typography } from "@mui/material"
+import { Box, Divider, IconButton, Stack, Typography } from "@mui/material"
 import { theme } from "../../theme"
 import UseAppContext from "../../contexts/AppContext"
 import { StyledIconButton } from "../Button/Button";
@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import FeedbackDialog, { FeedbackGeneral, FeedbackSearch } from "../FeedBack/Feedback";
 
 
-const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton, panel, primary} ) => {
+const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton, panel, primary, divider} ) => {
 
     const { panelWidgetVisible, setPanelWidgetVisibility, translateText, clearResultsComparables, panelDisplaySecondary, clearResults, panelPrimaryVisible, panelSecondaryVisible, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, comparableParcels } = UseAppContext()
 
@@ -168,6 +168,7 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
                 : null}
             </Stack>
             {descriptionText ? <Typography variant="body1">{translateText(descriptionText)}</Typography>: null}
+            {divider ? <Divider/> : null}
             
 
             <ExportDialog open={openExportDialog} onClose={handleCloseExport} dataDescription={text}/>
