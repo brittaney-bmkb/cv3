@@ -14,7 +14,7 @@ import FeedbackDialog, { FeedbackGeneral, FeedbackSearch } from "../FeedBack/Fee
 
 const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton, panel, primary, divider} ) => {
 
-    const { panelWidgetVisible, setPanelWidgetVisibility, translateText, clearResultsComparables, panelDisplaySecondary, clearResults, panelPrimaryVisible, panelSecondaryVisible, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, comparableParcels } = UseAppContext()
+    const { setShowMapMoblie, screenWidth, panelWidgetVisible, setPanelWidgetVisibility, translateText, clearResultsComparables, panelDisplaySecondary, clearResults, panelPrimaryVisible, panelSecondaryVisible, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, comparableParcels } = UseAppContext()
 
     //get url parameters
     const [routeParams , setSearchParams] = useSearchParams()
@@ -97,8 +97,16 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
 
         console.log("Closing panel: ", panel)
 
+        if(screenWidth < theme.breakpoints.values.sm){
+            console.log("Showing Map")
+            setShowMapMoblie(true)
+        }
+
         if(panel==="primary" && panelPrimaryVisible===true){
             setPanelPrimaryVisibility(false)
+
+            
+
         }
         if(panel==="secondary" && panelSecondaryVisible===true){
             setPanelSecondaryVisibility(false)
