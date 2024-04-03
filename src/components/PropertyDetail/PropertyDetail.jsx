@@ -287,7 +287,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                 null
                 }
                 
-                <Box id="propertyDetailsBox" display="flex" flexDirection="row" justifyContent={category==="top"? "space-around" : textAlignment}>
+                <Box id="propertyDetailsBox" display="flex" flexDirection="row" columnGap={3} justifyContent={category==="top"? "space-around" : textAlignment}>
                     {properties.map((property, propIndex) => {
                         ////console.log("property details for: ", property)
                         let color = property === property1 ? propertyColor1 : propertyColor2
