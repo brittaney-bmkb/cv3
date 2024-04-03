@@ -36,7 +36,7 @@ function addCommaSeparator(value, type) {
 
 const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) => {
 
-    const { clearResultsComparables, panelWidgetVisible, setPanelWidgetVisibility, screenWidth, dataDictionary, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, translateText } = UseAppContext()
+    const { clearResultsComparables, panelWidgetVisible, setPanelWidgetVisibility, screenWidth, dataDictionary, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, translateText, language } = UseAppContext()
 
 
     const [ categories, setCategories ] = useState(null)
@@ -123,7 +123,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
           };
 
           fetchMuniData();
-    }, [properties])
+    }, [properties, language])
 
 
     useEffect(() => {
@@ -248,13 +248,12 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         let excludeFields = []
 
         const propIsResCondo = properties.every(property => {
-            return res_condo_class_list.includes(parseInt(property.attributes["BCLASS"]));
+            return res_condo_class_list.includes(parseInt(property?.attributes["BCLASS"]));
         })
 
-        
 
         const propIsResSfMf = properties.every(property => {
-            return single_multi_improvements_class_list.includes(parseInt(property.attributes["BCLASS"]));
+            return single_multi_improvements_class_list.includes(parseInt(property?.attributes["BCLASS"]));
         })
 
         if (!propIsResCondo){
