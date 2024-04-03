@@ -17,6 +17,9 @@ const prefix = (key) => {
     }
 }
 
+const res_condo_class_list = [299, 399]
+const single_multi_improvements_class_list = [202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 218, 219, 224, 225, 234, 236, 278, 295, 297]
+
 function addCommaSeparator(value, type) {
     // Convert the string to a number (if it's not already)
     const numericValue = parseFloat(value);
@@ -188,12 +191,11 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
             </Box>
         )
 
-    const returnHyperlink = (text, params, url, attributes) => {
+    const returnHyperlink = (text, params, url, field, attributes) => {
 
         let urlFormatted = url
         let paramsValues = params.split(",")
-
-        //console.log("url data attributes: ", attributes)
+        let showLink = true
 
         if(attributes){
             paramsValues.map((param) => {
@@ -204,10 +206,12 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
             //console.log("url text: ", text, urlFormatted)
         }
         return (
+        
         <Box 
+        id={field}
         display="flex"
         >   
-        {/* <Link to={urlFormatted} target="_blank"> */}
+
             <Typography 
             variant="h5"
             align={textAlignment}
@@ -215,8 +219,8 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
             to={urlFormatted} 
             target="_blank"
             color={theme.palette.primary.light}>{translateText(text)}</Typography>
-        {/* </Link> */}
         </Box>
+        
     )}
 
 
@@ -239,16 +243,39 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
     }
     
     const fetchpropertyDetailData = (category, index) => {
+        //filter out historical sf mf characteristics and res condo characteristics if 
+        //propert bclass not in class list
+        let excludeFields = []
+
+        const propIsResCondo = properties.every(property => {
+            return res_condo_class_list.includes(parseInt(property.attributes["BCLASS"]));
+        })
+
+        
+
+        const propIsResSfMf = properties.every(property => {
+            return single_multi_improvements_class_list.includes(parseInt(property.attributes["BCLASS"]));
+        })
+
+        if (!propIsResCondo){
+            
+            excludeFields.push("res_condo_chars_link")
+        }
+        if (!propIsResSfMf){
+            excludeFields.push("hist_sf_mf_imp_chars_link")
+        }
+
         let filteredData = dataDictionary
-        ?.filter((data) => data.attributes['category'] === category)
+        ?.filter((data) => data.attributes['category'] === category && !excludeFields.includes(data.attributes['field']))
         .sort((a, b) => a.attributes['category_order'] > b.attributes['category_order'] ? 1:-1)
         .map((data) => data); 
 
         let data = filteredData?.map((data, subIndex) => {
             return(
                 <Box id={`${data.attributes['field']}-BOX`} key={data.attributes['field']} display="flex" flexDirection="column" width="100%">
-
-                {index !== 0 ? <Box 
+                {
+                index !== 0 ? 
+                <Box 
                 display="flex"
                 justifyContent={textAlignment}
                 pb={category !== "top" ? 1 :0}
@@ -256,14 +283,20 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                     <Typography variant="h6">
                         {translateText(data.attributes['label'])}
                     </Typography>
-                </Box>: null}
+                </Box>: 
+                null
+                }
                 
-                <Box id="propertyDetailsBox" display="flex" flexDirection="row" columnGap={3} justifyContent={category==="top"? "space-around" : textAlignment}>
+                <Box id="propertyDetailsBox" display="flex" flexDirection="row" justifyContent={category==="top"? "space-around" : textAlignment}>
                     {properties.map((property, propIndex) => {
                         ////console.log("property details for: ", property)
                         let color = property === property1 ? propertyColor1 : propertyColor2
                         panelContentTitleMain["color"] = color
                         panelContentTitleMain["borderColor"] = color
+
+                        //conditional links based on 
+                        let field = data.attributes['field']
+
                         return(
                             <Box 
                             id={`property-${propIndex}`}
@@ -271,7 +304,10 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                             display="flex" 
                             justifyContent="center" 
                             alignContent={textAlignment}>
-                           { data.attributes['field'] === "comparable_properties"? 
+                           
+                           { 
+                           
+                            data.attributes['field'] === "comparable_properties"? 
                             propertyComparison(data.attributes['field']) :
 
                             data.attributes['field'] === "nearby_properties"? 
@@ -283,6 +319,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                             data.attributes['field'] === "zoning_info"?
                             
                             <Box 
+                            id="zoning-info"
                             display="flex"
                             >
                                 {/* <Typography align={textAlignment} variant="h5" sx={{color: theme.main.text.dark }}> */}
@@ -290,12 +327,14 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                                 {/* </Typography> */}
     
                             </Box>: 
-                        data.attributes['field'].endsWith("_link")  ?
+
+                        data.attributes['field'].endsWith("_link") ?
                         // data.attributes['hyperlink_text'] && data.attributes['hyperlink_params'] && data.attributes['hyperlink_url'] ?
-                            returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], property?.attributes) :
-                            <Box 
+                            returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], data.attributes['field'], property?.attributes) :   
+       
+                        <Box 
                             key={data.attributes["field"]}
-                            id="data-field-container"
+                            id={data.attributes['field']}
                             display="flex"
                             sx={{
                                 border: category==="top" && subIndex ===0 ? 3: 0,
@@ -324,6 +363,8 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                                             translateText(property?.attributes[data.attributes['field']]) : 
                                             property?.attributes[data.attributes['field']] ? 
                                             `${prefix(data.attributes['type'])}${addCommaSeparator(property?.attributes[data.attributes['field']], data.attributes['type'])}` :
+
+                                            
                                             translateText("Data unavailable")
                                         }
                                 </Typography> 
@@ -344,14 +385,13 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                     })
                     }
                 </Box>
-                    <Box>
+                <Box>
                     {
-                        data.attributes['credit'] ? 
+                        data.attributes['credit']? 
                         <Typography variant="h6" align={textAlignment}>
                             { translateText(data.attributes['credit']) }
                         </Typography> :
                         null
-
                     }
                 </Box>
                     {filteredData.length -1 === subIndex ? <Divider variant="fullWidth" sx={{p: 1}}/> : null}
