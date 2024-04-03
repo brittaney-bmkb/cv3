@@ -737,7 +737,6 @@ export const AppProvider = ({children}) => {
         panelDisplayWidget: state.panelDisplayWidget,
         queryMapPoint,
         setComparableParcels,
-        clearResultsComparables
         
     }
 
