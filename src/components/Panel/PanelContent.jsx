@@ -249,7 +249,7 @@ const PanelContent = ({display}) => {
             )   
         case 'basemapsWidget':
             return(
-                <Box display="flex" flexDirection="column" rowGap={3} minHeight={0}>
+                <Box display="flex" flexDirection="column" rowGap={3} minHeight={0} flexGrow={1}>
                     <PanelHeader
                     text="Basemaps" 
                     closeButton={true}
