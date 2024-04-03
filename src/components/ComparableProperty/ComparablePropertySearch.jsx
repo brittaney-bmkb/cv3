@@ -156,7 +156,7 @@ const ComparablePropertySearch= () => {
 
             
             let parcelAge = attributes["BLDGAGE"]
-            let ageRange = 15
+            let ageRange = parcelAge ? 15 : 0
             setAgeMax(parcelAge+ageRange)
             setAgeMin(parcelAge-ageRange < 0 ? 0 : parcelAge-ageRange )
 
