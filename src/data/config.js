@@ -508,6 +508,21 @@ export const config = {
         render:null,
         searchSources: []
        },
+       {
+        layerName:"Unincorporated Area",
+        description: "",
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
+        type: 'mapImageLayer',
+        index: 42,
+        outFields: ["*"], // Fields to return in the search results (array of strings).
+        maxScale:0,
+        minScale: 190001,
+        opacity: null,
+        visible:false,
+        groupName:"Political Boundaries",
+        render:null,
+        searchSources: []
+       },
     //    //Places of Interest
     //    {
     //     layerName:"Cemetery",
@@ -698,6 +713,21 @@ export const config = {
         searchSources: []
        },
        //Parcel Archive
+       {
+        layerName:"Parcels 2023",
+        description: "",
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
+        type: 'mapImageLayer',
+        index: 2023,
+        outFields: ["*"], // Fields to return in the search results (array of strings).
+        maxScale:0,
+        minScale: 5001,
+        opacity: 1,
+        visible:false,
+        groupName:"Parcel Archive",
+        render: null,
+        searchSources: []
+       },
        {
         layerName:"Parcels 2022",
         description: "",
