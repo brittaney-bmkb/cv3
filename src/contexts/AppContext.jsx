@@ -291,7 +291,7 @@ export const AppProvider = ({children}) => {
         setCoordinates(point.x, point.y)
         console.log("x/y", point.x, point.y)
 
-        const { screenWidth, panelSecondaryVisible, panelPrimaryVisible, panelDisplay, parcelQueryFields, comparableParcels, primaryResultFeature} = state
+        const { panelDisplaySecondary, screenWidth, panelSecondaryVisible, panelPrimaryVisible, panelDisplay, parcelQueryFields, comparableParcels, primaryResultFeature} = state
         const { peformQueryFeatures, createGraphic, zoomToExtent, removeGraphics } = await import('../arcgis/webmap/webmap')
 
 
@@ -316,20 +316,22 @@ export const AppProvider = ({children}) => {
             secondaryFeatures = comparableParcels.filter((feature) => feature.attributes['PIN14'] === selectedFeatures[0].attributes['PIN14'])
             console.log("Secondary feature selected: ", secondaryFeatures)
         
-            if(secondaryFeatures?.length > 0){
-                setSecondaryResultFeature(secondaryFeatures[0])
-                if(screenWidth < theme.breakpoints.values.lg){
-                    setPanelDisplay("propertyDetailNearby")
-                }
-                else{
-                    setPanelDisplaySecondary("propertyDetailNearby")
-                }
-                
-                createGraphic(secondaryFeatures, "secondarySelected", theme.palette.secondary.main)
-                zoomToExtent([secondaryFeatures[0], primaryResultFeature])
-            }
-        
+            
         }
+
+        if(secondaryFeatures?.length > 0){
+            setSecondaryResultFeature(secondaryFeatures[0])
+            if(screenWidth < theme.breakpoints.values.lg){
+                setPanelDisplay("propertyDetailNearby")
+            }
+            else{
+                setPanelDisplaySecondary("propertyDetailNearby")
+            }
+            
+            createGraphic(secondaryFeatures, "secondarySelected", theme.palette.secondary.main)
+            zoomToExtent([secondaryFeatures[0], primaryResultFeature])
+        }
+    
 
         else{
             setPrimaryResultFeature(selectedFeatures, false)
