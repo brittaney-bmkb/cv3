@@ -137,6 +137,20 @@ export const config = {
            ]
        },
     //    //Natural Environment and Recreation
+       {
+        layerName:"Forest Preserve District of Cook County Boundary",
+        description: "",
+        url: "https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/arcgis/rest/services/Forest_Preserve_Boundary/FeatureServer/0", // URL to the layer service.
+        type: 'featureLayer',
+        outFields: ["*"], // Fields to return in the search results (array of strings).
+        maxScale:null,
+        minScale: null,
+        opacity: null,
+        visible:false,
+        groupName:"Natural Environment and Recreation",
+        render:null,
+        searchSources: []
+       },
     //    {
     //     layerName:"Boat Launch",
     //     description: "",
