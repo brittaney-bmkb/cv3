@@ -42,7 +42,7 @@ const LayerListWidgetCustom = () => {
         layerListWidget.current?.operationalItems?.items.filter(item => item.layer.title === layerName)
                                                        .map(item => {
                                                         item.layer.visible = !item.layer.visible 
-                                                        item.layer.allSublayers.map(subLayer =>  subLayer.visible = !subLayer.visible)
+                                                        item.layer.allSublayers?.map(subLayer =>  subLayer.visible = !subLayer.visible)
                                                         })
                                                     
 

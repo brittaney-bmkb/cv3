@@ -137,6 +137,29 @@ export const config = {
            ]
        },
     //    //Natural Environment and Recreation
+       {
+        layerName:"Forest Preserve District of Cook County Boundary",
+        description: "",
+        url: "https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/arcgis/rest/services/Forest_Preserve_Boundary/FeatureServer/0", // URL to the layer service.
+        type: 'featureLayer',
+        outFields: ["*"], // Fields to return in the search results (array of strings).
+        maxScale:null,
+        minScale: null,
+        opacity: null,
+        visible:false,
+        groupName:"Natural Environment and Recreation",
+        render:{
+            "type":"simple",
+            "symbol":{
+                "type": "simple-fill",
+                "style":"solid",
+                "color":[196,237,199,.4],
+                "outline":{
+                    "color":[112,112,112,1],
+                    "width":0.75
+                }}},
+        searchSources: []
+       },
     //    {
     //     layerName:"Boat Launch",
     //     description: "",
@@ -508,6 +531,21 @@ export const config = {
         render:null,
         searchSources: []
        },
+       {
+        layerName:"Unincorporated Area",
+        description: "",
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
+        type: 'mapImageLayer',
+        index: 42,
+        outFields: ["*"], // Fields to return in the search results (array of strings).
+        maxScale:0,
+        minScale: 190001,
+        opacity: null,
+        visible:false,
+        groupName:"Political Boundaries",
+        render:null,
+        searchSources: []
+       },
     //    //Places of Interest
     //    {
     //     layerName:"Cemetery",
@@ -698,6 +736,21 @@ export const config = {
         searchSources: []
        },
        //Parcel Archive
+       {
+        layerName:"Parcels 2023",
+        description: "",
+        url: "https://gis.cookcountyil.gov/traditional/rest/services/cookVwrDynmc/MapServer", // URL to the layer service.
+        type: 'mapImageLayer',
+        index: 2023,
+        outFields: ["*"], // Fields to return in the search results (array of strings).
+        maxScale:0,
+        minScale: 5001,
+        opacity: 1,
+        visible:false,
+        groupName:"Parcel Archive",
+        render: null,
+        searchSources: []
+       },
        {
         layerName:"Parcels 2022",
         description: "",

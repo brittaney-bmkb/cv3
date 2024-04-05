@@ -66,7 +66,7 @@ export async function createFeatureLayers(map, loadAll){
               // }),
               //comment
               visible:source.visible,
-              //renderer: source.render,
+              renderer: source.render ?? null,
               //minScale:source.minScale
               
             })
