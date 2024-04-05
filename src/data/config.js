@@ -148,7 +148,16 @@ export const config = {
         opacity: null,
         visible:false,
         groupName:"Natural Environment and Recreation",
-        render:null,
+        render:{
+            "type":"simple",
+            "symbol":{
+                "type": "simple-fill",
+                "style":"solid",
+                "color":[196,237,199,.4],
+                "outline":{
+                    "color":[112,112,112,1],
+                    "width":0.75
+                }}},
         searchSources: []
        },
     //    {
