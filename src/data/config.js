@@ -57,7 +57,7 @@ export const config = {
        {
            layerName: "Parcels (current)", // Name of the layer source.
            description:"",
-           url: "https://dev-gis.cookcountyil.gov/traditional/rest/services/CookViewerParcels/MapServer", // URL to the layer service.
+           url: "https://gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/", // URL to the layer service.
            type: 'mapImageLayer',
            index: 0,
            outFields: ["*"], // Fields to return in the search results (array of strings).
