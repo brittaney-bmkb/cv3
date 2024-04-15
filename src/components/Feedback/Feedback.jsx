@@ -21,8 +21,9 @@ const FeedbackDialog = ({open, onClose}) => {
 
 export const FeedbackGeneral = ({open, onClose}) => {
 
-    const { translateText, screenWidth } = UseAppContext()
+    const { translateText, screenWidth, language } = UseAppContext()
     const [ deviceType, setDeviceType ] = useState()
+    const [ locale, setLocale ] = useState()
 
     useEffect(() => {
 
@@ -37,6 +38,15 @@ export const FeedbackGeneral = ({open, onClose}) => {
         }
 
     }, [screenWidth])
+
+    useEffect(() => {
+        if(language === "english"){
+            setLocale("en")
+        }
+        if(language === "spanish"){
+            setLocale("es")
+        }
+    }, [language])
 
     const embedContainerStyle = {
         position: 'relative',
@@ -74,7 +84,7 @@ export const FeedbackGeneral = ({open, onClose}) => {
                 <iframe 
                     name="survey123webform"
                     title="CookViewer 3.0 Simple Feedback"
-                    src={`//survey123.arcgis.com/share/ba8f1d610701420abc33612ef1d3378a?hide=navbar,footer&field:device_type=${deviceType}`}
+                    src={`//survey123.arcgis.com/share/ba8f1d610701420abc33612ef1d3378a?hide=navbar,footer&locale=${locale}&field:device_type=${deviceType}`}
                     allow="geolocation https://survey123.arcgis.com; camera https://survey123.arcgis.com"
                     style={iframeStyle}
                 />
@@ -86,9 +96,10 @@ export const FeedbackGeneral = ({open, onClose}) => {
 
 export const FeedbackExtended = ({open, onClose}) => {
 
-    const { translateText, screenWidth } = UseAppContext()
+    const { translateText, screenWidth, language } = UseAppContext()
 
     const [ deviceType, setDeviceType ] = useState()
+    const [ locale, setLocale ] = useState()
 
     useEffect(() => {
 
@@ -105,6 +116,15 @@ export const FeedbackExtended = ({open, onClose}) => {
         console.log("Device type: ", deviceType)
 
     }, [screenWidth])
+
+    useEffect(() => {
+        if(language === "english"){
+            setLocale("en")
+        }
+        if(language === "spanish"){
+            setLocale("es")
+        }
+    }, [language])
 
     const embedContainerStyle = {
         position: 'relative',
@@ -148,7 +168,7 @@ export const FeedbackExtended = ({open, onClose}) => {
                 <iframe 
                     name="survey123webform"
                     title="CookViewer 3.0 Extended Feedback"
-                    src={`//survey123.arcgis.com/share/640dd8fd0d064eb880b65cc3d238f87f?hide=navbar,footer&field:device_type=${deviceType}`}
+                    src={`//survey123.arcgis.com/share/640dd8fd0d064eb880b65cc3d238f87f?hide=navbar,footer&locale=${locale}&field:device_type=${deviceType}`}
                     allow="geolocation https://survey123.arcgis.com; camera https://survey123.arcgis.com"
                     style={iframeStyle}
                 />
@@ -160,10 +180,11 @@ export const FeedbackExtended = ({open, onClose}) => {
 
 export const FeedbackSearch = ({open, onClose}) => {
 
-    const { translateText, screenWidth } = UseAppContext()
+    const { translateText, screenWidth, language } = UseAppContext()
 
     
     const [ deviceType, setDeviceType ] = useState()
+    const [ locale, setLocale ] = useState()
 
     useEffect(() => {
 
@@ -180,6 +201,15 @@ export const FeedbackSearch = ({open, onClose}) => {
         console.log("Device type: ", deviceType)
 
     }, [screenWidth])
+
+    useEffect(() => {
+        if(language === "english"){
+            setLocale("en")
+        }
+        if(language === "spanish"){
+            setLocale("es")
+        }
+    }, [language])
 
     const embedContainerStyle = {
         position: 'relative',
@@ -223,7 +253,7 @@ export const FeedbackSearch = ({open, onClose}) => {
                 <iframe 
                     name="survey123webform"
                     title="CookViewer 3.0 Search Feedback"
-                    src={`//survey123.arcgis.com/share/6c24e84d3ac24024a311b7e81045c382?hide=navbar,footer&field:device_type=${deviceType}`}
+                    src={`//survey123.arcgis.com/share/6c24e84d3ac24024a311b7e81045c382?hide=navbar,footer&locale=${locale}&field:device_type=${deviceType}`}
                     allow="geolocation https://survey123.arcgis.com; camera https://survey123.arcgis.com"
                     style={iframeStyle}
                 />
