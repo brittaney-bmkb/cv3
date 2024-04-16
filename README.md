@@ -1,4 +1,4 @@
-# CookViewer-3
+# CookViewer-3 (Current veresion CookViewer-Beta)
 
 Welcome to the repository for our CookViewer application. This README provides essential information about the application, how to set it up, and how to use it effectively.
 
