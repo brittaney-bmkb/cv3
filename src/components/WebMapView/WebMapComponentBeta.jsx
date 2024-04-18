@@ -6,16 +6,16 @@ import { theme } from "../../theme";
 
 const WebMapComponentBeta = () => {
 
-    const { primaryResultFeature, setMapView, queryMapPoint } = UseAppContext()
+    const { primaryResultFeature, setMapView, queryMapPoint, comparableParcels, secondaryResultFeature } = UseAppContext()
 
     const arcgisMapRef = useRef(null)
     const [mapLoading, setMapLoading] = useState(true)
 
     const addLayerToMap = async (features, title, theme) => {
+
         if(arcgisMapRef.current && mapLoading === false){
 
             let map = arcgisMapRef.current.map
-            let view = arcgisMapRef.current.view
 
             await removeLayer(map, title)
 
@@ -54,7 +54,20 @@ const WebMapComponentBeta = () => {
 
     }, [ primaryResultFeature ])
 
+    useEffect(() => {
+
+        addLayerToMap(comparableParcels, "Comparable Parcels", theme.layers.secondary)
+
+    }, [ comparableParcels ])
+
+    useEffect(() => {
+
+        addLayerToMap(secondaryResultFeature, "Selected Comparable Parcel", theme.layers.secondarySelected)
+
+    }, [ secondaryResultFeature ])
+
     return(
+
         <ArcgisMap
         ref={arcgisMapRef}
         itemId="779a9643c58f4a48a002a9b277a8bcc7"
@@ -69,9 +82,8 @@ const WebMapComponentBeta = () => {
         onArcgisViewClick={(event) => {
             handleViewClick(event.detail.mapPoint)
         }}
-        >
+        />
 
-        </ArcgisMap>
     )
 }
 
