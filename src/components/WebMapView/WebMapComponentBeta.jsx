@@ -6,7 +6,7 @@ import { theme } from "../../theme";
 
 const WebMapComponentBeta = () => {
 
-    const { primaryResultFeature, setMapView } = UseAppContext()
+    const { primaryResultFeature, setMapView, queryMapPoint } = UseAppContext()
 
     const arcgisMapRef = useRef(null)
     const [mapLoading, setMapLoading] = useState(true)
@@ -29,11 +29,15 @@ const WebMapComponentBeta = () => {
                 console.log("queried extent: ", extent)
 
                 arcgisMapRef.current.goTo(extent)
-
-                setMapView(view)
             }
 
         }
+    }
+
+    const handleViewClick = async (mapPoint) => {
+
+        await queryMapPoint(mapPoint)
+
     }
 
     useEffect(() => {
@@ -57,8 +61,14 @@ const WebMapComponentBeta = () => {
         onArcgisViewReadyChange={(event) => {
             console.log('MapView ready', event);
             setMapLoading(false)
-            
             }}
+        onArcgisViewChange={(event) => {
+            console.log("view change: ", event)
+            setMapView(event.target.view)
+        }}
+        onArcgisViewClick={(event) => {
+            handleViewClick(event.detail.mapPoint)
+        }}
         >
 
         </ArcgisMap>
