@@ -1,10 +1,40 @@
 import { ArcgisMap } from "@arcgis/map-components-react"
 import { useEffect, useRef, useState } from "react";
+import UseAppContext from "../../contexts/AppContext";
+import { createFeatureLayerFromFeatures, removeLayer } from "../../arcgis/layers/layers";
+import { theme } from "../../theme";
 
 const WebMapComponentBeta = () => {
 
+    const { primaryResultFeature, setMapView } = UseAppContext()
+
     const arcgisMapRef = useRef(null)
     const [mapLoading, setMapLoading] = useState(true)
+
+    const addLayerToMap = async (features, title, theme) => {
+        if(arcgisMapRef.current && mapLoading === false){
+
+            let map = arcgisMapRef.current.map
+            let view = arcgisMapRef.current.view
+
+            await removeLayer(map, title)
+
+            if(features){
+                let featLayer = await createFeatureLayerFromFeatures(features, title, theme)
+
+                map.add(featLayer)
+
+                let extent = await featLayer.queryExtent()
+
+                console.log("queried extent: ", extent)
+
+                arcgisMapRef.current.goTo(extent)
+
+                setMapView(view)
+            }
+
+        }
+    }
 
     useEffect(() => {
 
@@ -14,6 +44,12 @@ const WebMapComponentBeta = () => {
 
     }, [arcgisMapRef, mapLoading])
 
+    useEffect(() => {
+
+        addLayerToMap(primaryResultFeature, "Selected Parcel", theme.layers.primary)
+
+    }, [ primaryResultFeature ])
+
     return(
         <ArcgisMap
         ref={arcgisMapRef}
@@ -21,6 +57,7 @@ const WebMapComponentBeta = () => {
         onArcgisViewReadyChange={(event) => {
             console.log('MapView ready', event);
             setMapLoading(false)
+            
             }}
         >
 

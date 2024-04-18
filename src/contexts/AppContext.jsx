@@ -675,6 +675,7 @@ export const AppProvider = ({children}) => {
         mapContainer: state.mapContainer,
         loadMap,
         setMapContainer,
+        setMapView,
         mapView: state.mapView,
         primaryResultFeature: state.primaryResultFeature,
         setSearchResults,

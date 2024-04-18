@@ -71,7 +71,7 @@ function App() {
               </Box> */}
 
               { screenWidth >= 600  ? 
-              <Box display="flex" width="100vw" height="100%">
+              <Box display="flex" width="100%" height="100%">
                 <WebMapComponentBeta/>
                 <WebMapView/>
               </Box>

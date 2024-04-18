@@ -5,11 +5,44 @@ import { config } from "../../data/config";
 import Query from "@arcgis/core/rest/support/Query";
 import MapImageLayer from "@arcgis/core/layers/MapImageLayer";
 
-export async function createFeatureLayerFromFeatures(features, outFields){
+export async function removeLayer(map, name){
+
+  const foundLayers = map.allLayers.find(function(layer) {
+    return layer.title === name;
+   });
+
+   if(foundLayers){
+    console.log("Found Layers to Remove: ", foundLayers )
+
+      map.remove(foundLayers)
+
+   }
+
+}
+
+export async function createFeatureLayerFromFeatures(features, title, theme){
   
+
+  let featuresArray = Array.isArray(features) ? features : [features]
+
+  console.log("features source: ", featuresArray)
+
+  let featureGeometry = featuresArray.map(feature => {
+    let obj = {}
+    obj["geometry"] = feature.geometry
+
+    return obj
+  })
+
   let layer = new FeatureLayer({
-    source: features,
-    outFields: outFields
+    source: featureGeometry,
+    geometryType:"polygon",
+    title: title,
+    objectIdField: 'OBJECTID',
+    renderer: {
+      type: "simple",
+      symbol: theme
+    }
   })
 
   return layer

@@ -113,7 +113,7 @@ const PrintWidgetCustom = () => {
 
 export const PrintWidgetPane = () => {
 
-    const { mapLayout, mapFormat, mapTitle, translateText } = UseAppContext()
+    const { mapLayout, mapFormat, mapTitle, translateText, mapView } = UseAppContext()
 
     const [isPrinting, setIsPrinting] = useState(false)
     const [ printJobs, setPrintJobs ] = useState({})
@@ -127,7 +127,7 @@ export const PrintWidgetPane = () => {
         
         setIsPrinting(true)
 
-        let file = await printMap(mapLayout, mapFormat, mapTitle)
+        let file = await printMap(mapView, mapLayout, mapFormat, mapTitle)
         setIsPrinting(false)
 
         if(file){

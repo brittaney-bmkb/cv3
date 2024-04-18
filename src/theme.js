@@ -1,6 +1,16 @@
 import { createTheme } from "@mui/material";
 
 export const theme = createTheme({
+    layers: {
+        primary: {
+            type: "simple-fill",
+            style:"none",
+            outline: {
+                width:3,
+                color: "#0D4D96",
+            },
+        }
+    },
     main: {
         backgroundColor:{
             light: "#59BDE7",
