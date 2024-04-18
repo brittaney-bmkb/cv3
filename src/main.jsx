@@ -8,6 +8,9 @@ import { theme } from './theme.js'
 import { setAssetPath } from '@esri/calcite-components/dist/components';
 // setAssetPath(window.location.href);
 setAssetPath("https://unpkg.com/@esri/calcite-components/dist/calcite/assets");
+import { defineCustomElements } from "@arcgis/map-components/dist/loader";
+// Register custom elements
+defineCustomElements(window, { resourcesUrl: "https://js.arcgis.com/map-components/4.29/assets" });
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
