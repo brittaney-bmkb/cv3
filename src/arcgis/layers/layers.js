@@ -5,6 +5,15 @@ import { config } from "../../data/config";
 import Query from "@arcgis/core/rest/support/Query";
 import MapImageLayer from "@arcgis/core/layers/MapImageLayer";
 
+export async function createFeatureLayerFromFeatures(features, outFields){
+  
+  let layer = new FeatureLayer({
+    source: features,
+    outFields: outFields
+  })
+
+  return layer
+}
 
 export async function readFeatureLayerData(url, outFields, where, returnGeometry){
 
