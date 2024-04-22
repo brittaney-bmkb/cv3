@@ -1,4 +1,4 @@
-import { ArcgisMap } from "@arcgis/map-components-react"
+import { ArcgisMap, ArcgisZoom } from "@arcgis/map-components-react"
 import { useEffect, useRef, useState } from "react";
 import UseAppContext from "../../contexts/AppContext";
 import { createFeatureLayerFromFeatures, removeLayer } from "../../arcgis/layers/layers";
@@ -53,6 +53,9 @@ const WebMapComponentBeta = () => {
 
         if(arcgisMapRef && mapLoading === false){
             console.log(arcgisMapRef.current.view)
+
+            let view = arcgisMapRef.current.view
+            view.ui.move("zoom", "top-right")
         }
 
     }, [arcgisMapRef, mapLoading])
@@ -75,11 +78,16 @@ const WebMapComponentBeta = () => {
 
     }, [ secondaryResultFeature ])
 
+   
+
     return(
 
         <ArcgisMap
         ref={arcgisMapRef}
         itemId="779a9643c58f4a48a002a9b277a8bcc7"
+        center = "-87.8298, 41.8781"
+        zoom={8}
+
         onArcgisViewReadyChange={(event) => {
             console.log('MapView ready', event);
             setMapLoading(false)
@@ -92,18 +100,20 @@ const WebMapComponentBeta = () => {
             handleViewClick(event.detail.mapPoint)
         }}
         >   
-        <Box 
-        id="mapButtonGroup"
-        justifyContent={screenWidth < theme.breakpoints.values.md ? "center" : "left"} 
-        position="absolute" 
-        pt={2}
-        zIndex={2}
-        sx={{boxSizing:"border-box"}}
-        height="auto"
-        width="auto"
-        >
-            <MapButtonGroup/>
-        </Box>
+            {/* <ArcgisZoom position="top-right"/> */}
+            <Box 
+            id="mapButtonGroup"
+            justifyContent={screenWidth < theme.breakpoints.values.md ? "center" : "left"} 
+            position="absolute" 
+            pt={2}
+            pl={screenWidth < theme.breakpoints.values.md ? 0 : 2}
+            zIndex={2}
+            sx={{boxSizing:"border-box"}}
+            height="auto"
+            width="auto"
+            >
+                <MapButtonGroup/>
+            </Box>
             
         </ArcgisMap>
 
