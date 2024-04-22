@@ -5,6 +5,7 @@ import PanelContent from "./PanelContent";
 import { useEffect } from "react";
 import WebMapView from "../WebMapView/WebMapView";
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
+import WebMapComponentBeta from "../WebMapView/WebMapComponentBeta";
 
 
 const PanelMobile = () => {  
@@ -35,7 +36,7 @@ const PanelMobile = () => {
                  sx={{boxSizing:"border-box"}}
                 >
                 {
-                showMapMobile === true ? <WebMapView/> : 
+                showMapMobile === true ? <WebMapComponentBeta/> : 
                 <PanelContent display={panelDisplay}/>
                 }
                 </Box>

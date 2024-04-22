@@ -4,7 +4,8 @@ import UseAppContext from "../../contexts/AppContext";
 import { createFeatureLayerFromFeatures, removeLayer } from "../../arcgis/layers/layers";
 import { theme } from "../../theme";
 import MapButtonGroup from "../MapButtonGroup";
-import { Box } from "@mui/material";
+import { Box, Fade, Typography, IconButton } from "@mui/material";
+import { TableRowsOutlined } from "@mui/icons-material";
 
 const WebMapComponentBeta = () => {
 
@@ -14,7 +15,10 @@ const WebMapComponentBeta = () => {
         queryMapPoint, 
         comparableParcels, 
         secondaryResultFeature,
-        screenWidth
+        screenWidth,
+        panelWidgetVisible,
+        translateText,
+        setShowMapMoblie
         } = UseAppContext()
 
     const arcgisMapRef = useRef(null)
@@ -49,16 +53,29 @@ const WebMapComponentBeta = () => {
 
     }
 
+    const handleClick = () => {
+        console.log("Setting secondary panel display")
+        setShowMapMoblie( false)
+    }
+
     useEffect(() => {
 
         if(arcgisMapRef && mapLoading === false){
             console.log(arcgisMapRef.current.view)
 
             let view = arcgisMapRef.current.view
-            view.ui.move("zoom", "top-right")
+            
+            if(screenWidth < theme.breakpoints.values.md){
+                view.ui.move("zoom", "bottom-right")
+            }
+
+            else{
+                view.ui.move("zoom", "top-right")
+            }
+            
         }
 
-    }, [arcgisMapRef, mapLoading])
+    }, [arcgisMapRef, mapLoading, screenWidth])
 
     useEffect(() => {
 
@@ -81,7 +98,12 @@ const WebMapComponentBeta = () => {
    
 
     return(
-
+        <Box
+        display="flex"
+        width="100%"
+        height="100%"
+        justifyContent="center"
+        >
         <ArcgisMap
         ref={arcgisMapRef}
         itemId="779a9643c58f4a48a002a9b277a8bcc7"
@@ -100,10 +122,10 @@ const WebMapComponentBeta = () => {
             handleViewClick(event.detail.mapPoint)
         }}
         >   
-            {/* <ArcgisZoom position="top-right"/> */}
-            <Box 
+        </ArcgisMap>
+        <Box 
             id="mapButtonGroup"
-            justifyContent={screenWidth < theme.breakpoints.values.md ? "center" : "left"} 
+            // justifyContent={screenWidth < theme.breakpoints.values.md ? "center" : "left"} 
             position="absolute" 
             pt={2}
             pl={screenWidth < theme.breakpoints.values.md ? 0 : 2}
@@ -114,8 +136,29 @@ const WebMapComponentBeta = () => {
             >
                 <MapButtonGroup/>
             </Box>
-            
-        </ArcgisMap>
+
+            <Fade 
+                appear
+                in={!panelWidgetVisible}>
+                    <IconButton 
+                    onClick={handleClick}
+                    sx={{
+                        position: "absolute",
+                        bgcolor:theme.palette.primary.main, 
+                        zIndex:"modal",
+                        display:!panelWidgetVisible && screenWidth <= theme.breakpoints.values.sm ? "flex" : "none",
+                        width:50,
+                        height:50,
+                        flexDirection:"column",
+                        bottom:20,
+                        boxShadow:5
+                        }}>
+                        <TableRowsOutlined htmlColor="white"/>
+                        <Typography variant="subtitle1" color="white">{translateText("Data")}</Typography>
+                    </IconButton>
+                </Fade>
+        </Box>
+        
 
     )
 }
