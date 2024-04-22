@@ -66,7 +66,7 @@ export async function readFeatureLayerData(url, outFields, where, returnGeometry
   return queryResult
 }
 
-export async function createFeatureLayers(map, loadAll){
+export async function createFeatureLayers(loadAll){
 
     const namedLayers = {};
 
@@ -113,19 +113,16 @@ export async function createFeatureLayers(map, loadAll){
               
             })
           }
-          let foundLayer = map.allLayers.filter((mapLayer) => {
-            return mapLayer.title === name
-          })
+          // let foundLayer = map.allLayers.filter((mapLayer) => {
+          //   return mapLayer.title === name
+          // })
   
-          //console.log("Found layer = ", foundLayer)
-          if(foundLayer.items.length <= 0){
-            map.add(namedLayers[name])
-          }
+          // //console.log("Found layer = ", foundLayer)
+          // if(foundLayer.items.length <= 0){
+          //   map.add(namedLayers[name])
+          // }
         }
 
-        
-    
-        
       })
 
     return namedLayers

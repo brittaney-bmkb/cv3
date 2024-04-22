@@ -140,6 +140,29 @@ export async function initializeMap(container){
 return view, searchSources
 }  
 
+export const initializeLayersAndSearchSources = async () => {
+  
+  namedLayers = await createFeatureLayers()
+
+  //create search sources 
+  searchSources = await createSearchSources()
+
+   //define target layer
+   console.log("targetLayer: ",namedLayers[config.target_layer_name])
+
+   targetLayer = namedLayers[config.target_layer_name]
+
+   if(targetLayer.type === "map-image"){
+    let subLayer = targetLayer.findSublayerById(0)
+    targetLayer = await subLayer.createFeatureLayer()
+   }
+
+   console.log("targetLayer from sublayer: ",targetLayer)
+
+   return searchSources
+
+}
+
 // async funciton to set define point location from mouse click
 // point location is detected from view onclick event and map point is 
 // accessed from click event.mapPoint
@@ -261,8 +284,6 @@ export async function querySearchResults(result, outFields){
       query.where = whereString
       query.outFields = outFields
       query.returnGeometry = true;
-
-
     }
   }
 

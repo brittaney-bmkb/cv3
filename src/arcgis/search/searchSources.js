@@ -5,7 +5,7 @@ import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import MapImageLayer from "@arcgis/core/layers/MapImageLayer";
 
 
-export async function createSearchSources(namedLayers){
+export async function createSearchSources(){
 
   let searchSources  = []
   let subLayer
