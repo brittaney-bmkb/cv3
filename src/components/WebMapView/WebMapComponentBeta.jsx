@@ -6,6 +6,7 @@ import { theme } from "../../theme";
 import MapButtonGroup from "../MapButtonGroup";
 import { Box, Fade, Typography, IconButton } from "@mui/material";
 import { TableRowsOutlined } from "@mui/icons-material";
+import * as geometryEngine from "@arcgis/core/geometry/geometryEngine.js";
 
 const WebMapComponentBeta = () => {
 
@@ -18,13 +19,28 @@ const WebMapComponentBeta = () => {
         screenWidth,
         panelWidgetVisible,
         translateText,
-        setShowMapMoblie
+        setShowMapMoblie,
+        setPrimaryResultFeature,
+        searchSources
         } = UseAppContext()
 
     const arcgisMapRef = useRef(null)
     const [mapLoading, setMapLoading] = useState(true)
 
+    const zoomToExtent = async (features) => {
+
+        console.log("zoom to extent: ", features)
+        let extent
+        console.log("quering extent ")
+        extent = await features.queryExtent()
+
+        console.log("queried extent: ", extent)
+        arcgisMapRef.current.goTo(extent)
+    }
+
     const addLayerToMap = async (features, title, theme) => {
+
+        console.log("adding layer to map")
 
         if(arcgisMapRef.current && mapLoading === false){
 
@@ -35,13 +51,12 @@ const WebMapComponentBeta = () => {
             if(features){
                 let featLayer = await createFeatureLayerFromFeatures(features, title, theme)
 
-                map.add(featLayer)
+                if(featLayer){
+                    map.add(featLayer)
 
-                let extent = await featLayer.queryExtent()
-
-                console.log("queried extent: ", extent)
-
-                arcgisMapRef.current.goTo(extent)
+                    zoomToExtent(featLayer)
+                }
+                
             }
 
         }
@@ -60,8 +75,8 @@ const WebMapComponentBeta = () => {
 
     useEffect(() => {
 
-        if(arcgisMapRef && mapLoading === false){
-            console.log(arcgisMapRef.current.view)
+        if(arcgisMapRef && mapLoading === false && searchSources){
+            console.log("loading new map: ", arcgisMapRef.current.view)
 
             let view = arcgisMapRef.current.view
             
@@ -75,34 +90,33 @@ const WebMapComponentBeta = () => {
             
         }
 
-    }, [arcgisMapRef, mapLoading, screenWidth])
+    }, [arcgisMapRef, mapLoading, screenWidth, searchSources])
 
     useEffect(() => {
 
         addLayerToMap(primaryResultFeature, "Selected Parcel", theme.layers.primary)
 
-    }, [ primaryResultFeature ])
+    }, [ primaryResultFeature, arcgisMapRef, mapLoading ])
 
     useEffect(() => {
 
         addLayerToMap(comparableParcels, "Comparable Parcels", theme.layers.secondary)
 
-    }, [ comparableParcels ])
+    }, [ comparableParcels, arcgisMapRef, mapLoading ])
 
     useEffect(() => {
 
         addLayerToMap(secondaryResultFeature, "Selected Comparable Parcel", theme.layers.secondarySelected)
 
-    }, [ secondaryResultFeature ])
+    }, [ secondaryResultFeature, arcgisMapRef, mapLoading ])
 
    
-
     return(
         <Box
         display="flex"
         width="100%"
         height="100%"
-        justifyContent="center"
+        justifyContent={screenWidth < theme.breakpoints.values.md ? "center" : "left"}
         >
         <ArcgisMap
         ref={arcgisMapRef}

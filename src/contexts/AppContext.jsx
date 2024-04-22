@@ -70,7 +70,7 @@ export const AppProvider = ({children}) => {
         })
     }
 
-    const setSearchSources = (searchSources) => {
+    const setSearchSources = async (searchSources) => {
         dispatch({
             type:"SET_SEARCH_SOURCES",
              payload: {
@@ -282,6 +282,14 @@ export const AppProvider = ({children}) => {
             zoomToExtent(comparableParcels? comparableParcels: [primaryResultFeature])
         }
         
+    }
+
+    const initalizeSearchSources = async () => {
+            
+        const { initializeLayersAndSearchSources} = await import('../arcgis/webmap/webmap')
+        let searchSources = await initializeLayersAndSearchSources()
+
+        await setSearchSources(searchSources)
     }
 
 
@@ -621,6 +629,7 @@ export const AppProvider = ({children}) => {
         setMapView,
         mapView: state.mapView,
         primaryResultFeature: state.primaryResultFeature,
+        setPrimaryResultFeature,
         setSearchResults,
         searchSources: state.searchSources,
         searchResults: state.searchResults,
@@ -683,21 +692,23 @@ export const AppProvider = ({children}) => {
         panelDisplayWidget: state.panelDisplayWidget,
         queryMapPoint,
         setComparableParcels,
+        initalizeSearchSources
         
     }
 
-    useEffect(() => {
+    // useEffect( () => {
 
-        const initalizeSearchSources = async () => {
-            const { initializeLayersAndSearchSources} = await import('../arcgis/webmap/webmap')
-            let searchSources = await initializeLayersAndSearchSources()
+    //     const initalizeSearchSources = async () => {
+            
+    //         const { initializeLayersAndSearchSources} = await import('../arcgis/webmap/webmap')
+    //         let searchSources = await initializeLayersAndSearchSources()
 
-            setSearchSources(searchSources)
-        }
+    //         await setSearchSources(searchSources)
+    //     }
         
-        initalizeSearchSources()
+    //     initalizeSearchSources()
 
-    }, [])
+    // }, [])
 
     useEffect(() => {
         const loadParcelFields = async () => {

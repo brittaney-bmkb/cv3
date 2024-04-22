@@ -10,7 +10,23 @@ import { config } from "../../data/config";
 
 const Search = () => {
 
-    const {x, y, returnLocationFeatures,  language, translateText,  newSearch, setPanelPrimaryVisibility, renderSearchResults, mapView, searchSources, clearResults, panelPrimaryVisible, primaryResultFeature, searchFeatures } = UseAppContext()
+    const {
+        x, 
+        y, 
+        returnLocationFeatures,  
+        language, 
+        translateText,  
+        newSearch, 
+        setPanelPrimaryVisibility, 
+        renderSearchResults, 
+        mapView, 
+        searchSources, 
+        clearResults, 
+        panelPrimaryVisible, 
+        primaryResultFeature, 
+        setPrimaryResultFeature,
+        initalizeSearchSources
+     } = UseAppContext()
 
     //get url parameters
     const [routeParams, setSearchParams] = useSearchParams();
@@ -32,25 +48,41 @@ const Search = () => {
 
     }
 
-    useEffect(()=>{
-        const updateLocationParam = () => {
-
-            console.log("GETTING URL PARAM")
-
-            setLocationSearch(routeParams.get("location"))
-
-            setPinSearch(routeParams.get("pin"))
-
-            setGenericSearch(routeParams.get("search"))
-
-            setAddressSearch(routeParams.get("address"))
+    useEffect(() => {
+        initalizeSearchSources()
+        if(!primaryResultFeature){
+            setPrimaryResultFeature(null, true)
         }
+    }, [])
 
-        updateLocationParam()
+    // useEffect(()=>{
+    //     const searchSources = async () => {
+    //         console.log("Intializing search sources")
+    //         await initalizeSearchSources()
+    //     }
+        
+    //     searchSources()
 
-    },[])
+    //     const updateLocationParam = () => {
+
+    //         console.log("GETTING URL PARAM")
+
+    //         setLocationSearch(routeParams.get("location"))
+
+    //         setPinSearch(routeParams.get("pin"))
+
+    //         setGenericSearch(routeParams.get("search"))
+
+    //         setAddressSearch(routeParams.get("address"))
+    //     }
+
+    //     updateLocationParam()
+
+    // },[])
 
     useEffect(() => {
+
+        
         //When primary feature result changes update the search param
         //from mouse click
         console.log("USE EFFECT: checking for primary result feature and new search")
@@ -101,26 +133,26 @@ const Search = () => {
                 //}
             }
             
-    }
-    if(!primaryResultFeature){
-        console.log("No Primary Result Selected. Querying url parameters")
+        }
+        if(!primaryResultFeature){
+            console.log("No Primary Result Selected. Querying url parameters")
 
-        setLocationSearch(routeParams.get("location"))
+            setLocationSearch(routeParams.get("location"))
 
-        setPinSearch(routeParams.get("pin"))
+            setPinSearch(routeParams.get("pin"))
 
-        setGenericSearch(routeParams.get("search"))
+            setGenericSearch(routeParams.get("search"))
 
-        setAddressSearch(routeParams.get("address"))
+            setAddressSearch(routeParams.get("address"))
 
-        console.log("USE EFFECT No feature Found")
-        console.log("USE EFFECT GENERIC SEARCH: ", routeParams.get("search"))
-        console.log("USE EFFECT PIN SEARCH: ", routeParams.get("pin"))
-        console.log("USE EFFECT Address SEARCH: ", routeParams.get("address"))
+            console.log("USE EFFECT No feature Found")
+            console.log("USE EFFECT GENERIC SEARCH: ", routeParams.get("search"))
+            console.log("USE EFFECT PIN SEARCH: ", routeParams.get("pin"))
+            console.log("USE EFFECT Address SEARCH: ", routeParams.get("address"))
 
-        if(searchWidget.current){
-            searchWidget.current.searchTerm = null
-        }}  
+            if(searchWidget.current){
+                searchWidget.current.searchTerm = null
+            }}  
 
 
     }, [primaryResultFeature, searchWidget])
@@ -144,7 +176,7 @@ const Search = () => {
 
                     searchWidget.current = new widgetsSearch({
                         includeDefaultSources: false,
-                        view: mapView,
+                        //view: mapView,
                         container: searchDiv.current,
                         sources: searchSources,
                         resultGraphicEnabled:false,
