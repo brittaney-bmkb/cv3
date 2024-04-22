@@ -3,10 +3,19 @@ import { useEffect, useRef, useState } from "react";
 import UseAppContext from "../../contexts/AppContext";
 import { createFeatureLayerFromFeatures, removeLayer } from "../../arcgis/layers/layers";
 import { theme } from "../../theme";
+import MapButtonGroup from "../MapButtonGroup";
+import { Box } from "@mui/material";
 
 const WebMapComponentBeta = () => {
 
-    const { primaryResultFeature, setMapView, queryMapPoint, comparableParcels, secondaryResultFeature } = UseAppContext()
+    const { 
+        primaryResultFeature, 
+        setMapView, 
+        queryMapPoint, 
+        comparableParcels, 
+        secondaryResultFeature,
+        screenWidth
+        } = UseAppContext()
 
     const arcgisMapRef = useRef(null)
     const [mapLoading, setMapLoading] = useState(true)
@@ -82,7 +91,21 @@ const WebMapComponentBeta = () => {
         onArcgisViewClick={(event) => {
             handleViewClick(event.detail.mapPoint)
         }}
-        />
+        >   
+        <Box 
+        id="mapButtonGroup"
+        justifyContent={screenWidth < theme.breakpoints.values.md ? "center" : "left"} 
+        position="absolute" 
+        pt={2}
+        zIndex={2}
+        sx={{boxSizing:"border-box"}}
+        height="auto"
+        width="auto"
+        >
+            <MapButtonGroup/>
+        </Box>
+            
+        </ArcgisMap>
 
     )
 }

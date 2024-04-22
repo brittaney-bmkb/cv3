@@ -73,7 +73,7 @@ function App() {
               { screenWidth >= 600  ? 
               <Box display="flex" width="100%" height="100%">
                 <WebMapComponentBeta/>
-                <WebMapView/>
+                {/* <WebMapView/> */}
               </Box>
                : 
               <PanelMobile/>}
