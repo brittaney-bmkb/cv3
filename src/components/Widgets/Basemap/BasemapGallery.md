@@ -15,9 +15,11 @@ The `BasemapGallery` is replacing the `BasemapWidget`
     - `view` is passed from the `mapView` (`AppContext.jsx`)
         - `view` is now being set in the `WebMapComponentBeta.jsx`
 - css handled in App.css
+- mapView now set after map finishes loading rather than after each view change
 
 ### Fixes
 - Basemap now references mapView that is set from from `WebMapComponentBeta.jsx`
+- Repeated rendering of basemap gallery widget fixed in mobile as view changes
 
 ### Deprecated
 - Deprecated `BaseMapWidget` component and will completely remove in next release
