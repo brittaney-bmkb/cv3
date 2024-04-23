@@ -2,7 +2,7 @@ import { Box, Divider, Paper } from "@mui/material"
 import PanelHeader from "./PanelHeader"
 import ResultsList from "../ResultList/ResultsList"
 import ComparablePropertySearch from "../ComparableProperty/ComparablePropertySearch"
-import BasemapWidget from "../Widgets/BasemapWidget";
+// import BasemapWidget from "../Widgets/BasemapWidget";
 import LayersWidget from "../Widgets/LayersWidget";
 import MeasureWidget from "../Widgets/MeasureWidget";
 import PrintWidget from "../Widgets/PrintWidget";
@@ -15,6 +15,7 @@ import WebMapView from "../WebMapView/WebMapView";
 import LayerListWidgetCustom from "../Widgets/LayerListWidgetCustom";
 import PrintWidgetCustom, { PrintWidgetPane } from "../Widgets/PrintWidgetCustom";
 import { config } from "../../data/config";
+import BasemapGallery from "../Widgets/Basemap/BasemapGallery";
 
 const PanelContent = ({display}) => {
 
@@ -257,7 +258,8 @@ const PanelContent = ({display}) => {
                     descriptionText="Select a basemap from the options below to update the map"
                     divider={true}
                     />
-                    <BasemapWidget/>
+                    {/* <BasemapWidget/> */}
+                    <BasemapGallery/>
                 </Box>
             )                                           
         case 'printWidget':

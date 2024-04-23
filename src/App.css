@@ -28,6 +28,10 @@ arcgis-map{
   width: 100%
 }
 
+arcgis-basemap-gallery{
+  overflow: scroll;
+}
+
 calcite-icon {
   --calcite-ui-icon-color: black
 }
