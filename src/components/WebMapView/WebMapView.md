@@ -24,11 +24,18 @@ There are two components in this directory:
 
 ### Fixes
 - Fixed the bug where parcel search, comparable, and nearby results were not displaying correctly in the map and legend when the map was printed
+  - this was fixed by switching from graphics layer to feature layer 
+- Fixed the display issue where labels from layers overlapped
+  - this was fixed by consuming a map services and all sublayers rather than individual sublayers
 
+### Deprecated
+- Deprecated the `WebmapView` component and will completely remove it in the next release
 
-
-
-
+### Breaking Changes
+- `loadMap` function was not migrated and referenced from `AppContext` in the `WebMapComponentBeta` component, so `loadMap` is no longer being executed in the app
+  - mapView is now being set within `WebMapComponentBeta`
+  - searchSources is now being set within the `Search` component
+  - `initalizeMap` function no longer being executed from `loadMap` to return view and searchSources
 
 
 ### Usage
@@ -107,6 +114,3 @@ export default App;
 - Ensure that the `AppContext` is properly configured to provide necessary states and functions to the `WebMapComponentBeta` component.
 - This component assumes the presence of specific layers and themes configured in the application context.
 - Adjustments to UI layout and positioning are made based on the screen width using Material-UI's theme breakpoints.
-
-### Disclaimer
-This documentation is intended for informational purposes only and may require adjustments based on specific project requirements and configurations.
