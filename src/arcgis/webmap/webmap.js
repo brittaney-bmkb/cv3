@@ -24,62 +24,62 @@ let point;
 let layerGraphics
 
 
-// Create a Map instance
-export const map = new Map({
-  // basemap: "streets-vector"
-});
+// // Create a Map instance
+// export const map = new Map({
+//   // basemap: "streets-vector"
+// });
 
-export const view = new MapView({
-map: map,
-center: [-87.8298, 41.8781],
-zoom: 8,
-})
+// export const view = new MapView({
+// map: map,
+// center: [-87.8298, 41.8781],
+// zoom: 8,
+// })
 
-console.log("View Scale: ", view.scale)
-
-
-  //create home widget
-  let homeWidget = new Home({
-  view: view
-  });
-
-  let locateWidget = new Locate({
-  view: view,   // Attaches the Locate button to the view
-
-  graphic: new Graphic({
-    symbol: { type: "simple-marker" }  // overwrites the default symbol used for the
-    // graphic placed at the location of the user when found
-  })
-  });
-
-  let scaleBar = new ScaleBar({
-  view: view
-  });
-
-  view.ui.move( "zoom", "manual")
-  view.ui.add([homeWidget, locateWidget ], "manual");
-
-// adds the home widget to the top left corner of the MapView
-// https://github.com/alexlafroscia/ember-cli-stencil/issues/14 
-// view.ui.add(homeWidget, "top-right");
-// adds the locate widget to the top left corner of the MapView
-// view.ui.add(locateWidget, "top-right");
-// Add widget to the bottom left corner of the view
-view.ui.add(scaleBar, {
-position: "bottom-left"
-});
-
-//create graphics layer to search result
-layerGraphics = new GraphicsLayer()
-layerGraphics.effect = "drop-shadow(3px, 3px, 4px, #1B1D1F) brightness(150%)"
+// console.log("View Scale: ", view.scale)
 
 
-//create graphics layer to comparable search result
-let layerGraphicsSecondary = new GraphicsLayer()
-//layerGraphicsSecondary.effect = "drop-shadow(1px, 1px, 1px, #4c4e57) brightness(110%)"
-//create graphics layer to comparable search result
-let layerGraphicsSecondarySelected = new GraphicsLayer()
-layerGraphicsSecondarySelected.effect = "drop-shadow(3px, 3px, 4px, #1B1D1F) brightness(120%)"
+//   //create home widget
+//   let homeWidget = new Home({
+//   view: view
+//   });
+
+//   let locateWidget = new Locate({
+//   view: view,   // Attaches the Locate button to the view
+
+//   graphic: new Graphic({
+//     symbol: { type: "simple-marker" }  // overwrites the default symbol used for the
+//     // graphic placed at the location of the user when found
+//   })
+//   });
+
+//   let scaleBar = new ScaleBar({
+//   view: view
+//   });
+
+//   view.ui.move( "zoom", "manual")
+//   view.ui.add([homeWidget, locateWidget ], "manual");
+
+// // adds the home widget to the top left corner of the MapView
+// // https://github.com/alexlafroscia/ember-cli-stencil/issues/14 
+// // view.ui.add(homeWidget, "top-right");
+// // adds the locate widget to the top left corner of the MapView
+// // view.ui.add(locateWidget, "top-right");
+// // Add widget to the bottom left corner of the view
+// view.ui.add(scaleBar, {
+// position: "bottom-left"
+// });
+
+// //create graphics layer to search result
+// layerGraphics = new GraphicsLayer()
+// layerGraphics.effect = "drop-shadow(3px, 3px, 4px, #1B1D1F) brightness(150%)"
+
+
+// //create graphics layer to comparable search result
+// let layerGraphicsSecondary = new GraphicsLayer()
+// //layerGraphicsSecondary.effect = "drop-shadow(1px, 1px, 1px, #4c4e57) brightness(110%)"
+// //create graphics layer to comparable search result
+// let layerGraphicsSecondarySelected = new GraphicsLayer()
+// layerGraphicsSecondarySelected.effect = "drop-shadow(3px, 3px, 4px, #1B1D1F) brightness(120%)"
 
 export async function toggleLayer(layer){
 
@@ -139,6 +139,29 @@ export async function initializeMap(container){
 
 return view, searchSources
 }  
+
+export const initializeLayersAndSearchSources = async () => {
+  
+  namedLayers = await createFeatureLayers()
+
+  //create search sources 
+  searchSources = await createSearchSources()
+
+  //define target layer
+  console.log("targetLayer: ",namedLayers[config.target_layer_name])
+
+  targetLayer = namedLayers[config.target_layer_name]
+
+  if(targetLayer.type === "map-image"){
+    let subLayer = targetLayer.findSublayerById(0)
+    targetLayer = await subLayer.createFeatureLayer()
+  }
+
+  console.log("targetLayer from sublayer: ",targetLayer)
+
+  return searchSources
+
+}
 
 // async funciton to set define point location from mouse click
 // point location is detected from view onclick event and map point is 
@@ -261,8 +284,6 @@ export async function querySearchResults(result, outFields){
       query.where = whereString
       query.outFields = outFields
       query.returnGeometry = true;
-
-
     }
   }
 

@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@arcgis/core": "^4.28.10",
+    "@arcgis/map-components": "^4.29.10",
+    "@arcgis/map-components-react": "^4.29.10",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@esri/calcite-components": "^2.3.0",

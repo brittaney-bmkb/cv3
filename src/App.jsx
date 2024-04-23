@@ -15,6 +15,7 @@ import Notifications from './components/Notifications/Notifications'
 import TranslateMenu from './components/NavBar/TranslateMenu'
 import { config } from './data/config'
 import HelpDialog from './components/HelpDialog/HelpDialog'
+import WebMapComponentBeta from './components/WebMapView/WebMapComponentBeta'
 
 function App() {
 
@@ -69,7 +70,13 @@ function App() {
                 <MapButtonGroup/>
               </Box> */}
 
-              { screenWidth >= 600  ? <WebMapView/> : <PanelMobile/>}
+              { screenWidth >= 600  ? 
+              <Box display="flex" width="100%" height="100%">
+                <WebMapComponentBeta/>
+                {/* <WebMapView/> */}
+              </Box>
+               : 
+              <PanelMobile/>}
   
             <BottomPanel/>
           </Box>

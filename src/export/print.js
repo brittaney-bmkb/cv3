@@ -15,7 +15,7 @@ import { config } from "../data/config";
     console.log("Something broke: ", err);
   }
 
-export const printMap = async (mapLayout, mapFormat, mapTitle) => {
+export const printMap = async (view, mapLayout, mapFormat, mapTitle) => {
 
     console.log("map print props: ", mapLayout, mapFormat, mapTitle)
 
@@ -40,7 +40,7 @@ export const printMap = async (mapLayout, mapFormat, mapTitle) => {
         return result.url
     }
     catch (e) {
-        printError()
+        printError(e)
     } 
 }
 
