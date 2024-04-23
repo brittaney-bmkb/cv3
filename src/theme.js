@@ -1,6 +1,33 @@
 import { createTheme } from "@mui/material";
 
 export const theme = createTheme({
+    layers: {
+        primary: {
+            type: "simple-fill",
+            style:"none",
+            outline: {
+                width:3,
+                color: "#0D4D96",
+            }
+        },
+        secondary: {
+            type: "simple-fill",
+            style:"none",
+            outline: {
+                width:2,
+                style: "short-dot",
+                color: "#E58F65",
+            }
+        },
+        secondarySelected: {
+            type: "simple-fill",
+            style:"none",
+            outline: {
+                width:3,
+                color: "#E58F65",
+            }
+        }
+    },
     main: {
         backgroundColor:{
             light: "#59BDE7",

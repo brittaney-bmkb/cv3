@@ -70,7 +70,7 @@ export const AppProvider = ({children}) => {
         })
     }
 
-    const setSearchSources = (searchSources) => {
+    const setSearchSources = async (searchSources) => {
         dispatch({
             type:"SET_SEARCH_SOURCES",
              payload: {
@@ -284,6 +284,14 @@ export const AppProvider = ({children}) => {
         
     }
 
+    const initalizeSearchSources = async () => {
+            
+        const { initializeLayersAndSearchSources} = await import('../arcgis/webmap/webmap')
+        let searchSources = await initializeLayersAndSearchSources()
+
+        await setSearchSources(searchSources)
+    }
+
 
     const queryMapPoint = async (point) => {
         
@@ -358,63 +366,6 @@ export const AppProvider = ({children}) => {
 
     }
 
-    // const mapClickEventHandler = async () => {
-
-    //     const { onViewClick, createGraphic, zoomToExtent, removeGraphics } = await import('../arcgis/webmap/webmap')
-    //     const { theme } = await import ('../theme')
-        
-    //     const { measureWidgetState, comparableParcels, panelSecondaryVisible, primaryResultFeature, panelPrimaryVisible, panelDisplay, parcelQueryFields, panelDisplaySecondary } = state
-
-    //     if(measureWidgetState !== true){
-    //         const point = await returnLatLong()
-
-    //         const selectedFeatures = await onViewClick(parcelQueryFields)
-    //         console.log("selectedFeatures: ", selectedFeatures)
-            
-    //         setCoordinates(point.x, point.y)
-    //         console.log("x/y", point.x, point.y)
-
-            
-    //         let secondaryFeatures = []
-    //         if(comparableParcels){
-    //             console.log("Secondary feature selected: ", secondaryFeatures)
-    //             secondaryFeatures = comparableParcels.filter((feature) => feature.attributes['PIN14'] === selectedFeatures[0].attributes['PIN14'])
-
-    //         };
-            
-    //         if(secondaryFeatures?.length > 0){
-    //             setSecondaryResultFeature(secondaryFeatures[0])
-    //             setPanelDisplaySecondary("propertyDetailNearby")
-    //             createGraphic(secondaryFeatures, "secondarySelected", theme.palette.secondary.main)
-    //             //zoomToExtent([secondaryFeatures[0], primaryResultFeature])
-    //         }
-
-    //         else{
-    //             console.log("App context setting selected parcel", selectedFeatures)
-    //             // if(selectedFeatures.length === 1){
-    //             setPrimaryResultFeature(selectedFeatures, false)
-
-    //             setSearchResults(null, selectedFeatures)
-    //             createGraphic(selectedFeatures, "primary", theme.palette.primary.main)
-    //             if(!panelDisplay || panelDisplay !== "resultsList"){
-    //                 setPanelDisplay("resultsList")
-    //             }
-                
-    //             if(!panelPrimaryVisible || panelPrimaryVisible === false){
-    //                 setPanelPrimaryVisibility(true)
-    //             }
-
-    //             if(panelSecondaryVisible === true && ["propertyDetailNearby","propertyDetailComparable","resultsListNearby","resultsListComparables","nearbyProperties","comparablePropertySearch"].includes(panelDisplaySecondary)){
-    //                 setPanelSecondaryVisibility(false)
-    //             }
-                
-    //             if(comparableParcels){
-    //                 clearResultsComparables()
-    //             } 
-    //         }
-
-    // }   
-    // }
 
     const returnLocationFeatures = async (coordinates) => {
 
@@ -675,8 +626,10 @@ export const AppProvider = ({children}) => {
         mapContainer: state.mapContainer,
         loadMap,
         setMapContainer,
+        setMapView,
         mapView: state.mapView,
         primaryResultFeature: state.primaryResultFeature,
+        setPrimaryResultFeature,
         setSearchResults,
         searchSources: state.searchSources,
         searchResults: state.searchResults,
@@ -739,13 +692,23 @@ export const AppProvider = ({children}) => {
         panelDisplayWidget: state.panelDisplayWidget,
         queryMapPoint,
         setComparableParcels,
+        initalizeSearchSources
         
     }
 
-    useEffect(() => {
+    // useEffect( () => {
 
-        console.log("comparable parcels updated", state.comparableParcels)
-    }, [state.comparableParcels])
+    //     const initalizeSearchSources = async () => {
+            
+    //         const { initializeLayersAndSearchSources} = await import('../arcgis/webmap/webmap')
+    //         let searchSources = await initializeLayersAndSearchSources()
+
+    //         await setSearchSources(searchSources)
+    //     }
+        
+    //     initalizeSearchSources()
+
+    // }, [])
 
     useEffect(() => {
         const loadParcelFields = async () => {
