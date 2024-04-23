@@ -3,7 +3,7 @@ import PanelHeader from "./PanelHeader"
 import ResultsList from "../ResultList/ResultsList"
 import ComparablePropertySearch from "../ComparableProperty/ComparablePropertySearch"
 // import BasemapWidget from "../Widgets/BasemapWidget";
-import LayersWidget from "../Widgets/LayersWidget";
+import LayersWidget from "../Widgets/LayersList/LayersWidget";
 import MeasureWidget from "../Widgets/MeasureWidget";
 import PrintWidget from "../Widgets/PrintWidget";
 import UseAppContext from "../../contexts/AppContext"
@@ -12,10 +12,11 @@ import CompareNearby from "../ComparableProperty/CompareNearby"
 import PropertyDetail from "../PropertyDetail/PropertyDetail"
 import PropertyPagniation from "../PropertyDetail/PropertyPagnition";
 import WebMapView from "../WebMapView/WebMapView";
-import LayerListWidgetCustom from "../Widgets/LayerListWidgetCustom";
+import LayerListWidgetCustom from "../Widgets/LayersList/LayerListWidgetCustom";
 import PrintWidgetCustom, { PrintWidgetPane } from "../Widgets/PrintWidgetCustom";
 import { config } from "../../data/config";
 import BasemapGallery from "../Widgets/Basemap/BasemapGallery";
+import LayerList from "../Widgets/LayersList/LayerList";
 
 const PanelContent = ({display}) => {
 
@@ -245,12 +246,18 @@ const PanelContent = ({display}) => {
                     divider={true}
                     />
                     {/* <LayersWidget/> */}
-                    <LayerListWidgetCustom/>
+                    {/* <LayerListWidgetCustom/> */}
+                    <LayerList/>
                 </Box>
             )   
         case 'basemapsWidget':
             return(
-                <Box display="flex" flexDirection="column" rowGap={3} minHeight={0} flexGrow={1}>
+                <Box 
+                display="flex" 
+                flexDirection="column" 
+                rowGap={3} 
+                minHeight={0} 
+                flexGrow={1}>
                     <PanelHeader
                     text="Basemaps" 
                     closeButton={true}

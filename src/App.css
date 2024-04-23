@@ -32,6 +32,16 @@ arcgis-basemap-gallery{
   overflow: scroll;
 }
 
+arcgis-layer-list{
+  overflow: scroll;
+  height: 100%;
+  background-color: transparent;
+}
+
+.esri-widget--panel{
+  background-color: transparent;
+}
+
 calcite-icon {
   --calcite-ui-icon-color: black
 }

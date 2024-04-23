@@ -1,14 +1,14 @@
 import { Box, Checkbox, Chip, Collapse, List, ListItem, ListItemButton, ListItemText, Typography } from "@mui/material"
 import { useEffect, useRef, useState } from "react"
 import LayerList from "@arcgis/core/widgets/LayerList.js";
-import { map, view } from "../../arcgis/webmap/webmap";
-import { config } from "../../data/config";
-import UseAppContext from "../../contexts/AppContext";
+import { map, view } from "../../../arcgis/webmap/webmap";
+import { config } from "../../../data/config";
+import UseAppContext from "../../../contexts/AppContext";
 
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
-import { theme } from "../../theme";
+import { theme } from "../../../theme";
 import { CalciteLoader } from "@esri/calcite-components-react";
-import { createFeatureLayers } from "../../arcgis/layers/layers";
+import { createFeatureLayers } from "../../../arcgis/layers/layers";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 
 // Function to extract numeric part from a string
