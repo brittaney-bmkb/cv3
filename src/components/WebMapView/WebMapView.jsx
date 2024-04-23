@@ -1,7 +1,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import UseAppContext from "../../contexts/AppContext";
-import { view } from "../../arcgis/webmap/webmap";
+// import { view } from "../../arcgis/webmap/webmap";
 import StyledButtonFilledPrimary, { ToggleIconButton } from "../Button/Button";
 import { Box, Fade, IconButton, Typography } from "@mui/material";
 import TableRowsOutlinedIcon from '@mui/icons-material/TableRowsOutlined';
@@ -38,28 +38,6 @@ export default function WebMapView(){
 
     }, [mapContainer])
 
-    // useEffect(() => {
-    //     //watch for clicks in the mapview
-
-    //     reactiveUtils.on(
-    //         () => view,
-    //         "click",
-    //         (event) => {
-    //             console.log("measure widget state: ", measureWidgetState)
-    //             console.log("measure widget: ", measureWidget)
-    //             if(measureWidgetState){
-    //                 console.log("Measure session. Blocking map view click")
-    //             }
-    //             else{
-    //                 console.log("WEBMAPVIEW: Click event emitted: ", event)
-    //                 console.log("measure widget state: ", measureWidgetState)
-    //                 let point = event.mapPoint
-    
-    //                 console.log("View Map Point", point)
-    //             }
-    //         }
-    //     )
-    // })
 
     useEffect(() => {
         // Define event handler function

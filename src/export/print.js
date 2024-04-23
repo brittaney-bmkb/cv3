@@ -1,7 +1,7 @@
 import * as print from "@arcgis/core/rest/print.js";
 import PrintTemplate from "@arcgis/core/rest/support/PrintTemplate.js";
 import PrintParameters from "@arcgis/core/rest/support/PrintParameters.js";
-import { view } from "../arcgis/webmap/webmap";
+// import { view } from "../arcgis/webmap/webmap";
 import { config } from "../data/config";
 
 

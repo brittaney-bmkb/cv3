@@ -24,16 +24,16 @@ let point;
 let layerGraphics
 
 
-// // Create a Map instance
-// export const map = new Map({
-//   // basemap: "streets-vector"
-// });
+// Create a Map instance
+export const map = new Map({
+  // basemap: "streets-vector"
+});
 
-// export const view = new MapView({
-// map: map,
-// center: [-87.8298, 41.8781],
-// zoom: 8,
-// })
+export const view = new MapView({
+map: map,
+center: [-87.8298, 41.8781],
+zoom: 8,
+})
 
 // console.log("View Scale: ", view.scale)
 
