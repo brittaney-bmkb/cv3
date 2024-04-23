@@ -1,8 +1,8 @@
 import { Box, Chip, List, ListItem, ListItemText, Typography } from "@mui/material"
-import StyledButtonFilledPrimary from "../Button/Button"
-import UseAppContext from "../../contexts/AppContext"
-import { config } from "../../data/config"
-import { map, view } from "../../arcgis/webmap/webmap"
+import StyledButtonFilledPrimary from "../../Button/Button"
+import UseAppContext from "../../../contexts/AppContext"
+import { config } from "../../../data/config"
+import { map, view } from "../../../arcgis/webmap/webmap"
 import { useEffect, useState } from "react"
 
 
