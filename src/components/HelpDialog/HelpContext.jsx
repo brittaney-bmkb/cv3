@@ -189,7 +189,7 @@ const HelpContent = ({display}) => {
                             <Box flex={6} display="flex" justifyContent="center" padding= '20px' alignItems="center">
                                 <img 
                                     src={isMobile ? `${imageDirectory}/${AppImages.navbar_mobile}` : `${imageDirectory}/${AppImages.navbar_desktop}`} 
-                                    alt="Navigation Bar Image" 
+                                    alt={translateText("help_image_1")}
                                     style={{ maxWidth: "100%", height: "auto" }}
                                     onClick={() => handleImageClick(isMobile ? `${imageDirectory}/${AppImages.navbar_mobile}` : `${imageDirectory}/${AppImages.navbar_desktop}`)}
                                 />
@@ -253,7 +253,7 @@ const HelpContent = ({display}) => {
                         <Box flex={6} display="flex" justifyContent="center" padding= '20px' alignItems="center">
                             <img 
                                 src={isMobile ? `${imageDirectory}/${AppImages.widget_search_mobile}` : `${imageDirectory}/${AppImages.widget_search_desktop}`} 
-                                alt="Horizontal Search Bar that allows users to search by pin or address. Image" 
+                                alt={translateText("help_image_2")}
                                 style={{ width: "100%", height: "auto", cursor: "pointer" }}
                                 onClick={() => handleImageClick(isMobile ? `${imageDirectory}/${AppImages.widget_search_mobile}` : `${imageDirectory}/${AppImages.widget_search_desktop}`)} // Call handleImageClick when the image is clicked
                             />
@@ -351,7 +351,7 @@ const HelpContent = ({display}) => {
                         <Box flex={6} display="flex" justifyContent="center" padding= '20px' alignItems="center">
                             <img 
                                 src={isMobile ? `${imageDirectory}/${AppImages.property_results_mobile}` : `${imageDirectory}/${AppImages.property_results_desktop}`} 
-                                alt="Property Results Image" 
+                                alt={translateText("help_image_3")}
                                 style={{ width: "100%", height: "auto", cursor: "pointer" }}
                                 onClick={() => handleImageClick(isMobile ? `${imageDirectory}/${AppImages.property_results_mobile}` : `${imageDirectory}/${AppImages.property_results_desktop}`)} // Call handleImageClick when the image is clicked
                             />
@@ -396,7 +396,7 @@ const HelpContent = ({display}) => {
                         <Box flex={6} display="flex" justifyContent="center" padding= '20px' alignItems="center">
                             <img 
                                 src={isMobile ? `${imageDirectory}/${AppImages.compare_mobile}` : `${imageDirectory}/${AppImages.compare_desktop}`} 
-                                alt="Compare Properties Image" 
+                                alt={translateText("help_image_4")}
                                 style={{ width: "100%", height: "auto", cursor: "pointer" }}
                                 onClick={() => handleImageClick(isMobile ? `${imageDirectory}/${AppImages.compare_mobile}` : `${imageDirectory}/${AppImages.compare_desktop}`)} // Call handleImageClick when the image is clicked
                             />
@@ -438,7 +438,7 @@ const HelpContent = ({display}) => {
                         <Box flex={6} display="flex" justifyContent="center" padding= '20px' alignItems="center">
                             <img 
                                 src={isMobile ? `${imageDirectory}/${AppImages.widget_measure_mobile}` : `${imageDirectory}/${AppImages.widget_measure_desktop}`} 
-                                alt="Measure Widget Image" 
+                                alt={translateText("help_image_5")}
                                 style={{ width: "100%", height: "auto", cursor: "pointer" }}
                                 onClick={() => handleImageClick(isMobile ? `${imageDirectory}/${AppImages.widget_measure_mobile}` : `${imageDirectory}/${AppImages.widget_measure_desktop}`)} // Call handleImageClick when the image is clicked
                             />
@@ -471,7 +471,7 @@ const HelpContent = ({display}) => {
                         <Box flex={6} display="flex" justifyContent="center" padding= '20px' alignItems="center">
                             <img 
                                 src={isMobile ? `${imageDirectory}/${AppImages.widget_layers_mobile}` : `${imageDirectory}/${AppImages.widget_layers_desktop}`} 
-                                alt="Layers Widget Image" 
+                                alt={translateText("help_image_6")} 
                                 style={{ width: "100%", height: "auto", cursor: "pointer" }}
                                 onClick={() => handleImageClick(isMobile ? `${imageDirectory}/${AppImages.widget_layers_mobile}` : `${imageDirectory}/${AppImages.widget_layers_desktop}`)} // Call handleImageClick when the image is clicked
                             />
@@ -504,7 +504,7 @@ const HelpContent = ({display}) => {
                         <Box flex={6} display="flex" justifyContent="center" padding= '20px' alignItems="center">
                             <img 
                                 src={isMobile ? `${imageDirectory}/${AppImages.widget_basemaps_mobile}` : `${imageDirectory}/${AppImages.widget_basemaps_desktop}`} 
-                                alt="Basemaps Widget Image" 
+                                alt={translateText("help_image_7")}
                                 style={{ width: "100%", height: "auto", cursor: "pointer" }}
                                 onClick={() => handleImageClick(isMobile ? `${imageDirectory}/${AppImages.widget_basemaps_mobile}` : `${imageDirectory}/${AppImages.widget_basemaps_desktop}`)} // Call handleImageClick when the image is clicked
                             />
@@ -537,7 +537,7 @@ const HelpContent = ({display}) => {
                         <Box flex={6} display="flex" justifyContent="center" padding= '20px' alignItems="center">
                             <img 
                                 src={isMobile ? `${imageDirectory}/${AppImages.widget_print_mobile}` : `${imageDirectory}/${AppImages.widget_print_desktop}`} 
-                                alt="Print Widget Image" 
+                                alt={translateText("help_image_8")}
                                 style={{ width: "100%", height: "auto", cursor: "pointer" }}
                                 onClick={() => handleImageClick(isMobile ? `${imageDirectory}/${AppImages.widget_print_mobile}` : `${imageDirectory}/${AppImages.widget_print_desktop}`)} // Call handleImageClick when the image is clicked
                             />
@@ -593,7 +593,7 @@ const HelpContent = ({display}) => {
                             <Box flex={6} display="flex" justifyContent="center" padding= '20px' alignItems="center">
                                 <img 
                                     src={isMobile ? `${imageDirectory}/${AppImages.user_buttons_desktop}` : `${imageDirectory}/${AppImages.user_buttons_desktop}`} 
-                                    alt="Clear, Export, & Feedback Button Image" 
+                                    alt={translateText("help_image_9")}
                                     style={{ width: "100%", height: "auto", cursor: "pointer" }}
                                     onClick={() => handleImageClick(isMobile ? `${imageDirectory}/${AppImages.user_buttons_desktop}` : `${imageDirectory}/${AppImages.user_buttons_desktop}`)} // Call handleImageClick when the image is clicked
                                 />
