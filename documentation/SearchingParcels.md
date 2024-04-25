@@ -47,7 +47,7 @@ User includes a search query `search=123 happy street` as a url parameter after 
     - `address` - address string
 - for this action the `search` parameter is accessed and updates the `genericSearch` state.
     ``` 
-    setAddressSearch(routeParams.get("address")) 
+    setGenericSearch(routeParams.get("search")) 
     ```
 - On load the `newSearch` global variable is set to true, so when the searchWidget initally mounts it meets the condition to perform a new search using the values accessed from the `genericSearch` state
     ```
