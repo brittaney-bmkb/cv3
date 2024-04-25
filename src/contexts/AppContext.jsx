@@ -307,12 +307,12 @@ export const AppProvider = ({children}) => {
 
         console.log("Passing query fields: ", parcelQueryFields)
 
-        if(!parcelQueryFields){
-            fields = await loadDataDictionary()
-        }
-        else{
-            fields = parcelQueryFields
-        }
+        // if(!parcelQueryFields){
+        //     fields = await loadDataDictionary()
+        // }
+        // else{
+        //     fields = parcelQueryFields
+        // }
 
         //let selectedFeatures = await peformQueryFeatures(point, fields)
         let selectedFeatures = await queryTargetLayerWithPointFeatures(point)

@@ -27,6 +27,7 @@ There are two components in this directory:
   - this was fixed by switching from graphics layer to feature layer 
 - Fixed the display issue where labels from layers overlapped
   - this was fixed by consuming a map services and all sublayers rather than individual sublayers
+- fixes right click from firing the onArcgisViewClick event
 
 ### Deprecated
 - Deprecated the `WebmapView` component and will completely remove it in the next release

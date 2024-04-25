@@ -137,6 +137,7 @@ const WebMapComponentBeta = () => {
             
         // }}
         onArcgisViewClick={(event) => {
+            //console.log("onArcgisViewClick: ", event)
             handleViewClick(event.detail.mapPoint)
         }}
         >   
