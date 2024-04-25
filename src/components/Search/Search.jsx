@@ -1,11 +1,9 @@
-import { Box, InputBase, Paper } from "@mui/material";
+import { Box } from "@mui/material";
 import { theme } from "../../theme";
 import widgetsSearch from "@arcgis/core/widgets/Search.js";
 import UseAppContext from "../../contexts/AppContext";
 import { useEffect, useRef, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom"
-import { config } from "../../data/config";
-
 
 
 const Search = () => {
@@ -17,15 +15,16 @@ const Search = () => {
         language, 
         translateText,  
         newSearch, 
-        setPanelPrimaryVisibility, 
-        renderSearchResults, 
+        setPanelPrimaryVisibility,
+        setPanelDisplay, 
         mapView, 
         searchSources, 
         clearResults, 
         panelPrimaryVisible, 
         primaryResultFeature, 
         setPrimaryResultFeature,
-        initalizeSearchSources
+        initalizeSearchSources,
+        returnSearchResultFeatures
      } = UseAppContext()
 
     //get url parameters
@@ -48,6 +47,25 @@ const Search = () => {
 
     }
 
+    const updateAppWithSearchResult = () => {
+
+        
+        setLocationSearch(null)
+        setPinSearch(null)
+        setAddressSearch(null)
+        setGenericSearch(null)
+
+        if(!panelPrimaryVisible || panelPrimaryVisible === false){
+            setPanelPrimaryVisibility(true)
+            setPanelDisplay("resultsList")
+        }
+        
+        if(searchWidget.current.searchTerm !== locationSearch){
+            console.log("setting search term: ", searchTerm)
+            setSearchParams({'search': searchWidget.current.searchTerm})
+        } 
+    }
+
     useEffect(() => {
         initalizeSearchSources()
         if(!primaryResultFeature){
@@ -55,34 +73,8 @@ const Search = () => {
         }
     }, [])
 
-    // useEffect(()=>{
-    //     const searchSources = async () => {
-    //         console.log("Intializing search sources")
-    //         await initalizeSearchSources()
-    //     }
-        
-    //     searchSources()
-
-    //     const updateLocationParam = () => {
-
-    //         console.log("GETTING URL PARAM")
-
-    //         setLocationSearch(routeParams.get("location"))
-
-    //         setPinSearch(routeParams.get("pin"))
-
-    //         setGenericSearch(routeParams.get("search"))
-
-    //         setAddressSearch(routeParams.get("address"))
-    //     }
-
-    //     updateLocationParam()
-
-    // },[])
-
     useEffect(() => {
 
-        
         //When primary feature result changes update the search param
         //from mouse click
         console.log("USE EFFECT: checking for primary result feature and new search")
@@ -180,7 +172,7 @@ const Search = () => {
                         container: searchDiv.current,
                         sources: searchSources,
                         resultGraphicEnabled:false,
-                        autoSelect: true,
+                        autoSelect: false,
                         allPlaceholder: translateText('Search by address, pin, or intersection')
                     })
                 }
@@ -211,23 +203,19 @@ const Search = () => {
                     }
                 }
 
-                searchWidget.current.on("select-result", function(){
-                    console.log("The selected search result: ", searchWidget.current.selectedResult)
-                    //setSearchResults(searchWidget.current.selectedResult)
-                    // setPrimaryResultFeature(null, true)
-                    renderSearchResults(searchWidget.current.selectedResult)
-                    setLocationSearch(null)
-                    setPinSearch(null)
-                    setAddressSearch(null)
-                    setGenericSearch(null)
+                searchWidget.current.on("search-complete", (event) => {
+                    console.log("search complete event:", event)
 
-                    if(!panelPrimaryVisible || panelPrimaryVisible === false){
-                        setPanelPrimaryVisibility(true)
-                    }
+                    let results;
+
+                    results = event.results
+                    console.log("results for multiple results: ", event)
+
+                    returnSearchResultFeatures(results)
+                    setSearchParams({'search': searchWidget.current.searchTerm})
+
+                    updateAppWithSearchResult()
                     
-                    if(searchWidget.current.searchTerm !== locationSearch){
-                        setSearchParams({'search': searchWidget.current.searchTerm})
-                    } 
                 })
 
                 //to do enable clear results to empty searchFeatures array

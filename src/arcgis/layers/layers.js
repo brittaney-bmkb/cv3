@@ -1,9 +1,9 @@
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
-import PopupTemplate from "@arcgis/core/PopupTemplate.js";
 import Basemap from "@arcgis/core/Basemap";
 import { config } from "../../data/config";
 import Query from "@arcgis/core/rest/support/Query";
 import MapImageLayer from "@arcgis/core/layers/MapImageLayer";
+
 
 export async function removeLayer(map, name){
 
@@ -13,11 +13,8 @@ export async function removeLayer(map, name){
 
    if(foundLayers){
     console.log("Found Layers to Remove: ", foundLayers )
-
       map.remove(foundLayers)
-
    }
-
 }
 
 export async function createFeatureLayerFromFeatures(features, title, theme){
@@ -89,38 +86,24 @@ export async function createFeatureLayers(loadAll){
                   visible:source.visible,
                   minScale:source.minScale,
                   renderer: source.render ?? null,
-                  title: source.layerName
+                  title: source.layerName,
+                  outFields: ["*"]
                 
                 }
               ]
             })
   
-            // namedLayers[name] = mapImageLayer.findSublayerById(source.id)
           }
           else{
             namedLayers[name] = new FeatureLayer({
               url: source.url,
               outFields: source.outFields,
               title: name,
-              // popupEnabled: source.popupEnabled,
-              // popupTemplate : new PopupTemplate({
-              //   title: source.popupTemplateTitle
-              // }),
-              //comment
               visible:source.visible,
               renderer: source.render ?? null,
-              //minScale:source.minScale
-              
+              outFields: ["*"]
             })
           }
-          // let foundLayer = map.allLayers.filter((mapLayer) => {
-          //   return mapLayer.title === name
-          // })
-  
-          // //console.log("Found layer = ", foundLayer)
-          // if(foundLayer.items.length <= 0){
-          //   map.add(namedLayers[name])
-          // }
         }
 
       })
