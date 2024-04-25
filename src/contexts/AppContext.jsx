@@ -286,8 +286,13 @@ export const AppProvider = ({children}) => {
     const initalizeSearchSources = async () => {
             
         const { createSearchSources } = await import('../arcgis/search/searchSources')
-        let searchSources = await createSearchSources()
 
+        const { initalizeLayers } = await import('../arcgis/search/queryTargetLayer')
+
+        await initalizeLayers()
+        
+        let searchSources = await createSearchSources()
+    
         await setSearchSources(searchSources)
     }
 
@@ -296,7 +301,7 @@ export const AppProvider = ({children}) => {
     //in use [v3.0.0-beta.2]
     const queryMapPoint = async (point) => {
         
-        let fields 
+        // let fields 
         console.log("Point from click: ", point)
         setCoordinates(point.x, point.y)
         console.log("x/y", point.x, point.y)
@@ -329,7 +334,9 @@ export const AppProvider = ({children}) => {
         }
 
         if(secondaryFeatures?.length > 0){
+
             setSecondaryResultFeature(secondaryFeatures[0])
+
             if(screenWidth < theme.breakpoints.values.lg){
                 setPanelDisplay("propertyDetailNearby")
             }

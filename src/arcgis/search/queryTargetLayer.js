@@ -4,17 +4,23 @@ import Multipoint from "@arcgis/core/geometry/Multipoint.js";
 import Query from "@arcgis/core/rest/support/Query.js";
 import Point from "@arcgis/core/geometry/Point";
 
-const namedLayers = await createFeatureLayers()
-//define target layer
-console.log("targetLayer: ", namedLayers[config.target_layer_name])
+let namedLayers;
+let targetLayer
 
-let targetLayer = namedLayers[config.target_layer_name]
+export const initalizeLayers = async () => {
+    namedLayers = await createFeatureLayers()
 
-  if(targetLayer.type === "map-image"){
-    let subLayer = targetLayer.findSublayerById(0)
-    targetLayer = await subLayer.createFeatureLayer()
-  }
+    //define target layer
+    console.log("targetLayer: ", namedLayers[config.target_layer_name])
 
+    targetLayer = namedLayers[config.target_layer_name]
+
+    if(targetLayer.type === "map-image"){
+        let subLayer = targetLayer.findSublayerById(0)
+        targetLayer = await subLayer.createFeatureLayer()
+    }
+}
+ 
 const isTargetLayer = (layerUrl) => {
 
     //console.log("source url = ", layerUrl)
@@ -98,18 +104,27 @@ export const queryTargetLayerWithPointFeatures = async (pointFeatures, includeBu
     console.log("feature geometry: ", pointFeatures)
 
     if(Array.isArray(pointFeatures)){
-        
-        let geometries = pointFeatures.map(point => {
-            return [point.geometry.x, point.geometry.y]
-          })
-          console.log("feature geometry: ", geometries)
-        
-          let pointGeometry = new Multipoint({
+
+        if(pointFeatures.length === 1 && pointFeatures[0].geometry){
+            if(pointFeatures[0].geometry.type && pointFeatures[0].geometry.type === "point"){
+                pointGeometry = pointFeatures[0].geometry
+            }
+        }
+        else{
+            let geometries = pointFeatures.map(point => {
+                return [point.geometry.x, point.geometry.y]
+              })
+              console.log("feature geometry: ", geometries)
+    
+            pointGeometry = new Multipoint({
             points: geometries,
             spatialReference: pointFeatures[0].spatialReference
-          })
+            })
         
-          console.log("new multipoint feature: ", pointGeometry)
+            console.log("new multipoint feature: ", pointGeometry)
+        }
+
+
     }
 
     else{
