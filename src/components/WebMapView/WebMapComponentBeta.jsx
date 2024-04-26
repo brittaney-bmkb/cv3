@@ -132,7 +132,14 @@ const WebMapComponentBeta = () => {
             
         }}
         onArcgisViewClick={(event) => {
-            handleViewClick(event.detail.mapPoint)
+            console.log("onArcgisViewClick: ", event.detail.native)
+            if(event.detail.native.button === 2){
+                console.log("onArcgisViewClick: right click, button =", event.detail.native.button)
+            }
+            else{
+                console.log("onArcgisViewClick: left click, button =", event.detail.native.button)
+                handleViewClick(event.detail.mapPoint)
+            }
         }}
         >   
         </ArcgisMap>
