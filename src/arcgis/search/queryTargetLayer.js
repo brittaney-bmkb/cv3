@@ -34,6 +34,20 @@ const isTargetLayer = (layerUrl) => {
     return layerUrl === targetLayerUrl
 }
 
+const objectEquals = (obj1, obj2) => {
+    // Compare the attributes of obj1 and obj2
+    // Return true if the objects are equal, false otherwise
+    // This function can be customized based on the specific attributes you want to compare
+    return JSON.stringify(obj1) === JSON.stringify(obj2);
+};
+
+const addObjectToArrayIfNotExists = (array, newObj) => {
+    // Check if the newObj already exists in the array
+    const exists = array.some(obj => objectEquals(obj.attributes['PIN14'], newObj.attributes['PIN14']));
+    // If newObj doesn't exist in the array, push it
+    return exists
+};
+
 export const handleMultipleResults = async (results) => {
 
     console.log("handling multiple results: ", results);
@@ -57,6 +71,9 @@ export const handleMultipleResults = async (results) => {
                 if (sourceEqualsTarget) {
                     results.results.forEach(result => {
                         if (result && result.feature) {
+                            let featureExists = addObjectToArrayIfNotExists(targetFeatures, result.feature)
+                            console.log("feature exists in array: ", featureExists)
+                            console.log("pushing feature to targetFeatures: ", result.feature)
                             targetFeatures.push(result.feature);
                         } else {
                             console.error("Error: Missing feature in result.");
@@ -92,9 +109,16 @@ export const handleMultipleResults = async (results) => {
         console.log("Queried features from multipoint: ", features)
 
         features.map(feature => {
-            targetFeatures.push(feature)
+            let featureExists = addObjectToArrayIfNotExists(targetFeatures, feature)
+            console.log("new feature exists: ", featureExists)
+            if(!featureExists){
+                targetFeatures.push(feature)
+            }
+            
         })
     }
+
+    //let uniqueTargetFeatures = [...new Set(targetFeatures.map(feature => feature.attributes['PIN14']))]
 
     return {targetFeatures, searchFeatures}
 }
