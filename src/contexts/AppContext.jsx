@@ -475,7 +475,7 @@ export const AppProvider = ({children}) => {
 
         console.log("target features returned: ", targetFeatures)
         setPrimaryResultFeature(targetFeatures, true)
-        setSearchResults(null, targetFeatures)
+        setSearchResults(results, targetFeatures)
 
 
     }
