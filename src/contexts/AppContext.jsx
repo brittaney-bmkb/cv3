@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
 import AppReducer, { initialState } from '../reducers/AppReducer'
 import { config } from "../data/config";
-import { returnLatLong } from "../arcgis/webmap/webmap";
 import { theme } from "../theme";
 
 
@@ -53,7 +52,7 @@ export const AppProvider = ({children}) => {
             type:"SET_COORDINATES",
              payload: {
                 x: x,
-                y: y
+                y: y,
             }
         })
     } 
@@ -286,33 +285,42 @@ export const AppProvider = ({children}) => {
 
     const initalizeSearchSources = async () => {
             
-        const { initializeLayersAndSearchSources} = await import('../arcgis/webmap/webmap')
-        let searchSources = await initializeLayersAndSearchSources()
+        const { createSearchSources } = await import('../arcgis/search/searchSources')
 
+        const { initalizeLayers } = await import('../arcgis/search/queryTargetLayer')
+
+        await initalizeLayers()
+        
+        let searchSources = await createSearchSources()
+    
         await setSearchSources(searchSources)
     }
 
 
+    //Function to query parcels based on mouse click point
+    //in use [v3.0.0-beta.2]
     const queryMapPoint = async (point) => {
         
-        let fields 
+        // let fields 
+        console.log("Point from click: ", point)
         setCoordinates(point.x, point.y)
         console.log("x/y", point.x, point.y)
 
         const { panelDisplaySecondary, screenWidth, panelSecondaryVisible, panelPrimaryVisible, panelDisplay, parcelQueryFields, comparableParcels, primaryResultFeature} = state
-        const { peformQueryFeatures, createGraphic, zoomToExtent, removeGraphics } = await import('../arcgis/webmap/webmap')
-
+        //const { peformQueryFeatures, createGraphic, zoomToExtent, removeGraphics } = await import('../arcgis/webmap/webmap')
+        const { queryTargetLayerWithPointFeatures } = await import('../arcgis/search/queryTargetLayer')
 
         console.log("Passing query fields: ", parcelQueryFields)
 
-        if(!parcelQueryFields){
-            fields = await loadDataDictionary()
-        }
-        else{
-            fields = parcelQueryFields
-        }
+        // if(!parcelQueryFields){
+        //     fields = await loadDataDictionary()
+        // }
+        // else{
+        //     fields = parcelQueryFields
+        // }
 
-        let selectedFeatures = await peformQueryFeatures(point, fields)
+        //let selectedFeatures = await peformQueryFeatures(point, fields)
+        let selectedFeatures = await queryTargetLayerWithPointFeatures(point)
 
         console.log("Queried Features: ", selectedFeatures)
 
@@ -322,13 +330,13 @@ export const AppProvider = ({children}) => {
         let secondaryFeatures = []
         if(comparableParcels){
             secondaryFeatures = comparableParcels.filter((feature) => feature.attributes['PIN14'] === selectedFeatures[0].attributes['PIN14'])
-            console.log("Secondary feature selected: ", secondaryFeatures)
-        
-            
+            console.log("Secondary feature selected: ", secondaryFeatures) 
         }
 
         if(secondaryFeatures?.length > 0){
+
             setSecondaryResultFeature(secondaryFeatures[0])
+
             if(screenWidth < theme.breakpoints.values.lg){
                 setPanelDisplay("propertyDetailNearby")
             }
@@ -336,16 +344,16 @@ export const AppProvider = ({children}) => {
                 setPanelDisplaySecondary("propertyDetailNearby")
             }
             
-            createGraphic(secondaryFeatures, "secondarySelected", theme.palette.secondary.main)
-            zoomToExtent([secondaryFeatures[0], primaryResultFeature])
+            //createGraphic(secondaryFeatures, "secondarySelected", theme.palette.secondary.main)
+            //zoomToExtent([secondaryFeatures[0], primaryResultFeature])
         }
     
 
         else{
             setPrimaryResultFeature(selectedFeatures, false)
             setSearchResults(null, selectedFeatures)
-            createGraphic(selectedFeatures, "primary", theme.palette.primary.main)
-            zoomToExtent(selectedFeatures)
+            //createGraphic(selectedFeatures, "primary", theme.palette.primary.main)
+            //zoomToExtent(selectedFeatures)
 
             if(!panelDisplay || panelDisplay !== "resultsList"){
                 setPanelDisplay("resultsList")
@@ -366,18 +374,28 @@ export const AppProvider = ({children}) => {
 
     }
 
-
+    //Function to return parcel features using x/x coordinates
+    //in use [v3.0.0-beta.2]
     const returnLocationFeatures = async (coordinates) => {
 
-        const { queryLocationResults, createGraphic } = await import("../arcgis/webmap/webmap")
+        console.log("Returning location features")
+        const { queryTargetLayerWithCoordinates } = await import("../arcgis/search/queryTargetLayer")
 
-        const { parcelQueryFields } = state
+        const { panelDisplay, panelPrimaryVisible } = state
 
-        let features = await queryLocationResults(coordinates, parcelQueryFields)
+        let features = await queryTargetLayerWithCoordinates(coordinates)
+        console.log("target features from x/y: ", features)
 
         setPrimaryResultFeature(features, true)
         setSearchResults(null, features)
-        createGraphic(features, "primary", theme.palette.primary.main)
+
+        if(!panelDisplay || panelDisplay !== "resultsList"){
+            setPanelDisplay("resultsList")
+        }
+        
+        if(!panelPrimaryVisible || panelPrimaryVisible === false){
+            setPanelPrimaryVisibility(true)
+        }
     }
   
     
@@ -449,6 +467,18 @@ export const AppProvider = ({children}) => {
         toggleLayer(layerName)
     }
 
+    const returnSearchResultFeatures = async (results) => {
+
+        const { handleMultipleResults } = await import('../arcgis/search/queryTargetLayer')
+
+        const{ targetFeatures } = await handleMultipleResults(results)
+
+        console.log("target features returned: ", targetFeatures)
+        setPrimaryResultFeature(targetFeatures, true)
+        setSearchResults(results, targetFeatures)
+
+
+    }
 
     const renderSearchResults = async (searchWidgetResults) => {
         let fields
@@ -464,6 +494,8 @@ export const AppProvider = ({children}) => {
         }
 
         const features = await querySearchResults(searchWidgetResults, fields)
+
+        console.log("queried features: ", features)
         setSearchResults(searchWidgetResults, features)
 
         //if(!primaryResultFeature){
@@ -477,14 +509,14 @@ export const AppProvider = ({children}) => {
     }
 
     const clearResults = async () => {
-        const { removeGraphics } = await import('../arcgis/webmap/webmap')
+        //const { removeGraphics } = await import('../arcgis/webmap/webmap')
         
         const {panelDisplaySecondary} = state
 
         setPrimaryResultFeature(null, true)
         setSearchResults(null, null)
-        removeGraphics("primary");
-        removeGraphics("secondary");
+        //removeGraphics("primary");
+        //removeGraphics("secondary");
         setPanelDisplay("resultsList")
 
         if(["comparablePropertySearch", "nearbyProperties", "resultsListComparables", "resultsListNearby", "propertyDetailComparable", "propertyDetailNearby"].includes(panelDisplaySecondary)){
@@ -501,31 +533,26 @@ export const AppProvider = ({children}) => {
     }
 
     const clearResultsComparables = async () => {
-        const { removeGraphics } = await import('../arcgis/webmap/webmap')
+        //const { removeGraphics } = await import('../arcgis/webmap/webmap')
 
-        const { comparableParcels} = state
+        //const { comparableParcels} = state
         setComparableParcels(null)
-        removeGraphics("secondary")
+        //removeGraphics("secondary")
 
        
     }
 
+    //Function to return comparable parcel features
+    //in use [v3.0.0-beta.2]
     const searchComparableProperties = async (whereQuery, searchDistance) => {
 
-        const { compareProperities, zoomToExtent } = await import('../arcgis/webmap/webmap')
+        const { compareProperities } = await import('../arcgis/search/queryTargetLayer')
 
         const { primaryResultFeature, parcelQueryFields, screenWidth, comparableParcels } = state     
 
         let features = await compareProperities(whereQuery, searchDistance, primaryResultFeature, parcelQueryFields)
 
         setComparableParcels(features)
-
-        let zoomFeatures = [
-            ...[primaryResultFeature],
-            ...features
-        ]
-
-        zoomToExtent(zoomFeatures)
 
         console.log("New Comparable features: ", state.comparableParcels)
 
@@ -539,22 +566,17 @@ export const AppProvider = ({children}) => {
         }
     }
 
+    //Function to return nearby parcel features
+    //in use [v3.0.0-beta.2]
     const searchNearbyProperties = async (searchDistance, units) => {
         setIsQuerying(true)
-        const { nearbyProperties, zoomToExtent } = await import('../arcgis/webmap/webmap')
+        const { nearbyProperties } = await import('../arcgis/search/queryTargetLayer')
         const { primaryResultFeature, parcelQueryFields } = state  
         console.log(`Searching for properties within ${searchDistance}`)
 
         
         let nearbyParcels = await nearbyProperties( searchDistance, units, primaryResultFeature, parcelQueryFields)
-        
-        let zoomFeatures = [
-            ...[primaryResultFeature],
-            ...nearbyParcels
-        ]
-
-        zoomToExtent(zoomFeatures)
-
+    
         setComparableParcels(nearbyParcels)
         setIsQuerying(false)
     }
@@ -692,7 +714,8 @@ export const AppProvider = ({children}) => {
         panelDisplayWidget: state.panelDisplayWidget,
         queryMapPoint,
         setComparableParcels,
-        initalizeSearchSources
+        initalizeSearchSources,
+        returnSearchResultFeatures
         
     }
 
