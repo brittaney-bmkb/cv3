@@ -14,6 +14,7 @@ import ScaleBar from "@arcgis/core/widgets/ScaleBar.js";
 import Point from "@arcgis/core/geometry/Point";
 import { theme } from "../../theme";
 import FeatureEffect from "@arcgis/core/layers/support/FeatureEffect.js";
+import Multipoint from "@arcgis/core/geometry/Multipoint.js";
 
 let targetLayerView;
 let targetLayer;
@@ -70,16 +71,16 @@ zoom: 8,
 // });
 
 // //create graphics layer to search result
-// layerGraphics = new GraphicsLayer()
-// layerGraphics.effect = "drop-shadow(3px, 3px, 4px, #1B1D1F) brightness(150%)"
+layerGraphics = new GraphicsLayer()
+layerGraphics.effect = "drop-shadow(3px, 3px, 4px, #1B1D1F) brightness(150%)"
 
 
-// //create graphics layer to comparable search result
-// let layerGraphicsSecondary = new GraphicsLayer()
-// //layerGraphicsSecondary.effect = "drop-shadow(1px, 1px, 1px, #4c4e57) brightness(110%)"
-// //create graphics layer to comparable search result
-// let layerGraphicsSecondarySelected = new GraphicsLayer()
-// layerGraphicsSecondarySelected.effect = "drop-shadow(3px, 3px, 4px, #1B1D1F) brightness(120%)"
+//create graphics layer to comparable search result
+let layerGraphicsSecondary = new GraphicsLayer()
+//layerGraphicsSecondary.effect = "drop-shadow(1px, 1px, 1px, #4c4e57) brightness(110%)"
+//create graphics layer to comparable search result
+let layerGraphicsSecondarySelected = new GraphicsLayer()
+layerGraphicsSecondarySelected.effect = "drop-shadow(3px, 3px, 4px, #1B1D1F) brightness(120%)"
 
 export async function toggleLayer(layer){
 
@@ -177,6 +178,36 @@ export async function returnLatLong(){
   return point
 }
 
+export async function queryParcelsFromMultipoint(pointFeatures){
+
+  let pointGeometry = pointFeatures.map(point => {
+    return [point.geometry.x, point.geometry.y]
+  })
+  console.log("feature geometry: ", pointGeometry)
+
+  let multiPoint = new Multipoint({
+    points: pointGeometry,
+    spatialReference: pointFeatures[0].spatialReference
+  })
+
+  console.log("new multipoint feature: ", multiPoint)
+
+  const query = new Query();
+  query.geometry = multiPoint;
+  query.spatialRelationship = "intersects";
+  query.returnGeometry = true
+  query.outFields = ["*"]
+  query.distance = config.buffer_distance,
+  query.units = config.buffer_unit
+  //query.outFields = parcelQueryFields
+
+  const { features } = await targetLayer.queryFeatures(query);
+
+  console.log("queried features from click: ", features)
+
+  return features
+}
+
 export async function peformQueryFeatures(point, parcelQueryFields){
 
       console.log("Point: ", point, parcelQueryFields)
@@ -184,14 +215,11 @@ export async function peformQueryFeatures(point, parcelQueryFields){
       query.geometry = point;
       query.spatialRelationship = "intersects";
       query.returnGeometry = true
+      //query.outFields = ["*"]
       query.outFields = parcelQueryFields
 
 
       const { features } = await targetLayer.queryFeatures(query);
-
-      console.log("queried features from click: ", features)
-
-      
 
       return features
 }
@@ -312,9 +340,9 @@ export async function querySearchResults(result, outFields){
   // await reactiveUtils.whenOnce(() => !layerView.updating);
   
   let { features } = await targetLayer.queryFeatures(query)
-  await zoomToExtent(features)
+  // await zoomToExtent(features)
 
-  createGraphic(features, "primary", theme.palette.primary.main)    
+  // createGraphic(features, "primary", theme.palette.primary.main)    
 
   return features
 

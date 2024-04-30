@@ -95,7 +95,7 @@ export const config = {
                 name: "Parcel Pin", // Name of the search source.
                 displayField: "PIN14_dash", // Field used for displaying search suggestions.
                 exactMatch: false, // Exact match search (boolean).
-                maxResults: 50, // Maximum number of search results.
+                maxResults: 1000, // Maximum number of search results.
                 maxSuggestions: 50, // Maximum number of search suggestions.
                 minSuggestCharacters: 2, // Minimum characters for search suggestions.
                 outFields: [ "PIN14","PIN10", "PIN14_dash"], // IMPORTANT put the field that will be used to perfrom search query as the first item in the array. Fields to return in search results (array of strings).
@@ -125,7 +125,7 @@ export const config = {
                    name: "Parcel Address",
                    displayField:"street_address",
                    exactMatch:false,
-                   maxResults:50,
+                   maxResults:1000,
                    maxSuggestions:50,
                    minSuggestCharacters:2,
                    outFields: ["street_address", "city_state_zip"],
@@ -1107,7 +1107,7 @@ export const config = {
         {
             apiKey: null,
             autoNavigate:false,
-            maxResults: 50,
+            maxResults: 1000,
             maxSuggestions:50,
             minSuggestCharacters: 2,
             name: "Address Locator",

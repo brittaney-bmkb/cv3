@@ -43,8 +43,13 @@ const WebMapComponentBeta = () => {
         if(arcgisMapRef.current && mapLoading === false){
 
             let map = arcgisMapRef.current.map
-
+            
             await removeLayer(map, title)
+
+            if(title === "Comparable Parcels"){
+                await removeLayer(map, "Selected Comparable Parcel")
+            }
+           
 
             if(features){
                 let featLayer = await createFeatureLayerFromFeatures(features, title, theme)
@@ -127,10 +132,10 @@ const WebMapComponentBeta = () => {
             setMapLoading(false)
             setMapView(event.target.view)
             }}
-        onArcgisViewChange={(event) => {
-            console.log("view change: ", event)
+        // onArcgisViewChange={(event) => {
+        //     console.log("view change: ", event)
             
-        }}
+        // }}
         onArcgisViewClick={(event) => {
             console.log("onArcgisViewClick: ", event.detail.native)
             if(event.detail.native.button === 2){
