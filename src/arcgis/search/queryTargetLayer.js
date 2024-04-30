@@ -71,9 +71,9 @@ export const handleMultipleResults = async (results) => {
                 if (sourceEqualsTarget) {
                     results.results.forEach(result => {
                         if (result && result.feature) {
-                            let featureExists = addObjectToArrayIfNotExists(targetFeatures, result.feature)
-                            console.log("feature exists in array: ", featureExists)
-                            console.log("pushing feature to targetFeatures: ", result.feature)
+                            // let featureExists = addObjectToArrayIfNotExists(targetFeatures, result.feature)
+                            // console.log("feature exists in array: ", featureExists)
+                            //console.log("pushing feature to targetFeatures: ", result.feature)
                             targetFeatures.push(result.feature);
                         } else {
                             console.error("Error: Missing feature in result.");
@@ -89,7 +89,7 @@ export const handleMultipleResults = async (results) => {
                     });
                 }
             } else {
-                console.log("Pushing results features to search features");
+                //console.log("Pushing results features to search features");
                 results.results.map(result => {
                     searchFeatures.push(result.feature)
                 })
@@ -110,7 +110,7 @@ export const handleMultipleResults = async (results) => {
 
         features.map(feature => {
             let featureExists = addObjectToArrayIfNotExists(targetFeatures, feature)
-            console.log("new feature exists: ", featureExists)
+            //console.log("new feature exists: ", featureExists)
             if(!featureExists){
                 targetFeatures.push(feature)
             }

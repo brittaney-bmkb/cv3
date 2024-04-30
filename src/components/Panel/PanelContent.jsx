@@ -246,8 +246,8 @@ const PanelContent = ({display}) => {
                     divider={true}
                     />
                     {/* <LayersWidget/> */}
-                    {/* <LayerListWidgetCustom/> */}
-                    <LayerList/>
+                    <LayerListWidgetCustom/>
+                    {/* <LayerList/> */}
                 </Box>
             )   
         case 'basemapsWidget':
