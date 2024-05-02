@@ -19,7 +19,8 @@ const WebMapComponentBeta = () => {
         panelWidgetVisible,
         translateText,
         setShowMapMoblie,
-        searchSources
+        searchSources, 
+        setMap
         } = UseAppContext()
 
     const arcgisMapRef = useRef(null)
@@ -43,13 +44,8 @@ const WebMapComponentBeta = () => {
         if(arcgisMapRef.current && mapLoading === false){
 
             let map = arcgisMapRef.current.map
-            
-            await removeLayer(map, title)
 
-            if(title === "Comparable Parcels"){
-                await removeLayer(map, "Selected Comparable Parcel")
-            }
-           
+            await removeLayer(map, title)
 
             if(features){
                 let featLayer = await createFeatureLayerFromFeatures(features, title, theme)
@@ -131,22 +127,21 @@ const WebMapComponentBeta = () => {
             console.log('MapView ready', event);
             setMapLoading(false)
             setMapView(event.target.view)
+            setMap(event.target.map)
             }}
-        // onArcgisViewChange={(event) => {
-        //     console.log("view change: ", event)
+        onArcgisViewChange={(event) => {
+            console.log("view change: ", event)
             
-        // }}
+        }}
         onArcgisViewClick={(event) => {
-            console.log("onArcgisViewClick: ", event.detail.native)
-            if(event.detail.native.button === 2){
-                console.log("onArcgisViewClick: right click, button =", event.detail.native.button)
-            }
-            else{
-                console.log("onArcgisViewClick: left click, button =", event.detail.native.button)
-                handleViewClick(event.detail.mapPoint)
-            }
+            console.log('onArcgisViewClick', event)
+            handleViewClick(event.detail.mapPoint)
         }}
         >   
+            <arcgis-sketch position="bottom-left" creation-mode="continuous"
+                layout="horizontal">
+            </arcgis-sketch>
+
         </ArcgisMap>
         <Box 
             id="mapButtonGroup"

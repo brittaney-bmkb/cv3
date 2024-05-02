@@ -17,6 +17,7 @@ import PrintWidgetCustom, { PrintWidgetPane } from "../Widgets/PrintWidgetCustom
 import { config } from "../../data/config";
 import BasemapGallery from "../Widgets/Basemap/BasemapGallery";
 import LayerList from "../Widgets/LayersList/LayerList";
+import MeasureComponentBeta from "../Widgets/Measure/MeasureComponentBeta";
 
 const PanelContent = ({display}) => {
 
@@ -230,6 +231,7 @@ const PanelContent = ({display}) => {
                         panel={"widget"}
                         descriptionText={"Measure Widget Coming Soon"}
                     />                    
+                    <MeasureComponentBeta/>
                     {/* <MeasureWidget
                         panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"}
                     /> */}

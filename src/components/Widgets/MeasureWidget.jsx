@@ -25,7 +25,7 @@ const areaUnitOptions = [
 // this lifted from comparable property search and will needed to be updated for this widget
 const MeasureWidget = () => {
 
-    const { panelDisplayWidget, setMeasureWidgetState, translateText, setMeasureWidget, panelSecondaryVisible, screenWidth} = UseAppContext()
+    const { panelDisplayWidget, setMeasureWidgetState, translateText, setMeasureWidget, panelSecondaryVisible, screenWidth, mapView} = UseAppContext()
     // //use ref for div 
     const measureWidget = useRef(null)
 
@@ -63,12 +63,12 @@ const MeasureWidget = () => {
                 if(!measureWidget.current){
                     console.log("initializing new measure widget startup")
                     measureWidget.current = new Measurement({
-                        view:view,
+                        view:mapView,
                         activeTool: activeTool,
                         areaUnit:"square-us-feet",
                         linearUnit: "us-feet",
                         viewModel:{
-                            view:view,
+                            view:mapView,
                             activeTool:activeTool,
                             areaUnit: "square-us-feet",
                             linearUnit: "us-feet",
@@ -284,6 +284,18 @@ const MeasureWidget = () => {
         }
         
     }
+    // var operationalLayers = map.webMapResponse.itemData.operationalLayers;
+
+    // console.log(mapView.map.layers.items)
+    // console.log(Object.keys(mapView))
+
+    // Iterate through each layer in the map
+    // mapView.map.layers.forEach(function(layer) {
+    //     // Log the layer name and type
+    //     console.log("Layer Name: " + layer.title);
+    //     console.log("Layer Type: " + layer.type);
+    //     console.log("Layer : " + layer.layerObject.setSelectionEnabled);
+    // });
 
 
     return (
@@ -311,7 +323,7 @@ const MeasureWidget = () => {
                 /> 
 
                 <StyledButtonFilledPrimary
-                    //variant={activeTool === 'area' ? 'contained' : 'outlined'}
+                    variant={activeTool === 'area' ? 'contained' : 'outlined'}
                     color="primary"
                     startIcon={<SquareFootOutlinedIcon/>}
                     text={translateText('Area')}

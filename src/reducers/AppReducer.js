@@ -3,6 +3,7 @@ import { config } from "../data/config"
 export const initialState = {
 
     //MAP
+    map:null, 
     mapView:null,
     mapContainer:null,
     primaryResultFeature: null,
@@ -48,6 +49,12 @@ const AppReducer = (state, action) => {
             ...state, 
             mapContainer: payload.mapContainer
         }
+        case "SET_MAP":
+        console.log("SET_MAP")
+        return {
+            ...state, 
+            map: payload.map
+        }        
         case "SET_MAP_VIEW":
             console.log("SET_MAP_VIEW")
             return{
