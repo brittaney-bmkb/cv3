@@ -28,7 +28,8 @@ const Search = () => {
         setSearchResults,
         searchFeatures,
         searchTerm,
-        anyAttributesIncluded
+        anyAttributesIncluded,
+        setIsQuerying
      } = UseAppContext()
 
     //get url parameters
@@ -131,7 +132,7 @@ const Search = () => {
 
     //primaryResultFeature use effect
     useEffect(() => {
-
+        setIsQuerying(true)
         let searchString = routeParams.get("search")
         let primaryInSearchFeature
         //When primary feature result changes update the search param
@@ -206,6 +207,7 @@ const Search = () => {
             // }
         }  
 
+        setIsQuerying(false)
 
     }, [primaryResultFeature, searchWidget])
 
@@ -273,12 +275,12 @@ const Search = () => {
 
                     results = event.results
                     console.log("results for multiple results: ", event)
-
+                    setIsQuerying(true)
                     returnSearchResultFeatures(results, searchWidget.current.searchTerm)
                     setSearchParams({'search': searchWidget.current.searchTerm})
 
                     updateAppWithSearchResult()
-                    
+                    setIsQuerying(false)
                 })
 
                 //to do enable clear results to empty searchFeatures array

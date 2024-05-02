@@ -510,16 +510,8 @@ export const AppProvider = ({children}) => {
     const returnSearchResultFeatures = async (results, newSearchTerm) => {
 
         const { handleMultipleResults } = await import('../arcgis/search/queryTargetLayer')
-        const { searchTerm, prevSearchFeatures } = state
 
-        // if(newSearchTerm !== searchTerm){
-        //     console.log("Search term is same as previous: ", searchTerm)
-
-        //     setPrimaryResultFeature(prevSearchFeatures, false)
-    
-        //     setSearchResults(null, prevSearchFeatures)
-        // }
-
+        
         // else{
         console.log("Performing new target layer query")
         const{ targetFeatures } = await handleMultipleResults(results)
@@ -533,7 +525,7 @@ export const AppProvider = ({children}) => {
         console.log("seting previous feature: ", targetFeatures)
         setSearchResults(results, targetFeatures, newSearchTerm, targetFeatures)
         //}
-
+        
         
 
 
@@ -593,6 +585,8 @@ export const AppProvider = ({children}) => {
 
         // Use history.pushState to update the URL without refreshing the page
         window.history.pushState({ path: updatedUrl }, '', updatedUrl);
+
+        //setIsQuerying(false)
     }
 
     const clearResultsComparables = async () => {

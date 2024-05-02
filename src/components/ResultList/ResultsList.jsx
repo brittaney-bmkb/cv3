@@ -8,15 +8,16 @@ import { useEffect } from "react";
 
 const ResultsList = ({results, primaryLableColor, noResultsMessage}) => {
 
-    const { isQuerying, translateText, setIsQuerying } = UseAppContext()
+    const { isQuerying, translateText, setIsQuerying, primaryResultFeature } = UseAppContext()
 
     console.log("list results ", results)
 
-    useEffect(() => {
-        if(!results){
-            setIsQuerying(true)
-        }
-    }, [results])
+    // useEffect(() => {
+
+    //     if(!results && !primaryResultFeature){
+    //         setIsQuerying(true)
+    //     }
+    // }, [results, primaryResultFeature])
 
     return(
         <List sx={{

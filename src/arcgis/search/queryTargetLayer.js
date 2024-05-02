@@ -71,10 +71,13 @@ export const handleMultipleResults = async (results) => {
                 if (sourceEqualsTarget) {
                     results.results.forEach(result => {
                         if (result && result.feature) {
-                            // let featureExists = addObjectToArrayIfNotExists(targetFeatures, result.feature)
+                            let featureExists = addObjectToArrayIfNotExists(targetFeatures, result.feature)
                             // console.log("feature exists in array: ", featureExists)
                             //console.log("pushing feature to targetFeatures: ", result.feature)
-                            targetFeatures.push(result.feature);
+                            if(!featureExists){
+                                targetFeatures.push(result.feature);
+                            }
+                            
                         } else {
                             console.error("Error: Missing feature in result.");
                         }

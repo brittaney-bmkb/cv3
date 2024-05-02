@@ -33,7 +33,8 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
         prevSearchFeatures,
         searchTerm,
         setPrimaryResultFeature,
-        setSearchResults
+        setSearchResults,
+        setIsQuerying
     } = UseAppContext()
 
     //get url parameters
@@ -102,6 +103,7 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
                 console.log("setting previous search term: ", searchTerm)
                 console.log("setting previous features: ", prevSearchFeatures)
                 setSearchParams({'search': searchTerm})
+                setIsQuerying(true)
                 setSearchResults(null, null)
                 setPrimaryResultFeature(prevSearchFeatures, true)
             }
