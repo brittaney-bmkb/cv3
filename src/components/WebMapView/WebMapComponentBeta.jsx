@@ -130,12 +130,13 @@ const WebMapComponentBeta = () => {
         onArcgisViewReadyChange={(event) => {
             console.log('MapView ready', event);
             setMapLoading(false)
-            setMapView(event.target.view)
-            }}
-        // onArcgisViewChange={(event) => {
-        //     console.log("view change: ", event)
             
-        // }}
+            }}
+        onArcgisViewChange={(event) => {
+            console.log("view change: ", event)
+            setMapView(event.target.view)
+            
+        }}
         onArcgisViewClick={(event) => {
             //console.log("onArcgisViewClick: ", event)
             handleViewClick(event.detail.mapPoint)
