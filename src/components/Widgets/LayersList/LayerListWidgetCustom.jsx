@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react"
 import UseAppContext from "../../../contexts/AppContext";
 
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
-import { theme } from "../../../theme";
 import { CalciteLoader } from "@esri/calcite-components-react";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 
