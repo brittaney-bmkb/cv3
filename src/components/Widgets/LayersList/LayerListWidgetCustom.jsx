@@ -14,28 +14,60 @@ const layerListVMCustom = () => {
     const [ layerListItems, setLayerListItems ] = useState(null)
     const [groupOpen, setGroupOpen] = useState(null);
     const [layerGroups, setLayerGroups] = useState(null);
-    const { translateText, mapView } = UseAppContext()
+    const { translateText, mapView, mapViewScale } = UseAppContext()
+
+    const sortGroupedLayers = (groupedLayers) => {
+        const sortedGroupedLayers = {};
+        Object.entries(groupedLayers)
+            .sort(([groupA], [groupB]) => groupA.localeCompare(groupB))
+            .forEach(([group, children]) => {
+                sortedGroupedLayers[group] = children;
+            });
+        return sortedGroupedLayers;
+    };
 
     const handleClick = (title) => {
-
-        let groupedLayers = {}
-
-        layerListVM.current?.operationalItems?.items.flatMap(({ children }) => {
-            return children.items.map(childItem => {
-                const { title: groupTitle, children: mapImageChildren } = childItem;
-                groupedLayers[groupTitle] = mapImageChildren;
+        const updatedGroupedLayers = {};
     
-                const childToUpdate = mapImageChildren.find(child => child.title === title);
-                if (childToUpdate) {
-                    childToUpdate.layer.visible = !childToUpdate.layer.visible;
+        layerListItems.forEach(item => {
+            if (item.layer.type === "map-image") {
+                item.children.items.forEach(childItem => {
+                    const group = childItem.title;
+                    const mapImageChildren = childItem.children.items;
+    
+                    if (updatedGroupedLayers[group]) {
+                        updatedGroupedLayers[group] = [...updatedGroupedLayers[group], ...mapImageChildren];
+                    } else {
+                        updatedGroupedLayers[group] = mapImageChildren;
+                    }
+    
+                    const childToUpdate = mapImageChildren.find(child => child.title === title);
+                    if (childToUpdate) {
+                        childToUpdate.layer.visible = !childToUpdate.layer.visible;
+                    }
+                });
+            } else if (item.layer.type === "group") {
+                const group = item.title;
+                const groupChildren = item.children.items;
+    
+                if (updatedGroupedLayers[group]) {
+                    updatedGroupedLayers[group] = [...updatedGroupedLayers[group], ...groupChildren];
+                } else {
+                    updatedGroupedLayers[group] = groupChildren;
                 }
-            });
+    
+                groupChildren.forEach(child => {
+                    if (child.title === title) {
+                        child.layer.visible = !child.layer.visible;
+                    }
+                });
+            }
         });
         
-
-        setLayerGroups(groupedLayers)
-                                                
-        }
+        let sortedUpdatedGroups = sortGroupedLayers(updatedGroupedLayers)
+        setLayerGroups(sortedUpdatedGroups);
+    }
+    
 
     useEffect(() => {
         const createLayerListVM = async () => {
@@ -69,19 +101,40 @@ const layerListVMCustom = () => {
                 layerListItems.map((item) => {
                     
                     if(item.layer.type === "map-image"){
-                        //console.log("layerListItem: ", item)
+                        console.log("layerListItem map-image: ", item)
                         //if layer type is map image skip the parent group
                         //access the grouped children
                         item.children.items.map(childItem => {
                             
-                            let groups = childItem.title
+                            let group = childItem.title
                             let mapImageChildren = childItem.children.items
 
-                            groupedLayers[groups] = mapImageChildren
+                            
+                            if(groupedLayers[group]){
+                                groupedLayers[group] = [...groupedLayers[group], mapImageChildren]
+                            }
+                            else{
+                                groupedLayers[group] = mapImageChildren
+                            }
                             //console.log("layerListItem childItem: ", groupedLayers)
 
        
                         })
+                        
+                    }
+
+                    else if(item.layer.type === "group"){
+                        console.log("layerListItem: ", item)
+                        let group = item.title
+                        let groupChildren = item.children.items
+
+                        if(groupedLayers[group]){
+                            groupedLayers[group] = [...groupedLayers[group], ...groupChildren]
+                            console.log("groupedLayers: ", groupedLayers)
+                        }
+                        else{
+                            groupedLayers[group] =  groupChildren
+                        }
                         
                     }
                 })
@@ -93,7 +146,9 @@ const layerListVMCustom = () => {
 
                 setGroupOpen(obj)
 
-                setLayerGroups(groupedLayers)
+
+                let sortedUpdatedGroups = sortGroupedLayers(groupedLayers)
+                setLayerGroups(sortedUpdatedGroups);
             }
         }
 
@@ -107,7 +162,7 @@ const layerListVMCustom = () => {
     useEffect(() => {
 
         reactiveUtils.watch(
-            () => mapView.scale,
+            () => mapViewScale.scale,
             () => {
 
                 // Update layer sources with visibility
@@ -136,11 +191,10 @@ const layerListVMCustom = () => {
             layerGroups ? 
              <List disablePadding sx={{ width:"100%", height:"100%"}}>
                 {
-                Object.keys(layerGroups).map(group => {
+                Object.keys(layerGroups).map((group, index) => {
                     return(
-                        <Box>
+                        <Box key={`${group}-${index}`}>
                             <ListItemButton 
-                                key={group}
                                 sx={{justifyContent:"space-between"}}
                                 onClick={() => {handleGroupClick(group)}}
                                 >
@@ -149,11 +203,11 @@ const layerListVMCustom = () => {
                             </ListItemButton>
                             <Collapse in={groupOpen[group]}>
                                 {
-                                    layerGroups[group].map(layer => {
+                                    layerGroups[group].map((layer, index) => {
                                         return(
                                             <ListItem
                                                 dense
-                                                key={layer.title}
+                                                key={`${layer.title}-${index}`}
                                                 divider
                                                 sx={{width: "100%"}}
                                                 >

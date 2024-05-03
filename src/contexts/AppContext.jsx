@@ -19,6 +19,15 @@ export const AppProvider = ({children}) => {
         })
     } 
 
+    const setMapViewScale= (view) => {
+        dispatch({
+            type:"SET_MAP_VIEW_SCALE",
+            payload: {
+                mapViewScale: view
+            }
+        })
+    }
+
     const setMapView = (view) => {
         dispatch({
             type:"SET_MAP_VIEW",
@@ -649,6 +658,8 @@ export const AppProvider = ({children}) => {
         loadMap,
         setMapContainer,
         setMapView,
+        setMapViewScale,
+        mapViewScale: state.mapViewScale,
         mapView: state.mapView,
         primaryResultFeature: state.primaryResultFeature,
         setPrimaryResultFeature,

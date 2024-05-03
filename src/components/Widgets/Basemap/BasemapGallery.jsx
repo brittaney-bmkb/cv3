@@ -33,7 +33,7 @@ const BasemapGallery = () => {
 
         configureBasemapGallery()
 
-    }, [basemapGalleryRef, mapView])
+    }, [basemapGalleryRef])
 
     return(
         <ArcgisBasemapGallery

@@ -4,6 +4,7 @@ export const initialState = {
 
     //MAP
     mapView:null,
+    mapViewScale:null,
     mapContainer:null,
     primaryResultFeature: null,
     secondaryResultFeature:null,
@@ -53,6 +54,12 @@ const AppReducer = (state, action) => {
             return{
                 ...state,
                 mapView:payload.mapView
+            }
+        case "SET_MAP_VIEW_SCALE":
+            console.log("SET_MAP_VIEW_SCALE")
+            return{
+                ...state,
+                mapViewScale:payload.mapViewScale
             }
         case "SET_PRIMARY_RESULT_FEATURE":
             console.log("SET_PRIMARY_RESULT_FEATURE: ", payload.primaryResultFeature)
