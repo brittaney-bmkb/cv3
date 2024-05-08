@@ -32,7 +32,7 @@ export const config = {
     data_dictionary: "https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/ArcGIS/rest/services/cookviewer_data_dictionary_view/FeatureServer/0",
     // TARGET LAYER CONFIGURATION: Specify the name of the target layer and the fields to display in results.
     // MAKE SURE THE NAME OF THIS LAYER IS EXACTLY THE SAME IN THE LAYERSOURCES ARRAY
-    target_layer_name: "Parcels (current)", // Name of the target layer in LayerSources
+    target_layer_name: "Parcels Current", // Name of the target layer in LayerSources
     target_layer_out_fields: ["PIN10","PIN14","PIN14_dash","street_address","city_state_zip","OBJECTID"],// Fields to display in the results pane (array of strings).
     //FIELD TO REFERENCE FOR CREATING URL PARAM WHEN CLICKING IN MAP
     target_layer_id_field: "PIN10",
@@ -57,7 +57,7 @@ export const config = {
         // To add or remove a layer source copy or delete an object and modify
         // the object's properties
        {
-           layerName: "Parcels (current)", // Name of the layer source.
+           layerName: "Parcels Current", // Name of the layer source.
            description:"",
            url: "https://gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/", // URL to the layer service.
            type: 'mapImageLayer',

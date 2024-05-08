@@ -7,6 +7,7 @@ import { CalciteLoader } from "@esri/calcite-components-react";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 
 import LayerListVM from "@arcgis/core/widgets/LayerList/LayerListViewModel.js";
+import { config } from "../../../data/config";
 
 const layerListVMCustom = () => {
 
@@ -28,44 +29,48 @@ const layerListVMCustom = () => {
 
     const handleClick = (title) => {
         const updatedGroupedLayers = {};
-    
-        layerListItems.forEach(item => {
-            if (item.layer.type === "map-image") {
-                item.children.items.forEach(childItem => {
-                    const group = childItem.title;
-                    const mapImageChildren = childItem.children.items;
-    
-                    if (updatedGroupedLayers[group]) {
-                        updatedGroupedLayers[group] = [...updatedGroupedLayers[group], ...mapImageChildren];
-                    } else {
-                        updatedGroupedLayers[group] = mapImageChildren;
-                    }
-    
-                    const childToUpdate = mapImageChildren.find(child => child.title === title);
-                    if (childToUpdate) {
-                        childToUpdate.layer.visible = !childToUpdate.layer.visible;
-                    }
-                });
-            } else if (item.layer.type === "group") {
-                const group = item.title;
-                const groupChildren = item.children.items;
-    
-                if (updatedGroupedLayers[group]) {
-                    updatedGroupedLayers[group] = [...updatedGroupedLayers[group], ...groupChildren];
-                } else {
-                    updatedGroupedLayers[group] = groupChildren;
-                }
-    
-                groupChildren.forEach(child => {
-                    if (child.title === title) {
-                        child.layer.visible = !child.layer.visible;
-                    }
-                });
-            }
-        });
+
+        if(title !== config.target_layer_name ){
+            layerListItems.forEach(item => {
+                if (item.layer.type === "map-image") {
+                    item.children.items.forEach(childItem => {
+                        const group = childItem.title;
+                        const mapImageChildren = childItem.children.items;
         
-        let sortedUpdatedGroups = sortGroupedLayers(updatedGroupedLayers)
-        setLayerGroups(sortedUpdatedGroups);
+                        if (updatedGroupedLayers[group]) {
+                            updatedGroupedLayers[group] = [...updatedGroupedLayers[group], ...mapImageChildren];
+                        } else {
+                            updatedGroupedLayers[group] = mapImageChildren;
+                        }
+        
+                        const childToUpdate = mapImageChildren.find(child => child.title === title);
+                        if (childToUpdate) {
+                            childToUpdate.layer.visible = !childToUpdate.layer.visible;
+                        }
+                    });
+                } else if (item.layer.type === "group") {
+                    const group = item.title;
+                    const groupChildren = item.children.items;
+        
+                    if (updatedGroupedLayers[group]) {
+                        updatedGroupedLayers[group] = [...updatedGroupedLayers[group], ...groupChildren];
+                    } else {
+                        updatedGroupedLayers[group] = groupChildren;
+                    }
+        
+                    groupChildren.forEach(child => {
+                        if (child.title === title) {
+                            child.layer.visible = !child.layer.visible;
+                        }
+                    });
+                }
+            });
+            
+            let sortedUpdatedGroups = sortGroupedLayers(updatedGroupedLayers)
+            setLayerGroups(sortedUpdatedGroups);
+        }
+    
+        
     }
     
 
