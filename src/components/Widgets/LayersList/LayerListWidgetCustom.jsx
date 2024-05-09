@@ -1,140 +1,185 @@
-import { Box, Checkbox, Chip, Collapse, List, ListItem, ListItemButton, ListItemText, Typography } from "@mui/material"
+import { Box, Checkbox, Chip, Collapse, List, ListItem, ListItemButton, Typography } from "@mui/material"
 import { useEffect, useRef, useState } from "react"
-import LayerList from "@arcgis/core/widgets/LayerList.js";
-import { map, view } from "../../../arcgis/webmap/webmap";
-import { config } from "../../../data/config";
 import UseAppContext from "../../../contexts/AppContext";
 
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
-import { theme } from "../../../theme";
 import { CalciteLoader } from "@esri/calcite-components-react";
-import { createFeatureLayers } from "../../../arcgis/layers/layers";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 
-// Function to extract numeric part from a string
-function extractNumericPart(str) {
-    const matches = str.match(/\d+/g);
-    return matches ? parseInt(matches.join(''), 10) : NaN;
-  }
+import LayerListVM from "@arcgis/core/widgets/LayerList/LayerListViewModel.js";
+import { config } from "../../../data/config";
 
-const LayerListWidgetCustom = () => {
+const layerListVMCustom = () => {
 
-    const layerListWidget = useRef(null)
-    const [layerSources, setLayerSources] = useState(config.layer_sources);
+    const layerListVM = useRef(null)
+    const [ layerListItems, setLayerListItems ] = useState(null)
     const [groupOpen, setGroupOpen] = useState(null);
     const [layerGroups, setLayerGroups] = useState(null);
-    const { toggleMapLayer, translateText } = UseAppContext()
-    
-    // const toggleLayer = (layer) => {
-    //     toggleMapLayer(layer)
-    // }
+    const { translateText, mapView, mapViewScale } = UseAppContext()
 
-    // const handleChipClick = (layerName) => {
-    //     setActiveChips((prevActiveChips) => ({
-    //       ...prevActiveChips,
-    //       [layerName]: !prevActiveChips[layerName]
-    //     }));
-    //   };
+    const sortGroupedLayers = (groupedLayers) => {
+        const sortedGroupedLayers = {};
+        Object.entries(groupedLayers)
+            .sort(([groupA], [groupB]) => groupA.localeCompare(groupB))
+            .forEach(([group, children]) => {
+                sortedGroupedLayers[group] = children;
+            });
+        return sortedGroupedLayers;
+    };
 
+    const handleClick = (title) => {
+        const updatedGroupedLayers = {};
 
-    const handleClick = (layerName) => {
-
-        layerListWidget.current?.operationalItems?.items.filter(item => item.layer.title === layerName)
-                                                       .map(item => {
-                                                        item.layer.visible = !item.layer.visible 
-                                                        item.layer.allSublayers?.map(subLayer =>  subLayer.visible = !subLayer.visible)
-                                                        })
-                                                    
-
-        const updatedLayerSources = layerSources.map(layer => ({
-            ...layer,
-            visible: layerListWidget.current.operationalItems.items.filter(item => item.layer.title === layer.layerName)
-                                                                    .map(item =>  item.visible)[0],
-                                                                    
-        }));
-
-        setLayerSources(updatedLayerSources);
-    
+        if(title !== config.target_layer_name ){
+            layerListItems.forEach(item => {
+                if (item.layer.type === "map-image") {
+                    item.children.items.forEach(childItem => {
+                        const group = childItem.title;
+                        const mapImageChildren = childItem.children.items;
+        
+                        if (updatedGroupedLayers[group]) {
+                            updatedGroupedLayers[group] = [...updatedGroupedLayers[group], ...mapImageChildren];
+                        } else {
+                            updatedGroupedLayers[group] = mapImageChildren;
+                        }
+        
+                        const childToUpdate = mapImageChildren.find(child => child.title === title);
+                        if (childToUpdate) {
+                            childToUpdate.layer.visible = !childToUpdate.layer.visible;
+                        }
+                    });
+                } else if (item.layer.type === "group") {
+                    const group = item.title;
+                    const groupChildren = item.children.items;
+        
+                    if (updatedGroupedLayers[group]) {
+                        updatedGroupedLayers[group] = [...updatedGroupedLayers[group], ...groupChildren];
+                    } else {
+                        updatedGroupedLayers[group] = groupChildren;
+                    }
+        
+                    groupChildren.forEach(child => {
+                        if (child.title === title) {
+                            child.layer.visible = !child.layer.visible;
+                        }
+                    });
+                }
+            });
+            
+            let sortedUpdatedGroups = sortGroupedLayers(updatedGroupedLayers)
+            setLayerGroups(sortedUpdatedGroups);
         }
+    
+        
+    }
+    
 
     useEffect(() => {
-        const createLayerListWidget = async () => {
+        const createLayerListVM = async () => {
 
-            await createFeatureLayers(map, true)
-            
-            if(!layerListWidget.current){
-                layerListWidget.current = new LayerList({
-                    view:view,
+            if(!layerListVM.current){
+                layerListVM.current = new LayerListVM({
+                    view:mapView,
                 })
 
-                await layerListWidget.current.when()
+            if(layerListVM.current){
 
-                const updatedLayerSources = layerSources.map(layer => ({
-                    ...layer,
-                    visibleScale: layerListWidget.current.operationalItems.items
-                    .filter(item => item.title === layer.layerName)
-                    .map(item => item.visibleAtCurrentScale)[0],
-                    visible:layerListWidget.current.operationalItems.items
-                    .filter(item => item.title === layer.layerName)
-                    .map(item => item.visible)[0]
-                }));
+                //console.log("LayerListVM: ", layerListVM.current)
 
-                setLayerSources(updatedLayerSources);
+                setLayerListItems(layerListVM.current.operationalItems.items)
+            }
 
-                console.log("Selected Items: ", layerListWidget.current.selectedItems)
-
-                //layerListWidget.current.selectedItems.items = [layerListWidget.current.operationalItems.items[4]]
 
             }
         }
         
-         createLayerListWidget()
-    }, [layerListWidget])
+         createLayerListVM()
+    }, [layerListVM])
+
 
     useEffect(() => {
+
+        const createLayerList = () => {
+            if(layerListItems){
+                let groupedLayers = {}
+
+                layerListItems.map((item) => {
+                    
+                    if(item.layer.type === "map-image"){
+                        console.log("layerListItem map-image: ", item)
+                        //if layer type is map image skip the parent group
+                        //access the grouped children
+                        item.children.items.map(childItem => {
+                            
+                            let group = childItem.title
+                            let mapImageChildren = childItem.children.items
+
+                            
+                            if(groupedLayers[group]){
+                                groupedLayers[group] = [...groupedLayers[group], mapImageChildren]
+                            }
+                            else{
+                                groupedLayers[group] = mapImageChildren
+                            }
+                            //console.log("layerListItem childItem: ", groupedLayers)
+
+       
+                        })
+                        
+                    }
+
+                    else if(item.layer.type === "group"){
+                        console.log("layerListItem: ", item)
+                        let group = item.title
+                        let groupChildren = item.children.items
+
+                        if(groupedLayers[group]){
+                            groupedLayers[group] = [...groupedLayers[group], ...groupChildren]
+                            console.log("groupedLayers: ", groupedLayers)
+                        }
+                        else{
+                            groupedLayers[group] =  groupChildren
+                        }
+                        
+                    }
+                })
+
+                let obj = {}
+                Object.keys(groupedLayers).map((group) => {
+                    obj[group] = false
+                })
+
+                setGroupOpen(obj)
+
+
+                let sortedUpdatedGroups = sortGroupedLayers(groupedLayers)
+                setLayerGroups(sortedUpdatedGroups);
+            }
+        }
+
+        createLayerList()
+
+    }, [layerListItems])
+
+    
+
+
+    useEffect(() => {
+
         reactiveUtils.watch(
-            () => view.scale,
+            () => mapViewScale.scale,
             () => {
 
-                //console.log("Visible at scale ",layerListWidget.current.operationalItems.items[7].title, layerListWidget.current.operationalItems.items[7])
-
                 // Update layer sources with visibility
-                const updatedLayerSources = layerSources.map(layer => ({
-                    ...layer,
-                    visibleScale: layerListWidget.current.operationalItems.items.filter(item => item.layer.title === layer.layerName)
-                                                                            .map(item =>  item.visibleAtCurrentScale)[0],
-                    visible:layerListWidget.current.operationalItems.items
-                    .filter(item => item.title === layer.layerName)
-                    .map(item => item.visible)[0]
-                                                                            
-                }));
-                setLayerSources(updatedLayerSources);
+                if(layerListVM.current){
+                    
+                    //console.log("LayerListVM: ", layerListVM.current)
+    
+                    setLayerListItems(layerListVM.current.operationalItems.items)
+                }
             }
         );
     }, []);
-
-    useEffect(() => {
-
-        const createLayerGroups = () => {
-            const layerGroups = config.layer_sources.sort((a, b) => a.groupName > b.groupName ? 1:-1)
-            .map((layer) => {
-                return layer.groupName
-            })
-
-            setLayerGroups(layerGroups)
-
-            let obj = {}
-            layerGroups.map((group) => {
-                obj[group] = false
-            })
-
-            setGroupOpen(obj)
-        }
-
-        createLayerGroups()
-
-    }, [])
-
     
     const handleGroupClick = (group) => {
 
@@ -144,86 +189,63 @@ const LayerListWidgetCustom = () => {
         }));
 
     }
-    
-
-    const layerGroupList = [...new Set(layerGroups)].map((group) => (
-        <Box key={group} pt={2}>
-            <ListItemButton
-            onClick={() => {handleGroupClick(group)}}
-            sx={{justifyContent:"space-between"}}>
-            <Typography key={group} variant="body2">{translateText(group)}</Typography>
-            { groupOpen[group] ? <ExpandLess/> : <ExpandMore/>}
-            </ListItemButton>
-                <Collapse in={groupOpen[group]}>
-                
-                {
-                    layerSources.filter((layer) => layer.groupName === group)
-                                        .sort((a, b) => {
-                                            
-                                            // Extract numeric parts of layer names
-                                            const numericA = extractNumericPart(a.layerName);
-                                            const numericB = extractNumericPart(b.layerName);
-                                    
-                                            // If both names have numeric parts, compare them
-                                            if (!isNaN(numericA) && !isNaN(numericB)) {
-                                                return numericB - numericA; // Sort in descending order based on numeric part
-                                            }
-                                    
-                                            // If one of the names has numeric part, prioritize it
-                                            if (!isNaN(numericA)) {
-                                                return -1; // `a` has numeric part, so it should come before `b`
-                                            }
-                                            if (!isNaN(numericB)) {
-                                                return 1; // `b` has numeric part, so it should come before `a`
-                                            }
-                                    
-                                            // If none of the names have numeric parts, compare them as strings
-                                            return a.layerName.localeCompare(b.layerName);
-                                        })
-                                        .map((layer) => {
-
-                                            // let visible = checkVisibility(layer.layerName)
-                                            // console.log("layer is visible? ", visible)
-
-                                            return(
-                                            <ListItem
-                                            dense
-                                            key={layer.layerName}
-                                            divider
-                                            sx={{width: "100%"}}
-                                            >
-                                                <ListItemButton
-                                                    disabled={layer.visibleScale === true ? false : true}
-                                                    onClick={() => handleClick(layer.layerName)}
-                                                    sx={{justifyContent:"space-between"}}
-                                                >
-                                                <ListItemText  sx={{display:"flex", flex:4}}>
-                                                    <Typography variant="body2">
-                                                        {translateText(layer.layerName)}
-                                                    </Typography>
-                                                    
-                                                    </ListItemText>
-                                                <Checkbox
-                                                    color="primary"
-                                                    checked={layer.visible}
-                                                />
-                                                </ListItemButton>
-                                            
-                                            </ListItem>
-                                            )
-                                        })
-                }
-             </Collapse>
-             </Box>
-    ))
 
     return(
         <Box display="flex" sx={{ width: '100%', height:"100%", overflow:"auto"}}>
         {
-            layerSources &&  layerSources.length > 0 ? 
+            layerGroups ? 
              <List disablePadding sx={{ width:"100%", height:"100%"}}>
-                {layerGroupList}
-            </List> : <CalciteLoader/>
+                {
+                Object.keys(layerGroups).map((group, index) => {
+                    return(
+                        <Box key={`${group}-${index}`}>
+                            <ListItemButton 
+                                sx={{justifyContent:"space-between"}}
+                                onClick={() => {handleGroupClick(group)}}
+                                >
+                                <Typography variant="body2">{translateText(group)}</Typography>
+                                { groupOpen[group] ? <ExpandLess/> : <ExpandMore/>}
+                            </ListItemButton>
+                            <Collapse in={groupOpen[group]}>
+                                {
+                                    layerGroups[group].map((layer, index) => {
+                                        return(
+                                            <ListItem
+                                                dense
+                                                key={`${layer.title}-${index}`}
+                                                divider
+                                                sx={{width: "100%"}}
+                                                >
+                                                    <ListItemButton
+                                                        disabled={layer.visibleAtCurrentScale === true ? false : true}
+                                                        onClick={() => handleClick(layer.title)}
+                                                        sx={{justifyContent:"space-between"}}
+                                                    >
+                                                    {/* <ListItemText  sx={{display:"flex", flex:4}}> */}
+                                                        <Typography variant="body2">
+                                                            {translateText(layer.title)}
+                                                        </Typography>
+                                                        
+                                                        {/* </ListItemText> */}
+                                                    <Checkbox
+                                                        color="primary"
+                                                        checked={layer.visible}
+                                                    />
+                                                    </ListItemButton>
+                                                
+                                            </ListItem>
+                                        )
+                                    })
+                                }
+                            </Collapse>
+                        </Box>
+                        
+                    )
+                    })
+                    }
+
+            </List> 
+            : <CalciteLoader/>
         }
            
         </Box>
@@ -232,4 +254,4 @@ const LayerListWidgetCustom = () => {
     )
 }
 
-export default LayerListWidgetCustom
+export default layerListVMCustom

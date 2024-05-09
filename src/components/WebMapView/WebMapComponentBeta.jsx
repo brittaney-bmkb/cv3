@@ -19,7 +19,8 @@ const WebMapComponentBeta = () => {
         panelWidgetVisible,
         translateText,
         setShowMapMoblie,
-        searchSources
+        searchSources,
+        setMapViewScale
         } = UseAppContext()
 
     const arcgisMapRef = useRef(null)
@@ -132,10 +133,11 @@ const WebMapComponentBeta = () => {
             setMapLoading(false)
             setMapView(event.target.view)
             }}
-        // onArcgisViewChange={(event) => {
-        //     console.log("view change: ", event)
+        onArcgisViewChange={(event) => {
+            //console.log("view change: ", event)
+            setMapViewScale(event.target.view)
             
-        // }}
+        }}
         onArcgisViewClick={(event) => {
             console.log("onArcgisViewClick: ", event.detail.native)
             if(event.detail.native.button === 2){
