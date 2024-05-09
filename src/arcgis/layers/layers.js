@@ -42,6 +42,8 @@ export async function createFeatureLayerFromFeatures(features, title, theme){
     }
   })
 
+  
+
   return layer
 }
 
