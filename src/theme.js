@@ -6,7 +6,7 @@ export const theme = createTheme({
             type: "simple-fill",
             style:"none",
             outline: {
-                width:3,
+                width:5,
                 color: "#0D4D96",
             }
         },
@@ -14,7 +14,7 @@ export const theme = createTheme({
             type: "simple-fill",
             style:"none",
             outline: {
-                width:2,
+                width:5,
                 style: "short-dot",
                 color: "#E58F65",
             }
@@ -23,7 +23,7 @@ export const theme = createTheme({
             type: "simple-fill",
             style:"none",
             outline: {
-                width:3,
+                width:5,
                 color: "#E58F65",
             }
         }
