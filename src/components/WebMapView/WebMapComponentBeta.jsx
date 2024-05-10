@@ -148,6 +148,10 @@ const WebMapComponentBeta = () => {
                 handleViewClick(event.detail.mapPoint)
             }
         }}
+
+        constraints={{
+            rotationEnabled: false
+        }}
         >   
         </ArcgisMap>
         <Box 
