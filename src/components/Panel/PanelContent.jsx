@@ -38,6 +38,8 @@ const PanelContent = ({display}) => {
                         text={"Info"} 
                         primary={true}
                         divider={true}
+                        closeButton={true}
+                        panel={"primary"}
                     />
 
                     <Box 

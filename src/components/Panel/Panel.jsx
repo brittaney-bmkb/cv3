@@ -162,7 +162,7 @@ export const LeftPanel = () => {
             p={2}  
             sx={{
                 boxSizing:"border-box", 
-                display:{xs:'none', sm:'flex'},
+                display:{xs:'none', sm: panelPrimaryVisible ? "flex" : "none" },
                 boxShadow: 1
                 }}>
                 <PanelContent id="panel-content" display={panelDisplay}/>

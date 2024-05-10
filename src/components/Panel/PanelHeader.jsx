@@ -14,7 +14,7 @@ import FeedbackDialog, { FeedbackGeneral, FeedbackSearch } from "../FeedBack/Fee
 
 const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton, panel, primary, divider} ) => {
 
-    const { setShowMapMoblie, screenWidth, panelWidgetVisible, setPanelWidgetVisibility, translateText, clearResultsComparables, panelDisplaySecondary, clearResults, panelPrimaryVisible, panelSecondaryVisible, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, comparableParcels } = UseAppContext()
+    const { primaryResultFeature, panelDisplay, setShowMapMoblie, screenWidth, panelWidgetVisible, setPanelWidgetVisibility, translateText, clearResultsComparables, panelDisplaySecondary, clearResults, panelPrimaryVisible, panelSecondaryVisible, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, comparableParcels } = UseAppContext()
 
     //get url parameters
     const [routeParams , setSearchParams] = useSearchParams()
@@ -103,8 +103,16 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
         }
 
         if(panel==="primary" && panelPrimaryVisible===true){
-            setPanelPrimaryVisibility(false)
 
+            if(panelDisplay === "info" && primaryResultFeature){
+                setPanelDisplay("propertyDetail")
+            }
+            else if(panelDisplay === "info" && !primaryResultFeature){
+                setPanelPrimaryVisibility(false)
+            }
+            else{
+                setPanelPrimaryVisibility(false)
+            }
             
 
         }
@@ -150,7 +158,7 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
                         sx={{ 
                             display:"flex", 
                             flexDirection:"column",
-                            position:"absolute",
+                            position:"relative",
                             right: 0}}>
                         <CloseOutlined fontSize="small" sx={{color:theme.main.text.dark}}/>
                     <Typography color={theme.main.text.dark} variant="subtitle1">{translateText("Close")}</Typography>
