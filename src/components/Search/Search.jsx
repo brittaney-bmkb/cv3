@@ -167,6 +167,7 @@ const Search = () => {
                 if(!searchWidget.current){
 
                     searchWidget.current = new widgetsSearch({
+                        locationEnabled:false,
                         includeDefaultSources: false,
                         //view: mapView,
                         container: searchDiv.current,
