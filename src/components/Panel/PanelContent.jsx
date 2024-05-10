@@ -27,14 +27,23 @@ const PanelContent = ({display}) => {
     switch(display){
         case 'info':
             return (
-                <Box display="flex" flexDirection="column" height="100%" width="100%">
+                <Box 
+                display="flex" 
+                flexDirection="column" 
+                rowGap={2}
+                flexGrow={1} 
+                minHeight={0}
+                >
                     <PanelHeader
                         text={"Info"} 
                         primary={true}
                         divider={true}
                     />
 
-                    <Box display="flex" flexDirection="column" sx={{ overflowY:"scroll", flexGrow: 1}}>
+                    <Box 
+                    display="flex" 
+                    flexDirection="column" 
+                    sx={{ overflowY:"auto", flexGrow: 1}}>
                         <Info/>
                     </Box>   
                 </Box>)

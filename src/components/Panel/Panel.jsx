@@ -151,8 +151,6 @@ export const LeftPanel = () => {
       
       }, [screenWidth]);
       
-      
-
     return(
         <Box 
             id="left-panel"
@@ -162,7 +160,11 @@ export const LeftPanel = () => {
             minWidth={350}  
             flexDirection="column" 
             p={2}  
-            sx={{boxSizing:"border-box", display:{xs:'none', sm: panelPrimaryVisible ? 'flex' : 'none'}}}>
+            sx={{
+                boxSizing:"border-box", 
+                display:{xs:'none', sm:'flex'},
+                boxShadow: 1
+                }}>
                 <PanelContent id="panel-content" display={panelDisplay}/>
         </Box>
         

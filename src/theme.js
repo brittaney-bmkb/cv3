@@ -170,17 +170,17 @@ theme.typography.h4 = {
     [theme.breakpoints.up('md')]: {
         fontSize: 18,
         fontWeight: 700,
-        color: theme.main.text.dark
+        //color: theme.main.text.dark
     },
     [theme.breakpoints.down('md')]: {
         fontSize: 17,
         fontWeight: 700,
-        color: theme.main.text.dark
+        ///color: theme.main.text.dark
     },
     [theme.breakpoints.down('sm')]: {
         fontSize: 16,
         fontWeight: 700,
-        color: theme.main.text.dark
+        //color: theme.main.text.dark
     }
 }
 
@@ -237,16 +237,16 @@ theme.typography.body1 = {
 theme.typography.body2 = {
     [theme.breakpoints.up('md')]: {
         fontSize: 15,
-        fontWeight: 500,
+        fontWeight: 600,
         
     },
     [theme.breakpoints.down('md')]: {
         fontSize: 14,
-        fontWeight: 500,
+        fontWeight: 600,
 
     },
     [theme.breakpoints.down('sm')]: {
         fontSize: 13,
-        fontWeight: 500,
+        fontWeight: 600,
     }
 }
