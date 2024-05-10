@@ -33,6 +33,8 @@ const PanelContent = ({display}) => {
                 rowGap={2}
                 flexGrow={1} 
                 minHeight={0}
+                width="100"
+                p={screenWidth < theme.breakpoints.values.lg ? 1: 0}
                 >
                     <PanelHeader
                         text={"Info"} 

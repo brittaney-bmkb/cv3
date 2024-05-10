@@ -31,6 +31,7 @@ const PanelMobile = () => {
                 <Box
                  display="flex"
                  pb={!showMapMobile? 6 : 0}
+                 
                  height="100%"
                  width="100vw"
                  sx={{boxSizing:"border-box"}}

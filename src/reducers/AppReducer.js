@@ -27,7 +27,7 @@ export const initialState = {
     language: config.defaultLanguage,
     translateDialogOpen: false,
     textTranslationDictionary: null,
-    showMapMobile: true,
+    showMapMobile: false,
     measureWidget: null,
     isQuerying: null,
     mapLayout: null,
