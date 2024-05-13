@@ -12,6 +12,13 @@
   - `results`: Array of search results.
 - **Returns**: Object containing arrays of target features and search features.
 
+#### `queryTargetLayerByAddress(addresses)`
+- **Description**: Queries the target layer with street_address and city_state_zip values.
+- **Parameters**:
+  - `addresses`: Array of [street_address, city_state_zip] values.
+- **Returns**: Array of features matching the street_address & city_state_zip query.
+
+
 #### `queryTargetLayerWithPointFeatures(pointFeatures, includeBuffer)`
 - **Description**: Queries the target layer with point features to retrieve intersecting features.
 - **Parameters**:

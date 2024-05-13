@@ -57,6 +57,8 @@ export const handleMultipleResults = async (results) => {
     // Create arrays to store features
     let targetFeatures = [];
     let searchFeatures = [];
+    
+    let addresses = []
 
     filteredResults.forEach(results => {
         // Ensure results and results.source are not null before accessing properties
@@ -69,16 +71,37 @@ export const handleMultipleResults = async (results) => {
                     return;
                 }
                 if (sourceEqualsTarget) {
-                    results.results.forEach(result => {
-                        if (result && result.feature) {
-                            let featureExists = addObjectToArrayIfNotExists(targetFeatures, result.feature)
-                            console.log("feature exists in array: ", featureExists)
-                            console.log("pushing feature to targetFeatures: ", result.feature)
-                            targetFeatures.push(result.feature);
-                        } else {
-                            console.error("Error: Missing feature in result.");
-                        }
-                    });
+                    //get address values
+                    if(results.source.searchFields.includes("street_address")){
+                        results.results.forEach(result => {
+                            if (result && result.feature) {
+                                let street_address = result.feature.attributes["street_address"]
+                                let city_state_zip = result.feature.attributes["city_state_zip"]
+                                let address_values = [ street_address, city_state_zip ]
+
+                                if(!addresses.includes(address_values)){
+                                    addresses.push(address_values)
+                                }
+
+                            } else {
+                                console.error("Error: Missing feature in result.");
+
+                            }
+                        })
+                    }
+                    else{
+                        results.results.forEach(result => {
+                            if (result && result.feature) {
+                                let featureExists = addObjectToArrayIfNotExists(targetFeatures, result.feature)
+                                console.log("feature exists in array: ", featureExists)
+                                console.log("pushing feature to targetFeatures: ", result.feature)
+                                targetFeatures.push(result.feature);
+                            } else {
+                                console.error("Error: Missing feature in result.");
+                            }
+                        });
+                    }
+                    
                 } else {
                     results.results.forEach(result => {
                         if (result && result.feature) {
@@ -102,6 +125,23 @@ export const handleMultipleResults = async (results) => {
     console.log("target results: ", targetFeatures)
     console.log("search results: ", searchFeatures)
 
+    if(addresses.length > 0){ 
+        //Address to query
+        if(addresses.length > 0){
+            let features = await queryTargetLayerByAddress(addresses)
+
+            features.map(feature => {
+                let featureExists = addObjectToArrayIfNotExists(targetFeatures, feature)
+                console.log("new feature exists: ", featureExists)
+                if(!featureExists){
+                    targetFeatures.push(feature)
+                }
+                
+            })
+        }
+    }
+
+
     if(searchFeatures.length > 0){
 
         let features = await queryTargetLayerWithPointFeatures(searchFeatures, true)
@@ -121,6 +161,34 @@ export const handleMultipleResults = async (results) => {
     //let uniqueTargetFeatures = [...new Set(targetFeatures.map(feature => feature.attributes['PIN14']))]
 
     return {targetFeatures, searchFeatures}
+}
+
+const queryTargetLayerByAddress = async (addresses) => {
+    
+    let query = new Query()
+    query.where = ''
+    //query.where = `address = '${address}' AND city_state_zip = '${city_state_zip}'`
+    query.returnGeometry = true
+    query.outFields = ["*"]
+
+     addresses.map((address, index) => {
+        let [ street_address, city_state_zip ] = address
+        console.log("querying ", street_address, city_state_zip )
+
+        query.where += `(street_address = '${street_address}' AND city_state_zip = '${city_state_zip}')`
+        if(index < addresses.length -1){
+            query.where += ' OR '
+        }
+     })
+
+     console.log("Full address query = ", query.where)
+
+    
+    const { features } = await targetLayer.queryFeatures(query);
+
+    console.log(`Address query returned ${features.length} features`)
+
+    return features
 }
 
 export const queryTargetLayerWithPointFeatures = async (pointFeatures, includeBuffer) => {

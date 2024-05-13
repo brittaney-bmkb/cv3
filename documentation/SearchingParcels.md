@@ -58,7 +58,7 @@ User includes a search query `search=123 happy street` as a url parameter after 
 ### Action 5
 User includes a search query `location=1175293.981658909,1900287.819737036` as a url parameter after the cookViewer url.
 
-### Process this process accesses the search vaules from the url parameter then queries the target (parcel) layer by creating a point using the coordinates in the url
+### Process this process accesses the search values from the url parameter then queries the target (parcel) layer by creating a point using the coordinates in the url
 
 #### Step 1: Follows the steps from Action 4 with one change
 - After accessing the coordinates from the url parameter and setting the `locationSearch` state to the coordinate values
@@ -68,3 +68,18 @@ User includes a search query `location=1175293.981658909,1900287.819737036` as a
     - the `queryTargetLayerWithCoordinates` parses out the x and y coordinates from the coordinates string and converts the values to floats
     - a new point is created based on the x and y values and spatial reference of the targetLayer (**Note: the spatial reference for this app is the same for all our data source. this could break if a target layer with a different spatial reference is used**)
     - the new point is then passed to the `queryTargetLayerWithPointFeatures` and the `buffer distance boolean undefined` so a buffer distance is not applied to the query
+
+
+### Action 6
+User types in an address and selects a parcel address search result from the dropdown.
+
+### Process checks if the search result source fields includes 'street_address' to indicate that the results were selected from the parcel address search source, then performs a query on the target layer using the street_address and city_state_zip values
+
+#### Step 1: Follows steps from Action 1 with an additional condition to check if search result source fields includes `street_address`. 
+- After determining that the search result was selected from the parcel address search source the street_address and city_state_zip values are extracted from each search result
+- The extracted values are pushed into the address array
+- If the address array is populated then a query is perfromed on the target layer using the `queryTargetLayerByAddress` function
+- The addresses are passed to the `queryTargetLayerByAddress` function and parsed into a query string `(street_address = '${street_address}' AND city_state_zip = '${city_state_zip}')`
+- the query string is passed to the query.where property 
+- the target layer features are queried using the new query with the query string
+- features are returned and added to the targetFeatures array
