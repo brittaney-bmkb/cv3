@@ -83,6 +83,9 @@ const WebMapComponentBeta = () => {
             console.log("loading new map: ", arcgisMapRef.current.view)
 
             let view = arcgisMapRef.current.view
+            view.constraints = {
+                rotationEnabled: false
+            }
             
             if(screenWidth < theme.breakpoints.values.md){
                 view.ui.move("zoom", "bottom-right")
@@ -128,6 +131,10 @@ const WebMapComponentBeta = () => {
         // center = "-87.8298, 41.8781"
         // zoom={8}
 
+        // constraints={{
+        //     rotationEnabled: false
+        // }}
+
         onArcgisViewReadyChange={(event) => {
             console.log('MapView ready', event);
             setMapLoading(false)
@@ -149,9 +156,7 @@ const WebMapComponentBeta = () => {
             }
         }}
 
-        constraints={{
-            rotationEnabled: false
-        }}
+
         >   
         </ArcgisMap>
         <Box 
