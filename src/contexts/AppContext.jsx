@@ -797,6 +797,8 @@ export const AppProvider = ({children}) => {
             }
 
             setTranslationDictionary(text)
+            setPanelPrimaryVisibility(true)
+            setPanelDisplay("info")
         }
     
          initializeTranslationText();

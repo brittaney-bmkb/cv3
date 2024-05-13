@@ -31,6 +31,7 @@ const PanelMobile = () => {
                 <Box
                  display="flex"
                  pb={!showMapMobile? 6 : 0}
+                 
                  height="100%"
                  width="100vw"
                  sx={{boxSizing:"border-box"}}
@@ -151,8 +152,6 @@ export const LeftPanel = () => {
       
       }, [screenWidth]);
       
-      
-
     return(
         <Box 
             id="left-panel"
@@ -162,7 +161,11 @@ export const LeftPanel = () => {
             minWidth={350}  
             flexDirection="column" 
             p={2}  
-            sx={{boxSizing:"border-box", display:{xs:'none', sm: panelPrimaryVisible ? 'flex' : 'none'}}}>
+            sx={{
+                boxSizing:"border-box", 
+                display:{xs:'none', sm: panelPrimaryVisible ? "flex" : "none" },
+                boxShadow: 1
+                }}>
                 <PanelContent id="panel-content" display={panelDisplay}/>
         </Box>
         

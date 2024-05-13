@@ -17,12 +17,40 @@ import PrintWidgetCustom, { PrintWidgetPane } from "../Widgets/PrintWidgetCustom
 import { config } from "../../data/config";
 import BasemapGallery from "../Widgets/Basemap/BasemapGallery";
 import LayerList from "../Widgets/LayersList/LayerList";
+import Info from "../Info/Info";
+
 
 const PanelContent = ({display}) => {
 
     const { translateText, screenWidth, primaryResultFeature, searchFeatures, comparableParcels, secondaryResultFeature } = UseAppContext()
 
     switch(display){
+        case 'info':
+            return (
+                <Box 
+                display="flex" 
+                flexDirection="column" 
+                rowGap={2}
+                flexGrow={1} 
+                minHeight={0}
+                width="100"
+                p={screenWidth < theme.breakpoints.values.lg ? 1: 0}
+                >
+                    <PanelHeader
+                        text={"Info"} 
+                        primary={true}
+                        divider={true}
+                        closeButton={true}
+                        panel={"primary"}
+                    />
+
+                    <Box 
+                    display="flex" 
+                    flexDirection="column" 
+                    sx={{ overflowY:"auto", flexGrow: 1}}>
+                        <Info/>
+                    </Box>   
+                </Box>)
         case 'resultsList':
             return (
                 <Box display="flex" flexDirection="column" height="100%" width="100%">

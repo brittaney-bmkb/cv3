@@ -42,9 +42,9 @@ arcgis-layer-list{
   background-color: transparent;
 }
 
-calcite-icon {
+/* calcite-icon {
   --calcite-ui-icon-color: black
-}
+} */
 
 .esri-search{
   width:auto;
