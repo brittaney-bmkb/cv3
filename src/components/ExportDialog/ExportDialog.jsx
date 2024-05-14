@@ -12,7 +12,19 @@ import PrintWidgetCustom from "../Widgets/PrintWidgetCustom"
 
 const ExportDialog = ({open, onClose, dataDescription}) => {
 
-    const { searchFeatures, primaryResultFeature, comparableParcels, secondaryResultFeature, dataDictionary, translateText, mapLayout, mapFormat, mapTitle, screenWidth } = UseAppContext()
+    const { 
+        searchFeatures, 
+        primaryResultFeature, 
+        comparableParcels, 
+        secondaryResultFeature, 
+        dataDictionary, 
+        translateText, 
+        mapLayout,
+        mapFormat, 
+        mapTitle, 
+        screenWidth,
+        mapView
+     } = UseAppContext()
     
     const [isExporting, setIsExporting] = useState(false)
     const [ includeResults, setIncludeResults ] = useState(false)
@@ -78,7 +90,7 @@ const ExportDialog = ({open, onClose, dataDescription}) => {
 
         if(includeMap === true){
             setIsExporting(true)
-            let file = await printMap(mapLayout, mapFormat, mapTitle)
+            let file = await printMap(mapView, mapLayout, mapFormat, mapTitle)
             setIsExporting(false)
 
             if(file){
