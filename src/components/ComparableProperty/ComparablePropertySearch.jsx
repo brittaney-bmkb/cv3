@@ -70,7 +70,7 @@ const ComparablePropertySearch= () => {
     const [ ageMaxError, setAgeMaxError ] = useState(false)
     const [ ageMinError, setAgeMinError ] = useState(false)
 
-    const [radius, setRadius] = useState(.125)
+    const [radius, setRadius] = useState(.5)
 
     const [errorMessage, setErrorMessage] = useState(false)
 
