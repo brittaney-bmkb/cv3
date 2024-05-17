@@ -590,21 +590,23 @@ export const AppProvider = ({children}) => {
         setIsQuerying(false)
     }
 
-    const translateText = (text) => {
+    const translateText = (text, skipNum) => {
 
         const {language, textTranslationDictionary} = state
 
+        
         if(text && textTranslationDictionary){
             
             if(Object.keys(textTranslationDictionary).includes(text)){
+                
                 return textTranslationDictionary[text][language]
             }
 
             else{
-
+                console.log("text to translate: ", text)
                 let numericValues
                 let textToReplace = text
-                if(text.match(/\d+/g) && !text.includes("-")){
+                if(text.match(/\d+/g) && !text.includes("-") && !skipNum){
                 //&& text.match(/[()]/g)){
                     numericValues = text.match(/\d+/g)
 
@@ -622,7 +624,7 @@ export const AppProvider = ({children}) => {
 
                 //console.log("TRANSLATED TEXT: ", translation)
                 if(translation && translation.length){
-                    if(numericValues && text !== config.bannerHeader ){
+                    if(numericValues && text !== config.bannerHeader){
                         if(text.match(/[()]/g)){
                             return `${numericValues} (${ translation[0]})`
                         }

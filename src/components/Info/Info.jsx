@@ -71,7 +71,7 @@ const Info = () => {
                     <Typography
                     variant="body1"
                     >
-                        {translateText("Type parcel identification number (PIN10 or PIN14), address, or intersection into the search box. Or enter a portion of a  PIN to find all properties for an area-section-quadrant or block")}
+                        {translateText("Type parcel identification number (PIN10 or PIN14), address, or intersection into the search box. Or enter a portion of a PIN to find all properties for an area-section-quadrant or block", true)}
                     </Typography>
                     </Stack>
                 </Stack>
@@ -98,7 +98,7 @@ const Info = () => {
                     {translateText("CookViewer 3.0 Beta-2")}
                 </Typography>
                 <Typography>
-                    {translateText("Release: May 17 2024")}
+                    {translateText("Release: May 17 2024", true)}
                 </Typography>
             </Stack>
                 
@@ -117,7 +117,7 @@ const Info = () => {
                             fontWeight: 600,
                             fontSize:14
                             }}>{translateText("Layer Labeling")} - </span>
-                        {translateText("Layer information, including commissioner districts, townships, municipalities, etc., is now presented without overlap, enhancing readability and user experience.")}
+                        {translateText("Layer information, including commissioner districts, townships, municipalities, etc., is now presented without overlap, enhancing readability and user experience")}
                     </Typography>
 
                     <Typography variant="body1">
@@ -125,7 +125,7 @@ const Info = () => {
                             fontWeight: 600,
                             fontSize:14
                             }}>{translateText("Parcel Labeling")} - </span>
-                        {translateText("PINs are now prominently displayed and easily readable even when aerial images are chosen, resolving a reported usability concern.")}
+                        {translateText("PINs are now prominently displayed and easily readable even when aerial images are chosen, resolving a reported usability concern")}
                     </Typography>
 
                     <Typography variant="body1">
@@ -133,7 +133,7 @@ const Info = () => {
                             fontWeight: 600,
                             fontSize:14
                             }}>{translateText("Search for Portion of a PIN")} - </span>
-                        {translateText("Users can now enter a portion of a  PIN to find all properties for an area-section-quadrant or block")}
+                        {translateText("Users can now enter a portion of a PIN to find all properties for an area-section-quadrant or block")}
                     </Typography>
                     </Stack>
 
@@ -148,14 +148,14 @@ const Info = () => {
                             fontWeight: 600,
                             fontSize:14
                             }}>{translateText("Printing")} - </span>
-                        {translateText("Resolved an issue affecting map printouts where comparable parcels were incorrectly displayed as grey blocks. With this fix, comparable parcels are now accurately depicted on the printed map and included in the map legend as intended.")}
+                        {translateText("Resolved an issue affecting map printouts where comparable parcels were incorrectly displayed as grey blocks. With this fix, comparable parcels are now accurately depicted on the printed map and included in the map legend as intended")}
                     </Typography>
                     </Stack>
 
                     <Typography
                     variant="body2"
                     >
-                        {translateText("For more detailed release notes click ")}
+                        {`${translateText("For more detailed release notes click")} `}
                         <span>
                             <Link
                             target="_blank"
@@ -184,7 +184,7 @@ const Info = () => {
                     {translateText("CookViewer 3.0 Beta-1")}
                 </Typography>
                 <Typography>
-                    {translateText("Release: April 12 2024")}
+                    {translateText("Release: April 12 2024", true)}
                 </Typography>
             </Stack>
                 
@@ -202,8 +202,8 @@ const Info = () => {
                         <span style={{ 
                             fontWeight: 600,
                             fontSize:14
-                            }}>{translateText("Search by PIN14")} - </span>
-                        {translateText("New capabilities for condominium property searches, including full PIN 14 search functionality")}
+                            }}>{translateText("Search by PIN14", true)} - </span>
+                        {translateText("New capabilities for condominium property searches, including full PIN 14 search functionality", true)}
                     </Typography>
                     <Typography variant="body1">
                         <span style={{ 
@@ -226,14 +226,14 @@ const Info = () => {
                             fontWeight: 600,
                             fontSize:14
                             }}>{translateText("Historical Imagery")} - </span>
-                        {translateText("Users can now see the evolution of properties and landscapes using aerial imagery spanning from 1998 to 2023")}
+                        {translateText("Users can now see the evolution of properties and landscapes using aerial imagery spanning from 1998 to 2023", true)}
                     </Typography>
                     </Stack>
 
                     <Typography
                     variant="body2"
                     >
-                        {translateText("For more detailed release notes click ")}
+                        {`${translateText("For more detailed release notes click")} `}
                         <span>
                             <Link
                             target="_blank"
