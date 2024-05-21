@@ -18,6 +18,7 @@ import { config } from "../../data/config";
 import BasemapGallery from "../Widgets/Basemap/BasemapGallery";
 import LayerList from "../Widgets/LayersList/LayerList";
 import Info from "../Info/Info";
+import BasemapWidget from "../Widgets/Basemap/BasemapWidget";
 
 
 const PanelContent = ({display}) => {
@@ -293,8 +294,8 @@ const PanelContent = ({display}) => {
                     descriptionText="Select a basemap from the options below to update the map"
                     divider={true}
                     />
-                    {/* <BasemapWidget/> */}
-                    <BasemapGallery/>
+                    <BasemapWidget/>
+                    {/* <BasemapGallery/> */}
                 </Box>
             )                                           
         case 'printWidget':
