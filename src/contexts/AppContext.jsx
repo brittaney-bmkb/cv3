@@ -603,7 +603,7 @@ export const AppProvider = ({children}) => {
             }
 
             else{
-                console.log("text to translate: ", text)
+                //console.log("text to translate: ", text)
                 let numericValues
                 let textToReplace = text
                 if(text.match(/\d+/g) && !text.includes("-") && !skipNum){
