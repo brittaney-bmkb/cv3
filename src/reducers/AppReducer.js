@@ -50,7 +50,7 @@ const AppReducer = (state, action) => {
             mapContainer: payload.mapContainer
         }
         case "SET_MAP":
-        console.log("SET_MAP")
+        console.log("SET_MAP: ", payload.map)
         return {
             ...state, 
             map: payload.map

@@ -23,7 +23,7 @@ export const AppProvider = ({children}) => {
         dispatch({
             type:"SET_MAP",
              payload: {
-                mapContainer: ref,
+                map: ref,
             }
         })
     }     
@@ -658,8 +658,8 @@ export const AppProvider = ({children}) => {
         mapContainer: state.mapContainer,
         loadMap,
         setMapContainer,
-        map:state.map,
         setMap,
+        map: state.map,
         setMapView,
         mapView: state.mapView,
         primaryResultFeature: state.primaryResultFeature,

@@ -11,7 +11,10 @@ const WebMapComponentBeta = () => {
 
     const { 
         primaryResultFeature, 
+        mapView,
         setMapView, 
+        map,
+        setMap,
         queryMapPoint, 
         comparableParcels, 
         secondaryResultFeature,
@@ -19,8 +22,8 @@ const WebMapComponentBeta = () => {
         panelWidgetVisible,
         translateText,
         setShowMapMoblie,
-        searchSources, 
-        setMap
+        searchSources
+        
         } = UseAppContext()
 
     const arcgisMapRef = useRef(null)
@@ -128,6 +131,8 @@ const WebMapComponentBeta = () => {
             setMapLoading(false)
             setMapView(event.target.view)
             setMap(event.target.map)
+            console.log('map view: ', mapView)
+            console.log('map ready', map);
             }}
         onArcgisViewChange={(event) => {
             console.log("view change: ", event)
@@ -138,9 +143,9 @@ const WebMapComponentBeta = () => {
             handleViewClick(event.detail.mapPoint)
         }}
         >   
-            <arcgis-sketch position="bottom-left" creation-mode="continuous"
+            {/* <arcgis-sketch position="bottom-left" creation-mode="continuous"
                 layout="horizontal">
-            </arcgis-sketch>
+            </arcgis-sketch> */}
 
         </ArcgisMap>
         <Box 
