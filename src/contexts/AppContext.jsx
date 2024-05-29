@@ -371,7 +371,7 @@ export const AppProvider = ({children}) => {
 
             let resultFeatures = selectedFeatures
 
-            if(selectMultiple){
+            if(selectMultiple && primaryResultFeature){
                 console.log("multiple features selected")
                 let features = Array.isArray(primaryResultFeature) ? primaryResultFeature : [primaryResultFeature]
                 resultFeatures = [...features, ...selectedFeatures]
