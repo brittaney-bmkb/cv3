@@ -270,6 +270,15 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setSelectMultiple = (select) => {
+        dispatch({
+            type:"SET_SELECT_MULTIPLE",
+            payload:{
+                selectMultiple: select,
+            }
+        })
+    }
+
 
 
     const loadMap = async () => {
@@ -315,7 +324,7 @@ export const AppProvider = ({children}) => {
         setCoordinates(point.x, point.y)
         console.log("x/y", point.x, point.y)
 
-        const { panelDisplaySecondary, screenWidth, panelSecondaryVisible, panelPrimaryVisible, panelDisplay, parcelQueryFields, comparableParcels, primaryResultFeature} = state
+        const { selectMultiple, panelDisplaySecondary, screenWidth, panelSecondaryVisible, panelPrimaryVisible, panelDisplay, parcelQueryFields, comparableParcels, primaryResultFeature} = state
         //const { peformQueryFeatures, createGraphic, zoomToExtent, removeGraphics } = await import('../arcgis/webmap/webmap')
         const { queryTargetLayerWithPointFeatures } = await import('../arcgis/search/queryTargetLayer')
 
@@ -359,8 +368,17 @@ export const AppProvider = ({children}) => {
     
 
         else{
-            setPrimaryResultFeature(selectedFeatures, false)
-            setSearchResults(null, selectedFeatures)
+
+            let resultFeatures = selectedFeatures
+
+            if(selectMultiple){
+                console.log("multiple features selected")
+                let features = Array.isArray(primaryResultFeature) ? primaryResultFeature : [primaryResultFeature]
+                resultFeatures = [...features, ...selectedFeatures]
+            }
+
+            setPrimaryResultFeature(resultFeatures, false)
+            setSearchResults(null, resultFeatures)
             //createGraphic(selectedFeatures, "primary", theme.palette.primary.main)
             //zoomToExtent(selectedFeatures)
 
@@ -728,7 +746,9 @@ export const AppProvider = ({children}) => {
         queryMapPoint,
         setComparableParcels,
         initalizeSearchSources,
-        returnSearchResultFeatures
+        returnSearchResultFeatures,
+        setSelectMultiple,
+        selectMultiple: state.selectMultiple
         
     }
 
