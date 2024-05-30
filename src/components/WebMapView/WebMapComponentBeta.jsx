@@ -6,6 +6,7 @@ import { theme } from "../../theme";
 import MapButtonGroup from "../MapButtonGroup";
 import { Box, Fade, Typography, IconButton } from "@mui/material";
 import { TableRowsOutlined } from "@mui/icons-material";
+import { config } from "../../data/config";
 
 const WebMapComponentBeta = () => {
 
@@ -24,7 +25,8 @@ const WebMapComponentBeta = () => {
         } = UseAppContext()
 
     const arcgisMapRef = useRef(null)
-    const [mapLoading, setMapLoading] = useState(true)
+    const [ mapLoading, setMapLoading ] = useState(true)
+    const [ targetLayer, setTargetLayer ] = useState(null)
 
     const zoomToExtent = async (features) => {
 
@@ -72,6 +74,33 @@ const WebMapComponentBeta = () => {
 
     }
 
+    const findTargetLayer = (map) => {
+
+        let layer = map.allLayers.find((layer) => {
+            console.log("Layer details: ", layer)
+            return `${layer.url}/${layer.layerId}` === config.target_layer_url
+        })
+
+        return layer
+    }
+
+    const handleHitTest = async (event) => {
+        
+        console.log("onArcgisViewClick: ", event)
+
+        let view = event.target.view
+        let options = {
+            include: targetLayer
+        }
+        let hitTestResults = await view.hitTest(event.detail.screenPoint, options)
+
+        console.log("onArcgisViewClick - hitTestResults: ", hitTestResults)
+
+        // let mapHitTestResults = await arcgisMapRef.current.view.hitTest(event.detail.screenPoint)
+        // console.log("onArcgisViewClick - hitTestResults: ", mapHitTestResults)
+        
+    }
+
     const handleClick = () => {
         console.log("Setting secondary panel display")
         setShowMapMoblie( false)
@@ -79,23 +108,35 @@ const WebMapComponentBeta = () => {
 
     useEffect(() => {
 
-        if(arcgisMapRef && mapLoading === false && searchSources){
-            console.log("loading new map: ", arcgisMapRef.current.view)
-
-            let view = arcgisMapRef.current.view
-            view.constraints = {
-                rotationEnabled: false
+        const configureWebMap = async () => {
+            if(arcgisMapRef && mapLoading === false && searchSources){
+                console.log("loading new map: ", arcgisMapRef.current.view)
+    
+                let view = arcgisMapRef.current.view
+                view.constraints = {
+                    rotationEnabled: false
+                }
+                
+                if(screenWidth < theme.breakpoints.values.md){
+                    view.ui.move("zoom", "bottom-right")
+                }
+    
+                else{
+                    view.ui.move("zoom", "top-right")
+                }
+                
+                //v3.0.0-beta.3 find target layer (Parcel Current)
+                let map = arcgisMapRef.current.map
+                let layer = await findTargetLayer(map)
+                console.log("Target Layer Found: ", layer)
+                setTargetLayer(layer)
+                
+                
             }
-            
-            if(screenWidth < theme.breakpoints.values.md){
-                view.ui.move("zoom", "bottom-right")
-            }
-
-            else{
-                view.ui.move("zoom", "top-right")
-            }
-            
         }
+
+        configureWebMap()
+        
 
     }, [arcgisMapRef, mapLoading, screenWidth, searchSources])
 
@@ -128,12 +169,6 @@ const WebMapComponentBeta = () => {
         <ArcgisMap
         ref={arcgisMapRef}
         itemId="779a9643c58f4a48a002a9b277a8bcc7"
-        // center = "-87.8298, 41.8781"
-        // zoom={8}
-
-        // constraints={{
-        //     rotationEnabled: false
-        // }}
 
         onArcgisViewReadyChange={(event) => {
             console.log('MapView ready', event);
@@ -143,18 +178,19 @@ const WebMapComponentBeta = () => {
         onArcgisViewChange={(event) => {
             //console.log("view change: ", event)
             setMapViewScale(event.target.view)
-            
         }}
         onArcgisViewClick={(event) => {
-            console.log("onArcgisViewClick: ", event.detail.native)
+            
             if(event.detail.native.button === 2){
                 console.log("onArcgisViewClick: right click, button =", event.detail.native.button)
             }
             else{
                 console.log("onArcgisViewClick: left click, button =", event.detail.native.button)
-                handleViewClick(event.detail.mapPoint)
+                // handleViewClick(event.detail.mapPoint)
+                handleHitTest(event)
             }
         }}
+        // onArcgisViewPointerMove={}
 
 
         >   
