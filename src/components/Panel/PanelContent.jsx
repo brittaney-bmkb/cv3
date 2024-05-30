@@ -11,7 +11,6 @@ import { theme } from "../../theme"
 import CompareNearby from "../ComparableProperty/CompareNearby"
 import PropertyDetail from "../PropertyDetail/PropertyDetail"
 import PropertyPagniation from "../PropertyDetail/PropertyPagnition";
-import WebMapView from "../WebMapView/WebMapView";
 import LayerListWidgetCustom from "../Widgets/LayersList/LayerListWidgetCustom";
 import PrintWidgetCustom, { PrintWidgetPane } from "../Widgets/PrintWidgetCustom";
 import { config } from "../../data/config";

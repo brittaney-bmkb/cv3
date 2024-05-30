@@ -3,7 +3,6 @@ import UseAppContext from "../../contexts/AppContext";
 import { theme } from "../../theme";
 import PanelContent from "./PanelContent";
 import { useEffect } from "react";
-import WebMapView from "../WebMapView/WebMapView";
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import WebMapComponentBeta from "../WebMapView/WebMapComponentBeta";
 
