@@ -4,7 +4,7 @@ export const theme = createTheme({
     layers: {
         primary: {
             type: "simple-fill",
-            style:"none",
+            color: [ 255, 128, 0, 0.1 ],
             outline: {
                 width:5,
                 color: "#0D4D96",

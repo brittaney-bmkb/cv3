@@ -19,7 +19,6 @@ export async function removeLayer(map, name){
 
 export async function createFeatureLayerFromFeatures(features, title, theme){
   
-
   let featuresArray = Array.isArray(features) ? features : [features]
 
   console.log("features source: ", featuresArray)
@@ -43,6 +42,26 @@ export async function createFeatureLayerFromFeatures(features, title, theme){
   })
 
   
+
+  return layer
+}
+
+export const createFeatureLayerFromGraphics = async (source, objectIdField, type, title, theme) => {
+
+  let layer = new FeatureLayer({
+    source: source,
+    objectIdField: objectIdField,
+    geometryType: type,
+    title: title,
+    popupEnabled:true,
+    popupTemplate: {
+      title:"test"
+    },
+    renderer: {
+      type: "simple",
+      symbol: theme
+    }
+  })
 
   return layer
 }

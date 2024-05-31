@@ -1,12 +1,16 @@
 import { ArcgisMap, ArcgisZoom } from "@arcgis/map-components-react"
 import { useEffect, useRef, useState } from "react";
 import UseAppContext from "../../contexts/AppContext";
-import { createFeatureLayerFromFeatures, removeLayer } from "../../arcgis/layers/layers";
+import { createFeatureLayerFromGraphics, createFeatureLayerFromFeatures, removeLayer } from "../../arcgis/layers/layers";
 import { theme } from "../../theme";
 import MapButtonGroup from "../MapButtonGroup";
 import { Box, Fade, Typography, IconButton } from "@mui/material";
 import { TableRowsOutlined } from "@mui/icons-material";
 import { config } from "../../data/config";
+
+
+const selectedParcelTitle = "Selected Parcel"
+const webmapParcelLayerTitle = config.target_layer_name
 
 const WebMapComponentBeta = () => {
 
@@ -27,6 +31,9 @@ const WebMapComponentBeta = () => {
     const arcgisMapRef = useRef(null)
     const [ mapLoading, setMapLoading ] = useState(true)
     const [ targetLayer, setTargetLayer ] = useState(null)
+    const [ selectedParcelsPrimary, setSelectedParcelsPrimary ] = useState(null)
+    const [ hitTestLayers, setHitTestLayers ] = useState([])
+    const [ selectedGraphicObjectIds, setSelectedGraphicObjectIds ] = useState([])
 
     const zoomToExtent = async (features) => {
 
@@ -39,7 +46,7 @@ const WebMapComponentBeta = () => {
         arcgisMapRef.current.goTo(extent)
     }
 
-    const addLayerToMap = async (features, title, theme) => {
+    const addLayerToMap = async (source, title, theme, type) => {
 
         console.log("adding layer to map")
 
@@ -54,12 +61,20 @@ const WebMapComponentBeta = () => {
             }
            
 
-            if(features){
-                let featLayer = await createFeatureLayerFromFeatures(features, title, theme)
+            if(source){
+                let featLayer 
+                if(type === "graphics"){
+                    featLayer = await createFeatureLayerFromGraphics(source, "OBJECTID", "polygon", title, theme)
+                }
+                if(type === "features"){
+                    featLayer = await createFeatureLayerFromFeatures(source, title, theme)
+                }
+                
 
                 if(featLayer){
+                    
                     map.add(featLayer)
-
+                    console.log(`Add ${title} to map: `, map)
                     zoomToExtent(featLayer)
                 }
                 
@@ -77,27 +92,139 @@ const WebMapComponentBeta = () => {
     const findTargetLayer = (map) => {
 
         let layer = map.allLayers.find((layer) => {
-            console.log("Layer details: ", layer)
+            //console.log("Layer details: ", layer)
             return `${layer.url}/${layer.layerId}` === config.target_layer_url
         })
 
         return layer
     }
 
+    
+    const findLayerByTitle = (map, title) => {
+
+        let layer = map.allLayers.find((layer) => {
+            //console.log("Layer details: ", layer)
+            return layer.title === title
+        })
+
+        return layer
+    }
+
+    const deleteArrayItemByValue = (array, value) => {
+        return array.filter(item => item !== value)
+    }
+
     const handleHitTest = async (event) => {
         
         console.log("onArcgisViewClick: ", event)
 
-        let view = event.target.view
-        let options = {
-            include: targetLayer
+        //const view = event.target.view
+        const view = arcgisMapRef.current.view
+
+        console.log("Hit Test Layers: ", hitTestLayers)
+
+        const options = {
+            include: hitTestLayers
         }
-        let hitTestResults = await view.hitTest(event.detail.screenPoint, options)
 
-        console.log("onArcgisViewClick - hitTestResults: ", hitTestResults)
+        const response = await view.hitTest(event.detail.screenPoint, options)
 
-        // let mapHitTestResults = await arcgisMapRef.current.view.hitTest(event.detail.screenPoint)
-        // console.log("onArcgisViewClick - hitTestResults: ", mapHitTestResults)
+        if(!response) return;
+
+        if(response.results.length > 0){
+            console.log("onArcgisViewClick: hittest results ", response.results)
+
+            let addGraphics = []
+            let removeGraphics = []
+            let removeIds = []
+
+            // if(selectedParcelsPrimary){
+            //     response.results.map((result) => {
+            //         console.log("Result: ", result)
+            //         console.log("Result graphic OBJECTID: ", result.graphic.attributes['OBJECTID'])
+
+            //         if(selectedGraphicObjectIds.includes(result.graphic.attributes['OBJECTID'])){
+            //             console.log("Adding graphic to remove graphics: ", result.graphic)
+            //             removeGraphics.push(result.graphic)
+            //             removeIds.push(result.graphic.attributes['OBJECTID'])
+            //         }
+            //     })
+
+            //     setSelectedGraphicObjectIds([...selectedGraphicObjectIds, ...removeIds ])
+            // }
+
+            console.log("selectedGraphicObjectIds OBJECTIDs to remove: ", selectedGraphicObjectIds)
+            response.results.map((result) => {
+
+                console.log("Result graphic: ", result.graphic.attributes['OBJECTID'])
+                if(!selectedGraphicObjectIds.includes(result.graphic.attributes['OBJECTID'])){
+                    console.log("Adding graphic: ", result.graphic.attributes['OBJECTID'])
+                    addGraphics.push(result.graphic)
+                    setSelectedGraphicObjectIds([...selectedGraphicObjectIds, ...[result.graphic.attributes['OBJECTID']] ])
+                }
+                else{
+                    console.log("Removing graphic: ", result.graphic.attributes['OBJECTID'])
+                    removeGraphics.push(result.graphic)
+
+                    let updatedObjectIds = deleteArrayItemByValue(selectedGraphicObjectIds, result.graphic.attributes['OBJECTID'])
+                    setSelectedGraphicObjectIds(updatedObjectIds)
+
+                }
+            })
+  
+
+            
+
+            
+
+    
+            // response.results.filter((result) => {
+            //     console.log("Result: ", result)
+            //     if(selectedParcelsPrimary){
+            //         if(result.layer.id === selectedParcelsPrimary.id){
+            //             console.log("selectedParcelsPrimary exists - removing graphic")
+            //             removeGraphics.push(result.graphic)
+            //         }
+            //         else{
+            //             if(!removeGraphics.includes(result.graphic)){
+            //                 console.log("selectedParcelsPrimary exists - adding graphic")
+            //                 addGraphics.push(result.graphic)
+            //             }
+                        
+            //         }
+            //     }
+            //     else{
+            //         console.log("selectedParcelsPrimary does NOT exist - adding graphic")
+            //         addGraphics.push(result.graphic)
+            //     }
+                 
+            // })
+    
+            
+            console.log("remove graphics: ", removeGraphics)
+
+            const addEdits = {
+                addFeatures: addGraphics,
+                deleteFeatures: removeGraphics
+            }
+
+            if(!selectedParcelsPrimary){
+                await addLayerToMap(addGraphics, selectedParcelTitle, theme.layers.primary, "graphics")
+                let layer = findLayerByTitle(arcgisMapRef.current.map, selectedParcelTitle)
+                console.log("selectedParcelsPrimary created layerid: ", layer.id)
+                setSelectedParcelsPrimary(layer)
+                let newHitTestLayers = [...hitTestLayers, ...[layer]]
+                //let newHitTestLayers = [layer]
+                setHitTestLayers(newHitTestLayers)
+            }
+            else{
+                console.log(`Adding ${addGraphics.length} graphic${addGraphics.length > 1 ? 's' : ''} to feature layer`)
+                console.log(`Removing ${removeGraphics.length} graphic${removeGraphics.length > 1 ? 's' : ''} to feature layer`)
+                await selectedParcelsPrimary.applyEdits(addEdits)
+                //targetLayer.applyEdits(addEdits)
+            }
+            
+        }
         
     }
 
@@ -130,8 +257,13 @@ const WebMapComponentBeta = () => {
                 let layer = await findTargetLayer(map)
                 console.log("Target Layer Found: ", layer)
                 setTargetLayer(layer)
+
+                setHitTestLayers([layer])
                 
-                
+                //create feature layer for primary selected parcels 
+                // let selectedFeatLayer = await createFeatureLayer("Selected Parcel", theme.layers.primary)
+                // console.log("Selected Parcel Feature Layer Created: ", selectedFeatLayer)
+                // setSelectedParcelsPrimary(selectedFeatLayer)
             }
         }
 
@@ -142,19 +274,26 @@ const WebMapComponentBeta = () => {
 
     useEffect(() => {
 
-        addLayerToMap(primaryResultFeature, "Selected Parcel", theme.layers.primary)
+        if(!selectedParcelsPrimary && arcgisMapRef.current?.map){
+            addLayerToMap(primaryResultFeature, selectedParcelTitle, theme.layers.primary, "features")
+
+            let layer = findLayerByTitle(arcgisMapRef.current.map, selectedParcelTitle)
+
+            setSelectedParcelsPrimary(layer)
+        }
+        
 
     }, [ primaryResultFeature, arcgisMapRef, mapLoading ])
 
     useEffect(() => {
 
-        addLayerToMap(comparableParcels, "Comparable Parcels", theme.layers.secondary)
+        addLayerToMap(comparableParcels, "Comparable Parcels", theme.layers.secondary, "features")
 
     }, [ comparableParcels, arcgisMapRef, mapLoading ])
 
     useEffect(() => {
 
-        addLayerToMap(secondaryResultFeature, "Selected Comparable Parcel", theme.layers.secondarySelected)
+        addLayerToMap(secondaryResultFeature, "Selected Comparable Parcel", theme.layers.secondarySelected, "features")
 
     }, [ secondaryResultFeature, arcgisMapRef, mapLoading ])
 
