@@ -214,11 +214,6 @@ const WebMapComponentBeta = () => {
                 setTargetLayer(layer)
 
                 setHitTestLayers([layer])
-                
-                //create feature layer for primary selected parcels 
-                // let selectedFeatLayer = await createFeatureLayer("Selected Parcel", theme.layers.primary)
-                // console.log("Selected Parcel Feature Layer Created: ", selectedFeatLayer)
-                // setSelectedParcelsPrimary(selectedFeatLayer)
             }
         }
 
@@ -229,16 +224,30 @@ const WebMapComponentBeta = () => {
 
     useEffect(() => {
 
-        if(!selectedParcelsPrimary && arcgisMapRef.current?.map){
-            addLayerToMap(primaryResultFeature, selectedParcelTitle, theme.layers.primary, "features")
+        const displayPrimaryResultFeature = async () => {
 
-            let layer = findLayerByTitle(arcgisMapRef.current.map, selectedParcelTitle)
+            if(!selectedParcelsPrimary && !mapLoading){
 
-            setSelectedParcelsPrimary(layer)
+                await addLayerToMap(primaryResultFeature, selectedParcelTitle, theme.layers.primary, "features")
+    
+                let layer = findLayerByTitle(arcgisMapRef.current.map, selectedParcelTitle)
+    
+                setSelectedParcelsPrimary(layer)
+    
+                //add the layer to the hittest array
+                let newHitTestLayers = [...hitTestLayers, ...[layer]]
+    
+                console.log("hittest layers: ", newHitTestLayers)
+    
+                //update the state of the hittest layers
+                setHitTestLayers(newHitTestLayers)
+            }
         }
-        
 
-    }, [ primaryResultFeature, arcgisMapRef, mapLoading ])
+        
+    displayPrimaryResultFeature()
+    
+    }, [ primaryResultFeature, mapLoading ])
 
     useEffect(() => {
 

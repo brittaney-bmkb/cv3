@@ -35,6 +35,7 @@ export async function createFeatureLayerFromFeatures(features, title, theme){
     geometryType:"polygon",
     title: title,
     objectIdField: 'OBJECTID',
+    outFields: ["*"],
     renderer: {
       type: "simple",
       symbol: theme
@@ -53,6 +54,7 @@ export const createFeatureLayerFromGraphics = async (source, objectIdField, type
     objectIdField: objectIdField,
     geometryType: type,
     title: title,
+    outFields: ["*"],
     renderer: {
       type: "simple",
       symbol: theme
