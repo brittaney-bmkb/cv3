@@ -53,10 +53,6 @@ export const createFeatureLayerFromGraphics = async (source, objectIdField, type
     objectIdField: objectIdField,
     geometryType: type,
     title: title,
-    popupEnabled:true,
-    popupTemplate: {
-      title:"test"
-    },
     renderer: {
       type: "simple",
       symbol: theme

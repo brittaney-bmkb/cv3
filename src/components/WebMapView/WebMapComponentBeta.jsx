@@ -136,92 +136,47 @@ const WebMapComponentBeta = () => {
 
             let addGraphics = []
             let removeGraphics = []
-            let removeIds = []
 
-            // if(selectedParcelsPrimary){
-            //     response.results.map((result) => {
-            //         console.log("Result: ", result)
-            //         console.log("Result graphic OBJECTID: ", result.graphic.attributes['OBJECTID'])
+            let selectedGraphicsDetected = response.results.filter(result => result.graphic.layer.title === selectedParcelTitle)
 
-            //         if(selectedGraphicObjectIds.includes(result.graphic.attributes['OBJECTID'])){
-            //             console.log("Adding graphic to remove graphics: ", result.graphic)
-            //             removeGraphics.push(result.graphic)
-            //             removeIds.push(result.graphic.attributes['OBJECTID'])
-            //         }
-            //     })
-
-            //     setSelectedGraphicObjectIds([...selectedGraphicObjectIds, ...removeIds ])
-            // }
-
-            console.log("selectedGraphicObjectIds OBJECTIDs to remove: ", selectedGraphicObjectIds)
-            response.results.map((result) => {
-
-                console.log("Result graphic: ", result.graphic.attributes['OBJECTID'])
-                if(!selectedGraphicObjectIds.includes(result.graphic.attributes['OBJECTID'])){
-                    console.log("Adding graphic: ", result.graphic.attributes['OBJECTID'])
-                    addGraphics.push(result.graphic)
-                    setSelectedGraphicObjectIds([...selectedGraphicObjectIds, ...[result.graphic.attributes['OBJECTID']] ])
-                }
-                else{
-                    console.log("Removing graphic: ", result.graphic.attributes['OBJECTID'])
+            if(selectedGraphicsDetected.length > 0){
+                console.log(`${selectedGraphicsDetected.length} Selected Parcels Detected`)
+                console.log(`Removing ${selectedGraphicsDetected.length} parcels`)
+                selectedGraphicsDetected.map(result => {
+                    console.log("Deselecting graphic: ", result.graphic)
                     removeGraphics.push(result.graphic)
-
-                    let updatedObjectIds = deleteArrayItemByValue(selectedGraphicObjectIds, result.graphic.attributes['OBJECTID'])
-                    setSelectedGraphicObjectIds(updatedObjectIds)
-
-                }
-            })
+                })
+            }
+            else{
+                console.log(`${selectedGraphicsDetected.length} Selected Parcels Detected`)
+                console.log(`Adding ${response.results.length} parcels`)
+                response.results.map(result => addGraphics.push(result.graphic))
+            }
   
-
-            
-
-            
-
-    
-            // response.results.filter((result) => {
-            //     console.log("Result: ", result)
-            //     if(selectedParcelsPrimary){
-            //         if(result.layer.id === selectedParcelsPrimary.id){
-            //             console.log("selectedParcelsPrimary exists - removing graphic")
-            //             removeGraphics.push(result.graphic)
-            //         }
-            //         else{
-            //             if(!removeGraphics.includes(result.graphic)){
-            //                 console.log("selectedParcelsPrimary exists - adding graphic")
-            //                 addGraphics.push(result.graphic)
-            //             }
-                        
-            //         }
-            //     }
-            //     else{
-            //         console.log("selectedParcelsPrimary does NOT exist - adding graphic")
-            //         addGraphics.push(result.graphic)
-            //     }
-                 
-            // })
-    
-            
-            console.log("remove graphics: ", removeGraphics)
-
             const addEdits = {
                 addFeatures: addGraphics,
                 deleteFeatures: removeGraphics
             }
 
             if(!selectedParcelsPrimary){
+                //created selected parcel primary layer
+                //add the layer to the map
                 await addLayerToMap(addGraphics, selectedParcelTitle, theme.layers.primary, "graphics")
+
+                //get the layer object
                 let layer = findLayerByTitle(arcgisMapRef.current.map, selectedParcelTitle)
-                console.log("selectedParcelsPrimary created layerid: ", layer.id)
+
+                //set the selectedParcelsPrimary state to the layer
                 setSelectedParcelsPrimary(layer)
+
+                //add the layer to the hittest array
                 let newHitTestLayers = [...hitTestLayers, ...[layer]]
-                //let newHitTestLayers = [layer]
+
+                //update the state of the hittest layers
                 setHitTestLayers(newHitTestLayers)
             }
             else{
-                console.log(`Adding ${addGraphics.length} graphic${addGraphics.length > 1 ? 's' : ''} to feature layer`)
-                console.log(`Removing ${removeGraphics.length} graphic${removeGraphics.length > 1 ? 's' : ''} to feature layer`)
                 await selectedParcelsPrimary.applyEdits(addEdits)
-                //targetLayer.applyEdits(addEdits)
             }
             
         }
