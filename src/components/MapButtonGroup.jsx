@@ -14,7 +14,6 @@ const MapButtonGroup = () => {
 
     const { translateText, setPanelWidgetVisibility, setPanelDisplayWidget } = UseAppContext()
     
-    
     const handleClick = (display) =>{
         setPanelWidgetVisibility(true)
         setPanelDisplayWidget(display)
@@ -34,6 +33,7 @@ const MapButtonGroup = () => {
             }}
         // sx={{flexFlow:"wrap", gap: "3px 1px"}}
         >
+            <StyledButtonFilledPrimary text={translateText("Select Multiple Parcels")}  startIcon={<StraightenIcon/>} onClick={ () => {handleClick('select')}}  textVarient="subTitle1" />
             <StyledButtonFilledPrimary text={translateText("Measure")}  startIcon={<StraightenIcon/>} onClick={ () => {handleClick('measureWidget')}}  textVarient="subTitle1" />
             <StyledButtonFilledPrimary text={translateText("Layers")}   startIcon={<LayersOutlinedIcon/>} onClick={ () => {handleClick('layersWidget')} }  textVarient="subTitle1" />
             <StyledButtonFilledPrimary text={translateText("Basemaps")} startIcon={<GridViewIcon/>}  onClick={ () => {handleClick('basemapsWidget')} }  textVarient="subTitle1" />

@@ -35,7 +35,8 @@ export const initialState = {
     mapTitle: null,
     x: null,
     y: null, 
-    openHelpDialog: false
+    openHelpDialog: false,
+    selectMultiple: null
 }
 
 const AppReducer = (state, action) => {
@@ -223,6 +224,12 @@ const AppReducer = (state, action) => {
             return {
                 ...state, 
                 openHelpDialog: payload.openHelpDialog
+            }
+        case "SET_SELECT_MULTIPLE":
+            console.log("SET_SELECT_MULTIPLE")
+            return {
+                ...state, 
+                selectMultiple: payload.selectMultiple
             }
         default:
             throw new Error(`No valid selection made`)
