@@ -7,7 +7,7 @@ import MapButtonGroup from "../MapButtonGroup";
 import { Box, Fade, Typography, IconButton } from "@mui/material";
 import { TableRowsOutlined } from "@mui/icons-material";
 import { config } from "../../data/config";
-
+import * as geometryEngine from "@arcgis/core/geometry/geometryEngine.js";
 
 const selectedParcelTitle = "Selected Parcel"
 const webmapParcelLayerTitle = config.target_layer_name
@@ -37,12 +37,19 @@ const WebMapComponentBeta = () => {
 
     const zoomToExtent = async (features) => {
 
-        console.log("zoom to extent: ", features)
         let extent
-        console.log("quering extent ")
-        extent = await features.queryExtent()
 
-        console.log("queried extent: ", extent)
+        if(Array.isArray(features)){
+            const geometries = features.map((feature) => feature.geometry);
+            extent = geometryEngine.union(geometries);
+        }
+
+        else{
+            console.log("zoom to extent: ", features)
+            console.log("quering extent ")
+            extent = await features.queryExtent()
+        }
+        
         arcgisMapRef.current.goTo(extent)
     }
 
@@ -137,6 +144,7 @@ const WebMapComponentBeta = () => {
             let addGraphics = []
             let removeGraphics = []
 
+            //check if the hittest results include any previously selected layers
             let selectedGraphicsDetected = response.results.filter(result => result.graphic.layer.title === selectedParcelTitle)
 
             if(selectedGraphicsDetected.length > 0){
@@ -176,6 +184,7 @@ const WebMapComponentBeta = () => {
                 setHitTestLayers(newHitTestLayers)
             }
             else{
+                //update the selectedParcelPrimary layer with edits
                 await selectedParcelsPrimary.applyEdits(addEdits)
             }
             
@@ -192,7 +201,7 @@ const WebMapComponentBeta = () => {
 
         const configureWebMap = async () => {
             if(arcgisMapRef && mapLoading === false && searchSources){
-                console.log("loading new map: ", arcgisMapRef.current.view)
+                //console.log("loading new map: ", arcgisMapRef.current.view)
     
                 let view = arcgisMapRef.current.view
                 view.constraints = {
@@ -210,9 +219,12 @@ const WebMapComponentBeta = () => {
                 //v3.0.0-beta.3 find target layer (Parcel Current)
                 let map = arcgisMapRef.current.map
                 let layer = await findTargetLayer(map)
-                console.log("Target Layer Found: ", layer)
-                setTargetLayer(layer)
 
+                //update targetLayer state with parcel layer
+                setTargetLayer(layer)
+                //update hittest list layers with parcel layer
+                //to apply the user to select/deselect layers from the 
+                //web map
                 setHitTestLayers([layer])
             }
         }
@@ -227,11 +239,14 @@ const WebMapComponentBeta = () => {
         const displayPrimaryResultFeature = async () => {
 
             if(!selectedParcelsPrimary && !mapLoading){
-
+                //if selecetd parcels primary layer does not exist create it from the
+                //search result feautures
                 await addLayerToMap(primaryResultFeature, selectedParcelTitle, theme.layers.primary, "features")
-    
+                
+                //access the layer from the map
                 let layer = findLayerByTitle(arcgisMapRef.current.map, selectedParcelTitle)
-    
+                
+                //update the state of selectedParcelsPrimary with the layer
                 setSelectedParcelsPrimary(layer)
     
                 //add the layer to the hittest array
@@ -242,11 +257,36 @@ const WebMapComponentBeta = () => {
                 //update the state of the hittest layers
                 setHitTestLayers(newHitTestLayers)
             }
+
+            else{
+                //get features from primaryResultFeature and add them to the selectedParcelsPrimary layer
+                //clear existing features from the selectedParcelsPrimaryLayer
+                let { features } = await selectedParcelsPrimary.queryFeatures()
+                console.log("features to remove: ", features)
+
+                //add new primaryResultFeature to add features
+                //if it is not null
+                //add features from the selectedParcelsPrimary to delete features
+                const addEdits = {
+                    addFeatures: primaryResultFeature ?? [],
+                    deleteFeatures: features
+                }
+
+                //apply edits
+                await selectedParcelsPrimary.applyEdits(addEdits)
+                
+                //if primaryResultFeature is not null then zoom to newly added features
+                if(primaryResultFeature){
+                    zoomToExtent(primaryResultFeature)
+                }
+                
+
+            }
         }
 
         
     displayPrimaryResultFeature()
-    
+
     }, [ primaryResultFeature, mapLoading ])
 
     useEffect(() => {
