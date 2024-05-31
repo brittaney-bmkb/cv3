@@ -30,7 +30,8 @@ const WebMapComponentBeta = () => {
         setShowMapMoblie,
         searchSources,
         setMapViewScale,
-        setCoordinates
+        setCoordinates,
+        selectMultiple
         } = UseAppContext()
 
     const arcgisMapRef = useRef(null)
@@ -146,6 +147,47 @@ const WebMapComponentBeta = () => {
         return features
     }
 
+    const removeAllFeatures = async (layer) => {
+        let { features } = await layer.queryFeatures()
+        //console.log("features to remove: ", features)
+
+        //add new primaryResultFeature to add features
+        //if it is not null
+        //add features from the selectedParcelsPrimary to delete features
+        const addEdits = {
+            deleteFeatures: features ?? []
+        }
+
+        //apply edits
+        await layer.applyEdits(addEdits)
+    }
+
+    const addFeatures = async (results, multiple) => {
+
+        let objectIds = []
+        let addGraphics = []
+        let features
+        results.map(result => {
+            addGraphics.push(result.graphic)
+            objectIds.push(result.graphic.attributes['OBJECTID'])
+        })
+
+        //fetch features for graphics to be added
+        let fetchedFeatures = await fetchParcelAttributes(objectIds)
+        //update state of primaryResultsFeature with fetched features
+        if(multiple && primaryResultFeature){
+            let existingFeatures = Array.isArray(primaryResultFeature) ? primaryResultFeature : [primaryResultFeature]
+            features = [...fetchedFeatures, ...existingFeatures]
+        }
+        else{
+            features = fetchedFeatures
+        }
+        setPrimaryResultFeature(features, false)
+        setSearchResults(null, features)
+
+        return addGraphics
+    }
+
     const handleHitTest = async (event) => {
         //[v3.0.0-beta.3]
 
@@ -174,33 +216,43 @@ const WebMapComponentBeta = () => {
             let addGraphics = []
             let removeGraphics = []
 
-            //check if the hittest results include any previously selected layers
-            let selectedGraphicsDetected = response.results.filter(result => result.graphic.layer.title === selectedParcelTitle)
+            if(selectMultiple){
+                //check if the hittest results include any previously selected layers
+                let selectedGraphicsDetected = response.results.filter(result => result.graphic.layer.title === selectedParcelTitle)
 
-            if(selectedGraphicsDetected.length > 0){
-                console.log(`${selectedGraphicsDetected.length} Selected Parcels Detected`)
-                console.log(`Removing ${selectedGraphicsDetected.length} parcels`)
-                selectedGraphicsDetected.map(result => {
-                    console.log("Deselecting graphic: ", result.graphic)
-                    removeGraphics.push(result.graphic)
-                })
+                if(selectedGraphicsDetected.length > 0){
+                    console.log(`${selectedGraphicsDetected.length} Selected Parcels Detected`)
+                    console.log(`Removing ${selectedGraphicsDetected.length} parcels`)
+                    selectedGraphicsDetected.map(result => {
+                        console.log("Deselecting graphic: ", result.graphic)
+                        removeGraphics.push(result.graphic)
+                    })
+                }
+                else{
+                    console.log(`${selectedGraphicsDetected.length} Selected Parcels Detected`)
+                    console.log(`Adding ${response.results.length} parcels`)
+                    // let objectIds = []
+                    // response.results.map(result => {
+                    //     addGraphics.push(result.graphic)
+                    //     objectIds.push(result.graphic.attributes['OBJECTID'])
+                    // })
+
+                    // //fetch features for graphics to be added
+                    // let features = await fetchParcelAttributes(objectIds)
+                    // //update state of primaryResultsFeature with fetched features
+                    // setPrimaryResultFeature(features, false)
+                    // setSearchResults(null, features)
+                    addGraphics = await addFeatures(response.results, selectMultiple)
+                    
+                }
             }
             else{
-                console.log(`${selectedGraphicsDetected.length} Selected Parcels Detected`)
-                console.log(`Adding ${response.results.length} parcels`)
-                let objectIds = []
-                response.results.map(result => {
-                    addGraphics.push(result.graphic)
-                    objectIds.push(result.graphic.attributes['OBJECTID'])
-                })
-
-                //fetch features for graphics to be added
-                let features = await fetchParcelAttributes(objectIds)
-                //update state of primaryResultsFeature with fetched features
-                setPrimaryResultFeature(features, false)
-                setSearchResults(null, features)
-                
+                if(selectedParcelsPrimary){
+                    await removeAllFeatures(selectedParcelsPrimary)
+                }
+                addGraphics = await addFeatures(response.results)
             }
+            
   
             const addEdits = {
                 addFeatures: addGraphics,
@@ -314,15 +366,13 @@ const WebMapComponentBeta = () => {
                 else if(selectedParcelsPrimary && newSearch){
                     //get features from primaryResultFeature and add them to the selectedParcelsPrimary layer
                     //clear existing features from the selectedParcelsPrimaryLayer
-                    let { features } = await selectedParcelsPrimary.queryFeatures()
-                    console.log("features to remove: ", features)
+                    await removeAllFeatures(selectedParcelsPrimary)
 
                     //add new primaryResultFeature to add features
                     //if it is not null
                     //add features from the selectedParcelsPrimary to delete features
                     const addEdits = {
                         addFeatures: primaryResultFeature ?? [],
-                        deleteFeatures: features ?? []
                     }
 
                     //apply edits
@@ -374,7 +424,7 @@ const WebMapComponentBeta = () => {
             }}
         onArcgisViewChange={(event) => {
             //console.log("view change: ", event)
-            setMapViewScale(event.target.view)
+            //setMapViewScale(event.target.view)
         }}
         onArcgisViewClick={(event) => {
             
