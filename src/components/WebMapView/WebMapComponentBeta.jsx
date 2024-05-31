@@ -8,6 +8,7 @@ import { Box, Fade, Typography, IconButton } from "@mui/material";
 import { TableRowsOutlined } from "@mui/icons-material";
 import { config } from "../../data/config";
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine.js";
+import Query from "@arcgis/core/rest/support/Query.js";
 
 const selectedParcelTitle = "Selected Parcel"
 const webmapParcelLayerTitle = config.target_layer_name
@@ -16,6 +17,9 @@ const WebMapComponentBeta = () => {
 
     const { 
         primaryResultFeature, 
+        setPrimaryResultFeature,
+        newSearch,
+        setSearchResults,
         setMapView, 
         queryMapPoint, 
         comparableParcels, 
@@ -25,7 +29,8 @@ const WebMapComponentBeta = () => {
         translateText,
         setShowMapMoblie,
         searchSources,
-        setMapViewScale
+        setMapViewScale,
+        setCoordinates
         } = UseAppContext()
 
     const arcgisMapRef = useRef(null)
@@ -44,9 +49,14 @@ const WebMapComponentBeta = () => {
         }
 
         else{
-            console.log("zoom to extent: ", features)
-            console.log("quering extent ")
-            extent = await features.queryExtent()
+            if('geometry' in features){
+                extent = features.geometry
+            }
+            else{
+                console.log("zoom to extent: ", features)
+                console.log("quering extent ")
+                extent = await features.queryExtent()
+            }
         }
         
         arcgisMapRef.current.goTo(extent)
@@ -116,8 +126,29 @@ const WebMapComponentBeta = () => {
         return layer
     }
 
+    const featureExists = (features, value) => {
+        return features.some(feature => feature.attributes[config.target_layer_unique_id] === value)
+    }
+
+    const fetchParcelAttributes = async (objectIds) => {
+
+        console.log("objectIds: ", objectIds)
+        let where = objectIds.join(',')
+
+        let query = new Query({
+            where: `OBJECTID IN (${where})`,
+            outFields: ["*"],
+            returnGeometry: true
+        })
+
+        let { features } = await targetLayer.queryFeatures(query)
+
+        return features
+    }
+
     const handleHitTest = async (event) => {
-        
+        //[v3.0.0-beta.3]
+
         console.log("onArcgisViewClick: ", event)
 
         //const view = event.target.view
@@ -132,6 +163,10 @@ const WebMapComponentBeta = () => {
         const response = await view.hitTest(event.detail.screenPoint, options)
 
         if(!response) return;
+
+        //set point coordinates
+        let mapPoint = event.detail.mapPoint
+        setCoordinates(mapPoint.x, mapPoint.y)
 
         if(response.results.length > 0){
             console.log("onArcgisViewClick: hittest results ", response.results)
@@ -153,7 +188,18 @@ const WebMapComponentBeta = () => {
             else{
                 console.log(`${selectedGraphicsDetected.length} Selected Parcels Detected`)
                 console.log(`Adding ${response.results.length} parcels`)
-                response.results.map(result => addGraphics.push(result.graphic))
+                let objectIds = []
+                response.results.map(result => {
+                    addGraphics.push(result.graphic)
+                    objectIds.push(result.graphic.attributes['OBJECTID'])
+                })
+
+                //fetch features for graphics to be added
+                let features = await fetchParcelAttributes(objectIds)
+                //update state of primaryResultsFeature with fetched features
+                setPrimaryResultFeature(features, false)
+                setSearchResults(null, features)
+                
             }
   
             const addEdits = {
@@ -265,7 +311,7 @@ const WebMapComponentBeta = () => {
                     
                 }
 
-                else if(selectedParcelsPrimary){
+                else if(selectedParcelsPrimary && newSearch){
                     //get features from primaryResultFeature and add them to the selectedParcelsPrimary layer
                     //clear existing features from the selectedParcelsPrimaryLayer
                     let { features } = await selectedParcelsPrimary.queryFeatures()
@@ -282,10 +328,12 @@ const WebMapComponentBeta = () => {
                     //apply edits
                     await selectedParcelsPrimary.applyEdits(addEdits)
                     
-                    //if primaryResultFeature is not null then zoom to newly added features
-                    if(primaryResultFeature){
-                        zoomToExtent(primaryResultFeature)
-                    }
+                    
+                }
+
+                //if primaryResultFeature is not null then zoom to newly added features
+                if(primaryResultFeature){
+                    zoomToExtent(primaryResultFeature)
                 }
             }
         }
@@ -293,7 +341,7 @@ const WebMapComponentBeta = () => {
         
     displayPrimaryResultFeature()
 
-    }, [ primaryResultFeature, arcgisMapRef, mapLoading, targetLayer ])
+    }, [ primaryResultFeature, newSearch, arcgisMapRef, mapLoading, targetLayer ])
 
     useEffect(() => {
         
