@@ -188,6 +188,26 @@ const WebMapComponentBeta = () => {
         return addGraphics
     }
 
+    const removeFeatures = async (results) => {
+        let objectIds = []
+        let removeGraphics = []
+        console.log("removing objectids: ", results)
+        results.map(result => {
+            removeGraphics.push(result.graphic)
+            console.log("removing objectids: ", result.graphic.attributes['OBJECTID'])
+            objectIds.push(result.graphic.attributes['OBJECTID'])
+        })
+
+        console.log("ObjectIds to remove: ", objectIds)
+        let existingFeatures = Array.isArray(primaryResultFeature) ? primaryResultFeature : [primaryResultFeature]
+        let updatedFeatures = existingFeatures.filter(feature => !objectIds.includes(feature.attributes['OBJECTID']))
+
+        setPrimaryResultFeature(updatedFeatures, false)
+        setSearchResults(null, updatedFeatures)
+
+        return removeGraphics
+    }
+
     const handleHitTest = async (event) => {
         //[v3.0.0-beta.3]
 
@@ -223,10 +243,11 @@ const WebMapComponentBeta = () => {
                 if(selectedGraphicsDetected.length > 0){
                     console.log(`${selectedGraphicsDetected.length} Selected Parcels Detected`)
                     console.log(`Removing ${selectedGraphicsDetected.length} parcels`)
-                    selectedGraphicsDetected.map(result => {
-                        console.log("Deselecting graphic: ", result.graphic)
-                        removeGraphics.push(result.graphic)
-                    })
+                    // selectedGraphicsDetected.map(result => {
+                    //     console.log("Deselecting graphic: ", result.graphic)
+                    //     removeGraphics.push(result.graphic)
+                    // })
+                    removeGraphics = await removeFeatures(response.results)
                 }
                 else{
                     console.log(`${selectedGraphicsDetected.length} Selected Parcels Detected`)
