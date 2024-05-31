@@ -33,7 +33,6 @@ const WebMapComponentBeta = () => {
     const [ targetLayer, setTargetLayer ] = useState(null)
     const [ selectedParcelsPrimary, setSelectedParcelsPrimary ] = useState(null)
     const [ hitTestLayers, setHitTestLayers ] = useState([])
-    const [ selectedGraphicObjectIds, setSelectedGraphicObjectIds ] = useState([])
 
     const zoomToExtent = async (features) => {
 
@@ -55,7 +54,7 @@ const WebMapComponentBeta = () => {
 
     const addLayerToMap = async (source, title, theme, type) => {
 
-        console.log("adding layer to map")
+        console.log(`adding ${title} layer to map`)
 
         if(arcgisMapRef.current && mapLoading === false){
 
@@ -117,10 +116,6 @@ const WebMapComponentBeta = () => {
         return layer
     }
 
-    const deleteArrayItemByValue = (array, value) => {
-        return array.filter(item => item !== value)
-    }
-
     const handleHitTest = async (event) => {
         
         console.log("onArcgisViewClick: ", event)
@@ -177,11 +172,7 @@ const WebMapComponentBeta = () => {
                 //set the selectedParcelsPrimary state to the layer
                 setSelectedParcelsPrimary(layer)
 
-                //add the layer to the hittest array
-                let newHitTestLayers = [...hitTestLayers, ...[layer]]
-
-                //update the state of the hittest layers
-                setHitTestLayers(newHitTestLayers)
+                await updateHitTestLayers(layer)
             }
             else{
                 //update the selectedParcelPrimary layer with edits
@@ -195,6 +186,29 @@ const WebMapComponentBeta = () => {
     const handleClick = () => {
         console.log("Setting secondary panel display")
         setShowMapMoblie( false)
+    }
+
+    const setInitalHitTestLayers = async (layer) => {
+
+        console.log("setInitalHitTestLayers")
+        //update targetLayer state with parcel layer
+        setTargetLayer(layer)
+        //update hittest list layers with parcel layer
+        //to apply the user to select/deselect layers from the 
+        //web map
+        setHitTestLayers([layer])
+    }  
+
+    const updateHitTestLayers = async (layer) => {
+
+        console.log("updateHitTestLayers")
+        //add the layer to the hittest array
+        let newHitTestLayers = [ ...hitTestLayers, layer]
+                
+        console.log("hittest layers: ", newHitTestLayers)
+
+        //update the state of the hittest layers
+        setHitTestLayers(newHitTestLayers)
     }
 
     useEffect(() => {
@@ -220,12 +234,7 @@ const WebMapComponentBeta = () => {
                 let map = arcgisMapRef.current.map
                 let layer = await findTargetLayer(map)
 
-                //update targetLayer state with parcel layer
-                setTargetLayer(layer)
-                //update hittest list layers with parcel layer
-                //to apply the user to select/deselect layers from the 
-                //web map
-                setHitTestLayers([layer])
+                await setInitalHitTestLayers(layer)
             }
         }
 
@@ -238,59 +247,56 @@ const WebMapComponentBeta = () => {
 
         const displayPrimaryResultFeature = async () => {
 
-            if(!selectedParcelsPrimary && !mapLoading){
-                //if selecetd parcels primary layer does not exist create it from the
-                //search result feautures
-                await addLayerToMap(primaryResultFeature, selectedParcelTitle, theme.layers.primary, "features")
-                
-                //access the layer from the map
-                let layer = findLayerByTitle(arcgisMapRef.current.map, selectedParcelTitle)
-                
-                //update the state of selectedParcelsPrimary with the layer
-                setSelectedParcelsPrimary(layer)
-    
-                //add the layer to the hittest array
-                let newHitTestLayers = [...hitTestLayers, ...[layer]]
-    
-                console.log("hittest layers: ", newHitTestLayers)
-    
-                //update the state of the hittest layers
-                setHitTestLayers(newHitTestLayers)
-            }
+            if(arcgisMapRef.current && !mapLoading && targetLayer){
 
-            else{
-                //get features from primaryResultFeature and add them to the selectedParcelsPrimary layer
-                //clear existing features from the selectedParcelsPrimaryLayer
-                let { features } = await selectedParcelsPrimary.queryFeatures()
-                console.log("features to remove: ", features)
+                if(!selectedParcelsPrimary && primaryResultFeature){
+                    //if selecetd parcels primary layer does not exist create it from the
+                    //search result feautures
+                    await addLayerToMap(primaryResultFeature, selectedParcelTitle, theme.layers.primary, "features")
+                    
+                    //access the layer from the map
+                    let layer = findLayerByTitle(arcgisMapRef.current.map, selectedParcelTitle)
+                    
+                    //update the state of selectedParcelsPrimary with the layer
+                    setSelectedParcelsPrimary(layer)
 
-                //add new primaryResultFeature to add features
-                //if it is not null
-                //add features from the selectedParcelsPrimary to delete features
-                const addEdits = {
-                    addFeatures: primaryResultFeature ?? [],
-                    deleteFeatures: features
+                    await updateHitTestLayers(layer)
+        
+                    
                 }
 
-                //apply edits
-                await selectedParcelsPrimary.applyEdits(addEdits)
-                
-                //if primaryResultFeature is not null then zoom to newly added features
-                if(primaryResultFeature){
-                    zoomToExtent(primaryResultFeature)
-                }
-                
+                else if(selectedParcelsPrimary){
+                    //get features from primaryResultFeature and add them to the selectedParcelsPrimary layer
+                    //clear existing features from the selectedParcelsPrimaryLayer
+                    let { features } = await selectedParcelsPrimary.queryFeatures()
+                    console.log("features to remove: ", features)
 
+                    //add new primaryResultFeature to add features
+                    //if it is not null
+                    //add features from the selectedParcelsPrimary to delete features
+                    const addEdits = {
+                        addFeatures: primaryResultFeature ?? [],
+                        deleteFeatures: features ?? []
+                    }
+
+                    //apply edits
+                    await selectedParcelsPrimary.applyEdits(addEdits)
+                    
+                    //if primaryResultFeature is not null then zoom to newly added features
+                    if(primaryResultFeature){
+                        zoomToExtent(primaryResultFeature)
+                    }
+                }
             }
         }
 
         
     displayPrimaryResultFeature()
 
-    }, [ primaryResultFeature, mapLoading ])
+    }, [ primaryResultFeature, arcgisMapRef, mapLoading, targetLayer ])
 
     useEffect(() => {
-
+        
         addLayerToMap(comparableParcels, "Comparable Parcels", theme.layers.secondary, "features")
 
     }, [ comparableParcels, arcgisMapRef, mapLoading ])
