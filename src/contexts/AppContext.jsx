@@ -314,6 +314,28 @@ export const AppProvider = ({children}) => {
         await setSearchSources(searchSources)
     }
 
+    const queryPolygon = async (polygon) => {
+
+        const { panelDisplay, panelPrimaryVisible } = state
+
+        const { queryTargetLayerByPolygon } = await import('../arcgis/search/queryTargetLayer')
+
+        console.log("querying target layer by polygon geometry: ", polygon)
+        const features = await queryTargetLayerByPolygon(polygon)
+
+        setPrimaryResultFeature(features)
+        setSearchResults(null, features)
+
+        if(!panelDisplay || panelDisplay !== "resultsList"){
+            setPanelDisplay("resultsList")
+        }
+        
+        if(!panelPrimaryVisible || panelPrimaryVisible === false){
+            setPanelPrimaryVisibility(true)
+        }
+
+    }
+
 
     //Function to query parcels based on mouse click point
     //in use [v3.0.0-beta.2]
@@ -748,7 +770,8 @@ export const AppProvider = ({children}) => {
         initalizeSearchSources,
         returnSearchResultFeatures,
         setSelectMultiple,
-        selectMultiple: state.selectMultiple
+        selectMultiple: state.selectMultiple,
+        queryPolygon
         
     }
 

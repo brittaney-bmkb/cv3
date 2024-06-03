@@ -304,3 +304,20 @@ export async function compareProperities(whereQuery, searchDistance, feature, qu
 
   }
 
+
+  export async function queryTargetLayerByPolygon(geometry){
+
+    let query = new Query()
+    query.geometry = geometry
+    query.spatialRelationship = "intersects"
+    query.returnGeometry = true
+    query.outFields = ["*"]
+
+    let {features} = await targetLayer.queryFeatures(query)
+
+    console.log("queried Features: ", features)
+
+    return features
+
+  }
+
