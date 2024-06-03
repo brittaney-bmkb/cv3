@@ -333,7 +333,7 @@ const PanelContent = ({display}) => {
                     text="Select Multiple Parcels"
                     closeButton={true}
                     panel={"widget"}
-                    descriptionText={"Use the tools below to select multiple parcels in the map. You can either click to select or deselect individual parcels or draw an area to select all parcels within it"}
+                    //descriptionText={"Use the tools below to select multiple parcels in the map. You can either click to select or deselect individual parcels or draw an area to select all parcels within it"}
                     />
                     {/* <PrintWidget/> */}
                     <SelectMultipleParcels/>
