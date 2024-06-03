@@ -31,7 +31,12 @@ const WebMapComponentBeta = () => {
         searchSources,
         setMapViewScale,
         setCoordinates,
-        selectMultiple
+        selectMultiple,
+        panelDisplay,
+        setPanelDisplay,
+        panelPrimaryVisible,
+        setPanelPrimaryVisibility
+
         } = UseAppContext()
 
     const arcgisMapRef = useRef(null)
@@ -172,6 +177,19 @@ const WebMapComponentBeta = () => {
             objectIds.push(result.graphic.attributes['OBJECTID'])
         })
 
+        const addEdits = {
+            addFeatures: addGraphics,
+        }
+
+        if(!selectedParcelsPrimary){
+            await createSelectedFeatureLayer(addGraphics, "graphics")
+        }
+
+        else{
+            await selectedParcelsPrimary.applyEdits(addEdits)
+        }
+        
+
         //fetch features for graphics to be added
         let fetchedFeatures = await fetchParcelAttributes(objectIds)
         //update state of primaryResultsFeature with fetched features
@@ -185,6 +203,14 @@ const WebMapComponentBeta = () => {
         setPrimaryResultFeature(features, false)
         setSearchResults(null, features)
 
+        if(!panelDisplay || panelDisplay !== "resultsList"){
+            setPanelDisplay("resultsList")
+        }
+        
+        if(!panelPrimaryVisible || panelPrimaryVisible === false){
+            setPanelPrimaryVisibility(true)
+        }
+        
         return addGraphics
     }
 
@@ -197,6 +223,12 @@ const WebMapComponentBeta = () => {
             console.log("removing objectids: ", result.graphic.attributes['OBJECTID'])
             objectIds.push(result.graphic.attributes['OBJECTID'])
         })
+
+        const addEdits = {
+            deleteFeatures: removeGraphics
+        }
+
+        await selectedParcelsPrimary.applyEdits(addEdits)
 
         console.log("ObjectIds to remove: ", objectIds)
         let existingFeatures = Array.isArray(primaryResultFeature) ? primaryResultFeature : [primaryResultFeature]
@@ -233,9 +265,6 @@ const WebMapComponentBeta = () => {
         if(response.results.length > 0){
             console.log("onArcgisViewClick: hittest results ", response.results)
 
-            let addGraphics = []
-            let removeGraphics = []
-
             if(selectMultiple){
                 //check if the hittest results include any previously selected layers
                 let selectedGraphicsDetected = response.results.filter(result => result.graphic.layer.title === selectedParcelTitle)
@@ -243,27 +272,14 @@ const WebMapComponentBeta = () => {
                 if(selectedGraphicsDetected.length > 0){
                     console.log(`${selectedGraphicsDetected.length} Selected Parcels Detected`)
                     console.log(`Removing ${selectedGraphicsDetected.length} parcels`)
-                    // selectedGraphicsDetected.map(result => {
-                    //     console.log("Deselecting graphic: ", result.graphic)
-                    //     removeGraphics.push(result.graphic)
-                    // })
-                    removeGraphics = await removeFeatures(response.results)
+
+                    await removeFeatures(response.results)
                 }
                 else{
                     console.log(`${selectedGraphicsDetected.length} Selected Parcels Detected`)
                     console.log(`Adding ${response.results.length} parcels`)
-                    // let objectIds = []
-                    // response.results.map(result => {
-                    //     addGraphics.push(result.graphic)
-                    //     objectIds.push(result.graphic.attributes['OBJECTID'])
-                    // })
 
-                    // //fetch features for graphics to be added
-                    // let features = await fetchParcelAttributes(objectIds)
-                    // //update state of primaryResultsFeature with fetched features
-                    // setPrimaryResultFeature(features, false)
-                    // setSearchResults(null, features)
-                    addGraphics = await addFeatures(response.results, selectMultiple)
+                    await addFeatures(response.results, selectMultiple)
                     
                 }
             }
@@ -271,31 +287,7 @@ const WebMapComponentBeta = () => {
                 if(selectedParcelsPrimary){
                     await removeAllFeatures(selectedParcelsPrimary)
                 }
-                addGraphics = await addFeatures(response.results)
-            }
-            
-  
-            const addEdits = {
-                addFeatures: addGraphics,
-                deleteFeatures: removeGraphics
-            }
-
-            if(!selectedParcelsPrimary){
-                //created selected parcel primary layer
-                //add the layer to the map
-                await addLayerToMap(addGraphics, selectedParcelTitle, theme.layers.primary, "graphics")
-
-                //get the layer object
-                let layer = findLayerByTitle(arcgisMapRef.current.map, selectedParcelTitle)
-
-                //set the selectedParcelsPrimary state to the layer
-                setSelectedParcelsPrimary(layer)
-
-                await updateHitTestLayers(layer)
-            }
-            else{
-                //update the selectedParcelPrimary layer with edits
-                await selectedParcelsPrimary.applyEdits(addEdits)
+                await addFeatures(response.results)
             }
             
         }
@@ -316,7 +308,20 @@ const WebMapComponentBeta = () => {
         //to apply the user to select/deselect layers from the 
         //web map
         setHitTestLayers([layer])
-    }  
+    } 
+    
+    const createSelectedFeatureLayer = async (source, sourceType) => {
+
+        await addLayerToMap(source, selectedParcelTitle, theme.layers.primary, sourceType)
+
+        //get the layer object
+        let layer = findLayerByTitle(arcgisMapRef.current.map, selectedParcelTitle)
+
+        //set the selectedParcelsPrimary state to the layer
+        setSelectedParcelsPrimary(layer)
+
+        await updateHitTestLayers(layer)
+    }
 
     const updateHitTestLayers = async (layer) => {
 
@@ -371,15 +376,17 @@ const WebMapComponentBeta = () => {
                 if(!selectedParcelsPrimary && primaryResultFeature){
                     //if selecetd parcels primary layer does not exist create it from the
                     //search result feautures
-                    await addLayerToMap(primaryResultFeature, selectedParcelTitle, theme.layers.primary, "features")
+                    // await addLayerToMap(primaryResultFeature, selectedParcelTitle, theme.layers.primary, "features")
                     
-                    //access the layer from the map
-                    let layer = findLayerByTitle(arcgisMapRef.current.map, selectedParcelTitle)
+                    // //access the layer from the map
+                    // let layer = findLayerByTitle(arcgisMapRef.current.map, selectedParcelTitle)
                     
-                    //update the state of selectedParcelsPrimary with the layer
-                    setSelectedParcelsPrimary(layer)
+                    // //update the state of selectedParcelsPrimary with the layer
+                    // setSelectedParcelsPrimary(layer)
 
-                    await updateHitTestLayers(layer)
+                    // await updateHitTestLayers(layer)
+
+                    await createSelectedFeatureLayer(primaryResultFeature, "features")
         
                     
                 }
