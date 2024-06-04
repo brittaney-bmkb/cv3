@@ -23,7 +23,12 @@ const descriptions = (state) => {
 // this lifted from comparable property search and will needed to be updated for this widget
 const SelectMultipleParcels = () => {
 
-    const { translateText, setSelectMultiple, selectMultiple, mapView, queryPolygon } = UseAppContext()
+    const { 
+        translateText, 
+        setSelectMultiple, 
+        selectMultiple, 
+        mapView, 
+        queryPolygon } = UseAppContext()
 
     const [ tool, setTool ] = useState(null)
     const [ actionButtonsVisible, setActionButtonsVisible ] = useState(false);
@@ -58,7 +63,7 @@ const SelectMultipleParcels = () => {
         setToolDescription('draw')
 
         //start new sketch view model create session
-        //await createSketchViewModel()
+        await createSketchViewModel()
 
         
 
@@ -69,7 +74,9 @@ const SelectMultipleParcels = () => {
         console.log("creating new sketch view model")
 
         if(!polygonGraphicsLayer.current){
-            polygonGraphicsLayer.current = new GraphicsLayer()
+            polygonGraphicsLayer.current = new GraphicsLayer({
+                title:"selectGraphic"
+            })
             mapView.map.add(polygonGraphicsLayer.current)
         }
         
@@ -83,9 +90,10 @@ const SelectMultipleParcels = () => {
                     helpMessage: true
                 }
             })
-
-            sketchVMRef.current.create("polygon", "click")
+            
         }
+
+        sketchVMRef.current.create("polygon", "click")
 
     }
 
@@ -135,31 +143,7 @@ const SelectMultipleParcels = () => {
     },[sketchVMRef.current])
 
 
-    const destroySketchVM = () => {
-
-        if(sketchVMRef.current){
-            sketchVMRef.current.delete()
-            sketchVMRef.current.destroy()
-            sketchVMRef.current = null
-            
-        }
-        if(polygonGraphicsLayer.current){
-            polygonGraphicsLayer.current = nul
-            polygonGraphicsLayer.current.remove(sketchPolygon)
-        }
-    }
-
-    useEffect(() => {
-
-        if(tool === "draw"){
-            createSketchViewModel()
-        }
-
-        return () => {
-            destroySketchVM()
-        }
-
-    }, [tool])
+    
 
 
     return(

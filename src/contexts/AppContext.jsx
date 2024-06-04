@@ -481,7 +481,7 @@ export const AppProvider = ({children}) => {
         const selectedFeature = searchFeatures.filter((feature) => feature.attributes['PIN14_dash'] == result)
         console.log("selectedFeature: ", selectedFeature)
 
-        setPrimaryResultFeature(selectedFeature[0], false)
+        setPrimaryResultFeature(selectedFeature, true)
   
         //update graphic in map
         const { createGraphic } = await import('../arcgis/webmap/webmap')

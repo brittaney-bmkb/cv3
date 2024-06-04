@@ -35,8 +35,8 @@ const WebMapComponentBeta = () => {
         panelDisplay,
         setPanelDisplay,
         panelPrimaryVisible,
-        setPanelPrimaryVisibility
-
+        setPanelPrimaryVisibility,
+        panelDisplayWidget
         } = UseAppContext()
 
     const arcgisMapRef = useRef(null)
@@ -335,6 +335,7 @@ const WebMapComponentBeta = () => {
         setHitTestLayers(newHitTestLayers)
     }
 
+
     useEffect(() => {
 
         const configureWebMap = async () => {
@@ -375,17 +376,6 @@ const WebMapComponentBeta = () => {
 
                 if(!selectedParcelsPrimary && primaryResultFeature){
                     //if selecetd parcels primary layer does not exist create it from the
-                    //search result feautures
-                    // await addLayerToMap(primaryResultFeature, selectedParcelTitle, theme.layers.primary, "features")
-                    
-                    // //access the layer from the map
-                    // let layer = findLayerByTitle(arcgisMapRef.current.map, selectedParcelTitle)
-                    
-                    // //update the state of selectedParcelsPrimary with the layer
-                    // setSelectedParcelsPrimary(layer)
-
-                    // await updateHitTestLayers(layer)
-
                     await createSelectedFeatureLayer(primaryResultFeature, "features")
         
                     
@@ -396,17 +386,19 @@ const WebMapComponentBeta = () => {
                     //clear existing features from the selectedParcelsPrimaryLayer
                     await removeAllFeatures(selectedParcelsPrimary)
 
-                    //add new primaryResultFeature to add features
-                    //if it is not null
-                    //add features from the selectedParcelsPrimary to delete features
-                    const addEdits = {
-                        addFeatures: primaryResultFeature ?? [],
-                    }
+                    if(primaryResultFeature && selectedParcelsPrimary){
+                        //add new primaryResultFeature to add features
+                        let features = Array.isArray(primaryResultFeature) ? primaryResultFeature : [primaryResultFeature]
+                        // //if it is not null
+                        // //add features from the selectedParcelsPrimary to delete features
+                        const addEdits = {
+                            addFeatures: features ?? [],
+                        }
 
-                    //apply edits
-                    await selectedParcelsPrimary.applyEdits(addEdits)
-                    
-                    
+                        // //apply edits
+                        await selectedParcelsPrimary.applyEdits(addEdits)
+                    }
+                
                 }
 
                 //if primaryResultFeature is not null then zoom to newly added features
@@ -433,6 +425,32 @@ const WebMapComponentBeta = () => {
 
     }, [ secondaryResultFeature, arcgisMapRef, mapLoading ])
 
+    useEffect(() => {
+        const removeAllGraphics = () => {
+            if(arcgisMapRef.current?.map){
+                const isMeasure = panelDisplayWidget === "measure"
+                const isSelect = panelDisplayWidget === "sketch"
+                const map = arcgisMapRef.current.map
+    
+                if(!isSelect || !panelWidgetVisible){
+                    //remove all select graphics
+    
+                    const foundGraphic = findLayerByTitle(map,"selectGraphic")
+                    
+                    if(foundGraphic){
+                        foundGraphic.removeAll()
+                    }
+                    
+                    
+                }
+            }
+
+            
+        }
+
+        removeAllGraphics()
+
+    }, [panelDisplayWidget, panelWidgetVisible, arcgisMapRef.current])
    
     return(
         <Box

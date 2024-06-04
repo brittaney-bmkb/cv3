@@ -19,6 +19,7 @@ import LayerList from "../Widgets/LayersList/LayerList";
 import Info from "../Info/Info";
 import BasemapWidget from "../Widgets/Basemap/BasemapWidget";
 import SelectMultipleParcels from "../SelectMultipleParcels/SelectMultipleParcels";
+import { useState } from "react";
 
 
 const PanelContent = ({display}) => {

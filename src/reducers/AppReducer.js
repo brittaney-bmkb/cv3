@@ -36,7 +36,7 @@ export const initialState = {
     x: null,
     y: null, 
     openHelpDialog: false,
-    selectMultiple: null
+    selectMultiple: null,
 }
 
 const AppReducer = (state, action) => {
@@ -231,6 +231,7 @@ const AppReducer = (state, action) => {
                 ...state, 
                 selectMultiple: payload.selectMultiple
             }
+            
         default:
             throw new Error(`No valid selection made`)
     }

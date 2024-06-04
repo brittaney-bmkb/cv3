@@ -364,7 +364,6 @@ export async function zoomToExtent(features) {
     },
     { once: true }
   )
-
 }
 
 export async function removeGraphics(graphicName){
