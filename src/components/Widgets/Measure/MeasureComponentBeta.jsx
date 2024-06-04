@@ -1,12 +1,10 @@
-import { Box, MenuItem, Select, Typography } from "@mui/material"
+import { Box, MenuItem, Select, Typography, Stack, TextField } from "@mui/material"
 import UseAppContext from "../../../contexts/AppContext"
 import { useEffect, useRef, useState } from "react"
 import { ArcgisSketch } from "@arcgis/map-components-react"
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer.js";
 import Graphic from "@arcgis/core/Graphic.js";
-
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine.js";
-
 import SketchViewModel from "@arcgis/core/widgets/Sketch/SketchViewModel.js";
 import Sketch from "@arcgis/core/widgets/Sketch.js";
 
@@ -23,47 +21,69 @@ import Sketch from "@arcgis/core/widgets/Sketch.js";
 //// https://community.esri.com/t5/arcgis-javascript-maps-sdk-questions/how-to-convert-a-line-to-polygon-in-js-api-4-x/m-p/420334#M38612
 //// https://community.esri.com/t5/arcgis-javascript-maps-sdk-questions/getting-geodesic-area-ve/td-p/121084 // negative values 
 //// 
-//// 
-//// 
-//// 
 
+
+export const linearUnitOptions = [
+    "feet", "yards", "miles", "meters", "kilometers"
+]
+
+const areaUnitOptions = [
+    "square-inches", "square-feet", "square-yards", "square-miles", "square-meters", "square-kilometers", "acres"
+]
 
 // this lifted from comparable property search and will needed to be updated for this widget
 const MeasureComponentBeta = () => {
     
-    const { mapView, map } = UseAppContext()
+    const { mapView, map,translateText  } = UseAppContext()
+    // const { translateText, setMapPrintProps } = UseAppContext()
     const sketchRef = useRef(null)
     const graphicsLayer = useRef(null)
 
+    const [areaUnit, setAreaUnit] = useState(areaUnitOptions[0])
+    const [linearUnit, setLinearUnit] = useState(linearUnitOptions[0])
+
+    const [areaMeasurement, setAreaMeasurement] = useState(0)
+    const [linearMeasurement, setLinearMeasurement] = useState(0)
+
+
     const getPositiveNumber = (negativeNumber) => {
         //https://community.esri.com/t5/arcgis-javascript-maps-sdk-questions/getting-geodesic-area-ve/td-p/121084
-        let positiveNumber = (negativeNumber < 0) ? -negativeNumber : negativeNumber;
-        console.log('positiveNumber: ', positiveNumber, 'negative number:', negativeNumber, typeof positiveNumber)
+        const positiveNumber = (negativeNumber < 0) ? -negativeNumber : negativeNumber;
+        // console.log('positiveNumber: ', positiveNumber, 'negative number:', negativeNumber, typeof positiveNumber)
 
         return positiveNumber.toFixed(2)
         
     }
 
+    // useEffect(() => {
+    // }, []);
+
     const getArea = (polygon) => {
         // TODO make this a state to update in REACT
         const planarArea = geometryEngine.planarArea(polygon, "square-kilometers");
+        const planarAreaPositive = getPositiveNumber(planarArea);
+        setAreaMeasurement(planarAreaPositive)
+        console.log('updating planarAreaPositive', planarAreaPositive)
+        console.log('updating area measurement ', areaMeasurement)        
         
-        // console.log(typeof planarArea)
-        // console.log('planarArea:', planarArea.toFixed(2))
-
-        console.log('planarArea:', getPositiveNumber(planarArea))
+        return planarAreaPositive
+        
     }
 
     const getLength= (line) =>{
         const planarLength = geometryEngine.planarLength(line, "kilometers");
+        const planarLengthPositive = getPositiveNumber(planarLength)
         console.log('planarLength:', planarLength.toFixed(2))
+        return planarLengthPositive
+
     }
 
     function switchType(geom) {
-        console.log('Checking geom values',geom)
+        // console.log('Checking geom values',geom)
         switch (geom.type) {
             case "polygon":
                 getArea(geom);
+
                 break;
             case "polyline":
                 getLength(geom);
@@ -80,10 +100,8 @@ const MeasureComponentBeta = () => {
         let lastLat = polygonRings[polygonRings.length -1][0]
         let lastLon = polygonRings[polygonRings.length -1][1]
         let results = (firstLat === lastLat && firstLon === lastLon)
-
         return results
     }
-
 
 
     useEffect(() => {
@@ -94,14 +112,10 @@ const MeasureComponentBeta = () => {
             map.add(graphicsLayer)
             console.log("checking map ", map)
         }
-        // console.log('sketchRef.current')
-        // console.log(sketchRef.current)
 
-        
         if (sketchRef.current){
 
-            const convertPolyline2Polygon = (geom) =>{
-
+            const convertPolyline2Polygon = (geom) => {
                 let isPolygon = checkLatLongArray(geom)
                 console.log('Checking if both geoms are positive: ',isPolygon);
                 if (isPolygon){
@@ -121,42 +135,22 @@ const MeasureComponentBeta = () => {
                             width: 3,
                         },
                     };       
-                    console.log('Polygon Graphics')
                     const polygonGraphic = new Graphic({
                         geometry: polygon,
                         symbol: simplePolygonSymbol
                     });
-        
-                    console.log('graphicsLayer Before:', graphicsLayer)
-        
-                    // console.log('adding new graphic', polygonGraphic)
-                    // // sketchRef.current.layer.add(polygonGraphic);
-                    // graphicsLayer.add = polygonGraphic;
+
                     graphicsLayer.add(polygonGraphic);
-                    // // map.layers.add(polygonGraphic)
-        
-                    console.log('graphicsLayer after:', graphicsLayer)
-
-                    console.log('polygonGraphic: ', polygonGraphic.geometry.type)
-
-        
                     switchType(polygonGraphic.geometry)
-        
-                
-                    // console.log('See the polygon:', polygon)
-                } else{
-        
-                }
-        
-                // console.log('Checking the convert geom',geom.paths[0])
-        
+                } 
             }
 
-            // console.log('checking current')
+            // TODO start with replace SketchViewModel 
             const sketch = new Sketch({
                 view:mapView,
                 layer: graphicsLayer, 
-                availableCreateTools: ["polyline", "polygon"],
+                // availableCreateTools: ["polyline", "polygon"],
+                availableCreateTools: ["polyline"],
                 creationMode:"continuous",
                 container: sketchRef.current,
                 visibleElements: {
@@ -182,20 +176,17 @@ const MeasureComponentBeta = () => {
                 const geometry =  e.graphic.geometry;
                 
                 if (e.state === "active") {
+                    // console.log('active on create')
                     const geometry =  e.graphic.geometry;
                     // console.log("sketch on active",  e)
                     switchType(geometry);
                 }
                 if (e.state === "complete") {
+                    // console.log('complete on create')
                     const geometry =  e.graphic.geometry;
-                    console.log("sketch on complete", e)
-                    //TODO turns this back on and see what happens. 
-                    // convertPolyline2Polygon
+                    graphicsLayer.removeAll();
                     convertPolyline2Polygon(geometry);
-                    // switchType(geometry);
                     
-                    // graphicsLayer.remove(graphicsLayer.graphics.getItemAt(0));
-                    // measurements.innerHTML = null;
                 }
                 if (
                     e.toolEventInfo &&
@@ -204,47 +195,89 @@ const MeasureComponentBeta = () => {
                     e.toolEventInfo.type === "move-stop")
                     
                 ) {
-                    console.log("sketch on rescale", e.graphics[0].geometry)
+                    // console.log('if statements on create')
                     switchType(geometry);
                 }
             }); 
 
-            sketch.on("update", (e) => {
-                // console.log("sketch on update", e.graphics[0].geometry)
+            // sketch.on("update", (e) => {
+            //     // console.log("sketch on update", e.graphics[0].geometry)
                 
-                // const geometry = e.graphic.geometry;
-                const geometry =  e.graphics[0].geometry;
-                if (e.state === "start") {
-                    // console.log("sketch on start",  geometry)
-                    switchType(geometry);
-                }
+            //     // const geometry = e.graphic.geometry;
+            //     const geometry =  e.graphics[0].geometry;
+            //     if (e.state === "start") {
+            //         // console.log("sketch on start",  geometry)
+            //         switchType(geometry);
+            //     }
 
-                if (e.state === "complete") {
-                    // console.log("sketch on complete", e)
-                    // switchType(geometry);
-                    graphicsLayer.remove(graphicsLayer.graphics.getItemAt(0));
+            //     if (e.state === "complete") {
+            //         // console.log("sketch on complete", e)
+            //         // switchType(geometry);
+            //         graphicsLayer.remove(graphicsLayer.graphics.getItemAt(0));
                     
-                //   measurements.innerHTML = null;
-                }
-                if (
-                    e.toolEventInfo &&
-                    (e.toolEventInfo.type === "scale-stop" ||
-                    e.toolEventInfo.type === "reshape-stop" ||
-                    e.toolEventInfo.type === "move-stop")
+            //     //   measurements.innerHTML = null;
+            //     }
+            //     if (
+            //         e.toolEventInfo &&
+            //         (e.toolEventInfo.type === "scale-stop" ||
+            //         e.toolEventInfo.type === "reshape-stop" ||
+            //         e.toolEventInfo.type === "move-stop")
                     
-                ) {
-                    // console.log("sketch on rescale", e.graphics[0].geometry)
-                    switchType(geometry);
-                }
-            });            
+            //     ) {
+            //         // console.log("sketch on rescale", e.graphics[0].geometry)
+            //         switchType(geometry);
+            //     }
+            // });            
         }
 
-    }, [sketchRef, map, mapView, graphicsLayer])
-
-
+    }, [sketchRef, map, mapView, graphicsLayer, areaMeasurement])
 
     return (
-        <div id = "measure-widget-sketch"  style = {{width:300, height:600}} ref={sketchRef} > </div>
+        <Box display="flex" flexDirection="column"  rowGap={1}>
+            <Typography variant="h5" sx={{display:"flex", flexGrow:1, pt:1, pb:1}}>{`${translateText("Measure settings")}:`}</Typography>
+            <div id = "measure-widget-sketch"  style = {{width:300, height:300}} ref={sketchRef} > </div>
+            <Box display="flex" flexDirection="column" pl={1} rowGap={2}>
+            <Stack direction="row" sx={{alignItems:"center"}}  spacing={2}>
+                <Typography variant="body2" sx={{display:"flex", flexGrow:1}}>{translateText("Unit of Measurement")}</Typography>
+                {/* <Select
+                value={layoutValue}
+                onChange={handleLayoutOptionChange}
+                sx={{width: 'auto', height:40}}
+                >
+                    {formatLayoutOptions}
+                </Select> */}
+            </Stack> 
+            <Stack direction="row" sx={{alignItems:"center"}}  spacing={2}>
+                <Typography variant="body2" sx={{display:"flex", flexGrow:1}}>{translateText("Output format")}</Typography>
+                {/* <Select
+                value={formatValue}
+                onChange={handleFormatOptionChange}
+                sx={{width: 'auto', height:40}}
+                >
+                    {formatDropdownOptions}
+                </Select> */}
+            </Stack>             
+            {/* Choose Formats */}
+            {/* <Stack direction="row" sx={{alignItems:"center"}} spacing={2}>
+                <Typography variant="body2" sx={{display:"flex", flexGrow:1}}>{translateText("Map title")}</Typography>
+                <TextField 
+                    id="print-title" 
+                    //label="Title" 
+                    variant="outlined" 
+                    size="small"
+                    
+                    placeholder="Title"
+                    onChange={handleInput}
+                    sx={{width: 'auto', height:40}}
+                />
+            </Stack> 
+
+ */}
+            </Box>
+        </Box>        
+
+
+        
     )      
 }
 

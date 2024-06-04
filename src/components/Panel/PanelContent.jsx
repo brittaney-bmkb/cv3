@@ -18,6 +18,7 @@ import { config } from "../../data/config";
 import BasemapGallery from "../Widgets/Basemap/BasemapGallery";
 import LayerList from "../Widgets/LayersList/LayerList";
 import MeasureComponentBeta from "../Widgets/Measure/MeasureComponentBeta";
+import MeasureSketchWidget from  "../Widgets/Measure/MeasureSketchWidget";
 
 const PanelContent = ({display}) => {
 
@@ -200,15 +201,15 @@ const PanelContent = ({display}) => {
                         primary={false}
                     />
 
-                   <Box display="flex"  flexDirection="column" width="100%" flexGrow={1} minHeight={0}>
-                     <PropertyDetail 
-                       property1={screenWidth >= theme.breakpoints.values.lg ? null : primaryResultFeature} 
-                       property2={secondaryResultFeature} 
-                       propertyColor1={theme.palette.primary.main}
-                       propertyColor2={theme.palette.secondary.main}
-                      />
-                     <PropertyPagniation/>
-                   </Box>     
+                    <Box display="flex"  flexDirection="column" width="100%" flexGrow={1} minHeight={0}>
+                        <PropertyDetail 
+                        property1={screenWidth >= theme.breakpoints.values.lg ? null : primaryResultFeature} 
+                        property2={secondaryResultFeature} 
+                        propertyColor1={theme.palette.primary.main}
+                        propertyColor2={theme.palette.secondary.main}
+                        />
+                        <PropertyPagniation/>
+                    </Box>     
 
                 </Box>)
         case 'measureWidget':
@@ -229,9 +230,9 @@ const PanelContent = ({display}) => {
                         text="Measure"
                         closeButton={true}
                         panel={"widget"}
-                        descriptionText={"Measure Widget Coming Soon"}
+                        descriptionText={"Start drawing a line, close the shape to create a polygon."} //TODO needs to translate this 
                     />                    
-                    <MeasureComponentBeta/>
+                    <MeasureSketchWidget/>
                     {/* <MeasureWidget
                         panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"}
                     /> */}
