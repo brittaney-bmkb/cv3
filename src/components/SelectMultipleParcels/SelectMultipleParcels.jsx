@@ -8,7 +8,7 @@ import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
 
 const descriptions = (state) => {
     switch (state) {
-        case 'selectMultiple':
+        case 'click':
             return 'Click in the map to select parcels. Click on a selected parcel to deselect';
         case 'draw':
             return 'Click points in the map to draw an area and select parcels.';
@@ -28,7 +28,11 @@ const SelectMultipleParcels = () => {
         setSelectMultiple, 
         selectMultiple, 
         mapView, 
-        queryPolygon } = UseAppContext()
+        queryPolygon,
+        setPrimaryResultFeature,
+        primaryResultFeature,
+        setSearchResults
+     } = UseAppContext()
 
     const [ tool, setTool ] = useState(null)
     const [ actionButtonsVisible, setActionButtonsVisible ] = useState(false);
@@ -99,18 +103,32 @@ const SelectMultipleParcels = () => {
 
     const handleComplete = async () => {
 
-        //sketchVMRef.current.complete()
+        if(tool === "draw"){
+            await queryPolygon(sketchPolygon.geometry)
 
-        await queryPolygon(sketchPolygon.geometry)
+            polygonGraphicsLayer.current.remove(sketchPolygon)
+        }
 
-        polygonGraphicsLayer.current.remove(sketchPolygon)
+        if(tool === "select"){
+            setSelectMultiple(false)
+        }
 
         setActionButtonsVisible(false)
+
     }
 
     const handleStartNew = async () => {
 
-        polygonGraphicsLayer.current.remove(sketchPolygon)
+        if(polygonGraphicsLayer.current && tool==="draw"){
+            polygonGraphicsLayer.current.remove(sketchPolygon)
+        }
+
+        if(tool==="click"){
+            setPrimaryResultFeature(null, true)
+            setSearchResults(null, null)
+        }
+        
+
         setActionButtonsVisible(false)
     }
 
@@ -143,7 +161,16 @@ const SelectMultipleParcels = () => {
     },[sketchVMRef.current])
 
 
-    
+    useEffect(() => {
+
+        if(tool === 'click' && primaryResultFeature){
+            setActionButtonsVisible(true)
+        }
+        if(tool === 'click' && !primaryResultFeature){
+            setActionButtonsVisible(false)
+        }
+
+    }, [primaryResultFeature, tool])
 
 
     return(
