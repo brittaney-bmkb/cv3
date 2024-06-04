@@ -36,21 +36,24 @@ const MeasureSketchWidget = () => {
     // const { translateText, setMapPrintProps } = UseAppContext()
     const sketchDivDOM = useRef(null)
     const graphicsLayer = useRef(null)
-    let sketchVM = useState(null)
+    let sketchVM = useRef(null)
     
     // let graphicsLayer = new GraphicsLayer()
     const [activeTool, setActiveTool] = useState(null)
+    let [areaMeasurement, setAreaMeasurement] = useState("")
 
     const getPositiveNumber = (negativeNumber) => {
         const positiveNumber = (negativeNumber < 0) ? -negativeNumber : negativeNumber;
         return positiveNumber.toFixed(2)
     }
     
-    const getArea = (polygon) => {
+    let getArea = (polygon) => {
         // TODO make this a state to update in REACT
         const planarArea = geometryEngine.planarArea(polygon, "square-kilometers");
         const planarAreaPositive = getPositiveNumber(planarArea);
-        setAreaMeasurement(planarAreaPositive) //todo add this back to props 
+        console.log('updating planarAreaPositive before ', planarAreaPositive)
+        console.log('updating area measurement before', areaMeasurement)            
+        setAreaMeasurement(String(planarAreaPositive)) //todo add this back to props 
         console.log('updating planarAreaPositive', planarAreaPositive)
         console.log('updating area measurement ', areaMeasurement)        
         return planarAreaPositive
@@ -79,9 +82,9 @@ const MeasureSketchWidget = () => {
 
     const startMeasuring = async () => {
         await initializeSketchVM()
-        // setActiveTool(tool)
+        
         // TODO IT takes two times for this to become active
-        // sketchVM.current.create("polyline");
+        sketchVM.current.create("polyline");
 
     }    
     const checkLatLongArray = (geom) => {
@@ -150,51 +153,84 @@ const MeasureSketchWidget = () => {
                 snappingOptions: { // autocasts to SnappingOptions()
                     enabled: true, // global snapping is turned on
                     // assigns a collection of FeatureSnappingLayerSource() and enables feature snapping on this layer
-                    featureSources: [{ layer: graphicsLayer, enabled: true }]
+                    featureSources: [{ layer: graphicsLayer.current, enabled: true }]
                 }        
             })        
         }
-        sketchVM.current.create("polyline");
+        
     }
     
-    // useEffect( () => {
-    //     console.log("use effect")
-    //     const sketchVMListener = () =>{
-    //         console.log("Listener")
-    //         if(sketchVM.current){
-    //             sketchVM.current.on("create", (e) => {
-    //                 const geometry =  e.graphic.geometry;
+    useEffect( () => {
+        console.log("use effect")
+        let sketchVMListener = () =>{
+            console.log("Listener")
+            console.log("Listener sketchVM.current: ",sketchVM.current)
+            if(sketchVM.current){
+                console.log('If statement current')
+                sketchVM.current.on("create", (e) => {
+                    const geometry =  e.graphic.geometry;
                     
-    //                 if (e.state === "active") {
-    //                     console.log('active on create')
-    //                     const geometry =  e.graphic.geometry;
-    //                     // console.log("sketch on active",  e)
-    //                     switchType(geometry);
-    //                 }
-    //                 if (e.state === "complete") {
-    //                     console.log('complete on create')
-    //                     const geometry =  e.graphic.geometry;
-    //                     graphicsLayer.current.removeAll();
-    //                     //todo expand on comments for the logic 
-    //                     convertPolyline2Polygon(geometry);
+                    if (e.state === "active") {
+                        console.log('active on create')
+                        const geometry =  e.graphic.geometry;
+                        // console.log("sketch on active",  e)
+                        switchType(geometry);
+                    }
+                    if (e.state === "complete") {
+                        console.log('complete on create')
+                        const geometry =  e.graphic.geometry;
+                        graphicsLayer.current.removeAll();
+                        //todo expand on comments for the logic 
+                        convertPolyline2Polygon(geometry);
                         
-    //                 }
-    //                 if (
-    //                     e.toolEventInfo &&
-    //                     (e.toolEventInfo.type === "scale-stop" ||
-    //                     e.toolEventInfo.type === "reshape-stop" ||
-    //                     e.toolEventInfo.type === "move-stop")
+                    }
+                    if (
+                        e.toolEventInfo &&
+                        (e.toolEventInfo.type === "scale-stop" ||
+                        e.toolEventInfo.type === "reshape-stop" ||
+                        e.toolEventInfo.type === "move-stop")
                         
-    //                 ) {
-    //                     console.log('if statements on create')
-    //                     switchType(geometry);
-    //                 }
-    //             }); 
-    //         }
-    //     }
-    //     sketchVMListener()
-    // }, [sketchVM.current]
-    // )
+                    ) {
+                        console.log('if statements on create')
+                        switchType(geometry);
+                    }
+                }); 
+            }            
+            // if(sketchVM.current){
+            //     console.log('If statement current')
+            //     sketchVM.current.on("create", (e) => {
+            //         const geometry =  e.graphic.geometry;
+                    
+            //         if (e.state === "active") {
+            //             console.log('active on create')
+            //             const geometry =  e.graphic.geometry;
+            //             // console.log("sketch on active",  e)
+            //             switchType(geometry);
+            //         }
+            //         if (e.state === "complete") {
+            //             console.log('complete on create')
+            //             const geometry =  e.graphic.geometry;
+            //             graphicsLayer.current.removeAll();
+            //             //todo expand on comments for the logic 
+            //             convertPolyline2Polygon(geometry);
+                        
+            //         }
+            //         if (
+            //             e.toolEventInfo &&
+            //             (e.toolEventInfo.type === "scale-stop" ||
+            //             e.toolEventInfo.type === "reshape-stop" ||
+            //             e.toolEventInfo.type === "move-stop")
+                        
+            //         ) {
+            //             console.log('if statements on create')
+            //             switchType(geometry);
+            //         }
+            //     }); 
+            // }
+        }
+        sketchVMListener()
+    }, [sketchVM]
+    )
 
 
 
