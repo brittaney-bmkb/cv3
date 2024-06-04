@@ -109,7 +109,7 @@ const SelectMultipleParcels = () => {
             polygonGraphicsLayer.current.remove(sketchPolygon)
         }
 
-        if(tool === "select"){
+        if(tool === "click"){
             setSelectMultiple(false)
         }
 
@@ -126,6 +126,7 @@ const SelectMultipleParcels = () => {
         if(tool==="click"){
             setPrimaryResultFeature(null, true)
             setSearchResults(null, null)
+            
         }
         
 
@@ -169,8 +170,11 @@ const SelectMultipleParcels = () => {
         if(tool === 'click' && !primaryResultFeature){
             setActionButtonsVisible(false)
         }
+        // if(tool && polygonGraphicsLayer.current){
+        //     polygonGraphicsLayer.current.remove(sketchPolygon)
+        // }
 
-    }, [primaryResultFeature, tool])
+    }, [primaryResultFeature, tool, polygonGraphicsLayer])
 
 
     return(

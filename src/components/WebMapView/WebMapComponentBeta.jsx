@@ -16,6 +16,7 @@ const webmapParcelLayerTitle = config.target_layer_name
 const WebMapComponentBeta = () => {
 
     const { 
+        searchFeatures,
         primaryResultFeature, 
         setPrimaryResultFeature,
         newSearch,
@@ -173,6 +174,7 @@ const WebMapComponentBeta = () => {
         let addGraphics = []
         let features
         results.map(result => {
+            console.log("result being added: ", result)
             addGraphics.push(result.graphic)
             objectIds.push(result.graphic.attributes['OBJECTID'])
         })
@@ -265,9 +267,13 @@ const WebMapComponentBeta = () => {
         if(response.results.length > 0){
             console.log("onArcgisViewClick: hittest results ", response.results)
 
+            //check if the clicked feature is a selected parcel
+            let selectedGraphicsDetected = response.results.filter(result => result.graphic.layer.title === selectedParcelTitle)
+            
+            console.log("selectedGraphicsDetected: ", selectedGraphicsDetected)
+
             if(selectMultiple){
                 //check if the hittest results include any previously selected layers
-                let selectedGraphicsDetected = response.results.filter(result => result.graphic.layer.title === selectedParcelTitle)
 
                 if(selectedGraphicsDetected.length > 0){
                     console.log(`${selectedGraphicsDetected.length} Selected Parcels Detected`)
@@ -285,9 +291,42 @@ const WebMapComponentBeta = () => {
             }
             else{
                 if(selectedParcelsPrimary){
-                    await removeAllFeatures(selectedParcelsPrimary)
+
+                    if(selectedGraphicsDetected.length === 0){
+                        console.log("selected parcels not clicked")
+                        await removeAllFeatures(selectedParcelsPrimary)
+                        await addFeatures(response.results)
+                    }
+
+                    else{
+                        const clickedParcel = response.results.filter(result => result.graphic.layer.title === webmapParcelLayerTitle)
+                        console.log("display parcel details: ", clickedParcel)
+
+                        const clickedParcelObjId = clickedParcel[0].graphic.attributes['OBJECTID']
+
+                        console.log("clickedParcelObjId ", clickedParcelObjId)
+
+                        let parcels = searchFeatures ? searchFeatures : primaryResultFeature
+
+                        console.log("searchFeatures: ", searchFeatures)
+
+                        const showParcelDetail = searchFeatures.filter(feature => feature.attributes["OBJECTID"] === clickedParcelObjId)
+                        
+                        console.log("showParcelDetail: ", showParcelDetail)
+
+                        if(showParcelDetail.length > 0){
+                            setPrimaryResultFeature(showParcelDetail, false)
+                            setPanelDisplay("propertyDetail")
+                        }
+                        
+                    }  
                 }
-                await addFeatures(response.results)
+
+                else{
+
+                    await addFeatures(response.results)
+                }
+                
             }
             
         }
