@@ -238,6 +238,14 @@ const WebMapComponentBeta = () => {
 
         setPrimaryResultFeature(updatedFeatures, false)
         setSearchResults(null, updatedFeatures)
+        
+        if(!panelDisplay || panelDisplay !== "resultsList"){
+            setPanelDisplay("resultsList")
+        }
+        
+        if(!panelPrimaryVisible || panelPrimaryVisible === false){
+            setPanelPrimaryVisibility(true)
+        }
 
         return removeGraphics
     }
@@ -273,6 +281,7 @@ const WebMapComponentBeta = () => {
             console.log("selectedGraphicsDetected: ", selectedGraphicsDetected)
 
             if(selectMultiple){
+                //if select multiple === true
                 //check if the hittest results include any previously selected layers
 
                 if(selectedGraphicsDetected.length > 0){
@@ -299,18 +308,19 @@ const WebMapComponentBeta = () => {
                     }
 
                     else{
-                        const clickedParcel = response.results.filter(result => result.graphic.layer.title === webmapParcelLayerTitle)
+
+                        const clickedParcel = response.results.filter(result => [webmapParcelLayerTitle, selectedParcelTitle].includes(result.graphic.layer.title) )
                         console.log("display parcel details: ", clickedParcel)
 
-                        const clickedParcelObjId = clickedParcel[0].graphic.attributes['OBJECTID']
+                        const clickedParcelObjIds = clickedParcel.map(parcel => parcel.graphic.attributes['OBJECTID'])
 
-                        console.log("clickedParcelObjId ", clickedParcelObjId)
+                        console.log("clickedParcelObjId ", clickedParcelObjIds)
 
-                        let parcels = searchFeatures ? searchFeatures : primaryResultFeature
-
+                        let searchFeatObjectIDs = searchFeatures.map(feature => feature.attributes["OBJECTID"])
                         console.log("searchFeatures: ", searchFeatures)
+                        console.log("searchFeature IDs: ", searchFeatObjectIDs)
 
-                        const showParcelDetail = searchFeatures.filter(feature => feature.attributes["OBJECTID"] === clickedParcelObjId)
+                        const showParcelDetail = searchFeatures.filter(feature => clickedParcelObjIds.includes(feature.attributes["OBJECTID"]))
                         
                         console.log("showParcelDetail: ", showParcelDetail)
 

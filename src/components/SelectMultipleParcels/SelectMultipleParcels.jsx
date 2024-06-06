@@ -112,7 +112,7 @@ const SelectMultipleParcels = () => {
         if(tool === "click"){
             setSelectMultiple(false)
         }
-
+        setTool(null)
         setActionButtonsVisible(false)
 
     }
@@ -129,7 +129,7 @@ const SelectMultipleParcels = () => {
             
         }
         
-
+        
         setActionButtonsVisible(false)
     }
 
@@ -165,6 +165,8 @@ const SelectMultipleParcels = () => {
     useEffect(() => {
 
         if(tool === 'click' && primaryResultFeature){
+            console.log("active tool: ", tool)
+            console.log("setting action buttons visible to true")
             setActionButtonsVisible(true)
         }
         if(tool === 'click' && !primaryResultFeature){
