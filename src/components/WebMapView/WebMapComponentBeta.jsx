@@ -12,6 +12,7 @@ import Query from "@arcgis/core/rest/support/Query.js";
 
 const selectedParcelTitle = "Selected Parcel"
 const webmapParcelLayerTitle = config.target_layer_name
+const comparableParcelTitle = "Comparable Parcels"
 
 const WebMapComponentBeta = () => {
 
@@ -44,6 +45,7 @@ const WebMapComponentBeta = () => {
     const [ mapLoading, setMapLoading ] = useState(true)
     const [ targetLayer, setTargetLayer ] = useState(null)
     const [ selectedParcelsPrimary, setSelectedParcelsPrimary ] = useState(null)
+    const [ comparableParcelLayer, setComparableParcelLayer ] = useState(null)
     const [ hitTestLayers, setHitTestLayers ] = useState([])
 
     const zoomToExtent = async (features) => {
@@ -106,11 +108,6 @@ const WebMapComponentBeta = () => {
         }
     }
 
-    const handleViewClick = async (mapPoint) => {
-
-        await queryMapPoint(mapPoint)
-
-    }
 
     const findTargetLayer = (map) => {
 
@@ -168,23 +165,31 @@ const WebMapComponentBeta = () => {
         await layer.applyEdits(addEdits)
     }
 
-    const addFeatures = async (results, multiple) => {
+    const addFeatures = async (results, multiple, typeIsFeature) => {
 
         let objectIds = []
         let addGraphics = []
         let features
-        results.map(result => {
-            console.log("result being added: ", result)
-            addGraphics.push(result.graphic)
-            objectIds.push(result.graphic.attributes['OBJECTID'])
-        })
+
+        if(!typeIsFeature){
+            results.map(result => {
+                console.log("result being added: ", result)
+                addGraphics.push(result.graphic)
+                objectIds.push(result.graphic.attributes['OBJECTID'])
+            })
+        }
+        
+        else{
+            addGraphics = results
+        }
+        
 
         const addEdits = {
             addFeatures: addGraphics,
         }
 
         if(!selectedParcelsPrimary){
-            await createSelectedFeatureLayer(addGraphics, "graphics")
+            await createAndAddFeatureLayer(addGraphics, "graphics", selectedParcelTitle, theme.layers.primary)
         }
 
         else{
@@ -238,7 +243,7 @@ const WebMapComponentBeta = () => {
 
         setPrimaryResultFeature(updatedFeatures, false)
         setSearchResults(null, updatedFeatures)
-        
+
         if(!panelDisplay || panelDisplay !== "resultsList"){
             setPanelDisplay("resultsList")
         }
@@ -328,12 +333,10 @@ const WebMapComponentBeta = () => {
                             setPrimaryResultFeature(showParcelDetail, false)
                             setPanelDisplay("propertyDetail")
                         }
-                        
                     }  
                 }
 
                 else{
-
                     await addFeatures(response.results)
                 }
                 
@@ -359,12 +362,12 @@ const WebMapComponentBeta = () => {
         setHitTestLayers([layer])
     } 
     
-    const createSelectedFeatureLayer = async (source, sourceType) => {
+    const createAndAddFeatureLayer = async (source, sourceType, title, style) => {
 
-        await addLayerToMap(source, selectedParcelTitle, theme.layers.primary, sourceType)
+        await addLayerToMap(source, title, style, sourceType)
 
         //get the layer object
-        let layer = findLayerByTitle(arcgisMapRef.current.map, selectedParcelTitle)
+        let layer = findLayerByTitle(arcgisMapRef.current.map, title)
 
         //set the selectedParcelsPrimary state to the layer
         setSelectedParcelsPrimary(layer)
@@ -425,7 +428,7 @@ const WebMapComponentBeta = () => {
 
                 if(!selectedParcelsPrimary && primaryResultFeature){
                     //if selecetd parcels primary layer does not exist create it from the
-                    await createSelectedFeatureLayer(primaryResultFeature, "features")
+                    await createAndAddFeatureLayer(primaryResultFeature, "features", selectedParcelTitle, theme.layers.primary)
         
                     
                 }
@@ -464,9 +467,28 @@ const WebMapComponentBeta = () => {
 
     useEffect(() => {
         
-        addLayerToMap(comparableParcels, "Comparable Parcels", theme.layers.secondary, "features")
+        //addLayerToMap(comparableParcels, "Comparable Parcels", theme.layers.secondary, "features")
+        const displayComparableParcels = async () => {
 
-    }, [ comparableParcels, arcgisMapRef, mapLoading ])
+            if(arcgisMapRef.current && !mapLoading && targetLayer){
+
+                if(!comparableParcelLayer && comparableParcels){
+                    //if comparable parcel layer does not exist create it from array of features
+                    await createAndAddFeatureLayer(comparableParcels, "features", comparableParcelTitle, theme.layers.secondary)
+
+                    zoomToExtent(comparableParcels)
+                }
+
+                else if(comparableParcelLayer && !comparableParcels){
+                    await removeAllFeatures(comparableParcelLayer)
+                }
+            }
+
+        }
+
+        displayComparableParcels()
+
+    }, [ comparableParcels, arcgisMapRef, mapLoading, targetLayer ])
 
     useEffect(() => {
 
