@@ -8,9 +8,11 @@ export const initialState = {
     mapContainer:null,
     primaryResultFeature: null,
     secondaryResultFeature:null,
+    searchTerm: null,
     searchResults: null,
     searchSources: null,
     searchFeatures: null,
+    prevSearchFeatures: null,
     panelDisplay:null,
     panelDisplaySecondary:null,
     panelDisplayWidget:null,
@@ -89,8 +91,10 @@ const AppReducer = (state, action) => {
             console.log("SET_SEARCH_RESULT")
             return {
                 ...state,
+                searchTerm: payload.searchTerm,
                 searchResults: payload.searchResults,
-                searchFeatures: payload.searchFeatures
+                searchFeatures: payload.searchFeatures,
+                prevSearchFeatures: payload.prevSearchFeatures
             }
         case "SET_SEARCH_SOURCES":
             console.log("SET_SEARCH_SOURCES")

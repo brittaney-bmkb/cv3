@@ -171,8 +171,16 @@ const WebMapComponentBeta = () => {
         return features
     }
 
-    const removeAllFeatures = async (layer) => {
-        let { features } = await layer.queryFeatures()
+    const removeAllFeatures = async (layer, where) => {
+
+        let query;
+
+        if(where){
+            query = new Query({
+                where: where
+            })
+        }
+        let { features } = query ? await layer.queryFeatures(query) : await layer.queryFeatures()
         //console.log("features to remove: ", features)
 
         //add new primaryResultFeature to add features
@@ -230,7 +238,7 @@ const WebMapComponentBeta = () => {
             features = fetchedFeatures
         }
         setPrimaryResultFeature(features, false)
-        setSearchResults(null, features)
+        setSearchResults(null, features, null, features)
 
         if(!panelDisplay || panelDisplay !== "resultsList"){
             setPanelDisplay("resultsList")
@@ -247,6 +255,7 @@ const WebMapComponentBeta = () => {
         let objectIds = []
         let removeGraphics = []
         console.log("removing objectids: ", results)
+
         results.map(result => {
             removeGraphics.push(result.graphic)
             console.log("removing objectids: ", result.graphic.attributes['OBJECTID'])
@@ -264,7 +273,7 @@ const WebMapComponentBeta = () => {
         let updatedFeatures = existingFeatures.filter(feature => !objectIds.includes(feature.attributes['OBJECTID']))
 
         setPrimaryResultFeature(updatedFeatures, false)
-        setSearchResults(null, updatedFeatures)
+        setSearchResults(null, updatedFeatures, null, updatedFeatures)
 
         if(!panelDisplay || panelDisplay !== "resultsList"){
             setPanelDisplay("resultsList")
@@ -380,6 +389,14 @@ const WebMapComponentBeta = () => {
                         console.log("showParcelDetail: ", showParcelDetail)
 
                         if(showParcelDetail.length > 0){
+                            
+                            let features = searchFeatures.filter(feature => !clickedParcelObjIds.includes(feature.attributes['OBJECTID']))
+
+                            console.log("remove features: ", features)
+                            
+                            const where = `OBJECTID NOT IN (${clickedParcelObjIds.join(",")})`
+                            await removeAllFeatures(selectedParcelsPrimary, where)
+
                             setPrimaryResultFeature(showParcelDetail, false)
                             setPanelDisplay("propertyDetail")
                         }

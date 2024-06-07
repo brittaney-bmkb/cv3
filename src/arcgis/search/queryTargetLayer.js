@@ -112,7 +112,7 @@ export const handleMultipleResults = async (results) => {
                     });
                 }
             } else {
-                console.log("Pushing results features to search features");
+                //console.log("Pushing results features to search features");
                 results.results.map(result => {
                     searchFeatures.push(result.feature)
                 })
@@ -150,7 +150,7 @@ export const handleMultipleResults = async (results) => {
 
         features.map(feature => {
             let featureExists = addObjectToArrayIfNotExists(targetFeatures, feature)
-            console.log("new feature exists: ", featureExists)
+            //console.log("new feature exists: ", featureExists)
             if(!featureExists){
                 targetFeatures.push(feature)
             }

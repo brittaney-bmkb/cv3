@@ -13,6 +13,16 @@ The `Search` component is a React component designed to integrate and manage a s
 - Swapped `selected-result` for the `search-complete` event handler: As a result of the `autoSelect` property being changed, the `selected-result` event no longer returns the search results. To work with the results the `search-complete` event handler was setup to get the results through the event object   
 - Leverged the `returnSearchResultFeatures` function that was newly added to `AppContext` to pass the search results and return target features to display in the map and in the search results
     - This was a major update because the the app is now accessing the features that are returned from the search results when the search source is the same as the target layer, rather than performing an additional query on the target layer to return features. See `queryTargetLayer.md` for more information
+- **Displaying previous results when back button is clicked in results panel** 
+  - a new condition is added to the `primaryResultFeature` use effect hook to watch for changes to the `primaryResultFeature` when `newSearch` is set to true and the `search` search param is populated. This handles updates to the search widget search term and sets the SearchResults
+    - Inside the `PanelHeader` component the `primaryResultFeature` is also updated with the `prevSearchFeatures`
+    - when the `prevSearchFeatures` is passed to the `setPrimaryResultFeature` function this triggers a change to the `primaryResultFeature` to update the `searchtTerm` in the search widget, the search results, and display to previous results in the map
+  - a new condition and function `anyAttributesIncluded` was added to the check if selected features are in the `searchFeatures`, which means that the selected parcel was included in the results list
+    - if the selected feature is in the `searchFeatures` then the the condition prevents `searchFeatures` from being set to the `primaryResultFeatures`. 
+      - `searchFeatures` then set to the `prevFeatures` argurment in the `setSearchResults` function. 
+      - lastly, the `searchTerm` is kept the same so it be referenced when the back button is clicked
+    - if the selected feature is not in the `searchFeatures` then the `setSearchResults` is passed the newly selected `primaryResultFeatures` and a new `searchTerm`
+
     
 ### Fixes
 - None

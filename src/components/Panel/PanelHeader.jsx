@@ -14,7 +14,28 @@ import FeedbackDialog, { FeedbackGeneral, FeedbackSearch } from "../FeedBack/Fee
 
 const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton, panel, primary, divider} ) => {
 
-    const { setPanelDisplayWidget, primaryResultFeature, panelDisplay, setShowMapMoblie, screenWidth, panelWidgetVisible, setPanelWidgetVisibility, translateText, clearResultsComparables, panelDisplaySecondary, clearResults, panelPrimaryVisible, panelSecondaryVisible, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, comparableParcels } = UseAppContext()
+    const { setPanelDisplayWidget, primaryResultFeature, panelDisplay, 
+        setShowMapMoblie, 
+        screenWidth, 
+        panelWidgetVisible, 
+        setPanelWidgetVisibility, 
+        translateText, 
+        clearResultsComparables, 
+        panelDisplaySecondary, 
+        clearResults, 
+        panelPrimaryVisible, 
+        panelSecondaryVisible, 
+        setPanelDisplay, 
+        setPanelPrimaryVisibility, 
+        setPanelSecondaryVisibility, 
+        setPanelDisplaySecondary, 
+        comparableParcels,
+        prevSearchFeatures,
+        searchTerm,
+        setPrimaryResultFeature,
+        setSearchResults,
+        setIsQuerying
+    } = UseAppContext()
 
     //get url parameters
     const [routeParams , setSearchParams] = useSearchParams()
@@ -74,15 +95,22 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
 
     const handleBack = () => {
 
-        let secondaryParcelsDisplayed= ["nearbyProperties", "comparablePropertySearch","resultsListComparables","resultsListNearby","propertyDetailComparable","propertyDetailNearby"].includes(panelDisplaySecondary)
-
         if(panel==="primary"){
-            console.log("going back to: ", backButtonComponent)
-            setPanelDisplay(backButtonComponent)
-
             if(["nearbyProperties", "comparablePropertySearch","resultsList"].includes(backButtonComponent)){
                 clearResultsComparables()
             }
+
+            if(backButtonComponent === "resultsList"){
+                console.log("setting previous search term: ", searchTerm)
+                console.log("setting previous features as current search results", prevSearchFeatures)
+                setSearchParams({'search': searchTerm})
+                setIsQuerying(true)
+                setSearchResults(null, null)
+                setPrimaryResultFeature(prevSearchFeatures, true)
+            }
+
+            console.log("going back to: ", backButtonComponent)
+            setPanelDisplay(backButtonComponent)
         }
         if(panel==="secondary"){
             console.log("going back to: ", backButtonComponent)

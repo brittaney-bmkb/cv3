@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 import AppReducer, { initialState } from '../reducers/AppReducer'
 import { config } from "../data/config";
 import { theme } from "../theme";
+import { useSearchParams } from "react-router-dom";
 
 
 export const AppContext = createContext(initialState)
@@ -18,6 +19,9 @@ export const AppProvider = ({children}) => {
             }
         })
     } 
+
+    //get url parameters
+    const [routeParams, setSearchParams] = useSearchParams();
 
     const setMapContainer = (ref) => {
         dispatch({
@@ -77,12 +81,14 @@ export const AppProvider = ({children}) => {
 
     
 
-    const setSearchResults = (results, features) => {
+    const setSearchResults = (results, features, searchTerm, prevSearchFeatures) => {
         dispatch({
             type:"SET_SEARCH_RESULT",
              payload: {
                 searchResults: results,
-                searchFeatures: features
+                searchFeatures: features,
+                searchTerm: searchTerm,
+                prevSearchFeatures: prevSearchFeatures
             }
         })
     }
@@ -355,7 +361,16 @@ export const AppProvider = ({children}) => {
         setCoordinates(point.x, point.y)
         console.log("x/y", point.x, point.y)
 
-        const { selectMultiple, panelDisplaySecondary, screenWidth, panelSecondaryVisible, panelPrimaryVisible, panelDisplay, parcelQueryFields, comparableParcels, primaryResultFeature} = state
+        const { selectMultiple, 
+            panelDisplaySecondary, 
+            screenWidth, 
+            panelSecondaryVisible, 
+            panelPrimaryVisible, 
+            panelDisplay, 
+            parcelQueryFields, 
+            comparableParcels, 
+            searchFeatures
+        } = state
         //const { peformQueryFeatures, createGraphic, zoomToExtent, removeGraphics } = await import('../arcgis/webmap/webmap')
         const { queryTargetLayerWithPointFeatures } = await import('../arcgis/search/queryTargetLayer')
 
@@ -383,7 +398,7 @@ export const AppProvider = ({children}) => {
         }
 
         if(secondaryFeatures?.length > 0){
-
+            console.log("found comparable features from mouse click: ", selectedFeatures)
             setSecondaryResultFeature(secondaryFeatures[0])
 
             if(screenWidth < theme.breakpoints.values.lg){
@@ -416,6 +431,7 @@ export const AppProvider = ({children}) => {
             if(!panelDisplay || panelDisplay !== "resultsList"){
                 setPanelDisplay("resultsList")
             }
+        
             
             if(!panelPrimaryVisible || panelPrimaryVisible === false){
                 setPanelPrimaryVisibility(true)
@@ -445,7 +461,7 @@ export const AppProvider = ({children}) => {
         console.log("target features from x/y: ", features)
 
         setPrimaryResultFeature(features, true)
-        setSearchResults(null, features)
+        setSearchResults(null, features, null)
 
         if(!panelDisplay || panelDisplay !== "resultsList"){
             setPanelDisplay("resultsList")
@@ -454,6 +470,21 @@ export const AppProvider = ({children}) => {
         if(!panelPrimaryVisible || panelPrimaryVisible === false){
             setPanelPrimaryVisibility(true)
         }
+    }
+
+    // Function to check if any properties attributes['PIN14'] are included in another array of objects
+    const anyAttributesIncluded = (array1, array2) => {
+        // Extract the attributes['PIN14'] values from the first array
+        const attributes1 = array1.map(obj => obj.attributes['PIN14']);
+
+        // Iterate over each object in the second array and check if its attributes['PIN14'] value is included in the attributes1 array
+        for (let obj of array2) {
+            if (attributes1.includes(obj.attributes['PIN14'])) {
+                return true; // If a match is found, return true
+            }
+        }
+
+        return false; // If no match is found, return false
     }
   
     
@@ -486,16 +517,19 @@ export const AppProvider = ({children}) => {
 
     const selectResultFromList = async (result) => {
         console.log("Result PIN : ", result)
-        const { searchFeatures } = state
+        const { searchFeatures, searchTerm, prevSearchFeatures } = state
         const selectedFeature = searchFeatures.filter((feature) => feature.attributes['PIN14_dash'] == result)
         console.log("selectedFeature: ", selectedFeature)
 
         setPrimaryResultFeature(selectedFeature, true)
-  
-        //update graphic in map
-        const { createGraphic } = await import('../arcgis/webmap/webmap')
 
-        createGraphic(selectedFeature, "primary", theme.palette.primary.main)
+        console.log("previous search term: ", searchTerm)
+        console.log("previous search features: ", prevSearchFeatures)
+  
+        // //update graphic in map
+        // const { createGraphic } = await import('../arcgis/webmap/webmap')
+
+        // createGraphic(selectedFeature, "primary", theme.palette.primary.main)
     }
 
     const addSecondaryFeatureToMap = async () => {
@@ -525,20 +559,35 @@ export const AppProvider = ({children}) => {
         toggleLayer(layerName)
     }
 
-    const returnSearchResultFeatures = async (results) => {
+    //Function to return comparable parcel features
+    //in use [v3.0.0-beta.2]
+    const returnSearchResultFeatures = async (results, newSearchTerm) => {
 
         const { handleMultipleResults } = await import('../arcgis/search/queryTargetLayer')
 
+        
+        // else{
+        console.log("Performing new target layer query")
         const{ targetFeatures } = await handleMultipleResults(results)
 
         console.log("target features returned: ", targetFeatures)
+        console.log("results returned: ", results)
+
         setPrimaryResultFeature(targetFeatures, true)
-        setSearchResults(results, targetFeatures)
+
+
+        console.log("seting previous feature: ", targetFeatures)
+        setSearchResults(results, targetFeatures, newSearchTerm, targetFeatures)
+        //}
+        
+        
 
 
     }
 
     const renderSearchResults = async (searchWidgetResults) => {
+
+        console.log("FUNCTION: renderSearchResults" )
         let fields
         const { querySearchResults } = await import('../arcgis/webmap/webmap')
         const { parcelQueryFields, panelDisplay, primaryResultFeature } = state
@@ -573,6 +622,8 @@ export const AppProvider = ({children}) => {
 
         setPrimaryResultFeature(null, true)
         setSearchResults(null, null)
+        //clear search params
+        setSearchParams({})
         //removeGraphics("primary");
         //removeGraphics("secondary");
         setPanelDisplay("resultsList")
@@ -588,6 +639,8 @@ export const AppProvider = ({children}) => {
 
         // Use history.pushState to update the URL without refreshing the page
         window.history.pushState({ path: updatedUrl }, '', updatedUrl);
+
+        //setIsQuerying(false)
     }
 
     const clearResultsComparables = async () => {
@@ -717,6 +770,8 @@ export const AppProvider = ({children}) => {
         setSearchResults,
         searchSources: state.searchSources,
         searchResults: state.searchResults,
+        prevSearchFeatures: state.prevSearchFeatures,
+        searchTerm: state.searchTerm,
         setSearchSources,
         renderSearchResults,
         clearResults,
@@ -778,6 +833,7 @@ export const AppProvider = ({children}) => {
         setComparableParcels,
         initalizeSearchSources,
         returnSearchResultFeatures,
+        anyAttributesIncluded,
         setSelectMultiple,
         selectMultiple: state.selectMultiple,
         queryPolygon,
