@@ -286,19 +286,23 @@ export async function compareProperities(whereQuery, searchDistance, feature, qu
 
   export async function nearbyProperties(searchDistance, units, feature, queryFields){
 
+    console.log("nearby primary result feature:", feature)
+
+    let queryFeature = Array.isArray(feature) ? feature[0] : feature
+    
     let query = new Query()
-    query.geometry = feature.geometry
+    query.geometry = queryFeature.geometry
     query.spatialRelationship = "intersects"
     query.distance = searchDistance
     query.units = units
     query.returnGeometry = true
-    query.outFields = queryFields
+    query.outFields = ["*"]
 
     let {features} = await targetLayer.queryFeatures(query)
 
     console.log("queried Features: ", features)
 
-    let filteredFeatures = features.filter((f) => f.attributes['PIN14'] !== feature.attributes['PIN14'])
+    let filteredFeatures = features.filter((f) => f.attributes['PIN14'] !== queryFeature.attributes['PIN14'])
 
     return filteredFeatures
 

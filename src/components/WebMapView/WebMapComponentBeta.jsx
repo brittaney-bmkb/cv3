@@ -100,7 +100,7 @@ const WebMapComponentBeta = () => {
                     
                     map.add(featLayer)
                     console.log(`Add ${title} to map: `, map)
-                    zoomToExtent(featLayer)
+                    //zoomToExtent(featLayer)
                 }
                 
             }
@@ -199,6 +199,7 @@ const WebMapComponentBeta = () => {
 
         //fetch features for graphics to be added
         let fetchedFeatures = await fetchParcelAttributes(objectIds)
+
         //update state of primaryResultsFeature with fetched features
         if(multiple && primaryResultFeature){
             let existingFeatures = Array.isArray(primaryResultFeature) ? primaryResultFeature : [primaryResultFeature]
@@ -282,6 +283,7 @@ const WebMapComponentBeta = () => {
 
             //check if the clicked feature is a selected parcel
             let selectedGraphicsDetected = response.results.filter(result => result.graphic.layer.title === selectedParcelTitle)
+            let selectedComparableDetected = response.results.filter(result => result.graphic.layer.title === comparableParcelTitle)
             
             console.log("selectedGraphicsDetected: ", selectedGraphicsDetected)
 
@@ -313,7 +315,7 @@ const WebMapComponentBeta = () => {
                     }
 
                     else{
-
+                        //select primary search parcel detected
                         const clickedParcel = response.results.filter(result => [webmapParcelLayerTitle, selectedParcelTitle].includes(result.graphic.layer.title) )
                         console.log("display parcel details: ", clickedParcel)
 
@@ -370,7 +372,13 @@ const WebMapComponentBeta = () => {
         let layer = findLayerByTitle(arcgisMapRef.current.map, title)
 
         //set the selectedParcelsPrimary state to the layer
-        setSelectedParcelsPrimary(layer)
+        if(title === selectedParcelTitle){
+            setSelectedParcelsPrimary(layer)
+        }
+        else if(title === comparableParcelTitle){
+            setComparableParcelLayer(layer)
+        }
+        
 
         await updateHitTestLayers(layer)
     }
@@ -429,8 +437,8 @@ const WebMapComponentBeta = () => {
                 if(!selectedParcelsPrimary && primaryResultFeature){
                     //if selecetd parcels primary layer does not exist create it from the
                     await createAndAddFeatureLayer(primaryResultFeature, "features", selectedParcelTitle, theme.layers.primary)
-        
-                    
+
+                    zoomToExtent(primaryResultFeature)
                 }
 
                 else if(selectedParcelsPrimary && newSearch){
@@ -453,6 +461,11 @@ const WebMapComponentBeta = () => {
                 
                 }
 
+                else if(!primaryResultFeature && selectedParcelsPrimary){
+                    console.log("clearing primary parcel selection")
+                    await removeAllFeatures(selectedParcelsPrimary) 
+                }
+
                 //if primaryResultFeature is not null then zoom to newly added features
                 if(primaryResultFeature){
                     zoomToExtent(primaryResultFeature)
@@ -467,20 +480,38 @@ const WebMapComponentBeta = () => {
 
     useEffect(() => {
         
+        console.log("comparable parcels use effect triggereed: ", comparableParcels)
+        console.log("comparable parcels layer : ", comparableParcelLayer)
         //addLayerToMap(comparableParcels, "Comparable Parcels", theme.layers.secondary, "features")
         const displayComparableParcels = async () => {
 
-            if(arcgisMapRef.current && !mapLoading && targetLayer){
+            if(arcgisMapRef.current){
 
                 if(!comparableParcelLayer && comparableParcels){
                     //if comparable parcel layer does not exist create it from array of features
                     await createAndAddFeatureLayer(comparableParcels, "features", comparableParcelTitle, theme.layers.secondary)
 
+                    //const primaryFeaturesArray = Array.isArray(primaryResultFeature) ? primaryResultFeature : [primaryResultFeature]
+                    //const zoomFeatures = [...primaryFeaturesArray, ...comparableParcels]
                     zoomToExtent(comparableParcels)
                 }
 
-                else if(comparableParcelLayer && !comparableParcels){
+                else if(comparableParcelLayer && (!comparableParcels || comparableParcelLayer?.length === 0)){
                     await removeAllFeatures(comparableParcelLayer)
+                }
+
+                else if(comparableParcelLayer && comparableParcels){
+
+                    console.log("Adding comparable features to map")
+                    const addEdits = {
+                        addFeatures: comparableParcels,
+                    }
+
+                    comparableParcelLayer.applyEdits(addEdits)
+
+                    //const primaryFeaturesArray = Array.isArray(primaryResultFeature) ? primaryResultFeature : [primaryResultFeature]
+                    //const zoomFeatures = [...primaryFeaturesArray, ...comparableParcels]
+                    zoomToExtent(comparableParcels)
                 }
             }
 
@@ -488,7 +519,7 @@ const WebMapComponentBeta = () => {
 
         displayComparableParcels()
 
-    }, [ comparableParcels, arcgisMapRef, mapLoading, targetLayer ])
+    }, [ comparableParcels, arcgisMapRef])
 
     useEffect(() => {
 

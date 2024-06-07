@@ -49,6 +49,7 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
         }
 
         if(comparableParcels && comparableParcels.length > 0){
+            console.log("clearing comparable parcels")
             clearResultsComparables()
         }
 
