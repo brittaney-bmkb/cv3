@@ -161,11 +161,14 @@ const Search = () => {
                 //setSearchParams(newParam)
                 console.log("Primary Result Feature is in search features: ", searchFeatures)
                 console.log("Setting search term from search features: ", searchTerm)
+                console.log("setting search results - search feature = primary result features and previous search  = searchFeatures")
                 setSearchResults(null, features, searchTerm, searchFeatures)
             }
             else{
                 console.log("Primary Result feature is a net new search")
                 console.log("Setting search term from search features: ", paramValue)
+                console.log("setting search results - search feature = primary result features and not updating previous features")
+
                 setSearchResults(null, features, paramValue)
             }
             //console.log("USE EFFECT PARAM : ", routeParams.get("search"), routeParams.get("pin"))
@@ -181,8 +184,9 @@ const Search = () => {
 
             console.log("Returning pervious search: ", searchString)
             searchWidget.current.searchTerm = searchString !== 'null' ? searchString : null
-            console.log("Setting previous search features: ", primaryResultFeature)
-            setSearchResults(null, primaryResultFeature, searchString, primaryResultFeature)
+            console.log("Setting previous search features: ", searchFeatures)
+            setSearchResults(null, primaryResultFeature, searchString, searchFeatures)
+            //setSearchResults(null, primaryResultFeature, searchString)
         }
 
         if(!primaryResultFeature){

@@ -525,6 +525,9 @@ export const AppProvider = ({children}) => {
 
         console.log("previous search term: ", searchTerm)
         console.log("previous search features: ", prevSearchFeatures)
+        console.log("search features: ", searchFeatures )
+        
+        setSearchResults(null, searchFeatures, searchTerm, searchFeatures)
   
         // //update graphic in map
         // const { createGraphic } = await import('../arcgis/webmap/webmap')
