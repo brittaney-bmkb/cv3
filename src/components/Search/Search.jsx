@@ -180,7 +180,7 @@ const Search = () => {
         else if(primaryResultFeature && newSearch === true && searchString){
 
             console.log("Returning pervious search: ", searchString)
-            searchWidget.current.searchTerm = searchString
+            searchWidget.current.searchTerm = searchString !== 'null' ? searchString : null
             console.log("Setting previous search features: ", primaryResultFeature)
             setSearchResults(null, primaryResultFeature, searchString, primaryResultFeature)
         }
