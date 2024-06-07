@@ -269,7 +269,7 @@ export async function compareProperities(whereQuery, searchDistance, feature, qu
     let query = new Query()
     query.where = whereQuery
     query.returnGeometry = true
-    query.outFields = queryFields
+    query.outFields = ["*"]
 
     if(searchDistance && searchDistance > 0){
       query.geometry = feature.geometry

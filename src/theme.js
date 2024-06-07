@@ -12,7 +12,7 @@ export const theme = createTheme({
         },
         secondary: {
             type: "simple-fill",
-            style:"none",
+            color: [ 255, 128, 0, 0 ],
             outline: {
                 width:5,
                 style: "short-dot",
@@ -21,7 +21,7 @@ export const theme = createTheme({
         },
         secondarySelected: {
             type: "simple-fill",
-            style:"none",
+            color: [ 255, 128, 0, 0 ],
             outline: {
                 width:5,
                 color: "#E58F65",

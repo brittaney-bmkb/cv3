@@ -25,6 +25,7 @@ const WebMapComponentBeta = () => {
         setMapView, 
         queryMapPoint, 
         comparableParcels, 
+        setSecondaryResultFeature,
         secondaryResultFeature,
         screenWidth,
         panelWidgetVisible,
@@ -38,6 +39,7 @@ const WebMapComponentBeta = () => {
         setPanelDisplay,
         panelPrimaryVisible,
         setPanelPrimaryVisibility,
+        setPanelDisplaySecondary,
         panelDisplayWidget
         } = UseAppContext()
 
@@ -97,7 +99,7 @@ const WebMapComponentBeta = () => {
                 
 
                 if(featLayer){
-                    
+
                     map.add(featLayer)
                     console.log(`Add ${title} to map: `, map)
                     //zoomToExtent(featLayer)
@@ -264,8 +266,6 @@ const WebMapComponentBeta = () => {
         //const view = event.target.view
         const view = arcgisMapRef.current.view
 
-        console.log("Hit Test Layers: ", hitTestLayers)
-
         const options = {
             include: hitTestLayers
         }
@@ -279,13 +279,14 @@ const WebMapComponentBeta = () => {
         setCoordinates(mapPoint.x, mapPoint.y)
 
         if(response.results.length > 0){
+            console.log("Hit Test Layers: ", hitTestLayers)
             console.log("onArcgisViewClick: hittest results ", response.results)
 
             //check if the clicked feature is a selected parcel
             let selectedGraphicsDetected = response.results.filter(result => result.graphic.layer.title === selectedParcelTitle)
             let selectedComparableDetected = response.results.filter(result => result.graphic.layer.title === comparableParcelTitle)
             
-            console.log("selectedGraphicsDetected: ", selectedGraphicsDetected)
+            //console.log("selectedGraphicsDetected: ", selectedGraphicsDetected)
 
             if(selectMultiple){
                 //if select multiple === true
@@ -306,12 +307,36 @@ const WebMapComponentBeta = () => {
                 }
             }
             else{
-                if(selectedParcelsPrimary){
+                //if user clicks on a comparable parcel
+                //set selectedComparableParcels (setSecondaryResultFeature)
+                //update the secondary panel to display comparable parcel details
+                if(selectedComparableDetected?.length > 0){
+
+                    // console.log("comparable parcel layer clicked")
+                    const clickedParcel = response.results.filter(result => [webmapParcelLayerTitle, comparableParcelLayer].includes(result.graphic.layer.title) )
+
+
+                    console.log("comparable parcel selected: ", selectedComparableDetected)
+                    console.log("comparable parcels: ", comparableParcels)
+
+                    const clickedParcelObjIds = clickedParcel.map(parcel => parcel.graphic.attributes['OBJECTID'])
+
+                    const showParcelDetail = comparableParcels.filter(feature => clickedParcelObjIds.includes(feature.attributes["OBJECTID"]))
+
+                    if(showParcelDetail.length > 0){
+                        setSecondaryResultFeature(showParcelDetail)
+                        setPanelDisplaySecondary("propertyDetailNearby")
+                    }
+
+
+                }
+                else if (selectedParcelsPrimary && selectedComparableDetected.length === 0){
 
                     if(selectedGraphicsDetected.length === 0){
                         console.log("selected parcels not clicked")
                         await removeAllFeatures(selectedParcelsPrimary)
                         await addFeatures(response.results)
+                        //setCoordinates(mapPoint.x, mapPoint.y)
                     }
 
                     else{
@@ -322,10 +347,6 @@ const WebMapComponentBeta = () => {
                         const clickedParcelObjIds = clickedParcel.map(parcel => parcel.graphic.attributes['OBJECTID'])
 
                         console.log("clickedParcelObjId ", clickedParcelObjIds)
-
-                        let searchFeatObjectIDs = searchFeatures.map(feature => feature.attributes["OBJECTID"])
-                        console.log("searchFeatures: ", searchFeatures)
-                        console.log("searchFeature IDs: ", searchFeatObjectIDs)
 
                         const showParcelDetail = searchFeatures.filter(feature => clickedParcelObjIds.includes(feature.attributes["OBJECTID"]))
                         
@@ -338,8 +359,9 @@ const WebMapComponentBeta = () => {
                     }  
                 }
 
-                else{
+                else if(!selectedParcelsPrimary && selectedComparableDetected.length === 0){
                     await addFeatures(response.results)
+                    //setCoordinates(mapPoint.x, mapPoint.y)
                 }
                 
             }

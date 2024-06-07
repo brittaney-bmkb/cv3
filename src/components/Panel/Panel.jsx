@@ -108,7 +108,8 @@ export const WidgetPanel = () => {
             bgcolor="white" 
             flex={1}
             flexGrow={1}
-            minWidth={300}  
+            minWidth={300} 
+            maxWidth={350} 
             height={"100%"}
             p={2} 
             sx={{boxSizing:"border-box",

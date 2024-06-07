@@ -21,11 +21,12 @@ export async function createFeatureLayerFromFeatures(features, title, theme){
   
   let featuresArray = Array.isArray(features) ? features : [features]
 
-  console.log("features source: ", featuresArray)
+  console.log("features from source: ", featuresArray)
 
   let featureGeometry = featuresArray.map(feature => {
     let obj = {}
     obj["geometry"] = feature.geometry
+    //obj["attributes"] = feature.attributes
 
     return obj
   })
@@ -49,12 +50,14 @@ export async function createFeatureLayerFromFeatures(features, title, theme){
 
 export const createFeatureLayerFromGraphics = async (source, objectIdField, type, title, theme) => {
 
+  console.log("feature layers from graphics: ", source)
+
   let layer = new FeatureLayer({
     source: source,
     objectIdField: objectIdField,
     geometryType: type,
     title: title,
-    outFields: ["*"],
+    outFields: ["OBJECTID", "PIN14"],
     renderer: {
       type: "simple",
       symbol: theme
