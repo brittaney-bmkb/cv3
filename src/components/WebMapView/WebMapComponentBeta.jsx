@@ -117,6 +117,21 @@ const WebMapComponentBeta = () => {
         }
     }
 
+    const clearComparableParcels = async () => {
+
+        //clear comparables from map when primary selected parcel changes
+        if(selectedComparableParcelLayer){
+            await removeAllFeatures(selectedComparableParcelLayer)
+            setComparableParcels(null)
+            if(panelSecondaryVisible === true && ["propertyDetailNearby","propertyDetailComparable","resultsListNearby","resultsListComparables","nearbyProperties","comparablePropertySearch"].includes(panelDisplaySecondary)){
+                setPanelSecondaryVisibility(false)
+            }
+        }
+
+        if(comparableParcelLayer){
+            await removeAllFeatures(comparableParcelLayer)
+        }
+    }
 
     const findTargetLayer = (map) => {
 
@@ -301,12 +316,18 @@ const WebMapComponentBeta = () => {
                     console.log(`Removing ${selectedGraphicsDetected.length} parcels`)
 
                     await removeFeatures(response.results)
+
+                    //clear comparables from map when primary selected parcel changes
+                    clearComparableParcels()
                 }
                 else{
                     console.log(`${selectedGraphicsDetected.length} Selected Parcels Detected`)
                     console.log(`Adding ${response.results.length} parcels`)
 
                     await addFeatures(response.results, selectMultiple)
+
+                    //clear comparables from map when primary selected parcel changes
+                    clearComparableParcels()
                     
                 }
             }
@@ -342,17 +363,7 @@ const WebMapComponentBeta = () => {
                         
 
                         //clear comparables from map when primary selected parcel changes
-                        if(selectedComparableParcelLayer){
-                            await removeAllFeatures(selectedComparableParcelLayer)
-                            setComparableParcels(null)
-                            if(panelSecondaryVisible === true && ["propertyDetailNearby","propertyDetailComparable","resultsListNearby","resultsListComparables","nearbyProperties","comparablePropertySearch"].includes(panelDisplaySecondary)){
-                                setPanelSecondaryVisibility(false)
-                            }
-                        }
-
-                        if(comparableParcelLayer){
-                            await removeAllFeatures(comparableParcelLayer)
-                        }
+                        clearComparableParcels()
                     }
 
                     else{
@@ -511,6 +522,9 @@ const WebMapComponentBeta = () => {
                 //if primaryResultFeature is not null then zoom to newly added features
                 if(primaryResultFeature){
                     zoomToExtent(primaryResultFeature)
+                    //clear comparables from map when primary selected parcel changes
+                    clearComparableParcels()
+
                 }
             }
         }

@@ -99,7 +99,16 @@ export const SecondaryPanel = () => {
 
 export const WidgetPanel = () => {
 
-    const { panelDisplayWidget, panelWidgetVisible, panelSecondaryVisible } = UseAppContext()
+    const { setSelectMultiple, selectMultiple, panelDisplayWidget, panelWidgetVisible, panelSecondaryVisible } = UseAppContext()
+
+    //turn off select multiple parcels if navigating way from select display
+    useEffect(() => {
+
+        if((panelDisplayWidget !== "select" || !panelWidgetVisible) && selectMultiple){
+            setSelectMultiple(false)
+        }
+
+    }, [panelDisplayWidget])
 
     return(
         <Box

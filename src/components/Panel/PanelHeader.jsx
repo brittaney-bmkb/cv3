@@ -14,7 +14,7 @@ import FeedbackDialog, { FeedbackGeneral, FeedbackSearch } from "../FeedBack/Fee
 
 const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton, panel, primary, divider} ) => {
 
-    const { primaryResultFeature, panelDisplay, setShowMapMoblie, screenWidth, panelWidgetVisible, setPanelWidgetVisibility, translateText, clearResultsComparables, panelDisplaySecondary, clearResults, panelPrimaryVisible, panelSecondaryVisible, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, comparableParcels } = UseAppContext()
+    const { setPanelDisplayWidget, primaryResultFeature, panelDisplay, setShowMapMoblie, screenWidth, panelWidgetVisible, setPanelWidgetVisibility, translateText, clearResultsComparables, panelDisplaySecondary, clearResults, panelPrimaryVisible, panelSecondaryVisible, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, comparableParcels } = UseAppContext()
 
     //get url parameters
     const [routeParams , setSearchParams] = useSearchParams()
@@ -110,9 +110,11 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
             }
             else if(panelDisplay === "info" && !primaryResultFeature){
                 setPanelPrimaryVisibility(false)
+                setPanelDisplay(null)
             }
             else{
                 setPanelPrimaryVisibility(false)
+                setPanelDisplay(null)
             }
             
 
@@ -128,6 +130,7 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
         }
         if(panel==="widget" && panelWidgetVisible===true){
             setPanelWidgetVisibility(false)
+            setPanelDisplayWidget(null)
         }
     }
 

@@ -44,6 +44,13 @@ const SelectMultipleParcels = () => {
     const sketchVMRef = useRef(null)
     const polygonGraphicsLayer = useRef(null)
 
+    useEffect(() => {
+
+        setActionButtonsVisible(false)
+        setSelectMultiple(false)
+        
+    }, [])
+
 
     const handleSelectClick = () => {
 
