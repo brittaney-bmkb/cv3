@@ -13,6 +13,7 @@ import Query from "@arcgis/core/rest/support/Query.js";
 const selectedParcelTitle = "Selected Parcel"
 const webmapParcelLayerTitle = config.target_layer_name
 const comparableParcelTitle = "Comparable Parcels"
+const selectedComparableParcelTitle = "Selected Comparable Parcels"
 
 const WebMapComponentBeta = () => {
 
@@ -37,10 +38,15 @@ const WebMapComponentBeta = () => {
         selectMultiple,
         panelDisplay,
         setPanelDisplay,
+        panelSecondaryVisible,
         panelPrimaryVisible,
         setPanelPrimaryVisibility,
+        setPanelSecondaryVisibility,
         setPanelDisplaySecondary,
-        panelDisplayWidget
+        panelDisplaySecondary,
+        setComparableParcels,
+        panelDisplayWidget,
+        comparableType
         } = UseAppContext()
 
     const arcgisMapRef = useRef(null)
@@ -48,6 +54,7 @@ const WebMapComponentBeta = () => {
     const [ targetLayer, setTargetLayer ] = useState(null)
     const [ selectedParcelsPrimary, setSelectedParcelsPrimary ] = useState(null)
     const [ comparableParcelLayer, setComparableParcelLayer ] = useState(null)
+    const [ selectedComparableParcelLayer, setSelectedComparableParcelLayer ] = useState(null)
     const [ hitTestLayers, setHitTestLayers ] = useState([])
 
     const zoomToExtent = async (features) => {
@@ -132,9 +139,6 @@ const WebMapComponentBeta = () => {
         return layer
     }
 
-    const featureExists = (features, value) => {
-        return features.some(feature => feature.attributes[config.target_layer_unique_id] === value)
-    }
 
     const fetchParcelAttributes = async (objectIds) => {
 
@@ -313,21 +317,20 @@ const WebMapComponentBeta = () => {
                 if(selectedComparableDetected?.length > 0){
 
                     // console.log("comparable parcel layer clicked")
-                    const clickedParcel = response.results.filter(result => [webmapParcelLayerTitle, comparableParcelLayer].includes(result.graphic.layer.title) )
-
+                    const clickedParcel = response.results
 
                     console.log("comparable parcel selected: ", selectedComparableDetected)
-                    console.log("comparable parcels: ", comparableParcels)
+                    //console.log("comparable parcels: ", comparableParcels)
 
                     const clickedParcelObjIds = clickedParcel.map(parcel => parcel.graphic.attributes['OBJECTID'])
 
                     const showParcelDetail = comparableParcels.filter(feature => clickedParcelObjIds.includes(feature.attributes["OBJECTID"]))
 
+                    console.log("showPArcelDetail: ", showParcelDetail)
                     if(showParcelDetail.length > 0){
                         setSecondaryResultFeature(showParcelDetail)
-                        setPanelDisplaySecondary("propertyDetailNearby")
+                        setPanelDisplaySecondary(comparableType === "nearby" ? "propertyDetailNearby": "propertyDetailComparable")
                     }
-
 
                 }
                 else if (selectedParcelsPrimary && selectedComparableDetected.length === 0){
@@ -336,12 +339,25 @@ const WebMapComponentBeta = () => {
                         console.log("selected parcels not clicked")
                         await removeAllFeatures(selectedParcelsPrimary)
                         await addFeatures(response.results)
-                        //setCoordinates(mapPoint.x, mapPoint.y)
+                        
+
+                        //clear comparables from map when primary selected parcel changes
+                        if(selectedComparableParcelLayer){
+                            await removeAllFeatures(selectedComparableParcelLayer)
+                            setComparableParcels(null)
+                            if(panelSecondaryVisible === true && ["propertyDetailNearby","propertyDetailComparable","resultsListNearby","resultsListComparables","nearbyProperties","comparablePropertySearch"].includes(panelDisplaySecondary)){
+                                setPanelSecondaryVisibility(false)
+                            }
+                        }
+
+                        if(comparableParcelLayer){
+                            await removeAllFeatures(comparableParcelLayer)
+                        }
                     }
 
                     else{
                         //select primary search parcel detected
-                        const clickedParcel = response.results.filter(result => [webmapParcelLayerTitle, selectedParcelTitle].includes(result.graphic.layer.title) )
+                        const clickedParcel = response.results
                         console.log("display parcel details: ", clickedParcel)
 
                         const clickedParcelObjIds = clickedParcel.map(parcel => parcel.graphic.attributes['OBJECTID'])
@@ -360,6 +376,7 @@ const WebMapComponentBeta = () => {
                 }
 
                 else if(!selectedParcelsPrimary && selectedComparableDetected.length === 0){
+
                     await addFeatures(response.results)
                     //setCoordinates(mapPoint.x, mapPoint.y)
                 }
@@ -399,6 +416,10 @@ const WebMapComponentBeta = () => {
         }
         else if(title === comparableParcelTitle){
             setComparableParcelLayer(layer)
+        }
+        else if(title === selectedComparableParcelTitle){
+            console.log("setting selected comparable parcel layer")
+            setSelectedComparableParcelLayer(layer)
         }
         
 
@@ -467,7 +488,7 @@ const WebMapComponentBeta = () => {
                     //get features from primaryResultFeature and add them to the selectedParcelsPrimary layer
                     //clear existing features from the selectedParcelsPrimaryLayer
                     await removeAllFeatures(selectedParcelsPrimary)
-
+                    
                     if(primaryResultFeature && selectedParcelsPrimary){
                         //add new primaryResultFeature to add features
                         let features = Array.isArray(primaryResultFeature) ? primaryResultFeature : [primaryResultFeature]
@@ -480,7 +501,6 @@ const WebMapComponentBeta = () => {
                         // //apply edits
                         await selectedParcelsPrimary.applyEdits(addEdits)
                     }
-                
                 }
 
                 else if(!primaryResultFeature && selectedParcelsPrimary){
@@ -520,9 +540,16 @@ const WebMapComponentBeta = () => {
 
                 else if(comparableParcelLayer && (!comparableParcels || comparableParcelLayer?.length === 0)){
                     await removeAllFeatures(comparableParcelLayer)
+
+                    if(selectedComparableParcelLayer){
+                        await removeAllFeatures(selectedComparableParcelLayer)
+                    }
                 }
 
                 else if(comparableParcelLayer && comparableParcels){
+
+                    console.log("removing existing selected parcels")
+                    await removeAllFeatures(comparableParcelLayer)
 
                     console.log("Adding comparable features to map")
                     const addEdits = {
@@ -545,9 +572,40 @@ const WebMapComponentBeta = () => {
 
     useEffect(() => {
 
-        addLayerToMap(secondaryResultFeature, "Selected Comparable Parcel", theme.layers.secondarySelected, "features")
+        const displaySelectedComparableParcel = async () => {
 
-    }, [ secondaryResultFeature, arcgisMapRef, mapLoading ])
+            if(arcgisMapRef.current){
+                if(secondaryResultFeature && !selectedComparableParcelLayer){
+                    //create selected comparable parcel layer
+                    await createAndAddFeatureLayer(secondaryResultFeature, "features", selectedComparableParcelTitle, theme.layers.secondarySelected)
+                    zoomToExtent(secondaryResultFeature) 
+                }
+                else if((!secondaryResultFeature || !comparableParcels) && selectedComparableParcelLayer){
+                    //if there are no selected secondary parcels then remove all features
+                    await removeAllFeatures(selectedComparableParcelLayer)
+                }
+                else if(secondaryResultFeature && selectedComparableParcelLayer){
+
+                    console.log("removing existing selected parcels")
+                    await removeAllFeatures(selectedComparableParcelLayer)
+                    
+                    console.log("Adding selected comparable features to map: ", secondaryResultFeature)
+                    const addEdits = {
+                        addFeatures: Array.isArray(secondaryResultFeature) ? secondaryResultFeature : [secondaryResultFeature],
+                    }
+
+                    selectedComparableParcelLayer.applyEdits(addEdits)
+
+                    zoomToExtent(secondaryResultFeature)
+                }
+            }
+        }
+
+        displaySelectedComparableParcel()
+        
+        //addLayerToMap(secondaryResultFeature, "Selected Comparable Parcel", theme.layers.secondarySelected, "features")
+
+    }, [ secondaryResultFeature, arcgisMapRef ])
 
     useEffect(() => {
         const removeAllGraphics = () => {

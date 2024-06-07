@@ -10,6 +10,15 @@ export const AppProvider = ({children}) => {
 
     const [state, dispatch] = useReducer(AppReducer, initialState)
 
+    const setComparableType = (comparableType) => {
+        dispatch({
+            type:"SET_COMPARABLE_TYPE",
+             payload: {
+                comparableType: comparableType,
+            }
+        })
+    } 
+
     const setMapContainer = (ref) => {
         dispatch({
             type:"SET_MAP_CONTAINER",
@@ -771,7 +780,9 @@ export const AppProvider = ({children}) => {
         returnSearchResultFeatures,
         setSelectMultiple,
         selectMultiple: state.selectMultiple,
-        queryPolygon
+        queryPolygon,
+        setComparableType,
+        comparableType: state.comparableType
         
     }
 

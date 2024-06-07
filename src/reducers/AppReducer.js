@@ -37,6 +37,7 @@ export const initialState = {
     y: null, 
     openHelpDialog: false,
     selectMultiple: null,
+    comparableType: null,
 }
 
 const AppReducer = (state, action) => {
@@ -44,6 +45,13 @@ const AppReducer = (state, action) => {
     const {type, payload} = action
 
     switch(type){
+        case "SET_COMPARABLE_TYPE":
+        console.log("SET_COMPARABLE_TYPE")
+        return {
+            ...state, 
+            comparableType: payload.comparableType
+        }
+        ca
         case "SET_MAP_CONTAINER":
         console.log("SET_MAP_CONTAINER")
         return {

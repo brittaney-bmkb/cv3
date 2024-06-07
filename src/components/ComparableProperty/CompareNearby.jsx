@@ -10,7 +10,7 @@ import { linearUnitOptions } from "../Widgets/MeasureWidget"
 
 const CompareNearby = () => {
 
-    const { searchNearbyProperties, screenWidth, setPanelPrimaryVisibility, setPanelDisplay, setPanelSecondaryVisibility, setPanelDisplaySecondary, translateText } = UseAppContext()
+    const { setComparableType, searchNearbyProperties, screenWidth, setPanelPrimaryVisibility, setPanelDisplay, setPanelSecondaryVisibility, setPanelDisplaySecondary, translateText } = UseAppContext()
 
     const [ searchRadius, setSearchRadius ] = useState('0')
     const [ searchRadiusError, setSearchRadiusError ] = useState(false)
@@ -54,6 +54,9 @@ const CompareNearby = () => {
     }
 
     function handleSearchRadius(){
+
+        setComparableType("nearby")
+        
         console.log("nearby value: ", searchRadius)
 
         if(!searchRadiusError){
