@@ -5,6 +5,7 @@ import StyledButtonFilledPrimary from "../Button/Button";
 import { CalciteIcon } from "@esri/calcite-components-react";
 import SketchViewModel from "@arcgis/core/widgets/Sketch/SketchViewModel.js";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
+import { theme } from "../../theme";
 
 const descriptions = (state) => {
     switch (state) {
@@ -48,7 +49,7 @@ const SelectMultipleParcels = () => {
 
         setActionButtonsVisible(false)
         setSelectMultiple(false)
-        
+
     }, [])
 
 
@@ -75,9 +76,6 @@ const SelectMultipleParcels = () => {
 
         //start new sketch view model create session
         await createSketchViewModel()
-
-        
-
     }
 
     const createSketchViewModel = async () => {
@@ -175,13 +173,19 @@ const SelectMultipleParcels = () => {
             console.log("active tool: ", tool)
             console.log("setting action buttons visible to true")
             setActionButtonsVisible(true)
+            
+            
         }
         if(tool === 'click' && !primaryResultFeature){
             setActionButtonsVisible(false)
+
         }
-        // if(tool && polygonGraphicsLayer.current){
-        //     polygonGraphicsLayer.current.remove(sketchPolygon)
-        // }
+        if(tool !== 'draw'){
+            if(sketchVMRef.current){
+                sketchVMRef.current.destroy()
+                sketchVMRef.current = null
+            }
+        }
 
     }, [primaryResultFeature, tool, polygonGraphicsLayer])
 
@@ -204,7 +208,12 @@ const SelectMultipleParcels = () => {
                     display:"flex", 
                     flexDirection:"row", 
                     columnGap:1,
-                    width: "50%"
+                    width: "50%",
+                    backgroundColor: tool === 'click' ? 'primary.dark' : 'primary.main',
+                    border: tool === 'click' ? '2px solid' : 'none',
+                    borderColor: tool === 'click' ? 'primary.dark' : 'transparent',
+                    boxShadow: tool === 'click' ? 'inset 0 3px 5px rgba(0, 0, 0, 0.2)' : 'none',
+                    transform: tool === 'click' ? 'translateY(2px)' : 'none',
                 }}
                 onClick={handleSelectClick}
                 >   
@@ -223,7 +232,13 @@ const SelectMultipleParcels = () => {
                     display:"flex", 
                     flexDirection:"row", 
                     columnGap:1,
-                    width: "50%"}}
+                    width: "50%",
+                    backgroundColor: tool === 'draw' ? 'primary.dark' : 'primary.main',
+                    border: tool === 'draw' ? '2px solid' : 'none',
+                    borderColor: tool === 'draw' ? 'primary.dark' : 'transparent',
+                    boxShadow: tool === 'draw' ? 'inset 0 3px 5px rgba(0, 0, 0, 0.2)' : 'none',
+                    transform: tool === 'draw' ? 'translateY(2px)' : 'none',
+                }}
                 onClick={handleSelectDraw}
                 >   
                     <CalciteIcon icon="pencil"/>

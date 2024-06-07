@@ -47,7 +47,7 @@ export const theme = createTheme({
         },
         secondary:{
             main:"#E58F65",
-            light:"#009ADA"
+            light:"#F5D2C2"
         },
         info:{
             main:"#928884",
