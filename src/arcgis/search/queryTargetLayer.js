@@ -264,6 +264,34 @@ export async function queryTargetLayerWithCoordinates(coordinates){
     return features
 }
 
+export const queryTargeLayerWithPin10Pin14 = async (pin10, pin14) => {
+
+    let where = ''
+    console.log("pin14: ", pin14)
+    if(pin10){
+        where = `PIN10 IN (${pin10})`
+    }
+    if(pin14){
+        if(pin10){
+            where = where + `OR PIN14 IN (${pin14})`
+        }
+        else{
+            where =`PIN14 IN (${pin14})`
+        }
+        
+    }
+
+    let query = new Query()
+    query.where = where
+    query.returnGeometry = true
+    query.outFields = ["*"]
+
+    let {features} = await targetLayer.queryFeatures(query)
+
+    return features
+    
+}
+
 export async function compareProperities(whereQuery, searchDistance, feature, queryFields){
 
     let query = new Query()
