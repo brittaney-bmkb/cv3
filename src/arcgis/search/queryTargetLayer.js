@@ -112,7 +112,7 @@ export const handleMultipleResults = async (results) => {
                     });
                 }
             } else {
-                console.log("Pushing results features to search features");
+                //console.log("Pushing results features to search features");
                 results.results.map(result => {
                     searchFeatures.push(result.feature)
                 })
@@ -150,7 +150,7 @@ export const handleMultipleResults = async (results) => {
 
         features.map(feature => {
             let featureExists = addObjectToArrayIfNotExists(targetFeatures, feature)
-            console.log("new feature exists: ", featureExists)
+            //console.log("new feature exists: ", featureExists)
             if(!featureExists){
                 targetFeatures.push(feature)
             }
@@ -269,7 +269,7 @@ export async function compareProperities(whereQuery, searchDistance, feature, qu
     let query = new Query()
     query.where = whereQuery
     query.returnGeometry = true
-    query.outFields = queryFields
+    query.outFields = ["*"]
 
     if(searchDistance && searchDistance > 0){
       query.geometry = feature.geometry
@@ -286,21 +286,42 @@ export async function compareProperities(whereQuery, searchDistance, feature, qu
 
   export async function nearbyProperties(searchDistance, units, feature, queryFields){
 
+    console.log("nearby primary result feature:", feature)
+
+    let queryFeature = Array.isArray(feature) ? feature[0] : feature
+    
     let query = new Query()
-    query.geometry = feature.geometry
+    query.geometry = queryFeature.geometry
     query.spatialRelationship = "intersects"
     query.distance = searchDistance
     query.units = units
     query.returnGeometry = true
-    query.outFields = queryFields
+    query.outFields = ["*"]
 
     let {features} = await targetLayer.queryFeatures(query)
 
     console.log("queried Features: ", features)
 
-    let filteredFeatures = features.filter((f) => f.attributes['PIN14'] !== feature.attributes['PIN14'])
+    let filteredFeatures = features.filter((f) => f.attributes['PIN14'] !== queryFeature.attributes['PIN14'])
 
     return filteredFeatures
+
+  }
+
+
+  export async function queryTargetLayerByPolygon(geometry){
+
+    let query = new Query()
+    query.geometry = geometry
+    query.spatialRelationship = "intersects"
+    query.returnGeometry = true
+    query.outFields = ["*"]
+
+    let {features} = await targetLayer.queryFeatures(query)
+
+    console.log("queried Features: ", features)
+
+    return features
 
   }
 

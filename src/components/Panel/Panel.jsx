@@ -3,7 +3,6 @@ import UseAppContext from "../../contexts/AppContext";
 import { theme } from "../../theme";
 import PanelContent from "./PanelContent";
 import { useEffect } from "react";
-import WebMapView from "../WebMapView/WebMapView";
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import WebMapComponentBeta from "../WebMapView/WebMapComponentBeta";
 
@@ -100,7 +99,16 @@ export const SecondaryPanel = () => {
 
 export const WidgetPanel = () => {
 
-    const { panelDisplayWidget, panelWidgetVisible, panelSecondaryVisible } = UseAppContext()
+    const { setSelectMultiple, selectMultiple, panelDisplayWidget, panelWidgetVisible, panelSecondaryVisible } = UseAppContext()
+
+    //turn off select multiple parcels if navigating way from select display
+    useEffect(() => {
+
+        if((panelDisplayWidget !== "select" || !panelWidgetVisible) && selectMultiple){
+            setSelectMultiple(false)
+        }
+
+    }, [panelDisplayWidget])
 
     return(
         <Box
@@ -109,7 +117,8 @@ export const WidgetPanel = () => {
             bgcolor="white" 
             flex={1}
             flexGrow={1}
-            width={350} 
+            minWidth={300} 
+            maxWidth={350} 
             height={"100%"}
             p={2} 
             sx={{boxSizing:"border-box",

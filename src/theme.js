@@ -4,7 +4,7 @@ export const theme = createTheme({
     layers: {
         primary: {
             type: "simple-fill",
-            style:"none",
+            color: [ 255, 128, 0, 0 ],
             outline: {
                 width:5,
                 color: "#0D4D96",
@@ -12,7 +12,7 @@ export const theme = createTheme({
         },
         secondary: {
             type: "simple-fill",
-            style:"none",
+            color: [ 255, 128, 0, 0 ],
             outline: {
                 width:5,
                 style: "short-dot",
@@ -21,7 +21,7 @@ export const theme = createTheme({
         },
         secondarySelected: {
             type: "simple-fill",
-            style:"none",
+            color: [ 255, 128, 0, 0 ],
             outline: {
                 width:5,
                 color: "#E58F65",
@@ -47,7 +47,7 @@ export const theme = createTheme({
         },
         secondary:{
             main:"#E58F65",
-            light:"#009ADA"
+            light:"#F5D2C2"
         },
         info:{
             main:"#928884",

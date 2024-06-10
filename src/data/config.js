@@ -33,9 +33,11 @@ export const config = {
     // TARGET LAYER CONFIGURATION: Specify the name of the target layer and the fields to display in results.
     // MAKE SURE THE NAME OF THIS LAYER IS EXACTLY THE SAME IN THE LAYERSOURCES ARRAY
     target_layer_name: "Parcels Current", // Name of the target layer in LayerSources
+    target_layer_url: "https://gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/0",
     target_layer_out_fields: ["PIN10","PIN14","PIN14_dash","street_address","city_state_zip","OBJECTID"],// Fields to display in the results pane (array of strings).
     //FIELD TO REFERENCE FOR CREATING URL PARAM WHEN CLICKING IN MAP
     target_layer_id_field: "PIN10",
+    target_layer_unique_id: "PIN14",
     //MUNICIPALITY SERVICE- USED TO CALCULATE INCORPORATED VS UNINCORPORATED VALUES FOR MUNICIPALITY IN PROPERTY DETAIL
     municipality_url: "https://gis.cookcountyil.gov/traditional/rest/services/politicalBoundary/MapServer/2",
     // NEARBY SEARCH SETTINGS: Configure the buffer distance and unit for nearby searches.
@@ -50,7 +52,7 @@ export const config = {
     translation_text:"https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/ArcGIS/rest/services/cookviewer_translated_text/FeatureServer/1",
     translation_text_help:"https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/ArcGIS/rest/services/cookviewer_translated_text/FeatureServer/4",
     //WEB MAP ID
-    webmap_id: "779a9643c58f4a48a002a9b277a8bcc7",
+    webmap_id: "2d8ad931484c4f6dad75e1842470e19a",
     // LAYER SOURCES CONFIGURATION: Configure the layers for map and search sources for the search widget
     layer_sources: [
         // First Layer Source: Configure the parcelLayer

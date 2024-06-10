@@ -11,7 +11,6 @@ import { theme } from "../../theme"
 import CompareNearby from "../ComparableProperty/CompareNearby"
 import PropertyDetail from "../PropertyDetail/PropertyDetail"
 import PropertyPagniation from "../PropertyDetail/PropertyPagnition";
-import WebMapView from "../WebMapView/WebMapView";
 import LayerListWidgetCustom from "../Widgets/LayersList/LayerListWidgetCustom";
 import PrintWidgetCustom, { PrintWidgetPane } from "../Widgets/PrintWidgetCustom";
 import { config } from "../../data/config";
@@ -19,6 +18,8 @@ import BasemapGallery from "../Widgets/Basemap/BasemapGallery";
 import LayerList from "../Widgets/LayersList/LayerList";
 import Info from "../Info/Info";
 import BasemapWidget from "../Widgets/Basemap/BasemapWidget";
+import SelectMultipleParcels from "../SelectMultipleParcels/SelectMultipleParcels";
+import { useState } from "react";
 
 
 const PanelContent = ({display}) => {
@@ -317,7 +318,28 @@ const PanelContent = ({display}) => {
                     {/* <PrintWidget/> */}
                     <PrintWidgetPane/>
                 </Box>
-            )                                   
+            )    
+        case 'select':
+            return(
+                <Box 
+                display="flex" 
+                flexDirection="column"  
+                minHeight={0} 
+                width="100%"
+                sx={{boxSizing:"border-box"}}
+                divider={true}
+                rowGap={2}
+                >
+                    <PanelHeader
+                    text="Select Multiple Parcels"
+                    closeButton={true}
+                    panel={"widget"}
+                    //descriptionText={"Use the tools below to select multiple parcels in the map. You can either click to select or deselect individual parcels or draw an area to select all parcels within it"}
+                    />
+                    {/* <PrintWidget/> */}
+                    <SelectMultipleParcels/>
+                </Box>
+            )                                
         default:
             return null
     }
