@@ -202,7 +202,7 @@ const WebMapComponentBeta = () => {
 
         if(!typeIsFeature){
             results.map(result => {
-                console.log("result being added: ", result)
+                //console.log("result being added: ", result)
                 addGraphics.push(result.graphic)
                 objectIds.push(result.graphic.attributes['OBJECTID'])
             })
@@ -509,7 +509,7 @@ const WebMapComponentBeta = () => {
                     //if selecetd parcels primary layer does not exist create it from the
                     await createAndAddFeatureLayer(primaryResultFeature, "features", selectedParcelTitle, theme.layers.primary)
 
-                    zoomToExtent(primaryResultFeature)
+                    //zoomToExtent(primaryResultFeature)
                 }
 
                 else if(selectedParcelsPrimary && newSearch){
@@ -538,7 +538,10 @@ const WebMapComponentBeta = () => {
 
                 //if primaryResultFeature is not null then zoom to newly added features
                 if(primaryResultFeature){
-                    zoomToExtent(primaryResultFeature)
+                    if(newSearch){
+                        zoomToExtent(primaryResultFeature)
+                    }
+                    
                     //clear comparables from map when primary selected parcel changes
                     clearComparableParcels()
 

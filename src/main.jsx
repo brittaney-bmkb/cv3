@@ -23,6 +23,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <Route path="/:location?" element={ <App />}/>
               <Route path="/:search?" element={ <App />}/>
               <Route path="/:pin?" element={ <App />}/>
+              <Route path="/:pin10?" element={ <App />}/>
+              <Route path="/:pin14?" element={ <App />}/>
               <Route path=":address?" element={ <App />}/>
           </Routes>
       </BrowserRouter>

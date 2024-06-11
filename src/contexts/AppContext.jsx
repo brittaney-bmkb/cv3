@@ -450,6 +450,7 @@ export const AppProvider = ({children}) => {
 
     //Function to return parcel features using x/x coordinates
     //in use [v3.0.0-beta.2]
+    //deprecated in [v3.0.0-beta-3]
     const returnLocationFeatures = async (coordinates) => {
 
         console.log("Returning location features")
@@ -459,6 +460,26 @@ export const AppProvider = ({children}) => {
 
         let features = await queryTargetLayerWithCoordinates(coordinates)
         console.log("target features from x/y: ", features)
+
+        setPrimaryResultFeature(features, true)
+        setSearchResults(null, features, null)
+
+        if(!panelDisplay || panelDisplay !== "resultsList"){
+            setPanelDisplay("resultsList")
+        }
+        
+        if(!panelPrimaryVisible || panelPrimaryVisible === false){
+            setPanelPrimaryVisibility(true)
+        }
+    }
+
+    const returnFeaturesByPin10Pin14 = async (pin10, pin14) => {
+
+        const { queryTargeLayerWithPin10Pin14 } = await import("../arcgis/search/queryTargetLayer")
+
+        const { panelDisplay, panelPrimaryVisible } = state
+
+        let features = await queryTargeLayerWithPin10Pin14(pin10, pin14)
 
         setPrimaryResultFeature(features, true)
         setSearchResults(null, features, null)
@@ -841,7 +862,8 @@ export const AppProvider = ({children}) => {
         selectMultiple: state.selectMultiple,
         queryPolygon,
         setComparableType,
-        comparableType: state.comparableType
+        comparableType: state.comparableType,
+        returnFeaturesByPin10Pin14
         
     }
 
