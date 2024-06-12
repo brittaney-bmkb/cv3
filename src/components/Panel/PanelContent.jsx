@@ -230,7 +230,7 @@ const PanelContent = ({display}) => {
                         text="Measure"
                         closeButton={true}
                         panel={"widget"}
-                        descriptionText={"Start drawing a line, close the shape to create a polygon."} //TODO needs to translate this 
+                        descriptionText={"Start drawing a line, double click to close or click done to create a line. Close the shape to create a polygon."} //TODO needs to translate thi
                     />                    
                     <MeasureSketchWidget/>
                     {/* <MeasureWidget
