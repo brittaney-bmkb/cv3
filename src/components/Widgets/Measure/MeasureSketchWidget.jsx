@@ -31,16 +31,7 @@ import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 //// https://community.esri.com/t5/arcgis-javascript-maps-sdk-questions/getting-geodesic-area-ve/td-p/121084 // negative values 
 //// 
 
-// export const linearUnitOptions = [
-//     "feet", "yards", "miles", "meters", "kilometers"
-// ]
 
-// const areaUnitOptions = [
-//     "square-inches", "square-feet", "square-yards", "square-miles", "square-meters", "square-kilometers", "acres"
-// ]
-// this lifted from comparable property search and will needed to be updated for this widget
-
-//TODO work on menu change
 const MeasureSketchWidget = () => {
     
     const { mapView, map, translateText  } = UseAppContext()
@@ -48,7 +39,6 @@ const MeasureSketchWidget = () => {
     const graphicsLayer = useRef(null)
     let sketchVM = useRef(null)
     
-    // let graphicsLayer = new GraphicsLayer()
     const [activeTool, setActiveTool] = useState(null)
     let [areaMeasurement, setAreaMeasurement] = useState(null)
     let  [linearMeasurement, setLinearMeasurement] = useState(null)
@@ -57,11 +47,7 @@ const MeasureSketchWidget = () => {
     let [unitAbbrev, setUnitAbbrev ] = useState(null)
 
     const handleChange = (e) => {
-        console.log('handle change event', e.target.value)
-        console.log('userGeometry: ', userGeometry)
-        console.log('areaMeasurement: ', areaMeasurement)
         setSelectedValue(e.target.value)
-
         unitMeasurementAbbrev(e.target.value)
         
         if (activeTool==='polygon'){
@@ -72,7 +58,6 @@ const MeasureSketchWidget = () => {
     }
 
     const unitMeasurementAbbrev = (stringToCheck) => {
-        console.log('unit of measurement abbred', stringToCheck)
         const linearUnitOptions = [
             {key: 'feet', value: 'ft' },
             {key: 'yards', value: 'yd'},
@@ -90,17 +75,11 @@ const MeasureSketchWidget = () => {
             stringToCheck === option.key
         );
 
-        console.log('look a match', matchedOption)
-        console.log('checkout super', matchedOption.superscript)
-
         if (matchedOption) {
             setUnitAbbrev(
                 <span>
-                {matchedOption.value} {matchedOption.superscript ? matchedOption.superscript : ''}
+                    {matchedOption.value} {matchedOption.superscript ? matchedOption.superscript : ''}
                 </span>
-                // matchedOption.superscript ? matchedOption.superscript : ''
-            
-                
             );
         } else {
             console.log("String does not contain any linear units.");
@@ -132,29 +111,17 @@ const MeasureSketchWidget = () => {
             {value: 'square-miles', label: 'square-miles' }
         ]
 
-
         return(            
             activeTool === null ? (null) : (
                 <Stack direction="row" spacing={2}>
-                    {/* <Box component="section" sx={{ p: 2, border: '1px dashed grey' }}> */}
                     <Box component="section" >
-{/* 
                         {activeTool == "polyline" ? 
-                            `Length: ${linearMeasurement +' '+ unitAbbrev}`: 
-                            `Area:  ${areaMeasurement+' '+unitAbbrev + <sub>2</sub>} `  }   
-                            
-                            */}
-
-                    {activeTool == "polyline" ? 
                             <span> <b>Length:</b> {linearMeasurement} <em>{unitAbbrev}</em> </span> : 
-                            // <span> Area: {areaMeasurement} {unitAbbrev} {unitAbbrev && <sup>2</sup>} </span>  }   
                             <span> <b>Area:</b> {areaMeasurement} <em>{unitAbbrev}</em>  </span>  }   
-
                     </Box>
-
                     <FormControl size='small'>
                     <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                        {/* Unit of Measurement */}
+                        Unit of Measurement
                     </InputLabel>
                         <NativeSelect
                             // defaultValue={areaUnitOptions[0].value}
@@ -164,12 +131,8 @@ const MeasureSketchWidget = () => {
                             id: 'unit-measure-select',
                             }}
                             value={selectedValue}
-                            // onChange={(e) => setSelectedValue(e.target.value)}
                             onChange={handleChange}
                         >
-                            {/* {(e) => console.log('setting selected value', e)} */}
-                            {console.log('selectedValue', selectedValue)}
-                            
                             {activeTool ==="polygon" ? (
                                     areaUnitOptions.map((measureUnitOptions)  => (
                                         <option key={measureUnitOptions.value} value={measureUnitOptions.value}>
@@ -263,7 +226,6 @@ const MeasureSketchWidget = () => {
     }    
     
     const createGraphicLayer = async () => {
-
         graphicsLayer.current = new GraphicsLayer()
         mapView.map.add(graphicsLayer.current)
     }
@@ -288,59 +250,42 @@ const MeasureSketchWidget = () => {
     }
 
     const startMeasuring = async () => {
-        if(!graphicsLayer.current){
-            await createGraphicLayer()
-        }
+        if(!graphicsLayer.current){ await createGraphicLayer() }
         await initializeSketchVM()
         // setActiveTool(tool)
         // TODO IT takes two times for this to become active
-        sketchVM.current.create("polyline");
 
+        sketchVM.current.create("polyline");
         sketchVM.current.on("create", (e) => {
-        let geometry =  e.graphic.geometry;
-        setUserGeometry(geometry)
-        
-        console.log('regular geom',geometry)
-        console.log('user geom',userGeometry)
-        
-        if (e.state === "active") {
-            console.log('active on create',geometry)
-            // const geometry =  e.graphic.geometry;
-            // console.log("sketch on active",  e)
-            setUserGeometry(e.graphic.geometry)
-            switchType(geometry);
-        }
-        if (e.state === "complete") {
-            console.log('complete on create', geometry)
-            setUserGeometry(e.graphic.geometry)
-            // const geometry =  e.graphic.geometry;
-            // graphicsLayer.current.removeAll();
-            //todo expand on comments for the logic 
-            convertPolyline2Polygon(geometry);
+
+            let geometry =  e.graphic.geometry;
+            setUserGeometry(geometry)
             
-        }
-        if (
-            e.toolEventInfo &&
-            (e.toolEventInfo.type === "scale-stop" ||
-            e.toolEventInfo.type === "reshape-stop" ||
-            e.toolEventInfo.type === "move-stop")
-            
-        ) {
-            // console.log('if statements on create')
-            switchType(geometry);
-        }
+            if (e.state === "active") {
+                setUserGeometry(e.graphic.geometry)
+                switchType(geometry);
+            }
+            if (e.state === "complete") {
+                setUserGeometry(e.graphic.geometry) 
+                convertPolyline2Polygon(geometry);
+            }
+            if (
+                e.toolEventInfo &&
+                (e.toolEventInfo.type === "scale-stop" ||
+                e.toolEventInfo.type === "reshape-stop" ||
+                e.toolEventInfo.type === "move-stop")
+                
+            ) {
+                switchType(geometry);
+            }
         });
 
 
         sketchVM.current.on("update", (e) => {
-            // console.log("sketch on update", e.graphics[0].geometry)
-            // const geometry = e.graphic.geometry;
             const geometry =  e.graphics[0].geometry;
             if (e.state === "start") {
-                // console.log("sketch on start",  geometry)
                 switchType(geometry);
             }
-
             if (e.state === "complete") {
                 // console.log("sketch on complete", e)
                 // switchType(geometry);
@@ -354,7 +299,6 @@ const MeasureSketchWidget = () => {
                 e.toolEventInfo.type === "move-stop")
                 
             ) {
-                // console.log("sketch on rescale", e.graphics[0].geometry)
                 switchType(geometry);
             }
         });
@@ -372,7 +316,6 @@ const MeasureSketchWidget = () => {
 
     const convertPolyline2Polygon = (geom) => {
         let isPolygon = checkLatLongArray(geom)
-        // console.log('Checking if both geoms are positive: ',isPolygon);
         if (isPolygon){
             const polygon = {
                 type:"polygon",
@@ -400,14 +343,8 @@ const MeasureSketchWidget = () => {
         }
     }
 
-
-
     const initializeSketchVM = async () =>{
-
         if(!sketchVM.current){
-
-            console.log("Setting sketchVM: ", sketchVM)
-
             sketchVM.current = new SketchViewModel({
                 view: mapView,
                 layer: graphicsLayer.current, 
@@ -426,27 +363,13 @@ const MeasureSketchWidget = () => {
                     featureSources: [{ layer: graphicsLayer.current, enabled: true }]
                 }        
             }) 
-        } 
-        
+        }
     }
 
 
     return (
         <Box display="flex" flexDirection="column"  rowGap={1}>
-            
 
-            {/* {activeTool == null ? null :
-
-                <Box component="section" sx={{ p: 2, border: '1px dashed grey' }}>
-
-                    {activeTool == "polyline" ? `Length: ${linearMeasurement}` : `Area:  ${areaMeasurement}` }    
-
-                </Box>
-            } */}
-
-            {/* <Typography variant="h5" sx={{display:"flex", flexGrow:1, pt:1, pb:1}}>{`${translateText("Measure settings")}:`}</Typography> */}
-
-            
             <Divider />
             <Box display="flex" flexDirection="column" gap={1} sx={{justifyContent:"center"}}>
                 <StyledButtonFilledPrimary
