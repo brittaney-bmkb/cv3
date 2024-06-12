@@ -59,7 +59,7 @@ const SelectMultipleParcels = () => {
         queryPolygon,
         setPrimaryResultFeature,
         primaryResultFeature,
-        setSearchResults
+        setSearchResults,
      } = UseAppContext()
 
     const [ tool, setTool ] = useState(null)
@@ -281,17 +281,17 @@ const SelectMultipleParcels = () => {
                     }
                     
                     if (tool === "click") {
-                        tooltipRef.current.innerHTML = `select / deselect parcel`
+                        tooltipRef.current.innerHTML = translateText(`select / deselect parcel`)
                     }
                     if (tool === "draw") {
                         if(!actionButtonsVisible || !polygonGraphicsLayer.current){
-                            tooltipRef.current.innerHTML = `set first point`
+                            tooltipRef.current.innerHTML = translateText(`set first point`)
                         }
                         else{
-                            tooltipRef.current.innerHTML = `double click to complete`
+                            tooltipRef.current.innerHTML = translateText(`double click to complete`)
                         }
                         if(sketchPolygon){
-                            tooltipRef.current.innerHTML = `click done to select parcels`
+                            tooltipRef.current.innerHTML = translateText(`click done to select parcels`)
                         }
                         
                     }
@@ -336,7 +336,7 @@ const SelectMultipleParcels = () => {
 <div ref={tooltipRef} style={{position:"absolute", zIndex:100}}></div>
 
             <Typography variant="body1" sx={{height: 80}}>
-                {descriptions(toolDescription)}
+                {translateText(descriptions(toolDescription))}
             </Typography>
 
             <Stack direction="row" justifyContent="space-around" spacing={1}>
