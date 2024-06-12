@@ -1,12 +1,10 @@
 import { Box, Button, Divider, Stack, Typography } from "@mui/material"
 import UseAppContext from "../../contexts/AppContext"
 import { useEffect, useRef, useState } from "react";
-import StyledButtonFilledPrimary from "../Button/Button";
 import { CalciteIcon } from "@esri/calcite-components-react";
 import SketchViewModel from "@arcgis/core/widgets/Sketch/SketchViewModel.js";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
 import { theme } from "../../theme";
-import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 
 const descriptions = (state) => {
     switch (state) {
