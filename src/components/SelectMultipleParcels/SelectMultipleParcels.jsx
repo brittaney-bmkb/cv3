@@ -6,6 +6,7 @@ import { CalciteIcon } from "@esri/calcite-components-react";
 import SketchViewModel from "@arcgis/core/widgets/Sketch/SketchViewModel.js";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
 import { theme } from "../../theme";
+import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 
 const descriptions = (state) => {
     switch (state) {
@@ -17,9 +18,6 @@ const descriptions = (state) => {
             return 'Use the tools below to select multiple parcels in the map. You can either click to select or deselect individual parcels or draw an area to select all parcels within it';
     }
 }
-
-
-
 
 // this lifted from comparable property search and will needed to be updated for this widget
 const SelectMultipleParcels = () => {
@@ -37,10 +35,11 @@ const SelectMultipleParcels = () => {
 
     const [ tool, setTool ] = useState(null)
     const [ actionButtonsVisible, setActionButtonsVisible ] = useState(false);
-    const [ isTooltipVisible, setTooltipVisible ] = useState(false);
     const [ toolDescription, setToolDescription ] = useState(false);
     const [ sketchPolygon, setSketchPolygon ] = useState(null);
     const [ completeSketch, setCompleteSketch ] = useState(false);
+
+    const tooltipRef = useRef(null);
 
     const sketchVMRef = useRef(null)
     const polygonGraphicsLayer = useRef(null)
@@ -94,10 +93,10 @@ const SelectMultipleParcels = () => {
             sketchVMRef.current = new SketchViewModel({
                 view: mapView,
                 layer: polygonGraphicsLayer.current,
-                tooltipOptions: {
-                    enabled: true,
-                    helpMessage: true
-                }
+                // tooltipOptions: {
+                //     enabled: true,
+                //     helpMessage: true
+                // }
             })
             
         }
@@ -190,10 +189,105 @@ const SelectMultipleParcels = () => {
     }, [primaryResultFeature, tool, polygonGraphicsLayer])
 
 
+    const handleMouseMove = (event) => {
+        const x = event.clientX 
+        const y = event.clientY
+        tooltipRef.current.style.left = x + 15 + 'px';
+        tooltipRef.current.style.top = y - 10 + 'px';
+        // /tooltipRef.current.innerHTML = `select/deselect parcel`;
+        tooltipRef.current.style.textWrap = 'wrap'
+        tooltipRef.current.style.backgroundColor = theme.palette.secondary.light
+        tooltipRef.current.style.opacity = "80%"
+        tooltipRef.current.style.borderRadius = '15px'
+        tooltipRef.current.style.borderColor = 'transparent'
+        tooltipRef.current.style.width = 'fit-content'
+        tooltipRef.current.style.display = 'flex';
+      };
+
+      const handleMouseLeave = () => {
+        tooltipRef.current.style.display = 'none';
+      };
+
+    useEffect(() => {
+
+        const createTooltip = () => {
+
+            if(!tooltipRef.current){
+                // Create the tooltip element
+                const tooltip = document.createElement('div');
+                tooltip.className = 'tooltip';
+                tooltip.style.position = 'absolute';
+                tooltip.style.pointerEvents = 'none';
+                tooltip.style.display = 'none'
+
+                tooltipRef.current = tooltip;
+            }
+
+            else{
+                console.log("tool is: ", tool)
+                if (tool) {
+                    
+                    const mapContainer = mapView.container;
+                    const existingTooltip = mapContainer.querySelector('.tooltip-class');
+                    if(!existingTooltip){
+                        mapContainer.appendChild(tooltipRef.current);
+                    }
+                    
+                    if (tool === "click") {
+                        tooltipRef.current.innerHTML = `select/deselect parcel`
+                    }
+                    if (tool === "draw") {
+                        if(!actionButtonsVisible){
+                            tooltipRef.current.innerHTML = `set first point`
+                        }
+                        else{
+                            tooltipRef.current.innerHTML = `double click to complete`
+                        }
+                        if(sketchPolygon){
+                            tooltipRef.current.innerHTML = `click done to select parcels`
+                        }
+                        
+                    }
+                  }
+
+            }
+
+        }
+        
+        if(mapView && tool){
+
+            const mapContainer = mapView.container;
+            
+            createTooltip()
+
+            // Append tooltip to map container
+            //mapContainer.appendChild(tooltipRef.current);
+
+            mapContainer.addEventListener('mousemove', handleMouseMove);
+            mapContainer.addEventListener('mouseleave', handleMouseLeave);
+                        
+        }
+        
+        
+
+        return () => {
+            if(mapView && tool && tooltipRef.current){
+                const mapContainer = mapView.container;
+                mapContainer.removeEventListener('mousemove', handleMouseMove);
+                mapContainer.removeEventListener('mouseleave', handleMouseLeave);
+                mapView.container.removeChild(tooltipRef.current); // Clean up tooltip
+            }
+            
+          };
+
+      }, [tool, mapView, actionButtonsVisible, sketchPolygon]);
+
+
     return(
         <Box display="flex" flexDirection="column" rowGap={2}>
 
-            {/* <Tooltip isTooltipVisible={isTooltipVisible} content={"test"}/> */}
+<div ref={tooltipRef} style={{position:"absolute", zIndex:100}}></div>
+
             <Typography variant="body1" sx={{height: 80}}>
                 {descriptions(toolDescription)}
             </Typography>

@@ -98,3 +98,13 @@ arcgis-layer-list{
 .esri-distance-measurement-2d__clear-button{
   border-radius: 20px !important;
 }
+
+.tooltip {
+  position: absolute;
+  background-color: white;
+  border: 1px solid black;
+  padding: 5px;
+  pointer-events: none;
+  display: none;
+  z-index: 100;
+}
