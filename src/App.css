@@ -99,12 +99,7 @@ arcgis-layer-list{
   border-radius: 20px !important;
 }
 
-.tooltip {
-  position: absolute;
-  background-color: white;
-  border: 1px solid black;
-  padding: 5px;
-  pointer-events: none;
-  display: none;
-  z-index: 100;
+/* Example CSS rule to change the cursor to a pointer */
+.element-class {
+  cursor: pointer;
 }

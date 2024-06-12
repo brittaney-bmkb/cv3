@@ -19,6 +19,35 @@ const descriptions = (state) => {
     }
 }
 
+// Get the element you want to change the cursor for
+const element = document.querySelector('.element-class');
+
+function hexToRgba(hex, alpha = 1) {
+    // Remove the leading # if it's there
+    hex = hex.replace(/^#/, '');
+  
+    // Parse the r, g, b values
+    let r, g, b;
+  
+    if (hex.length === 3) {
+      // If the hex code is in the shorthand format (e.g. #F00)
+      r = parseInt(hex[0] + hex[0], 16);
+      g = parseInt(hex[1] + hex[1], 16);
+      b = parseInt(hex[2] + hex[2], 16);
+    } else if (hex.length === 6) {
+      // If the hex code is in the full format (e.g. #FF0000)
+      r = parseInt(hex.substring(0, 2), 16);
+      g = parseInt(hex.substring(2, 4), 16);
+      b = parseInt(hex.substring(4, 6), 16);
+    } else {
+      throw new Error('Invalid hex color code');
+    }
+  
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+
+
+
 // this lifted from comparable property search and will needed to be updated for this widget
 const SelectMultipleParcels = () => {
 
@@ -111,6 +140,8 @@ const SelectMultipleParcels = () => {
             await queryPolygon(sketchPolygon.geometry)
 
             polygonGraphicsLayer.current.remove(sketchPolygon)
+
+            setSketchPolygon(null)
         }
 
         if(tool === "click"){
@@ -118,6 +149,7 @@ const SelectMultipleParcels = () => {
         }
         setTool(null)
         setActionButtonsVisible(false)
+        
 
     }
 
@@ -192,20 +224,35 @@ const SelectMultipleParcels = () => {
     const handleMouseMove = (event) => {
         const x = event.clientX 
         const y = event.clientY
+
         tooltipRef.current.style.left = x + 15 + 'px';
-        tooltipRef.current.style.top = y - 10 + 'px';
-        // /tooltipRef.current.innerHTML = `select/deselect parcel`;
-        tooltipRef.current.style.textWrap = 'wrap'
-        tooltipRef.current.style.backgroundColor = theme.palette.secondary.light
-        tooltipRef.current.style.opacity = "80%"
+        tooltipRef.current.style.top = y - 30 + 'px';
+        //tooltipRef.current.innerHTML = `select/deselect parcel`;
+        //tooltipRef.current.style.textWrap = 'wrap'
+        tooltipRef.current.style.backgroundColor = hexToRgba(theme.palette.secondary.light, .75)
+        //tooltipRef.current.style.opacity = "80%"
+        tooltipRef.current.padding = '10px'
         tooltipRef.current.style.borderRadius = '15px'
         tooltipRef.current.style.borderColor = 'transparent'
-        tooltipRef.current.style.width = 'fit-content'
+        tooltipRef.current.style.width = '100px'
         tooltipRef.current.style.display = 'flex';
+        tooltipRef.current.style.minHeight = "30px"
+        // Flexbox styles to center content vertically and horizontally
+        tooltipRef.current.style.textAlign = 'center';
+        tooltipRef.current.style.display = 'flex';
+        tooltipRef.current.style.alignItems = 'center';
+        tooltipRef.current.style.justifyContent = 'center';
+        tooltipRef.current.style.fontWeight = 600
+
+        // Change the cursor to pointer
+        //tooltipRef.current.style.cursor = 'pointer';
+
       };
 
       const handleMouseLeave = () => {
         tooltipRef.current.style.display = 'none';
+
+        //element.style.cursor = 'default';
       };
 
     useEffect(() => {
@@ -234,10 +281,10 @@ const SelectMultipleParcels = () => {
                     }
                     
                     if (tool === "click") {
-                        tooltipRef.current.innerHTML = `select/deselect parcel`
+                        tooltipRef.current.innerHTML = `select / deselect parcel`
                     }
                     if (tool === "draw") {
-                        if(!actionButtonsVisible){
+                        if(!actionButtonsVisible || !polygonGraphicsLayer.current){
                             tooltipRef.current.innerHTML = `set first point`
                         }
                         else{
