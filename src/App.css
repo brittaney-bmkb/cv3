@@ -98,3 +98,8 @@ arcgis-layer-list{
 .esri-distance-measurement-2d__clear-button{
   border-radius: 20px !important;
 }
+
+/* Example CSS rule to change the cursor to a pointer */
+.element-class {
+  cursor: pointer;
+}

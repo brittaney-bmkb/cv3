@@ -1,7 +1,6 @@
 import { Box, Button, Divider, Stack, Typography } from "@mui/material"
 import UseAppContext from "../../contexts/AppContext"
 import { useEffect, useRef, useState } from "react";
-import StyledButtonFilledPrimary from "../Button/Button";
 import { CalciteIcon } from "@esri/calcite-components-react";
 import SketchViewModel from "@arcgis/core/widgets/Sketch/SketchViewModel.js";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
@@ -18,6 +17,32 @@ const descriptions = (state) => {
     }
 }
 
+// Get the element you want to change the cursor for
+const element = document.querySelector('.element-class');
+
+function hexToRgba(hex, alpha = 1) {
+    // Remove the leading # if it's there
+    hex = hex.replace(/^#/, '');
+  
+    // Parse the r, g, b values
+    let r, g, b;
+  
+    if (hex.length === 3) {
+      // If the hex code is in the shorthand format (e.g. #F00)
+      r = parseInt(hex[0] + hex[0], 16);
+      g = parseInt(hex[1] + hex[1], 16);
+      b = parseInt(hex[2] + hex[2], 16);
+    } else if (hex.length === 6) {
+      // If the hex code is in the full format (e.g. #FF0000)
+      r = parseInt(hex.substring(0, 2), 16);
+      g = parseInt(hex.substring(2, 4), 16);
+      b = parseInt(hex.substring(4, 6), 16);
+    } else {
+      throw new Error('Invalid hex color code');
+    }
+  
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
 
 
 
@@ -32,15 +57,16 @@ const SelectMultipleParcels = () => {
         queryPolygon,
         setPrimaryResultFeature,
         primaryResultFeature,
-        setSearchResults
+        setSearchResults,
      } = UseAppContext()
 
     const [ tool, setTool ] = useState(null)
     const [ actionButtonsVisible, setActionButtonsVisible ] = useState(false);
-    const [ isTooltipVisible, setTooltipVisible ] = useState(false);
     const [ toolDescription, setToolDescription ] = useState(false);
     const [ sketchPolygon, setSketchPolygon ] = useState(null);
     const [ completeSketch, setCompleteSketch ] = useState(false);
+
+    const tooltipRef = useRef(null);
 
     const sketchVMRef = useRef(null)
     const polygonGraphicsLayer = useRef(null)
@@ -94,10 +120,10 @@ const SelectMultipleParcels = () => {
             sketchVMRef.current = new SketchViewModel({
                 view: mapView,
                 layer: polygonGraphicsLayer.current,
-                tooltipOptions: {
-                    enabled: true,
-                    helpMessage: true
-                }
+                // tooltipOptions: {
+                //     enabled: true,
+                //     helpMessage: true
+                // }
             })
             
         }
@@ -112,6 +138,8 @@ const SelectMultipleParcels = () => {
             await queryPolygon(sketchPolygon.geometry)
 
             polygonGraphicsLayer.current.remove(sketchPolygon)
+
+            setSketchPolygon(null)
         }
 
         if(tool === "click"){
@@ -119,6 +147,7 @@ const SelectMultipleParcels = () => {
         }
         setTool(null)
         setActionButtonsVisible(false)
+        
 
     }
 
@@ -190,12 +219,122 @@ const SelectMultipleParcels = () => {
     }, [primaryResultFeature, tool, polygonGraphicsLayer])
 
 
+    const handleMouseMove = (event) => {
+        const x = event.clientX 
+        const y = event.clientY
+
+        tooltipRef.current.style.left = x + 15 + 'px';
+        tooltipRef.current.style.top = y - 30 + 'px';
+        //tooltipRef.current.innerHTML = `select/deselect parcel`;
+        //tooltipRef.current.style.textWrap = 'wrap'
+        tooltipRef.current.style.backgroundColor = hexToRgba(theme.palette.secondary.light, .75)
+        //tooltipRef.current.style.opacity = "80%"
+        tooltipRef.current.padding = '10px'
+        tooltipRef.current.style.borderRadius = '15px'
+        tooltipRef.current.style.borderColor = 'transparent'
+        tooltipRef.current.style.width = '100px'
+        tooltipRef.current.style.display = 'flex';
+        tooltipRef.current.style.minHeight = "30px"
+        // Flexbox styles to center content vertically and horizontally
+        tooltipRef.current.style.textAlign = 'center';
+        tooltipRef.current.style.display = 'flex';
+        tooltipRef.current.style.alignItems = 'center';
+        tooltipRef.current.style.justifyContent = 'center';
+        tooltipRef.current.style.fontWeight = 600
+
+        // Change the cursor to pointer
+        //tooltipRef.current.style.cursor = 'pointer';
+
+      };
+
+      const handleMouseLeave = () => {
+        tooltipRef.current.style.display = 'none';
+
+        //element.style.cursor = 'default';
+      };
+
+    useEffect(() => {
+
+        const createTooltip = () => {
+
+            if(!tooltipRef.current){
+                // Create the tooltip element
+                const tooltip = document.createElement('div');
+                tooltip.className = 'tooltip';
+                tooltip.style.position = 'absolute';
+                tooltip.style.pointerEvents = 'none';
+                tooltip.style.display = 'none'
+
+                tooltipRef.current = tooltip;
+            }
+
+            else{
+                console.log("tool is: ", tool)
+                if (tool) {
+                    
+                    const mapContainer = mapView.container;
+                    const existingTooltip = mapContainer.querySelector('.tooltip-class');
+                    if(!existingTooltip){
+                        mapContainer.appendChild(tooltipRef.current);
+                    }
+                    
+                    if (tool === "click") {
+                        tooltipRef.current.innerHTML = translateText(`select / deselect parcel`)
+                    }
+                    if (tool === "draw") {
+                        if(!actionButtonsVisible || !polygonGraphicsLayer.current){
+                            tooltipRef.current.innerHTML = translateText(`set first point`)
+                        }
+                        else{
+                            tooltipRef.current.innerHTML = translateText(`double click to complete`)
+                        }
+                        if(sketchPolygon){
+                            tooltipRef.current.innerHTML = translateText(`click done to select parcels`)
+                        }
+                        
+                    }
+                  }
+
+            }
+
+        }
+        
+        if(mapView && tool){
+
+            const mapContainer = mapView.container;
+            
+            createTooltip()
+
+            // Append tooltip to map container
+            //mapContainer.appendChild(tooltipRef.current);
+
+            mapContainer.addEventListener('mousemove', handleMouseMove);
+            mapContainer.addEventListener('mouseleave', handleMouseLeave);
+                        
+        }
+        
+        
+
+        return () => {
+            if(mapView && tool && tooltipRef.current){
+                const mapContainer = mapView.container;
+                mapContainer.removeEventListener('mousemove', handleMouseMove);
+                mapContainer.removeEventListener('mouseleave', handleMouseLeave);
+                mapView.container.removeChild(tooltipRef.current); // Clean up tooltip
+            }
+            
+          };
+
+      }, [tool, mapView, actionButtonsVisible, sketchPolygon]);
+
+
     return(
         <Box display="flex" flexDirection="column" rowGap={2}>
 
-            {/* <Tooltip isTooltipVisible={isTooltipVisible} content={"test"}/> */}
+<div ref={tooltipRef} style={{position:"absolute", zIndex:100}}></div>
+
             <Typography variant="body1" sx={{height: 80}}>
-                {descriptions(toolDescription)}
+                {translateText(descriptions(toolDescription))}
             </Typography>
 
             <Stack direction="row" justifyContent="space-around" spacing={1}>
