@@ -50,7 +50,7 @@ export const radiusTypes = {
 
 const ComparablePropertySearch= () => {
 
-    const { searchComparableProperties, primaryResultFeature, translateText } = UseAppContext()
+    const { setComparableType, searchComparableProperties, primaryResultFeature, translateText } = UseAppContext()
 
     const [ sourceParcel, setSourceParcel ] = useState(null)
     const [ buildingSqFtMin, setBuildingSqFtMin ] = useState(0)
@@ -70,7 +70,7 @@ const ComparablePropertySearch= () => {
     const [ ageMaxError, setAgeMaxError ] = useState(false)
     const [ ageMinError, setAgeMinError ] = useState(false)
 
-    const [radius, setRadius] = useState(.125)
+    const [radius, setRadius] = useState(.5)
 
     const [errorMessage, setErrorMessage] = useState(false)
 
@@ -134,6 +134,8 @@ const ComparablePropertySearch= () => {
         console.log("Comparable query = ", query, radius)
 
         await searchComparableProperties(query,radius)
+
+        setComparableType("comparable")
 
         //return query
     }

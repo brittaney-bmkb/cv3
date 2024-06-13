@@ -8,12 +8,13 @@ import TranslateIcon from '@mui/icons-material/Translate';
 import TranslateMenu from "./TranslateMenu";
 import UseAppContext from "../../contexts/AppContext";
 import { theme } from "../../theme";
+import { InfoOutlined } from "@mui/icons-material";
 import { FeedbackExtended, FeedbackGeneral } from "../Feedback/Feedback";
 
 const MenuBar = ({open, setOpen}) => {
 
 
-    const {setTranslateDialogOpen, setOpenHelpDialog, screenWidth, translateText} = UseAppContext()
+    const {setPanelPrimaryVisibility, setPanelDisplay, setTranslateDialogOpen, setOpenHelpDialog, screenWidth, translateText, setShowMapMoblie} = UseAppContext()
 
     const [openFeedback, setOpenFeedback] = useState(false)
 
@@ -36,9 +37,20 @@ const MenuBar = ({open, setOpen}) => {
         setOpenFeedback(true)
     }
 
+    const handleInfo = () => {
+        setShowMapMoblie(false)
+        setPanelPrimaryVisibility(true)
+        setPanelDisplay("info")
+    }
     const drawer = (
         <Box onClick={handleDrawerToggle}  pt={2} display="flex" flexDirection="column" rowGap={2}>
             <List>
+            <MenuItem onClick={handleInfo}>
+                    <Stack direction="row" spacing={1} alignItems="center">
+                        <InfoOutlined/>
+                        <Typography variant="h5">{translateText("Info")}</Typography>
+                    </Stack>
+                </MenuItem> 
                 <MenuItem onClick={handleHelp}>
                     <Stack direction="row" spacing={1} alignItems="center">
                         <CalciteIcon icon="question-mark"/>

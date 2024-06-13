@@ -11,20 +11,48 @@ import { theme } from "../../theme"
 import CompareNearby from "../ComparableProperty/CompareNearby"
 import PropertyDetail from "../PropertyDetail/PropertyDetail"
 import PropertyPagniation from "../PropertyDetail/PropertyPagnition";
-import WebMapView from "../WebMapView/WebMapView";
 import LayerListWidgetCustom from "../Widgets/LayersList/LayerListWidgetCustom";
 import PrintWidgetCustom, { PrintWidgetPane } from "../Widgets/PrintWidgetCustom";
 import { config } from "../../data/config";
 import BasemapGallery from "../Widgets/Basemap/BasemapGallery";
 import LayerList from "../Widgets/LayersList/LayerList";
-import MeasureComponentBeta from "../Widgets/Measure/MeasureComponentBeta";
-import MeasureSketchWidget from  "../Widgets/Measure/MeasureSketchWidget";
+import Info from "../Info/Info";
+import BasemapWidget from "../Widgets/Basemap/BasemapWidget";
+import SelectMultipleParcels from "../SelectMultipleParcels/SelectMultipleParcels";
+import { useState } from "react";
+import MeasureSketchWidget from "../Widgets/Measure/MeasureSketchWidget";
 
 const PanelContent = ({display}) => {
 
     const { translateText, screenWidth, primaryResultFeature, searchFeatures, comparableParcels, secondaryResultFeature } = UseAppContext()
 
     switch(display){
+        case 'info':
+            return (
+                <Box 
+                display="flex" 
+                flexDirection="column" 
+                rowGap={2}
+                flexGrow={1} 
+                minHeight={0}
+                width="100"
+                p={screenWidth < theme.breakpoints.values.lg ? 1: 0}
+                >
+                    <PanelHeader
+                        text={"Info"} 
+                        primary={true}
+                        divider={true}
+                        closeButton={true}
+                        panel={"primary"}
+                    />
+
+                    <Box 
+                    display="flex" 
+                    flexDirection="column" 
+                    sx={{ overflowY:"auto", flexGrow: 1}}>
+                        <Info/>
+                    </Box>   
+                </Box>)
         case 'resultsList':
             return (
                 <Box display="flex" flexDirection="column" height="100%" width="100%">
@@ -249,8 +277,8 @@ const PanelContent = ({display}) => {
                     divider={true}
                     />
                     {/* <LayersWidget/> */}
-                    {/* <LayerListWidgetCustom/> */}
-                    <LayerList/>
+                    <LayerListWidgetCustom/>
+                    {/* <LayerList/> */}
                 </Box>
             )   
         case 'basemapsWidget':
@@ -268,8 +296,8 @@ const PanelContent = ({display}) => {
                     descriptionText="Select a basemap from the options below to update the map"
                     divider={true}
                     />
-                    {/* <BasemapWidget/> */}
-                    <BasemapGallery/>
+                    <BasemapWidget/>
+                    {/* <BasemapGallery/> */}
                 </Box>
             )                                           
         case 'printWidget':
@@ -291,7 +319,28 @@ const PanelContent = ({display}) => {
                     {/* <PrintWidget/> */}
                     <PrintWidgetPane/>
                 </Box>
-            )                                   
+            )    
+        case 'select':
+            return(
+                <Box 
+                display="flex" 
+                flexDirection="column"  
+                minHeight={0} 
+                width="100%"
+                sx={{boxSizing:"border-box"}}
+                divider={true}
+                rowGap={2}
+                >
+                    <PanelHeader
+                    text="Select Multiple Parcels"
+                    closeButton={true}
+                    panel={"widget"}
+                    //descriptionText={"Use the tools below to select multiple parcels in the map. You can either click to select or deselect individual parcels or draw an area to select all parcels within it"}
+                    />
+                    {/* <PrintWidget/> */}
+                    <SelectMultipleParcels/>
+                </Box>
+            )                                
         default:
             return null
     }

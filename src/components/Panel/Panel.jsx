@@ -3,7 +3,6 @@ import UseAppContext from "../../contexts/AppContext";
 import { theme } from "../../theme";
 import PanelContent from "./PanelContent";
 import { useEffect } from "react";
-import WebMapView from "../WebMapView/WebMapView";
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import WebMapComponentBeta from "../WebMapView/WebMapComponentBeta";
 
@@ -31,6 +30,7 @@ const PanelMobile = () => {
                 <Box
                  display="flex"
                  pb={!showMapMobile? 6 : 0}
+                 
                  height="100%"
                  width="100vw"
                  sx={{boxSizing:"border-box"}}
@@ -99,7 +99,16 @@ export const SecondaryPanel = () => {
 
 export const WidgetPanel = () => {
 
-    const { panelDisplayWidget, panelWidgetVisible, panelSecondaryVisible } = UseAppContext()
+    const { setSelectMultiple, selectMultiple, panelDisplayWidget, panelWidgetVisible, panelSecondaryVisible } = UseAppContext()
+
+    //turn off select multiple parcels if navigating way from select display
+    useEffect(() => {
+
+        if((panelDisplayWidget !== "select" || !panelWidgetVisible) && selectMultiple){
+            setSelectMultiple(false)
+        }
+
+    }, [panelDisplayWidget])
 
     return(
         <Box
@@ -108,7 +117,8 @@ export const WidgetPanel = () => {
             bgcolor="white" 
             flex={1}
             flexGrow={1}
-            width={350} 
+            minWidth={300} 
+            maxWidth={350} 
             height={"100%"}
             p={2} 
             sx={{boxSizing:"border-box",
@@ -151,8 +161,6 @@ export const LeftPanel = () => {
       
       }, [screenWidth]);
       
-      
-
     return(
         <Box 
             id="left-panel"
@@ -162,7 +170,11 @@ export const LeftPanel = () => {
             minWidth={350}  
             flexDirection="column" 
             p={2}  
-            sx={{boxSizing:"border-box", display:{xs:'none', sm: panelPrimaryVisible ? 'flex' : 'none'}}}>
+            sx={{
+                boxSizing:"border-box", 
+                display:{xs:'none', sm: panelPrimaryVisible ? "flex" : "none" },
+                boxShadow: 1
+                }}>
                 <PanelContent id="panel-content" display={panelDisplay}/>
         </Box>
         

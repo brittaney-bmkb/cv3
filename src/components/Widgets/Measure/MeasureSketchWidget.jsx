@@ -1,5 +1,5 @@
 
-import { Box, MenuItem, Select, Typography, Stack, TextField, Divider, InputLabel , FormControl, NativeSelect   } from "@mui/material"
+import { Box, Button, Select, Typography, Stack, TextField, Divider, InputLabel , FormControl, NativeSelect   } from "@mui/material"
 import UseAppContext from "../../../contexts/AppContext"
 import { useEffect, useRef, useState } from "react"
 import { ArcgisSketch } from "@arcgis/map-components-react"
@@ -17,6 +17,7 @@ import StyledButtonFilledPrimary from "../../Button/Button";
 import CalculateIcon from '@mui/icons-material/Calculate';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
+import { CalciteIcon } from "@esri/calcite-components-react";
 
 //// https://developers.arcgis.com/javascript/latest/tutorials/find-length-and-area/
 //// https://developers.arcgis.com/javascript/latest/tutorials/find-length-and-area/#add-an-event-listener
@@ -31,7 +32,12 @@ import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 //// https://community.esri.com/t5/arcgis-javascript-maps-sdk-questions/getting-geodesic-area-ve/td-p/121084 // negative values 
 //// 
 
-
+//TODO continue to test merge
+//TODO better layer out for buttons
+//TODO have tool and layer close when tool exists 
+//TODO have abbr unit set 
+//TODO 
+//TODO 
 const MeasureSketchWidget = () => {
     
     const { mapView, map, translateText  } = UseAppContext()
@@ -45,6 +51,9 @@ const MeasureSketchWidget = () => {
     const [selectedValue, setSelectedValue ] = useState(null);
     let [userGeometry, setUserGeometry ] = useState(null);
     let [unitAbbrev, setUnitAbbrev ] = useState(null)
+    
+    const [ tool, setTool ] = useState(null)
+    const [ toolDescription, setToolDescription ] = useState(false);
 
     const handleChange = (e) => {
         setSelectedValue(e.target.value)
@@ -55,6 +64,11 @@ const MeasureSketchWidget = () => {
         } else{
             getLength(userGeometry, e.target.value)
         }
+    }
+
+    const handleSelectClick = () => {
+        setTool('click')
+        setToolDescription('selectMultiple')
     }
 
     const unitMeasurementAbbrev = (stringToCheck) => {
@@ -250,6 +264,8 @@ const MeasureSketchWidget = () => {
     }
 
     const startMeasuring = async () => {
+        setTool('click')
+        // setToolDescription('selectMultiple')
         if(!graphicsLayer.current){ await createGraphicLayer() }
         await initializeSketchVM()
         // setActiveTool(tool)
@@ -329,7 +345,7 @@ const MeasureSketchWidget = () => {
                 type: "simple-fill",
                 color: '#ffb6c1',
                 outline: {
-                    color: [245, 0, 127, 0.05],
+                    color: [245, 0, 127, 0.0],
                     width: 5,
                 },
             };       
@@ -371,7 +387,7 @@ const MeasureSketchWidget = () => {
         <Box display="flex" flexDirection="column"  rowGap={1}>
 
             <Divider />
-            <Box display="flex" flexDirection="column" gap={1} sx={{justifyContent:"center"}}>
+            {/* <Box display="flex" flexDirection="column" gap={1} sx={{justifyContent:"center"}}>
                 <StyledButtonFilledPrimary
                     color="primary"
                     startIcon={<SquareFootIcon/>}
@@ -379,6 +395,7 @@ const MeasureSketchWidget = () => {
                     textVarient={"body2"}
                     // active={activeTool === "distance" ? true: false}
                     onClick={startMeasuring}
+                    
                 /> 
                 <StyledButtonFilledPrimary
                     color="primary"
@@ -398,8 +415,95 @@ const MeasureSketchWidget = () => {
                     // active={activeTool === "area" ? true: false}
                     onClick={completeAllGraphics}
                 /> 
-
             </Box>
+            <Divider /> */}
+
+            <Stack 
+                direction="row" spacing={2}
+                // divider={<Divider orientation="horizontal" flexItem />}
+                useFlexGap 
+                sx={{  
+                    flexWrap: 'wrap',
+                    justifyContent: 'center'
+                }}>
+            {/* <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap">              */}
+
+                <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{textTransform:"none", 
+                    display:"flex", 
+                    flexDirection:"row", 
+                    columnGap:1,
+                    width: "40%",
+                }}
+                    onClick={startMeasuring}>   
+                        <CalciteIcon icon="measure-area"/>
+                        <Typography variant="body1">
+                            {translateText("Draw")}
+                        </Typography>
+                </Button>
+                
+                <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{textTransform:"none", 
+                    display:"flex", 
+                    flexDirection:"row", 
+                    columnGap:1,
+                    width: "40%",
+                }}
+                    onClick={completeAllGraphics}>   
+                        <CalciteIcon icon="check-square"/>
+                        <Typography variant="body1">
+                            {translateText("Done")}
+                        </Typography>
+                </Button>
+
+                <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{textTransform:"none", 
+                    display:"flex", 
+                    flexDirection:"row", 
+                    columnGap:1,
+                    width: "40%",
+                }}
+                    onClick={removeAllGraphics}>   
+                        <CalciteIcon icon="trash"/>
+                        <Typography variant="body1">
+                            {translateText("Remove")}
+                        </Typography>
+                </Button>
+
+
+
+                {/* <Button
+                variant="contained"
+                color="primary"
+                sx={{textTransform:"none", 
+                    display:"flex", 
+                    flexDirection:"row", 
+                    columnGap:1,
+                    width: "50%",
+                    backgroundColor: tool === 'draw' ? 'primary.dark' : 'primary.main',
+                    border: tool === 'draw' ? '2px solid' : 'none',
+                    borderColor: tool === 'draw' ? 'primary.dark' : 'transparent',
+                    boxShadow: tool === 'draw' ? 'inset 0 3px 5px rgba(0, 0, 0, 0.2)' : 'none',
+                    transform: tool === 'draw' ? 'translateY(2px)' : 'none',
+                }}
+                onClick={handleSelectDraw}
+                >   
+                    <CalciteIcon icon="pencil"/>
+                    <Typography
+                    variant="body1"
+                    >
+                        {translateText("Draw")}
+                    </Typography>
+                </Button> */}
+
+            </Stack>
+
             <Divider />
 
             <DropDownUnitMeasurement/>

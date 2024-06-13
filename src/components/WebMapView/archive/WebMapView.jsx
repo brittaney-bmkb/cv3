@@ -1,12 +1,12 @@
 
 import { useEffect, useRef, useState } from "react";
-import UseAppContext from "../../contexts/AppContext";
+import UseAppContext from "../../../contexts/AppContext";
 // import { view } from "../../arcgis/webmap/webmap";
-import StyledButtonFilledPrimary, { ToggleIconButton } from "../Button/Button";
+import StyledButtonFilledPrimary, { ToggleIconButton } from "../../Button/Button";
 import { Box, Fade, IconButton, Typography } from "@mui/material";
 import TableRowsOutlinedIcon from '@mui/icons-material/TableRowsOutlined';
-import MapButtonGroup from "../MapButtonGroup";
-import { theme } from "../../theme";
+import MapButtonGroup from "../../MapButtonGroup";
+import { theme } from "../../../theme";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 
 

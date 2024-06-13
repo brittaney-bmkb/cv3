@@ -17,6 +17,7 @@ import { FeedbackExtended, FeedbackGeneral } from "../Feedback/Feedback";
 
 import HelpDialog from "../HelpDialog/HelpDialog";
 import ExportDialog from "../ExportDialog/ExportDialog";
+import { Info, InfoOutlined } from "@mui/icons-material";
 
 
 const StyledToolbar = styled(Toolbar)({
@@ -28,11 +29,16 @@ const StyledToolbar = styled(Toolbar)({
 const NavBar = () => {
 
 
-    const {setTranslateDialogOpen, translateText} = UseAppContext()
+    const {setTranslateDialogOpen, translateText, setPanelDisplay, setPanelPrimaryVisibility} = UseAppContext()
 
     const {openHelpDialog, setOpenHelpDialog} = UseAppContext()
     const [open, setOpen] = useState(false);
     const [openFeedback, setOpenFeedback] = useState(false)
+
+    const handleInfo = () => {
+        setPanelPrimaryVisibility(true)
+        setPanelDisplay("info")
+    }
 
     const handleClick = () => {
         setOpen(!open)
@@ -99,6 +105,11 @@ const NavBar = () => {
                         </Stack>
                         
                         <Stack direction="row" gap={2} display={{xs:'none', sm:'none', md:'none', lg:'flex' }}> 
+
+                            <StyledButtonFilledPrimaryLight 
+                                onClick={handleInfo}
+                                text={translateText("Info")} 
+                                startIcon={<InfoOutlined/> }/>  
 
                             <StyledButtonFilledPrimaryLight 
                                 onClick={handleHelp}

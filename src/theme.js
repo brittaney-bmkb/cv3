@@ -4,26 +4,26 @@ export const theme = createTheme({
     layers: {
         primary: {
             type: "simple-fill",
-            style:"none",
+            color: [ 255, 128, 0, 0 ],
             outline: {
-                width:3,
+                width:5,
                 color: "#0D4D96",
             }
         },
         secondary: {
             type: "simple-fill",
-            style:"none",
+            color: [ 255, 128, 0, 0 ],
             outline: {
-                width:2,
+                width:5,
                 style: "short-dot",
                 color: "#E58F65",
             }
         },
         secondarySelected: {
             type: "simple-fill",
-            style:"none",
+            color: [ 255, 128, 0, 0 ],
             outline: {
-                width:3,
+                width:5,
                 color: "#E58F65",
             }
         }
@@ -47,7 +47,7 @@ export const theme = createTheme({
         },
         secondary:{
             main:"#E58F65",
-            light:"#009ADA"
+            light:"#F5D2C2"
         },
         info:{
             main:"#928884",
@@ -170,17 +170,17 @@ theme.typography.h4 = {
     [theme.breakpoints.up('md')]: {
         fontSize: 18,
         fontWeight: 700,
-        color: theme.main.text.dark
+        //color: theme.main.text.dark
     },
     [theme.breakpoints.down('md')]: {
         fontSize: 17,
         fontWeight: 700,
-        color: theme.main.text.dark
+        ///color: theme.main.text.dark
     },
     [theme.breakpoints.down('sm')]: {
         fontSize: 16,
         fontWeight: 700,
-        color: theme.main.text.dark
+        //color: theme.main.text.dark
     }
 }
 
@@ -237,16 +237,16 @@ theme.typography.body1 = {
 theme.typography.body2 = {
     [theme.breakpoints.up('md')]: {
         fontSize: 15,
-        fontWeight: 500,
+        fontWeight: 600,
         
     },
     [theme.breakpoints.down('md')]: {
         fontSize: 14,
-        fontWeight: 500,
+        fontWeight: 600,
 
     },
     [theme.breakpoints.down('sm')]: {
         fontSize: 13,
-        fontWeight: 500,
+        fontWeight: 600,
     }
 }

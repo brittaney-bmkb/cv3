@@ -14,7 +14,28 @@ import FeedbackDialog, { FeedbackGeneral, FeedbackSearch } from "../Feedback/Fee
 
 const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton, feedbackButton, backButton, backButtonComponent, closeButton, panel, primary, divider} ) => {
 
-    const { setShowMapMoblie, screenWidth, panelWidgetVisible, setPanelWidgetVisibility, translateText, clearResultsComparables, panelDisplaySecondary, clearResults, panelPrimaryVisible, panelSecondaryVisible, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, comparableParcels } = UseAppContext()
+    const { setPanelDisplayWidget, primaryResultFeature, panelDisplay, 
+        setShowMapMoblie, 
+        screenWidth, 
+        panelWidgetVisible, 
+        setPanelWidgetVisibility, 
+        translateText, 
+        clearResultsComparables, 
+        panelDisplaySecondary, 
+        clearResults, 
+        panelPrimaryVisible, 
+        panelSecondaryVisible, 
+        setPanelDisplay, 
+        setPanelPrimaryVisibility, 
+        setPanelSecondaryVisibility, 
+        setPanelDisplaySecondary, 
+        comparableParcels,
+        prevSearchFeatures,
+        searchTerm,
+        setPrimaryResultFeature,
+        setSearchResults,
+        setIsQuerying
+    } = UseAppContext()
 
     //get url parameters
     const [routeParams , setSearchParams] = useSearchParams()
@@ -49,6 +70,7 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
         }
 
         if(comparableParcels && comparableParcels.length > 0){
+            console.log("clearing comparable parcels")
             clearResultsComparables()
         }
 
@@ -73,15 +95,24 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
 
     const handleBack = () => {
 
-        let secondaryParcelsDisplayed= ["nearbyProperties", "comparablePropertySearch","resultsListComparables","resultsListNearby","propertyDetailComparable","propertyDetailNearby"].includes(panelDisplaySecondary)
-
         if(panel==="primary"){
-            console.log("going back to: ", backButtonComponent)
-            setPanelDisplay(backButtonComponent)
-
             if(["nearbyProperties", "comparablePropertySearch","resultsList"].includes(backButtonComponent)){
                 clearResultsComparables()
             }
+
+            if(backButtonComponent === "resultsList"){
+                console.log("setting previous search term: ", searchTerm)
+                console.log("setting previous features as current search results", prevSearchFeatures)
+                setSearchParams({'search': searchTerm})
+                setIsQuerying(true)
+                console.log("setting search features to null")
+
+                //setSearchResults(null, null)
+                setPrimaryResultFeature(prevSearchFeatures, true)
+            }
+
+            console.log("going back to: ", backButtonComponent)
+            setPanelDisplay(backButtonComponent)
         }
         if(panel==="secondary"){
             console.log("going back to: ", backButtonComponent)
@@ -103,8 +134,18 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
         }
 
         if(panel==="primary" && panelPrimaryVisible===true){
-            setPanelPrimaryVisibility(false)
 
+            if(panelDisplay === "info" && primaryResultFeature){
+                setPanelDisplay("propertyDetail")
+            }
+            else if(panelDisplay === "info" && !primaryResultFeature){
+                setPanelPrimaryVisibility(false)
+                setPanelDisplay(null)
+            }
+            else{
+                setPanelPrimaryVisibility(false)
+                setPanelDisplay(null)
+            }
             
 
         }
@@ -119,6 +160,7 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
         }
         if(panel==="widget" && panelWidgetVisible===true){
             setPanelWidgetVisibility(false)
+            setPanelDisplayWidget(null)
         }
     }
 
@@ -138,7 +180,7 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
                     </IconButton> : null} 
                 <Box display="flex" flex={1} alignItems="center" justifyContent="space-around" p={1} minWidth={150}>
                     <Box bgcolor={theme.main.backgroundColor.grey} p={1} sx={{borderRadius: theme.shape.borderRadius}}>
-                        <Typography variant="h5" color={theme.main.text.dark}>
+                        <Typography variant="h5" color={theme.main.text.dark} align="center">
                             {translateText(text)}
                             {/* { infoButton ?  <IconButton  target="_blank" > {<InfoIcon/>} </IconButton > : null} */}
                         </Typography>
@@ -150,7 +192,7 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
                         sx={{ 
                             display:"flex", 
                             flexDirection:"column",
-                            position:"absolute",
+                            position:"relative",
                             right: 0}}>
                         <CloseOutlined fontSize="small" sx={{color:theme.main.text.dark}}/>
                     <Typography color={theme.main.text.dark} variant="subtitle1">{translateText("Close")}</Typography>

@@ -4,10 +4,21 @@ import { theme } from "../../theme"
 import UseAppContext from "../../contexts/AppContext"
 import LinearProgress from '@mui/material/LinearProgress';
 import { CalciteLoader } from "@esri/calcite-components-react";
+import { useEffect } from "react";
 
 const ResultsList = ({results, primaryLableColor, noResultsMessage}) => {
 
-    const { isQuerying, translateText } = UseAppContext()
+    const { isQuerying, translateText, setIsQuerying, primaryResultFeature } = UseAppContext()
+
+    console.log("list results ", results)
+
+    // useEffect(() => {
+
+    //     if(!results && !primaryResultFeature){
+    //         setIsQuerying(true)
+    //     }
+    // }, [results, primaryResultFeature])
+
     return(
         <List sx={{
             height:"100%", 

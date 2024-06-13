@@ -57,6 +57,8 @@ export const handleMultipleResults = async (results) => {
     // Create arrays to store features
     let targetFeatures = [];
     let searchFeatures = [];
+    
+    let addresses = []
 
     filteredResults.forEach(results => {
         // Ensure results and results.source are not null before accessing properties
@@ -69,16 +71,37 @@ export const handleMultipleResults = async (results) => {
                     return;
                 }
                 if (sourceEqualsTarget) {
-                    results.results.forEach(result => {
-                        if (result && result.feature) {
-                            let featureExists = addObjectToArrayIfNotExists(targetFeatures, result.feature)
-                            console.log("feature exists in array: ", featureExists)
-                            console.log("pushing feature to targetFeatures: ", result.feature)
-                            targetFeatures.push(result.feature);
-                        } else {
-                            console.error("Error: Missing feature in result.");
-                        }
-                    });
+                    //get address values
+                    if(results.source.searchFields.includes("street_address")){
+                        results.results.forEach(result => {
+                            if (result && result.feature) {
+                                let street_address = result.feature.attributes["street_address"]
+                                let city_state_zip = result.feature.attributes["city_state_zip"]
+                                let address_values = [ street_address, city_state_zip ]
+
+                                if(!addresses.includes(address_values)){
+                                    addresses.push(address_values)
+                                }
+
+                            } else {
+                                console.error("Error: Missing feature in result.");
+
+                            }
+                        })
+                    }
+                    else{
+                        results.results.forEach(result => {
+                            if (result && result.feature) {
+                                let featureExists = addObjectToArrayIfNotExists(targetFeatures, result.feature)
+                                console.log("feature exists in array: ", featureExists)
+                                console.log("pushing feature to targetFeatures: ", result.feature)
+                                targetFeatures.push(result.feature);
+                            } else {
+                                console.error("Error: Missing feature in result.");
+                            }
+                        });
+                    }
+                    
                 } else {
                     results.results.forEach(result => {
                         if (result && result.feature) {
@@ -89,7 +112,7 @@ export const handleMultipleResults = async (results) => {
                     });
                 }
             } else {
-                console.log("Pushing results features to search features");
+                //console.log("Pushing results features to search features");
                 results.results.map(result => {
                     searchFeatures.push(result.feature)
                 })
@@ -102,6 +125,23 @@ export const handleMultipleResults = async (results) => {
     console.log("target results: ", targetFeatures)
     console.log("search results: ", searchFeatures)
 
+    if(addresses.length > 0){ 
+        //Address to query
+        if(addresses.length > 0){
+            let features = await queryTargetLayerByAddress(addresses)
+
+            features.map(feature => {
+                let featureExists = addObjectToArrayIfNotExists(targetFeatures, feature)
+                console.log("new feature exists: ", featureExists)
+                if(!featureExists){
+                    targetFeatures.push(feature)
+                }
+                
+            })
+        }
+    }
+
+
     if(searchFeatures.length > 0){
 
         let features = await queryTargetLayerWithPointFeatures(searchFeatures, true)
@@ -110,7 +150,7 @@ export const handleMultipleResults = async (results) => {
 
         features.map(feature => {
             let featureExists = addObjectToArrayIfNotExists(targetFeatures, feature)
-            console.log("new feature exists: ", featureExists)
+            //console.log("new feature exists: ", featureExists)
             if(!featureExists){
                 targetFeatures.push(feature)
             }
@@ -121,6 +161,34 @@ export const handleMultipleResults = async (results) => {
     //let uniqueTargetFeatures = [...new Set(targetFeatures.map(feature => feature.attributes['PIN14']))]
 
     return {targetFeatures, searchFeatures}
+}
+
+const queryTargetLayerByAddress = async (addresses) => {
+    
+    let query = new Query()
+    query.where = ''
+    //query.where = `address = '${address}' AND city_state_zip = '${city_state_zip}'`
+    query.returnGeometry = true
+    query.outFields = ["*"]
+
+     addresses.map((address, index) => {
+        let [ street_address, city_state_zip ] = address
+        console.log("querying ", street_address, city_state_zip )
+
+        query.where += `(street_address = '${street_address}' AND city_state_zip = '${city_state_zip}')`
+        if(index < addresses.length -1){
+            query.where += ' OR '
+        }
+     })
+
+     console.log("Full address query = ", query.where)
+
+    
+    const { features } = await targetLayer.queryFeatures(query);
+
+    console.log(`Address query returned ${features.length} features`)
+
+    return features
 }
 
 export const queryTargetLayerWithPointFeatures = async (pointFeatures, includeBuffer) => {
@@ -196,12 +264,40 @@ export async function queryTargetLayerWithCoordinates(coordinates){
     return features
 }
 
+export const queryTargeLayerWithPin10Pin14 = async (pin10, pin14) => {
+
+    let where = ''
+    console.log("pin14: ", pin14)
+    if(pin10){
+        where = `PIN10 IN (${pin10})`
+    }
+    if(pin14){
+        if(pin10){
+            where = where + `OR PIN14 IN (${pin14})`
+        }
+        else{
+            where =`PIN14 IN (${pin14})`
+        }
+        
+    }
+
+    let query = new Query()
+    query.where = where
+    query.returnGeometry = true
+    query.outFields = ["*"]
+
+    let {features} = await targetLayer.queryFeatures(query)
+
+    return features
+    
+}
+
 export async function compareProperities(whereQuery, searchDistance, feature, queryFields){
 
     let query = new Query()
     query.where = whereQuery
     query.returnGeometry = true
-    query.outFields = queryFields
+    query.outFields = ["*"]
 
     if(searchDistance && searchDistance > 0){
       query.geometry = feature.geometry
@@ -218,21 +314,42 @@ export async function compareProperities(whereQuery, searchDistance, feature, qu
 
   export async function nearbyProperties(searchDistance, units, feature, queryFields){
 
+    console.log("nearby primary result feature:", feature)
+
+    let queryFeature = Array.isArray(feature) ? feature[0] : feature
+    
     let query = new Query()
-    query.geometry = feature.geometry
+    query.geometry = queryFeature.geometry
     query.spatialRelationship = "intersects"
     query.distance = searchDistance
     query.units = units
     query.returnGeometry = true
-    query.outFields = queryFields
+    query.outFields = ["*"]
 
     let {features} = await targetLayer.queryFeatures(query)
 
     console.log("queried Features: ", features)
 
-    let filteredFeatures = features.filter((f) => f.attributes['PIN14'] !== feature.attributes['PIN14'])
+    let filteredFeatures = features.filter((f) => f.attributes['PIN14'] !== queryFeature.attributes['PIN14'])
 
     return filteredFeatures
+
+  }
+
+
+  export async function queryTargetLayerByPolygon(geometry){
+
+    let query = new Query()
+    query.geometry = geometry
+    query.spatialRelationship = "intersects"
+    query.returnGeometry = true
+    query.outFields = ["*"]
+
+    let {features} = await targetLayer.queryFeatures(query)
+
+    console.log("queried Features: ", features)
+
+    return features
 
   }
 
