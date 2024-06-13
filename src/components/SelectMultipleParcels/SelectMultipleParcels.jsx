@@ -5,6 +5,7 @@ import { CalciteIcon } from "@esri/calcite-components-react";
 import SketchViewModel from "@arcgis/core/widgets/Sketch/SketchViewModel.js";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
 import { theme } from "../../theme";
+import { removeLayer } from "../../arcgis/layers/layers";
 
 const descriptions = (state) => {
     switch (state) {
@@ -140,6 +141,11 @@ const SelectMultipleParcels = () => {
             polygonGraphicsLayer.current.remove(sketchPolygon)
 
             setSketchPolygon(null)
+
+            const map = mapView.map
+            removeLayer(map, "selectGraphic")
+            polygonGraphicsLayer.current = null
+            
         }
 
         if(tool === "click"){

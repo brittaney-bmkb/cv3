@@ -655,8 +655,8 @@ const WebMapComponentBeta = () => {
                     
                     if(foundGraphic){
                         foundGraphic.removeAll()
+                        removeLayer(map, "selectGraphic")
                     }
-                    
                     
                 }
             }
@@ -686,7 +686,7 @@ const WebMapComponentBeta = () => {
             }}
         onArcgisViewChange={(event) => {
             //console.log("view change: ", event)
-            //setMapViewScale(event.target.view)
+            setMapViewScale(event.target.view)
         }}
         onArcgisViewClick={(event) => {
             
@@ -696,7 +696,13 @@ const WebMapComponentBeta = () => {
             else{
                 console.log("onArcgisViewClick: left click, button =", event.detail.native.button)
                 // handleViewClick(event.detail.mapPoint)
-                handleHitTest(event)
+                let foundSelectGraphic = findLayerByTitle(arcgisMapRef.current.map, "selectGraphic")
+                let foundMeasureGraphic = findLayerByTitle(arcgisMapRef.current.map, "measureGraphic")
+                console.log("found graphic: ", foundSelectGraphic)
+                if(!foundSelectGraphic && !foundMeasureGraphic){
+                    handleHitTest(event)
+                }
+                
             }
         }}
         // onArcgisViewPointerMove={}
