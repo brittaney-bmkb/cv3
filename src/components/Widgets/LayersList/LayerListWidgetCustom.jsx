@@ -169,17 +169,14 @@ const layerListVMCustom = () => {
         reactiveUtils.watch(
             () => mapViewScale.scale,
             () => {
-
                 // Update layer sources with visibility
                 if(layerListVM.current){
-                    
                     //console.log("LayerListVM: ", layerListVM.current)
-    
                     setLayerListItems(layerListVM.current.operationalItems.items)
                 }
             }
         );
-    }, []);
+    }, [mapViewScale]);
     
     const handleGroupClick = (group) => {
 
