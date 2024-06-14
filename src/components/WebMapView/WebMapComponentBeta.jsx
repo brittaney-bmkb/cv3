@@ -686,7 +686,7 @@ const WebMapComponentBeta = () => {
             }}
         onArcgisViewChange={(event) => {
             //console.log("view change: ", event)
-            setMapViewScale(event.target.view)
+            //setMapViewScale(event.target.view)
         }}
         onArcgisViewClick={(event) => {
             
