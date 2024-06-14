@@ -63,10 +63,9 @@ const SelectMultipleParcels = () => {
 
     const [ tool, setTool ] = useState(null)
     const [ actionButtonsVisible, setActionButtonsVisible ] = useState(false);
-    const [ doneButtonActive, setDoneButtonActive ] = useState(false);
     const [ toolDescription, setToolDescription ] = useState(false);
     const [ sketchPolygon, setSketchPolygon ] = useState(null);
-    const [ completeSketch, setCompleteSketch ] = useState(false);
+    const [ sketchActive, setSketchActive ] = useState(false);
 
     const tooltipRef = useRef(null);
 
@@ -77,42 +76,54 @@ const SelectMultipleParcels = () => {
 
         setActionButtonsVisible(false)
         setSelectMultiple(false)
+        setSketchActive(false)
 
     }, [])
 
 
     const handleSelectClick = () => {
 
-        setTool('click')
-        setSelectMultiple(!selectMultiple)
-        setToolDescription('click')
+        if(tool !== "click"){
+            setTool('click')
+            setToolDescription('click')
+            setSelectMultiple(true)
+        }
+        else{
+            setTool(null)
+            setToolDescription(null)
+            setSelectMultiple(false)
+        }
     }
 
     const handleSelectDraw = async () => {
 
-        //update tool state
-        setTool('draw')
-
-        //update state of select multiple to false
-        //to prevent clicks from triggering updates
-        //to parcel results
         setSelectMultiple(false)
 
-        //update tool description state to show 
-        //draw guide text
-        setToolDescription('draw')
+        if(tool !== "draw"){
+            //update tool state
+            setTool('draw')
+            //update tool description state to show 
+            //draw guide text
+            setToolDescription('draw')
 
-        //start new sketch view model create session
-        await createSketchViewModel()
+            //start new sketch view model create session
+            await createSketchViewModel()
 
-        if(tooltipRef.current){
-            tooltipRef.current.innerHTML = translateText(`set first point`)
+            if(tooltipRef.current){
+                tooltipRef.current.innerHTML = translateText(`set first point`)
+            }
         }
+        else{
+            setTool(null)
+            setToolDescription(null)
+            clearGraphic()
+        }
+
     }
 
     const createSketchViewModel = async () => {
 
-        console.log("creating new sketch view model")
+        //console.log("creating new sketch view model")
 
         if(!polygonGraphicsLayer.current){
             polygonGraphicsLayer.current = new GraphicsLayer({
@@ -126,10 +137,6 @@ const SelectMultipleParcels = () => {
             sketchVMRef.current = new SketchViewModel({
                 view: mapView,
                 layer: polygonGraphicsLayer.current,
-                // tooltipOptions: {
-                //     enabled: true,
-                //     helpMessage: true
-                // }
             })
             
         }
@@ -140,10 +147,8 @@ const SelectMultipleParcels = () => {
 
     }
 
-    const handleComplete = async () => {
-
-        if(tool === "draw"){
-            await queryPolygon(sketchPolygon.geometry)
+    const clearGraphic = () => {
+        if(polygonGraphicsLayer.current){
 
             polygonGraphicsLayer.current.remove(sketchPolygon)
 
@@ -151,7 +156,25 @@ const SelectMultipleParcels = () => {
 
             const map = mapView.map
             removeLayer(map, "selectGraphic")
+
             polygonGraphicsLayer.current = null
+        }
+    }
+
+    const handleComplete = async () => {
+
+        if(tool === "draw"){
+            await queryPolygon(sketchPolygon.geometry)
+
+            clearGraphic()
+            // polygonGraphicsLayer.current.remove(sketchPolygon)
+
+            // setSketchPolygon(null)
+
+            // const map = mapView.map
+            // removeLayer(map, "selectGraphic")
+
+            // polygonGraphicsLayer.current = null
             
         }
 
@@ -170,11 +193,11 @@ const SelectMultipleParcels = () => {
             polygonGraphicsLayer.current.remove(sketchPolygon)
         }
 
-        if(tool==="click"){
+        //if(tool==="click"){
             setPrimaryResultFeature(null, true)
             setSearchResults(null, null)
             
-        }
+        //}
         
         
         setActionButtonsVisible(false)
@@ -198,16 +221,12 @@ const SelectMultipleParcels = () => {
                             tooltipRef.current.innerHTML = translateText(`double click to complete`)
                         }
 
-                        if(!sketchPolygon){
-                            setDoneButtonActive(false)
-                        }
                     }
 
                     if(event.state === "complete"){
                         //console.log("selecting parcels by polygon: ", event)
 
                         setSketchPolygon(event.graphic)
-                        setDoneButtonActive(true)
                         
 
                         
@@ -225,8 +244,8 @@ const SelectMultipleParcels = () => {
     useEffect(() => {
 
         if(tool === 'click' && primaryResultFeature){
-            console.log("active tool: ", tool)
-            console.log("setting action buttons visible to true")
+            //console.log("active tool: ", tool)
+            //console.log("setting action buttons visible to true")
             setActionButtonsVisible(true)
             
             
@@ -278,9 +297,6 @@ const SelectMultipleParcels = () => {
             }
         }
 
-        // Change the cursor to pointer
-        //tooltipRef.current.style.cursor = 'pointer';
-
       };
 
       const handleMouseLeave = () => {
@@ -288,9 +304,6 @@ const SelectMultipleParcels = () => {
             tooltipRef.current.style.display = 'none';
             mapView.container.style.cursor = "auto"
         }
-        
-
-        //element.style.cursor = 'default';
       };
 
     useEffect(() => {
@@ -322,16 +335,6 @@ const SelectMultipleParcels = () => {
                         tooltipRef.current.innerHTML = translateText(`select / deselect parcel`)
                     }
                     if (tool === "draw") {
-                        // if(!polygonGraphicsLayer.current || polygonGraphicsLayer.current?.graphics.items.length === 0){
-                        //     console.log("polygonGraphicsLayer.current.graphics: ", polygonGraphicsLayer.current.graphics)
-  
-                        //         tooltipRef.current.innerHTML = translateText(`set first point`)
-                        //     //}
-                            
-                        // }
-                        // else{
-                        //     tooltipRef.current.innerHTML = translateText(`double click to complete`)
-                        // }
                         if(sketchPolygon){
                             tooltipRef.current.innerHTML = translateText(`click done to select parcels`)
                         }
@@ -348,9 +351,6 @@ const SelectMultipleParcels = () => {
             const mapContainer = mapView.container;
             
             createTooltip()
-
-            // Append tooltip to map container
-            //mapContainer.appendChild(tooltipRef.current);
 
             mapContainer.addEventListener('mousemove', handleMouseMove);
             mapContainer.addEventListener('mouseleave', handleMouseLeave);
@@ -375,7 +375,7 @@ const SelectMultipleParcels = () => {
     return(
         <Box display="flex" flexDirection="column" rowGap={2}>
 
-<div ref={tooltipRef} style={{position:"absolute", zIndex:100}}></div>
+            <div ref={tooltipRef} style={{position:"absolute", zIndex:100}}></div>
 
             <Typography variant="body1" sx={{height: 80}}>
                 {translateText(descriptions(toolDescription))}
@@ -433,59 +433,48 @@ const SelectMultipleParcels = () => {
                 </Button>
 
             </Stack>
-            
-            {/* {actionButtonsVisible ? 
 
-            <Box display="flex" flexDirection="column" rowGap={2}> */}
                 <Divider/>
-                <Stack direction="row" justifyContent="flex-end" >
-                    <Button 
-                        disabled = {!actionButtonsVisible}
-                        variant="text"
-                        sx={{
-                            textTransform:"none", 
-                            display:"flex", 
-                            flexDirection:"row", 
-                            columnGap:1,
-                            width: "auto"}}
-                        onClick={handleStartNew}
-                    >
-                        <CalciteIcon icon="reset"/>
-                            <Typography
-                            variant="body1"
-                            >
-                                {translateText("Start New")}
-                            </Typography>
-                    </Button>
-                    <Button 
-                        disabled = {!actionButtonsVisible || (tool === "draw" && !sketchPolygon)}
-                        variant="contained"
-                        sx={{
-                            textTransform:"none", 
-                            display:"flex", 
-                            flexDirection:"row", 
-                            columnGap:1,
-                            width: "30%"
-                        }}
-                        onClick={handleComplete}
-                    >
-                        <CalciteIcon icon="check-circle"/>
-                            <Typography
-                            variant="body1"
-                            >
-                                {translateText("Done")}
-                            </Typography>
-                    </Button>
+            <Stack direction="row" justifyContent="flex-end" >
+                <Button 
+                    disabled = {!actionButtonsVisible}
+                    variant="text"
+                    sx={{
+                        textTransform:"none", 
+                        display:"flex", 
+                        flexDirection:"row", 
+                        columnGap:1,
+                        width: "auto"}}
+                    onClick={handleStartNew}
+                >
+                    <CalciteIcon icon="reset"/>
+                        <Typography
+                        variant="body1"
+                        >
+                            {translateText("Start New")}
+                        </Typography>
+                </Button>
+                <Button 
+                    disabled = {!actionButtonsVisible || (tool === "draw" && !sketchPolygon)}
+                    variant="contained"
+                    sx={{
+                        textTransform:"none", 
+                        display:"flex", 
+                        flexDirection:"row", 
+                        columnGap:1,
+                        width: "30%"
+                    }}
+                    onClick={handleComplete}
+                >
+                    <CalciteIcon icon="check-circle"/>
+                        <Typography
+                        variant="body1"
+                        >
+                            {translateText("Done")}
+                        </Typography>
+                </Button>
 
-                </Stack>
-            {/* </Box>
-           : <Box></Box> */}
-            
-            
-
-            
-
-           
+            </Stack>
         </Box>
         
     )
