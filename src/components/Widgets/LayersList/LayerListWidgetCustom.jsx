@@ -84,7 +84,7 @@ const layerListVMCustom = () => {
 
             if(layerListVM.current){
 
-                //console.log("LayerListVM: ", layerListVM.current)
+                ////console.log("LayerListVM: ", layerListVM.current)
 
                 setLayerListItems(layerListVM.current.operationalItems.items)
             }
@@ -106,7 +106,7 @@ const layerListVMCustom = () => {
                 layerListItems.map((item) => {
                     
                     if(item.layer.type === "map-image"){
-                        console.log("layerListItem map-image: ", item)
+                        //console.log("layerListItem map-image: ", item)
                         //if layer type is map image skip the parent group
                         //access the grouped children
                         item.children.items.map(childItem => {
@@ -121,7 +121,7 @@ const layerListVMCustom = () => {
                             else{
                                 groupedLayers[group] = mapImageChildren
                             }
-                            //console.log("layerListItem childItem: ", groupedLayers)
+                            ////console.log("layerListItem childItem: ", groupedLayers)
 
        
                         })
@@ -129,13 +129,13 @@ const layerListVMCustom = () => {
                     }
 
                     else if(item.layer.type === "group"){
-                        console.log("layerListItem: ", item)
+                        //console.log("layerListItem: ", item)
                         let group = item.title
                         let groupChildren = item.children.items
 
                         if(groupedLayers[group]){
                             groupedLayers[group] = [...groupedLayers[group], ...groupChildren]
-                            console.log("groupedLayers: ", groupedLayers)
+                            //console.log("groupedLayers: ", groupedLayers)
                         }
                         else{
                             groupedLayers[group] =  groupChildren
@@ -166,16 +166,19 @@ const layerListVMCustom = () => {
 
     useEffect(() => {
 
-        reactiveUtils.watch(
-            () => mapViewScale.scale,
-            () => {
-                // Update layer sources with visibility
-                if(layerListVM.current){
-                    //console.log("LayerListVM: ", layerListVM.current)
-                    setLayerListItems(layerListVM.current.operationalItems.items)
+        if(mapViewScale){
+            reactiveUtils.watch(
+                () => mapViewScale.scale,
+                () => {
+                    // Update layer sources with visibility
+                    if(layerListVM.current){
+                        ////console.log("LayerListVM: ", layerListVM.current)
+                        setLayerListItems(layerListVM.current.operationalItems.items)
+                    }
                 }
-            }
-        );
+            );
+        }
+
     }, [mapViewScale]);
     
     const handleGroupClick = (group) => {

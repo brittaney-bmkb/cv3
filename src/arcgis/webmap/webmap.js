@@ -36,7 +36,7 @@ center: [-87.8298, 41.8781],
 zoom: 8,
 })
 
-// console.log("View Scale: ", view.scale)
+// //console.log("View Scale: ", view.scale)
 
 
 //   //create home widget
@@ -127,7 +127,7 @@ export async function initializeMap(container){
   let subLayer = mapImageLayer.findSublayerById(0)
   targetLayer = await subLayer.createFeatureLayer()
 
-  console.log("targetLayer from sublayer: ",targetLayer)
+  //console.log("targetLayer from sublayer: ",targetLayer)
 
   map.add(layerGraphicsSecondarySelected)
 
@@ -149,7 +149,7 @@ export const initializeLayersAndSearchSources = async () => {
   searchSources = await createSearchSources()
 
   //define target layer
-  console.log("targetLayer: ",namedLayers[config.target_layer_name])
+  //console.log("targetLayer: ",namedLayers[config.target_layer_name])
 
   targetLayer = namedLayers[config.target_layer_name]
 
@@ -158,7 +158,7 @@ export const initializeLayersAndSearchSources = async () => {
     targetLayer = await subLayer.createFeatureLayer()
   }
 
-  console.log("targetLayer from sublayer: ",targetLayer)
+  //console.log("targetLayer from sublayer: ",targetLayer)
 
   return searchSources
 
@@ -183,14 +183,14 @@ export async function queryParcelsFromMultipoint(pointFeatures){
   let pointGeometry = pointFeatures.map(point => {
     return [point.geometry.x, point.geometry.y]
   })
-  console.log("feature geometry: ", pointGeometry)
+  //console.log("feature geometry: ", pointGeometry)
 
   let multiPoint = new Multipoint({
     points: pointGeometry,
     spatialReference: pointFeatures[0].spatialReference
   })
 
-  console.log("new multipoint feature: ", multiPoint)
+  //console.log("new multipoint feature: ", multiPoint)
 
   const query = new Query();
   query.geometry = multiPoint;
@@ -203,14 +203,14 @@ export async function queryParcelsFromMultipoint(pointFeatures){
 
   const { features } = await targetLayer.queryFeatures(query);
 
-  console.log("queried features from click: ", features)
+  //console.log("queried features from click: ", features)
 
   return features
 }
 
 export async function peformQueryFeatures(point, parcelQueryFields){
 
-      console.log("Point: ", point, parcelQueryFields)
+      //console.log("Point: ", point, parcelQueryFields)
       const query = new Query();
       query.geometry = point;
       query.spatialRelationship = "intersects";
@@ -229,10 +229,10 @@ export async function queryLocationResults(coordinates, parcelQueryFields){
   let x = String(coordinates).split(",")[0]
   let y = String(coordinates).split(",")[1]
   
-  console.log("X, Y: ", x, y)
+  //console.log("X, Y: ", x, y)
 
   targetLayer.when()
-  console.log("Target layer: ", targetLayer)
+  //console.log("Target layer: ", targetLayer)
   let point = new Point({
     x: x,
     y: y,
@@ -243,7 +243,7 @@ export async function queryLocationResults(coordinates, parcelQueryFields){
 
   let features = await peformQueryFeatures(point, parcelQueryFields)
 
-  //console.log("queryLocationResults: zooming to features: ", features)
+  ////console.log("queryLocationResults: zooming to features: ", features)
   zoomToExtent(features)
 
   return features
@@ -261,7 +261,7 @@ export async function onViewClick(parcelQueryFields) {
       });
 
 
-      console.log("Map Point: ", point);
+      //console.log("Map Point: ", point);
       const query = new Query();
       query.geometry = point;
       query.spatialRelationship = "intersects";
@@ -271,7 +271,7 @@ export async function onViewClick(parcelQueryFields) {
 
       const { features } = await targetLayer.queryFeatures(query);
 
-      console.log("queried features from click: ", features)
+      //console.log("queried features from click: ", features)
 
       zoomToExtent(features)
       resolve(features);
@@ -297,18 +297,18 @@ export async function querySearchResults(result, outFields){
   //to query target feature spatial and attribute data
   //based on search results
   let query = new Query()
-  console.log("search source: ", searchSource)
-  console.log("Search Layer URL: ", searchLayer?.url)
-  console.log("Target Layer URL: ", targetLayer?.url)
+  //console.log("search source: ", searchSource)
+  //console.log("Search Layer URL: ", searchLayer?.url)
+  //console.log("Target Layer URL: ", targetLayer?.url)
   //check if target layer is the same as search source layer
   if(searchLayer?.url=== targetLayer?.url){
-    console.log("Search layer is the same as named layer")
+    //console.log("Search layer is the same as named layer")
     let searchField = searchSource.outFields[0]
     resultValue = result.feature.attributes[searchField]
 
     if(resultValue){
       whereString = `${searchField}='${resultValue}'`
-      console.log(whereString)
+      //console.log(whereString)
       query.where = whereString
       query.outFields = outFields
       query.returnGeometry = true;
@@ -320,7 +320,7 @@ export async function querySearchResults(result, outFields){
   //perform a spatial intersection
   let geometry = result.feature.geometry
   if(geometry){
-    console.log("result does have geometry")
+    //console.log("result does have geometry")
     //zoom to result 
     await zoomToExtent(resultFeatures)
     query.geometry = geometry
@@ -334,7 +334,7 @@ export async function querySearchResults(result, outFields){
   }
 
   // //get features from query
-  console.log("Query = ", query)
+  //console.log("Query = ", query)
 
   // const layerView = await view.whenLayerView(targetLayer);
   // await reactiveUtils.whenOnce(() => !layerView.updating);
@@ -358,7 +358,7 @@ export async function zoomToExtent(features) {
   reactiveUtils.when(
     () => !view.updating,
     () => {
-      console.log("zooming to: ", combinedExtent)
+      //console.log("zooming to: ", combinedExtent)
       view.goTo(combinedExtent, {
       });
     },
@@ -440,7 +440,7 @@ export async function createGraphic(features, removeGraphicName, color){
 
     if(features &&  features.length > 0){
       //zoomToExtent(features)
-      //console.log("queried Features: ", features)
+      ////console.log("queried Features: ", features)
   
       createGraphic(features, "secondary", theme.palette.secondary.main, true, "solid")
   
@@ -461,7 +461,7 @@ export async function createGraphic(features, removeGraphicName, color){
 
     let {features} = await targetLayer.queryFeatures(query)
 
-    console.log("queried Features: ", features)
+    //console.log("queried Features: ", features)
 
     let filteredFeatures = features.filter((f) => f.attributes['PIN14'] !== feature.attributes['PIN14'])
 

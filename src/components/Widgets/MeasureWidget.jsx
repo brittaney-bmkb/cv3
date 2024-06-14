@@ -61,7 +61,7 @@ const MeasureWidget = () => {
     useEffect(() => {
         const createmeasureWidget = async () => {
                 if(!measureWidget.current){
-                    console.log("initializing new measure widget startup")
+                    //console.log("initializing new measure widget startup")
                     measureWidget.current = new Measurement({
                         view:view,
                         activeTool: activeTool,
@@ -88,7 +88,7 @@ const MeasureWidget = () => {
 
         // return () => {
         //     if (measureWidget.current) {
-        //         console.log("destroying widget")
+        //         //console.log("destroying widget")
         //         setActiveTool(null)
         //         setMeasurementValue(0)
         //         measureWidget.current.destroy()
@@ -155,7 +155,7 @@ const MeasureWidget = () => {
     //             (label) => {
     //                 if(label){
     //                     if(label?.area){
-    //                         console.log(
+    //                         //console.log(
     //                             "active tool: ", activeTool, 
     //                             "Area: ", label.area,
     //                             "Perimeter: ", label.perimeter                
@@ -163,7 +163,7 @@ const MeasureWidget = () => {
     //                         setMeasurementValue(label.area)
     //                     }
     //                     else{
-    //                         console.log(
+    //                         //console.log(
     //                             "active tool: ", activeTool,
     //                             "Distance: ", label,            
     //                         );
@@ -181,14 +181,14 @@ const MeasureWidget = () => {
     //                 if(unit){
     //                     let measurementLabel = measureWidget.current?.viewModel?.activeViewModel?.measurementLabel
     //                     if(measurementLabel?.area){
-    //                         console.log(
+    //                         //console.log(
     //                             "Area: ", measurementLabel.area,
     //                             "Perimeter: ", measurementLabel.perimeter                
     //                         );
     //                         setMeasurementValue(measurementLabel.area)
     //                     }
     //                     else{
-    //                         console.log(
+    //                         //console.log(
     //                             "Distance: ", measurementLabel,            
     //                         );
     //                         setMeasurementValue(measurementLabel)
@@ -206,10 +206,10 @@ const MeasureWidget = () => {
     //     reactiveUtils.watch( 
     //         () => measureWidget.current.viewModel.state,
     //         (state) => {
-    //             console.log("measure state: ", state)
+    //             //console.log("measure state: ", state)
     //             if(state){
     //                 setMeasureWidgetState(true)
-    //                 console.log(
+    //                 //console.log(
     //                     "State: ", state               
     //                 );
     //             }
@@ -223,10 +223,10 @@ const MeasureWidget = () => {
 
     useEffect(() => {
         const updateMeasureState = (state) => {
-            console.log("measure state: ", state);
+            //console.log("measure state: ", state);
             if (state && state !== "disabled") {
                 setMeasureWidgetState(true);
-                console.log("State: ", state);
+                //console.log("State: ", state);
             }
             else{
                 measureWidget.current.clear();
@@ -262,7 +262,7 @@ const MeasureWidget = () => {
         setMeasureWidgetState(true)
         setActiveTool(tool) 
         if( measureWidget.current){
-            console.log("Starting measurement Tool: ", measureWidget.current)
+            //console.log("Starting measurement Tool: ", measureWidget.current)
             await measureWidget.current.when()
             measureWidget.current.activeTool = tool
             setMeasurementValue(0)
@@ -275,7 +275,7 @@ const MeasureWidget = () => {
     const clearMeasurement = () => {
         
         if( measureWidget.current){
-            console.log("Clearing measurement Tool")
+            //console.log("Clearing measurement Tool")
             measureWidget.current.clear()
             setMeasurementValue(0)
             setActiveTool(null)  

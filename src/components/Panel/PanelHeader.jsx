@@ -56,7 +56,7 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
 
         if(primary===true){
             await clearResults()
-            console.log("CLEARING SEARCH RESULTS FROM HEADER BUTTON")
+            //console.log("CLEARING SEARCH RESULTS FROM HEADER BUTTON")
             setSearchParams({"search": ""})
             setSearchParams({"pin": ""})
             setSearchParams({"address": ""})
@@ -70,7 +70,7 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
         }
 
         if(comparableParcels && comparableParcels.length > 0){
-            console.log("clearing comparable parcels")
+            //console.log("clearing comparable parcels")
             clearResultsComparables()
         }
 
@@ -101,21 +101,21 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
             }
 
             if(backButtonComponent === "resultsList"){
-                console.log("setting previous search term: ", searchTerm)
-                console.log("setting previous features as current search results", prevSearchFeatures)
+                //console.log("setting previous search term: ", searchTerm)
+                //console.log("setting previous features as current search results", prevSearchFeatures)
                 setSearchParams({'search': searchTerm})
                 setIsQuerying(true)
-                console.log("setting search features to null")
+                //console.log("setting search features to null")
 
                 //setSearchResults(null, null)
                 setPrimaryResultFeature(prevSearchFeatures, true)
             }
 
-            console.log("going back to: ", backButtonComponent)
+            //console.log("going back to: ", backButtonComponent)
             setPanelDisplay(backButtonComponent)
         }
         if(panel==="secondary"){
-            console.log("going back to: ", backButtonComponent)
+            //console.log("going back to: ", backButtonComponent)
             setPanelDisplaySecondary(backButtonComponent)
 
             if(["nearbyProperties", "comparablePropertySearch"].includes(backButtonComponent)){
@@ -126,10 +126,10 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
 
     const handleClosePanel = (panel) => {
 
-        console.log("Closing panel: ", panel)
+        //console.log("Closing panel: ", panel)
 
         if(screenWidth < theme.breakpoints.values.sm){
-            console.log("Showing Map")
+            //console.log("Showing Map")
             setShowMapMoblie(true)
         }
 

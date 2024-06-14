@@ -131,7 +131,7 @@ const ComparablePropertySearch= () => {
         
         query = ['None','Any'].includes(constructionType) ? query :  query + ` AND bldg_const_desc = '${constructionType}'`
 
-        console.log("Comparable query = ", query, radius)
+        //console.log("Comparable query = ", query, radius)
 
         await searchComparableProperties(query,radius)
 
@@ -163,7 +163,7 @@ const ComparablePropertySearch= () => {
             setAgeMin(parcelAge-ageRange < 0 ? 0 : parcelAge-ageRange )
 
             //set construction type
-            console.log("Building construction: ", attributes['bldg_const_desc'] )
+            //console.log("Building construction: ", attributes['bldg_const_desc'] )
             setConstructionType(attributes['bldg_const_desc'] !== "Data Unavailable" ? attributes['bldg_const_desc']: "Any")
         }
 
@@ -440,7 +440,7 @@ const ComparablePropertySearch= () => {
                 type="text"
                 value={radius}
                 onChange={(event) => {
-                    console.log("radius event: ", event)
+                    //console.log("radius event: ", event)
                     setRadius(event.target.value)
                 }}
                 SelectProps={{

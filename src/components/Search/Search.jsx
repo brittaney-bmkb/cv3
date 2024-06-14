@@ -57,7 +57,7 @@ const Search = () => {
 
     const attributesStartWithString = (array, attributeName, prefix) => {
         // Use the every method to check if all attributes start with the specified string
-        console.log(`checking if features ${attributeName} startswith: ${prefix}` )
+        //console.log(`checking if features ${attributeName} startswith: ${prefix}` )
         return array.every(obj => obj.attributes[attributeName].startsWith(prefix));
     };
 
@@ -65,7 +65,7 @@ const Search = () => {
         // Step 1: Extract PIN10 values
         let values = array.map(feature => feature.attributes[attributeName]);
 
-        console.log("values: ", values)
+        //console.log("values: ", values)
 
         // Step 2: Use a frequency counter to count occurrences of each PIN10
         let valueCounts = values.reduce((acc, pin) => {
@@ -97,7 +97,7 @@ const Search = () => {
         }
         
         if(searchWidget.current.searchTerm !== locationSearch){
-            console.log("setting search term: ", searchTerm)
+            //console.log("setting search term: ", searchTerm)
             setSearchParams({'search': searchWidget.current.searchTerm})
         } 
     }
@@ -127,7 +127,7 @@ const Search = () => {
                 //if there are multple features and pin10s do not match and pin14 dash are not the same
                 if(addressMatch === true){
                     //if addresses are the same
-                    console.log("addresses match")
+                    //console.log("addresses match")
                     paramValue = attributes["street_address"]
                     param = {"address": paramValue}
                 }
@@ -142,16 +142,16 @@ const Search = () => {
                     //that start with pin10
                     let pin14s = features.map(feature => feature.attributes['PIN14'])
                     // let pin10Unique = [...new Set(pin10s)]
-                    //console.log("Location Param - Unique pin10s: ", pin10Unique)
+                    ////console.log("Location Param - Unique pin10s: ", pin10Unique)
                     let pin10Dups = await extractDuplicates(features, "PIN10")
-                    //console.log("Location Param - Duplicate pin14s: ", pin14s)
-                    //console.log("Location Param - Duplicate pin10s: ", pin10Dups)
+                    ////console.log("Location Param - Duplicate pin14s: ", pin14s)
+                    ////console.log("Location Param - Duplicate pin10s: ", pin10Dups)
                     
                     // Filter out PIN14 values that start with any values in pin10Dups
                     let filteredPin14s = pin14s.filter(pin14 => !pin10Dups.some(pin10Dup => pin14.startsWith(pin10Dup)));
-                    //console.log("Location Param - Filtered pin14s: ", filteredPin14s);
+                    ////console.log("Location Param - Filtered pin14s: ", filteredPin14s);
                     let paramPins = [...filteredPin14s, ...pin10Dups]
-                    console.log("Final list of url params = ", paramPins)
+                    //console.log("Final list of url params = ", paramPins)
 
                     paramValue = paramPins
                     if(pin10Dups?.length > 0){
@@ -173,7 +173,7 @@ const Search = () => {
             }
         }
 
-        console.log("url param: ", param)
+        //console.log("url param: ", param)
 
         return { paramValue, param }
     }
@@ -196,17 +196,17 @@ const Search = () => {
             let primaryInSearchFeature
             //When primary feature result changes update the search param
             //from mouse click
-            console.log("USE EFFECT: checking for primary result feature and new search")
+            //console.log("USE EFFECT: checking for primary result feature and new search")
             if(primaryResultFeature){
                 //&& newSearch === false){
-                console.log("USE EFFECT FEATURES found: ", primaryResultFeature)
+                //console.log("USE EFFECT FEATURES found: ", primaryResultFeature)
                 
                 let features = Array.isArray(primaryResultFeature) ? primaryResultFeature : [primaryResultFeature]
                 let attributes = features.length > 0 ? features[0].attributes : null
     
                 let {paramValue, param} = await returnSearchParam(primaryResultFeature)
                 
-                console.log("setting url params: ", param)
+                //console.log("setting url params: ", param)
                 setSearchParams(param)
                 
                 // //if primary features is in search results then don't update the searchTerm
@@ -216,23 +216,23 @@ const Search = () => {
                 
                 if(primaryInSearchFeature){
                     //let { paramValue, param} = returnSearchParam(searchFeatures)
-                    console.log("full search param: ", param)
+                    //console.log("full search param: ", param)
                     //let newSearchTerm = paramValue ?? searchTerm
                     //let newParam = {'search' : newSearchTerm}
                     //setSearchParams(newParam)
-                    console.log("Primary Result Feature is in search features: ", searchFeatures)
-                    console.log("Setting search term from search features: ", searchTerm)
-                    console.log("setting search results - search feature = primary result features and previous search  = searchFeatures")
+                    //console.log("Primary Result Feature is in search features: ", searchFeatures)
+                    //console.log("Setting search term from search features: ", searchTerm)
+                    //console.log("setting search results - search feature = primary result features and previous search  = searchFeatures")
                     setSearchResults(null, features, searchTerm, searchFeatures)
                 }
                 else{
-                    console.log("Primary Result feature is a net new search")
-                    console.log("Setting search term from search features: ", paramValue)
-                    console.log("setting search results - search feature = primary result features and not updating previous features")
+                    //console.log("Primary Result feature is a net new search")
+                    //console.log("Setting search term from search features: ", paramValue)
+                    //console.log("setting search results - search feature = primary result features and not updating previous features")
     
                     setSearchResults(null, features, paramValue)
                 }
-                //console.log("USE EFFECT PARAM : ", routeParams.get("search"), routeParams.get("pin"))
+                ////console.log("USE EFFECT PARAM : ", routeParams.get("search"), routeParams.get("pin"))
                 
                 if(searchWidget.current && ![attributes["PIN10"], attributes["PIN14"], `${attributes["street_address"]}, ${attributes["city_state_zip"]}`].includes(searchWidget.current.searchTerm)){
                     let urlParamKey = Object.keys(param)
@@ -245,15 +245,15 @@ const Search = () => {
             }
             else if(primaryResultFeature && newSearch === true && searchString){
     
-                console.log("Returning pervious search: ", searchString)
+                //console.log("Returning pervious search: ", searchString)
                 searchWidget.current.searchTerm = searchString !== 'null' ? searchString : null
-                console.log("Setting previous search features: ", searchFeatures)
+                //console.log("Setting previous search features: ", searchFeatures)
                 setSearchResults(null, primaryResultFeature, searchString, searchFeatures)
                 //setSearchResults(null, primaryResultFeature, searchString)
             }
     
             if(!primaryResultFeature){
-                console.log("No Primary Result Selected. Querying url parameters")
+                //console.log("No Primary Result Selected. Querying url parameters")
     
                 //setLocationSearch(routeParams.get("location"))
                 
@@ -267,10 +267,10 @@ const Search = () => {
     
                 setAddressSearch(routeParams.get("address"))
     
-                console.log("USE EFFECT No feature Found")
-                console.log("USE EFFECT GENERIC SEARCH: ", routeParams.get("search"))
-                console.log("USE EFFECT PIN SEARCH: ", routeParams.get("pin"))
-                console.log("USE EFFECT Address SEARCH: ", routeParams.get("address"))
+                //console.log("USE EFFECT No feature Found")
+                //console.log("USE EFFECT GENERIC SEARCH: ", routeParams.get("search"))
+                //console.log("USE EFFECT PIN SEARCH: ", routeParams.get("pin"))
+                //console.log("USE EFFECT Address SEARCH: ", routeParams.get("address"))
     
                 // if(searchWidget.current){
                 //     searchWidget.current.searchTerm = null
@@ -318,26 +318,26 @@ const Search = () => {
 
                 if(newSearch === true){
                     if(genericSearch && !locationSearch){
-                        console.log("DETECTED GENERIC SEARCH PARAM: ", genericSearch)
+                        //console.log("DETECTED GENERIC SEARCH PARAM: ", genericSearch)
                         searchWidget.current.search(genericSearch)
                         searchWidget.current.searchTerm = genericSearch
                     }
 
                     if(pinSearch && pinSearch !== 'null'){
-                       console.log("Performing New Search for pin=", pinSearch)           
+                       //console.log("Performing New Search for pin=", pinSearch)           
                         searchWidget.current.search(pinSearch)
                         searchWidget.current.searchTerm = pinSearch
                     }
 
                     if(addressSearch && addressSearch !== 'null'){
-                        console.log("DETECTED Address SEARCH PARAM: ", addressSearch)
+                        //console.log("DETECTED Address SEARCH PARAM: ", addressSearch)
                         searchWidget.current.search(addressSearch)
                         searchWidget.current.searchTerm = addressSearch
                     }
 
                     //replaceing locatin search with pin10 and pin14 search
                     // if(locationSearch && locationSearch !== 'null'){
-                    //     console.log("Location search = ", locationSearch)             
+                    //     //console.log("Location search = ", locationSearch)             
                     //     //searchWidget.current.search(locationSearch)
                     //     returnLocationFeatures(locationSearch)
 
@@ -351,12 +351,12 @@ const Search = () => {
                 }
 
                 searchWidget.current.on("search-complete", (event) => {
-                    console.log("search complete event:", event)
+                    //console.log("search complete event:", event)
 
                     let results;
 
                     results = event.results
-                    console.log("results for multiple results: ", event)
+                    //console.log("results for multiple results: ", event)
                     setIsQuerying(true)
                     returnSearchResultFeatures(results, searchWidget.current.searchTerm)
                     setSearchParams({'search': searchWidget.current.searchTerm})
@@ -368,7 +368,7 @@ const Search = () => {
                 //to do enable clear results to empty searchFeatures array
                 searchWidget.current.on("search-clear", function(event){
                     // The results are stored in the event Object[]
-                    console.log("Search input textbox was cleared.");
+                    //console.log("Search input textbox was cleared.");
 
                     setLocationSearch(null)
                     setPinSearch(null)

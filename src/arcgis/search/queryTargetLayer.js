@@ -11,7 +11,7 @@ export const initalizeLayers = async () => {
     namedLayers = await createFeatureLayers()
 
     //define target layer
-    console.log("targetLayer: ", namedLayers[config.target_layer_name])
+    //console.log("targetLayer: ", namedLayers[config.target_layer_name])
 
     targetLayer = namedLayers[config.target_layer_name]
 
@@ -23,13 +23,13 @@ export const initalizeLayers = async () => {
  
 const isTargetLayer = (layerUrl) => {
 
-    //console.log("source url = ", layerUrl)
+    ////console.log("source url = ", layerUrl)
 
     let targetLayer = config.layer_sources.filter(layer => layer.layerName === config.target_layer_name)
     let targetLayerUrl = `${targetLayer[0].url}/${targetLayer[0].index}`
     targetLayerUrl = targetLayerUrl.replace(`//${targetLayer[0].index}`,`/${targetLayer[0].index}`)
 
-    //console.log("target layer url = ", targetLayerUrl)
+    ////console.log("target layer url = ", targetLayerUrl)
 
     return layerUrl === targetLayerUrl
 }
@@ -50,7 +50,7 @@ const addObjectToArrayIfNotExists = (array, newObj) => {
 
 export const handleMultipleResults = async (results) => {
 
-    console.log("handling multiple results: ", results);
+    //console.log("handling multiple results: ", results);
 
     let filteredResults = results.filter(results => results.results.length > 0)
 
@@ -67,7 +67,7 @@ export const handleMultipleResults = async (results) => {
                 let sourceEqualsTarget = isTargetLayer(`${results.source.layer.url}/${results.source.layer.layerId}`);
                 // Log error if isTargetLayer function returns null
                 if (sourceEqualsTarget === null) {
-                    console.error("Error: isTargetLayer function returned null.");
+                    //console.error("Error: isTargetLayer function returned null.");
                     return;
                 }
                 if (sourceEqualsTarget) {
@@ -84,7 +84,7 @@ export const handleMultipleResults = async (results) => {
                                 }
 
                             } else {
-                                console.error("Error: Missing feature in result.");
+                                //console.error("Error: Missing feature in result.");
 
                             }
                         })
@@ -93,11 +93,11 @@ export const handleMultipleResults = async (results) => {
                         results.results.forEach(result => {
                             if (result && result.feature) {
                                 let featureExists = addObjectToArrayIfNotExists(targetFeatures, result.feature)
-                                console.log("feature exists in array: ", featureExists)
-                                console.log("pushing feature to targetFeatures: ", result.feature)
+                                //console.log("feature exists in array: ", featureExists)
+                                //console.log("pushing feature to targetFeatures: ", result.feature)
                                 targetFeatures.push(result.feature);
                             } else {
-                                console.error("Error: Missing feature in result.");
+                                //console.error("Error: Missing feature in result.");
                             }
                         });
                     }
@@ -107,23 +107,23 @@ export const handleMultipleResults = async (results) => {
                         if (result && result.feature) {
                             searchFeatures.push(result.feature);
                         } else {
-                            console.error("Error: Missing feature in result.");
+                            //console.error("Error: Missing feature in result.");
                         }
                     });
                 }
             } else {
-                //console.log("Pushing results features to search features");
+                ////console.log("Pushing results features to search features");
                 results.results.map(result => {
                     searchFeatures.push(result.feature)
                 })
             }
         } else {
-            console.error("Error: Missing source in results.");
+            //console.error("Error: Missing source in results.");
         }
     });
 
-    console.log("target results: ", targetFeatures)
-    console.log("search results: ", searchFeatures)
+    //console.log("target results: ", targetFeatures)
+    //console.log("search results: ", searchFeatures)
 
     if(addresses.length > 0){ 
         //Address to query
@@ -132,7 +132,7 @@ export const handleMultipleResults = async (results) => {
 
             features.map(feature => {
                 let featureExists = addObjectToArrayIfNotExists(targetFeatures, feature)
-                console.log("new feature exists: ", featureExists)
+                //console.log("new feature exists: ", featureExists)
                 if(!featureExists){
                     targetFeatures.push(feature)
                 }
@@ -146,11 +146,11 @@ export const handleMultipleResults = async (results) => {
 
         let features = await queryTargetLayerWithPointFeatures(searchFeatures, true)
         
-        console.log("Queried features from multipoint: ", features)
+        //console.log("Queried features from multipoint: ", features)
 
         features.map(feature => {
             let featureExists = addObjectToArrayIfNotExists(targetFeatures, feature)
-            //console.log("new feature exists: ", featureExists)
+            ////console.log("new feature exists: ", featureExists)
             if(!featureExists){
                 targetFeatures.push(feature)
             }
@@ -173,7 +173,7 @@ const queryTargetLayerByAddress = async (addresses) => {
 
      addresses.map((address, index) => {
         let [ street_address, city_state_zip ] = address
-        console.log("querying ", street_address, city_state_zip )
+        //console.log("querying ", street_address, city_state_zip )
 
         query.where += `(street_address = '${street_address}' AND city_state_zip = '${city_state_zip}')`
         if(index < addresses.length -1){
@@ -181,19 +181,19 @@ const queryTargetLayerByAddress = async (addresses) => {
         }
      })
 
-     console.log("Full address query = ", query.where)
+     //console.log("Full address query = ", query.where)
 
     
     const { features } = await targetLayer.queryFeatures(query);
 
-    console.log(`Address query returned ${features.length} features`)
+    //console.log(`Address query returned ${features.length} features`)
 
     return features
 }
 
 export const queryTargetLayerWithPointFeatures = async (pointFeatures, includeBuffer) => {
     let pointGeometry
-    console.log("feature geometry: ", pointFeatures)
+    //console.log("feature geometry: ", pointFeatures)
 
     if(Array.isArray(pointFeatures)){
 
@@ -206,14 +206,14 @@ export const queryTargetLayerWithPointFeatures = async (pointFeatures, includeBu
             let geometries = pointFeatures.map(point => {
                 return [point.geometry.x, point.geometry.y]
               })
-              console.log("feature geometry: ", geometries)
+              //console.log("feature geometry: ", geometries)
     
             pointGeometry = new Multipoint({
             points: geometries,
             spatialReference: pointFeatures[0].spatialReference
             })
         
-            console.log("new multipoint feature: ", pointGeometry)
+            //console.log("new multipoint feature: ", pointGeometry)
         }
 
 
@@ -237,7 +237,7 @@ export const queryTargetLayerWithPointFeatures = async (pointFeatures, includeBu
     
       const { features } = await targetLayer.queryFeatures(query);
     
-      console.log("queried features from click: ", features)
+      //console.log("queried features from click: ", features)
     
       return features
 }
@@ -248,7 +248,7 @@ export async function queryTargetLayerWithCoordinates(coordinates){
     let y = parseFloat(String(coordinates).split(",")[1])
 
     targetLayer.when()
-    console.log("Target layer: ", targetLayer)
+    //console.log("Target layer: ", targetLayer)
     let point = new Point({
       x: x,
       y: y,
@@ -257,7 +257,7 @@ export async function queryTargetLayerWithCoordinates(coordinates){
     })
 
 
-    console.log("new Point : ", point)
+    //console.log("new Point : ", point)
   
     let features = await queryTargetLayerWithPointFeatures(point)
   
@@ -267,7 +267,7 @@ export async function queryTargetLayerWithCoordinates(coordinates){
 export const queryTargeLayerWithPin10Pin14 = async (pin10, pin14) => {
 
     let where = ''
-    console.log("pin14: ", pin14)
+    //console.log("pin14: ", pin14)
     if(pin10){
         where = `PIN10 IN (${pin10})`
     }
@@ -314,7 +314,7 @@ export async function compareProperities(whereQuery, searchDistance, feature, qu
 
   export async function nearbyProperties(searchDistance, units, feature, queryFields){
 
-    console.log("nearby primary result feature:", feature)
+    //console.log("nearby primary result feature:", feature)
 
     let queryFeature = Array.isArray(feature) ? feature[0] : feature
     
@@ -328,7 +328,7 @@ export async function compareProperities(whereQuery, searchDistance, feature, qu
 
     let {features} = await targetLayer.queryFeatures(query)
 
-    console.log("queried Features: ", features)
+    //console.log("queried Features: ", features)
 
     let filteredFeatures = features.filter((f) => f.attributes['PIN14'] !== queryFeature.attributes['PIN14'])
 
@@ -347,7 +347,7 @@ export async function compareProperities(whereQuery, searchDistance, feature, qu
 
     let {features} = await targetLayer.queryFeatures(query)
 
-    console.log("queried Features: ", features)
+    //console.log("queried Features: ", features)
 
     return features
 
