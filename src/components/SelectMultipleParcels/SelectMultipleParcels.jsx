@@ -103,11 +103,15 @@ const SelectMultipleParcels = () => {
 
         //start new sketch view model create session
         await createSketchViewModel()
+
+        if(tooltipRef.current){
+            tooltipRef.current.innerHTML = translateText(`set first point`)
+        }
     }
 
     const createSketchViewModel = async () => {
 
-        //console.log("creating new sketch view model")
+        console.log("creating new sketch view model")
 
         if(!polygonGraphicsLayer.current){
             polygonGraphicsLayer.current = new GraphicsLayer({
@@ -130,6 +134,8 @@ const SelectMultipleParcels = () => {
         }
 
         sketchVMRef.current.create("polygon", "click")
+
+        
 
     }
 
@@ -178,17 +184,27 @@ const SelectMultipleParcels = () => {
         const selectParcelsByArea = async () => {
 
             if(sketchVMRef.current){
+
+
                 sketchVMRef.current.on("create", async (event) => {
-                    //console.log("create state: ", event)
+                    console.log("create state: ", event)
 
                     if(event.state === "active"){
+                        //console.log("tool is active: ", event)
                         setActionButtonsVisible(true)
+
+                        if(tooltipRef.current){
+
+                            tooltipRef.current.innerHTML = translateText(`double click to complete`)
+                        }
                     }
 
                     if(event.state === "complete"){
                         //console.log("selecting parcels by polygon: ", event)
 
                         setSketchPolygon(event.graphic)
+
+                        
 
                         
                     }
@@ -205,8 +221,8 @@ const SelectMultipleParcels = () => {
     useEffect(() => {
 
         if(tool === 'click' && primaryResultFeature){
-            //console.log("active tool: ", tool)
-            //console.log("setting action buttons visible to true")
+            console.log("active tool: ", tool)
+            console.log("setting action buttons visible to true")
             setActionButtonsVisible(true)
             
             
@@ -253,7 +269,7 @@ const SelectMultipleParcels = () => {
             if(tool === "click"){
                 mapView.container.style.cursor = "pointer"
             }
-            else{
+            if(tool === "click"){
                 mapView.container.style.cursor = "auto"
             }
         }
@@ -288,7 +304,7 @@ const SelectMultipleParcels = () => {
             }
 
             else{
-                //console.log("tool is: ", tool)
+                console.log("tool is: ", tool)
                 if (tool) {
                     
                     const mapContainer = mapView.container;
@@ -301,17 +317,16 @@ const SelectMultipleParcels = () => {
                         tooltipRef.current.innerHTML = translateText(`select / deselect parcel`)
                     }
                     if (tool === "draw") {
-                        if(!actionButtonsVisible || !polygonGraphicsLayer.current){
-                            //console.log("polygonGraphicsLayer.current.graphics: ", polygonGraphicsLayer.current.graphics)
-                            if(polygonGraphicsLayer.current && polygonGraphicsLayer.current.graphics.items.length === 0){
-                                
-                                tooltipRef.current.innerHTML = translateText(`set first point`)
-                            }
+                        // if(!polygonGraphicsLayer.current || polygonGraphicsLayer.current?.graphics.items.length === 0){
+                        //     console.log("polygonGraphicsLayer.current.graphics: ", polygonGraphicsLayer.current.graphics)
+  
+                        //         tooltipRef.current.innerHTML = translateText(`set first point`)
+                        //     //}
                             
-                        }
-                        else{
-                            tooltipRef.current.innerHTML = translateText(`double click to complete`)
-                        }
+                        // }
+                        // else{
+                        //     tooltipRef.current.innerHTML = translateText(`double click to complete`)
+                        // }
                         if(sketchPolygon){
                             tooltipRef.current.innerHTML = translateText(`click done to select parcels`)
                         }
