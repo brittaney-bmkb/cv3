@@ -167,19 +167,16 @@ const layerListVMCustom = () => {
     useEffect(() => {
 
         reactiveUtils.watch(
-            () => mapViewScale.scale,
+            () => mapView.scale,
             () => {
-
                 // Update layer sources with visibility
                 if(layerListVM.current){
-                    
                     //console.log("LayerListVM: ", layerListVM.current)
-    
                     setLayerListItems(layerListVM.current.operationalItems.items)
                 }
             }
         );
-    }, []);
+    }, [mapView?.scale]);
     
     const handleGroupClick = (group) => {
 
