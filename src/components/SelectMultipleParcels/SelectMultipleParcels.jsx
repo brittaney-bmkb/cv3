@@ -63,6 +63,7 @@ const SelectMultipleParcels = () => {
 
     const [ tool, setTool ] = useState(null)
     const [ actionButtonsVisible, setActionButtonsVisible ] = useState(false);
+    const [ doneButtonActive, setDoneButtonActive ] = useState(false);
     const [ toolDescription, setToolDescription ] = useState(false);
     const [ sketchPolygon, setSketchPolygon ] = useState(null);
     const [ completeSketch, setCompleteSketch ] = useState(false);
@@ -194,8 +195,11 @@ const SelectMultipleParcels = () => {
                         setActionButtonsVisible(true)
 
                         if(tooltipRef.current){
-
                             tooltipRef.current.innerHTML = translateText(`double click to complete`)
+                        }
+
+                        if(!sketchPolygon){
+                            setDoneButtonActive(false)
                         }
                     }
 
@@ -203,7 +207,7 @@ const SelectMultipleParcels = () => {
                         //console.log("selecting parcels by polygon: ", event)
 
                         setSketchPolygon(event.graphic)
-
+                        setDoneButtonActive(true)
                         
 
                         
@@ -269,7 +273,7 @@ const SelectMultipleParcels = () => {
             if(tool === "click"){
                 mapView.container.style.cursor = "pointer"
             }
-            if(tool === "click"){
+            if(tool === "draw"){
                 mapView.container.style.cursor = "auto"
             }
         }
@@ -282,6 +286,7 @@ const SelectMultipleParcels = () => {
       const handleMouseLeave = () => {
         if(tooltipRef.current){
             tooltipRef.current.style.display = 'none';
+            mapView.container.style.cursor = "auto"
         }
         
 
@@ -453,7 +458,7 @@ const SelectMultipleParcels = () => {
                             </Typography>
                     </Button>
                     <Button 
-                        disabled = {!actionButtonsVisible}
+                        disabled = {!actionButtonsVisible || (tool === "draw" && !sketchPolygon)}
                         variant="contained"
                         sx={{
                             textTransform:"none", 
