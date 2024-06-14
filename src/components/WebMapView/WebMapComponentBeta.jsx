@@ -23,10 +23,7 @@ const WebMapComponentBeta = () => {
         setPrimaryResultFeature,
         newSearch,
         setSearchResults,
-        mapView,
         setMapView, 
-        map,
-        setMap,
         queryMapPoint, 
         comparableParcels, 
         setSecondaryResultFeature,
@@ -90,7 +87,7 @@ const WebMapComponentBeta = () => {
         if(arcgisMapRef.current && mapLoading === false){
 
             let map = arcgisMapRef.current.map
-
+            
             await removeLayer(map, title)
 
             if(title === "Comparable Parcels"){
@@ -646,25 +643,33 @@ const WebMapComponentBeta = () => {
 
     useEffect(() => {
         const removeAllGraphics = () => {
+            console.log('check our panel displate widget', panelDisplayWidget)
             if(arcgisMapRef.current?.map){
-                const isMeasure = panelDisplayWidget === "measure"
+                const isMeasure = panelDisplayWidget === "measureWidget"
                 const isSelect = panelDisplayWidget === "sketch"
                 const map = arcgisMapRef.current.map
-    
+
                 if(!isSelect || !panelWidgetVisible){
                     //remove all select graphics
-    
                     const foundGraphic = findLayerByTitle(map,"selectGraphic")
                     
                     if(foundGraphic){
                         foundGraphic.removeAll()
+                        removeLayer(map, 'selectGraphic')
                     }
-                    
-                    
+                }
+                if(!isMeasure || !panelWidgetVisible ){
+                    const foundGraphicMeasure = findLayerByTitle(map,"measureGraphic")
+                    console.log('check ouit foundGraphicMeasure: ', foundGraphicMeasure)
+    
+                    if(foundGraphicMeasure){
+                        console.log('removing all measure graphics')
+                        foundGraphicMeasure.removeAll()
+                        removeLayer(map, 'measureGraphic')
+                    }
+
                 }
             }
-
-            
         }
 
         removeAllGraphics()
@@ -686,14 +691,10 @@ const WebMapComponentBeta = () => {
             console.log('MapView ready', event);
             setMapLoading(false)
             setMapView(event.target.view)
-            setMap(event.target.map)
-            console.log('map view: ', mapView)
-            console.log('map ready', map);
             }}
-
         onArcgisViewChange={(event) => {
-            console.log("view change: ", event)
-            
+            //console.log("view change: ", event)
+            //setMapViewScale(event.target.view)
         }}
         onArcgisViewClick={(event) => {
             
@@ -703,17 +704,22 @@ const WebMapComponentBeta = () => {
             else{
                 console.log("onArcgisViewClick: left click, button =", event.detail.native.button)
                 // handleViewClick(event.detail.mapPoint)
-                handleHitTest(event)
+                let foundSelectGraphic = findLayerByTitle(arcgisMapRef.current.map, "selectGraphic")
+                let foundMeasureGraphic = findLayerByTitle(arcgisMapRef.current.map, "measureGraphic")
+                console.log("found graphic: ", foundSelectGraphic)
+                if(!foundSelectGraphic && !foundMeasureGraphic){
+                    handleHitTest(event)
+                }                
+
+
+                // handleHitTest(event)
+                // If sleect grapic or measure is in the map 
             }
         }}
         // onArcgisViewPointerMove={}
 
 
         >   
-            {/* <arcgis-sketch position="bottom-left" creation-mode="continuous"
-                layout="horizontal">
-            </arcgis-sketch> */}
-
         </ArcgisMap>
         <Box 
             id="mapButtonGroup"

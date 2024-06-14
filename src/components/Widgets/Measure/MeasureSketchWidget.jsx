@@ -18,6 +18,7 @@ import CalculateIcon from '@mui/icons-material/Calculate';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 import { CalciteIcon } from "@esri/calcite-components-react";
+import { theme } from "../../../theme";
 
 //// https://developers.arcgis.com/javascript/latest/tutorials/find-length-and-area/
 //// https://developers.arcgis.com/javascript/latest/tutorials/find-length-and-area/#add-an-event-listener
@@ -32,12 +33,25 @@ import { CalciteIcon } from "@esri/calcite-components-react";
 //// https://community.esri.com/t5/arcgis-javascript-maps-sdk-questions/getting-geodesic-area-ve/td-p/121084 // negative values 
 //// 
 
-//TODO continue to test merge
-//TODO better layer out for buttons
-//TODO have tool and layer close when tool exists 
-//TODO have abbr unit set 
-//TODO 
-//TODO 
+
+//TODO Remove and draw should only after start of session - DONE 
+//TODO continue to test merge                     - DONE
+//TODO better layer out for buttons               - DONE 
+//TODO have abbr unit set                         - DONE 
+//TODO Inspect colors over aerial                 - DONE
+//TODO graphic style & add graphics to themes.js  - DONE
+//TODO typography                                 - DONE
+
+
+// TODO change abbrevbation to match drop down -- IP
+// TODO if draw is complete you will need to add the unit to default 
+
+//TODO have tool and layer close when tool exists - IP
+//TODO hittest 
+
+
+//TODO Done button should only appear is graphic not complete
+
 const MeasureSketchWidget = () => {
     
     const { mapView, map, translateText  } = UseAppContext()
@@ -50,10 +64,7 @@ const MeasureSketchWidget = () => {
     let  [linearMeasurement, setLinearMeasurement] = useState(null)
     const [selectedValue, setSelectedValue ] = useState(null);
     let [userGeometry, setUserGeometry ] = useState(null);
-    let [unitAbbrev, setUnitAbbrev ] = useState(null)
-    
-    const [ tool, setTool ] = useState(null)
-    const [ toolDescription, setToolDescription ] = useState(false);
+    let [unitAbbrev, setUnitAbbrev ] = useState('m')
 
     const handleChange = (e) => {
         setSelectedValue(e.target.value)
@@ -66,18 +77,16 @@ const MeasureSketchWidget = () => {
         }
     }
 
-    const handleSelectClick = () => {
-        setTool('click')
-        setToolDescription('selectMultiple')
-    }
 
     const unitMeasurementAbbrev = (stringToCheck) => {
+    //https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#AreaUnits
+    // "acres"|"ares"|"hectares"|"square-feet"|"square-meters"|"square-yards"|"square-kilometers"|"square-miles"
         const linearUnitOptions = [
             {key: 'feet', value: 'ft' },
             {key: 'yards', value: 'yd'},
             {key: 'miles', value: 'mi' },
             {key: 'meters', value: 'm' },
-            {key: 'kilometers', value: 'kms' },
+            {key: 'kilometers', value: 'km' },
             { key: 'acres', value: 'ac' },
             { key: 'square-feet', value: 'ft', superscript: <sup>2</sup> },
             { key: 'square-meters', value: 'm', superscript: <sup>2</sup> },
@@ -95,47 +104,44 @@ const MeasureSketchWidget = () => {
                     {matchedOption.value} {matchedOption.superscript ? matchedOption.superscript : ''}
                 </span>
             );
-        } else {
-            console.log("String does not contain any linear units.");
-        }
-        //https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#AreaUnits
-        // "acres"|"ares"|"hectares"|"square-feet"|"square-meters"|"square-yards"|"square-kilometers"|"square-miles"
+        } 
+
 
     }
 
     const DropDownUnitMeasurement = () => {
-        console.log('inside dropdown menu')
         
         const linearUnitOptions = [
-            {value: 'feet', label: 'feet' },
-            {value: 'yards', label: 'yards' },
-            {value: 'miles', label: 'miles' },
-            {value: 'meters', label: 'meters' },
-            {value: 'kilometers', label: 'kilometers' }
+            {value: 'feet', label: translateText("feet") },
+            {value: 'yards', label: translateText("yards") },
+            {value: 'miles', label: translateText("miles") },
+            {value: 'meters', label: translateText("meters") },
+            {value: 'kilometers', label: translateText("kilometers") }
         ]
 
         //https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#AreaUnits
         // "acres"|"ares"|"hectares"|"square-feet"|"square-meters"|"square-yards"|"square-kilometers"|"square-miles"
         const areaUnitOptions = [
-            {value: 'acres', label: 'acres' },
-            {value: 'square-feet', label: 'square-feet' },
-            {value: 'square-meters', label: 'square-meters' },
-            {value: 'square-yards', label: 'square-yards' },
-            {value: 'square-kilometers', label: 'square-kilometers' },
-            {value: 'square-miles', label: 'square-miles' }
+            {value: 'acres', label: translateText("acres") },
+            {value: 'square-feet', label: translateText("square-feet")  },
+            {value: 'square-meters', label: translateText("square-meters") },
+            {value: 'square-yards', label: translateText("square-yards") },
+            {value: 'square-kilometers', label: translateText("square-kilometers") },
+            {value: 'square-miles', label: translateText("square-miles") }
         ]
 
         return(            
             activeTool === null ? (null) : (
-                <Stack direction="row" spacing={2}>
+                <Stack direction="column" spacing={2}>
                     <Box component="section" >
+                        {/* use Typography */}
                         {activeTool == "polyline" ? 
-                            <span> <b>Length:</b> {linearMeasurement} <em>{unitAbbrev}</em> </span> : 
-                            <span> <b>Area:</b> {areaMeasurement} <em>{unitAbbrev}</em>  </span>  }   
+                            <span><Typography variant="h3"> {translateText("Length")}: {linearMeasurement} {unitAbbrev}</Typography> </span> : 
+                            <span><Typography variant="h3"> {translateText("Area")}: {areaMeasurement} {unitAbbrev}</Typography> </span> }   
                     </Box>
                     <FormControl size='small'>
                     <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                        Unit of Measurement
+                        <Typography variant="subtitle2">{translateText("Unit of Measurement")}</Typography>
                     </InputLabel>
                         <NativeSelect
                             // defaultValue={areaUnitOptions[0].value}
@@ -200,23 +206,16 @@ const MeasureSketchWidget = () => {
     }
     
     const getArea = (polygon, selectedValue) => {
-        console.log("the current selectedValue", selectedValue)
-        // TODO make this a state to update in REACT
         const planarArea = geometryEngine.planarArea(polygon, selectedValue);
         const planarAreaPositive = getPositiveNumber(planarArea);
-        setAreaMeasurement(planarAreaPositive) //todo add this back to props 
-        console.log('updating planarAreaPositive', planarAreaPositive)
-        console.log('updating area measurement ', areaMeasurement)        
-        console.log('updating polygon measurement ', polygon)        
+        setAreaMeasurement(planarAreaPositive) //todo add this back to props       
         return planarAreaPositive
     }
     
     const getLength= (line, selectedValue) =>{
-        console.log("the current selectedValue", selectedValue)
         const planarLength = geometryEngine.planarLength(line, selectedValue);
         const planarLengthPositive = getPositiveNumber(planarLength)
         setLinearMeasurement(planarLengthPositive) //todo add this back to props 
-        // console.log('planarLength:', planarLength.toFixed(2))
         return planarLengthPositive
     }
     
@@ -227,6 +226,8 @@ const MeasureSketchWidget = () => {
                 setSelectedValue('square-meters')  
                 setUserGeometry(geom)              
                 getArea(geom);
+                // setUnitAbbrev()
+                unitMeasurementAbbrev('square-meters')
                 break;
             case "polyline":
                 setActiveTool(geom.type);
@@ -240,7 +241,9 @@ const MeasureSketchWidget = () => {
     }    
     
     const createGraphicLayer = async () => {
-        graphicsLayer.current = new GraphicsLayer()
+        graphicsLayer.current = new GraphicsLayer({
+            title:"measureGraphic"
+        })
         mapView.map.add(graphicsLayer.current)
     }
 
@@ -251,7 +254,7 @@ const MeasureSketchWidget = () => {
         setLinearMeasurement(null)
         setSelectedValue(null)
         setUserGeometry(null)
-        setUnitAbbrev(null)
+        setUnitAbbrev('m')
     }
 
     const completeAllGraphics = async () => {
@@ -264,8 +267,8 @@ const MeasureSketchWidget = () => {
     }
 
     const startMeasuring = async () => {
-        setTool('click')
-        // setToolDescription('selectMultiple')
+        
+
         if(!graphicsLayer.current){ await createGraphicLayer() }
         await initializeSketchVM()
         // setActiveTool(tool)
@@ -343,10 +346,10 @@ const MeasureSketchWidget = () => {
             };
             const simplePolygonSymbol = {
                 type: "simple-fill",
-                color: '#ffb6c1',
+                color: theme.measureGraphics.polygon.color,
                 outline: {
-                    color: [245, 0, 127, 0.0],
-                    width: 5,
+                    color: theme.measureGraphics.polygonOutline.color,
+                    width: theme.measureGraphics.polygonOutline.width,
                 },
             };       
             const polygonGraphic = new Graphic({
@@ -367,56 +370,26 @@ const MeasureSketchWidget = () => {
                 creationMode:"continuous",
                 polylineSymbol: {
                     type: "simple-line",
-                    color: "#219ebc",
-                    width: 6
+                    color: theme.measureGraphics.line.color,
+                    width: theme.measureGraphics.line.width
                 },                
                 defaultCreateOptions: { hasZ: false },
                 snappingOptions: { // autocasts to SnappingOptions()
                     distance:8,
                     enabled: true, // global snapping is turned on
-                    featureEnabled: true,
+                    featureEnabled: false,
+                    selfEnabled: true,
                     // assigns a collection of FeatureSnappingLayerSource() and enables feature snapping on this layer
-                    featureSources: [{ layer: graphicsLayer.current, enabled: true }]
+                    // featureSources: [{ layer: graphicsLayer.current, enabled: true }]
                 }        
             }) 
         }
     }
 
-
     return (
         <Box display="flex" flexDirection="column"  rowGap={1}>
 
             <Divider />
-            {/* <Box display="flex" flexDirection="column" gap={1} sx={{justifyContent:"center"}}>
-                <StyledButtonFilledPrimary
-                    color="primary"
-                    startIcon={<SquareFootIcon/>}
-                    text={translateText('Measure')}
-                    textVarient={"body2"}
-                    // active={activeTool === "distance" ? true: false}
-                    onClick={startMeasuring}
-                    
-                /> 
-                <StyledButtonFilledPrimary
-                    color="primary"
-                    startIcon={<DeleteSweepIcon/>}
-                    text={translateText('Remove')}
-                    textVarient={"body2"}
-                    // active={activeTool === "distance" ? true: false}
-                    onClick={removeAllGraphics}
-                />                 
-
-                <StyledButtonFilledPrimary
-                    // variant={activeTool === 'area' ? 'contained' : 'outlined'}
-                    color="primary"
-                    startIcon={<CheckCircleOutlineIcon/>}
-                    text={translateText('Done')}
-                    textVarient={"body2"}
-                    // active={activeTool === "area" ? true: false}
-                    onClick={completeAllGraphics}
-                /> 
-            </Box>
-            <Divider /> */}
 
             <Stack 
                 direction="row" spacing={2}
@@ -426,7 +399,6 @@ const MeasureSketchWidget = () => {
                     flexWrap: 'wrap',
                     justifyContent: 'center'
                 }}>
-            {/* <Stack spacing={{ xs: 1, sm: 2 }} direction="row" useFlexGap flexWrap="wrap">              */}
 
                 <Button
                     variant="contained"
@@ -443,72 +415,87 @@ const MeasureSketchWidget = () => {
                             {translateText("Draw")}
                         </Typography>
                 </Button>
-                
-                <Button
-                    variant="contained"
-                    color="primary"
-                    sx={{textTransform:"none", 
-                    display:"flex", 
-                    flexDirection:"row", 
-                    columnGap:1,
-                    width: "40%",
-                }}
-                    onClick={completeAllGraphics}>   
-                        <CalciteIcon icon="check-square"/>
-                        <Typography variant="body1">
-                            {translateText("Done")}
-                        </Typography>
-                </Button>
 
-                <Button
-                    variant="contained"
-                    color="primary"
-                    sx={{textTransform:"none", 
-                    display:"flex", 
-                    flexDirection:"row", 
-                    columnGap:1,
-                    width: "40%",
-                }}
-                    onClick={removeAllGraphics}>   
-                        <CalciteIcon icon="trash"/>
-                        <Typography variant="body1">
-                            {translateText("Remove")}
-                        </Typography>
-                </Button>
+                {/* { (activeTool) ? 
+
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        sx={{textTransform:"none", 
+                        display:"flex", 
+                        flexDirection:"row", 
+                        columnGap:1,
+                        width: "40%",
+                    }}
+                        onClick={completeAllGraphics}>   
+                            <CalciteIcon icon="check-square"/>
+                            <Typography variant="body1">
+                                {translateText("Done")}
+                            </Typography>
+                    </Button> : '' }
 
 
-
-                {/* <Button
-                variant="contained"
-                color="primary"
-                sx={{textTransform:"none", 
-                    display:"flex", 
-                    flexDirection:"row", 
-                    columnGap:1,
-                    width: "50%",
-                    backgroundColor: tool === 'draw' ? 'primary.dark' : 'primary.main',
-                    border: tool === 'draw' ? '2px solid' : 'none',
-                    borderColor: tool === 'draw' ? 'primary.dark' : 'transparent',
-                    boxShadow: tool === 'draw' ? 'inset 0 3px 5px rgba(0, 0, 0, 0.2)' : 'none',
-                    transform: tool === 'draw' ? 'translateY(2px)' : 'none',
-                }}
-                onClick={handleSelectDraw}
-                >   
-                    <CalciteIcon icon="pencil"/>
-                    <Typography
-                    variant="body1"
-                    >
-                        {translateText("Draw")}
-                    </Typography>
-                </Button> */}
-
+                { (activeTool) ? 
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        sx={{textTransform:"none", 
+                        display:"flex", 
+                        flexDirection:"row", 
+                        columnGap:1,
+                        width: "40%",
+                    }}
+                        onClick={removeAllGraphics}>   
+                            <CalciteIcon icon="trash"/>
+                            <Typography variant="body1">
+                                {translateText("Remove")}
+                            </Typography>
+                    </Button> : '' } */}
             </Stack>
-
             <Divider />
-
             <DropDownUnitMeasurement/>
-            {/* <div id = "measure-widget-sketch"  style = {{width:300, height:300}} ref={sketchDivDOM} > </div> */}
+            { (activeTool) ? <Divider /> : ''}
+            { (activeTool) ? 
+                <Stack 
+                direction="row" spacing={2}
+                useFlexGap 
+                sx={{  
+                    flexWrap: 'wrap',
+                    justifyContent: 'center'
+                }}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        sx={{textTransform:"none", 
+                        display:"flex", 
+                        flexDirection:"row", 
+                        columnGap:1,
+                        width: "40%",
+                    }}
+                        onClick={completeAllGraphics}>   
+                            <CalciteIcon icon="check-square"/>
+                            <Typography variant="body1">
+                                {translateText("Done")}
+                            </Typography>
+                    </Button>  
 
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        sx={{textTransform:"none", 
+                        display:"flex", 
+                        flexDirection:"row", 
+                        columnGap:1,
+                        width: "40%",
+                    }}
+                        onClick={removeAllGraphics}>   
+                            <CalciteIcon icon="trash"/>
+                            <Typography variant="body1">
+                                {translateText("Remove")}
+                            </Typography>
+                    </Button> 
+                </Stack>
+        : ''}
         </Box>        
 
 
