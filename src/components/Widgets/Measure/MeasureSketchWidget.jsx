@@ -41,13 +41,10 @@ import { theme } from "../../../theme";
 //TODO Inspect colors over aerial                 - DONE
 //TODO graphic style & add graphics to themes.js  - DONE
 //TODO typography                                 - DONE
+// TODO change abbrevbation to match drop down    - DONE
 
-
-// TODO change abbrevbation to match drop down -- IP
-// TODO if draw is complete you will need to add the unit to default 
-
-//TODO have tool and layer close when tool exists - IP
-//TODO hittest 
+//TODO have tool and layer close when tool exists - Done
+//TODO hittest - IP 
 
 
 //TODO Done button should only appear is graphic not complete
@@ -55,16 +52,15 @@ import { theme } from "../../../theme";
 const MeasureSketchWidget = () => {
     
     const { mapView, map, translateText  } = UseAppContext()
-    // const sketchDivDOM = useRef(null)
-    const graphicsLayer = useRef(null)
-    let sketchVM = useRef(null)
+    const graphicsLayer = useRef(null) // ESRI graphics
+    let sketchVM = useRef(null) //ESRI sketchVM
+    const [activeTool, setActiveTool] = useState(null) // active tool plyline or polygon 
+    let [areaMeasurement, setAreaMeasurement] = useState(null) //polygon unit area
+    let  [linearMeasurement, setLinearMeasurement] = useState(null) // line unit length 
     
-    const [activeTool, setActiveTool] = useState(null)
-    let [areaMeasurement, setAreaMeasurement] = useState(null)
-    let  [linearMeasurement, setLinearMeasurement] = useState(null)
-    const [selectedValue, setSelectedValue ] = useState(null);
-    let [userGeometry, setUserGeometry ] = useState(null);
-    let [unitAbbrev, setUnitAbbrev ] = useState('m')
+    let [userGeometry, setUserGeometry ] = useState(null); // user created geom in props
+    let [selectedValue, setSelectedValue ] = useState(null); //drop down menu 
+    let [unitAbbrev, setUnitAbbrev ] = useState(null) // unit abbreviation 
 
     const handleChange = (e) => {
         setSelectedValue(e.target.value)
@@ -77,24 +73,23 @@ const MeasureSketchWidget = () => {
         }
     }
 
+    const measurementUnitOptions = [
+        { key: 'feet',              value: 'ft', label: translateText("feet")  },
+        { key: 'yards',             value: 'yd', label: translateText("yards") },
+        { key: 'miles',             value: 'mi', label: translateText("miles") },
+        { key: 'meters',            value: 'm',  label: translateText("meters") },
+        { key: 'kilometers',        value: 'km', label: translateText("kilometers") },
+        { key: 'acres',             value: 'ac', label: translateText("acres") },
+        { key: 'square-feet',       value: 'ft', label: translateText("square-feet"),       superscript: <sup>2</sup> },
+        { key: 'square-meters',     value: 'm',  label: translateText("square-meters"),     superscript: <sup>2</sup> },
+        { key: 'square-yards',      value: 'yd', label: translateText("square-yards"),      superscript: <sup>2</sup> },
+        { key: 'square-kilometers', value: 'km', label: translateText("square-kilometers"), superscript: <sup>2</sup> },
+        { key: 'square-miles',      value: 'mi', label: translateText("square-miles"),      superscript: <sup>2</sup> }            
+    ]
 
     const unitMeasurementAbbrev = (stringToCheck) => {
-    //https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html#AreaUnits
-    // "acres"|"ares"|"hectares"|"square-feet"|"square-meters"|"square-yards"|"square-kilometers"|"square-miles"
-        const linearUnitOptions = [
-            {key: 'feet', value: 'ft' },
-            {key: 'yards', value: 'yd'},
-            {key: 'miles', value: 'mi' },
-            {key: 'meters', value: 'm' },
-            {key: 'kilometers', value: 'km' },
-            { key: 'acres', value: 'ac' },
-            { key: 'square-feet', value: 'ft', superscript: <sup>2</sup> },
-            { key: 'square-meters', value: 'm', superscript: <sup>2</sup> },
-            { key: 'square-yards', value: 'yd', superscript: <sup>2</sup> },
-            { key: 'square-kilometers', value: 'km', superscript: <sup>2</sup> },
-            { key: 'square-miles', value: 'mi', superscript: <sup>2</sup> }            
-        ]
-        const matchedOption = linearUnitOptions.find(option => 
+
+        const matchedOption = measurementUnitOptions.find(option => 
             stringToCheck === option.key
         );
 
@@ -105,8 +100,6 @@ const MeasureSketchWidget = () => {
                 </span>
             );
         } 
-
-
     }
 
     const DropDownUnitMeasurement = () => {
@@ -134,7 +127,6 @@ const MeasureSketchWidget = () => {
             activeTool === null ? (null) : (
                 <Stack direction="column" spacing={2}>
                     <Box component="section" >
-                        {/* use Typography */}
                         {activeTool == "polyline" ? 
                             <span><Typography variant="h3"> {translateText("Length")}: {linearMeasurement} {unitAbbrev}</Typography> </span> : 
                             <span><Typography variant="h3"> {translateText("Area")}: {areaMeasurement} {unitAbbrev}</Typography> </span> }   
@@ -153,6 +145,14 @@ const MeasureSketchWidget = () => {
                             value={selectedValue}
                             onChange={handleChange}
                         >
+                        
+                        {/* {      measurementUnitOptions.map((measureUnitOptions)  => (
+                                        <option key={measureUnitOptions.key} value={measureUnitOptions.key}>
+                                            {measureUnitOptions.label}
+                                        </option>
+                                    )) } */}
+                                
+                  
                             {activeTool ==="polygon" ? (
                                     areaUnitOptions.map((measureUnitOptions)  => (
                                         <option key={measureUnitOptions.value} value={measureUnitOptions.value}>
@@ -234,6 +234,7 @@ const MeasureSketchWidget = () => {
                 setSelectedValue('meters')
                 setUserGeometry(geom)
                 getLength(geom, selectedValue);
+                unitMeasurementAbbrev('meters')
                 break;
             default:
                 console.log("No value found");
@@ -266,9 +267,30 @@ const MeasureSketchWidget = () => {
         // setUserGeometry(null)
     }
 
-    const startMeasuring = async () => {
-        
+    const checkDropDownAbbrev = (menuValue, abbrevValue) =>{
+        //levaing in this function for posterity but may not be needed. 
+        // console.log('Inside Console Log', abbrevValue)
+        // menuValue is key in object
+        // abbrevValue is value  in object. WE want this key in order to set it in the drop down. 
 
+        // measurementUnitOptions.some(option => option.value === value && option.key === key);
+        // if (!abbrevValue){
+            const menuValueOption = measurementUnitOptions.find(option => menuValue === option.key );
+            const abbrevValueOption = measurementUnitOptions.find(option => abbrevValue === option.value );
+
+            if (menuValueOption.key === abbrevValueOption.key ){
+                setSelectedValue(abbrevValueOption.key)
+            }
+    
+            console.log('menuValueOption',menuValueOption)
+            console.log('abbrevValueOption',abbrevValueOption)
+
+        // }
+
+
+    }
+
+    const startMeasuring = async () => {
         if(!graphicsLayer.current){ await createGraphicLayer() }
         await initializeSketchVM()
         // setActiveTool(tool)
@@ -281,10 +303,15 @@ const MeasureSketchWidget = () => {
             setUserGeometry(geometry)
             
             if (e.state === "active") {
+                // if(unitAbbrev.props){
+                //     checkDropDownAbbrev(selectedValue, unitAbbrev.props.children[0] )
+                // }
                 setUserGeometry(e.graphic.geometry)
                 switchType(geometry);
+
             }
             if (e.state === "complete") {
+                console.log('complete state')
                 setUserGeometry(e.graphic.geometry) 
                 convertPolyline2Polygon(geometry);
             }
@@ -295,6 +322,7 @@ const MeasureSketchWidget = () => {
                 e.toolEventInfo.type === "move-stop")
                 
             ) {
+                console.log('rescale state')
                 switchType(geometry);
             }
         });
