@@ -107,7 +107,7 @@ const SelectMultipleParcels = () => {
 
     const createSketchViewModel = async () => {
 
-        console.log("creating new sketch view model")
+        //console.log("creating new sketch view model")
 
         if(!polygonGraphicsLayer.current){
             polygonGraphicsLayer.current = new GraphicsLayer({
@@ -179,14 +179,14 @@ const SelectMultipleParcels = () => {
 
             if(sketchVMRef.current){
                 sketchVMRef.current.on("create", async (event) => {
-                    console.log("create state: ", event)
+                    //console.log("create state: ", event)
 
                     if(event.state === "active"){
                         setActionButtonsVisible(true)
                     }
 
                     if(event.state === "complete"){
-                        console.log("selecting parcels by polygon: ", event)
+                        //console.log("selecting parcels by polygon: ", event)
 
                         setSketchPolygon(event.graphic)
 
@@ -205,8 +205,8 @@ const SelectMultipleParcels = () => {
     useEffect(() => {
 
         if(tool === 'click' && primaryResultFeature){
-            console.log("active tool: ", tool)
-            console.log("setting action buttons visible to true")
+            //console.log("active tool: ", tool)
+            //console.log("setting action buttons visible to true")
             setActionButtonsVisible(true)
             
             
@@ -249,7 +249,13 @@ const SelectMultipleParcels = () => {
             tooltipRef.current.style.alignItems = 'center';
             tooltipRef.current.style.justifyContent = 'center';
             tooltipRef.current.style.fontWeight = 600
-    
+            
+            if(tool === "click"){
+                mapView.container.style.cursor = "pointer"
+            }
+            else{
+                mapView.container.style.cursor = "auto"
+            }
         }
 
         // Change the cursor to pointer
@@ -282,7 +288,7 @@ const SelectMultipleParcels = () => {
             }
 
             else{
-                console.log("tool is: ", tool)
+                //console.log("tool is: ", tool)
                 if (tool) {
                     
                     const mapContainer = mapView.container;
@@ -296,7 +302,7 @@ const SelectMultipleParcels = () => {
                     }
                     if (tool === "draw") {
                         if(!actionButtonsVisible || !polygonGraphicsLayer.current){
-                            console.log("polygonGraphicsLayer.current.graphics: ", polygonGraphicsLayer.current.graphics)
+                            //console.log("polygonGraphicsLayer.current.graphics: ", polygonGraphicsLayer.current.graphics)
                             if(polygonGraphicsLayer.current && polygonGraphicsLayer.current.graphics.items.length === 0){
                                 
                                 tooltipRef.current.innerHTML = translateText(`set first point`)

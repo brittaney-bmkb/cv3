@@ -10,7 +10,7 @@ const ResultsList = ({results, primaryLableColor, noResultsMessage}) => {
 
     const { isQuerying, translateText, setIsQuerying, primaryResultFeature } = UseAppContext()
 
-    console.log("list results ", results)
+    //console.log("list results ", results)
 
     // useEffect(() => {
 

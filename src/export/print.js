@@ -6,18 +6,18 @@ import { config } from "../data/config";
 
 
 // function printResult(result) {
-//     console.log(result.url);
+//     //console.log(result.url);
 //     //window.open(result.url);
 //     return result.url
 //   }
 
   function printError(err) {
-    console.log("Something broke: ", err);
+    //console.log("Something broke: ", err);
   }
 
 export const printMap = async (view, mapLayout, mapFormat, mapTitle) => {
 
-    console.log("map print props: ", mapLayout, mapFormat, mapTitle)
+    //console.log("map print props: ", mapLayout, mapFormat, mapTitle)
 
     const template = new PrintTemplate({
         format: mapFormat,

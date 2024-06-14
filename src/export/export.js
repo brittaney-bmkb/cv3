@@ -56,9 +56,9 @@ export const prepareDataForExport = async (featuresToExport, preparedHeaderField
 
     let dataRows = await Promise.all(features.map(async (feature, i) => {
 
-        console.log("COUNT : ", i)
+        //console.log("COUNT : ", i)
         let result =  await Promise.all(Object.entries(preparedHeaderFieldsObj).map( async ([key, fields]) => {
-            //console.log("FIELD: ",  field)
+            ////console.log("FIELD: ",  field)
             let obj = {}
             let value = null
             let alias = fields["label"]
@@ -95,7 +95,7 @@ export const exportToCsv = async (featuresToExport, dataDictionary, filename) =>
     let preparedHeaderFieldsObj = await getDataFieldsForExport(dataDictionary)
     let dataRows = await prepareDataForExport(featuresToExport, preparedHeaderFieldsObj)
     
-    console.log("DATA TO EXPORT: ", dataRows)
+    //console.log("DATA TO EXPORT: ", dataRows)
 
     // Convert the combined object to CSV
     const csvData = arrayToCsv(dataRows);
