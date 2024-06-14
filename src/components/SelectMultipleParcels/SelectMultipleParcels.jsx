@@ -5,6 +5,7 @@ import { CalciteIcon } from "@esri/calcite-components-react";
 import SketchViewModel from "@arcgis/core/widgets/Sketch/SketchViewModel.js";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
 import { theme } from "../../theme";
+import { removeLayer } from "../../arcgis/layers/layers";
 
 const descriptions = (state) => {
     switch (state) {
@@ -83,7 +84,7 @@ const SelectMultipleParcels = () => {
 
         setTool('click')
         setSelectMultiple(!selectMultiple)
-        setToolDescription('selectMultiple')
+        setToolDescription('click')
     }
 
     const handleSelectDraw = async () => {
@@ -140,6 +141,11 @@ const SelectMultipleParcels = () => {
             polygonGraphicsLayer.current.remove(sketchPolygon)
 
             setSketchPolygon(null)
+
+            const map = mapView.map
+            removeLayer(map, "selectGraphic")
+            polygonGraphicsLayer.current = null
+            
         }
 
         if(tool === "click"){
@@ -220,27 +226,31 @@ const SelectMultipleParcels = () => {
 
 
     const handleMouseMove = (event) => {
-        const x = event.clientX 
-        const y = event.clientY
 
-        tooltipRef.current.style.left = x + 15 + 'px';
-        tooltipRef.current.style.top = y - 30 + 'px';
-        //tooltipRef.current.innerHTML = `select/deselect parcel`;
-        //tooltipRef.current.style.textWrap = 'wrap'
-        tooltipRef.current.style.backgroundColor = hexToRgba(theme.palette.secondary.light, .75)
-        //tooltipRef.current.style.opacity = "80%"
-        tooltipRef.current.padding = '10px'
-        tooltipRef.current.style.borderRadius = '15px'
-        tooltipRef.current.style.borderColor = 'transparent'
-        tooltipRef.current.style.width = '100px'
-        tooltipRef.current.style.display = 'flex';
-        tooltipRef.current.style.minHeight = "30px"
-        // Flexbox styles to center content vertically and horizontally
-        tooltipRef.current.style.textAlign = 'center';
-        tooltipRef.current.style.display = 'flex';
-        tooltipRef.current.style.alignItems = 'center';
-        tooltipRef.current.style.justifyContent = 'center';
-        tooltipRef.current.style.fontWeight = 600
+        if(tooltipRef.current){
+            const x = event.clientX 
+            const y = event.clientY
+    
+            tooltipRef.current.style.left = x + 15 + 'px';
+            tooltipRef.current.style.top = y - 30 + 'px';
+            //tooltipRef.current.innerHTML = `select/deselect parcel`;
+            //tooltipRef.current.style.textWrap = 'wrap'
+            tooltipRef.current.style.backgroundColor = hexToRgba(theme.palette.secondary.light, .75)
+            //tooltipRef.current.style.opacity = "80%"
+            tooltipRef.current.padding = '10px'
+            tooltipRef.current.style.borderRadius = '15px'
+            tooltipRef.current.style.borderColor = 'transparent'
+            tooltipRef.current.style.width = '100px'
+            tooltipRef.current.style.display = 'flex';
+            tooltipRef.current.style.minHeight = "30px"
+            // Flexbox styles to center content vertically and horizontally
+            tooltipRef.current.style.textAlign = 'center';
+            tooltipRef.current.style.display = 'flex';
+            tooltipRef.current.style.alignItems = 'center';
+            tooltipRef.current.style.justifyContent = 'center';
+            tooltipRef.current.style.fontWeight = 600
+    
+        }
 
         // Change the cursor to pointer
         //tooltipRef.current.style.cursor = 'pointer';
@@ -248,7 +258,10 @@ const SelectMultipleParcels = () => {
       };
 
       const handleMouseLeave = () => {
-        tooltipRef.current.style.display = 'none';
+        if(tooltipRef.current){
+            tooltipRef.current.style.display = 'none';
+        }
+        
 
         //element.style.cursor = 'default';
       };
@@ -283,7 +296,12 @@ const SelectMultipleParcels = () => {
                     }
                     if (tool === "draw") {
                         if(!actionButtonsVisible || !polygonGraphicsLayer.current){
-                            tooltipRef.current.innerHTML = translateText(`set first point`)
+                            console.log("polygonGraphicsLayer.current.graphics: ", polygonGraphicsLayer.current.graphics)
+                            if(polygonGraphicsLayer.current && polygonGraphicsLayer.current.graphics.items.length === 0){
+                                
+                                tooltipRef.current.innerHTML = translateText(`set first point`)
+                            }
+                            
                         }
                         else{
                             tooltipRef.current.innerHTML = translateText(`double click to complete`)

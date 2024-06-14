@@ -176,7 +176,9 @@ const layerListVMCustom = () => {
                 }
             }
         );
-    }, [mapView?.scale]);
+
+    }, [mapViewScale]);
+
     
     const handleGroupClick = (group) => {
 
