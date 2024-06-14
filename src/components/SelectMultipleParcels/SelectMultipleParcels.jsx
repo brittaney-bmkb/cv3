@@ -84,7 +84,7 @@ const SelectMultipleParcels = () => {
 
         setTool('click')
         setSelectMultiple(!selectMultiple)
-        setToolDescription('selectMultiple')
+        setToolDescription('click')
     }
 
     const handleSelectDraw = async () => {
