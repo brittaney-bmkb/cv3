@@ -289,7 +289,12 @@ const SelectMultipleParcels = () => {
                     }
                     if (tool === "draw") {
                         if(!actionButtonsVisible || !polygonGraphicsLayer.current){
-                            tooltipRef.current.innerHTML = translateText(`set first point`)
+                            console.log("polygonGraphicsLayer.current.graphics: ", polygonGraphicsLayer.current.graphics)
+                            if(polygonGraphicsLayer.current && polygonGraphicsLayer.current.graphics.items.length === 0){
+                                
+                                tooltipRef.current.innerHTML = translateText(`set first point`)
+                            }
+                            
                         }
                         else{
                             tooltipRef.current.innerHTML = translateText(`double click to complete`)
