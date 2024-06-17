@@ -46,7 +46,8 @@ const WebMapComponentBeta = () => {
         panelDisplaySecondary,
         setComparableParcels,
         panelDisplayWidget,
-        comparableType
+        comparableType, 
+        isMeasuring,
         } = UseAppContext()
 
     const arcgisMapRef = useRef(null)
@@ -709,8 +710,11 @@ const WebMapComponentBeta = () => {
                 // handleViewClick(event.detail.mapPoint)
                 let foundSelectGraphic = findLayerByTitle(arcgisMapRef.current.map, "selectGraphic")
                 let foundMeasureGraphic = findLayerByTitle(arcgisMapRef.current.map, "measureGraphic")
+                //measure ment glbal variable 
+
                 ////console.log("found graphic: ", foundSelectGraphic)
-                if((!foundSelectGraphic && !foundMeasureGraphic) || !selectMultiple){
+                console.log("Is Measuring: ", isMeasuring )
+                if((!foundSelectGraphic&& !foundMeasureGraphic) || !selectMultiple || (!isMeasuring)){
                     handleHitTest(event)
                 }
                 

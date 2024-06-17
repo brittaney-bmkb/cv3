@@ -6,14 +6,13 @@ import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer.js";
 import Graphic from "@arcgis/core/Graphic.js";
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine.js";
 import SketchViewModel from "@arcgis/core/widgets/Sketch/SketchViewModel.js";
-
 import { CalciteIcon } from "@esri/calcite-components-react";
 import { theme } from "../../../theme";
 import { ContactEmergency } from "@mui/icons-material";
 
 //270-measure-widget-redesign-polygon-polyline
 
-const MeasureSketchWidget = () => {
+const MeasureViewModelWidget = () => {
     
     const { mapView, translateText  } = UseAppContext()
     const graphicsLayer = useRef(null) // ESRI graphics
@@ -56,36 +55,15 @@ const MeasureSketchWidget = () => {
     }
 
     const handleChange = (e) => {
-
+        // setSelectedValue(e.target.value)
+        unitMeasurementAbbrev(e.target.value)
         
         if (activeTool==='polygon'){
-            
-            setSelectedValue(e.target.value)
-            unitMeasurementAbbrev(e.target.value)
-
             getArea(userGeometry, e.target.value)
         } else{
-            
-            setSelectedValue(e.target.value)
-            unitMeasurementAbbrev(e.target.value)
             getLength(userGeometry, e.target.value)
-
         }
     }
-
-    // const handleChange = (e) => {
-    //     //TODO this breaks it
-    //     // setSelectedValue(e.target.value)
-        
-        
-    //     if (activeTool==='polygon'){
-    //         unitMeasurementAbbrev(e.target.value)
-    //         getArea(userGeometry, e.target.value)
-    //     } else{
-    //         unitMeasurementAbbrev(e.target.value)
-    //         getLength(userGeometry, e.target.value)
-    //     }
-    // }    
 
     const DropDownUnitMeasurement = () => {
         // measurementUnitOptions should be the main object
@@ -130,12 +108,6 @@ const MeasureSketchWidget = () => {
                             value={selectedValue}
                             onChange={handleChange}
                         >
-                        
-                        {/* {      measurementUnitOptions.map((measureUnitOptions)  => (
-                                        <option key={measureUnitOptions.key} value={measureUnitOptions.key}>
-                                            {measureUnitOptions.label}
-                                        </option>
-                                    )) } */}
                             {activeTool ==="polygon" ? (
                                     areaUnitOptions.map((measureUnitOptions)  => (
                                         <option key={measureUnitOptions.value} value={measureUnitOptions.value}>
@@ -164,17 +136,17 @@ const MeasureSketchWidget = () => {
         return positiveNumber.toFixed(2)
     }
     
-    const getArea = (polygon, unitType) => {
-        console.log("Get area: ", polygon, unitType)
-        const planarArea = geometryEngine.planarArea(polygon, unitType);
+    const getArea = (polygon) => {
+        console.log("Get area: ", polygon, selectedValue)
+        const planarArea = geometryEngine.planarArea(polygon, selectedValue);
         const planarAreaPositive = getPositiveNumber(planarArea);
         setAreaMeasurement(planarAreaPositive) //todo add this back to props       
         return planarAreaPositive
     }
     
-    const getLength= (line, unitType) =>{
-        console.log("Get length: ", line, unitType)
-        const planarLength = geometryEngine.planarLength(line, unitType);
+    const getLength= (line) =>{
+        console.log("Get length: ", line, selectedValue)
+        const planarLength = geometryEngine.planarLength(line, selectedValue);
         const planarLengthPositive = getPositiveNumber(planarLength)
         setLinearMeasurement(planarLengthPositive) //todo add this back to props 
         return planarLengthPositive
@@ -188,15 +160,15 @@ const MeasureSketchWidget = () => {
             case "polygon":
                 setActiveTool(geom.type);
                 setUserGeometry(geom)
-                setSelectedValue('square-meters')  
-                unitMeasurementAbbrev('square-meters')
+                // setSelectedValue('square-meters')  
+                // unitMeasurementAbbrev('square-meters')
                 getArea(geom);
                 break;
             case "polyline":
                 setActiveTool(geom.type);
                 setUserGeometry(geom)
-                setSelectedValue('meters')
-                unitMeasurementAbbrev('meters')
+                // setSelectedValue('meters')
+                // unitMeasurementAbbrev('meters')
                 getLength(geom);
                 break;
             default:
@@ -233,16 +205,22 @@ const MeasureSketchWidget = () => {
     //     // console.log('Inside Console Log', abbrevValue)
     //     // menuValue is key in object
     //     // abbrevValue is value  in object. WE want this key in order to set it in the drop down. 
+
     //     // measurementUnitOptions.some(option => option.value === value && option.key === key);
     //     // if (!abbrevValue){
     //         const menuValueOption = measurementUnitOptions.find(option => menuValue === option.key );
     //         const abbrevValueOption = measurementUnitOptions.find(option => abbrevValue === option.value );
+
     //         if (menuValueOption.key === abbrevValueOption.key ){
     //             setSelectedValue(abbrevValueOption.key)
     //         }
+    
     //         console.log('menuValueOption',menuValueOption)
     //         console.log('abbrevValueOption',abbrevValueOption)
+
     //     // }
+
+
     // }
 
     const startMeasuring = async (geom_type) => {
@@ -258,29 +236,25 @@ const MeasureSketchWidget = () => {
             sketchVM.current.cancel()
 
         } else{
-            // removeAllGraphics()
+            removeAllGraphics()
+            console.log("Currently selected value: ", selectedValue)
             sketchVM.current.create(geom_type); // polygon || polyline
-            console.log('setting')
-            // if (activeTool==='polygon'){
-            //     setSelectedValue('square-meters')  
-            //     unitMeasurementAbbrev('square-meters')
-            // } else{
-            //     setSelectedValue('meters')  
-            //     unitMeasurementAbbrev('meters')
-            // }            
         }
 
-        // sketchVM.current.create("polygon");
-        // sketchVM.current.create("polyline");
         sketchVM.current.on("create", (e) => {
             if (e.graphic){
                 let geometry =  e.graphic.geometry;
                 setUserGeometry(geometry)
                 
                 if (e.state === "active") {
-                    // if(unitAbbrev.props){
-                    //     checkDropDownAbbrev(selectedValue, unitAbbrev.props.children[0] )
+                    // if (activeTool==='polygon'){
+                    //     setSelectedValue('square-meters')  
+                    //     unitMeasurementAbbrev('square-meters')
+                    // } else{
+                    //     setSelectedValue('meters')  
+                    //     unitMeasurementAbbrev('meters')
                     // }
+
                     setUserGeometry(e.graphic.geometry)
                     switchType(geometry);
     
@@ -530,4 +504,4 @@ const MeasureSketchWidget = () => {
     )      
 }
 
-export default MeasureSketchWidget
+export default MeasureViewModelWidget

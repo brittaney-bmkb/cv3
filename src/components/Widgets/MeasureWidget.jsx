@@ -25,7 +25,7 @@ const areaUnitOptions = [
 // this lifted from comparable property search and will needed to be updated for this widget
 const MeasureWidget = () => {
 
-    const { panelDisplayWidget, setMeasureWidgetState, translateText, setMeasureWidget, panelSecondaryVisible, screenWidth, mapView} = UseAppContext()
+    const { panelDisplayWidget, setMeasureWidgetState, translateText, setMeasureWidget, panelSecondaryVisible, screenWidth, mapView, setIsMeasuring} = UseAppContext()
     // //use ref for div 
     const measureWidget = useRef(null)
 
@@ -108,7 +108,8 @@ const MeasureWidget = () => {
                             "Area: ", label.area,
                             "Perimeter: ", label.perimeter
                         );
-                        setMeasurementValue(label.area);
+                        setMeasurementValue(label.area)
+                        setIsMeasuring(true);
                     } else {
                         console.log(
                             "active tool: ", activeTool,
@@ -140,11 +141,14 @@ const MeasureWidget = () => {
                 }
             }
         );
+
+     
     
         // Cleanup function
         return () => {
             watcher.remove();
             unitWatcher.remove();
+            // stateWatcher.remove();
             // Reset measurementValue and activeTool to their initial values
         };
     }, [measureWidget.current]);
@@ -259,6 +263,7 @@ const MeasureWidget = () => {
 
 
     const startMeasuring = async (tool) => {
+        setIsMeasuring(true)
         setMeasureWidgetState(true)
         setActiveTool(tool) 
         if( measureWidget.current){
@@ -268,6 +273,19 @@ const MeasureWidget = () => {
             setMeasurementValue(0)
             await measureWidget.current.when()
             measureWidget.current.startMeasurement()
+            
+            reactiveUtils.watch(
+                () => measureWidget.current?.viewModel?.activeViewModel?.state,
+                (state) => {
+                    if (state) {
+                        if(state !=="disabled"){
+                            setIsMeasuring(true)
+                        }
+                        
+                        console.log("watch the state:", state)
+                    }
+                }
+            );   
         }
         
     }

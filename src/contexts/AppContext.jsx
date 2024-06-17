@@ -101,6 +101,15 @@ export const AppProvider = ({children}) => {
             }
         })
     }
+    
+    const setIsMeasuring = async (measuring) => {
+        dispatch({
+            type:"SET_IS_MEASURING",
+             payload: {
+                isMeasuring: measuring,
+            }
+        })
+    }
 
     const setSearchSources = async (searchSources) => {
         dispatch({
@@ -875,7 +884,9 @@ export const AppProvider = ({children}) => {
         queryPolygon,
         setComparableType,
         comparableType: state.comparableType,
-        returnFeaturesByPin10Pin14
+        returnFeaturesByPin10Pin14,
+        setIsMeasuring,
+        isMeasuring: state.isMeasuring,
         
     }
 
