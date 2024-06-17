@@ -72,35 +72,35 @@ export const handleMultipleResults = async (results) => {
                 }
                 if (sourceEqualsTarget) {
                     //get address values
-                    if(results.source.searchFields.includes("street_address")){
-                        results.results.forEach(result => {
-                            if (result && result.feature) {
-                                let street_address = result.feature.attributes["street_address"]
-                                let city_state_zip = result.feature.attributes["city_state_zip"]
-                                let address_values = [ street_address, city_state_zip ]
+                    // if(results.source.searchFields.includes("street_address")){
+                    //     results.results.forEach(result => {
+                    //         if (result && result.feature) {
+                    //             let street_address = result.feature.attributes["street_address"]
+                    //             let city_state_zip = result.feature.attributes["city_state_zip"]
+                    //             let address_values = [ street_address, city_state_zip ]
 
-                                if(!addresses.includes(address_values)){
-                                    addresses.push(address_values)
-                                }
+                    //             if(!addresses.includes(address_values)){
+                    //                 addresses.push(address_values)
+                    //             }
 
-                            } else {
-                                //console.error("Error: Missing feature in result.");
+                    //         } else {
+                    //             //console.error("Error: Missing feature in result.");
 
-                            }
-                        })
-                    }
-                    else{
-                        results.results.forEach(result => {
-                            if (result && result.feature) {
-                                let featureExists = addObjectToArrayIfNotExists(targetFeatures, result.feature)
-                                //console.log("feature exists in array: ", featureExists)
-                                //console.log("pushing feature to targetFeatures: ", result.feature)
-                                targetFeatures.push(result.feature);
-                            } else {
-                                //console.error("Error: Missing feature in result.");
-                            }
-                        });
-                    }
+                    //         }
+                    //     })
+                    // }
+                    // else{
+                    results.results.forEach(result => {
+                        if (result && result.feature) {
+                            let featureExists = addObjectToArrayIfNotExists(targetFeatures, result.feature)
+                            //console.log("feature exists in array: ", featureExists)
+                            //console.log("pushing feature to targetFeatures: ", result.feature)
+                            targetFeatures.push(result.feature);
+                        } else {
+                            //console.error("Error: Missing feature in result.");
+                        }
+                    });
+                    //}
                     
                 } else {
                     results.results.forEach(result => {
@@ -179,10 +179,13 @@ const queryTargetLayerByAddress = async (addresses) => {
         if(index < addresses.length -1){
             query.where += ' OR '
         }
+
+        console.log("where: ", query.where)
      })
 
      //console.log("Full address query = ", query.where)
 
+     console.log("query: ", query)
     
     const { features } = await targetLayer.queryFeatures(query);
 
