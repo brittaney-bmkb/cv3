@@ -180,12 +180,12 @@ const queryTargetLayerByAddress = async (addresses) => {
             query.where += ' OR '
         }
 
-        console.log("where: ", query.where)
+        //console.log("where: ", query.where)
      })
 
      //console.log("Full address query = ", query.where)
 
-     console.log("query: ", query)
+     //console.log("query: ", query)
     
     const { features } = await targetLayer.queryFeatures(query);
 
