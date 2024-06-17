@@ -49,7 +49,7 @@ const CompareNearby = () => {
     }, [searchRadius, searchUnit])
 
     function handleInput(event){
-        console.log("nearby value: ", event)
+        //console.log("nearby value: ", event)
         setSearchRadius(event.target.value)
     }
 
@@ -57,7 +57,7 @@ const CompareNearby = () => {
 
         setComparableType("nearby")
         
-        console.log("nearby value: ", searchRadius)
+        //console.log("nearby value: ", searchRadius)
 
         if(!searchRadiusError){
             searchNearbyProperties(searchRadius, searchUnit)
@@ -127,7 +127,7 @@ const CompareNearby = () => {
                 size="small"
                 type="text"
                 onChange={(event) => {
-                    console.log("search unit: ", event.target.value)
+                    //console.log("search unit: ", event.target.value)
                     setSearchUnit(event.target.value)
                 }}
                 SelectProps={{

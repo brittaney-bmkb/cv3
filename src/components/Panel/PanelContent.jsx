@@ -258,7 +258,7 @@ const PanelContent = ({display}) => {
                         text="Measure"
                         closeButton={true}
                         panel={"widget"}
-                        descriptionText={"Start drawing a line, double click to close or click done to create a line. Close the shape to create a polygon."} //TODO needs to translate thi
+                        descriptionText={"Click the Draw button to activate the tool. To measure distance, click on the map to anchor the first point and double-click on the map or click the Done button to finish. To measure area, click on the map to anchor the first point, then hover over the first point and double-click or click the Done button to finish."} //TODO needs to translate thi
                     />                    
                     <MeasureSketchWidget/>
                     {/* <MeasureWidget

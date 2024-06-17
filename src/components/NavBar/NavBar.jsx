@@ -45,14 +45,14 @@ const NavBar = () => {
     }
 
     const handleHelp = () => {
-        console.log("Setting Open Help Dialog True");
-        console.log(openHelpDialog)
+        //console.log("Setting Open Help Dialog True");
+        //console.log(openHelpDialog)
         setOpenHelpDialog(true)
-        console.log(openHelpDialog)
+        //console.log(openHelpDialog)
     }
 
     const handleTranslateButton = () => {
-        console.log("OPENING TRANSLATE BUTTON")
+        //console.log("OPENING TRANSLATE BUTTON")
         setTranslateDialogOpen(true)
     }
 

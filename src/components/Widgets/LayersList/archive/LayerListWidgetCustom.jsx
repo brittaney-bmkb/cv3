@@ -81,7 +81,7 @@ const LayerListWidgetCustom = () => {
 
                 setLayerSources(updatedLayerSources);
 
-                console.log("Selected Items: ", layerListWidget.current.selectedItems)
+                //console.log("Selected Items: ", layerListWidget.current.selectedItems)
 
                 //layerListWidget.current.selectedItems.items = [layerListWidget.current.operationalItems.items[4]]
 
@@ -96,7 +96,7 @@ const LayerListWidgetCustom = () => {
             () => view.scale,
             () => {
 
-                //console.log("Visible at scale ",layerListWidget.current.operationalItems.items[7].title, layerListWidget.current.operationalItems.items[7])
+                ////console.log("Visible at scale ",layerListWidget.current.operationalItems.items[7].title, layerListWidget.current.operationalItems.items[7])
 
                 // Update layer sources with visibility
                 const updatedLayerSources = layerSources.map(layer => ({
@@ -183,7 +183,7 @@ const LayerListWidgetCustom = () => {
                                         .map((layer) => {
 
                                             // let visible = checkVisibility(layer.layerName)
-                                            // console.log("layer is visible? ", visible)
+                                            // //console.log("layer is visible? ", visible)
 
                                             return(
                                             <ListItem

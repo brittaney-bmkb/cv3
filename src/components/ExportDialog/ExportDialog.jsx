@@ -45,7 +45,7 @@ const ExportDialog = ({open, onClose, dataDescription}) => {
     const featuresToExport = async () => {
         let features;
 
-        console.log("Export dialog: ", dataDescription)
+        //console.log("Export dialog: ", dataDescription)
 
         if(dataDescription === "Property Results"){
             features = searchFeatures
@@ -72,17 +72,17 @@ const ExportDialog = ({open, onClose, dataDescription}) => {
         let filename = `CookViewer_${translateText(dataDescription).replace(" ","_")}`
         let features = await featuresToExport()
 
-        console.log("exporting features: ", features)
+        //console.log("exporting features: ", features)
 
         if(includeCsv === true){
-            console.log("Include csv: ", includeCsv)
+            //console.log("Include csv: ", includeCsv)
             setIsExporting(true)
             await exportToCsv(features, dataDictionary, filename)
             setIsExporting(false)
         }
 
         if(includeExcel === true){
-            console.log("Include csv: ", includeCsv)
+            //console.log("Include csv: ", includeCsv)
             setIsExporting(true)
             await exportToExcel(features, dataDictionary, filename)
             setIsExporting(false)
