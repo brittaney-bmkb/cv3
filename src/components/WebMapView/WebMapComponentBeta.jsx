@@ -237,6 +237,7 @@ const WebMapComponentBeta = () => {
         else{
             features = fetchedFeatures
         }
+        
         setPrimaryResultFeature(features, false)
         setSearchResults(null, features, null, features)
 
@@ -366,7 +367,7 @@ const WebMapComponentBeta = () => {
                 else if (selectedParcelsPrimary && selectedComparableDetected.length === 0){
 
                     if(selectedGraphicsDetected.length === 0){
-                        ////console.log("selected parcels not clicked")
+                        console.log("selected parcels not clicked")
                         await removeAllFeatures(selectedParcelsPrimary)
                         await addFeatures(response.results)
                         
@@ -386,11 +387,11 @@ const WebMapComponentBeta = () => {
 
                         const showParcelDetail = searchFeatures.filter(feature => clickedParcelObjIds.includes(feature.attributes["OBJECTID"]))
                         
-                        ////console.log("showParcelDetail: ", showParcelDetail)
+                        console.log("showParcelDetail: ", showParcelDetail)
 
                         if(showParcelDetail.length > 0){
                             
-                            let features = searchFeatures.filter(feature => !clickedParcelObjIds.includes(feature.attributes['OBJECTID']))
+                            //let features = searchFeatures.filter(feature => !clickedParcelObjIds.includes(feature.attributes['OBJECTID']))
 
                             ////console.log("remove features: ", features)
                             
