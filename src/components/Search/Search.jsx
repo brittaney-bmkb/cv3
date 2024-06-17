@@ -234,12 +234,12 @@ const Search = () => {
                 }
                 ////console.log("USE EFFECT PARAM : ", routeParams.get("search"), routeParams.get("pin"))
                 
-                if(searchWidget.current && ![attributes["PIN10"], attributes["PIN14"], `${attributes["street_address"]}, ${attributes["city_state_zip"]}`].includes(searchWidget.current.searchTerm)){
-                    let urlParamKey = Object.keys(param)
+                // if(searchWidget.current && ![attributes["PIN10"], attributes["PIN14"], `${attributes["street_address"]}, ${attributes["city_state_zip"]}`].includes(searchWidget.current.searchTerm)){
+                //     let urlParamKey = Object.keys(param)
 
-                    //searchWidget.current.searchTerm = urlParamKey.includes("pin10") || urlParamKey.includes("pin14") ? null :  paramValue
-                    //searchWidget.current.searchTerm = paramValue
-                }
+                //     //searchWidget.current.searchTerm = urlParamKey.includes("pin10") || urlParamKey.includes("pin14") ? null :  paramValue
+                //     //searchWidget.current.searchTerm = paramValue
+                // }
                     //}
                 //}
                 
