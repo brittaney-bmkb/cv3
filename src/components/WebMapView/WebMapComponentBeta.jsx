@@ -643,33 +643,25 @@ const WebMapComponentBeta = () => {
 
     useEffect(() => {
         const removeAllGraphics = () => {
-            console.log('check our panel displate widget', panelDisplayWidget)
             if(arcgisMapRef.current?.map){
-                const isMeasure = panelDisplayWidget === "measureWidget"
+                const isMeasure = panelDisplayWidget === "measure"
                 const isSelect = panelDisplayWidget === "sketch"
                 const map = arcgisMapRef.current.map
-
+    
                 if(!isSelect || !panelWidgetVisible){
                     //remove all select graphics
+    
                     const foundGraphic = findLayerByTitle(map,"selectGraphic")
                     
                     if(foundGraphic){
                         foundGraphic.removeAll()
                         removeLayer(map, "selectGraphic")
                     }
-                }
-                if(!isMeasure || !panelWidgetVisible ){
-                    const foundGraphicMeasure = findLayerByTitle(map,"measureGraphic")
-                    console.log('check ouit foundGraphicMeasure: ', foundGraphicMeasure)
-    
-                    if(foundGraphicMeasure){
-                        console.log('removing all measure graphics')
-                        foundGraphicMeasure.removeAll()
-                        removeLayer(map, 'measureGraphic')
-                    }
-
+                    
                 }
             }
+
+            
         }
 
         removeAllGraphics()
@@ -714,7 +706,6 @@ const WebMapComponentBeta = () => {
                     handleHitTest(event)
                 }
                 
-
             }
         }}
         // onArcgisViewPointerMove={}

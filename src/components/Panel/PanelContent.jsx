@@ -20,7 +20,7 @@ import Info from "../Info/Info";
 import BasemapWidget from "../Widgets/Basemap/BasemapWidget";
 import SelectMultipleParcels from "../SelectMultipleParcels/SelectMultipleParcels";
 import { useState } from "react";
-import MeasureSketchWidget from "../Widgets/Measure/MeasureSketchWidget";
+
 
 const PanelContent = ({display}) => {
 
@@ -229,15 +229,15 @@ const PanelContent = ({display}) => {
                         primary={false}
                     />
 
-                    <Box display="flex"  flexDirection="column" width="100%" flexGrow={1} minHeight={0}>
-                        <PropertyDetail 
-                        property1={screenWidth >= theme.breakpoints.values.lg ? null : primaryResultFeature} 
-                        property2={secondaryResultFeature} 
-                        propertyColor1={theme.palette.primary.main}
-                        propertyColor2={theme.palette.secondary.main}
-                        />
-                        <PropertyPagniation/>
-                    </Box>     
+                   <Box display="flex"  flexDirection="column" width="100%" flexGrow={1} minHeight={0}>
+                     <PropertyDetail 
+                       property1={screenWidth >= theme.breakpoints.values.lg ? null : primaryResultFeature} 
+                       property2={secondaryResultFeature} 
+                       propertyColor1={theme.palette.primary.main}
+                       propertyColor2={theme.palette.secondary.main}
+                      />
+                     <PropertyPagniation/>
+                   </Box>     
 
                 </Box>)
         case 'measureWidget':
@@ -258,9 +258,8 @@ const PanelContent = ({display}) => {
                         text="Measure"
                         closeButton={true}
                         panel={"widget"}
-                        descriptionText={"Click the Draw button to activate the tool. To measure distance, click on the map to anchor the first point and double-click on the map or click the Done button to finish. To measure area, click on the map to anchor the first point, then hover over the first point and double-click or click the Done button to finish."} //TODO needs to translate thi
+                        descriptionText={"Measure Widget Coming Soon"}
                     />                    
-                    <MeasureSketchWidget/>
                     {/* <MeasureWidget
                         panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"}
                     /> */}
