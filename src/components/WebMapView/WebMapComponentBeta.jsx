@@ -71,8 +71,8 @@ const WebMapComponentBeta = () => {
                 extent = features.geometry
             }
             else{
-                //console.log("zoom to extent: ", features)
-                //console.log("quering extent ")
+                ////console.log("zoom to extent: ", features)
+                ////console.log("quering extent ")
                 extent = await features.queryExtent()
             }
         }
@@ -82,7 +82,7 @@ const WebMapComponentBeta = () => {
 
     const addLayerToMap = async (source, title, theme, type) => {
 
-        //console.log(`adding ${title} layer to map`)
+        ////console.log(`adding ${title} layer to map`)
 
         if(arcgisMapRef.current && mapLoading === false){
 
@@ -108,7 +108,7 @@ const WebMapComponentBeta = () => {
                 if(featLayer){
 
                     map.add(featLayer)
-                    //console.log(`Add ${title} to map: `, map)
+                    ////console.log(`Add ${title} to map: `, map)
                     //zoomToExtent(featLayer)
                 }
                 
@@ -136,7 +136,7 @@ const WebMapComponentBeta = () => {
     const findTargetLayer = (map) => {
 
         let layer = map.allLayers.find((layer) => {
-            ////console.log("Layer details: ", layer)
+            //////console.log("Layer details: ", layer)
             return `${layer.url}/${layer.layerId}` === config.target_layer_url
         })
 
@@ -147,7 +147,7 @@ const WebMapComponentBeta = () => {
     const findLayerByTitle = (map, title) => {
 
         let layer = map.allLayers.find((layer) => {
-            ////console.log("Layer details: ", layer)
+            //////console.log("Layer details: ", layer)
             return layer.title === title
         })
 
@@ -157,7 +157,7 @@ const WebMapComponentBeta = () => {
 
     const fetchParcelAttributes = async (objectIds) => {
 
-        //console.log("objectIds: ", objectIds)
+        ////console.log("objectIds: ", objectIds)
         let where = objectIds.join(',')
 
         let query = new Query({
@@ -181,7 +181,7 @@ const WebMapComponentBeta = () => {
             })
         }
         let { features } = query ? await layer.queryFeatures(query) : await layer.queryFeatures()
-        ////console.log("features to remove: ", features)
+        //////console.log("features to remove: ", features)
 
         //add new primaryResultFeature to add features
         //if it is not null
@@ -202,7 +202,7 @@ const WebMapComponentBeta = () => {
 
         if(!typeIsFeature){
             results.map(result => {
-                ////console.log("result being added: ", result)
+                //////console.log("result being added: ", result)
                 addGraphics.push(result.graphic)
                 objectIds.push(result.graphic.attributes['OBJECTID'])
             })
@@ -254,11 +254,11 @@ const WebMapComponentBeta = () => {
     const removeFeatures = async (results) => {
         let objectIds = []
         let removeGraphics = []
-        //console.log("removing objectids: ", results)
+        ////console.log("removing objectids: ", results)
 
         results.map(result => {
             removeGraphics.push(result.graphic)
-            //console.log("removing objectids: ", result.graphic.attributes['OBJECTID'])
+            ////console.log("removing objectids: ", result.graphic.attributes['OBJECTID'])
             objectIds.push(result.graphic.attributes['OBJECTID'])
         })
 
@@ -268,7 +268,7 @@ const WebMapComponentBeta = () => {
 
         await selectedParcelsPrimary.applyEdits(addEdits)
 
-        //console.log("ObjectIds to remove: ", objectIds)
+        ////console.log("ObjectIds to remove: ", objectIds)
         let existingFeatures = Array.isArray(primaryResultFeature) ? primaryResultFeature : [primaryResultFeature]
         let updatedFeatures = existingFeatures.filter(feature => !objectIds.includes(feature.attributes['OBJECTID']))
 
@@ -289,7 +289,7 @@ const WebMapComponentBeta = () => {
     const handleHitTest = async (event) => {
         //[v3.0.0-beta.3]
 
-        //console.log("onArcgisViewClick: ", event)
+        ////console.log("onArcgisViewClick: ", event)
 
         //const view = event.target.view
         const view = arcgisMapRef.current.view
@@ -307,22 +307,22 @@ const WebMapComponentBeta = () => {
         setCoordinates(mapPoint.x, mapPoint.y)
 
         if(response.results.length > 0){
-            //console.log("Hit Test Layers: ", hitTestLayers)
-            //console.log("onArcgisViewClick: hittest results ", response.results)
+            ////console.log("Hit Test Layers: ", hitTestLayers)
+            ////console.log("onArcgisViewClick: hittest results ", response.results)
 
             //check if the clicked feature is a selected parcel
             let selectedGraphicsDetected = response.results.filter(result => result.graphic.layer.title === selectedParcelTitle)
             let selectedComparableDetected = response.results.filter(result => result.graphic.layer.title === comparableParcelTitle)
             
-            ////console.log("selectedGraphicsDetected: ", selectedGraphicsDetected)
+            //////console.log("selectedGraphicsDetected: ", selectedGraphicsDetected)
 
             if(selectMultiple){
                 //if select multiple === true
                 //check if the hittest results include any previously selected layers
 
                 if(selectedGraphicsDetected.length > 0){
-                    //console.log(`${selectedGraphicsDetected.length} Selected Parcels Detected`)
-                    //console.log(`Removing ${selectedGraphicsDetected.length} parcels`)
+                    ////console.log(`${selectedGraphicsDetected.length} Selected Parcels Detected`)
+                    ////console.log(`Removing ${selectedGraphicsDetected.length} parcels`)
 
                     await removeFeatures(response.results)
 
@@ -330,8 +330,8 @@ const WebMapComponentBeta = () => {
                     clearComparableParcels()
                 }
                 else{
-                    //console.log(`${selectedGraphicsDetected.length} Selected Parcels Detected`)
-                    //console.log(`Adding ${response.results.length} parcels`)
+                    ////console.log(`${selectedGraphicsDetected.length} Selected Parcels Detected`)
+                    ////console.log(`Adding ${response.results.length} parcels`)
 
                     await addFeatures(response.results, selectMultiple)
 
@@ -346,17 +346,17 @@ const WebMapComponentBeta = () => {
                 //update the secondary panel to display comparable parcel details
                 if(selectedComparableDetected?.length > 0){
 
-                    // //console.log("comparable parcel layer clicked")
+                    // ////console.log("comparable parcel layer clicked")
                     const clickedParcel = response.results
 
-                    //console.log("comparable parcel selected: ", selectedComparableDetected)
-                    ////console.log("comparable parcels: ", comparableParcels)
+                    ////console.log("comparable parcel selected: ", selectedComparableDetected)
+                    //////console.log("comparable parcels: ", comparableParcels)
 
                     const clickedParcelObjIds = clickedParcel.map(parcel => parcel.graphic.attributes['OBJECTID'])
 
                     const showParcelDetail = comparableParcels.filter(feature => clickedParcelObjIds.includes(feature.attributes["OBJECTID"]))
 
-                    //console.log("showPArcelDetail: ", showParcelDetail)
+                    ////console.log("showPArcelDetail: ", showParcelDetail)
                     if(showParcelDetail.length > 0){
                         setSecondaryResultFeature(showParcelDetail)
                         setPanelDisplaySecondary(comparableType === "nearby" ? "propertyDetailNearby": "propertyDetailComparable")
@@ -366,7 +366,7 @@ const WebMapComponentBeta = () => {
                 else if (selectedParcelsPrimary && selectedComparableDetected.length === 0){
 
                     if(selectedGraphicsDetected.length === 0){
-                        //console.log("selected parcels not clicked")
+                        ////console.log("selected parcels not clicked")
                         await removeAllFeatures(selectedParcelsPrimary)
                         await addFeatures(response.results)
                         
@@ -378,21 +378,21 @@ const WebMapComponentBeta = () => {
                     else{
                         //select primary search parcel detected
                         const clickedParcel = response.results
-                        //console.log("display parcel details: ", clickedParcel)
+                        ////console.log("display parcel details: ", clickedParcel)
 
                         const clickedParcelObjIds = clickedParcel.map(parcel => parcel.graphic.attributes['OBJECTID'])
 
-                        //console.log("clickedParcelObjId ", clickedParcelObjIds)
+                        ////console.log("clickedParcelObjId ", clickedParcelObjIds)
 
                         const showParcelDetail = searchFeatures.filter(feature => clickedParcelObjIds.includes(feature.attributes["OBJECTID"]))
                         
-                        //console.log("showParcelDetail: ", showParcelDetail)
+                        ////console.log("showParcelDetail: ", showParcelDetail)
 
                         if(showParcelDetail.length > 0){
                             
                             let features = searchFeatures.filter(feature => !clickedParcelObjIds.includes(feature.attributes['OBJECTID']))
 
-                            //console.log("remove features: ", features)
+                            ////console.log("remove features: ", features)
                             
                             const where = `OBJECTID NOT IN (${clickedParcelObjIds.join(",")})`
                             await removeAllFeatures(selectedParcelsPrimary, where)
@@ -416,13 +416,13 @@ const WebMapComponentBeta = () => {
     }
 
     const handleClick = () => {
-        //console.log("Setting secondary panel display")
+        ////console.log("Setting secondary panel display")
         setShowMapMoblie( false)
     }
 
     const setInitalHitTestLayers = async (layer) => {
 
-        //console.log("setInitalHitTestLayers")
+        ////console.log("setInitalHitTestLayers")
         //update targetLayer state with parcel layer
         setTargetLayer(layer)
         //update hittest list layers with parcel layer
@@ -446,7 +446,7 @@ const WebMapComponentBeta = () => {
             setComparableParcelLayer(layer)
         }
         else if(title === selectedComparableParcelTitle){
-            //console.log("setting selected comparable parcel layer")
+            ////console.log("setting selected comparable parcel layer")
             setSelectedComparableParcelLayer(layer)
         }
         
@@ -456,11 +456,11 @@ const WebMapComponentBeta = () => {
 
     const updateHitTestLayers = async (layer) => {
 
-        //console.log("updateHitTestLayers")
+        ////console.log("updateHitTestLayers")
         //add the layer to the hittest array
         let newHitTestLayers = [ ...hitTestLayers, layer]
                 
-        //console.log("hittest layers: ", newHitTestLayers)
+        ////console.log("hittest layers: ", newHitTestLayers)
 
         //update the state of the hittest layers
         setHitTestLayers(newHitTestLayers)
@@ -471,7 +471,7 @@ const WebMapComponentBeta = () => {
 
         const configureWebMap = async () => {
             if(arcgisMapRef && mapLoading === false && searchSources){
-                ////console.log("loading new map: ", arcgisMapRef.current.view)
+                //////console.log("loading new map: ", arcgisMapRef.current.view)
     
                 let view = arcgisMapRef.current.view
                 view.constraints = {
@@ -532,7 +532,7 @@ const WebMapComponentBeta = () => {
                 }
 
                 else if(!primaryResultFeature && selectedParcelsPrimary){
-                    //console.log("clearing primary parcel selection")
+                    ////console.log("clearing primary parcel selection")
                     await removeAllFeatures(selectedParcelsPrimary) 
                 }
 
@@ -556,8 +556,8 @@ const WebMapComponentBeta = () => {
 
     useEffect(() => {
         
-        //console.log("comparable parcels use effect triggereed: ", comparableParcels)
-        //console.log("comparable parcels layer : ", comparableParcelLayer)
+        ////console.log("comparable parcels use effect triggereed: ", comparableParcels)
+        ////console.log("comparable parcels layer : ", comparableParcelLayer)
         //addLayerToMap(comparableParcels, "Comparable Parcels", theme.layers.secondary, "features")
         const displayComparableParcels = async () => {
 
@@ -582,10 +582,10 @@ const WebMapComponentBeta = () => {
 
                 else if(comparableParcelLayer && comparableParcels){
 
-                    //console.log("removing existing selected parcels")
+                    ////console.log("removing existing selected parcels")
                     await removeAllFeatures(comparableParcelLayer)
 
-                    //console.log("Adding comparable features to map")
+                    ////console.log("Adding comparable features to map")
                     const addEdits = {
                         addFeatures: comparableParcels,
                     }
@@ -620,10 +620,10 @@ const WebMapComponentBeta = () => {
                 }
                 else if(secondaryResultFeature && selectedComparableParcelLayer){
 
-                    //console.log("removing existing selected parcels")
+                    ////console.log("removing existing selected parcels")
                     await removeAllFeatures(selectedComparableParcelLayer)
                     
-                    //console.log("Adding selected comparable features to map: ", secondaryResultFeature)
+                    ////console.log("Adding selected comparable features to map: ", secondaryResultFeature)
                     const addEdits = {
                         addFeatures: Array.isArray(secondaryResultFeature) ? secondaryResultFeature : [secondaryResultFeature],
                     }
@@ -688,12 +688,12 @@ const WebMapComponentBeta = () => {
         itemId="779a9643c58f4a48a002a9b277a8bcc7"
 
         onArcgisViewReadyChange={(event) => {
-            //console.log('MapView ready', event);
+            ////console.log('MapView ready', event);
             setMapLoading(false)
             setMapView(event.target.view)
             }}
         onArcgisViewChange={(event) => {
-            ////console.log("view change: ", event)
+            //////console.log("view change: ", event)
             if(panelDisplayWidget === "layersWidget" && panelWidgetVisible){
                 setMapViewScale(event.target.view)
             }
@@ -702,16 +702,15 @@ const WebMapComponentBeta = () => {
         onArcgisViewClick={(event) => {
             
             if(event.detail.native.button === 2){
-                //console.log("onArcgisViewClick: right click, button =", event.detail.native.button)
+                ////console.log("onArcgisViewClick: right click, button =", event.detail.native.button)
             }
             else{
-                //console.log("onArcgisViewClick: left click, button =", event.detail.native.button)
+                ////console.log("onArcgisViewClick: left click, button =", event.detail.native.button)
                 // handleViewClick(event.detail.mapPoint)
                 let foundSelectGraphic = findLayerByTitle(arcgisMapRef.current.map, "selectGraphic")
                 let foundMeasureGraphic = findLayerByTitle(arcgisMapRef.current.map, "measureGraphic")
-
-                //console.log("found graphic: ", foundSelectGraphic)
-                if(!foundSelectGraphic && !foundMeasureGraphic){
+                ////console.log("found graphic: ", foundSelectGraphic)
+                if((!foundSelectGraphic && !foundMeasureGraphic) || !selectMultiple){
                     handleHitTest(event)
                 }
                 

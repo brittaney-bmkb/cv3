@@ -19,7 +19,7 @@ export default function WebMapView(){
     const [mapButtonsExist, setMapButtonsExist] = useState(false)
 
     const handleClick = () => {
-        console.log("Setting secondary panel display")
+        //console.log("Setting secondary panel display")
         setShowMapMoblie( false)
     }
 
@@ -42,18 +42,18 @@ export default function WebMapView(){
     useEffect(() => {
         // Define event handler function
         const handleClick = async (event) => {
-            // console.log("measure widget state: ", measureWidgetState);
-            // console.log("measure widget: ", measureWidget);
+            // //console.log("measure widget state: ", measureWidgetState);
+            // //console.log("measure widget: ", measureWidget);
             // if (measureWidget && measureWidgetState) {
-            //     console.log("Measure session. Blocking map view click");
+            //     //console.log("Measure session. Blocking map view click");
             // } else {
-            //     console.log("WEBMAPVIEW: Click event emitted: ", event);
-            //     console.log("measure widget state: ", measureWidgetState);
+            //     //console.log("WEBMAPVIEW: Click event emitted: ", event);
+            //     //console.log("measure widget state: ", measureWidgetState);
                 let point = event.mapPoint;
-                console.log("View Map Point", point);
+                //console.log("View Map Point", point);
 
                 // if(comparableParcels){
-                //     console.log("comparable parcels detected")
+                //     //console.log("comparable parcels detected")
                 //     await querySecondaryPoint(point)
                 // }
                 //else{

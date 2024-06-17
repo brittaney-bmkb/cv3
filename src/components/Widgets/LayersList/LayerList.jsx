@@ -14,7 +14,7 @@ const LayerList = () => {
             if(layerListRef.current && mapView){
 
                 const layerList = layerListRef.current
-                console.log("Layer list: ", layerListRef.current)
+                //console.log("Layer list: ", layerListRef.current)
                 layerList.view = mapView
             }
         }

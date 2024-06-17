@@ -25,7 +25,7 @@ const BasemapGallery = () => {
                 const basemapGallery = basemapGalleryRef.current
 
                 if(!basemapGallery.view){
-                    console.log("configuring basemap gallery view: ", basemapGallery)
+                    //console.log("configuring basemap gallery view: ", basemapGallery)
                     basemapGallery.view = mapView
                 }
             }

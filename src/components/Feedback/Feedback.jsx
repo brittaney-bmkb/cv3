@@ -113,7 +113,7 @@ export const FeedbackExtended = ({open, onClose}) => {
             setDeviceType("desktop")
         }
 
-        console.log("Device type: ", deviceType)
+        //console.log("Device type: ", deviceType)
 
     }, [screenWidth])
 
@@ -198,7 +198,7 @@ export const FeedbackSearch = ({open, onClose}) => {
             setDeviceType("desktop")
         }
 
-        console.log("Device type: ", deviceType)
+        //console.log("Device type: ", deviceType)
 
     }, [screenWidth])
 

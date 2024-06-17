@@ -49,14 +49,14 @@ const AppReducer = (state, action) => {
 
     switch(type){
         case "SET_COMPARABLE_TYPE":
-        console.log("SET_COMPARABLE_TYPE")
+        //console.log("SET_COMPARABLE_TYPE")
         return {
             ...state, 
             comparableType: payload.comparableType
         }
         ca
         case "SET_MAP_CONTAINER":
-        console.log("SET_MAP_CONTAINER")
+        //console.log("SET_MAP_CONTAINER")
         return {
             ...state, 
             mapContainer: payload.mapContainer
@@ -68,19 +68,19 @@ const AppReducer = (state, action) => {
             map: payload.map
         }        
         case "SET_MAP_VIEW":
-            console.log("SET_MAP_VIEW")
+            //console.log("SET_MAP_VIEW")
             return{
                 ...state,
                 mapView:payload.mapView
             }
         case "SET_MAP_VIEW_SCALE":
-            console.log("SET_MAP_VIEW_SCALE")
+            //console.log("SET_MAP_VIEW_SCALE")
             return{
                 ...state,
                 mapViewScale:payload.mapViewScale
             }
         case "SET_PRIMARY_RESULT_FEATURE":
-            console.log("SET_PRIMARY_RESULT_FEATURE: ", payload.primaryResultFeature)
+            //console.log("SET_PRIMARY_RESULT_FEATURE: ", payload.primaryResultFeature)
             return{
                 ...state,
                 primaryResultFeature:payload.primaryResultFeature,
@@ -88,14 +88,14 @@ const AppReducer = (state, action) => {
             }
 
         case "SET_SECONDARY_RESULT_FEATURE":
-            console.log("SET_SECONDARY_RESULT_FEATURE")
+            //console.log("SET_SECONDARY_RESULT_FEATURE")
             return{
                 ...state,
                 secondaryResultFeature:payload.secondaryResultFeature,
             }
         
         case "SET_SEARCH_RESULT":
-            console.log("SET_SEARCH_RESULT")
+            //console.log("SET_SEARCH_RESULT")
             return {
                 ...state,
                 searchTerm: payload.searchTerm,
@@ -104,127 +104,127 @@ const AppReducer = (state, action) => {
                 prevSearchFeatures: payload.prevSearchFeatures
             }
         case "SET_SEARCH_SOURCES":
-            console.log("SET_SEARCH_SOURCES")
+            //console.log("SET_SEARCH_SOURCES")
             return {
                 ...state,
                 searchSources: payload.searchSources,
             }
 
         case "SET_PANEL_DISPLAY":
-            console.log("SET_PANEL_DISPLAY")
+            //console.log("SET_PANEL_DISPLAY")
             return {
                 ...state,
                 panelDisplay: payload.panelDisplay,
             }
         case "SET_PANEL_SECONDARY_DISPLAY":
-            console.log("SET_PANEL_SECONDARY_DISPLAY")
+            //console.log("SET_PANEL_SECONDARY_DISPLAY")
             return {
                 ...state,
                 panelDisplaySecondary: payload.panelDisplaySecondary,
             }
         case "SET_PANEL_PRIMARY_VISIBILTIY":
-            console.log("SET_PANEL_PRIMARY_VISIBILTIY")
+            //console.log("SET_PANEL_PRIMARY_VISIBILTIY")
             return {
                 ...state,
                 panelPrimaryVisible: payload.panelPrimaryVisible,
             }
         case "SET_PANEL_SECONDARY_VISIBILTIY":
-            console.log("SET_PANEL_SECONDARY_VISIBILTIY")
+            //console.log("SET_PANEL_SECONDARY_VISIBILTIY")
             return {
                 ...state,
                 panelSecondaryVisible: payload.panelSecondaryVisible,
             }
         case "SET_PANEL_WIDGET_VISIBILTIY":
-            console.log("SET_PANEL_WIDGET_VISIBILTIY")
+            //console.log("SET_PANEL_WIDGET_VISIBILTIY")
             return {
                 ...state,
                 panelWidgetVisible: payload.panelWidgetVisible,
             }
         case "SET_PANEL_WIDGET_DISPLAY":
-            console.log("SET_PANEL_WIDGET_DISPLAY")
+            //console.log("SET_PANEL_WIDGET_DISPLAY")
             return {
                 ...state,
                 panelDisplayWidget: payload.panelDisplayWidget,
             }
         case "SET_DATA_DICTIONARY":
-            console.log("SET_DATA_DICTIONARY")
+            //console.log("SET_DATA_DICTIONARY")
             return {
                 ...state,
                 dataDictionary: payload.dataDictionary,
             }
 
         case "SET_PARCEL_QUERY_FIELDS":
-            console.log("SET_PARCEL_QUERY_FIELDS")
+            //console.log("SET_PARCEL_QUERY_FIELDS")
             return {
                 ...state,
                 parcelQueryFields: payload.parcelQueryFields,
             }
 
         case "SET_SCREEN_WIDTH":
-            console.log("SET_SCREEN_WIDTH")
+            //console.log("SET_SCREEN_WIDTH")
             return {
                 ...state,
                 screenWidth: payload.screenWidth,
             }
 
         case "SET_COMPARABLE_PARCELS":
-            console.log("SET_COMPARABLE_PARCELS")
+            //console.log("SET_COMPARABLE_PARCELS")
             return {
                 ...state,
                 comparableParcels: payload.comparableParcels,
             }
         case "SET_NEARBY_PARCELS":
-            console.log("SET_NEARBY_PARCELS")
+            //console.log("SET_NEARBY_PARCELS")
             return {
                 ...state,
                 nearbyParcels: payload.nearbyParcels,
             }
 
         case "SET_MEASURE_WIDGET_STATE":
-            console.log("SET_MEASURE_WIDGET_STATE: ", payload.measureWidgetState)
+            //console.log("SET_MEASURE_WIDGET_STATE: ", payload.measureWidgetState)
             return {
                 ...state,
                 measureWidgetState: payload.measureWidgetState,
             }
 
         case "SET_LANGUAGE":
-            console.log("SET_LANGUAGE")
+            //console.log("SET_LANGUAGE")
             return {
                 ...state,
                 language: payload.language,
             }
         case "SET_TRANSLATE_DIALOG_OPEN":
-            console.log("SET_TRANSLATE_DIALOG_OPEN")
+            //console.log("SET_TRANSLATE_DIALOG_OPEN")
             return {
                 ...state,
                 translateDialogOpen: payload.translateDialogOpen,
             }
         case "SET_TRANSLATE_DICTIONARY":
-            console.log("SET_TRANSLATE_DICTIONARY")
+            //console.log("SET_TRANSLATE_DICTIONARY")
             return {
                 ...state,
                 textTranslationDictionary: payload.textTranslationDictionary,
             }
         case "SET_SHOW_MAP_MOBILE":
-            console.log("SET_SHOW_MAP_MOBILE")
+            //console.log("SET_SHOW_MAP_MOBILE")
             return {
                 ...state,
                 showMapMobile: payload.showMapMobile,
             }
         case "SET_MEASURE_WIDGET":
-            console.log("SET_MEASURE_WIDGET")
+            //console.log("SET_MEASURE_WIDGET")
             return {
                 ...state,
                 measureWidget: payload.measureWidget,
             }
         case "SET_IS_QUERYING":
-            console.log("SET_IS_QUERYING")
+            //console.log("SET_IS_QUERYING")
             return {
                 ...state,
                 isQuerying: payload.isQuerying,
             }
         case "SET_MAP_PRINT_PROPS":
-            console.log("SET_MAP_PRINT_PROPS")
+            //console.log("SET_MAP_PRINT_PROPS")
             return {
                 ...state,
                 mapLayout: payload.mapLayout,
@@ -232,20 +232,20 @@ const AppReducer = (state, action) => {
                 mapTitle: payload.mapTitle
             }
         case "SET_COORDINATES":
-            console.log("SET_COORDINATES")
+            //console.log("SET_COORDINATES")
             return {
                 ...state,
                 x: payload.x,
                 y: payload.y,
             }
         case "SET_OPEN_HELP_DIALOG":
-            console.log("SET_OPEN_HELP_DIALOG")
+            //console.log("SET_OPEN_HELP_DIALOG")
             return {
                 ...state, 
                 openHelpDialog: payload.openHelpDialog
             }
         case "SET_SELECT_MULTIPLE":
-            console.log("SET_SELECT_MULTIPLE")
+            //console.log("SET_SELECT_MULTIPLE")
             return {
                 ...state, 
                 selectMultiple: payload.selectMultiple

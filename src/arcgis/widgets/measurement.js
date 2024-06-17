@@ -24,7 +24,7 @@ export async function initializeMeasureWidget(container){
     // measurement.view = view
     // measurement.container = container 
     // measurement.activeTool = 'distance'
-    console.log('measure widget', measurement)  
+    //console.log('measure widget', measurement)  
 
     return measurement
 }

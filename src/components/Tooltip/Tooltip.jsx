@@ -8,7 +8,7 @@ const Tooltip = ({children, isTooltipVisible}) => {
 
     const handleMouseMove = (event) => {
 
-        console.log("mouse moving: ", event)
+        //console.log("mouse moving: ", event)
 
         const { clientX, clientY } = event
 

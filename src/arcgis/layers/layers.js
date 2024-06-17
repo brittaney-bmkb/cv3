@@ -12,7 +12,7 @@ export async function removeLayer(map, name){
    });
 
    if(foundLayers){
-    console.log("Found Layers to Remove: ", foundLayers )
+    //console.log("Found Layers to Remove: ", foundLayers )
       map.remove(foundLayers)
    }
 }
@@ -21,7 +21,7 @@ export async function createFeatureLayerFromFeatures(features, title, theme){
   
   let featuresArray = Array.isArray(features) ? features : [features]
 
-  console.log("features from source: ", featuresArray)
+  //console.log("features from source: ", featuresArray)
 
   let featureGeometry = featuresArray.map(feature => {
     let obj = {}
@@ -50,7 +50,7 @@ export async function createFeatureLayerFromFeatures(features, title, theme){
 
 export const createFeatureLayerFromGraphics = async (source, objectIdField, type, title, theme) => {
 
-  console.log("feature layers from graphics: ", source)
+  //console.log("feature layers from graphics: ", source)
 
   let layer = new FeatureLayer({
     source: source,
@@ -80,7 +80,7 @@ export async function readFeatureLayerData(url, outFields, where, returnGeometry
   query.outFields = ["*"]
 
   let queryResult = await layer.queryFeatures(query)
-  //console.log("data dicationary query result ", queryResult)
+  ////console.log("data dicationary query result ", queryResult)
 
   return queryResult
 }

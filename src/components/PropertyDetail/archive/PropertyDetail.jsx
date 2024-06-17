@@ -24,7 +24,7 @@ const PropertyDetail = ({property, pinLableColor}) => {
 
     useEffect(() => {
 
-        console.log("Property: ", property)
+        //console.log("Property: ", property)
 
     },[property])
 
@@ -75,7 +75,7 @@ const PropertyDetail = ({property, pinLableColor}) => {
     }, [dataDictionary]);
     
     useEffect(() => {
-        console.log("categories: ", categories);
+        //console.log("categories: ", categories);
         const getMuniValue = async () => {
             let muniValue = await returnMunicipality(property)
             setMuni(muniValue)
@@ -134,15 +134,15 @@ const PropertyDetail = ({property, pinLableColor}) => {
         let urlFormatted = url
         let paramsValues = params.split(",")
 
-        console.log("url data attributes: ", attributes)
+        //console.log("url data attributes: ", attributes)
 
         if(attributes){
             paramsValues.map((param) => {
-                console.log("Replacing: ", `{${param}}`)
+                //console.log("Replacing: ", `{${param}}`)
                 urlFormatted = urlFormatted.replace(`{${param}}`, attributes[param])
             })
     
-            console.log("url text: ", text, urlFormatted)
+            //console.log("url text: ", text, urlFormatted)
         }
 
 

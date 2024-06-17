@@ -12,9 +12,9 @@ export async function returnMunicipality(parcel){
 
     let parcelCentroid = parcel.geometry.centroid
 
-    console.log("parcel centroid: ", parcelCentroid)
+    //console.log("parcel centroid: ", parcelCentroid)
 
-    console.log("parcel coordinates: ", parcelCentroid.x, parcelCentroid.y )
+    //console.log("parcel coordinates: ", parcelCentroid.x, parcelCentroid.y )
 
     let point = new Point({
         x: parcelCentroid.x,
@@ -23,7 +23,7 @@ export async function returnMunicipality(parcel){
 
     })
 
-    console.log("New point geometry: ", point)
+    //console.log("New point geometry: ", point)
 
     let query = new Query()
     query.spatialRelationship = "intersects"
@@ -33,7 +33,7 @@ export async function returnMunicipality(parcel){
 
     let { features } = await muniLayer.queryFeatures(query)
 
-    console.log("municipality features ", features)
+    //console.log("municipality features ", features)
 
     let muniValue = features[0].attributes['MUNICIPALITY']
     //let incorp_unincorp = muniValue ? `Incorporated ${muniValue}` : `Unincorporated ${parcel.attributes['township_name']}`
