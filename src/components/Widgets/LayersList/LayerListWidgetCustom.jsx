@@ -180,6 +180,7 @@ const layerListVMCustom = () => {
         }
 
     }, [mapViewScale]);
+
     
     const handleGroupClick = (group) => {
 
