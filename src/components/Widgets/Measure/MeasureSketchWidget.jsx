@@ -24,6 +24,7 @@ const MeasureSketchWidget = () => {
     let [userGeometry, setUserGeometry ] = useState(null); // user created geom in props
     let [selectedValue, setSelectedValue ] = useState(null); //drop down menu 
     let [unitAbbrev, setUnitAbbrev ] = useState(null) // unit abbreviation 
+    let [sketchState, setSketchState ] = useState(null)
 
     const measurementUnitOptions = [
         //TODO this object should be the main object
@@ -221,11 +222,13 @@ const MeasureSketchWidget = () => {
         setSelectedValue(null)
         setUserGeometry(null)
         setUnitAbbrev(null)
+        setSketchState(null)
     }
 
     const completeAllGraphics = async () => {
         //completes all graphics with the done button
         sketchVM.current.complete();
+        setSketchState("complete")
     }
 
     // const checkDropDownAbbrev = (menuValue, abbrevValue) =>{
@@ -283,11 +286,13 @@ const MeasureSketchWidget = () => {
                     // }
                     setUserGeometry(e.graphic.geometry)
                     switchType(geometry);
+                    setSketchState("active")
     
                 }
                 if (e.state === "complete") {
                     console.log('complete state')
                     setUserGeometry(e.graphic.geometry) 
+                    setSketchState("complete")
                     // convertPolyline2Polygon(geometry);
                 }
                 if (
@@ -299,6 +304,7 @@ const MeasureSketchWidget = () => {
                 ) {
                     console.log('rescale state')
                     switchType(geometry);
+                    setSketchState("edit")
                 }
 
             }
@@ -331,14 +337,10 @@ const MeasureSketchWidget = () => {
             const geometry =  e.graphics[0].geometry;
             if (e.state === "start") {
                 switchType(geometry);
+                setSketchState("update")
             }
-            if (e.state === "complete") {
-                //TODO NEED TO REMOVE AND TEST 
-                // console.log("sketch on complete", e)
-                // switchType(geometry);
-                // graphicsLayer.current.remove(graphicsLayer.current.graphics.getItemAt(0));
-            //   measurements.innerHTML = null;
-            }
+
+
             if (
                 e.toolEventInfo &&
                 (e.toolEventInfo.type === "scale-stop" ||
@@ -347,61 +349,10 @@ const MeasureSketchWidget = () => {
                 
             ) {
                 switchType(geometry);
+                setSketchState("edit")
             }
         });
     }    
-    // const checkLatLongArray = (geom) => {
-    //     //checks the first and last points in a line to see if they match. IF they match then the polyline should be
-    //     // converted to a polygon
-    //     let polygonRings = geom.paths[0]
-    //     let firstLat =polygonRings[0][0]
-    //     let firstLon = polygonRings[0][1]
-    //     let lastLat = polygonRings[polygonRings.length -1][0]
-    //     let lastLon = polygonRings[polygonRings.length -1][1]
-    //     let results = (firstLat === lastLat && firstLon === lastLon)
-    //     return results
-    // }
-
-
-    // const convertPolyline2Polygon = (geom) => {
-    //     //converts polyline to polygon and creates the graphic as needed. 
-    //     // colors need to be altered in theme js 
-    //     let isPolygon = checkLatLongArray(geom)
-    //     if (isPolygon){
-    //         const polygon = {
-    //             type:"polygon",
-    //             spatialReference: {
-    //                 wkid: 102671,
-    //                 latestWkid:3436
-    //             },                
-    //             rings:geom.paths[0]
-    //         };
-    //         const simplePolygonSymbol = {
-    //             type: "simple-fill",
-    //             color: theme.measureGraphics.polygon.color,
-    //             outline: {
-    //                 color: theme.measureGraphics.polygonOutline.color,
-    //                 width: theme.measureGraphics.polygonOutline.width,
-    //             },
-    //         };       
-    //         const polygonGraphic = new Graphic({
-    //             geometry: polygon,
-    //             symbol: simplePolygonSymbol
-    //         });
-    //         graphicsLayer.current.removeAll();
-    //         graphicsLayer.current.add(polygonGraphic);
-    //         switchType(polygonGraphic.geometry)
-    //     }
-    // }
-
-    // const simplePolygonSymbol = {
-    //     type: "simple-fill",
-    //     color: theme.measureGraphics.polygon.color,
-    //     outline: {
-    //         color: theme.measureGraphics.polygonOutline.color,
-    //         width: theme.measureGraphics.polygonOutline.width,
-    //     },
-    // };  
 
     const initializeSketchVM = async () =>{
         //initializes the ESRI sketch View Model. 
@@ -493,6 +444,8 @@ const MeasureSketchWidget = () => {
                     flexWrap: 'wrap',
                     justifyContent: 'center'
                 }}>
+
+                { (sketchState !=="complete") ?                     
                     <Button
                         variant="contained"
                         color="primary"
@@ -502,12 +455,14 @@ const MeasureSketchWidget = () => {
                         columnGap:1,
                         width: "40%",
                     }}
+
                         onClick={completeAllGraphics}>   
                             <CalciteIcon icon="check-square"/>
                             <Typography variant="body1">
                                 {translateText("Done")}
                             </Typography>
-                    </Button>  
+                    </Button>    : '' }
+
 
                     <Button
                         variant="contained"
