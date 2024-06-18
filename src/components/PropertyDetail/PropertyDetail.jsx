@@ -36,7 +36,7 @@ function addCommaSeparator(value, type) {
 
 const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) => {
 
-    const { clearResultsComparables, panelWidgetVisible, setPanelWidgetVisibility, screenWidth, dataDictionary, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, translateText, language } = UseAppContext()
+    const { primaryResultFeature, clearResultsComparables, panelWidgetVisible, setPanelWidgetVisibility, screenWidth, dataDictionary, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, translateText, language } = UseAppContext()
 
 
     const [ categories, setCategories ] = useState(null)
@@ -294,7 +294,8 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                         panelContentTitleMain["borderColor"] = color
 
                         //conditional links based on 
-                        let field = data.attributes['field']
+                        let pin14 = property.attributes['PIN14']
+                        let primaryPin14 = primaryResultFeature[0]?.attributes['PIN14']
 
                         return(
                             <Box 
@@ -343,8 +344,10 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                                 fontSize: theme.typography.h3.fontSize,
                                 // justifyContent: "center",
                                 // alignItems:"center",
-                                borderColor:property===property1 ? propertyColor1 : propertyColor2,
-                                color:property===property1 ? propertyColor1 : propertyColor2
+                                borderColor:  pin14 === primaryPin14 ? propertyColor1 : propertyColor2,
+                                color: pin14 === primaryPin14  ? propertyColor1 : propertyColor2,
+                               //borderColor:property===property1 ? propertyColor1 : propertyColor2,
+                                //color:property===property1 ? propertyColor1 : propertyColor2
                             }}
                             >
                                 {property ? 
@@ -355,7 +358,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                                     variant="h5" 
                                     sx={{
                                         width:"100%",
-                                        color: category === "top" && subIndex==0 && property===property1 ? propertyColor1 : category === "top" && subIndex==0 && property===property2 ? propertyColor2: theme.main.text.dark 
+                                        color: category === "top" && subIndex==0 && pin14 === primaryPin14 ? propertyColor1 : category === "top" && subIndex==0 && pin14 !== primaryPin14 ? propertyColor2: theme.main.text.dark 
                                         }}>
                                         {
                                             property?.attributes[data.attributes['field']] && data.attributes['type'] === "text" ? 

@@ -290,10 +290,10 @@ const Search = () => {
                 //console.log("USE EFFECT GENERIC SEARCH: ", routeParams.get("search"))
                 //console.log("USE EFFECT PIN SEARCH: ", routeParams.get("pin"))
                 //console.log("USE EFFECT Address SEARCH: ", routeParams.get("address"))
-                searchWidget.current.searchTerm = null
-                // if(searchWidget.current){
-                //     searchWidget.current.searchTerm = null
-                // }
+                //searchWidget.current.searchTerm = null
+                if(searchWidget.current){
+                    searchWidget.current.searchTerm = null
+                }
             }  
     
             setIsQuerying(false)
