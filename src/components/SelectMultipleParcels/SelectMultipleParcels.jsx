@@ -12,7 +12,7 @@ const descriptions = (state) => {
         case 'click':
             return 'Click in the map to select parcels. Click on a selected parcel to deselect';
         case 'draw':
-            return 'Click points in the map to draw an area and select parcels.';
+            return 'Click points in the map to draw an area and select parcels';
         default:
             return 'Use the tools below to select multiple parcels in the map. You can either click to select or deselect individual parcels or draw an area to select all parcels within it';
     }
@@ -279,7 +279,7 @@ const SelectMultipleParcels = () => {
             tooltipRef.current.padding = '10px'
             tooltipRef.current.style.borderRadius = '15px'
             tooltipRef.current.style.borderColor = 'transparent'
-            tooltipRef.current.style.width = '100px'
+            tooltipRef.current.style.width = '150px'
             tooltipRef.current.style.display = 'flex';
             tooltipRef.current.style.minHeight = "30px"
             // Flexbox styles to center content vertically and horizontally
@@ -377,7 +377,7 @@ const SelectMultipleParcels = () => {
 
             <div ref={tooltipRef} style={{position:"absolute", zIndex:100}}></div>
 
-            <Typography variant="body1" sx={{height: 80}}>
+            <Typography variant="body1" sx={{minHeight: 80}}>
                 {translateText(descriptions(toolDescription))}
             </Typography>
 
@@ -400,7 +400,7 @@ const SelectMultipleParcels = () => {
                 }}
                 onClick={handleSelectClick}
                 >   
-                    <CalciteIcon icon="select"/>
+                    <CalciteIcon icon="touch" scale="s"/>
                     <Typography
                     variant="body1"
                     >
@@ -424,7 +424,7 @@ const SelectMultipleParcels = () => {
                 }}
                 onClick={handleSelectDraw}
                 >   
-                    <CalciteIcon icon="pencil"/>
+                    <CalciteIcon icon="pencil" scale="s"/>
                     <Typography
                     variant="body1"
                     >
