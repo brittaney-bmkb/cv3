@@ -12,7 +12,7 @@ const descriptions = (state) => {
         case 'click':
             return 'Click in the map to select parcels. Click on a selected parcel to deselect';
         case 'draw':
-            return 'Click points in the map to draw an area and select parcels.';
+            return 'Click points in the map to draw an area and select parcels';
         default:
             return 'Use the tools below to select multiple parcels in the map. You can either click to select or deselect individual parcels or draw an area to select all parcels within it';
     }

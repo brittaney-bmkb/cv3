@@ -13,6 +13,7 @@ const Info = () => {
         display="flex"
         flexDirection="column"
         rowGap={2}
+        p={2}
         >
             <Box
             id="welcome-message"
@@ -76,6 +77,30 @@ const Info = () => {
                     </Stack>
                 </Stack>
 
+                <Stack 
+                id="select-multiple"
+                direction="row" 
+                gap={1}>
+                    <Stack direction="column" spacing={1}>
+                    <CalciteIcon icon="touch" scale="m"/>
+                    <CalciteIcon icon="pencil" scale="m"/>
+                    </Stack>
+                    
+                    {/* <Search/> */}
+                    <Stack>
+                    <Typography
+                    variant="body2"
+                    >
+                        {translateText("Select Multiple Parcels")}
+                    </Typography>
+                    <Typography
+                    variant="body1"
+                    >
+                        {translateText("Use the 'Select Multiple Parcels' tool to choose multiple parcels by either clicking in the map or drawing a shape around them", true)}
+                    </Typography>
+                    </Stack>
+                </Stack>
+
                 <Typography
                 variant="h4"
                 color="primary"
@@ -83,11 +108,82 @@ const Info = () => {
                     {translateText("Whats New?")}
                 </Typography>
             </Box>
-                
-            <Accordion
+
+             <Accordion
             defaultExpanded
-        square={true}
-        >
+            square={true}
+            >
+            <AccordionSummary
+            expandIcon={<ExpandMore/>}
+            >   
+            <Stack gap={1}>
+                <Typography
+                variant="body2"
+                >
+                    {translateText("CookViewer 3.0 Beta-3")}
+                </Typography>
+                <Typography>
+                    {translateText("Release: July 05 2024", true)}
+                </Typography>
+            </Stack>
+                
+            </AccordionSummary>
+            <AccordionDetails>
+
+                <Stack gap={2}>
+                    <Typography
+                    variant="body2"
+                    >
+                        {translateText("Enhancements")}
+                    </Typography>
+                    <Stack gap={1}>
+                    <Typography variant="body1">
+                        <span style={{ 
+                            fontWeight: 600,
+                            fontSize:14
+                            }}>{translateText("Measure Widget")} - </span>
+                        {translateText("Users can now measure distance and area using the measure widget")}
+                    </Typography>
+
+                    <Typography variant="body1">
+                        <span style={{ 
+                            fontWeight: 600,
+                            fontSize:14
+                            }}>{translateText("Select Multiple Parcels")} - </span>
+                        {translateText("Users can now select multiple parcels by clicking parcels in the map or drawing a shape around them")}
+                    </Typography>
+
+                    <Typography variant="body1">
+                        <span style={{ 
+                            fontWeight: 600,
+                            fontSize:14
+                            }}>{translateText("Find Parcel Dimensions")} - </span>
+                        {translateText("Users can view parcel dimensions using the Tax Map Viewer application found in the Data and Resources section at the bottom of the property detail")}
+                    </Typography>
+                    </Stack>
+
+                    <Typography
+                    variant="body2"
+                    >
+                        {`${translateText("For more detailed release notes click")} `}
+                        <span>
+                            <Link
+                            target="_blank"
+                            rel="noopener"
+                            href="https://cookviewer3-info-cookcountyil.hub.arcgis.com/"
+                            >
+                               {translateText("here") }
+                            </Link>
+                        </span>
+
+                    </Typography>
+                </Stack>
+            </AccordionDetails>
+            </Accordion>    
+
+            <Accordion
+            square={true}
+            >
             <AccordionSummary
             expandIcon={<ExpandMore/>}
             >   
@@ -169,7 +265,7 @@ const Info = () => {
                     </Typography>
                 </Stack>
             </AccordionDetails>
-        </Accordion>    
+            </Accordion>    
         <Accordion
         square={true}
         
