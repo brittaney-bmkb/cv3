@@ -425,7 +425,7 @@ const MeasureSketchWidget = () => {
                 },         
                 defaultCreateOptions: { hasZ: false },
                 snappingOptions: { // autocasts to SnappingOptions()
-                    distance:8, // snapping tolerance by pixels
+                    distance:5, // snapping tolerance by pixels
                     enabled: true, // global snapping is turned on
                     featureEnabled: false,
                     selfEnabled: true,

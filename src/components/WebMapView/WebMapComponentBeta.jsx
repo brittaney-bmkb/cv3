@@ -635,11 +635,8 @@ const WebMapComponentBeta = () => {
                 }
             }
         }
-
         displaySelectedComparableParcel()
-        
         //addLayerToMap(secondaryResultFeature, "Selected Comparable Parcel", theme.layers.secondarySelected, "features")
-
     }, [ secondaryResultFeature, arcgisMapRef ])
 
     useEffect(() => {
@@ -659,24 +656,23 @@ const WebMapComponentBeta = () => {
                         removeLayer(map, "selectGraphic")
                     }
                 }
+
                 if(!isMeasure || !panelWidgetVisible ){
+                    console.log(isMeasure)
                     const foundGraphicMeasure = findLayerByTitle(map,"measureGraphic")
-                    console.log('check ouit foundGraphicMeasure: ', foundGraphicMeasure)
-    
+                    console.log('check out foundGraphicMeasure: ', foundGraphicMeasure)
+                    
                     if(foundGraphicMeasure){
                         console.log('removing all measure graphics')
                         foundGraphicMeasure.removeAll()
                         removeLayer(map, 'measureGraphic')
                     }
-
                 }
             }
         }
-
         removeAllGraphics()
-
     }, [panelDisplayWidget, panelWidgetVisible, arcgisMapRef.current])
-   
+
     return(
         <Box
         display="flex"
@@ -714,7 +710,7 @@ const WebMapComponentBeta = () => {
 
                 ////console.log("found graphic: ", foundSelectGraphic)
                 console.log("Is Measuring: ", isMeasuring )
-                if((!foundSelectGraphic&& !foundMeasureGraphic) || !selectMultiple || (!isMeasuring)){
+                if((!foundSelectGraphic && !foundMeasureGraphic) || !selectMultiple || (!isMeasuring)){
                     handleHitTest(event)
                 }
                 

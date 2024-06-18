@@ -25,7 +25,7 @@ const areaUnitOptions = [
 // this lifted from comparable property search and will needed to be updated for this widget
 const MeasureWidget = () => {
 
-    const { panelDisplayWidget, setMeasureWidgetState, translateText, setMeasureWidget, panelSecondaryVisible, screenWidth, mapView, setIsMeasuring} = UseAppContext()
+    const { panelDisplayWidget, setMeasureWidgetState, translateText, setMeasureWidget, panelSecondaryVisible, screenWidth, mapView, setIsMeasuring, isMeasuring} = UseAppContext()
     // //use ref for div 
     const measureWidget = useRef(null)
 
@@ -230,6 +230,7 @@ const MeasureWidget = () => {
             //console.log("measure state: ", state);
             if (state && state !== "disabled") {
                 setMeasureWidgetState(true);
+                setIsMeasuring(true);
                 //console.log("State: ", state);
             }
             else{
@@ -263,7 +264,7 @@ const MeasureWidget = () => {
 
 
     const startMeasuring = async (tool) => {
-        setIsMeasuring(true)
+        // setIsMeasuring(true)
         setMeasureWidgetState(true)
         setActiveTool(tool) 
         if( measureWidget.current){
@@ -279,7 +280,12 @@ const MeasureWidget = () => {
                 (state) => {
                     if (state) {
                         if(state !=="disabled"){
+                            
                             setIsMeasuring(true)
+                            console.log('setting set is measured in reactive utils: ', isMeasuring)
+                        } else{
+                            setIsMeasuring(false)
+                            console.log('setting set is measured in reactive utils: ', isMeasuring)
                         }
                         
                         console.log("watch the state:", state)
