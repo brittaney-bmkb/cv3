@@ -81,11 +81,9 @@ const Info = () => {
                 id="select-multiple"
                 direction="row" 
                 gap={1}>
-                    <Stack direction="column" spacing={1}>
-                    <CalciteIcon icon="touch" scale="m"/>
-                    <CalciteIcon icon="pencil" scale="m"/>
-                    </Stack>
-                    
+
+                    <CalciteIcon icon="add-in-new" scale="m"/>
+
                     {/* <Search/> */}
                     <Stack>
                     <Typography
