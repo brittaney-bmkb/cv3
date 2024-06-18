@@ -10,15 +10,27 @@ import LayersOutlinedIcon from '@mui/icons-material/LayersOutlined';
 import GridViewIcon from '@mui/icons-material/GridView';
 import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 import { CalciteIcon } from "@esri/calcite-components-react";
+import { useEffect, useState } from "react";
 
 const MapButtonGroup = () => {
 
-    const { translateText, setPanelWidgetVisibility, setPanelDisplayWidget, screenWidth } = UseAppContext()
+    const { translateText, setPanelWidgetVisibility, setPanelDisplayWidget, screenWidth, mapView, panelDisplay, panelDisplayWidget} = UseAppContext()
     
+    const [ smallMap, setSmallMap ] = useState(null)
+
     const handleClick = (display) =>{
         setPanelWidgetVisibility(true)
         setPanelDisplayWidget(display)
     }
+
+    useEffect(() => {
+
+        console.log("mapView container: ", mapView?.container.offsetWidth )
+        
+        setSmallMap(mapView?.container.offsetWidth < theme.breakpoints.values.md )
+
+    }, [mapView, panelDisplayWidget, panelDisplay])
+
 
     return(
         <Box 
@@ -34,7 +46,7 @@ const MapButtonGroup = () => {
             }}
         // sx={{flexFlow:"wrap", gap: "3px 1px"}}
         >
-            { screenWidth < theme.breakpoints.values.md ?  
+            { screenWidth < theme.breakpoints.values.md || smallMap ?  
             <Box 
             display="flex" 
             flexDirection="row" 

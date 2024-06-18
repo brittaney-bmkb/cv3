@@ -41,7 +41,7 @@ const PanelContent = ({display}) => {
                     <PanelHeader
                         text={"Info"} 
                         primary={true}
-                        divider={true}
+                        //divider={true}
                         closeButton={true}
                         panel={"primary"}
                     />
@@ -63,7 +63,7 @@ const PanelContent = ({display}) => {
                         results={searchFeatures ? searchFeatures.length : 0} 
                         feedbackButton={true}
                         primary={true}
-                        divider={true}
+                        //divider={true}
                     />
 
                     <Box display="flex" flexDirection="column" sx={{ overflowY:"scroll", flexGrow: 1}}>
@@ -113,7 +113,7 @@ const PanelContent = ({display}) => {
                     backButton={screenWidth < theme.breakpoints.values.lg}
                     backButtonComponent={"propertyDetail"}
                     descriptionText={"Complete the comparable search form to view similar properties"}
-                    divider={true}
+                    //divider={true}
                     />
                     <Box  display="flex" flexDirection="column" flexGrow={1} minHeight={0}>
                         <ComparablePropertySearch/>
@@ -135,7 +135,7 @@ const PanelContent = ({display}) => {
                 panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"}
                 backButton={screenWidth < theme.breakpoints.values.lg}
                 backButtonComponent={"propertyDetail"}
-                divider={true}
+                //divider={true}
                 />
                 <Box  display="flex" width="100%">
                     <CompareNearby/>
@@ -156,7 +156,7 @@ const PanelContent = ({display}) => {
                     backButtonComponent={"comparablePropertySearch"}
                     panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"}
                     primary={false}
-                    divider={true}
+                    //divider={true}
                     />
                     <Box display="flex" flexDirection="column" sx={{ overflowY:"scroll"}} flexGrow={1} minHeight={0}>
                         <ResultsList 
@@ -180,7 +180,7 @@ const PanelContent = ({display}) => {
                     backButtonComponent={"nearbyProperties"}
                     panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"}
                     primary={false}
-                    divider={true}
+                    //divider={true}
                     />
                     <Box display="flex" flexDirection="column" sx={{ overflowY:"scroll"}} flexGrow={1} minHeight={0}>
                         <ResultsList 
@@ -252,7 +252,7 @@ const PanelContent = ({display}) => {
                 flexGrow={1} 
                 minHeight={0} 
                 rowGap={1}
-                divider={true}
+                //divider={true}
                 >
                     <PanelHeader 
                         text="Measure"
@@ -273,7 +273,7 @@ const PanelContent = ({display}) => {
                     closeButton={true}
                     descriptionText="Select layers to update the map. Layers that are greyed out are not visible at current map zoom level."
                     panel={"widget"}
-                    divider={true}
+                    //divider={true}
                     />
                     {/* <LayersWidget/> */}
                     <LayerListWidgetCustom/>
@@ -293,7 +293,7 @@ const PanelContent = ({display}) => {
                     closeButton={true}
                     panel={"widget"}
                     descriptionText="Select a basemap from the options below to update the map"
-                    divider={true}
+                    //divider={true}
                     />
                     <BasemapWidget/>
                     {/* <BasemapGallery/> */}
@@ -307,7 +307,7 @@ const PanelContent = ({display}) => {
                 minHeight={0} 
                 width="100%"
                 sx={{boxSizing:"border-box"}}
-                divider={true}
+                //divider={true}
                 >
                     <PanelHeader
                     text="Print"
@@ -327,7 +327,7 @@ const PanelContent = ({display}) => {
                 minHeight={0} 
                 width="100%"
                 sx={{boxSizing:"border-box"}}
-                divider={true}
+                //divider={true}
                 rowGap={2}
                 >
                     <PanelHeader
