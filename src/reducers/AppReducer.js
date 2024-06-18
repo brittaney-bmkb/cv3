@@ -16,7 +16,7 @@ export const initialState = {
     panelDisplay:null,
     panelDisplaySecondary:null,
     panelDisplayWidget:null,
-    panelPrimaryVisible:null,
+    panelPrimaryVisible:true,
     panelSecondaryVisible:null,
     panelWidgetVisible:null,
     dataDictionary:null,
