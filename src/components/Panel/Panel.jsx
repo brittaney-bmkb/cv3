@@ -185,7 +185,7 @@ export const BottomPanel = () => {
 
     const { panelWidgetVisible, panelDisplayWidget } = UseAppContext()
 
-    const widgetDisplayed = ["measureWidget","layersWidget","basemapsWidget","printWidget"].includes(panelDisplayWidget)
+    const widgetDisplayed = ["measureWidget","layersWidget","basemapsWidget","printWidget", "select"].includes(panelDisplayWidget)
 
     return(
         <Slide direction="up" in={panelWidgetVisible} mountOnEnter unmountOnExit>

@@ -41,15 +41,6 @@ export const AppProvider = ({children}) => {
         })
     }
 
-    const setMap = (ref) => {
-        dispatch({
-            type:"SET_MAP",
-             payload: {
-                map: ref,
-            }
-        })
-    }     
-
     const setMapView = (view) => {
         dispatch({
             type:"SET_MAP_VIEW",
@@ -368,7 +359,6 @@ export const AppProvider = ({children}) => {
     //Function to query parcels based on mouse click point
     //in use [v3.0.0-beta.2]
     const queryMapPoint = async (point) => {
-        // #TODO THIS IS MUCKING THINGS UP
         
         // let fields 
         //console.log("Point from click: ", point)
@@ -799,8 +789,6 @@ export const AppProvider = ({children}) => {
         mapContainer: state.mapContainer,
         loadMap,
         setMapContainer,
-        setMap,
-        map: state.map,
         setMapView,
         setMapViewScale,
         mapViewScale: state.mapViewScale,

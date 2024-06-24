@@ -13,7 +13,7 @@ import { useRef, useEffect, useState } from "react";
 import MenuBar from "./MenuBar";
 import UseAppContext from "../../contexts/AppContext";
 import TranslateMenu from "./TranslateMenu";
-import { FeedbackExtended, FeedbackGeneral } from "../Feedback/Feedback";
+import { FeedbackExtended, FeedbackGeneral } from "../FeedBack/Feedback";
 
 import HelpDialog from "../HelpDialog/HelpDialog";
 import ExportDialog from "../ExportDialog/ExportDialog";

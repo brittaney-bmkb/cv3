@@ -78,13 +78,13 @@ const MeasureWidget = () => {
                 if(!measureWidget.current){
                     //console.log("initializing new measure widget startup")
                     measureWidget.current = new Measurement({
-                        view:mapView,
+                        view:view,
                         activeTool: activeTool,
                         areaUnit:"square-us-feet",
                         linearUnit: "us-feet",
                         label:"measureGraphic",
                         viewModel:{
-                            view:mapView,
+                            view:view,
                             activeTool:activeTool,
                             areaUnit: "square-us-feet",
                             linearUnit: "us-feet",
@@ -337,18 +337,6 @@ const MeasureWidget = () => {
         }
         
     }
-    // var operationalLayers = map.webMapResponse.itemData.operationalLayers;
-
-    // console.log(mapView.map.layers.items)
-    // console.log(Object.keys(mapView))
-
-    // Iterate through each layer in the map
-    // mapView.map.layers.forEach(function(layer) {
-    //     // Log the layer name and type
-    //     console.log("Layer Name: " + layer.title);
-    //     console.log("Layer Type: " + layer.type);
-    //     console.log("Layer : " + layer.layerObject.setSelectionEnabled);
-    // });
 
 
     return (
@@ -376,7 +364,7 @@ const MeasureWidget = () => {
                 /> 
 
                 <StyledButtonFilledPrimary
-                    variant={activeTool === 'area' ? 'contained' : 'outlined'}
+                    //variant={activeTool === 'area' ? 'contained' : 'outlined'}
                     color="primary"
                     startIcon={<SquareFootOutlinedIcon/>}
                     text={translateText('Area')}

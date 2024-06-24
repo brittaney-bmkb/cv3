@@ -237,6 +237,7 @@ const WebMapComponentBeta = () => {
         else{
             features = fetchedFeatures
         }
+        
         setPrimaryResultFeature(features, false)
         setSearchResults(null, features, null, features)
 
@@ -374,7 +375,7 @@ const WebMapComponentBeta = () => {
                 else if (selectedParcelsPrimary && selectedComparableDetected.length === 0){
 
                     if(selectedGraphicsDetected.length === 0){
-                        ////console.log("selected parcels not clicked")
+                        console.log("selected parcels not clicked")
                         await removeAllFeatures(selectedParcelsPrimary)
                         await addFeatures(response.results)
                         
@@ -394,11 +395,11 @@ const WebMapComponentBeta = () => {
 
                         const showParcelDetail = searchFeatures.filter(feature => clickedParcelObjIds.includes(feature.attributes["OBJECTID"]))
                         
-                        ////console.log("showParcelDetail: ", showParcelDetail)
+                        console.log("showParcelDetail: ", showParcelDetail)
 
                         if(showParcelDetail.length > 0){
                             
-                            let features = searchFeatures.filter(feature => !clickedParcelObjIds.includes(feature.attributes['OBJECTID']))
+                            //let features = searchFeatures.filter(feature => !clickedParcelObjIds.includes(feature.attributes['OBJECTID']))
 
                             ////console.log("remove features: ", features)
                             
@@ -650,12 +651,13 @@ const WebMapComponentBeta = () => {
         const removeAllGraphics = () => {
 
             if(arcgisMapRef.current?.map){
-                const isMeasure = panelDisplayWidget === "measureWidget"
+                const isMeasure = panelDisplayWidget === "measure"
                 const isSelect = panelDisplayWidget === "sketch"
                 const map = arcgisMapRef.current.map
-
+    
                 if(!isSelect || !panelWidgetVisible){
                     //remove all select graphics
+    
                     const foundGraphic = findLayerByTitle(map,"selectGraphic")
                     
                     if(foundGraphic){
@@ -731,9 +733,9 @@ const WebMapComponentBeta = () => {
                 if( !foundSelectGraphic  || !selectMultiple || !measureWidgetState ){
                     // console.log("The if block executes because one of the conditions is falsy.");
                     handleHitTest(event)
-                } 
+                }
                 
-                
+
             }
         }}
         // onArcgisViewPointerMove={}

@@ -191,6 +191,9 @@ const Search = () => {
     useEffect(() => {
 
         const updateURLParams = async () => {
+
+
+
             setIsQuerying(true)
             let searchString = routeParams.get("search")
             let primaryInSearchFeature
@@ -236,12 +239,27 @@ const Search = () => {
                 
                 // if(searchWidget.current && ![attributes["PIN10"], attributes["PIN14"], `${attributes["street_address"]}, ${attributes["city_state_zip"]}`].includes(searchWidget.current.searchTerm)){
                 //     let urlParamKey = Object.keys(param)
+                //     let pin = urlParamKey.includes("pin")
+                    
+                //     let searchTermEntered = searchWidget.current.searchTerm
+                //     searchTermEntered = searchTermEntered.toLowerCase()
 
-                //     //searchWidget.current.searchTerm = urlParamKey.includes("pin10") || urlParamKey.includes("pin14") ? null :  paramValue
+                //     if(pin && attributes["street_address"].toLowerCase().startsWith(searchTermEntered)){
+                //         return
+                //     }
+                //     else{
+                //         searchWidget.current.searchTerm = null
+                //     }
+                //     //searchWidget.current.searchTerm.startwith(pin}
+
+                    
                 //     //searchWidget.current.searchTerm = paramValue
                 // }
-                    //}
-                //}
+
+                if(primaryResultFeature && !newSearch ){
+                    searchWidget.current.searchTerm = null
+                }
+   
                 
             }
             else if(primaryResultFeature && newSearch === true && searchString){
@@ -272,10 +290,10 @@ const Search = () => {
                 //console.log("USE EFFECT GENERIC SEARCH: ", routeParams.get("search"))
                 //console.log("USE EFFECT PIN SEARCH: ", routeParams.get("pin"))
                 //console.log("USE EFFECT Address SEARCH: ", routeParams.get("address"))
-    
-                // if(searchWidget.current){
-                //     searchWidget.current.searchTerm = null
-                // }
+                //searchWidget.current.searchTerm = null
+                if(searchWidget.current){
+                    searchWidget.current.searchTerm = null
+                }
             }  
     
             setIsQuerying(false)

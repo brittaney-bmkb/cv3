@@ -3,7 +3,6 @@ import { config } from "../data/config"
 export const initialState = {
 
     //MAP
-    map:null, 
     mapView:null,
     mapViewScale:null,
     mapContainer:null,
@@ -17,7 +16,7 @@ export const initialState = {
     panelDisplay:null,
     panelDisplaySecondary:null,
     panelDisplayWidget:null,
-    panelPrimaryVisible:null,
+    panelPrimaryVisible:true,
     panelSecondaryVisible:null,
     panelWidgetVisible:null,
     dataDictionary:null,
