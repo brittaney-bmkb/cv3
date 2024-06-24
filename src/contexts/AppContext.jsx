@@ -102,14 +102,7 @@ export const AppProvider = ({children}) => {
         })
     }
     
-    const setIsMeasuring = async (measuring) => {
-        dispatch({
-            type:"SET_IS_MEASURING",
-             payload: {
-                isMeasuring: measuring,
-            }
-        })
-    }
+
 
     const setSearchSources = async (searchSources) => {
         dispatch({
@@ -311,6 +304,8 @@ export const AppProvider = ({children}) => {
             }
         })
     }
+
+
 
 
 
@@ -885,9 +880,6 @@ export const AppProvider = ({children}) => {
         setComparableType,
         comparableType: state.comparableType,
         returnFeaturesByPin10Pin14,
-        setIsMeasuring,
-        isMeasuring: state.isMeasuring,
-        
     }
 
     // useEffect( () => {

@@ -20,7 +20,7 @@ import Sketch from "@arcgis/core/widgets/Sketch.js";
 //// https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch.html
 //// https://community.esri.com/t5/arcgis-javascript-maps-sdk-questions/how-to-convert-a-line-to-polygon-in-js-api-4-x/m-p/420334#M38612
 //// https://community.esri.com/t5/arcgis-javascript-maps-sdk-questions/getting-geodesic-area-ve/td-p/121084 // negative values 
-//// 
+
 
 
 export const linearUnitOptions = [

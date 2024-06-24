@@ -1,507 +1,275 @@
-
-import { Box, Button, Typography, Stack, Divider, InputLabel , FormControl, NativeSelect   } from "@mui/material"
+import { Box, MenuItem, Select, Typography, Divider } from "@mui/material"
 import UseAppContext from "../../../contexts/AppContext"
 import { useEffect, useRef, useState } from "react"
-import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer.js";
-import Graphic from "@arcgis/core/Graphic.js";
-import * as geometryEngine from "@arcgis/core/geometry/geometryEngine.js";
-import SketchViewModel from "@arcgis/core/widgets/Sketch/SketchViewModel.js";
-import { CalciteIcon } from "@esri/calcite-components-react";
 import { theme } from "../../../theme";
-import { ContactEmergency } from "@mui/icons-material";
 
-//270-measure-widget-redesign-polygon-polyline
+import StraightenOutlinedIcon from '@mui/icons-material/StraightenOutlined';
+import SquareFootOutlinedIcon from '@mui/icons-material/SquareFootOutlined';
+import StyledButtonFilledPrimary, { StyledPanelButton } from "../../Button/Button";
+import Measurement from "@arcgis/core/widgets/Measurement.js";
+import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
+
+export const linearUnitOptions = [ "feet", "yards", "miles", "meters", "kilometers" ]
+
+const areaUnitOptions = [ "square-feet", "square-inches", "square-yards", "square-miles", "square-meters", "square-kilometers", "acres" ]
 
 const MeasureViewModelWidget = () => {
-    
-    const { mapView, translateText  } = UseAppContext()
-    const graphicsLayer = useRef(null) // ESRI graphics
-    let sketchVM = useRef(null) //ESRI sketchVM
-    const [activeTool, setActiveTool] = useState(null) // active tool plyline or polygon 
-    let [areaMeasurement, setAreaMeasurement] = useState(null) //polygon unit area
-    let  [linearMeasurement, setLinearMeasurement] = useState(null) // line unit length 
-    let [userGeometry, setUserGeometry ] = useState(null); // user created geom in props
-    let [selectedValue, setSelectedValue ] = useState(null); //drop down menu 
-    let [unitAbbrev, setUnitAbbrev ] = useState(null) // unit abbreviation 
 
-    const measurementUnitOptions = [
-        //TODO this object should be the main object
-        { key: 'feet',              value: 'ft', label: translateText("feet")  },
-        { key: 'yards',             value: 'yd', label: translateText("yards") },
-        { key: 'miles',             value: 'mi', label: translateText("miles") },
-        { key: 'meters',            value: 'm',  label: translateText("meters") },
-        { key: 'kilometers',        value: 'km', label: translateText("kilometers") },
-        { key: 'acres',             value: 'ac', label: translateText("acres") },
-        { key: 'square-feet',       value: 'ft', label: translateText("square-feet"),       superscript: <sup>2</sup> },
-        { key: 'square-meters',     value: 'm',  label: translateText("square-meters"),     superscript: <sup>2</sup> },
-        { key: 'square-yards',      value: 'yd', label: translateText("square-yards"),      superscript: <sup>2</sup> },
-        { key: 'square-kilometers', value: 'km', label: translateText("square-kilometers"), superscript: <sup>2</sup> },
-        { key: 'square-miles',      value: 'mi', label: translateText("square-miles"),      superscript: <sup>2</sup> }            
-    ]
+    const { panelDisplayWidget, panelSecondaryVisible, measureWidgetState, setMeasureWidget, setMeasureWidgetState, translateText,  screenWidth, mapView } = UseAppContext()
 
-    const unitMeasurementAbbrev = (stringToCheck) => {
+    const measureWidget = useRef(null)
+    const [areaUnit, setAreaUnit] = useState(areaUnitOptions[0])
+    const [linearUnit, setLinearUnit] = useState(linearUnitOptions[0])
+    const [measurementValue, setMeasurementValue] = useState(0)
+    const [activeTool, setActiveTool] = useState(null)
 
-        const matchedOption = measurementUnitOptions.find(option => 
-            stringToCheck === option.key
-        );
+    // useEffect(() => {
+    //     setActiveTool(null)
+    //     setMeasurementValue(0)
+    // },[])
 
-        if (matchedOption) {
-            setUnitAbbrev(
-                <span>
-                    {matchedOption.value} {matchedOption.superscript ? matchedOption.superscript : ''}
-                </span>
-            );
-        } 
-    }
+    // useEffect(() => {
+    //     setMeasurementValue(0)
+    //     setActiveTool(null)
 
-    const handleChange = (e) => {
-        // setSelectedValue(e.target.value)
-        unitMeasurementAbbrev(e.target.value)
-        
-        if (activeTool==='polygon'){
-            getArea(userGeometry, e.target.value)
-        } else{
-            getLength(userGeometry, e.target.value)
-        }
-    }
-
-    const DropDownUnitMeasurement = () => {
-        // measurementUnitOptions should be the main object
-
-        // this function controls the drop down menu and handles the change for unit abbrv and 
-        // the unit calculation. 
-        
-        const linearUnitOptions = [
-            {value: 'feet', label: translateText("feet") },
-            {value: 'yards', label: translateText("yards") },
-            {value: 'miles', label: translateText("miles") },
-            {value: 'meters', label: translateText("meters") },
-            {value: 'kilometers', label: translateText("kilometers") }
-        ]
-
-        const areaUnitOptions = [
-            {value: 'acres', label: translateText("acres") },
-            {value: 'square-feet', label: translateText("square-feet")  },
-            {value: 'square-meters', label: translateText("square-meters") },
-            {value: 'square-yards', label: translateText("square-yards") },
-            {value: 'square-kilometers', label: translateText("square-kilometers") },
-            {value: 'square-miles', label: translateText("square-miles") }
-        ]
-
-        return(            
-            activeTool === null ? (null) : (
-                <Stack direction="column" spacing={2}>
-                    <Box component="section" >
-                        {activeTool == "polyline" ? 
-                            <span><Typography variant="h3"> {translateText("Length")}: {linearMeasurement} {unitAbbrev}</Typography> </span> : 
-                            <span><Typography variant="h3"> {translateText("Area")}: {areaMeasurement} {unitAbbrev}</Typography> </span> }   
-                    </Box>
-                    <FormControl size='small'>
-                    <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                        <Typography variant="subtitle2">{translateText("Unit of Measurement")}</Typography>
-                    </InputLabel>
-                        <NativeSelect
-                            inputProps={{
-                            name: 'unitType',
-                            id: 'unit-measure-select',
-                            }}
-                            value={selectedValue}
-                            onChange={handleChange}
-                        >
-                            {activeTool ==="polygon" ? (
-                                    areaUnitOptions.map((measureUnitOptions)  => (
-                                        <option key={measureUnitOptions.value} value={measureUnitOptions.value}>
-                                            {measureUnitOptions.label}
-                                        </option>
-                                    )) 
-                                ) : (
-                                    linearUnitOptions.map((measureUnitOptions)  => (
-                                        <option key={measureUnitOptions.value} value={measureUnitOptions.value}>
-                                            {measureUnitOptions.label}
-                                        </option>
-                                    )) 
-                                )
-                            }
-                        </NativeSelect>            
-                    </FormControl>        
-                </Stack>
-            )
-        )
-    }
-
-
-
-    const getPositiveNumber = (negativeNumber) => {
-        const positiveNumber = (negativeNumber < 0) ? -negativeNumber : negativeNumber;
-        return positiveNumber.toFixed(2)
-    }
-    
-    const getArea = (polygon) => {
-        console.log("Get area: ", polygon, selectedValue)
-        const planarArea = geometryEngine.planarArea(polygon, selectedValue);
-        const planarAreaPositive = getPositiveNumber(planarArea);
-        setAreaMeasurement(planarAreaPositive) //todo add this back to props       
-        return planarAreaPositive
-    }
-    
-    const getLength= (line) =>{
-        console.log("Get length: ", line, selectedValue)
-        const planarLength = geometryEngine.planarLength(line, selectedValue);
-        const planarLengthPositive = getPositiveNumber(planarLength)
-        setLinearMeasurement(planarLengthPositive) //todo add this back to props 
-        return planarLengthPositive
-    }
-    
-    function switchType(geom) {
-        console.log("Check out geom type",geom.type);
-        //switches between polyline and polygon and sets props as needed to reflect in widget
-        switch (geom.type) {
-            
-            case "polygon":
-                setActiveTool(geom.type);
-                setUserGeometry(geom)
-                // setSelectedValue('square-meters')  
-                // unitMeasurementAbbrev('square-meters')
-                getArea(geom);
-                break;
-            case "polyline":
-                setActiveTool(geom.type);
-                setUserGeometry(geom)
-                // setSelectedValue('meters')
-                // unitMeasurementAbbrev('meters')
-                getLength(geom);
-                break;
-            default:
-                console.log("No value found");
-        }
-    }    
-    
-    const createGraphicLayer = async () => {
-        //creates the graphic needed to be added in the map. 
-        graphicsLayer.current = new GraphicsLayer({
-            title:"measureGraphic" // makes is searchable for WebMapComponentBeta to clear when widget not in use and for hittest to not occur
-        })
-        mapView.map.add(graphicsLayer.current)
-    }
-
-    const removeAllGraphics = async () => {
-        //removes all graphics and set props to null as if in a new session 
-        graphicsLayer.current.removeAll();
-        setActiveTool(null)       
-        setAreaMeasurement(null)
-        setLinearMeasurement(null)
-        setSelectedValue(null)
-        setUserGeometry(null)
-        setUnitAbbrev(null)
-    }
-
-    const completeAllGraphics = async () => {
-        //completes all graphics with the done button
-        sketchVM.current.complete();
-    }
-
-    // const checkDropDownAbbrev = (menuValue, abbrevValue) =>{
-    //     //levaing in this function for posterity but may not be needed. 
-    //     // console.log('Inside Console Log', abbrevValue)
-    //     // menuValue is key in object
-    //     // abbrevValue is value  in object. WE want this key in order to set it in the drop down. 
-
-    //     // measurementUnitOptions.some(option => option.value === value && option.key === key);
-    //     // if (!abbrevValue){
-    //         const menuValueOption = measurementUnitOptions.find(option => menuValue === option.key );
-    //         const abbrevValueOption = measurementUnitOptions.find(option => abbrevValue === option.value );
-
-    //         if (menuValueOption.key === abbrevValueOption.key ){
-    //             setSelectedValue(abbrevValueOption.key)
-    //         }
-    
-    //         console.log('menuValueOption',menuValueOption)
-    //         console.log('abbrevValueOption',abbrevValueOption)
-
-    //     // }
-
-
-    // }
-
-    const startMeasuring = async (geom_type) => {
-        
-        // heart of the widget, controls all creation and update of a polyline/polygon
-        // from here the majority of functions are altered. 
-        if(!graphicsLayer.current){ await createGraphicLayer() }
-        await initializeSketchVM()
-
-        
-
-        if (sketchVM.current.state ==='active'){
-            sketchVM.current.cancel()
-
-        } else{
-            removeAllGraphics()
-            console.log("Currently selected value: ", selectedValue)
-            sketchVM.current.create(geom_type); // polygon || polyline
-        }
-
-        sketchVM.current.on("create", (e) => {
-            if (e.graphic){
-                let geometry =  e.graphic.geometry;
-                setUserGeometry(geometry)
-                
-                if (e.state === "active") {
-                    // if (activeTool==='polygon'){
-                    //     setSelectedValue('square-meters')  
-                    //     unitMeasurementAbbrev('square-meters')
-                    // } else{
-                    //     setSelectedValue('meters')  
-                    //     unitMeasurementAbbrev('meters')
-                    // }
-
-                    setUserGeometry(e.graphic.geometry)
-                    switchType(geometry);
-    
-                }
-                if (e.state === "complete") {
-                    console.log('complete state')
-                    setUserGeometry(e.graphic.geometry) 
-                    // convertPolyline2Polygon(geometry);
-                }
-                if (
-                    e.toolEventInfo &&
-                    (e.toolEventInfo.type === "scale-stop" ||
-                    e.toolEventInfo.type === "reshape-stop" ||
-                    e.toolEventInfo.type === "move-stop")
-                    
-                ) {
-                    console.log('rescale state')
-                    switchType(geometry);
-                }
-
-            }
-
-
-        });
-        
-        // useEffect(() => {
-        //     const updateUnitType  = () => {
-        //         if (activeTool==='polygon'){
-        //             setSelectedValue('square-meters')  
-        //             unitMeasurementAbbrev('square-meters')
-        //         } else{
-        //             setSelectedValue('meters')  
-        //             unitMeasurementAbbrev('meters')
-        //         }
-        //     }
-        //     updateUnitType()
-
-        //     // return () => {
-        //     //   window.removeEventListener('resize', handleResize);
-        //     //   //window.removeEventListener('resize', resizeOps);
-        //     // };
-        
-        //     //window.innerHeight
-        //   }, [selectedValue, unitAbbrev, activeTool]);
-
-
-        sketchVM.current.on("update", (e) => {
-            const geometry =  e.graphics[0].geometry;
-            if (e.state === "start") {
-                switchType(geometry);
-            }
-            if (e.state === "complete") {
-                //TODO NEED TO REMOVE AND TEST 
-                // console.log("sketch on complete", e)
-                // switchType(geometry);
-                // graphicsLayer.current.remove(graphicsLayer.current.graphics.getItemAt(0));
-            //   measurements.innerHTML = null;
-            }
-            if (
-                e.toolEventInfo &&
-                (e.toolEventInfo.type === "scale-stop" ||
-                e.toolEventInfo.type === "reshape-stop" ||
-                e.toolEventInfo.type === "move-stop")
-                
-            ) {
-                switchType(geometry);
-            }
-        });
-    }    
-    // const checkLatLongArray = (geom) => {
-    //     //checks the first and last points in a line to see if they match. IF they match then the polyline should be
-    //     // converted to a polygon
-    //     let polygonRings = geom.paths[0]
-    //     let firstLat =polygonRings[0][0]
-    //     let firstLon = polygonRings[0][1]
-    //     let lastLat = polygonRings[polygonRings.length -1][0]
-    //     let lastLon = polygonRings[polygonRings.length -1][1]
-    //     let results = (firstLat === lastLat && firstLon === lastLon)
-    //     return results
-    // }
-
-
-    // const convertPolyline2Polygon = (geom) => {
-    //     //converts polyline to polygon and creates the graphic as needed. 
-    //     // colors need to be altered in theme js 
-    //     let isPolygon = checkLatLongArray(geom)
-    //     if (isPolygon){
-    //         const polygon = {
-    //             type:"polygon",
-    //             spatialReference: {
-    //                 wkid: 102671,
-    //                 latestWkid:3436
-    //             },                
-    //             rings:geom.paths[0]
-    //         };
-    //         const simplePolygonSymbol = {
-    //             type: "simple-fill",
-    //             color: theme.measureGraphics.polygon.color,
-    //             outline: {
-    //                 color: theme.measureGraphics.polygonOutline.color,
-    //                 width: theme.measureGraphics.polygonOutline.width,
-    //             },
-    //         };       
-    //         const polygonGraphic = new Graphic({
-    //             geometry: polygon,
-    //             symbol: simplePolygonSymbol
-    //         });
-    //         graphicsLayer.current.removeAll();
-    //         graphicsLayer.current.add(polygonGraphic);
-    //         switchType(polygonGraphic.geometry)
+    //     if(measureWidget.current){
+    //         console.log("Checking use Efeect in measure")
+    //         measureWidget.current.clear()
     //     }
+        
+    // },[panelSecondaryVisible, panelDisplayWidget, measureWidget.current])
+
+
+    useEffect(() => {
+        const createmeasureWidget = async () => {
+                if(!measureWidget.current){
+                    measureWidget.current = new Measurement({
+                        view:mapView,
+                        activeTool: activeTool,
+                        areaUnit:"square-us-feet",
+                        linearUnit: "us-feet",
+                        label:"measureGraphic",
+                        viewModel:{
+                            view:mapView,
+                            activeTool:activeTool,
+                            areaUnit: "square-us-feet",
+                            linearUnit: "us-feet",
+                        }, 
+                        title: "measureGraphic",
+                    })
+                    setMeasureWidget(measureWidget.current)
+                }
+            }          
+        createmeasureWidget();
+    }, []);
+
+    useEffect(() => {
+        const watcher = reactiveUtils.watch(
+            () => measureWidget.current?.viewModel?.activeViewModel?.measurementLabel,
+            (label) => {
+                if (label) {
+                    if (label?.area) {
+                        // console.log( "active tool: ", activeTool, "Area: ", label.area, "Perimeter: ", label.perimeter );
+                        setMeasurementValue(label.area)
+                    } else {
+                        // console.log( "active tool: ", activeTool, "Distance: ", label );
+                        setMeasurementValue(label);
+                    }
+                }
+            }
+        );
+    
+        const unitWatcher = reactiveUtils.watch(
+            () => measureWidget.current?.viewModel?.activeViewModel?.unit,
+            (unit) => {
+                if (unit) {
+                    let measurementLabel = measureWidget.current?.viewModel?.activeViewModel?.measurementLabel;
+                    if (measurementLabel?.area) {
+                        // console.log( "Area: ", measurementLabel.area, "Perimeter: ", measurementLabel.perimeter );
+                        setMeasurementValue(measurementLabel.area);
+                    } else {
+                        // console.log( "Distance: ", measurementLabel );
+                        setMeasurementValue(measurementLabel);
+                    }
+                }
+            }
+        );
+        // Cleanup function
+        return () => {
+            watcher.remove();
+            unitWatcher.remove();
+            // stateWatcher.remove();
+            // Reset measurementValue and activeTool to their initial values
+        };
+    }, [measureWidget.current]);
+
+    useEffect(() => {
+        const setAreaToolMeasure = () => {
+            if(activeTool === "area"){
+                measureWidget.current.areaUnit = areaUnit
+            }
+            if(activeTool === "distance"){
+                measureWidget.current.linearUnit = linearUnit
+            }
+        }
+        setAreaToolMeasure()
+    }, [areaUnit, linearUnit, activeTool])
+
+    // const completeAllGraphics = async () => {
+    //     console.log("Not going to happen. ESRI does not provide method outside of double click.")
     // }
 
-    // const simplePolygonSymbol = {
-    //     type: "simple-fill",
-    //     color: theme.measureGraphics.polygon.color,
-    //     outline: {
-    //         color: theme.measureGraphics.polygonOutline.color,
-    //         width: theme.measureGraphics.polygonOutline.width,
-    //     },
-    // };  
 
-    const initializeSketchVM = async () =>{
-        //initializes the ESRI sketch View Model. 
-        if(!sketchVM.current){
-            sketchVM.current = new SketchViewModel({
-                view: mapView,
-                layer: graphicsLayer.current, 
-                creationMode:"continuous",
-                polylineSymbol: {
-                    type: "simple-line",
-                    color: theme.measureGraphics.line.color,
-                    width: theme.measureGraphics.line.width
-                },
-                polygonSymbol: {
-                    type: "simple-fill",
-                    color: theme.measureGraphics.polygon.color,
-                    outline: {
-                        color: theme.measureGraphics.polygonOutline.color,
-                        width: theme.measureGraphics.polygonOutline.width,
-                    },
-                },         
-                defaultCreateOptions: { hasZ: false },
-                snappingOptions: { // autocasts to SnappingOptions()
-                    distance:8, // snapping tolerance by pixels
-                    enabled: true, // global snapping is turned on
-                    featureEnabled: false,
-                    selfEnabled: true,
-                    // assigns a collection of FeatureSnappingLayerSource() and enables feature snapping on this layer
-                    // featureSources: [{ layer: graphicsLayer.current, enabled: true }]
-                }        
-            }) 
+    const handleUnitChange = (event) => {
+        if(activeTool === "area"){
+            setAreaUnit(event.target.value)
+        }
+        if(activeTool === "distance"){
+            setLinearUnit(event.target.value)
+        }  
+    }
+
+    const clearMeasurement = () => {
+        
+        if( measureWidget.current){
+            measureWidget.current.clear()
+            setMeasurementValue(0)
+            setActiveTool(null)  
+            setAreaUnit(areaUnitOptions[0])
+            setLinearUnit(linearUnitOptions[0])
+        }
+    }
+
+
+    const startMeasuring = async (tool) => {
+        // setMeasureWidgetState(true)
+        setActiveTool(tool) 
+        if( measureWidget.current){
+            await measureWidget.current.when()
+            measureWidget.current.activeTool = tool
+            setMeasurementValue(0)
+            await measureWidget.current.when()
+            measureWidget.current.startMeasurement()
+
+            // measureWidget.current.viewModel.title  = "measureGraphic"
+            // measureWidget.current.title  = "measureGraphic"
+
+            reactiveUtils.watch(
+                () => measureWidget.current?.viewModel?.activeViewModel?.state,
+                (state) => {
+                    if (state) {
+                        if(state && state !=="disabled"){
+                            setMeasureWidgetState(true)
+                        }
+                        else{
+                            setMeasureWidgetState(false)
+                        }
+                    }
+                }
+            );   
         }
     }
 
     return (
-        <Box display="flex" flexDirection="column"  rowGap={1}>
+        <Box 
+        id="MEASURECONTAINER" 
+        display="flex" 
+        width="100%"  
+        height= "auto" 
+        flexDirection="column" 
+        justifyContent="center" 
+        alignContent="center"
+        rowGap={2}
+        >
+            <Divider />
+            <Typography align="center" variant="body1"> {translateText("Start by selecting a measure tool.")} </Typography>
+            <Box display="flex" flexDirection="row" gap={1} sx={{justifyContent:"center"}}>
+                <StyledButtonFilledPrimary
+                    color="primary"
+                    startIcon={<StraightenOutlinedIcon/>}
+                    text={translateText('Distance')}
+                    textVarient={"body2"}
+                    active={activeTool === "distance" ? true: false}
+                    onClick={() => startMeasuring("distance")}
+                /> 
+
+                <StyledButtonFilledPrimary
+                    variant={activeTool === 'area' ? 'contained' : 'outlined'}
+                    color="primary"
+                    startIcon={<SquareFootOutlinedIcon/>}
+                    text={translateText('Area')}
+                    textVarient={"body2"}
+                    active={activeTool === "area" ? true: false}
+                    onClick={() => startMeasuring("area")}
+                /> 
+
+            </Box>
+            <Typography align="center" variant="body1"> {translateText("Click in the map to set your first point. Double click to stop measuring")} </Typography>
 
             <Divider />
 
-            <Stack 
-                direction="row" spacing={2}
-                useFlexGap 
-                sx={{  
-                    flexWrap: 'wrap',
-                    justifyContent: 'center'
-                }}>
+            <Box display="flex" flexDirection={screenWidth <= theme.breakpoints.values.md ? "row" : "column" } rowGap={2} columnGap={2} width="100%">
+                <Box display="flex" flex={2} flexDirection="row" alignItems="center" columnGap={1} width="100%" justifyContent="space-between">
+                    <Typography variant="h5" sx={{ width: screenWidth <= theme.breakpoints.values.md ? "auto" : 75,  display:"flex"}}>{translateText("Unit")}</Typography>
+                    <Select
+                        disabled = {!activeTool}
+                        id="unit-selector"
+                        value={activeTool && activeTool === "area" ? areaUnit : linearUnit}
+                        onChange={handleUnitChange}
+                        sx={{height:30, display:"flex", flex:2}}
+                    >
+                        {
+                            activeTool === "area" ? areaUnitOptions.map((unit) => (
+                                <MenuItem key={unit} value={unit}>{translateText(unit)}</MenuItem>
+                            ))
+                            :
+                            linearUnitOptions.map((unit) => (
+                            <MenuItem key={unit} value={unit}>{translateText(unit)}</MenuItem>
+                            ))
+                        }
+                        
+                    </Select>
+                </Box>
 
-                <Button
-                    variant="contained"
-                    color="primary"
-                    sx={{textTransform:"none", 
-                    display:"flex", 
-                    flexDirection:"row", 
-                    columnGap:1,
-                    width: "40%",
-                }}
-                    onClick={() => {startMeasuring("polyline")} }>   
-                        <CalciteIcon icon="measure-line"/>
-                        <Typography variant="body1">
-                            {translateText("Distance")}
-                        </Typography>
-                </Button>
+                
 
-                <Button
-                    variant="contained"
-                    color="primary"
-                    sx={{textTransform:"none", 
-                    display:"flex", 
-                    flexDirection:"row", 
-                    columnGap:1,
-                    width: "40%",
-                }}
-                    onClick={() => {startMeasuring("polygon")} }>   
-                        <CalciteIcon icon="measure-area"/>
-                        <Typography variant="body1">
-                            {translateText("Area")}
-                        </Typography>
-                </Button>                
+                <Box display="flex" flex={3} flexDirection="row" columnGap={1} alignItems="center" justifyContent="space-between">
+                    <Typography variant="h5" sx={{ width: screenWidth <= theme.breakpoints.values.md ? "auto" : 75,  display:"flex"}}>{translateText(activeTool === 'area' ? "Area" : "Distance")}</Typography>
+                    <Box 
+                    display="flex"
+                    alignItems="center"
+                    sx={{border: 1, borderColor: theme.palette.info.light, borderRadius:5, height:30, flex:3}}>
+                        <Typography pl={2}>{measurementValue ?? 0}</Typography>
+                    </Box>
 
-            </Stack>
+                    <StyledButtonFilledPrimary
+                        //variant={activeTool === 'area' ? 'contained' : 'outlined'}
+                        color="primary"
+                        width="auto"
+                        text={translateText('Clear')}
+                        textVarient={"body2"}
+                        
+                        onClick={() => clearMeasurement()}
+                    /> 
+
+                </Box>
+
+            </Box>
             <Divider />
-            <DropDownUnitMeasurement/>
-            { (activeTool) ? <Divider /> : ''}
-            { (activeTool) ? 
-                <Stack 
-                direction="row" spacing={2}
-                useFlexGap 
-                sx={{  
-                    flexWrap: 'wrap',
-                    justifyContent: 'center'
-                }}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        sx={{textTransform:"none", 
-                        display:"flex", 
-                        flexDirection:"row", 
-                        columnGap:1,
-                        width: "40%",
-                    }}
-                        onClick={completeAllGraphics}>   
-                            <CalciteIcon icon="check-square"/>
-                            <Typography variant="body1">
-                                {translateText("Done")}
-                            </Typography>
-                    </Button>  
 
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        sx={{textTransform:"none", 
-                        display:"flex", 
-                        flexDirection:"row", 
-                        columnGap:1,
-                        width: "40%",
-                    }}
-                        onClick={removeAllGraphics}>   
-                            <CalciteIcon icon="trash"/>
-                            <Typography variant="body1">
-                                {translateText("Remove")}
-                            </Typography>
-                    </Button> 
-                </Stack>
-        : ''}
-        </Box>        
-    )      
+            {/* Complete All Graphics is not possible at the momement through ESRI API. Does not provide a a close method. */}
+            {/* { (activeTool) ?      
+                <StyledButtonFilledPrimary
+                variant={activeTool === 'area' ? 'contained' : 'outlined'}
+                color="primary"
+                startIcon={<CheckCircleOutlineIcon/>}
+                text={translateText('Complete')}
+                textVarient={"body2"}
+                active={activeTool === "area" ? true: false}
+                onClick={completeAllGraphics}
+            /> : '' } */}
+        </Box>
+    )
 }
 
 export default MeasureViewModelWidget

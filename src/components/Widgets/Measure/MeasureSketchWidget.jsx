@@ -166,7 +166,7 @@ const MeasureSketchWidget = () => {
     }
     
     const getArea = (polygon, unitType) => {
-        console.log("Get area: ", polygon, unitType)
+        // console.log("Get area: ", polygon, unitType)
         const planarArea = geometryEngine.planarArea(polygon, unitType);
         const planarAreaPositive = getPositiveNumber(planarArea);
         setAreaMeasurement(planarAreaPositive) //todo add this back to props       
@@ -174,7 +174,7 @@ const MeasureSketchWidget = () => {
     }
     
     const getLength= (line, unitType) =>{
-        console.log("Get length: ", line, unitType)
+        // console.log("Get length: ", line, unitType)
         const planarLength = geometryEngine.planarLength(line, unitType);
         const planarLengthPositive = getPositiveNumber(planarLength)
         setLinearMeasurement(planarLengthPositive) //todo add this back to props 
@@ -182,7 +182,7 @@ const MeasureSketchWidget = () => {
     }
     
     function switchType(geom) {
-        console.log("Check out geom type",geom.type);
+        // console.log("Check out geom type",geom.type);
         //switches between polyline and polygon and sets props as needed to reflect in widget
         switch (geom.type) {
             
@@ -263,7 +263,7 @@ const MeasureSketchWidget = () => {
         } else{
             // removeAllGraphics()
             sketchVM.current.create(geom_type); // polygon || polyline
-            console.log('setting')
+            // console.log('setting')
             // if (activeTool==='polygon'){
             //     setSelectedValue('square-meters')  
             //     unitMeasurementAbbrev('square-meters')
@@ -290,7 +290,7 @@ const MeasureSketchWidget = () => {
     
                 }
                 if (e.state === "complete") {
-                    console.log('complete state')
+                    // console.log('complete state')
                     setUserGeometry(e.graphic.geometry) 
                     setSketchState("complete")
                     // convertPolyline2Polygon(geometry);
@@ -302,7 +302,7 @@ const MeasureSketchWidget = () => {
                     e.toolEventInfo.type === "move-stop")
                     
                 ) {
-                    console.log('rescale state')
+                    // console.log('rescale state')
                     switchType(geometry);
                     setSketchState("edit")
                 }

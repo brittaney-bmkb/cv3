@@ -18,14 +18,17 @@ export const linearUnitOptions = [
     "feet", "yards", "miles", "meters", "kilometers"
 ]
 
+// const areaUnitOptions = [
+//     "square-inches", "square-feet", "square-yards", "square-miles", "square-meters", "square-kilometers", "acres"
+// ]
 const areaUnitOptions = [
-    "square-inches", "square-feet", "square-yards", "square-miles", "square-meters", "square-kilometers", "acres"
+    "square-feet", "square-inches", "square-yards", "square-miles", "square-meters", "square-kilometers", "acres"
 ]
 
 // this lifted from comparable property search and will needed to be updated for this widget
 const MeasureWidget = () => {
 
-    const { panelDisplayWidget, setMeasureWidgetState, translateText, setMeasureWidget, panelSecondaryVisible, screenWidth, mapView, setIsMeasuring, isMeasuring} = UseAppContext()
+    const { panelDisplayWidget, setMeasureWidgetState, translateText, setMeasureWidget, panelSecondaryVisible, screenWidth, mapView, measureWidgetState } = UseAppContext()
     // //use ref for div 
     const measureWidget = useRef(null)
 
@@ -48,10 +51,22 @@ const MeasureWidget = () => {
         setActiveTool(null)
 
         if(measureWidget.current){
+            console.log("Checking useEfeect in measure")
             measureWidget.current.clear()
         }
+        
 
     },[panelSecondaryVisible, panelDisplayWidget, measureWidget.current])
+
+
+    useEffect(() => {
+        console.log("UseEffect")
+        console.log("measureWidget.current?.viewModel?.graphics", measureWidget.current?.viewModel?.activeViewModel?.view?.graphics)
+        console.log("panelDisplayWidget", panelDisplayWidget,)
+        
+
+    },[panelSecondaryVisible, panelDisplayWidget, measureWidget.current])
+
 
     useEffect(() => {
         setActiveTool(null)
@@ -67,13 +82,19 @@ const MeasureWidget = () => {
                         activeTool: activeTool,
                         areaUnit:"square-us-feet",
                         linearUnit: "us-feet",
+                        label:"measureGraphic",
                         viewModel:{
                             view:mapView,
                             activeTool:activeTool,
                             areaUnit: "square-us-feet",
                             linearUnit: "us-feet",
-                        }
+                        }, 
+                        title: "measureGraphic",
                     })
+                    // console.log("measureWidget.current", measureWidget.current)
+                    // console.log("measureWidget.current.title", measureWidget.current.title)
+
+                    console.log("mapView: ", mapView.title)
                     setMeasureWidget(measureWidget.current)
                 }
 
@@ -103,18 +124,18 @@ const MeasureWidget = () => {
             (label) => {
                 if (label) {
                     if (label?.area) {
-                        console.log(
-                            "active tool: ", activeTool,
-                            "Area: ", label.area,
-                            "Perimeter: ", label.perimeter
-                        );
+                        // console.log(
+                        //     "active tool: ", activeTool,
+                        //     "Area: ", label.area,
+                        //     "Perimeter: ", label.perimeter
+                        // );
                         setMeasurementValue(label.area)
-                        setIsMeasuring(true);
+                        // setIsMeasuring(true);
                     } else {
-                        console.log(
-                            "active tool: ", activeTool,
-                            "Distance: ", label
-                        );
+                        // console.log(
+                        //     "active tool: ", activeTool,
+                        //     "Distance: ", label
+                        // );
                         setMeasurementValue(label);
                     }
                 }
@@ -153,6 +174,7 @@ const MeasureWidget = () => {
         };
     }, [measureWidget.current]);
     
+
     // useEffect( () => {
     //        reactiveUtils.watch( 
     //             () => measureWidget.current?.viewModel?.activeViewModel?.measurementLabel,
@@ -225,29 +247,30 @@ const MeasureWidget = () => {
 
     
 
-    useEffect(() => {
-        const updateMeasureState = (state) => {
-            //console.log("measure state: ", state);
-            if (state && state !== "disabled") {
-                setMeasureWidgetState(true);
-                setIsMeasuring(true);
-                //console.log("State: ", state);
-            }
-            else{
-                measureWidget.current.clear();
-            }
-        };
+    // useEffect(() => {
+    //     const updateMeasureState = (state) => {
+    //         //console.log("measure state: ", state);
+    //         // if (state && state !== "disabled") {
+    //         if (state !== "disabled") {            
+    //             setMeasureWidgetState(true);
+    //             // setIsMeasuring(true);
+    //             //console.log("State: ", state);
+    //         }
+    //         else{
+    //             measureWidget.current.clear();
+    //         }
+    //     };
     
-        const watcher = reactiveUtils.watch(
-            () => measureWidget.current.viewModel.state,
-            updateMeasureState
-        );
+    //     const watcher = reactiveUtils.watch(
+    //         () => measureWidget.current.viewModel.state,
+    //         updateMeasureState
+    //     );
     
-        // Cleanup function
-        return () => {
-            watcher.remove();
-        };
-    }, [measureWidget.current?.viewModel?.state]);
+    //     // Cleanup function
+    //     return () => {
+    //         watcher.remove();
+    //     };
+    // }, [measureWidget.current?.viewModel?.state, measureWidgetState]);
 
     useEffect(() => {
         const setAreaToolMeasure = () => {
@@ -258,14 +281,13 @@ const MeasureWidget = () => {
                 measureWidget.current.linearUnit = linearUnit
             }
         }
-
         setAreaToolMeasure()
     }, [areaUnit, linearUnit, activeTool])
 
 
     const startMeasuring = async (tool) => {
         // setIsMeasuring(true)
-        setMeasureWidgetState(true)
+        // setMeasureWidgetState(true)
         setActiveTool(tool) 
         if( measureWidget.current){
             //console.log("Starting measurement Tool: ", measureWidget.current)
@@ -274,33 +296,40 @@ const MeasureWidget = () => {
             setMeasurementValue(0)
             await measureWidget.current.when()
             measureWidget.current.startMeasurement()
+
+            measureWidget.current.viewModel.title  = "measureGraphic"
+            measureWidget.current.title  = "measureGraphic"
+
+            // console.log("start measureWidget.viewModel", measureWidget.current.viewModel)
+            // console.log("start measureWidget.current.viewModel.title", measureWidget.current.viewModel.title)
             
             reactiveUtils.watch(
                 () => measureWidget.current?.viewModel?.activeViewModel?.state,
                 (state) => {
                     if (state) {
-                        if(state !=="disabled"){
-                            
-                            setIsMeasuring(true)
-                            console.log('setting set is measured in reactive utils: ', isMeasuring)
-                        } else{
-                            setIsMeasuring(false)
-                            console.log('setting set is measured in reactive utils: ', isMeasuring)
-                        }
-                        
                         console.log("watch the state:", state)
+                        // setIsMeasuring(true)
+                        if(state && state !=="disabled"){
+
+                            setMeasureWidgetState(true)
+                            console.log('setting TRUE is measured in reactive utils: ', measureWidgetState)
+                        }
+                        else{
+                            setMeasureWidgetState(false)
+                            // setIsMeasuring(false)
+                            console.log('setting FALSE is measured in reactive utils: ', measureWidgetState)
+                        }
                     }
                 }
             );   
         }
-        
     }
 
     const clearMeasurement = () => {
         
         if( measureWidget.current){
             //console.log("Clearing measurement Tool")
-            measureWidget.current.clear()
+            measureWidget.current.activeTool = null;
             setMeasurementValue(0)
             setActiveTool(null)  
             setAreaUnit(areaUnitOptions[0])

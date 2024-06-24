@@ -21,6 +21,8 @@ import BasemapWidget from "../Widgets/Basemap/BasemapWidget";
 import SelectMultipleParcels from "../SelectMultipleParcels/SelectMultipleParcels";
 import { useState } from "react";
 import MeasureSketchWidget from "../Widgets/Measure/MeasureSketchWidget";
+import MeasureViewModelWidget from "../Widgets/Measure/MeasureViewModelWidget";
+
 
 const PanelContent = ({display}) => {
 
@@ -241,11 +243,7 @@ const PanelContent = ({display}) => {
 
                 </Box>)
         case 'measureWidget':
-            // Add panel headers 
-            // add additional arguments for arguments in there
-            // create argument to toggle on and off. 
             return(
-                // <Box bgcolor="white" flex={1} flexDirection="column">
                 <Box 
                 display="flex" 
                 flexDirection="column" 
@@ -260,10 +258,9 @@ const PanelContent = ({display}) => {
                         panel={"widget"}
                         descriptionText={"Click the Draw button to activate the tool. To measure distance, click on the map to anchor the first point and double-click on the map or click the Done button to finish. To measure area, click on the map to anchor the first point, then hover over the first point and double-click or click the Done button to finish."} //TODO needs to translate thi
                     />                    
-                    <MeasureSketchWidget/>
-                    {/* <MeasureWidget
-                        panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"}
-                    /> */}
+                    <MeasureViewModelWidget/>
+                    {/* <MeasureSketchWidget/> */}
+                    {/* <MeasureWidget panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"} /> */}
                 </Box>
                 )                
         case 'layersWidget':

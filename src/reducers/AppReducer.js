@@ -41,7 +41,7 @@ export const initialState = {
     openHelpDialog: false,
     selectMultiple: null,
     comparableType: null,
-    isMeasuring: null,
+
 }
 
 const AppReducer = (state, action) => {
@@ -49,13 +49,6 @@ const AppReducer = (state, action) => {
     const {type, payload} = action
 
     switch(type){
-        
-        case "SET_IS_MEASURING":
-        console.log("SET_IS_MEASURING")
-        return {
-            ...state, 
-            isMeasuring: payload.isMeasuring
-        }
 
         case "SET_COMPARABLE_TYPE":
         //console.log("SET_COMPARABLE_TYPE")
@@ -70,24 +63,28 @@ const AppReducer = (state, action) => {
             ...state, 
             mapContainer: payload.mapContainer
         }
+        
         case "SET_MAP":
         console.log("SET_MAP: ", payload.map)
         return {
             ...state, 
             map: payload.map
-        }        
+        }  
+
         case "SET_MAP_VIEW":
             //console.log("SET_MAP_VIEW")
             return{
                 ...state,
                 mapView:payload.mapView
             }
+
         case "SET_MAP_VIEW_SCALE":
             //console.log("SET_MAP_VIEW_SCALE")
             return{
                 ...state,
                 mapViewScale:payload.mapViewScale
             }
+
         case "SET_PRIMARY_RESULT_FEATURE":
             //console.log("SET_PRIMARY_RESULT_FEATURE: ", payload.primaryResultFeature)
             return{
@@ -112,6 +109,7 @@ const AppReducer = (state, action) => {
                 searchFeatures: payload.searchFeatures,
                 prevSearchFeatures: payload.prevSearchFeatures
             }
+
         case "SET_SEARCH_SOURCES":
             //console.log("SET_SEARCH_SOURCES")
             return {
@@ -125,36 +123,42 @@ const AppReducer = (state, action) => {
                 ...state,
                 panelDisplay: payload.panelDisplay,
             }
+
         case "SET_PANEL_SECONDARY_DISPLAY":
             //console.log("SET_PANEL_SECONDARY_DISPLAY")
             return {
                 ...state,
                 panelDisplaySecondary: payload.panelDisplaySecondary,
             }
+
         case "SET_PANEL_PRIMARY_VISIBILTIY":
             //console.log("SET_PANEL_PRIMARY_VISIBILTIY")
             return {
                 ...state,
                 panelPrimaryVisible: payload.panelPrimaryVisible,
             }
+
         case "SET_PANEL_SECONDARY_VISIBILTIY":
             //console.log("SET_PANEL_SECONDARY_VISIBILTIY")
             return {
                 ...state,
                 panelSecondaryVisible: payload.panelSecondaryVisible,
             }
+
         case "SET_PANEL_WIDGET_VISIBILTIY":
             //console.log("SET_PANEL_WIDGET_VISIBILTIY")
             return {
                 ...state,
                 panelWidgetVisible: payload.panelWidgetVisible,
             }
+
         case "SET_PANEL_WIDGET_DISPLAY":
             //console.log("SET_PANEL_WIDGET_DISPLAY")
             return {
                 ...state,
                 panelDisplayWidget: payload.panelDisplayWidget,
             }
+
         case "SET_DATA_DICTIONARY":
             //console.log("SET_DATA_DICTIONARY")
             return {
