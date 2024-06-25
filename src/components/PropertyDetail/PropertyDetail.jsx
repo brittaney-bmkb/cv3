@@ -288,101 +288,104 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                 
                 <Box id="propertyDetailsBox" display="flex" flexDirection="row" columnGap={3} justifyContent={category==="top"? "space-around" : textAlignment}>
                     {properties.map((property, propIndex) => {
-                        //////console.log("property details for: ", property)
-                        let color = property === property1 ? propertyColor1 : propertyColor2
-                        panelContentTitleMain["color"] = color
-                        panelContentTitleMain["borderColor"] = color
+                        if(property){
+//////console.log("property details for: ", property)
+let color = property === property1 ? propertyColor1 : propertyColor2
+panelContentTitleMain["color"] = color
+panelContentTitleMain["borderColor"] = color
 
-                        //conditional links based on 
-                        let pin14 = property.attributes['PIN14']
-                        let primaryPin14 = primaryResultFeature[0]?.attributes['PIN14']
+//conditional links based on 
+let pin14 = property?.attributes['PIN14']
+let primaryPin14 = primaryResultFeature[0]?.attributes['PIN14']
 
-                        return(
-                            <Box 
-                            id={`property-${propIndex}`}
-                            key={property.attributes['PIN14']}
-                            display="flex" 
-                            justifyContent="center" 
-                            alignContent={textAlignment}>
-                           
-                           { 
-                           
-                            data.attributes['field'] === "comparable_properties"? 
-                            propertyComparison(data.attributes['field']) :
+return(
+    <Box 
+    id={`property-${propIndex}`}
+    key={property?.attributes['PIN14']}
+    display="flex" 
+    justifyContent="center" 
+    alignContent={textAlignment}>
+   
+   { 
+   
+    data.attributes['field'] === "comparable_properties"? 
+    propertyComparison(data.attributes['field']) :
 
-                            data.attributes['field'] === "nearby_properties"? 
-                            nearbyProperties(data.attributes['field']) :
+    data.attributes['field'] === "nearby_properties"? 
+    nearbyProperties(data.attributes['field']) :
 
-                            data.attributes['field'] === "incorp_unincorp_state" ?
-                            incorp_unincorp(property) :
+    data.attributes['field'] === "incorp_unincorp_state" ?
+    incorp_unincorp(property) :
 
-                            data.attributes['field'] === "zoning_info"?
-                            
-                            <Box 
-                            id="zoning-info"
-                            display="flex"
-                            >
-                                {/* <Typography align={textAlignment} variant="h5" sx={{color: theme.main.text.dark }}> */}
-                                    { muniLoading ? <CircularProgress size={5}/> :  zoningInfo(property, data)} 
-                                {/* </Typography> */}
+    data.attributes['field'] === "zoning_info"?
     
-                            </Box>: 
+    <Box 
+    id="zoning-info"
+    display="flex"
+    >
+        {/* <Typography align={textAlignment} variant="h5" sx={{color: theme.main.text.dark }}> */}
+            { muniLoading ? <CircularProgress size={5}/> :  zoningInfo(property, data)} 
+        {/* </Typography> */}
 
-                        data.attributes['field'].endsWith("_link") ?
-                        // data.attributes['hyperlink_text'] && data.attributes['hyperlink_params'] && data.attributes['hyperlink_url'] ?
-                            returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], data.attributes['field'], property?.attributes) :   
-       
-                        <Box 
-                            key={data.attributes["field"]}
-                            id={data.attributes['field']}
-                            display="flex"
-                            sx={{
-                                border: category==="top" && subIndex ===0 ? 3: 0,
-                                padding:"2px",
-                                boxSizing:"border-box",
-                                borderRadius: theme.shape.borderRadius,
-                                fontSize: theme.typography.h3.fontSize,
-                                // justifyContent: "center",
-                                // alignItems:"center",
-                                borderColor:  pin14 === primaryPin14 ? propertyColor1 : propertyColor2,
-                                color: pin14 === primaryPin14  ? propertyColor1 : propertyColor2,
-                               //borderColor:property===property1 ? propertyColor1 : propertyColor2,
-                                //color:property===property1 ? propertyColor1 : propertyColor2
-                            }}
-                            >
-                                {property ? 
+    </Box>: 
 
-                                <Typography 
-                                    id={data.attributes['field']}
-                                    align={textAlignment}
-                                    variant="h5" 
-                                    sx={{
-                                        width:"100%",
-                                        color: category === "top" && subIndex==0 && pin14 === primaryPin14 ? propertyColor1 : category === "top" && subIndex==0 && pin14 !== primaryPin14 ? propertyColor2: theme.main.text.dark 
-                                        }}>
-                                        {
-                                            property?.attributes[data.attributes['field']] && data.attributes['type'] === "text" ? 
-                                            translateText(property?.attributes[data.attributes['field']]) : 
-                                            property?.attributes[data.attributes['field']] ? 
-                                            `${prefix(data.attributes['type'])}${addCommaSeparator(property?.attributes[data.attributes['field']], data.attributes['type'])}` :
+data.attributes['field'].endsWith("_link") ?
+// data.attributes['hyperlink_text'] && data.attributes['hyperlink_params'] && data.attributes['hyperlink_url'] ?
+    returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], data.attributes['field'], property?.attributes) :   
 
-                                            
-                                            translateText("Data unavailable")
-                                        }
-                                </Typography> 
+<Box 
+    key={data.attributes["field"]}
+    id={data.attributes['field']}
+    display="flex"
+    sx={{
+        border: category==="top" && subIndex ===0 ? 3: 0,
+        padding:"2px",
+        boxSizing:"border-box",
+        borderRadius: theme.shape.borderRadius,
+        fontSize: theme.typography.h3.fontSize,
+        // justifyContent: "center",
+        // alignItems:"center",
+        borderColor:  pin14 === primaryPin14 ? propertyColor1 : propertyColor2,
+        color: pin14 === primaryPin14  ? propertyColor1 : propertyColor2,
+       //borderColor:property===property1 ? propertyColor1 : propertyColor2,
+        //color:property===property1 ? propertyColor1 : propertyColor2
+    }}
+    >
+        {property ? 
 
-                                : null
-                                }
-  
-                            </Box>
-                            
-                            }
-                            {propIndex === 0 && category !== "top" && properties.length > 1? 
-                            <Divider flexItem orientation="vertical" sx={{color:theme.palette.info.dark, height:'100%', pl:1, pr:1}}/>
-                            : null
-                            }
-                        </Box> 
-                        )
+        <Typography 
+            id={data.attributes['field']}
+            align={textAlignment}
+            variant="h5" 
+            sx={{
+                width:"100%",
+                color: category === "top" && subIndex==0 && pin14 === primaryPin14 ? propertyColor1 : category === "top" && subIndex==0 && pin14 !== primaryPin14 ? propertyColor2: theme.main.text.dark 
+                }}>
+                {
+                    property?.attributes[data.attributes['field']] && data.attributes['type'] === "text" ? 
+                    translateText(property?.attributes[data.attributes['field']]) : 
+                    property?.attributes[data.attributes['field']] ? 
+                    `${prefix(data.attributes['type'])}${addCommaSeparator(property?.attributes[data.attributes['field']], data.attributes['type'])}` :
+
+                    
+                    translateText("Data unavailable")
+                }
+        </Typography> 
+
+        : null
+        }
+
+    </Box>
+    
+    }
+    {propIndex === 0 && category !== "top" && properties.length > 1? 
+    <Divider flexItem orientation="vertical" sx={{color:theme.palette.info.dark, height:'100%', pl:1, pr:1}}/>
+    : null
+    }
+</Box> 
+)
+                        }
+                        
                             
                     })
                     }
