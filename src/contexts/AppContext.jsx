@@ -882,6 +882,14 @@ export const AppProvider = ({children}) => {
     // }, [])
 
     useEffect(() => {
+        //on initial load display info panel
+
+        setPanelPrimaryVisibility(true)
+        setPanelDisplay("info")
+        
+    }, [])
+
+    useEffect(() => {
         const loadParcelFields = async () => {
             let fields = await loadDataDictionary()
             setParcelQueryFields(fields)
@@ -934,8 +942,16 @@ export const AppProvider = ({children}) => {
             }
 
             setTranslationDictionary(text)
-            setPanelPrimaryVisibility(true)
-            setPanelDisplay("info")
+            
+
+            // setPanelDisplay("info")
+            // if(!state.primaryResultFeature){
+            //     setPanelDisplay("info")
+            // }
+            // else{
+            //     setPanelDisplay("resultsList")
+            // }
+            
         }
     
          initializeTranslationText();

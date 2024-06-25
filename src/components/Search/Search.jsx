@@ -29,7 +29,8 @@ const Search = () => {
         searchFeatures,
         searchTerm,
         anyAttributesIncluded,
-        setIsQuerying
+        setIsQuerying,
+        panelDisplay
      } = UseAppContext()
 
     //get url parameters
@@ -303,6 +304,24 @@ const Search = () => {
         
 
     }, [primaryResultFeature, searchWidget])
+
+    useEffect(() => {
+        //when primaryResultFeature changes update the panel display
+        if(searchFeatures && primaryResultFeature){
+
+            const primaryInSearchFeature = anyAttributesIncluded(primaryResultFeature, searchFeatures)
+
+            if(!primaryInSearchFeature){
+                console.log("Setting primar panel to display results list: ", panelDisplay)
+            
+                setPanelDisplay("resultsList")
+            }
+            else if(primaryInSearchFeature && panelDisplay === "info"){
+                setPanelDisplay("resultsList")
+            }
+           
+        }
+    }, [searchFeatures, primaryResultFeature])
 
 
     useEffect(() => {
