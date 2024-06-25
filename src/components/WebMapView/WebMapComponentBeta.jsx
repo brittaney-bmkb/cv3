@@ -651,7 +651,7 @@ const WebMapComponentBeta = () => {
         const removeAllGraphics = () => {
 
             if(arcgisMapRef.current?.map){
-                const isMeasure = panelDisplayWidget === "measure"
+                const isMeasure = panelDisplayWidget === "measureWidget"
                 const isSelect = panelDisplayWidget === "sketch"
                 const map = arcgisMapRef.current.map
     
@@ -667,26 +667,10 @@ const WebMapComponentBeta = () => {
                 }
 
                 if(!isMeasure || !panelWidgetVisible ){
-                    //TODO maybe add a print option 
-                    console.log("Checking to see if !isMeasure OR !panelWidgetVisible")
-                    if ((measureWidget !== undefined) || (measureWidget !== null)){
+                    if (measureWidget != null ){
                         measureWidget.clear()
-
                     }
-                    
-                    // if(measureWidget === undefined){
-                    //     console.log('UNDEFINED in web map component beta')
-                    //     // measureWidget.current.activeTool = null
-                    //     measureWidget.clear()
-                    // } else if(measureWidget === null) {
-                    //     console.log('NULL in web map component beta')
-                    // } else {
-                    //     
-                    //     // console.log("measureWidget: ", measureWidget)
-                    // }
 
-                } else{
-                    console.log("ELSE for !isMeasure OR !panelWidgetVisible")
                 }
             }
         }

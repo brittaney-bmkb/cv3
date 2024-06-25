@@ -4,7 +4,6 @@ import ResultsList from "../ResultList/ResultsList"
 import ComparablePropertySearch from "../ComparableProperty/ComparablePropertySearch"
 // import BasemapWidget from "../Widgets/BasemapWidget";
 import LayersWidget from "../Widgets/LayersList/LayersWidget";
-import MeasureWidget from "../Widgets/MeasureWidget";
 import PrintWidget from "../Widgets/PrintWidget";
 import UseAppContext from "../../contexts/AppContext"
 import { theme } from "../../theme"
@@ -260,7 +259,6 @@ const PanelContent = ({display}) => {
                     />                    
                     <MeasureViewModelWidget/>
                     {/* <MeasureSketchWidget/> */}
-                    {/* <MeasureWidget panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"} /> */}
                 </Box>
                 )                
         case 'layersWidget':

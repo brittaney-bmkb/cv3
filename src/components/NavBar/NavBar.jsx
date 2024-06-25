@@ -13,11 +13,14 @@ import { useRef, useEffect, useState } from "react";
 import MenuBar from "./MenuBar";
 import UseAppContext from "../../contexts/AppContext";
 import TranslateMenu from "./TranslateMenu";
-import { FeedbackExtended, FeedbackGeneral } from "../FeedBack/Feedback";
+import { FeedbackExtended, FeedbackGeneral } from "../Feedback/Feedback";
+
+
 
 import HelpDialog from "../HelpDialog/HelpDialog";
 import ExportDialog from "../ExportDialog/ExportDialog";
 import { Info, InfoOutlined } from "@mui/icons-material";
+
 
 
 const StyledToolbar = styled(Toolbar)({

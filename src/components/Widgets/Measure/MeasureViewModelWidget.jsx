@@ -9,6 +9,8 @@ import StyledButtonFilledPrimary, { StyledPanelButton } from "../../Button/Butto
 import Measurement from "@arcgis/core/widgets/Measurement.js";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
 
+
+//TODO update to use this measure widget. export through out file. 
 export const linearUnitOptions = [ "feet", "yards", "miles", "meters", "kilometers" ]
 
 const areaUnitOptions = [ "square-feet", "square-inches", "square-yards", "square-miles", "square-meters", "square-kilometers", "acres" ]

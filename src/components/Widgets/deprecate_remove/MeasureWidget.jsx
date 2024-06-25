@@ -1,15 +1,15 @@
 import { Box, MenuItem, Select, Typography } from "@mui/material"
-import UseAppContext from "../../contexts/AppContext"
+import UseAppContext from "../../../contexts/AppContext"
 import { useEffect, useRef, useState } from "react"
-import { theme } from "../../theme"
+import { theme } from "../../../theme"
 
 import StraightenOutlinedIcon from '@mui/icons-material/StraightenOutlined';
 import SquareFootOutlinedIcon from '@mui/icons-material/SquareFootOutlined';
-import StyledButtonFilledPrimary, { StyledPanelButton } from "../Button/Button";
+import StyledButtonFilledPrimary, { StyledPanelButton } from "../../Button/Button";
 
 
 import Measurement from "@arcgis/core/widgets/Measurement.js";
-import { view } from "../../arcgis/webmap/webmap";
+import { view } from "../../../arcgis/webmap/webmap";
 
 
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
