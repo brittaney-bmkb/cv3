@@ -670,7 +670,6 @@ const WebMapComponentBeta = () => {
                     if (measureWidget != null ){
                         measureWidget.clear()
                     }
-
                 }
             }
         }

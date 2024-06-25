@@ -5,6 +5,8 @@ import { theme } from "../../../theme";
 
 import StraightenOutlinedIcon from '@mui/icons-material/StraightenOutlined';
 import SquareFootOutlinedIcon from '@mui/icons-material/SquareFootOutlined';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+
 import StyledButtonFilledPrimary, { StyledPanelButton } from "../../Button/Button";
 import Measurement from "@arcgis/core/widgets/Measurement.js";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
@@ -117,9 +119,11 @@ const MeasureViewModelWidget = () => {
         setAreaToolMeasure()
     }, [areaUnit, linearUnit, activeTool])
 
-    // const completeAllGraphics = async () => {
-    //     console.log("Not going to happen. ESRI does not provide method outside of double click.")
-    // }
+    const completeAllGraphics = async () => {
+        measureWidget.current.activeTool = null
+        // console.log("Not going to happen. ESRI does not provide method outside of double click.")
+
+    }
 
 
     const handleUnitChange = (event) => {
@@ -260,7 +264,7 @@ const MeasureViewModelWidget = () => {
             <Divider />
 
             {/* Complete All Graphics is not possible at the momement through ESRI API. Does not provide a a close method. */}
-            {/* { (activeTool) ?      
+            { (activeTool) ?      
                 <StyledButtonFilledPrimary
                 variant={activeTool === 'area' ? 'contained' : 'outlined'}
                 color="primary"
@@ -269,7 +273,7 @@ const MeasureViewModelWidget = () => {
                 textVarient={"body2"}
                 active={activeTool === "area" ? true: false}
                 onClick={completeAllGraphics}
-            /> : '' } */}
+            /> : '' }
         </Box>
     )
 }
