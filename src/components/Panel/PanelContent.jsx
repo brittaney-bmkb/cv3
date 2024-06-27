@@ -230,15 +230,15 @@ const PanelContent = ({display}) => {
                         primary={false}
                     />
 
-                   <Box display="flex"  flexDirection="column" width="100%" flexGrow={1} minHeight={0}>
-                     <PropertyDetail 
-                       property1={screenWidth >= theme.breakpoints.values.lg ? null : primaryResultFeature} 
-                       property2={secondaryResultFeature} 
-                       propertyColor1={theme.palette.primary.main}
-                       propertyColor2={theme.palette.secondary.main}
-                      />
-                     <PropertyPagniation/>
-                   </Box>     
+                <Box display="flex"  flexDirection="column" width="100%" flexGrow={1} minHeight={0}>
+                    <PropertyDetail 
+                    property1={screenWidth >= theme.breakpoints.values.lg ? null : primaryResultFeature} 
+                    property2={secondaryResultFeature} 
+                    propertyColor1={theme.palette.primary.main}
+                    propertyColor2={theme.palette.secondary.main}
+                    />
+                    <PropertyPagniation/>
+                </Box>     
 
                 </Box>)
         case 'measureWidget':
@@ -252,13 +252,13 @@ const PanelContent = ({display}) => {
                 //divider={true}
                 >
                     <PanelHeader 
-                        text="Measure"
+                        text="Measure BETA"
                         closeButton={true}
                         panel={"widget"}
-                        descriptionText={"Measure Widget Coming Soon"}
+                        descriptionText={"Select a tool to activate. "} //TODO needs to translate thi
                     />                    
-                    <MeasureViewModelWidget/>
-                    {/* <MeasureSketchWidget/> */}
+                    {/* <MeasureViewModelWidget/> */}
+                    <MeasureSketchWidget/>
                 </Box>
                 )                
         case 'layersWidget':

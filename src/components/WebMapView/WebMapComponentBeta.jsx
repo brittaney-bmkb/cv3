@@ -666,9 +666,19 @@ const WebMapComponentBeta = () => {
                     }
                 }
 
+                //TODO add print props into state
                 if(!isMeasure || !panelWidgetVisible ){
+                    //This is for the measureViewModelWidget
                     if (measureWidget != null ){
                         measureWidget.clear()
+                    }
+
+                    //This is for the MeasureSketchWidget
+                    const foundGraphicMeasure = findLayerByTitle(map,"measureGraphic")
+                    if(foundGraphicMeasure){
+                        console.log('removing all measure graphics')
+                        foundGraphicMeasure.removeAll()
+                        removeLayer(map, 'measureGraphic')
                     }
                 }
             }
@@ -714,6 +724,7 @@ const WebMapComponentBeta = () => {
 
                 // console.log("found MEASURE graphic: ", foundMeasureGraphic)
                 if( !foundSelectGraphic  || !selectMultiple || !measureWidgetState ){
+                // if((!foundSelectGraphic && !foundMeasureGraphic) || !selectMultiple || (!isMeasuring)){ //TODO this is for the measureSketchWidget
                     // console.log("The if block executes because one of the conditions is falsy.");
                     handleHitTest(event)
                 }
