@@ -139,7 +139,7 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
         if(panel==="primary" && panelPrimaryVisible===true){
 
             if(panelDisplay === "info" && primaryResultFeature){
-                setPanelDisplay("propertyDetail")
+                setPanelDisplay("resultsList")
             }
             else if(panelDisplay === "info" && !primaryResultFeature){
                 setPanelPrimaryVisibility(false)
