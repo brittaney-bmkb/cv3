@@ -3,17 +3,14 @@ import { Box, Button, Typography, Stack, Divider, InputLabel , FormControl, Nati
 import UseAppContext from "../../../contexts/AppContext"
 import { useEffect, useRef, useState } from "react"
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer.js";
-import Graphic from "@arcgis/core/Graphic.js";
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine.js";
 import SketchViewModel from "@arcgis/core/widgets/Sketch/SketchViewModel.js";
-
 import { CalciteIcon } from "@esri/calcite-components-react";
 import { theme } from "../../../theme";
-import { ContactEmergency } from "@mui/icons-material";
 import StyledButtonFilledPrimary from "../../Button/Button";
 import StraightenOutlinedIcon from '@mui/icons-material/StraightenOutlined';
 import SquareFootOutlinedIcon from '@mui/icons-material/SquareFootOutlined';
-//// 270-measure-widget-redesign-polygon-polyline
+
 
 export const measurementUnitOptions = {
     linear: [
@@ -54,7 +51,6 @@ const MeasureSketchWidget = () => {
     let [selectedValueArea, setSelectedValueArea ] = useState(measurementUnitOptions.area[0].key); //drop down menu     
     let [selectedValueLinear, setSelectedValueLinear ] = useState(measurementUnitOptions.linear[0].key); //drop down menu 
 
-    console.log("measurementUnitOptions: ",measurementUnitOptions.linear[0].key)
 
 
     const unitMeasurementAbbrev = (stringToCheck) => {
