@@ -46,7 +46,9 @@ const WebMapComponentBeta = () => {
         panelDisplaySecondary,
         setComparableParcels,
         panelDisplayWidget,
-        comparableType
+        comparableType, 
+        measureWidgetState,
+        measureWidget,
         } = UseAppContext()
 
     const arcgisMapRef = useRef(null)
@@ -93,7 +95,6 @@ const WebMapComponentBeta = () => {
             if(title === "Comparable Parcels"){
                 await removeLayer(map, "Selected Comparable Parcel")
             }
-           
 
             if(source){
                 let featLayer 
@@ -225,7 +226,6 @@ const WebMapComponentBeta = () => {
             await selectedParcelsPrimary.applyEdits(addEdits)
         }
         
-
         //fetch features for graphics to be added
         let fetchedFeatures = await fetchParcelAttributes(objectIds)
 
@@ -320,7 +320,7 @@ const WebMapComponentBeta = () => {
             if(selectMultiple){
                 //if select multiple === true
                 //check if the hittest results include any previously selected layers
-
+                
                 if(selectedGraphicsDetected.length > 0){
                     ////console.log(`${selectedGraphicsDetected.length} Selected Parcels Detected`)
                     ////console.log(`Removing ${selectedGraphicsDetected.length} parcels`)
@@ -329,8 +329,7 @@ const WebMapComponentBeta = () => {
 
                     //clear comparables from map when primary selected parcel changes
                     clearComparableParcels()
-                }
-                else{
+                } else {
                     ////console.log(`${selectedGraphicsDetected.length} Selected Parcels Detected`)
                     ////console.log(`Adding ${response.results.length} parcels`)
 
@@ -340,8 +339,17 @@ const WebMapComponentBeta = () => {
                     clearComparableParcels()
                     
                 }
-            }
-            else{
+            } else if (measureWidgetState){
+                // FOR MEASURE widget only
+                // need to make sure if a parcel is selected it doesn't remove it while measuring. 
+                // One selected parcel is OK. 
+                if(selectedGraphicsDetected.length > 1){
+                    await removeFeatures(response.results)
+                    //// NOT NEEDED!? but needs futher testing for measureWidgetState
+                    //// clear comparables from map when primary selected parcel changes 
+                    // clearComparableParcels()
+                }
+            } else {
                 //if user clicks on a comparable parcel
                 //set selectedComparableParcels (setSecondaryResultFeature)
                 //update the secondary panel to display comparable parcel details
@@ -635,17 +643,15 @@ const WebMapComponentBeta = () => {
                 }
             }
         }
-
         displaySelectedComparableParcel()
-        
         //addLayerToMap(secondaryResultFeature, "Selected Comparable Parcel", theme.layers.secondarySelected, "features")
-
     }, [ secondaryResultFeature, arcgisMapRef ])
 
     useEffect(() => {
         const removeAllGraphics = () => {
+
             if(arcgisMapRef.current?.map){
-                const isMeasure = panelDisplayWidget === "measure"
+                const isMeasure = panelDisplayWidget === "measureWidget"
                 const isSelect = panelDisplayWidget === "sketch"
                 const map = arcgisMapRef.current.map
     
@@ -658,17 +664,28 @@ const WebMapComponentBeta = () => {
                         foundGraphic.removeAll()
                         removeLayer(map, "selectGraphic")
                     }
-                    
+                }
+
+                //TODO add print props into state
+                if(!isMeasure || !panelWidgetVisible ){
+                    //This is for the measureViewModelWidget
+                    if (measureWidget != null ){
+                        measureWidget.clear()
+                    }
+
+                    //This is for the MeasureSketchWidget
+                    const foundGraphicMeasure = findLayerByTitle(map,"measureGraphic")
+                    if(foundGraphicMeasure){
+                        console.log('removing all measure graphics')
+                        foundGraphicMeasure.removeAll()
+                        removeLayer(map, 'measureGraphic')
+                    }
                 }
             }
-
-            
         }
-
         removeAllGraphics()
-
     }, [panelDisplayWidget, panelWidgetVisible, arcgisMapRef.current])
-   
+
     return(
         <Box
         display="flex"
@@ -701,12 +718,18 @@ const WebMapComponentBeta = () => {
                 ////console.log("onArcgisViewClick: left click, button =", event.detail.native.button)
                 // handleViewClick(event.detail.mapPoint)
                 let foundSelectGraphic = findLayerByTitle(arcgisMapRef.current.map, "selectGraphic")
-                let foundMeasureGraphic = findLayerByTitle(arcgisMapRef.current.map, "measureGraphic")
-                ////console.log("found graphic: ", foundSelectGraphic)
-                if((!foundSelectGraphic && !foundMeasureGraphic) || !selectMultiple){
+                let foundMeasureGraphic = findLayerByTitle(arcgisMapRef.current.map, "measureGraphic") //no longer needed 
+
+                // console.log("CURRENT MAP ON CLICK", arcgisMapRef.current.map)
+
+                // console.log("found MEASURE graphic: ", foundMeasureGraphic)
+                if( !foundSelectGraphic  || !selectMultiple || !measureWidgetState ){
+                // if((!foundSelectGraphic && !foundMeasureGraphic) || !selectMultiple || (!isMeasuring)){ //TODO this is for the measureSketchWidget
+                    // console.log("The if block executes because one of the conditions is falsy.");
                     handleHitTest(event)
                 }
                 
+
             }
         }}
         // onArcgisViewPointerMove={}

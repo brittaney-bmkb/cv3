@@ -92,6 +92,8 @@ export const AppProvider = ({children}) => {
             }
         })
     }
+    
+
 
     const setSearchSources = async (searchSources) => {
         dispatch({
@@ -293,6 +295,8 @@ export const AppProvider = ({children}) => {
             }
         })
     }
+
+
 
 
 
@@ -863,8 +867,7 @@ export const AppProvider = ({children}) => {
         queryPolygon,
         setComparableType,
         comparableType: state.comparableType,
-        returnFeaturesByPin10Pin14
-        
+        returnFeaturesByPin10Pin14,
     }
 
     // useEffect( () => {

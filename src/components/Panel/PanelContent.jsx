@@ -4,7 +4,6 @@ import ResultsList from "../ResultList/ResultsList"
 import ComparablePropertySearch from "../ComparableProperty/ComparablePropertySearch"
 // import BasemapWidget from "../Widgets/BasemapWidget";
 import LayersWidget from "../Widgets/LayersList/LayersWidget";
-import MeasureWidget from "../Widgets/MeasureWidget";
 import PrintWidget from "../Widgets/PrintWidget";
 import UseAppContext from "../../contexts/AppContext"
 import { theme } from "../../theme"
@@ -20,6 +19,8 @@ import Info from "../Info/Info";
 import BasemapWidget from "../Widgets/Basemap/BasemapWidget";
 import SelectMultipleParcels from "../SelectMultipleParcels/SelectMultipleParcels";
 import { useState } from "react";
+import MeasureSketchWidget from "../Widgets/Measure/MeasureSketchWidget";
+import MeasureViewModelWidget from "../Widgets/Measure/MeasureViewModelWidget";
 
 
 const PanelContent = ({display}) => {
@@ -229,23 +230,19 @@ const PanelContent = ({display}) => {
                         primary={false}
                     />
 
-                   <Box display="flex"  flexDirection="column" width="100%" flexGrow={1} minHeight={0}>
-                     <PropertyDetail 
-                       property1={screenWidth >= theme.breakpoints.values.lg ? null : primaryResultFeature} 
-                       property2={secondaryResultFeature} 
-                       propertyColor1={theme.palette.primary.main}
-                       propertyColor2={theme.palette.secondary.main}
-                      />
-                     <PropertyPagniation/>
-                   </Box>     
+                <Box display="flex"  flexDirection="column" width="100%" flexGrow={1} minHeight={0}>
+                    <PropertyDetail 
+                    property1={screenWidth >= theme.breakpoints.values.lg ? null : primaryResultFeature} 
+                    property2={secondaryResultFeature} 
+                    propertyColor1={theme.palette.primary.main}
+                    propertyColor2={theme.palette.secondary.main}
+                    />
+                    <PropertyPagniation/>
+                </Box>     
 
                 </Box>)
         case 'measureWidget':
-            // Add panel headers 
-            // add additional arguments for arguments in there
-            // create argument to toggle on and off. 
             return(
-                // <Box bgcolor="white" flex={1} flexDirection="column">
                 <Box 
                 display="flex" 
                 flexDirection="column" 
@@ -255,14 +252,13 @@ const PanelContent = ({display}) => {
                 //divider={true}
                 >
                     <PanelHeader 
-                        text="Measure"
+                        text="Measure BETA"
                         closeButton={true}
                         panel={"widget"}
-                        descriptionText={"Measure Widget Coming Soon"}
+                        descriptionText="Select a tool to activate." //TODO needs to translate thi
                     />                    
-                    {/* <MeasureWidget
-                        panel={screenWidth < theme.breakpoints.values.lg? "primary":"secondary"}
-                    /> */}
+                    {/* <MeasureViewModelWidget/> */}
+                    <MeasureSketchWidget/>
                 </Box>
                 )                
         case 'layersWidget':

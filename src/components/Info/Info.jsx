@@ -139,7 +139,7 @@ const Info = () => {
                         <span style={{ 
                             fontWeight: 600,
                             fontSize:14
-                            }}>{translateText("Measure Widget")} - </span>
+                            }}>{translateText("Measure Widget BETA")} - </span>
                         {translateText("Users can now measure distance and area using the measure widget")}
                     </Typography>
 

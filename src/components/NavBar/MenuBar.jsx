@@ -8,7 +8,7 @@ import TranslateIcon from '@mui/icons-material/Translate';
 import TranslateMenu from "./TranslateMenu";
 import UseAppContext from "../../contexts/AppContext";
 import { theme } from "../../theme";
-import { FeedbackExtended, FeedbackGeneral } from "../FeedBack/Feedback";
+import { FeedbackExtended, FeedbackGeneral } from "../Feedback/Feedback";
 import { InfoOutlined } from "@mui/icons-material";
 
 const MenuBar = ({open, setOpen}) => {

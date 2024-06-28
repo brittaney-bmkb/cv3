@@ -39,6 +39,19 @@ export const theme = createTheme({
             light:"#59BDE7"
         }
     },
+    measureGraphics:{
+        line:{
+            color: [162, 0, 255, 1],
+            width: 6
+        },
+        polygon:{
+            color: [245, 0, 127, 0.1],
+        },
+        polygonOutline:{
+            color: [245, 0, 127, 1],
+            width: 5
+        }
+    },    
     palette:{
         primary:{
             main:"#0D4D96",
