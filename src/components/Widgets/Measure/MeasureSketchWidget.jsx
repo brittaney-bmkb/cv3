@@ -105,7 +105,7 @@ const MeasureSketchWidget = () => {
                         {/* This is the diplay above the drop down */}
                         {activeTool === "polygon" ? 
                             <span><Typography variant="h3"> {translateText("Area")}: {areaMeasurement} {unitMeasurementAbbrev(selectedValueArea)}</Typography> </span> :
-                            <span><Typography variant="h3"> {translateText("Length")}: {linearMeasurement} {unitMeasurementAbbrev(selectedValueLinear)}</Typography> </span>  }   
+                            <span><Typography variant="h3"> {translateText("Distance")}: {linearMeasurement} {unitMeasurementAbbrev(selectedValueLinear)}</Typography> </span>  }   
                     </Box>
                     <FormControl size='small'>
                         <InputLabel variant="standard" htmlFor="uncontrolled-native">

@@ -255,7 +255,7 @@ const PanelContent = ({display}) => {
                         text="Measure BETA"
                         closeButton={true}
                         panel={"widget"}
-                        descriptionText={"Select a tool to activate. "} //TODO needs to translate thi
+                        descriptionText="Select a tool to activate." //TODO needs to translate thi
                     />                    
                     {/* <MeasureViewModelWidget/> */}
                     <MeasureSketchWidget/>
