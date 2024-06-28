@@ -4,8 +4,7 @@ import { useEffect, useState } from "react"
 import UseAppContext from "../../contexts/AppContext"
 import StyledButtonFilledPrimary from "../Button/Button"
 import { theme } from "../../theme"
-import { linearUnitOptions } from "../Widgets/Measure/MeasureViewModelWidget"
-
+import { measurementUnitOptions } from "../Widgets/Measure/MeasureSketchWidget"
 
 
 
@@ -18,7 +17,7 @@ const CompareNearby = () => {
     const [ searchRadius, setSearchRadius ] = useState('0')
     const [ searchRadiusError, setSearchRadiusError ] = useState(false)
     const [ searchRadiusHelperText, setSearchRadiusHelperText ] = useState(false)
-    const [ searchUnit, setSearchUnit ] = useState(linearUnitOptions[0])
+    const [ searchUnit, setSearchUnit ] = useState(measurementUnitOptions.linear[0].key)
 
     useEffect(() => {
         const validateSearchRadius = () => {

@@ -15,28 +15,28 @@ import StraightenOutlinedIcon from '@mui/icons-material/StraightenOutlined';
 import SquareFootOutlinedIcon from '@mui/icons-material/SquareFootOutlined';
 //// 270-measure-widget-redesign-polygon-polyline
 
+export const measurementUnitOptions = {
+    linear: [
+        { key: 'feet',              value: 'ft', type: 'polyline', label: "feet"  },
+        { key: 'yards',             value: 'yd', type: 'polyline', label: "yards" },
+        { key: 'miles',             value: 'mi', type: 'polyline', label: "miles" },
+        { key: 'meters',            value: 'm',  type: 'polyline', label: "meters" },
+        { key: 'kilometers',        value: 'km', type: 'polyline', label: "kilometers" }
+    ],
+    area: [
+        { key: 'acres',             value: 'ac', type: 'polygon', label: "acres" },
+        { key: 'square-feet',       value: 'ft', type: 'polygon', label: "square feet",       superscript: <sup>2</sup> },
+        { key: 'square-meters',     value: 'm',  type: 'polygon', label: "square meters",     superscript: <sup>2</sup> },
+        { key: 'square-yards',      value: 'yd', type: 'polygon', label: "square yards",      superscript: <sup>2</sup> },
+        { key: 'square-kilometers', value: 'km', type: 'polygon', label: "square kilometers", superscript: <sup>2</sup> },
+        { key: 'square-miles',      value: 'mi', type: 'polygon', label: "square miles",      superscript: <sup>2</sup> }    
+    ]
+};
 
 const MeasureSketchWidget = () => {
     
     const { mapView, translateText  } = UseAppContext()
 
-    const measurementUnitOptions = {
-        linear: [
-            { key: 'feet',              value: 'ft', type: 'polyline', label: translateText("feet")  },
-            { key: 'yards',             value: 'yd', type: 'polyline', label: translateText("yards") },
-            { key: 'miles',             value: 'mi', type: 'polyline', label: translateText("miles") },
-            { key: 'meters',            value: 'm',  type: 'polyline', label: translateText("meters") },
-            { key: 'kilometers',        value: 'km', type: 'polyline', label: translateText("kilometers") }
-        ],
-        area: [
-            { key: 'acres',             value: 'ac', type: 'polygon', label: translateText("acres") },
-            { key: 'square-feet',       value: 'ft', type: 'polygon', label: translateText("square feet"),       superscript: <sup>2</sup> },
-            { key: 'square-meters',     value: 'm',  type: 'polygon', label: translateText("square meters"),     superscript: <sup>2</sup> },
-            { key: 'square-yards',      value: 'yd', type: 'polygon', label: translateText("square yards"),      superscript: <sup>2</sup> },
-            { key: 'square-kilometers', value: 'km', type: 'polygon', label: translateText("square kilometers"), superscript: <sup>2</sup> },
-            { key: 'square-miles',      value: 'mi', type: 'polygon', label: translateText("square miles"),      superscript: <sup>2</sup> }    
-        ]
-    };
     
     const graphicsLayer = useRef(null) // ESRI graphics
     let sketchVM = useRef(null) //ESRI sketchVM
@@ -53,6 +53,8 @@ const MeasureSketchWidget = () => {
 
     let [selectedValueArea, setSelectedValueArea ] = useState(measurementUnitOptions.area[0].key); //drop down menu     
     let [selectedValueLinear, setSelectedValueLinear ] = useState(measurementUnitOptions.linear[0].key); //drop down menu 
+
+    console.log("measurementUnitOptions: ",measurementUnitOptions.linear[0].key)
 
 
     const unitMeasurementAbbrev = (stringToCheck) => {
@@ -123,7 +125,7 @@ const MeasureSketchWidget = () => {
                             
                                 {getOptionsByType(activeTool).map((measureUnitOption) => (
                                     <option key={measureUnitOption.key} value={measureUnitOption.key}>
-                                        {measureUnitOption.label}
+                                        {translateText(measureUnitOption.label)}
                                     </option>
                                 ))}
                             </NativeSelect>            
