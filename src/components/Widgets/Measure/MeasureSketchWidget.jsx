@@ -179,6 +179,7 @@ const MeasureSketchWidget = () => {
 
     const removeAllGraphics = async () => {
         //removes all graphics and set props to null as if in a new session 
+        sketchVM.current.complete(); // quick fix, should really look at state. 
         graphicsLayer.current.removeAll();
         setActiveTool(null)       
         setAreaMeasurement(0)
