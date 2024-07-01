@@ -71,8 +71,6 @@ const MeasureSketchWidget = () => {
 
 
     const handleChange = (e) => {
-        //TODO this breaks it
-        console.log("Value passed to area caluculations: ", e.target.value)
         
         if (activeTool==='polygon'){
             setSelectedValueArea(e.target.value)
@@ -138,7 +136,6 @@ const MeasureSketchWidget = () => {
     }
     
     const getArea = (polygon, unitType) => {
-        // console.log("Get area: ", polygon, unitType)
         const planarArea = geometryEngine.planarArea(polygon, unitType);
         const planarAreaPositive = getPositiveNumber(planarArea);
         setAreaMeasurement(planarAreaPositive) 
@@ -146,7 +143,6 @@ const MeasureSketchWidget = () => {
     }
     
     const getLength= (line, unitType) =>{
-        // console.log("Get length: ", line, unitType)
         const planarLength = geometryEngine.planarLength(line, unitType);
         const planarLengthPositive = getPositiveNumber(planarLength)
         setLinearMeasurement(planarLengthPositive) 
@@ -183,6 +179,7 @@ const MeasureSketchWidget = () => {
 
     const removeAllGraphics = async () => {
         //removes all graphics and set props to null as if in a new session 
+        sketchVM.current.complete(); // quick fix, should really look at state. 
         graphicsLayer.current.removeAll();
         setActiveTool(null)       
         setAreaMeasurement(0)
@@ -199,6 +196,8 @@ const MeasureSketchWidget = () => {
         //completes all graphics with the done button
         sketchVM.current.complete();
         setSketchState("complete")
+        // setActiveTool(null) 
+
     }
 
     useEffect(() => {
@@ -220,6 +219,8 @@ const MeasureSketchWidget = () => {
                         if (e.state === "complete") {
                             setUserGeometry(e.graphic.geometry) 
                             setSketchState("complete")
+                            switchType(geometry);
+
                         }
                         if (
                             e.toolEventInfo &&
