@@ -144,6 +144,7 @@ export const handleMultipleResults = async (results) => {
 
     if(searchFeatures.length > 0){
 
+        console.log("search features: ", searchFeatures)
         let features = await queryTargetLayerWithPointFeatures(searchFeatures, true)
         
         //console.log("Queried features from multipoint: ", features)
@@ -196,28 +197,30 @@ const queryTargetLayerByAddress = async (addresses) => {
 
 export const queryTargetLayerWithPointFeatures = async (pointFeatures, includeBuffer) => {
     let pointGeometry
-    //console.log("feature geometry: ", pointFeatures)
+    console.log("feature geometry: ", pointFeatures)
 
     if(Array.isArray(pointFeatures)){
-
-        if(pointFeatures.length === 1 && pointFeatures[0].geometry){
-            if(pointFeatures[0].geometry.type && pointFeatures[0].geometry.type === "point"){
-                pointGeometry = pointFeatures[0].geometry
+        if(pointFeatures[0]?.geometry){
+            if(pointFeatures.length === 1){
+                if(pointFeatures[0].geometry.type && pointFeatures[0].geometry.type === "point"){
+                    pointGeometry = pointFeatures[0].geometry
+                }
+            }
+            else{
+                let geometries = pointFeatures.map(point => {
+                    return [point.geometry.x, point.geometry.y]
+                  })
+                  //console.log("feature geometry: ", geometries)
+        
+                pointGeometry = new Multipoint({
+                points: geometries,
+                spatialReference: pointFeatures[0].spatialReference
+                })
+            
+                //console.log("new multipoint feature: ", pointGeometry)
             }
         }
-        else{
-            let geometries = pointFeatures.map(point => {
-                return [point.geometry.x, point.geometry.y]
-              })
-              //console.log("feature geometry: ", geometries)
-    
-            pointGeometry = new Multipoint({
-            points: geometries,
-            spatialReference: pointFeatures[0].spatialReference
-            })
-        
-            //console.log("new multipoint feature: ", pointGeometry)
-        }
+
 
 
     }

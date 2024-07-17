@@ -44,6 +44,10 @@ const Search = () => {
     let [pin10Search, setPin10Search] = useState(null)
     let [pin14Search, setPin14Search] = useState(null)
 
+    let [searchSuggestions, setSearchSuggestions] = useState(null)
+    let [searchCompleteResults, setSearchCompleteResults] = useState(null)
+    let [initalSearchTerm, setInitialSearchTerm] = useState(null)
+
 
     //create a reference to the search  DOM  element
     const searchDiv = useRef(null)
@@ -181,11 +185,39 @@ const Search = () => {
     
 
     useEffect(() => {
+
+        console.log("checking search results and suggestions")
+
+        //console.log("search compete results: ", searchCompleteResults)
+        let emptyResults = searchCompleteResults?.filter(result => result.results.length > 0)
+        console.log("search complete results: ", emptyResults)
+        if(emptyResults?.length === 0 && searchSuggestions?.length > 0){
+            
+            console.log("new search suggestions: ", searchSuggestions)
+
+            let returnedSuggestions = searchSuggestions.filter(result => result.results.length > 0)
+            console.log("returned suggestions: ", returnedSuggestions)
+            let firstSuggestion = returnedSuggestions[0]?.results[0]?.text
+            if(searchWidget.current){
+                console.log("passing first suggestion to search:", firstSuggestion)
+                setPrimaryResultFeature(null, false)
+                searchWidget.current.search(firstSuggestion)
+                searchWidget.current.searchTerm = initalSearchTerm
+                
+            }
+        }
+        
+        
+    },[searchCompleteResults, searchSuggestions])
+
+    useEffect(() => {
         initalizeSearchSources()
         if(!primaryResultFeature){
             setPrimaryResultFeature(null, true)
         }
     }, [])
+
+
 
 
     //primaryResultFeature use effect
@@ -356,19 +388,21 @@ const Search = () => {
 
                 if(newSearch === true){
                     if(genericSearch && !locationSearch){
-                        //console.log("DETECTED GENERIC SEARCH PARAM: ", genericSearch)
+                        console.log("DETECTED GENERIC SEARCH PARAM: ", genericSearch)
+                        setInitialSearchTerm(genericSearch)
                         searchWidget.current.search(genericSearch)
+                        searchWidget.current.suggest(genericSearch)
                         searchWidget.current.searchTerm = genericSearch
                     }
 
                     if(pinSearch && pinSearch !== 'null'){
-                       //console.log("Performing New Search for pin=", pinSearch)           
+                       console.log("Performing New Search for pin=", pinSearch)           
                         searchWidget.current.search(pinSearch)
                         searchWidget.current.searchTerm = pinSearch
                     }
 
                     if(addressSearch && addressSearch !== 'null'){
-                        //console.log("DETECTED Address SEARCH PARAM: ", addressSearch)
+                        console.log("DETECTED Address SEARCH PARAM: ", addressSearch)
                         searchWidget.current.search(addressSearch)
                         searchWidget.current.searchTerm = addressSearch
                     }
@@ -387,13 +421,20 @@ const Search = () => {
                         returnFeaturesByPin10Pin14(pin10Search, pin14Search)
                     }
                 }
+                searchWidget.current.on("suggest-complete", (event) => {
+                    console.log("suggest complete event: ", event)
+                    setSearchSuggestions(event.results)
+
+                })
 
                 searchWidget.current.on("search-complete", (event) => {
-                    //console.log("search complete event:", event)
+                //searchWidget.current.on("search-complete", (event) => {
+                    console.log("search complete event:", event)
 
                     let results;
-
+                    
                     results = event.results
+                    setSearchCompleteResults(results)
                     //console.log("results for multiple results: ", event)
                     setIsQuerying(true)
                     returnSearchResultFeatures(results, searchWidget.current.searchTerm)
@@ -414,8 +455,6 @@ const Search = () => {
                     setGenericSearch(null)
 
                     clearResults();
-
-                    
                   });
             }
 
