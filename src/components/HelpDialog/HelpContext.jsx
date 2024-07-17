@@ -1,9 +1,6 @@
-import { Box, Collapse, Dialog, DialogContent, DialogTitle, 
-    Divider, IconButton, Input, Stack, Switch, TextField, Typography, Button, useTheme, DialogActions } from "@mui/material"
-
+import { Box, Dialog, DialogContent, DialogTitle,  Typography, Button, DialogActions } from "@mui/material"
 import { theme } from "../../theme"
 import { config } from "../../data/config"
-
 import AppImages from "../AppImages/AppImages.js";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import React, { useEffect, useState } from 'react';
@@ -30,43 +27,6 @@ const Modal = ({ open, imageUrl, onClose }) => {
                     </Button>
             </DialogActions>
         </Dialog>
-
-
-        // <div style={{
-        //     position: 'fixed',
-        //     top: 0,
-        //     left: 0,
-        //     right: 0,
-        //     bottom: 0,
-        //     backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        //     display: 'flex',
-        //     justifyContent: 'center',
-        //     alignItems: 'center',
-        //     zIndex: 9999
-        // }}>
-        //     <div style={{
-        //         backgroundColor: '#fff',
-        //         padding: '20px',
-        //         borderRadius: '5px',
-        //         maxWidth: '80%',
-        //         maxHeight: '80%',
-        //         overflow: 'auto',
-        //         display: 'flex',
-        //         flexDirection: 'column', // Change to column layout
-        //         position: 'relative' // Add this to set the position for the close button
-        //     }}>
-        //         <img src={imageUrl} alt="Enlarged Image" style={{ maxWidth: '100%', maxHeight: 'calc(80% - 20px)'  }} />
-        //         <Divider style={{ margin: '10px 0' }} /> {/* Add margin to the divider */}
-        //         <div style={{ marginTop: '10px', alignSelf: 'flex-end' }}> {/* Position close button on the right */}
-        //             <Button variant="text" onClick={onClose} sx={{ textTransform: 'none' }}>
-        //                 <Typography variant="h5" color={theme.palette.primary.main}>
-        //                     {translateText("Close")}
-        //                 </Typography>
-        //             </Button>
-        //         </div>                
-        //     </div>
-            
-        // </div>
     );
 }
 
