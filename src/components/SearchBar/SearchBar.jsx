@@ -197,7 +197,10 @@ const SearchBar = () => {
                         container: searchDiv.current,
                         sources: searchSources,
                         resultGraphicEnabled:false,
-                        allPlaceholder: translateText('Search by address, pin, or intersection')
+                        allPlaceholder: translateText('Search by address, pin, or intersection'),
+                        // goToOverride: function(view, goToParams){
+                        //     console.log("search target: ", goToParams)
+                        // }
                     })
 
                     if(newSearch === true){
