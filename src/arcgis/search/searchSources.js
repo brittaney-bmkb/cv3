@@ -56,6 +56,7 @@ export async function createSearchSources(){
       minSuggestCharacters: locatorSource.minSuggestCharacters,
       name: locatorSource.name,
       outFields: locatorSource.outFields,
+      popupEnabled: locatorSource.popupEnabled,
       singleLineFieldName: locatorSource.singleLineFieldName,
       suggestionsEnabled: locatorSource.suggestionsEnabled,
       url: locatorSource.url

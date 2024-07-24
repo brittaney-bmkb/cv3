@@ -370,7 +370,7 @@ const SearchBar = () => {
 
             if(searchDiv.current && searchSources){
 
-                if(!searchWidget.current){
+                if(!searchWidget.current && mapView){
 
                     searchWidget.current = new Search({
                         locationEnabled:false,
@@ -379,12 +379,13 @@ const SearchBar = () => {
                         container: searchDiv.current,
                         sources: searchSources,
                         resultGraphicEnabled:false,
-                        autoSelect: false,
+                        //autoSelect: false,
+
                         allPlaceholder: translateText('Search by address, pin, or intersection')
                     })
                 }
 
-                await searchWidget.current.when();
+                //await searchWidget.current.when();
 
                 if(newSearch === true){
                     if(genericSearch && !locationSearch){
@@ -434,14 +435,14 @@ const SearchBar = () => {
                     let results;
                     
                     results = event.results
-                    setSearchCompleteResults(results)
-                    //console.log("results for multiple results: ", event)
-                    setIsQuerying(true)
-                    returnSearchResultFeatures(results, searchWidget.current.searchTerm)
-                    setSearchParams({'search': searchWidget.current.searchTerm})
+                    // setSearchCompleteResults(results)
+                    // //console.log("results for multiple results: ", event)
+                    // setIsQuerying(true)
+                    // returnSearchResultFeatures(results, searchWidget.current.searchTerm)
+                    // setSearchParams({'search': searchWidget.current.searchTerm})
 
-                    updateAppWithSearchResult()
-                    setIsQuerying(false)
+                    // updateAppWithSearchResult()
+                    // setIsQuerying(false)
                 })
 
                 //to do enable clear results to empty searchFeatures array
