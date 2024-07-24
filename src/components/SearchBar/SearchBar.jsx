@@ -184,7 +184,7 @@ const SearchBar = () => {
     //Create Search 
     useEffect(() => {
 
-        const createSearch = () => {
+        const createSearch = async () => {
 
             if(searchDiv.current && searchSources){
 
@@ -199,7 +199,76 @@ const SearchBar = () => {
                         resultGraphicEnabled:false,
                         allPlaceholder: translateText('Search by address, pin, or intersection')
                     })
+
+                    if(newSearch === true){
+                        if(genericSearch && !locationSearch){
+                            console.log("DETECTED GENERIC SEARCH PARAM: ", genericSearch)
+                            setInitialSearchTerm(genericSearch)
+                            searchWidget.current.search(genericSearch)
+                            searchWidget.current.suggest(genericSearch)
+                            searchWidget.current.searchTerm = genericSearch
+                        }
+    
+                        if(pinSearch && pinSearch !== 'null'){
+                           console.log("Performing New Search for pin=", pinSearch)           
+                            searchWidget.current.search(pinSearch)
+                            searchWidget.current.searchTerm = pinSearch
+                        }
+    
+                        if(addressSearch && addressSearch !== 'null'){
+                            console.log("DETECTED Address SEARCH PARAM: ", addressSearch)
+                            searchWidget.current.search(addressSearch)
+                            searchWidget.current.searchTerm = addressSearch
+                        }
+    
+                        if(pin10Search || pin14Search){
+                            //if pin10 or pin14 search params return values
+                            //bypass the seach and query the parcels directly from the service
+                            let features = await returnFeaturesByPin10Pin14(pin10Search, pin14Search)
+                            mapView.goTo(features)
+                        }
+                    }
                 }
+
+            }
+
+            if(searchWidget.current){
+
+                searchWidget.current.on("suggest-complete", (event) => {
+                    console.log("suggest complete event: ", event)
+                    setSearchSuggestions(event.results)
+
+                })
+
+                searchWidget.current.on("search-complete", (event) => {
+                    //searchWidget.current.on("search-complete", (event) => {
+                    console.log("search complete event:", event)
+
+                    let results;
+                    
+                    results = event.results
+                    setSearchCompleteResults(results)
+                    //console.log("results for multiple results: ", event)
+                    setIsQuerying(true)
+                    returnSearchResultFeatures(results, searchWidget.current.searchTerm)
+                    setSearchParams({'search': searchWidget.current.searchTerm})
+
+                    updateAppWithSearchResult()
+                    setIsQuerying(false)
+                })
+
+                //to do enable clear results to empty searchFeatures array
+                searchWidget.current.on("search-clear", function(event){
+                    // The results are stored in the event Object[]
+                    //console.log("Search input textbox was cleared.");
+
+                    setLocationSearch(null)
+                    setPinSearch(null)
+                    setAddressSearch(null)
+                    setGenericSearch(null)
+
+                    clearResults();
+                  });
             }
 
         }
@@ -353,80 +422,57 @@ const SearchBar = () => {
     },[searchWidget, language])
 
 
-    useEffect(() => {
-        const searchEventHandler = async () => {
-            if(searchWidget.current){
+    // useEffect(() => {
+    //     const searchEventHandler = async () => {
 
-                if(newSearch === true){
-                    if(genericSearch && !locationSearch){
-                        console.log("DETECTED GENERIC SEARCH PARAM: ", genericSearch)
-                        setInitialSearchTerm(genericSearch)
-                        searchWidget.current.search(genericSearch)
-                        searchWidget.current.suggest(genericSearch)
-                        searchWidget.current.searchTerm = genericSearch
-                    }
+    //         if(searchWidget.current){
 
-                    if(pinSearch && pinSearch !== 'null'){
-                       console.log("Performing New Search for pin=", pinSearch)           
-                        searchWidget.current.search(pinSearch)
-                        searchWidget.current.searchTerm = pinSearch
-                    }
+    //             console.log("search event handler use effect")    
 
-                    if(addressSearch && addressSearch !== 'null'){
-                        console.log("DETECTED Address SEARCH PARAM: ", addressSearch)
-                        searchWidget.current.search(addressSearch)
-                        searchWidget.current.searchTerm = addressSearch
-                    }
+                
+    //             searchWidget.current.on("suggest-complete", (event) => {
+    //                 console.log("suggest complete event: ", event)
+    //                 setSearchSuggestions(event.results)
 
-                    if(pin10Search || pin14Search){
-                        //if pin10 or pin14 search params return values
-                        //bypass the seach and query the parcels directly from the service
-                        returnFeaturesByPin10Pin14(pin10Search, pin14Search)
-                    }
-                }
-                searchWidget.current.on("suggest-complete", (event) => {
-                    console.log("suggest complete event: ", event)
-                    setSearchSuggestions(event.results)
+    //             })
 
-                })
+    //             searchWidget.current.on("search-complete", (event) => {
+    //             //searchWidget.current.on("search-complete", (event) => {
+    //                 console.log("search complete event:", event)
 
-                searchWidget.current.on("search-complete", (event) => {
-                //searchWidget.current.on("search-complete", (event) => {
-                    console.log("search complete event:", event)
-
-                    let results;
+    //                 let results;
                     
-                    results = event.results
-                    setSearchCompleteResults(results)
-                    //console.log("results for multiple results: ", event)
-                    setIsQuerying(true)
-                    returnSearchResultFeatures(results, searchWidget.current.searchTerm)
-                    setSearchParams({'search': searchWidget.current.searchTerm})
+    //                 results = event.results
+    //                 setSearchCompleteResults(results)
+    //                 //console.log("results for multiple results: ", event)
+    //                 setIsQuerying(true)
+    //                 returnSearchResultFeatures(results, searchWidget.current.searchTerm)
+    //                 setSearchParams({'search': searchWidget.current.searchTerm})
 
-                    updateAppWithSearchResult()
-                    setIsQuerying(false)
-                })
+    //                 updateAppWithSearchResult()
+    //                 setIsQuerying(false)
+    //             })
 
-                //to do enable clear results to empty searchFeatures array
-                searchWidget.current.on("search-clear", function(event){
-                    // The results are stored in the event Object[]
-                    //console.log("Search input textbox was cleared.");
+    //             //to do enable clear results to empty searchFeatures array
+    //             searchWidget.current.on("search-clear", function(event){
+    //                 // The results are stored in the event Object[]
+    //                 //console.log("Search input textbox was cleared.");
 
-                    setLocationSearch(null)
-                    setPinSearch(null)
-                    setAddressSearch(null)
-                    setGenericSearch(null)
+    //                 setLocationSearch(null)
+    //                 setPinSearch(null)
+    //                 setAddressSearch(null)
+    //                 setGenericSearch(null)
 
-                    clearResults();
-                  });
-            }
+    //                 clearResults();
+    //               });
+    //         }
 
         
-        }
-        //execute function search function with url param
-        searchEventHandler()
+    //     }
+    //     //execute function search function with url param
+    //     searchEventHandler()
 
-    },[searchWidget])
+    // },[searchWidget])
 
     return(
         <Box 
