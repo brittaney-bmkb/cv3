@@ -4,7 +4,7 @@ import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import FeedbackIcon from '@mui/icons-material/Feedback';
 import TranslateIcon from '@mui/icons-material/Translate';
 
-import Search from "../Search/Search"
+import SearchBar from "../SearchBar/SearchBar"
 import BlueButton, { StyledButtonFilledPrimaryLight, StyledButtonFilledSecondary } from "../Button/Button"
 import { config } from "../../data/config";
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
@@ -86,7 +86,7 @@ const NavBar = () => {
                         </Stack>
                         <Stack direction="row" alignItems="center" flex={5} padding={{xs:1, sm:1, md: 2}} justifyContent="space-between">
                             <Box display="flex" flex={5} > 
-                                <Search/>
+                                <SearchBar/>
                             </Box>
 
                             <Box display="flex" flex={1} sx={{display:{xs: 'none', sm: 'flex', md:'flex', lg:'none'}, alignItems:"center", justifyContent:"flex-end"}}>

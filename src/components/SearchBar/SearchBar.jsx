@@ -1,12 +1,12 @@
 import { Box } from "@mui/material";
 import { theme } from "../../theme";
-import widgetsSearch from "@arcgis/core/widgets/Search.js";
+import Search from "@arcgis/core/widgets/Search.js";
 import UseAppContext from "../../contexts/AppContext";
 import { useEffect, useRef, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom"
 
 
-const Search = () => {
+const SearchBar = () => {
 
     const {
         x, 
@@ -372,10 +372,10 @@ const Search = () => {
 
                 if(!searchWidget.current){
 
-                    searchWidget.current = new widgetsSearch({
+                    searchWidget.current = new Search({
                         locationEnabled:false,
                         includeDefaultSources: false,
-                        //view: mapView,
+                        view: mapView,
                         container: searchDiv.current,
                         sources: searchSources,
                         resultGraphicEnabled:false,
@@ -480,4 +480,4 @@ const Search = () => {
     )
 }
 
-export default Search
+export default SearchBar
