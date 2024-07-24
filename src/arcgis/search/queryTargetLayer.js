@@ -116,7 +116,7 @@ export const handleMultipleResults = async (results) => {
         console.log("search features: ", searchFeatures)
         //query only the first search feature
         //which should be the same as the best suggestion
-        let features = await queryTargetLayerWithPointFeatures(searchFeatures[0], true)
+        let features = await queryTargetLayerWithPointFeatures(searchFeatures, true)
         
         //console.log("Queried features from multipoint: ", features)
 
