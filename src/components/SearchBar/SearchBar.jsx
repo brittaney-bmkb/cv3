@@ -84,9 +84,6 @@ const SearchBar = () => {
     //create a reference to the search widget DOM element
     const searchWidget = useRef(null)
 
-   
-
-
 
     const updateAppWithSearchResult = () => {
 
@@ -183,6 +180,33 @@ const SearchBar = () => {
 
         return { paramValue, param }
     }
+
+    //Create Search 
+    useEffect(() => {
+
+        const createSearch = () => {
+
+            if(searchDiv.current && searchSources){
+
+                if(!searchWidget.current && mapView){
+
+                    searchWidget.current = new Search({
+                        locationEnabled:false,
+                        includeDefaultSources: false,
+                        view: mapView,
+                        container: searchDiv.current,
+                        sources: searchSources,
+                        resultGraphicEnabled:false,
+                        allPlaceholder: translateText('Search by address, pin, or intersection')
+                    })
+                }
+            }
+
+        }
+
+        createSearch()
+
+    },[searchDiv, mapView, searchSources])
     
 
     useEffect(() => {
@@ -218,15 +242,10 @@ const SearchBar = () => {
         }
     }, [])
 
-
-
-
     //primaryResultFeature use effect
     useEffect(() => {
 
         const updateURLParams = async () => {
-
-
 
             setIsQuerying(true)
             let searchString = routeParams.get("search")
@@ -335,26 +354,8 @@ const SearchBar = () => {
 
 
     useEffect(() => {
-        const createSearch = async () => {
-
-            if(searchDiv.current && searchSources){
-
-                if(!searchWidget.current && mapView){
-
-                    searchWidget.current = new Search({
-                        locationEnabled:false,
-                        includeDefaultSources: false,
-                        view: mapView,
-                        container: searchDiv.current,
-                        sources: searchSources,
-                        resultGraphicEnabled:false,
-                        //autoSelect: false,
-
-                        allPlaceholder: translateText('Search by address, pin, or intersection')
-                    })
-                }
-
-                //await searchWidget.current.when();
+        const searchEventHandler = async () => {
+            if(searchWidget.current){
 
                 if(newSearch === true){
                     if(genericSearch && !locationSearch){
@@ -377,17 +378,9 @@ const SearchBar = () => {
                         searchWidget.current.searchTerm = addressSearch
                     }
 
-                    //replaceing locatin search with pin10 and pin14 search
-                    // if(locationSearch && locationSearch !== 'null'){
-                    //     //console.log("Location search = ", locationSearch)             
-                    //     //searchWidget.current.search(locationSearch)
-                    //     returnLocationFeatures(locationSearch)
-
-                    // }
                     if(pin10Search || pin14Search){
                         //if pin10 or pin14 search params return values
                         //bypass the seach and query the parcels directly from the service
-
                         returnFeaturesByPin10Pin14(pin10Search, pin14Search)
                     }
                 }
@@ -404,14 +397,14 @@ const SearchBar = () => {
                     let results;
                     
                     results = event.results
-                    // setSearchCompleteResults(results)
-                    // //console.log("results for multiple results: ", event)
-                    // setIsQuerying(true)
-                    // returnSearchResultFeatures(results, searchWidget.current.searchTerm)
-                    // setSearchParams({'search': searchWidget.current.searchTerm})
+                    setSearchCompleteResults(results)
+                    //console.log("results for multiple results: ", event)
+                    setIsQuerying(true)
+                    returnSearchResultFeatures(results, searchWidget.current.searchTerm)
+                    setSearchParams({'search': searchWidget.current.searchTerm})
 
-                    // updateAppWithSearchResult()
-                    // setIsQuerying(false)
+                    updateAppWithSearchResult()
+                    setIsQuerying(false)
                 })
 
                 //to do enable clear results to empty searchFeatures array
@@ -431,9 +424,9 @@ const SearchBar = () => {
         
         }
         //execute function search function with url param
-        createSearch()
+        searchEventHandler()
 
-    },[searchDiv, mapView, searchSources])
+    },[searchWidget])
 
     return(
         <Box 
