@@ -5,6 +5,36 @@ import UseAppContext from "../../contexts/AppContext";
 import { useEffect, useRef, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom"
 
+const arrayAllSame = (array) => {
+    // Use the every method to check if all elements are strictly equal to the previous element
+    return array.every((value, index, arr) => index === 0 || value === arr[index - 1]);
+
+}
+
+const attributesStartWithString = (array, attributeName, prefix) => {
+  // Use the every method to check if all attributes start with the specified string
+  //console.log(`checking if features ${attributeName} startswith: ${prefix}` )
+  return array.every(obj => obj.attributes[attributeName].startsWith(prefix));
+};
+
+const extractDuplicates = async (array, attributeName) => {
+  // Step 1: Extract PIN10 values
+  let values = array.map(feature => feature.attributes[attributeName]);
+
+  //console.log("values: ", values)
+
+  // Step 2: Use a frequency counter to count occurrences of each PIN10
+  let valueCounts = values.reduce((acc, pin) => {
+      acc[pin] = (acc[pin] || 0) + 1;
+      return acc;
+  }, {});
+
+  // Step 3: Filter out the PIN10 values that appear more than once
+  let dups = Object.keys(valueCounts).filter(value => valueCounts[value] > 1);
+
+  return dups
+
+  }
 
 const SearchBar = () => {
 
@@ -54,36 +84,7 @@ const SearchBar = () => {
     //create a reference to the search widget DOM element
     const searchWidget = useRef(null)
 
-    const arrayAllSame = (array) => {
-          // Use the every method to check if all elements are strictly equal to the previous element
-          return array.every((value, index, arr) => index === 0 || value === arr[index - 1]);
-
-    }
-
-    const attributesStartWithString = (array, attributeName, prefix) => {
-        // Use the every method to check if all attributes start with the specified string
-        //console.log(`checking if features ${attributeName} startswith: ${prefix}` )
-        return array.every(obj => obj.attributes[attributeName].startsWith(prefix));
-    };
-
-    const extractDuplicates = async (array, attributeName) => {
-        // Step 1: Extract PIN10 values
-        let values = array.map(feature => feature.attributes[attributeName]);
-
-        //console.log("values: ", values)
-
-        // Step 2: Use a frequency counter to count occurrences of each PIN10
-        let valueCounts = values.reduce((acc, pin) => {
-            acc[pin] = (acc[pin] || 0) + 1;
-            return acc;
-        }, {});
-
-        // Step 3: Filter out the PIN10 values that appear more than once
-        let dups = Object.keys(valueCounts).filter(value => valueCounts[value] > 1);
-
-        return dups
-
-        }
+   
 
 
 
@@ -251,43 +252,11 @@ const SearchBar = () => {
                 }
                 
                 if(primaryInSearchFeature){
-                    //let { paramValue, param} = returnSearchParam(searchFeatures)
-                    //console.log("full search param: ", param)
-                    //let newSearchTerm = paramValue ?? searchTerm
-                    //let newParam = {'search' : newSearchTerm}
-                    //setSearchParams(newParam)
-                    //console.log("Primary Result Feature is in search features: ", searchFeatures)
-                    //console.log("Setting search term from search features: ", searchTerm)
-                    //console.log("setting search results - search feature = primary result features and previous search  = searchFeatures")
                     setSearchResults(null, features, searchTerm, searchFeatures)
                 }
                 else{
-                    //console.log("Primary Result feature is a net new search")
-                    //console.log("Setting search term from search features: ", paramValue)
-                    //console.log("setting search results - search feature = primary result features and not updating previous features")
-    
                     setSearchResults(null, features, paramValue)
                 }
-                ////console.log("USE EFFECT PARAM : ", routeParams.get("search"), routeParams.get("pin"))
-                
-                // if(searchWidget.current && ![attributes["PIN10"], attributes["PIN14"], `${attributes["street_address"]}, ${attributes["city_state_zip"]}`].includes(searchWidget.current.searchTerm)){
-                //     let urlParamKey = Object.keys(param)
-                //     let pin = urlParamKey.includes("pin")
-                    
-                //     let searchTermEntered = searchWidget.current.searchTerm
-                //     searchTermEntered = searchTermEntered.toLowerCase()
-
-                //     if(pin && attributes["street_address"].toLowerCase().startsWith(searchTermEntered)){
-                //         return
-                //     }
-                //     else{
-                //         searchWidget.current.searchTerm = null
-                //     }
-                //     //searchWidget.current.searchTerm.startwith(pin}
-
-                    
-                //     //searchWidget.current.searchTerm = paramValue
-                // }
 
                 if(primaryResultFeature && !newSearch ){
                     searchWidget.current.searchTerm = null
