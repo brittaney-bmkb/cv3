@@ -195,55 +195,86 @@ const queryTargetLayerByAddress = async (addresses) => {
 }
 
 export const queryTargetLayerWithPointFeatures = async (pointFeatures, includeBuffer) => {
-    let pointGeometry
-    //console.log("feature geometry: ", pointFeatures)
+    let points = Array.isArray(pointFeatures) ? pointFeatures : [pointFeatures]
 
-    if(Array.isArray(pointFeatures)){
+    console.log("feature geometry: ", pointFeatures)
 
-        if(pointFeatures.length === 1 && pointFeatures[0].geometry){
-            if(pointFeatures[0].geometry.type && pointFeatures[0].geometry.type === "point"){
-                pointGeometry = pointFeatures[0].geometry
-            }
-        }
-        else{
-            let geometries = pointFeatures.map(point => {
-                return [point.geometry.x, point.geometry.y]
-              })
-              //console.log("feature geometry: ", geometries)
-    
-            pointGeometry = new Multipoint({
-            points: geometries,
-            spatialReference: pointFeatures[0].spatialReference
-            })
-        
-            //console.log("new multipoint feature: ", pointGeometry)
-        }
+    let targetFeatures = [] 
 
+    await Promise.all(points.map(async (point) => {
 
-    }
+        const query = new Query();
+        query.spatialRelationship = "intersects";
+        query.returnGeometry = true
+        query.outFields = ["*"]
+    //     if(includeBuffer){
+    //     query.distance = config.buffer_distance,
+    //     query.units = config.buffer_unit
+    // }
+            
+            query.geometry = point.geometry;
 
-    else{
-        pointGeometry = pointFeatures
-    }
+            const { features } = await targetLayer.queryFeatures(query)
 
-      const query = new Query();
-      query.geometry = pointGeometry;
-      query.spatialRelationship = "intersects";
-      query.returnGeometry = true
-      query.outFields = ["*"]
-      if(includeBuffer){
-        query.distance = config.buffer_distance,
-        query.units = config.buffer_unit
-      }
+            targetFeatures = [...targetFeatures, ...features]
+    }))
+
+    console.log("target features from multiple points: ", targetFeatures)
+
+    return targetFeatures
       
-      //query.outFields = parcelQueryFields
-    
-      const { features } = await targetLayer.queryFeatures(query);
-    
-      //console.log("queried features from click: ", features)
-    
-      return features
 }
+
+// export const queryTargetLayerWithPointFeatures = async (pointFeatures, includeBuffer) => {
+//     let pointGeometry
+//     //console.log("feature geometry: ", pointFeatures)
+
+//     if(Array.isArray(pointFeatures)){
+
+//         if(pointFeatures.length === 1 && pointFeatures[0].geometry){
+//             if(pointFeatures[0].geometry.type && pointFeatures[0].geometry.type === "point"){
+//                 pointGeometry = pointFeatures[0].geometry
+//             }
+//         }
+//         else{
+//             let geometries = pointFeatures.map(point => {
+//                 return [point.geometry.x, point.geometry.y]
+//               })
+//               //console.log("feature geometry: ", geometries)
+    
+//             pointGeometry = new Multipoint({
+//             points: geometries,
+//             spatialReference: pointFeatures[0].spatialReference
+//             })
+        
+//             //console.log("new multipoint feature: ", pointGeometry)
+//         }
+
+
+//     }
+
+//     else{
+//         pointGeometry = pointFeatures
+//     }
+
+//       const query = new Query();
+//       query.geometry = pointGeometry;
+//       query.spatialRelationship = "intersects";
+//       query.returnGeometry = true
+//       query.outFields = ["*"]
+//     //   if(includeBuffer){
+//     //     query.distance = config.buffer_distance,
+//     //     query.units = config.buffer_unit
+//     //   }
+      
+//       //query.outFields = parcelQueryFields
+    
+//       const { features } = await targetLayer.queryFeatures(query);
+    
+//       //console.log("queried features from click: ", features)
+    
+//       return features
+// }
 
 export async function queryTargetLayerWithCoordinates(coordinates){
 

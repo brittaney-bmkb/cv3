@@ -203,7 +203,7 @@ const Search = () => {
             //console.log("USE EFFECT: checking for primary result feature and new search")
             if(primaryResultFeature){
                 //&& newSearch === false){
-                //console.log("USE EFFECT FEATURES found: ", primaryResultFeature)
+                console.log("USE EFFECT FEATURES found: ", primaryResultFeature)
                 
                 let features = Array.isArray(primaryResultFeature) ? primaryResultFeature : [primaryResultFeature]
                 let attributes = features.length > 0 ? features[0].attributes : null
@@ -389,12 +389,12 @@ const Search = () => {
                 }
 
                 searchWidget.current.on("search-complete", (event) => {
-                    //console.log("search complete event:", event)
+                    console.log("search complete event:", event)
 
                     let results;
 
                     results = event.results
-                    //console.log("results for multiple results: ", event)
+                    console.log("results for multiple results: ", event)
                     setIsQuerying(true)
                     returnSearchResultFeatures(results, searchWidget.current.searchTerm)
                     setSearchParams({'search': searchWidget.current.searchTerm})
