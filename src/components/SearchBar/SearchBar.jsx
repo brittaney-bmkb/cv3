@@ -198,9 +198,9 @@ const SearchBar = () => {
                         sources: searchSources,
                         resultGraphicEnabled:true,
                         allPlaceholder: translateText('Search by address, pin, or intersection'),
-                        // goToOverride: function(view, goToParams){
-                        //     console.log("search target: ", goToParams)
-                        // }
+                        goToOverride: function(view, goToParams){
+                            console.log("search target: ", goToParams)
+                        }
                     })
 
                     if(newSearch === true){
@@ -281,31 +281,31 @@ const SearchBar = () => {
     },[searchDiv, mapView, searchSources])
     
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        console.log("checking search results and suggestions")
+    //     console.log("checking search results and suggestions")
 
-        //console.log("search compete results: ", searchCompleteResults)
-        let emptyResults = searchCompleteResults?.filter(result => result.results.length > 0)
-        console.log("search complete results: ", emptyResults)
-        if(emptyResults?.length === 0 && searchSuggestions?.length > 0){
+    //     //console.log("search compete results: ", searchCompleteResults)
+    //     let emptyResults = searchCompleteResults?.filter(result => result.results.length > 0)
+    //     console.log("search complete results: ", emptyResults)
+    //     if(emptyResults?.length === 0 && searchSuggestions?.length > 0){
             
-            console.log("new search suggestions: ", searchSuggestions)
+    //         console.log("new search suggestions: ", searchSuggestions)
 
-            let returnedSuggestions = searchSuggestions.filter(result => result.results.length > 0)
-            console.log("returned suggestions: ", returnedSuggestions)
-            let firstSuggestion = returnedSuggestions[0]?.results[0]?.text
-            if(searchWidget.current){
-                console.log("passing first suggestion to search:", firstSuggestion)
-                setPrimaryResultFeature(null, false)
-                searchWidget.current.search(firstSuggestion)
-                searchWidget.current.searchTerm = initalSearchTerm
+    //         let returnedSuggestions = searchSuggestions.filter(result => result.results.length > 0)
+    //         console.log("returned suggestions: ", returnedSuggestions)
+    //         let firstSuggestion = returnedSuggestions[0]?.results[0]?.text
+    //         if(searchWidget.current){
+    //             console.log("passing first suggestion to search:", firstSuggestion)
+    //             setPrimaryResultFeature(null, false)
+    //             searchWidget.current.search(firstSuggestion)
+    //             searchWidget.current.searchTerm = initalSearchTerm
                 
-            }
-        }
+    //         }
+    //     }
         
         
-    },[searchCompleteResults, searchSuggestions])
+    // },[searchCompleteResults, searchSuggestions])
 
     useEffect(() => {
         initalizeSearchSources()

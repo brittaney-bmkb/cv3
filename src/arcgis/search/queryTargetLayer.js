@@ -98,7 +98,7 @@ export const handleMultipleResults = async (results) => {
             } else {
                 ////console.log("Pushing results features to search features");
                 results.results.map(result => {
-                    searchFeatures.push(result.feature)
+                    searchFeatures.push([result.feature, results.source.name])
                 })
             }
         } else {
@@ -111,18 +111,19 @@ export const handleMultipleResults = async (results) => {
 
     //If there are no matching features from the target (parcel layer)
     //then perform spatial intersection using points from locator source
-    if(searchFeatures.length > 0 && targetFeatures.length === 0){
+    // && targetFeatures.length === 0
+    if(searchFeatures.length > 0){
 
         console.log("search features: ", searchFeatures)
         //query only the first search feature
         //which should be the same as the best suggestion
-        let features = await queryTargetLayerWithPointFeatures(searchFeatures, true)
+        let features = await queryTargetLayerWithPointFeatures(searchFeatures)
         
         //console.log("Queried features from multipoint: ", features)
 
         features.map(feature => {
             let featureExists = addObjectToArrayIfNotExists(targetFeatures, feature)
-            ////console.log("new feature exists: ", featureExists)
+            
             if(!featureExists){
                 targetFeatures.push(feature)
             }
@@ -131,7 +132,7 @@ export const handleMultipleResults = async (results) => {
     }
 
     //let uniqueTargetFeatures = [...new Set(targetFeatures.map(feature => feature.attributes['PIN14']))]
-
+    console.log("new features: ", targetFeatures)
     return {targetFeatures, searchFeatures}
 }
 
@@ -166,29 +167,38 @@ const queryTargetLayerByAddress = async (addresses) => {
     return features
 }
 
-export const queryTargetLayerWithPointFeatures = async (pointFeatures, includeBuffer) => {
-    let points = Array.isArray(pointFeatures) ? pointFeatures : [pointFeatures]
+export const queryTargetLayerWithPointFeatures = async (searchFeatures) => {
+    //let points = Array.isArray(pointFeatures) ? pointFeatures : [pointFeatures]
 
-    console.log("feature geometry: ", pointFeatures)
+    //console.log("feature geometry: ", pointFeatures)
 
     let targetFeatures = [] 
 
-    await Promise.all(points.map(async (point) => {
+    await Promise.all(searchFeatures.map(async (searchFeature) => {
+
+        let includeBuffer = searchFeature[1] === "Address Locator" ? true : false
+        let point = searchFeature[0]
 
         const query = new Query();
         query.spatialRelationship = "intersects";
         query.returnGeometry = true
         query.outFields = ["*"]
-    //     if(includeBuffer){
-    //     query.distance = config.buffer_distance,
-    //     query.units = config.buffer_unit
-    // }
-            
-            query.geometry = point.geometry;
+        query.geometry = point.geometry;
 
-            const { features } = await targetLayer.queryFeatures(query)
+        const { features } = await targetLayer.queryFeatures(query)
 
-            targetFeatures = [...targetFeatures, ...features]
+        targetFeatures = [...targetFeatures, ...features]
+
+        //now do buffer after point to polygon intersection 
+        //is performed to get nearby features
+        if(includeBuffer){
+            query.distance = config.buffer_distance,
+            query.units = config.buffer_unit
+        }
+
+        const bufferedFeatures = await targetLayer.queryFeatures(query)
+
+        targetFeatures = [...targetFeatures, ...bufferedFeatures.features]
     }))
 
     console.log("target features from multiple points: ", targetFeatures)

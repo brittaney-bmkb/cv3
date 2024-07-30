@@ -555,7 +555,7 @@ const WebMapComponentBeta = () => {
                 //if primaryResultFeature is not null then zoom to newly added features
                 if(primaryResultFeature){
                     if(newSearch){
-                        //zoomToExtent(primaryResultFeature)
+                        zoomToExtent(primaryResultFeature)
                     }
                     
                     //clear comparables from map when primary selected parcel changes
