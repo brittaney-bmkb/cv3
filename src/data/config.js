@@ -41,7 +41,7 @@ export const config = {
     //MUNICIPALITY SERVICE- USED TO CALCULATE INCORPORATED VS UNINCORPORATED VALUES FOR MUNICIPALITY IN PROPERTY DETAIL
     municipality_url: "https://gis.cookcountyil.gov/traditional/rest/services/politicalBoundary/MapServer/2",
     // NEARBY SEARCH SETTINGS: Configure the buffer distance and unit for nearby searches.
-    buffer_distance: 50,
+    buffer_distance: 100,
     buffer_unit: "feet",
     //No results Message
     no_results_message: "Try a new search using the search bar or by clicking in the map",
