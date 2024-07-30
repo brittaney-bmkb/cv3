@@ -1,12 +1,42 @@
 import { Box } from "@mui/material";
 import { theme } from "../../theme";
-import widgetsSearch from "@arcgis/core/widgets/Search.js";
+import Search from "@arcgis/core/widgets/Search.js";
 import UseAppContext from "../../contexts/AppContext";
 import { useEffect, useRef, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom"
 
+const arrayAllSame = (array) => {
+    // Use the every method to check if all elements are strictly equal to the previous element
+    return array.every((value, index, arr) => index === 0 || value === arr[index - 1]);
 
-const Search = () => {
+}
+
+const attributesStartWithString = (array, attributeName, prefix) => {
+  // Use the every method to check if all attributes start with the specified string
+  //console.log(`checking if features ${attributeName} startswith: ${prefix}` )
+  return array.every(obj => obj.attributes[attributeName].startsWith(prefix));
+};
+
+const extractDuplicates = async (array, attributeName) => {
+  // Step 1: Extract PIN10 values
+  let values = array.map(feature => feature.attributes[attributeName]);
+
+  //console.log("values: ", values)
+
+  // Step 2: Use a frequency counter to count occurrences of each PIN10
+  let valueCounts = values.reduce((acc, pin) => {
+      acc[pin] = (acc[pin] || 0) + 1;
+      return acc;
+  }, {});
+
+  // Step 3: Filter out the PIN10 values that appear more than once
+  let dups = Object.keys(valueCounts).filter(value => valueCounts[value] > 1);
+
+  return dups
+
+  }
+
+const SearchBar = () => {
 
     const {
         x, 
@@ -44,43 +74,15 @@ const Search = () => {
     let [pin10Search, setPin10Search] = useState(null)
     let [pin14Search, setPin14Search] = useState(null)
 
+    let [searchSuggestions, setSearchSuggestions] = useState(null)
+    let [searchCompleteResults, setSearchCompleteResults] = useState(null)
+    let [initalSearchTerm, setInitialSearchTerm] = useState(null)
+
 
     //create a reference to the search  DOM  element
     const searchDiv = useRef(null)
     //create a reference to the search widget DOM element
     const searchWidget = useRef(null)
-
-    const arrayAllSame = (array) => {
-          // Use the every method to check if all elements are strictly equal to the previous element
-          return array.every((value, index, arr) => index === 0 || value === arr[index - 1]);
-
-    }
-
-    const attributesStartWithString = (array, attributeName, prefix) => {
-        // Use the every method to check if all attributes start with the specified string
-        //console.log(`checking if features ${attributeName} startswith: ${prefix}` )
-        return array.every(obj => obj.attributes[attributeName].startsWith(prefix));
-    };
-
-    const extractDuplicates = async (array, attributeName) => {
-        // Step 1: Extract PIN10 values
-        let values = array.map(feature => feature.attributes[attributeName]);
-
-        //console.log("values: ", values)
-
-        // Step 2: Use a frequency counter to count occurrences of each PIN10
-        let valueCounts = values.reduce((acc, pin) => {
-            acc[pin] = (acc[pin] || 0) + 1;
-            return acc;
-        }, {});
-
-        // Step 3: Filter out the PIN10 values that appear more than once
-        let dups = Object.keys(valueCounts).filter(value => valueCounts[value] > 1);
-
-        return dups
-
-        }
-
 
 
     const updateAppWithSearchResult = () => {
@@ -178,7 +180,132 @@ const Search = () => {
 
         return { paramValue, param }
     }
+
+    //Create Search 
+    useEffect(() => {
+
+        const createSearch = async () => {
+
+            if(searchDiv.current && searchSources){
+
+                if(!searchWidget.current && mapView){
+
+                    searchWidget.current = new Search({
+                        locationEnabled:false,
+                        includeDefaultSources: false,
+                        view: mapView,
+                        container: searchDiv.current,
+                        sources: searchSources,
+                        resultGraphicEnabled:true,
+                        allPlaceholder: translateText('Search by address, pin, or intersection'),
+                        // goToOverride: function(view, goToParams){
+                        //     console.log("search target: ", goToParams)
+                        // }
+                    })
+
+                    if(newSearch === true){
+                        if(genericSearch && !locationSearch){
+                            console.log("DETECTED GENERIC SEARCH PARAM: ", genericSearch)
+                            setInitialSearchTerm(genericSearch)
+                            searchWidget.current.search(genericSearch)
+                            searchWidget.current.suggest(genericSearch)
+                            searchWidget.current.searchTerm = genericSearch
+                        }
     
+                        if(pinSearch && pinSearch !== 'null'){
+                           console.log("Performing New Search for pin=", pinSearch)           
+                            searchWidget.current.search(pinSearch)
+                            searchWidget.current.searchTerm = pinSearch
+                        }
+    
+                        if(addressSearch && addressSearch !== 'null'){
+                            console.log("DETECTED Address SEARCH PARAM: ", addressSearch)
+                            searchWidget.current.search(addressSearch)
+                            searchWidget.current.searchTerm = addressSearch
+                        }
+    
+                        if(pin10Search || pin14Search){
+                            //if pin10 or pin14 search params return values
+                            //bypass the seach and query the parcels directly from the service
+                            let features = await returnFeaturesByPin10Pin14(pin10Search, pin14Search)
+                            mapView.goTo(features)
+                        }
+                    }
+                }
+
+            }
+
+            if(searchWidget.current){
+
+                searchWidget.current.on("suggest-complete", (event) => {
+                    console.log("suggest complete event: ", event)
+                    setSearchSuggestions(event.results)
+
+                })
+
+                searchWidget.current.on("search-complete", (event) => {
+                    //searchWidget.current.on("search-complete", (event) => {
+                    console.log("search complete event:", event)
+
+                    let results;
+                    
+                    results = event.results
+                    setSearchCompleteResults(results)
+                    //console.log("results for multiple results: ", event)
+                    setIsQuerying(true)
+                    returnSearchResultFeatures(results, searchWidget.current.searchTerm)
+                    setSearchParams({'search': searchWidget.current.searchTerm})
+
+                    updateAppWithSearchResult()
+                    setIsQuerying(false)
+                })
+
+                //to do enable clear results to empty searchFeatures array
+                searchWidget.current.on("search-clear", function(event){
+                    // The results are stored in the event Object[]
+                    //console.log("Search input textbox was cleared.");
+
+                    setLocationSearch(null)
+                    setPinSearch(null)
+                    setAddressSearch(null)
+                    setGenericSearch(null)
+
+                    clearResults();
+                  });
+            }
+
+        }
+
+        createSearch()
+
+    },[searchDiv, mapView, searchSources])
+    
+
+    useEffect(() => {
+
+        console.log("checking search results and suggestions")
+
+        //console.log("search compete results: ", searchCompleteResults)
+        let emptyResults = searchCompleteResults?.filter(result => result.results.length > 0)
+        console.log("search complete results: ", emptyResults)
+        if(emptyResults?.length === 0 && searchSuggestions?.length > 0){
+            
+            console.log("new search suggestions: ", searchSuggestions)
+
+            let returnedSuggestions = searchSuggestions.filter(result => result.results.length > 0)
+            console.log("returned suggestions: ", returnedSuggestions)
+            let firstSuggestion = returnedSuggestions[0]?.results[0]?.text
+            if(searchWidget.current){
+                console.log("passing first suggestion to search:", firstSuggestion)
+                setPrimaryResultFeature(null, false)
+                searchWidget.current.search(firstSuggestion)
+                searchWidget.current.searchTerm = initalSearchTerm
+                
+            }
+        }
+        
+        
+    },[searchCompleteResults, searchSuggestions])
 
     useEffect(() => {
         initalizeSearchSources()
@@ -187,13 +314,10 @@ const Search = () => {
         }
     }, [])
 
-
     //primaryResultFeature use effect
     useEffect(() => {
 
         const updateURLParams = async () => {
-
-
 
             setIsQuerying(true)
             let searchString = routeParams.get("search")
@@ -203,7 +327,7 @@ const Search = () => {
             //console.log("USE EFFECT: checking for primary result feature and new search")
             if(primaryResultFeature){
                 //&& newSearch === false){
-                console.log("USE EFFECT FEATURES found: ", primaryResultFeature)
+                //console.log("USE EFFECT FEATURES found: ", primaryResultFeature)
                 
                 let features = Array.isArray(primaryResultFeature) ? primaryResultFeature : [primaryResultFeature]
                 let attributes = features.length > 0 ? features[0].attributes : null
@@ -219,43 +343,11 @@ const Search = () => {
                 }
                 
                 if(primaryInSearchFeature){
-                    //let { paramValue, param} = returnSearchParam(searchFeatures)
-                    //console.log("full search param: ", param)
-                    //let newSearchTerm = paramValue ?? searchTerm
-                    //let newParam = {'search' : newSearchTerm}
-                    //setSearchParams(newParam)
-                    //console.log("Primary Result Feature is in search features: ", searchFeatures)
-                    //console.log("Setting search term from search features: ", searchTerm)
-                    //console.log("setting search results - search feature = primary result features and previous search  = searchFeatures")
                     setSearchResults(null, features, searchTerm, searchFeatures)
                 }
                 else{
-                    //console.log("Primary Result feature is a net new search")
-                    //console.log("Setting search term from search features: ", paramValue)
-                    //console.log("setting search results - search feature = primary result features and not updating previous features")
-    
                     setSearchResults(null, features, paramValue)
                 }
-                ////console.log("USE EFFECT PARAM : ", routeParams.get("search"), routeParams.get("pin"))
-                
-                // if(searchWidget.current && ![attributes["PIN10"], attributes["PIN14"], `${attributes["street_address"]}, ${attributes["city_state_zip"]}`].includes(searchWidget.current.searchTerm)){
-                //     let urlParamKey = Object.keys(param)
-                //     let pin = urlParamKey.includes("pin")
-                    
-                //     let searchTermEntered = searchWidget.current.searchTerm
-                //     searchTermEntered = searchTermEntered.toLowerCase()
-
-                //     if(pin && attributes["street_address"].toLowerCase().startsWith(searchTermEntered)){
-                //         return
-                //     }
-                //     else{
-                //         searchWidget.current.searchTerm = null
-                //     }
-                //     //searchWidget.current.searchTerm.startwith(pin}
-
-                    
-                //     //searchWidget.current.searchTerm = paramValue
-                // }
 
                 if(primaryResultFeature && !newSearch ){
                     searchWidget.current.searchTerm = null
@@ -333,98 +425,57 @@ const Search = () => {
     },[searchWidget, language])
 
 
-    useEffect(() => {
-        const createSearch = async () => {
+    // useEffect(() => {
+    //     const searchEventHandler = async () => {
 
-            if(searchDiv.current && searchSources){
+    //         if(searchWidget.current){
 
-                if(!searchWidget.current){
+    //             console.log("search event handler use effect")    
 
-                    searchWidget.current = new widgetsSearch({
-                        locationEnabled:false,
-                        includeDefaultSources: false,
-                        //view: mapView,
-                        container: searchDiv.current,
-                        sources: searchSources,
-                        resultGraphicEnabled:false,
-                        autoSelect: false,
-                        allPlaceholder: translateText('Search by address, pin, or intersection')
-                    })
-                }
+                
+    //             searchWidget.current.on("suggest-complete", (event) => {
+    //                 console.log("suggest complete event: ", event)
+    //                 setSearchSuggestions(event.results)
 
-                await searchWidget.current.when();
+    //             })
 
-                if(newSearch === true){
-                    if(genericSearch && !locationSearch){
-                        //console.log("DETECTED GENERIC SEARCH PARAM: ", genericSearch)
-                        searchWidget.current.search(genericSearch)
-                        searchWidget.current.searchTerm = genericSearch
-                    }
+    //             searchWidget.current.on("search-complete", (event) => {
+    //             //searchWidget.current.on("search-complete", (event) => {
+    //                 console.log("search complete event:", event)
 
-                    if(pinSearch && pinSearch !== 'null'){
-                       //console.log("Performing New Search for pin=", pinSearch)           
-                        searchWidget.current.search(pinSearch)
-                        searchWidget.current.searchTerm = pinSearch
-                    }
-
-                    if(addressSearch && addressSearch !== 'null'){
-                        //console.log("DETECTED Address SEARCH PARAM: ", addressSearch)
-                        searchWidget.current.search(addressSearch)
-                        searchWidget.current.searchTerm = addressSearch
-                    }
-
-                    //replaceing locatin search with pin10 and pin14 search
-                    // if(locationSearch && locationSearch !== 'null'){
-                    //     //console.log("Location search = ", locationSearch)             
-                    //     //searchWidget.current.search(locationSearch)
-                    //     returnLocationFeatures(locationSearch)
-
-                    // }
-                    if(pin10Search || pin14Search){
-                        //if pin10 or pin14 search params return values
-                        //bypass the seach and query the parcels directly from the service
-
-                        returnFeaturesByPin10Pin14(pin10Search, pin14Search)
-                    }
-                }
-
-                searchWidget.current.on("search-complete", (event) => {
-                    console.log("search complete event:", event)
-
-                    let results;
-
-                    results = event.results
-                    console.log("results for multiple results: ", event)
-                    setIsQuerying(true)
-                    returnSearchResultFeatures(results, searchWidget.current.searchTerm)
-                    setSearchParams({'search': searchWidget.current.searchTerm})
-
-                    updateAppWithSearchResult()
-                    setIsQuerying(false)
-                })
-
-                //to do enable clear results to empty searchFeatures array
-                searchWidget.current.on("search-clear", function(event){
-                    // The results are stored in the event Object[]
-                    //console.log("Search input textbox was cleared.");
-
-                    setLocationSearch(null)
-                    setPinSearch(null)
-                    setAddressSearch(null)
-                    setGenericSearch(null)
-
-                    clearResults();
-
+    //                 let results;
                     
-                  });
-            }
+    //                 results = event.results
+    //                 setSearchCompleteResults(results)
+    //                 //console.log("results for multiple results: ", event)
+    //                 setIsQuerying(true)
+    //                 returnSearchResultFeatures(results, searchWidget.current.searchTerm)
+    //                 setSearchParams({'search': searchWidget.current.searchTerm})
+
+    //                 updateAppWithSearchResult()
+    //                 setIsQuerying(false)
+    //             })
+
+    //             //to do enable clear results to empty searchFeatures array
+    //             searchWidget.current.on("search-clear", function(event){
+    //                 // The results are stored in the event Object[]
+    //                 //console.log("Search input textbox was cleared.");
+
+    //                 setLocationSearch(null)
+    //                 setPinSearch(null)
+    //                 setAddressSearch(null)
+    //                 setGenericSearch(null)
+
+    //                 clearResults();
+    //               });
+    //         }
 
         
-        }
-        //execute function search function with url param
-        createSearch()
+    //     }
+    //     //execute function search function with url param
+    //     searchEventHandler()
 
-    },[searchDiv, mapView, searchSources])
+    // },[searchWidget])
 
     return(
         <Box 
@@ -441,4 +492,4 @@ const Search = () => {
     )
 }
 
-export default Search
+export default SearchBar

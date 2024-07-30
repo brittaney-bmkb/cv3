@@ -121,7 +121,7 @@ const Info = () => {
                     {translateText("CookViewer 3.0 Beta-3")}
                 </Typography>
                 <Typography>
-                    {translateText("Release: July 05 2024", true)}
+                    {translateText("Release: July 15 2024", true)}
                 </Typography>
             </Stack>
                 

@@ -65,7 +65,11 @@ const WebMapComponentBeta = () => {
 
         if(Array.isArray(features)){
             const geometries = features.map((feature) => feature.geometry);
-            extent = geometryEngine.union(geometries);
+            console.log("geometries: ", geometries)
+            if(geometries?.length > 0){
+                extent = geometryEngine.union(geometries);
+            }
+            
         }
 
         else{
@@ -79,7 +83,10 @@ const WebMapComponentBeta = () => {
             }
         }
         
-        arcgisMapRef.current.goTo(extent)
+        if(extent){
+            arcgisMapRef.current.goTo(extent)
+        }
+        
     }
 
     const addLayerToMap = async (source, title, theme, type) => {
@@ -548,7 +555,7 @@ const WebMapComponentBeta = () => {
                 //if primaryResultFeature is not null then zoom to newly added features
                 if(primaryResultFeature){
                     if(newSearch){
-                        zoomToExtent(primaryResultFeature)
+                        //zoomToExtent(primaryResultFeature)
                     }
                     
                     //clear comparables from map when primary selected parcel changes

@@ -6,8 +6,10 @@ import Point from "@arcgis/core/geometry/Point";
 
 let namedLayers;
 let targetLayer
+let targetViewLayer
 
 export const initalizeLayers = async () => {
+    
     namedLayers = await createFeatureLayers()
 
     //define target layer
@@ -71,25 +73,7 @@ export const handleMultipleResults = async (results) => {
                     return;
                 }
                 if (sourceEqualsTarget) {
-                    //get address values
-                    // if(results.source.searchFields.includes("street_address")){
-                    //     results.results.forEach(result => {
-                    //         if (result && result.feature) {
-                    //             let street_address = result.feature.attributes["street_address"]
-                    //             let city_state_zip = result.feature.attributes["city_state_zip"]
-                    //             let address_values = [ street_address, city_state_zip ]
-
-                    //             if(!addresses.includes(address_values)){
-                    //                 addresses.push(address_values)
-                    //             }
-
-                    //         } else {
-                    //             //console.error("Error: Missing feature in result.");
-
-                    //         }
-                    //     })
-                    // }
-                    // else{
+                    
                     results.results.forEach(result => {
                         if (result && result.feature) {
                             let featureExists = addObjectToArrayIfNotExists(targetFeatures, result.feature)
@@ -125,25 +109,13 @@ export const handleMultipleResults = async (results) => {
     //console.log("target results: ", targetFeatures)
     //console.log("search results: ", searchFeatures)
 
-    if(addresses.length > 0){ 
-        //Address to query
-        if(addresses.length > 0){
-            let features = await queryTargetLayerByAddress(addresses)
+    //If there are no matching features from the target (parcel layer)
+    //then perform spatial intersection using points from locator source
+    if(searchFeatures.length > 0 && targetFeatures.length === 0){
 
-            features.map(feature => {
-                let featureExists = addObjectToArrayIfNotExists(targetFeatures, feature)
-                //console.log("new feature exists: ", featureExists)
-                if(!featureExists){
-                    targetFeatures.push(feature)
-                }
-                
-            })
-        }
-    }
-
-
-    if(searchFeatures.length > 0){
-
+        console.log("search features: ", searchFeatures)
+        //query only the first search feature
+        //which should be the same as the best suggestion
         let features = await queryTargetLayerWithPointFeatures(searchFeatures, true)
         
         //console.log("Queried features from multipoint: ", features)

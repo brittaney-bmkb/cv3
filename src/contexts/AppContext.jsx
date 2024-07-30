@@ -495,6 +495,8 @@ export const AppProvider = ({children}) => {
         if(!panelPrimaryVisible || panelPrimaryVisible === false){
             setPanelPrimaryVisibility(true)
         }
+
+        return features
     }
 
     // Function to check if any properties attributes['PIN14'] are included in another array of objects
