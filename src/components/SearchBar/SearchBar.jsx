@@ -192,7 +192,7 @@ const SearchBar = () => {
                     searchWidget.current = new Search({
                         locationEnabled:false,
                         includeDefaultSources: false,
-                        view: mapView,
+                        //view: mapView,
                         container: searchDiv.current,
                         sources: searchSources,
                         resultGraphicEnabled:false,

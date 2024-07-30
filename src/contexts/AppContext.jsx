@@ -709,6 +709,8 @@ export const AppProvider = ({children}) => {
 
         const { handleMultipleResults } = await import('../arcgis/search/queryTargetLayer')
 
+        //created buffer graphic here
+
         
         // else{
         //console.log("Performing new target layer query")
@@ -724,6 +726,7 @@ export const AppProvider = ({children}) => {
         setSearchResults(results, targetFeatures, newSearchTerm, targetFeatures)
         //}
         
+    
         
 
 

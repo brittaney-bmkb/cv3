@@ -167,7 +167,8 @@ export const config = {
             popupEnabled: false,
             singleLineFieldName:"SingleLine",
             suggestionsEnabled:true,
-            url:"https://test-gis.cookcountyil.gov/traditional/rest/services/Locator/parcelMultirole/GeocodeServer"
+            //url:"https://test-gis.cookcountyil.gov/traditional/rest/services/Locator/parcelMultirole/GeocodeServer"
+            url:"https://test-gis.cookcountyil.gov/traditional/rest/services/Locator/parcelMultirole_20240730/GeocodeServer"
         }
     ]
 }
