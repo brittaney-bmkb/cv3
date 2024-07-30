@@ -316,7 +316,18 @@ const SearchBar = () => {
     useEffect(() => {
         initalizeSearchSources()
         if(!primaryResultFeature){
+            
             setPrimaryResultFeature(null, true)
+
+            setPin10Search(routeParams.get("pin10"))
+
+            setPin14Search(routeParams.get("pin14"))
+
+            setPinSearch(routeParams.get("pin"))
+
+            setGenericSearch(routeParams.get("search"))
+
+            setAddressSearch(routeParams.get("address"))
         }
     }, [])
 
