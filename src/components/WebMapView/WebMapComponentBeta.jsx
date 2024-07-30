@@ -9,6 +9,7 @@ import { TableRowsOutlined } from "@mui/icons-material";
 import { config } from "../../data/config";
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine.js";
 import Query from "@arcgis/core/rest/support/Query.js";
+import { useSearchParams } from "react-router-dom";
 
 const selectedParcelTitle = "Selected Parcel"
 const webmapParcelLayerTitle = config.target_layer_name
@@ -49,6 +50,7 @@ const WebMapComponentBeta = () => {
         comparableType, 
         measureWidgetState,
         measureWidget,
+        returnSearchParam
         } = UseAppContext()
 
     const arcgisMapRef = useRef(null)
@@ -58,6 +60,7 @@ const WebMapComponentBeta = () => {
     const [ comparableParcelLayer, setComparableParcelLayer ] = useState(null)
     const [ selectedComparableParcelLayer, setSelectedComparableParcelLayer ] = useState(null)
     const [ hitTestLayers, setHitTestLayers ] = useState([])
+    const [routeParams, setSearchParams] = useSearchParams();
 
     const zoomToExtent = async (features) => {
 
@@ -247,6 +250,10 @@ const WebMapComponentBeta = () => {
         
         setPrimaryResultFeature(features, false)
         setSearchResults(null, features, null, features)
+
+        console.log("updating URL parameters for select multiple - click tool")
+        const param = await returnSearchParam(features)
+        setSearchParams(param)
 
         if(!panelDisplay || panelDisplay !== "resultsList"){
             setPanelDisplay("resultsList")

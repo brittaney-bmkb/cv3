@@ -164,6 +164,7 @@ export const config = {
             minSuggestCharacters: 3,
             name: "Parcel Locator",
             outFields:["StAddr",],
+            popupEnabled: false,
             singleLineFieldName:"SingleLine",
             suggestionsEnabled:true,
             url:"https://test-gis.cookcountyil.gov/traditional/rest/services/Locator/parcelMultirole/GeocodeServer"

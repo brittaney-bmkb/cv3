@@ -8,7 +8,6 @@ import { useParams, useSearchParams } from "react-router-dom"
 const arrayAllSame = (array) => {
     // Use the every method to check if all elements are strictly equal to the previous element
     return array.every((value, index, arr) => index === 0 || value === arr[index - 1]);
-
 }
 
 const attributesStartWithString = (array, attributeName, prefix) => {
@@ -164,7 +163,6 @@ const SearchBar = () => {
                     if(filteredPin14s?.length){
                         param["pin14"] = `'${filteredPin14s.join("','")}'`
                     }
-
                 }
             }
             else if(isMultiFeatures === true && pin10Match === true){
@@ -218,17 +216,17 @@ const SearchBar = () => {
                             searchWidget.current.searchTerm = genericSearch
                         }
     
-                        if(pinSearch && pinSearch !== 'null'){
-                           console.log("Performing New Search for pin=", pinSearch)           
-                            searchWidget.current.search(pinSearch)
-                            searchWidget.current.searchTerm = pinSearch
-                        }
+                        // if(pinSearch && pinSearch !== 'null'){
+                        //    console.log("Performing New Search for pin=", pinSearch)           
+                        //     searchWidget.current.search(pinSearch)
+                        //     searchWidget.current.searchTerm = pinSearch
+                        // }
     
-                        if(addressSearch && addressSearch !== 'null'){
-                            console.log("DETECTED Address SEARCH PARAM: ", addressSearch)
-                            searchWidget.current.search(addressSearch)
-                            searchWidget.current.searchTerm = addressSearch
-                        }
+                        // if(addressSearch && addressSearch !== 'null'){
+                        //     console.log("DETECTED Address SEARCH PARAM: ", addressSearch)
+                        //     searchWidget.current.search(addressSearch)
+                        //     searchWidget.current.searchTerm = addressSearch
+                        // }
     
                         if(pin10Search || pin14Search){
                             //if pin10 or pin14 search params return values
@@ -316,18 +314,18 @@ const SearchBar = () => {
     useEffect(() => {
         initalizeSearchSources()
         if(!primaryResultFeature){
-            
+
             setPrimaryResultFeature(null, true)
 
             setPin10Search(routeParams.get("pin10"))
 
             setPin14Search(routeParams.get("pin14"))
 
-            setPinSearch(routeParams.get("pin"))
+            // setPinSearch(routeParams.get("pin"))
 
             setGenericSearch(routeParams.get("search"))
 
-            setAddressSearch(routeParams.get("address"))
+            // setAddressSearch(routeParams.get("address"))
         }
     }, [])
 
