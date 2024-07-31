@@ -4,5 +4,5 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base:"/cookviewer-beta-parcel-locator-91"
+  base:"/cookviewer-beta-parcel-layer-source-and-locator"
 })
