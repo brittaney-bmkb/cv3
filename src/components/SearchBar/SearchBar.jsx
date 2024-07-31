@@ -330,6 +330,13 @@ const SearchBar = () => {
     }, [])
 
     //primaryResultFeature use effect
+    useEffect(() => {
+
+        if(!primaryResultFeature){
+            searchWidget.current.searchTerm = null
+        }
+
+    },[primaryResultFeature])
     // useEffect(() => {
 
     //     const updateURLParams = async () => {
