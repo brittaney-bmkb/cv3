@@ -4,6 +4,24 @@
 
 The `MeasureSketchWidget` is a React component that provides measurement functionality for a web map application. It allows users to measure distances and areas on the map using polylines and polygons. The widget includes tools for drawing, unit selection, and display of measurement results.
 
+SketchViewModel
+https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Sketch-SketchViewModel.html
+Provides the logic for the Sketch widget. The SketchViewModel is intended to be used with Graphics and requires a GraphicsLayer to be specified in its layer property. The Sketch widget provides out-of-the box functionality with a user interface (UI). 
+
+This is the underlying ViewModel for the sketch widget. It builds out the functionality to create the graphic. 
+
+GraphicsLayer
+https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-GraphicsLayer.html
+A GraphicsLayer contains one or more client-side Graphics. Each graphic in the GraphicsLayer is rendered in a LayerView inside either a SceneView or a MapView. The graphics contain discrete vector geometries that represent real-world phenomena.
+
+This allows the graphic created in the SketchViewModel to appear on the map once user has completed drawing. 
+
+geometryEngine
+https://developers.arcgis.com/javascript/latest/api-reference/esri-geometry-geometryEngine.html
+A client-side geometry engine for testing, measuring, and analyzing the spatial relationship between two or more 2D geometries. 
+
+With this library we are able to do transformations as needed. 
+
 ### Change Log
 
 N/A
