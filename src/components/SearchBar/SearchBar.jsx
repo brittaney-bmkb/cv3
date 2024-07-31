@@ -332,7 +332,7 @@ const SearchBar = () => {
     //primaryResultFeature use effect
     useEffect(() => {
 
-        if(!primaryResultFeature){
+        if(!primaryResultFeature && searchWidget.current){
             searchWidget.current.searchTerm = null
         }
 
