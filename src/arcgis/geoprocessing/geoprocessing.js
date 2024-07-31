@@ -3,6 +3,8 @@ import { config } from "../../data/config";
 import Point from "@arcgis/core/geometry/Point.js";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 
+import * as geometryEngineAsync from "@arcgis/core/geometry/geometryEngineAsync.js";
+
 let muniLayer = new FeatureLayer({
     url: config.municipality_url,
     outFields: ["OBJECTID", "MUNICIPALITY"],
@@ -39,4 +41,13 @@ export async function returnMunicipality(parcel){
     //let incorp_unincorp = muniValue ? `Incorporated ${muniValue}` : `Unincorporated ${parcel.attributes['township_name']}`
 
     return muniValue
+}
+
+export async function returnBufferGeometry(geometry, distance, units ){
+
+
+
+    const ptBuff = await geometryEngineAsync.geodesicBuffer(geometry, distance, units)
+
+    return ptBuff
 }

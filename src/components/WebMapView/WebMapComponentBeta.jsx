@@ -1,7 +1,7 @@
 import { ArcgisMap, ArcgisZoom } from "@arcgis/map-components-react"
 import { useEffect, useRef, useState } from "react";
 import UseAppContext from "../../contexts/AppContext";
-import { createFeatureLayerFromGraphics, createFeatureLayerFromFeatures, removeLayer } from "../../arcgis/layers/layers";
+import { createFeatureLayerFromGraphics, createFeatureLayerFromFeatures, removeLayer, createGraphic } from "../../arcgis/layers/layers";
 import { theme } from "../../theme";
 import MapButtonGroup from "../MapButtonGroup";
 import { Box, Fade, Typography, IconButton } from "@mui/material";
@@ -50,7 +50,10 @@ const WebMapComponentBeta = () => {
         comparableType, 
         measureWidgetState,
         measureWidget,
-        returnSearchParam
+        returnSearchParam,
+        searchBufferGeometry,
+        searchResultPoint,
+        setSearchBufferGeometry
         } = UseAppContext()
 
     const arcgisMapRef = useRef(null)
@@ -490,6 +493,7 @@ const WebMapComponentBeta = () => {
     }
 
 
+    //configure map on load
     useEffect(() => {
 
         const configureWebMap = async () => {
@@ -521,6 +525,56 @@ const WebMapComponentBeta = () => {
         
 
     }, [arcgisMapRef, mapLoading, screenWidth, searchSources])
+
+    //add search buffer graphic to map when searchBufferGeometry changes
+    useEffect(() => {
+
+        let view 
+
+        if(arcgisMapRef.current){
+            view = arcgisMapRef.current.view
+        }
+
+        console.log("adding buffe graphics to map")
+        if(searchResultPoint?.length > 0 && searchBufferGeometry?.length > 0 && view){
+            searchResultPoint.map(async(point) => {
+
+                console.log("point geometry: ", point)
+
+                let graphic = await createGraphic(point, "point")
+
+                console.log("point graphic created: ", graphic)
+
+                view.graphics.add(graphic)
+            })
+
+            searchBufferGeometry.map(async(polygon) => {
+
+                console.log("polygon geometry: ", polygon)
+
+                let graphic = await createGraphic(polygon, "polygon")
+
+                console.log("polygon graphic created: ", graphic)
+
+                view.graphics.add(graphic)
+            })  
+        }
+
+        if(!primaryResultFeature && view){
+            //remove graphics
+            setSearchBufferGeometry(null, null)
+
+            if(view.graphics?.items?.length > 0){
+                console.log("removing all graphics from view: ", view.graphics)
+                view.graphics.items.map(graphic => {
+                    view.graphics.remove(graphic)
+                })
+            }
+            
+        }
+
+    },[searchResultPoint, searchBufferGeometry, primaryResultFeature])
+
 
     useEffect(() => {
 
@@ -557,6 +611,7 @@ const WebMapComponentBeta = () => {
                 else if(!primaryResultFeature && selectedParcelsPrimary){
                     ////console.log("clearing primary parcel selection")
                     await removeAllFeatures(selectedParcelsPrimary) 
+
                 }
 
                 //if primaryResultFeature is not null then zoom to newly added features
@@ -626,7 +681,7 @@ const WebMapComponentBeta = () => {
         displayComparableParcels()
 
     }, [ comparableParcels, arcgisMapRef])
-
+    
     useEffect(() => {
 
         const displaySelectedComparableParcel = async () => {
@@ -661,6 +716,8 @@ const WebMapComponentBeta = () => {
         //addLayerToMap(secondaryResultFeature, "Selected Comparable Parcel", theme.layers.secondarySelected, "features")
     }, [ secondaryResultFeature, arcgisMapRef ])
 
+
+    //Remove all graphics from map when panelDisplayWidget, panelWidgetVisible changes
     useEffect(() => {
         const removeAllGraphics = () => {
 

@@ -104,6 +104,16 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setSearchBufferGeometry = async (searchResultPoint, searchBufferGeometry) => {
+        dispatch({
+            type:"SET_SEARCH_BUFFER_GEOMETRY",
+            payload: {
+                searchResultPoint: searchResultPoint, 
+                searchBufferGeometry: searchBufferGeometry
+            }
+        })
+    }
+
     const setPanelDisplay = (state) => {
         dispatch({
             type:"SET_PANEL_DISPLAY",
@@ -708,8 +718,30 @@ export const AppProvider = ({children}) => {
     const returnSearchResultFeatures = async (results, newSearchTerm) => {
 
         const { handleMultipleResults } = await import('../arcgis/search/queryTargetLayer')
+        const { returnBufferGeometry } = await import('../arcgis/geoprocessing/geoprocessing')
 
         //created buffer graphic here
+        //if results include Address Locator source
+        //update state of searchBuffer and pass point geometries
+        
+        const addressLocatorResultGeometry = results.filter(result => result.source.name === "Address Locator")
+                                             .flatMap(filteredResults => filteredResults.results)
+                                             .map(flattenedResults => flattenedResults.feature.geometry)
+        
+        
+        const bufferGeometries = await Promise.all(addressLocatorResultGeometry.map(async(geometry) => {
+
+            console.log("buffer geometry: ", geometry)
+            return await returnBufferGeometry(geometry, config.buffer_distance, config.buffer_unit)
+
+        }))
+
+        console.log("address locator buffer geometries calculated: ", bufferGeometries)
+        setSearchBufferGeometry(addressLocatorResultGeometry, bufferGeometries)
+
+        //create marker graphic for point
+        //create polygon buffer graphic for buffer distance
+
 
         
         // else{
@@ -919,6 +951,9 @@ export const AppProvider = ({children}) => {
         searchResults: state.searchResults,
         prevSearchFeatures: state.prevSearchFeatures,
         searchTerm: state.searchTerm,
+        searchResultPoint: state.searchResultPoint,
+        searchBufferGeometry: state.searchBufferGeometry,
+        setSearchBufferGeometry,
         setSearchSources,
         renderSearchResults,
         clearResults,
