@@ -93,20 +93,20 @@ export const config = {
                 }]
            },
            searchSources: [
-            // {
-            //     name: "Parcel Pin", // Name of the search source.
-            //     displayField: "PIN14_dash", // Field used for displaying search suggestions.
-            //     exactMatch: false, // Exact match search (boolean).
-            //     maxResults: 1000, // Maximum number of search results.
-            //     maxSuggestions: 50, // Maximum number of search suggestions.
-            //     minSuggestCharacters: 2, // Minimum characters for search suggestions.
-            //     outFields: [ "PIN14","PIN10", "PIN14_dash"], // IMPORTANT put the field that will be used to perfrom search query as the first item in the array. Fields to return in search results (array of strings).
-            //     orderByFields: ["PIN14"], // Fields for sorting search results (array of strings).
-            //     searchFields: ["PIN10", "PIN14", "PIN14_dash"], // Fields used for searching (array of strings).
-            //     suggestionsEnabled: true, // Enable/disable suggestions for this search source (boolean).
-            //     autoNavigate: false, // Automatically navigate to the result on selection (boolean).
-            //     searchTemplate: "{PIN14_dash}"
-            // },
+            {
+                name: "Parcel Pin", // Name of the search source.
+                displayField: "PIN14_dash", // Field used for displaying search suggestions.
+                exactMatch: false, // Exact match search (boolean).
+                maxResults: 1000, // Maximum number of search results.
+                maxSuggestions: 50, // Maximum number of search suggestions.
+                minSuggestCharacters: 2, // Minimum characters for search suggestions.
+                outFields: [ "PIN14","PIN10", "PIN14_dash"], // IMPORTANT put the field that will be used to perfrom search query as the first item in the array. Fields to return in search results (array of strings).
+                orderByFields: ["PIN14"], // Fields for sorting search results (array of strings).
+                searchFields: ["PIN10", "PIN14", "PIN14_dash"], // Fields used for searching (array of strings).
+                suggestionsEnabled: true, // Enable/disable suggestions for this search source (boolean).
+                autoNavigate: false, // Automatically navigate to the result on selection (boolean).
+                searchTemplate: "{PIN14_dash}"
+            },
 
             // {
             //     name: "Parcel 14 digit pin", // Name of the search source.
@@ -145,6 +145,20 @@ export const config = {
       locator_search_sources: [
         {
             apiKey: null,
+            autoNavigate:false,
+            maxResults: 1000,
+            maxSuggestions:50,
+            minSuggestCharacters: 3,
+            name: "Parcel Locator",
+            outFields:["street_address","city_state_zip","UnitName"],
+            popupEnabled: false,
+            singleLineFieldName:"SingleLine",
+            suggestionsEnabled:true,
+            url:"https://test-gis.cookcountyil.gov/traditional/rest/services/Locator/parcelMultirole/GeocodeServer"
+            //url:"https://test-gis.cookcountyil.gov/traditional/rest/services/Locator/parcelMultirole_20240730/GeocodeServer"
+        },
+        {
+            apiKey: null,
             autoNavigate:true,
             maxResults: 1000,
             maxSuggestions:50,
@@ -156,19 +170,6 @@ export const config = {
             suggestionsEnabled:true,
             url:"https://gis.cookcountyil.gov/traditional/rest/services/Locator/CookAddressMultirole/GeocodeServer"
         },
-        {
-            apiKey: null,
-            autoNavigate:false,
-            maxResults: 1000,
-            maxSuggestions:50,
-            minSuggestCharacters: 3,
-            name: "Parcel Locator",
-            outFields:["StAddr",],
-            popupEnabled: false,
-            singleLineFieldName:"SingleLine",
-            suggestionsEnabled:true,
-            //url:"https://test-gis.cookcountyil.gov/traditional/rest/services/Locator/parcelMultirole/GeocodeServer"
-            url:"https://test-gis.cookcountyil.gov/traditional/rest/services/Locator/parcelMultirole_20240730/GeocodeServer"
-        }
+
     ]
 }
