@@ -346,7 +346,16 @@ const SearchBar = () => {
         if(!primaryResultFeature && searchWidget.current){
             searchWidget.current.searchTerm = null
         }
+        
+        if(primaryResultFeature){
+            let searchParamValue = routeParams.get("search")
+            let pin10ParamValue = routeParams.get("pin10")
+            let pin14ParamValue = routeParams.get("pin14")
 
+            if(!searchParamValue && (pin10ParamValue || pin14ParamValue)){
+                searchWidget.current.searchTerm = null
+            }
+        }
     },[primaryResultFeature])
     // useEffect(() => {
 
