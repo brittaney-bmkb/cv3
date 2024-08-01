@@ -529,50 +529,64 @@ const WebMapComponentBeta = () => {
     //add search buffer graphic to map when searchBufferGeometry changes
     useEffect(() => {
 
-        let view 
+        const createSearchBufferGraphics = async () => {
+            let view 
 
-        if(arcgisMapRef.current){
-            view = arcgisMapRef.current.view
-        }
-
-        
-        if(searchResultPoint?.length > 0 && searchBufferGeometry?.length > 0 && view){
-            console.log("adding buffe graphics to map")
-            searchResultPoint.map(async(point) => {
-
-                console.log("point geometry: ", point)
-
-                let graphic = await createGraphic(point, "point")
-
-                console.log("point graphic created: ", graphic)
-
-                view.graphics.add(graphic)
-            })
-
-            searchBufferGeometry.map(async(polygon) => {
-
-                console.log("polygon geometry: ", polygon)
-
-                let graphic = await createGraphic(polygon, "polygon")
-
-                console.log("polygon graphic created: ", graphic)
-
-                view.graphics.add(graphic)
-            })  
-        }
-
-        if(!primaryResultFeature && view){
-            //remove graphics
-            setSearchBufferGeometry(null, null)
-
-            if(view.graphics?.items?.length > 0){
-                console.log("removing all graphics from view: ", view.graphics)
-                view.graphics.items.map(graphic => {
-                    view.graphics.remove(graphic)
-                })
+            if(arcgisMapRef.current){
+                view = arcgisMapRef.current.view
             }
+    
             
+            if(searchResultPoint?.length > 0 && searchBufferGeometry?.length > 0 && view){
+                console.log("adding buffer graphics to map")
+    
+                searchResultPoint.map(async(point) => {
+    
+                    console.log("point geometry: ", point)
+    
+                    let graphic = await createGraphic(point, "point")
+    
+                    console.log("point graphic created: ", graphic)
+    
+                    view.graphics.add(graphic)
+                })
+    
+                let graphics = await Promise.all(searchBufferGeometry.map(async(polygon) => {
+    
+                    console.log("polygon geometry: ", polygon)
+    
+                    let graphic = await createGraphic(polygon, "polygon")
+    
+                    console.log("polygon graphic created: ", graphic)
+    
+                    view.graphics.add(graphic)
+    
+                    return graphic
+                }))
+    
+                console.log("features selected: ", primaryResultFeature)
+                if(primaryResultFeature?.length === 0){
+                    console.log("no features detected zooming to buffered area:", graphics[0])
+                    view.goTo(graphics[0])
+                }
+            }
+    
+            if(!primaryResultFeature && view){
+                //remove graphics
+                setSearchBufferGeometry(null, null)
+    
+                if(view.graphics?.items?.length > 0){
+                    console.log("removing all graphics from view: ", view.graphics)
+                    view.graphics.items.map(graphic => {
+                        view.graphics.remove(graphic)
+                    })
+                }
+                
+            }
         }
+
+
+        createSearchBufferGraphics()
 
     },[searchResultPoint, searchBufferGeometry, primaryResultFeature])
 

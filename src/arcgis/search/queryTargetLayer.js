@@ -60,7 +60,7 @@ export const handleMultipleResults = async (results) => {
     let targetFeatures = [];
     let searchFeatures = [];
     
-    let addresses = []
+    //let addresses = []
 
     filteredResults.forEach(results => {
         // Ensure results and results.source are not null before accessing properties
@@ -76,7 +76,7 @@ export const handleMultipleResults = async (results) => {
                     
                     results.results.forEach(result => {
                         if (result && result.feature) {
-                            let featureExists = addObjectToArrayIfNotExists(targetFeatures, result.feature)
+                            //let featureExists = addObjectToArrayIfNotExists(targetFeatures, result.feature)
                             //console.log("feature exists in array: ", featureExists)
                             //console.log("pushing feature to targetFeatures: ", result.feature)
                             targetFeatures.push(result.feature);
@@ -118,7 +118,6 @@ export const handleMultipleResults = async (results) => {
         //if unit attribute is populated return features by querying target layer
         const unitsPopulated = searchFeatures.filter(feature => feature[0].attributes.UnitName)
         const noUnitsPopulated = searchFeatures.filter(feature => !feature[0].attributes.UnitName)
-        
 
         if(unitsPopulated?.length > 0){
             console.log("units populated: ", unitsPopulated)
@@ -144,6 +143,7 @@ export const handleMultipleResults = async (results) => {
                 //if unit attribute is no populated return features using point in polygon
                 let featuresNoUnits = await queryTargetLayerWithPointFeatures(noUnitsPopulated)
                 features = [...features, ...featuresNoUnits]
+                console.log("features from queryTargetLayerWithPointFeatures: ", featuresNoUnits)
             }
             
         }

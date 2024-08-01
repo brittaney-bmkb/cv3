@@ -720,6 +720,19 @@ export const AppProvider = ({children}) => {
         const { handleMultipleResults } = await import('../arcgis/search/queryTargetLayer')
         const { returnBufferGeometry } = await import('../arcgis/geoprocessing/geoprocessing')
 
+        //console.log("Performing new target layer query")
+        const{ targetFeatures } = await handleMultipleResults(results)
+
+        //console.log("target features returned: ", targetFeatures)
+        //console.log("results returned: ", results)
+
+        setPrimaryResultFeature(targetFeatures, true)
+
+
+        //console.log("seting previous feature: ", targetFeatures)
+        setSearchResults(results, targetFeatures, newSearchTerm, targetFeatures)
+        //}
+
         //created buffer graphic here
         //if results include Address Locator source
         //update state of searchBuffer and pass point geometries
@@ -738,29 +751,6 @@ export const AppProvider = ({children}) => {
 
         console.log("address locator buffer geometries calculated: ", bufferGeometries)
         setSearchBufferGeometry(addressLocatorResultGeometry, bufferGeometries)
-
-        //create marker graphic for point
-        //create polygon buffer graphic for buffer distance
-
-
-        
-        // else{
-        //console.log("Performing new target layer query")
-        const{ targetFeatures } = await handleMultipleResults(results)
-
-        //console.log("target features returned: ", targetFeatures)
-        //console.log("results returned: ", results)
-
-        setPrimaryResultFeature(targetFeatures, true)
-
-
-        //console.log("seting previous feature: ", targetFeatures)
-        setSearchResults(results, targetFeatures, newSearchTerm, targetFeatures)
-        //}
-        
-    
-        
-
 
     }
 
