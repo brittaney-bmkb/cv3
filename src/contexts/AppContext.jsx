@@ -796,6 +796,7 @@ export const AppProvider = ({children}) => {
         //removeGraphics("primary");
         //removeGraphics("secondary");
         setPanelDisplay("resultsList")
+        setSearchBufferGeometry(null, null)
 
         if(["comparablePropertySearch", "nearbyProperties", "resultsListComparables", "resultsListNearby", "propertyDetailComparable", "propertyDetailNearby"].includes(panelDisplaySecondary)){
             //console.log("CLEAR RESULTS: closing secondary panel. Secondary Panel =", panelDisplaySecondary )
