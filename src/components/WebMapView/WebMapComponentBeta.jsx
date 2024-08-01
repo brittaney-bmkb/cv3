@@ -535,8 +535,9 @@ const WebMapComponentBeta = () => {
             view = arcgisMapRef.current.view
         }
 
-        console.log("adding buffe graphics to map")
+        
         if(searchResultPoint?.length > 0 && searchBufferGeometry?.length > 0 && view){
+            console.log("adding buffe graphics to map")
             searchResultPoint.map(async(point) => {
 
                 console.log("point geometry: ", point)

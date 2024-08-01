@@ -176,7 +176,7 @@ const queryTargetLayerByAddress = async (searchFeatures) => {
 
         where += `(street_address = '${street_address}' AND city_state_zip = '${city_state_zip}')`
         if(index < searchFeatures.length -1){
-            query.where += ' OR '
+            where += ' OR '
         }
         
     }))
