@@ -719,8 +719,10 @@ export const AppProvider = ({children}) => {
 
         const { handleMultipleResults } = await import('../arcgis/search/queryTargetLayer')
         const { returnBufferGeometry } = await import('../arcgis/geoprocessing/geoprocessing')
-
+    
         //console.log("Performing new target layer query")
+        setSearchBufferGeometry(null, null)
+        
         const{ targetFeatures } = await handleMultipleResults(results)
 
         //console.log("target features returned: ", targetFeatures)

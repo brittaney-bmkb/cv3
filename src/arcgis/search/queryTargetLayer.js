@@ -312,7 +312,8 @@ export async function queryTargetLayerWithCoordinates(coordinates){
 export const queryTargeLayerWithPin10Pin14 = async (pin10, pin14) => {
 
     let where = ''
-    //console.log("pin14: ", pin14)
+    console.log("pin14: ", pin14)
+    console.log("pin10: ", pin10)
     if(pin10){
         where = `PIN10 IN (${pin10})`
     }
@@ -321,7 +322,7 @@ export const queryTargeLayerWithPin10Pin14 = async (pin10, pin14) => {
             where = where + `OR PIN14 IN (${pin14})`
         }
         else{
-            where =`PIN14 IN (${pin14})`
+            where = `PIN14 IN (${pin14})`
         }
         
     }

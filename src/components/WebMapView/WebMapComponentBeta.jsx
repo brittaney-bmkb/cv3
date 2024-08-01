@@ -253,6 +253,9 @@ const WebMapComponentBeta = () => {
             features = fetchedFeatures
         }
         
+        //trigger clearing of searchBuffer Geometry when 
+        //user user updates selected parcels
+        setSearchBufferGeometry(null, null)
         setPrimaryResultFeature(features, false)
         setSearchResults(null, features, null, features)
 
@@ -430,7 +433,7 @@ const WebMapComponentBeta = () => {
                         }
                     }  
                 }
-
+                //new parcel selected
                 else if(!selectedParcelsPrimary && selectedComparableDetected.length === 0){
 
                     await addFeatures(response.results)
@@ -624,7 +627,6 @@ const WebMapComponentBeta = () => {
                 // } 
             }
         }
-
         removeSearchBufferGraphics()
 
     }, [searchResultPoint, searchBufferGeometry, primaryResultFeature])
@@ -848,9 +850,10 @@ const WebMapComponentBeta = () => {
                 // console.log("CURRENT MAP ON CLICK", arcgisMapRef.current.map)
 
                 // console.log("found MEASURE graphic: ", foundMeasureGraphic)
-                if( !foundSelectGraphic  || !selectMultiple || !measureWidgetState ){
+                if( !foundSelectGraphic  || !selectMultiple || !measureWidgetState){
                 // if((!foundSelectGraphic && !foundMeasureGraphic) || !selectMultiple || (!isMeasuring)){ //TODO this is for the measureSketchWidget
                     // console.log("The if block executes because one of the conditions is falsy.");
+                    
                     handleHitTest(event)
                 }
                 
