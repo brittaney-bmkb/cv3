@@ -1,23 +1,15 @@
-import { Box, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, Input, Stack, Switch, TextField, Typography, Button } from "@mui/material"
+import { Box, Dialog, DialogActions, DialogContent, DialogTitle, Divider,  Typography, Button } from "@mui/material"
 import { theme } from "../../theme"
-import { useState } from "react"
-import SelectDropdown from "../SelectDropdown/SelectDropdown"
-import { config } from "../../data/config"
-import { CloseOutlined } from "@mui/icons-material"
-import UseAppContext from "../../contexts/AppContext"
 
+import UseAppContext from "../../contexts/AppContext"
 import HelpTabs from "./HelpTabs"
 import HelpContent from "./HelpContext"
-
-
-
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { returnTranslatedText } from "../../translation/handleTranslation"
 
 
 
 const HelpDialog = ({}) => {
-    ////console.log("help dialog component")
     
     const {openHelpDialog, setOpenHelpDialog, translateText, screenWidth} = UseAppContext()
 
@@ -26,7 +18,6 @@ const HelpDialog = ({}) => {
     }
 
 
-    ////console.log(openHelpDialog)
 
     return(
         <Dialog 
