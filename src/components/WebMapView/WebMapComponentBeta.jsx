@@ -579,6 +579,15 @@ const WebMapComponentBeta = () => {
 
                 let allGraphics = [...pointGraphics, ...bufferGraphics]
 
+                //check to see if graphics layer already exists
+                let foundBufferGraphic = await findLayerByTitle(map, "bufferGraphics")
+                if(foundBufferGraphic){
+                    //remove all graphics
+                    foundBufferGraphic.removeAll()
+                    //remove from map
+                    map.remove(foundBufferGraphic)
+                }
+
                 let newGraphicsLayer = new GraphicsLayer({
                     title: "bufferGraphics"
                 })
