@@ -54,7 +54,8 @@ const WebMapComponentBeta = () => {
         returnSearchParam,
         searchBufferGeometry,
         searchResultPoint,
-        setSearchBufferGeometry
+        setSearchBufferGeometry,
+        anyAttributesIncluded
         } = UseAppContext()
 
     const arcgisMapRef = useRef(null)
@@ -545,7 +546,11 @@ const WebMapComponentBeta = () => {
     
             
             if(searchResultPoint?.length > 0 && searchBufferGeometry?.length > 0 && view){
-                console.log("adding buffer graphics to map")
+
+                //check to make sure primaryResultFeature is new and not in searchFeatures
+                //const primaryInSearchFeature = anyAttributesIncluded(primaryResultFeature, searchFeatures)
+
+                console.log("adding buffer graphics to map: ", searchResultPoint)
     
                 let pointGraphics = await Promise.all(searchResultPoint.map(async(point) => {
     
@@ -574,7 +579,7 @@ const WebMapComponentBeta = () => {
 
                 let allGraphics = [...pointGraphics, ...bufferGraphics]
 
-                let newGraphicsLayer= new GraphicsLayer({
+                let newGraphicsLayer = new GraphicsLayer({
                     title: "bufferGraphics"
                 })
 
@@ -585,6 +590,7 @@ const WebMapComponentBeta = () => {
                 map.add(newGraphicsLayer)
     
                 console.log("features selected: ", primaryResultFeature)
+
                 if(primaryResultFeature?.length === 0){
                     console.log("no features detected zooming to buffered area:", bufferGraphics[0])
                     view.goTo(bufferGraphics[0])
@@ -597,13 +603,13 @@ const WebMapComponentBeta = () => {
 
         createSearchBufferGraphics()
 
-    },[searchResultPoint, searchBufferGeometry, primaryResultFeature])
+    },[searchResultPoint])
 
     //remove search buffer graphics
     useEffect(() => {
 
         let map;
-        const removeSearchBufferGraphics = () => {
+        const removeSearchBufferGraphics = async () => {
             if(arcgisMapRef.current){
                 map = arcgisMapRef.current.map
             }
@@ -613,10 +619,17 @@ const WebMapComponentBeta = () => {
             }
 
             if(!primaryResultFeature || (!searchBufferGeometry && !searchResultPoint)){
+                console.log("Removing buffer graphics")
                 //remove graphics
                 //setSearchBufferGeometry(null, null)
-                //let foundSelectGraphic = findLayerByTitle(map, "bufferGraphics")
-                removeLayer(map, "bufferGraphics")
+                let foundBufferGraphic = await findLayerByTitle(map, "bufferGraphics")
+                
+                if(foundBufferGraphic){
+                    console.log("found graphic to remove: ", foundBufferGraphic)
+                    foundBufferGraphic.removeAll()
+                    map.remove(foundBufferGraphic)
+                }
+                
                 // if(view){
                 //     if(view.graphics?.items?.length > 0){
                 //         console.log("removing all graphics from view: ", view.graphics)
