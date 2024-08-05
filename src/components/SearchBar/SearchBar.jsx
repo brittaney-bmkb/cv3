@@ -355,6 +355,11 @@ const SearchBar = () => {
             if(!searchParamValue && (pin10ParamValue || pin14ParamValue)){
                 searchWidget.current.searchTerm = null
             }
+
+            if(!panelPrimaryVisible){
+                setPanelPrimaryVisibility(true)
+            }
+
         }
     },[primaryResultFeature])
     // useEffect(() => {
