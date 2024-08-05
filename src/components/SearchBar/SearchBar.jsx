@@ -356,93 +356,10 @@ const SearchBar = () => {
                 searchWidget.current.searchTerm = null
             }
 
-            if(!panelPrimaryVisible){
-                setPanelPrimaryVisibility(true)
-            }
-
+            
         }
     },[primaryResultFeature])
-    // useEffect(() => {
-
-    //     const updateURLParams = async () => {
-
-    //         setIsQuerying(true)
-    //         let searchString = routeParams.get("search")
-    //         let primaryInSearchFeature
-    //         //When primary feature result changes update the search param if the search term
-    //         //from mouse click
-    //         //console.log("USE EFFECT: checking for primary result feature and new search")
-    //         if(primaryResultFeature){
-    //             //&& newSearch === false){
-    //             //console.log("USE EFFECT FEATURES found: ", primaryResultFeature)
-                
-    //             let features = Array.isArray(primaryResultFeature) ? primaryResultFeature : [primaryResultFeature]
-    //             let attributes = features.length > 0 ? features[0].attributes : null
     
-    //             let {paramValue, param} = await returnSearchParam(primaryResultFeature)
-                
-    //             //console.log("setting url params: ", param)
-    //             setSearchParams(param)
-                
-    //             // //if primary features is in search results then don't update the searchTerm
-    //             if(features && searchFeatures){
-    //                 primaryInSearchFeature = anyAttributesIncluded(features, searchFeatures)
-    //             }
-                
-    //             if(primaryInSearchFeature){
-    //                 setSearchResults(null, features, searchTerm, searchFeatures)
-    //             }
-    //             else{
-    //                 setSearchResults(null, features, paramValue)
-    //             }
-
-    //             if(primaryResultFeature && !newSearch ){
-    //                 searchWidget.current.searchTerm = null
-    //             }
-   
-                
-    //         }
-    //         else if(primaryResultFeature && newSearch === true && searchString){
-    
-    //             //console.log("Returning pervious search: ", searchString)
-    //             searchWidget.current.searchTerm = searchString !== 'null' ? searchString : null
-    //             //console.log("Setting previous search features: ", searchFeatures)
-    //             setSearchResults(null, primaryResultFeature, searchString, searchFeatures)
-    //             //setSearchResults(null, primaryResultFeature, searchString)
-    //         }
-    
-    //         if(!primaryResultFeature){
-    //             //console.log("No Primary Result Selected. Querying url parameters")
-    
-    //             //setLocationSearch(routeParams.get("location"))
-                
-    //             setPin10Search(routeParams.get("pin10"))
-
-    //             setPin14Search(routeParams.get("pin14"))
-    
-    //             setPinSearch(routeParams.get("pin"))
-    
-    //             setGenericSearch(routeParams.get("search"))
-    
-    //             setAddressSearch(routeParams.get("address"))
-    
-    //             //console.log("USE EFFECT No feature Found")
-    //             //console.log("USE EFFECT GENERIC SEARCH: ", routeParams.get("search"))
-    //             //console.log("USE EFFECT PIN SEARCH: ", routeParams.get("pin"))
-    //             //console.log("USE EFFECT Address SEARCH: ", routeParams.get("address"))
-    //             //searchWidget.current.searchTerm = null
-    //             if(searchWidget.current){
-    //                 searchWidget.current.searchTerm = null
-    //             }
-    //         }  
-    
-    //         setIsQuerying(false)
-    //     }
-
-    //     updateURLParams()
-        
-
-    // }, [primaryResultFeature, searchWidget])
 
     useEffect(() => {
         //when primaryResultFeature changes update the panel display
@@ -451,13 +368,18 @@ const SearchBar = () => {
             const primaryInSearchFeature = anyAttributesIncluded(primaryResultFeature, searchFeatures)
 
             if(!primaryInSearchFeature){
-                console.log("Setting primar panel to display results list: ", panelDisplay)
-            
+                console.log("Setting primary panel to display results list: ", panelDisplay)
+                
                 setPanelDisplay("resultsList")
             }
             else if(primaryInSearchFeature && panelDisplay === "info"){
                 setPanelDisplay("resultsList")
             }
+            if(primaryResultFeature && !panelPrimaryVisible){
+                    setPanelPrimaryVisibility(true)
+                    setPanelDisplay("resultsList")
+                }
+    
            
         }
     }, [searchFeatures, primaryResultFeature])
