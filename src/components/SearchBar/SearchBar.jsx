@@ -321,14 +321,16 @@ const SearchBar = () => {
             if(pin10){
                 console.log("pin10: ", pin10)
                 let pin10Array = pin10.split(',')
-                let formattedPin10 = `'${pin10Array.join("','")}'`
+                let formattedPin10 = `${pin10Array.join(",")}`
                 setPin10Search(formattedPin10)
             }
             
             let pin14 = routeParams.get("pin14")
             if(pin14){
                 let pin14Array = pin14.split(',')
-                let formattedPin14 = `'${pin14Array.join("','")}'`
+                console.log("pin14Array: ", pin14Array)
+                let formattedPin14 = `${pin14Array.join(',')}`
+                console.log("formattedPin14: ", formattedPin14)
                 setPin14Search(formattedPin14)
             }
             
