@@ -218,7 +218,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
             component={Link} 
             to={urlFormatted} 
             target="_blank"
-            color={theme.palette.primary.light}>{translateText(text)}</Typography>
+            color={theme.palette.primary.main}>{translateText(text)}</Typography>
         </Box>
         
     )}
@@ -246,183 +246,181 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         //filter out historical sf mf characteristics and res condo characteristics if 
         //propert bclass not in class list
         let excludeFields = []
-
+    
         const propIsResCondo = properties.every(property => {
             return res_condo_class_list.includes(parseInt(property?.attributes["BCLASS"]));
         })
-
-
+    
         const propIsResSfMf = properties.every(property => {
             return single_multi_improvements_class_list.includes(parseInt(property?.attributes["BCLASS"]));
         })
-
-        if (!propIsResCondo){
-            
+    
+        if (!propIsResCondo) {
             excludeFields.push("res_condo_chars_link")
         }
-        if (!propIsResSfMf){
+        if (!propIsResSfMf) {
             excludeFields.push("hist_sf_mf_imp_chars_link")
         }
-
+    
         let filteredData = dataDictionary
-        ?.filter((data) => data.attributes['category'] === category && !excludeFields.includes(data.attributes['field']))
-        .sort((a, b) => a.attributes['category_order'] > b.attributes['category_order'] ? 1:-1)
-        .map((data) => data); 
-
-        let data = filteredData?.map((data, subIndex) => {
-            return(
-                <Box id={`${data.attributes['field']}-BOX`} key={data.attributes['field']} display="flex" flexDirection="column" width="100%">
-                {
-                index !== 0 ? 
-                <Box 
-                display="flex"
-                justifyContent={textAlignment}
-                pb={category !== "top" ? 1 :0}
-                >
-                    <Typography variant="h6">
-                        {translateText(data.attributes['label'])}
-                    </Typography>
-                </Box>: 
-                null
-                }
-                
-                <Box id="propertyDetailsBox" display="flex" flexDirection="row" columnGap={3} justifyContent={category==="top"? "space-around" : textAlignment}>
-                    {properties.map((property, propIndex) => {
-                        if(property){
-//////console.log("property details for: ", property)
-let color = property === property1 ? propertyColor1 : propertyColor2
-panelContentTitleMain["color"] = color
-panelContentTitleMain["borderColor"] = color
-
-//conditional links based on 
-let pin14 = property?.attributes['PIN14']
-let primaryPin14 = primaryResultFeature[0]?.attributes['PIN14']
-
-return(
-    <Box 
-    id={`property-${propIndex}`}
-    key={property?.attributes['PIN14']}
-    display="flex" 
-    justifyContent="center" 
-    alignContent={textAlignment}>
-   
-   { 
-   
-    data.attributes['field'] === "comparable_properties"? 
-    propertyComparison(data.attributes['field']) :
-
-    data.attributes['field'] === "nearby_properties"? 
-    nearbyProperties(data.attributes['field']) :
-
-    data.attributes['field'] === "incorp_unincorp_state" ?
-    incorp_unincorp(property) :
-
-    data.attributes['field'] === "zoning_info"?
+            ?.filter((data) => data.attributes['category'] === category && !excludeFields.includes(data.attributes['field']))
+            .sort((a, b) => a.attributes['category_order'] > b.attributes['category_order'] ? 1 : -1)
+            .map((data) => data); //not sure if needed. 
     
-    <Box 
-    id="zoning-info"
-    display="flex"
-    >
-        {/* <Typography align={textAlignment} variant="h5" sx={{color: theme.main.text.dark }}> */}
-            { muniLoading ? <CircularProgress size={5}/> :  zoningInfo(property, data)} 
-        {/* </Typography> */}
-
-    </Box>: 
-
-data.attributes['field'].endsWith("_link") ?
-// data.attributes['hyperlink_text'] && data.attributes['hyperlink_params'] && data.attributes['hyperlink_url'] ?
-    returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], data.attributes['field'], property?.attributes) :   
-
-<Box 
-    key={data.attributes["field"]}
-    id={data.attributes['field']}
-    display="flex"
-    sx={{
-        border: category==="top" && subIndex ===0 ? 3: 0,
-        padding:"2px",
-        boxSizing:"border-box",
-        borderRadius: theme.shape.borderRadius,
-        fontSize: theme.typography.h3.fontSize,
-        // justifyContent: "center",
-        // alignItems:"center",
-        borderColor:  pin14 === primaryPin14 ? propertyColor1 : propertyColor2,
-        color: pin14 === primaryPin14  ? propertyColor1 : propertyColor2,
-       //borderColor:property===property1 ? propertyColor1 : propertyColor2,
-        //color:property===property1 ? propertyColor1 : propertyColor2
-    }}
-    >
-        {property ? 
-
-        <Typography 
-            id={data.attributes['field']}
-            align={textAlignment}
-            variant="h5" 
-            sx={{
-                width:"100%",
-                color: category === "top" && subIndex==0 && pin14 === primaryPin14 ? propertyColor1 : category === "top" && subIndex==0 && pin14 !== primaryPin14 ? propertyColor2: theme.main.text.dark 
-                }}>
-                {
-                    property?.attributes[data.attributes['field']] && data.attributes['type'] === "text" ? 
-                    translateText(property?.attributes[data.attributes['field']]) : 
-                    property?.attributes[data.attributes['field']] ? 
-                    `${prefix(data.attributes['type'])}${addCommaSeparator(property?.attributes[data.attributes['field']], data.attributes['type'])}` :
-
-                    
-                    translateText("Data unavailable")
-                }
-        </Typography> 
-
-        : null
+        if (!filteredData || filteredData.length === 0) {
+            return null; // Return null if there's no data
         }
-
-    </Box>
     
-    }
-    {propIndex === 0 && category !== "top" && properties.length > 1? 
-    <Divider flexItem orientation="vertical" sx={{color:theme.palette.info.dark, height:'100%', pl:1, pr:1}}/>
-    : null
-    }
-</Box> 
-)
-                        }
-                        
-                            
-                    })
-                    }
+        let data = filteredData.map((data, subIndex) => {
+            // Prepare the content
+            const headerContent = index !== 0 ? translateText(data.attributes['label']) : '';
+            //this gets moved up as the main function 
+            const propertyContent = properties.map((property, propIndex) => {
+                if (property) {
+                    let color = property === property1 ? propertyColor1 : propertyColor2;
+                    panelContentTitleMain["color"] = color;
+                    panelContentTitleMain["borderColor"] = color;
+    
+                    let pin14 = property?.attributes['PIN14'];
+                    let primaryPin14 = primaryResultFeature[0]?.attributes['PIN14'];
+    
+                    return (
+                        <Box
+                            id={`property-${propIndex}`}
+                            key={property?.attributes['PIN14']}
+                            display="flex"
+                            justifyContent="center"
+                            alignContent={textAlignment}>
+    
+                            {
+                                data.attributes['field'] === "comparable_properties" ?
+                                    propertyComparison(data.attributes['field']) :
+    
+                                    data.attributes['field'] === "nearby_properties" ?
+                                        nearbyProperties(data.attributes['field']) :
+    
+                                        data.attributes['field'] === "incorp_unincorp_state" ?
+                                            incorp_unincorp(property) :
+    
+                                            data.attributes['field'] === "zoning_info" ?
+                                                <Box id="zoning-info" display="flex">
+                                                    {muniLoading ? <CircularProgress size={5} /> : zoningInfo(property, data)}
+                                                </Box> :
+    
+                                                data.attributes['field'].endsWith("_link") ?
+                                                    returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], data.attributes['field'], property?.attributes) :
+    
+                                                    <Box
+                                                        key={data.attributes["field"]}
+                                                        id={data.attributes['field']}
+                                                        display="flex"
+                                                        sx={{
+                                                            border: category === "top" && subIndex === 0 ? 3 : 0,
+                                                            padding: "2px",
+                                                            boxSizing: "border-box",
+                                                            borderRadius: theme.shape.borderRadius,
+                                                            fontSize: theme.typography.h3.fontSize,
+                                                            borderColor: pin14 === primaryPin14 ? propertyColor1 : propertyColor2,
+                                                            color: pin14 === primaryPin14 ? propertyColor1 : propertyColor2,
+                                                        }}
+                                                    >
+                                                        {property ?
+                                                            <Typography
+                                                                id={data.attributes['field']}
+                                                                align={textAlignment}
+                                                                variant="h5"
+                                                                sx={{
+                                                                    width: "100%",
+                                                                    color: category === "top" && subIndex == 0 && pin14 === primaryPin14 ? propertyColor1 : category === "top" && subIndex == 0 && pin14 !== primaryPin14 ? propertyColor2 : theme.main.text.dark
+                                                                }}>
+                                                                {
+                                                                    property?.attributes[data.attributes['field']] && data.attributes['type'] === "text" ?
+                                                                        translateText(property?.attributes[data.attributes['field']]) :
+                                                                        property?.attributes[data.attributes['field']] ?
+                                                                            `${prefix(data.attributes['type'])}${addCommaSeparator(property?.attributes[data.attributes['field']], data.attributes['type'])}` :
+                                                                            translateText("Data unavailable")
+                                                                }
+                                                            </Typography>
+                                                            : null
+                                                        }
+                                                    </Box>
+                            }
+                            {propIndex === 0 && category !== "top" && properties.length > 1 ?
+                                <Divider flexItem orientation="vertical" sx={{ color: theme.palette.info.dark, height: '100%', pl: 1, pr: 1 }} />
+                                : null
+                            }
+                        </Box>
+                    )
+                }
+                return null;
+            }).filter(Boolean);
+    
+            // boolean for creditContent 
+            const creditContent = data.attributes['credit'] 
+                ? translateText(data.attributes['credit'])
+                : '';
+    
+            // Check if there's any meaningful content
+            const hasContent = headerContent || propertyContent.length > 0 || creditContent;
+    
+            // checking to see if there is a header worth returning 
+            if (!hasContent) {
+                return null;
+            }
+    
+            return (
+                <Box id={`${data.attributes['field']}-BOX`} key={data.attributes['field']} display="flex" flexDirection="column" width="100%">
+                    {headerContent && (
+                        <Box
+                            display="flex"
+                            justifyContent={textAlignment}
+                            pb={category !== "top" ? 1 : 0}
+                        >
+                            <Typography variant="h6">
+                                {headerContent}
+                            </Typography>
+                        </Box>
+                    )}
+    
+                    {propertyContent.length > 0 && (
+                        <Box id="propertyDetailsBox" display="flex" flexDirection="row" columnGap={3} justifyContent={category === "top" ? "space-around" : textAlignment}>
+                            {propertyContent}
+                        </Box>
+                    )}
+    
+                    {creditContent && (
+                        <Box>
+                            <Typography variant="h6" align={textAlignment}>
+                                {creditContent}
+                            </Typography>
+                        </Box>
+                    )}
+    
+                    {subIndex === filteredData.length - 1 && <Divider variant="fullWidth" sx={{ p: 1 }} />}
                 </Box>
-                <Box>
-                    {
-                        data.attributes['credit']? 
-                        <Typography variant="h6" align={textAlignment}>
-                            { translateText(data.attributes['credit']) }
-                        </Typography> :
-                        null
-                    }
-                </Box>
-                    {filteredData.length -1 === subIndex ? <Divider variant="fullWidth" sx={{p: 1}}/> : null}
-                </Box>
-            
-            )
-        })
-
-        return(
-            <Box id={category} key={category} display="flex" flexDirection="column" width="100%" pt={category !== "top" ? 1: 0} rowGap={category !== "top" ? 1: 0}>
-                {category !== "top"? <Typography variant="h2">{translateText(category)}</Typography> :
-                null}
-                <Box 
-                id={"property-detail-data-container"} 
-                width="100%"
-                display="flex" 
-                flexDirection="column" 
-                pl={category === "top" ? 0 :1} 
-                rowGap={category === "top" ? 0 : 2}
+            );
+        }).filter(Boolean); // Filter out null values
+    
+        if (data.length === 0) {
+            return null; // Return null if all items were filtered out
+        }
+    
+        return (
+            <Box id={category} key={category} display="flex" flexDirection="column" width="100%" pt={category !== "top" ? 1 : 0} rowGap={category !== "top" ? 1 : 0}>
+                {category !== "top" ? <Typography variant="h2">{translateText(category)}</Typography> : null}
+                <Box
+                    id={"property-detail-data-container"}
+                    width="100%"
+                    display="flex"
+                    flexDirection="column"
+                    pl={category === "top" ? 0 : 1}
+                    rowGap={category === "top" ? 0 : 2}
                 >
                     {data}
-                    
-                </Box> 
+                </Box>
             </Box>
-        )
-    }
+        );
+    };
 
     return(
         <Box 
