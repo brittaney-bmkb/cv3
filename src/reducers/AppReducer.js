@@ -12,6 +12,8 @@ export const initialState = {
     searchResults: null,
     searchSources: null,
     searchFeatures: null,
+    searchBufferGeometry:null,
+    searchResultPoint:null,
     prevSearchFeatures: null,
     panelDisplay:null,
     panelDisplaySecondary:null,
@@ -114,6 +116,13 @@ const AppReducer = (state, action) => {
             return {
                 ...state,
                 searchSources: payload.searchSources,
+            }
+        case "SET_SEARCH_BUFFER_GEOMETRY":
+            //console.log("SET_SEARCH_SOURCES")
+            return {
+                ...state,
+                searchResultPoint: payload.searchResultPoint,
+                searchBufferGeometry: payload.searchBufferGeometry,
             }
 
         case "SET_PANEL_DISPLAY":

@@ -1,7 +1,7 @@
 import { ArcgisMap, ArcgisZoom } from "@arcgis/map-components-react"
 import { useEffect, useRef, useState } from "react";
 import UseAppContext from "../../contexts/AppContext";
-import { createFeatureLayerFromGraphics, createFeatureLayerFromFeatures, removeLayer } from "../../arcgis/layers/layers";
+import { createFeatureLayerFromGraphics, createFeatureLayerFromFeatures, removeLayer, createGraphic } from "../../arcgis/layers/layers";
 import { theme } from "../../theme";
 import MapButtonGroup from "../MapButtonGroup";
 import { Box, Fade, Typography, IconButton } from "@mui/material";
@@ -9,6 +9,8 @@ import { TableRowsOutlined } from "@mui/icons-material";
 import { config } from "../../data/config";
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine.js";
 import Query from "@arcgis/core/rest/support/Query.js";
+import { useSearchParams } from "react-router-dom";
+import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
 
 const selectedParcelTitle = "Selected Parcel"
 const webmapParcelLayerTitle = config.target_layer_name
@@ -49,6 +51,11 @@ const WebMapComponentBeta = () => {
         comparableType, 
         measureWidgetState,
         measureWidget,
+        returnSearchParam,
+        searchBufferGeometry,
+        searchResultPoint,
+        setSearchBufferGeometry,
+        anyAttributesIncluded
         } = UseAppContext()
 
     const arcgisMapRef = useRef(null)
@@ -57,7 +64,9 @@ const WebMapComponentBeta = () => {
     const [ selectedParcelsPrimary, setSelectedParcelsPrimary ] = useState(null)
     const [ comparableParcelLayer, setComparableParcelLayer ] = useState(null)
     const [ selectedComparableParcelLayer, setSelectedComparableParcelLayer ] = useState(null)
+    const [ bufferGraphicsLayer, setBufferGraphicsLayer ] = useState(null)
     const [ hitTestLayers, setHitTestLayers ] = useState([])
+    const [routeParams, setSearchParams] = useSearchParams();
 
     const zoomToExtent = async (features) => {
 
@@ -65,7 +74,11 @@ const WebMapComponentBeta = () => {
 
         if(Array.isArray(features)){
             const geometries = features.map((feature) => feature.geometry);
-            extent = geometryEngine.union(geometries);
+            console.log("geometries: ", geometries)
+            if(geometries?.length > 0){
+                extent = geometryEngine.union(geometries);
+            }
+            
         }
 
         else{
@@ -79,7 +92,10 @@ const WebMapComponentBeta = () => {
             }
         }
         
-        arcgisMapRef.current.goTo(extent)
+        if(extent){
+            arcgisMapRef.current.goTo(extent)
+        }
+        
     }
 
     const addLayerToMap = async (source, title, theme, type) => {
@@ -238,8 +254,15 @@ const WebMapComponentBeta = () => {
             features = fetchedFeatures
         }
         
+        //trigger clearing of searchBuffer Geometry when 
+        //user user updates selected parcels
+        setSearchBufferGeometry(null, null)
         setPrimaryResultFeature(features, false)
         setSearchResults(null, features, null, features)
+
+        console.log("updating URL parameters for select multiple - click tool")
+        const param = await returnSearchParam(features)
+        setSearchParams(param)
 
         if(!panelDisplay || panelDisplay !== "resultsList"){
             setPanelDisplay("resultsList")
@@ -411,7 +434,7 @@ const WebMapComponentBeta = () => {
                         }
                     }  
                 }
-
+                //new parcel selected
                 else if(!selectedParcelsPrimary && selectedComparableDetected.length === 0){
 
                     await addFeatures(response.results)
@@ -476,6 +499,7 @@ const WebMapComponentBeta = () => {
     }
 
 
+    //configure map on load
     useEffect(() => {
 
         const configureWebMap = async () => {
@@ -507,6 +531,128 @@ const WebMapComponentBeta = () => {
         
 
     }, [arcgisMapRef, mapLoading, screenWidth, searchSources])
+
+    //add search buffer graphic to map when searchBufferGeometry changes
+    useEffect(() => {
+
+        const createSearchBufferGraphics = async () => {
+            let view; 
+            let map;
+
+            if(arcgisMapRef.current){
+                view = arcgisMapRef.current.view
+                map = arcgisMapRef.current.map
+            }
+    
+            
+            if(searchResultPoint?.length > 0 && searchBufferGeometry?.length > 0 && view){
+
+                //check to make sure primaryResultFeature is new and not in searchFeatures
+                //const primaryInSearchFeature = anyAttributesIncluded(primaryResultFeature, searchFeatures)
+
+                console.log("adding buffer graphics to map: ", searchResultPoint)
+    
+                let pointGraphics = await Promise.all(searchResultPoint.map(async(point) => {
+    
+                    console.log("point geometry: ", point)
+    
+                    let graphic = await createGraphic(point, "point")
+    
+                    console.log("point graphic created: ", graphic)
+                    
+                    return graphic
+                    //view.graphics.add(graphic)
+                }))
+    
+                let bufferGraphics = await Promise.all(searchBufferGeometry.map(async(polygon) => {
+    
+                    console.log("polygon geometry: ", polygon)
+    
+                    let graphic = await createGraphic(polygon, "polygon")
+    
+                    console.log("polygon graphic created: ", graphic)
+    
+                    //view.graphics.add(graphic)
+    
+                    return graphic
+                }))
+
+                let allGraphics = [...pointGraphics, ...bufferGraphics]
+
+                //check to see if graphics layer already exists
+                let foundBufferGraphic = await findLayerByTitle(map, "bufferGraphics")
+                if(foundBufferGraphic){
+                    //remove all graphics
+                    foundBufferGraphic.removeAll()
+                    //remove from map
+                    map.remove(foundBufferGraphic)
+                }
+
+                let newGraphicsLayer = new GraphicsLayer({
+                    title: "bufferGraphics"
+                })
+
+                setBufferGraphicsLayer(newGraphicsLayer)
+
+                newGraphicsLayer.addMany(allGraphics)
+
+                map.add(newGraphicsLayer)
+    
+                console.log("features selected: ", primaryResultFeature)
+
+                if(primaryResultFeature?.length === 0){
+                    console.log("no features detected zooming to buffered area:", bufferGraphics[0])
+                    view.goTo(bufferGraphics[0])
+                }
+            }
+    
+            
+        }
+
+
+        createSearchBufferGraphics()
+
+    },[searchResultPoint])
+
+    //remove search buffer graphics
+    useEffect(() => {
+
+        let map;
+        const removeSearchBufferGraphics = async () => {
+            if(arcgisMapRef.current){
+                map = arcgisMapRef.current.map
+            }
+
+            if(!bufferGraphicsLayer){
+                return
+            }
+
+            if(!primaryResultFeature || (!searchBufferGeometry && !searchResultPoint)){
+                console.log("Removing buffer graphics")
+                //remove graphics
+                //setSearchBufferGeometry(null, null)
+                let foundBufferGraphic = await findLayerByTitle(map, "bufferGraphics")
+                
+                if(foundBufferGraphic){
+                    console.log("found graphic to remove: ", foundBufferGraphic)
+                    foundBufferGraphic.removeAll()
+                    map.remove(foundBufferGraphic)
+                }
+                
+                // if(view){
+                //     if(view.graphics?.items?.length > 0){
+                //         console.log("removing all graphics from view: ", view.graphics)
+                //         view.graphics.items.map(graphic => {
+                //             view.graphics.remove(graphic)
+                //         })
+                //     }
+                // } 
+            }
+        }
+        removeSearchBufferGraphics()
+
+    }, [searchResultPoint, searchBufferGeometry, primaryResultFeature])
+
 
     useEffect(() => {
 
@@ -543,6 +689,7 @@ const WebMapComponentBeta = () => {
                 else if(!primaryResultFeature && selectedParcelsPrimary){
                     ////console.log("clearing primary parcel selection")
                     await removeAllFeatures(selectedParcelsPrimary) 
+
                 }
 
                 //if primaryResultFeature is not null then zoom to newly added features
@@ -612,7 +759,7 @@ const WebMapComponentBeta = () => {
         displayComparableParcels()
 
     }, [ comparableParcels, arcgisMapRef])
-
+    
     useEffect(() => {
 
         const displaySelectedComparableParcel = async () => {
@@ -647,6 +794,8 @@ const WebMapComponentBeta = () => {
         //addLayerToMap(secondaryResultFeature, "Selected Comparable Parcel", theme.layers.secondarySelected, "features")
     }, [ secondaryResultFeature, arcgisMapRef ])
 
+
+    //Remove all graphics from map when panelDisplayWidget, panelWidgetVisible changes
     useEffect(() => {
         const removeAllGraphics = () => {
 
@@ -723,9 +872,10 @@ const WebMapComponentBeta = () => {
                 // console.log("CURRENT MAP ON CLICK", arcgisMapRef.current.map)
 
                 // console.log("found MEASURE graphic: ", foundMeasureGraphic)
-                if( !foundSelectGraphic  || !selectMultiple || !measureWidgetState ){
+                if( !foundSelectGraphic  || !selectMultiple || !measureWidgetState){
                 // if((!foundSelectGraphic && !foundMeasureGraphic) || !selectMultiple || (!isMeasuring)){ //TODO this is for the measureSketchWidget
                     // console.log("The if block executes because one of the conditions is falsy.");
+                    
                     handleHitTest(event)
                 }
                 
