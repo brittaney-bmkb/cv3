@@ -113,11 +113,11 @@ const ExportDialog = ({open, onClose, dataDescription}) => {
             <Box display="flex" flexDirection="column" pl={1}>
             <Stack direction="row" sx={{alignItems:"center"}}>
                 <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>{translateText("csv")}</Typography>
-                <Switch onClick={() => {setIncludeCsv(!includeCsv)}}/>
+                <Switch inputProps={{ 'aria-label': 'switch-include-csv' }} onClick={() => {setIncludeCsv(!includeCsv)}}/>
             </Stack> 
             <Stack direction="row" sx={{alignItems:"center"}}>
                 <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>{translateText("excel")}</Typography>
-                <Switch onClick={() => {setIncludeExcel(!includeExcel)}}/>
+                <Switch inputProps={{ 'aria-label': 'switch-include-excel' }} onClick={() => {setIncludeExcel(!includeExcel)}}/>
             </Stack> 
             </Box>
         </Box>
@@ -127,10 +127,10 @@ const ExportDialog = ({open, onClose, dataDescription}) => {
         <Dialog
         open={open}
         onClose={onClose}
+
         aria-labelledby="print-dialog-title"
-        aria-describedby="print-dialog-description"
         fullWidth
-        >   <IconButton sx={{position:"absolute", right:8, top:8}} onClick={onClose}><CloseOutlined/></IconButton>
+        >   <IconButton aria-label ="close-outlined-button" sx={{position:"absolute", right:8, top:8}} onClick={onClose}><CloseOutlined/></IconButton>
             <DialogTitle id="print-dialog-title" sx={{display:"flex", justifyContent:"center"}}>
                 <Box display="flex" bgcolor={theme.main.backgroundColor.grey} p={1} sx={{borderRadius: theme.shape.borderRadius}} width={100} justifyContent="center">
                     <Typography variant="h3" color={theme.main.text.dark} align="center">{translateText("Export")}</Typography>
@@ -140,7 +140,7 @@ const ExportDialog = ({open, onClose, dataDescription}) => {
                 <Box display="flex" flexDirection="column" rowGap={1}>
                     <Stack direction="row" sx={{alignItems:"center"}}>
                         <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>{translateText("Include results")}</Typography>
-                        <Switch onClick={() => {setIncludeResults(!includeResults)}}/>
+                        <Switch inputProps={{ 'aria-label': 'switch-include-results' }}onClick={() => {setIncludeResults(!includeResults)}}/>
                     </Stack> 
                     
                     <Collapse in={includeResults}>{exportOptions}</Collapse>
@@ -150,7 +150,7 @@ const ExportDialog = ({open, onClose, dataDescription}) => {
                 <Box display="flex" flexDirection="column" rowGap={1} pt={2}>
                 <Stack direction="row" sx={{alignItems:"center"}}>
                     <Typography variant="h5" sx={{display:"flex", flexGrow:1}}>{translateText("Include map")}</Typography>
-                    <Switch onClick={() => {setIncludeMap(!includeMap)}}/>
+                    <Switch inputProps={{ 'aria-label': 'switch-include-map' }} onClick={() => {setIncludeMap(!includeMap)}}/>
                 </Stack> 
 
                 <Collapse in={includeMap}>{<PrintWidgetCustom/>}</Collapse>
@@ -181,7 +181,9 @@ const ExportDialog = ({open, onClose, dataDescription}) => {
             <DialogActions>
                 <StyledButtonFilledPrimary 
                 text={translateText(isExporting ? `${translateText("Exporting")}...` : translateText("Export"))} 
-                onClick={performExport}/>
+                onClick={performExport}
+                inputProps={{ "aria-labelledby":"export-button", "aria-label": "export-button" }}
+                />
             </DialogActions>
     
         </Dialog>

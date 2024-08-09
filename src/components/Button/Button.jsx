@@ -9,21 +9,36 @@ const StyledButtonFilledPrimary = ({text, startIcon, endIcon, onClick, textVarie
 
     return(
         <Button 
-        size={screenWidth < theme.breakpoints.values.md ? "small" : "medium"}
-        disabled={disabled}
-        variant="contained" 
-        color= "primary"
-        startIcon={startIcon}
-        endIcon={endIcon}
-        onClick={onClick}
-        sx={{
-            textTransform:"none", 
-            width: width ?? "auto", 
-            height:30,
-            backgroundColor: active ? theme.palette.primary.dark: theme.palette.primary.main,
-            boxShadow:  active ? 0: 2,
-            }}
-        ><Typography variant={textVarient} color={theme.palette.primary.contrastText}>
+            size={screenWidth < theme.breakpoints.values.md ? "small" : "medium"}
+            disabled={disabled}
+            variant="contained" 
+            color= "primary"
+            startIcon={startIcon}
+            endIcon={endIcon}
+            onClick={onClick}
+            sx={{
+                textTransform:"none", 
+                width: width ?? "auto", 
+                height:30,
+                backgroundColor: active ? theme.palette.primary.dark: theme.palette.primary.main, //TODO edit here for style guide
+                boxShadow:  active ? 0: 2,
+                ////add this for style guide, adding for future reference.
+            //     ':hover': {
+            //     bgcolor: theme.palette.primary.complementary,
+            //     color: theme.palette.accessibilityText.dark,
+            // },                
+                }}
+        ><Typography 
+            variant={textVarient} 
+            color={theme.palette.primary.contrastText}
+            ////add this for style guide, adding for future reference.
+            // sx={{
+            //     ':hover': {
+            //     // bgcolor: theme.palette.primary.light,
+            //     color: theme.palette.accessibilityText.dark,
+            //     },
+            // }}            
+        >
             {text}
         </Typography>
         </Button>
@@ -74,15 +89,17 @@ export const StyledPanelButton = ({text1, text2, text3, icon1, icon2, icon3, onC
 export const StyledButtonFilledSecondary = ({text, startIcon, endIcon, onClick}) => {
     return(
         <Button 
-        variant="contained" 
-        color="secondary"
-        startIcon={startIcon}
-        endIcon={endIcon}
-        onClick={onClick}
-        sx={{paddingTop:'2px', paddingBottom:'2px', textTransform:'none'}}
-        ><Typography p={0} variant="body1">
-        {text}
-    </Typography></Button>
+            variant="contained" 
+            color="secondary"
+            startIcon={startIcon}
+            endIcon={endIcon}
+            onClick={onClick}
+            sx={{paddingTop:'2px', paddingBottom:'2px', textTransform:'none'}}
+        >
+            <Typography p={0} variant="body1">
+                {text}
+            </Typography>
+        </Button>
     )
 }
 
@@ -97,7 +114,11 @@ export const StyledButtonFilledPrimaryLight = ({text, startIcon, endIcon, onClic
             paddingTop:'2px', 
             paddingBottom:'2px', 
             textTransform:'none', 
-            bgcolor: theme.palette.primary.light,
+            bgcolor: theme.palette.accessibilityButton.main,
+            color: theme.palette.accessibilityText.dark,
+            ':hover': {
+                bgcolor: theme.palette.accessibilityButton.complementary
+              },
         }}
         ><Typography p={0} variant="body1">
         {text}
