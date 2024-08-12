@@ -471,11 +471,11 @@ export const AppProvider = ({children}) => {
             setPanelPrimaryVisibility(true)
         }
 
-        //update url parameters
-        console.log("setting url parameters for select multiple draw tool results")
-        const  param = await returnSearchParam(features)
-
-        setSearchParams(param)
+        // //update url parameters
+        // console.log("setting url parameters for select multiple draw tool results")
+        // const  param = await returnSearchParam(features)
+        // console.log("new url param: ", param)
+        // setSearchParams(param)
 
     }
 
