@@ -149,13 +149,12 @@ export const config = {
             maxResults: 1000,
             maxSuggestions:50,
             minSuggestCharacters: 3,
-            name: "Parcel Locator",
+            name: "Parcel Address Locator",
             outFields:["street_address","city_state_zip","UnitName"],
             popupEnabled: false,
             singleLineFieldName:"SingleLine",
             suggestionsEnabled:true,
-            url:"https://test-gis.cookcountyil.gov/traditional/rest/services/Locator/parcelMultirole/GeocodeServer"
-            //url:"https://test-gis.cookcountyil.gov/traditional/rest/services/Locator/parcelMultirole_20240730/GeocodeServer"
+            url:"https://test-gis.cookcountyil.gov/traditional/rest/services/Locator/parcelAddress/GeocodeServer"
         },
         {
             apiKey: null,

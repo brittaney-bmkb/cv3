@@ -6,6 +6,7 @@ import SketchViewModel from "@arcgis/core/widgets/Sketch/SketchViewModel.js";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
 import { theme } from "../../theme";
 import { removeLayer } from "../../arcgis/layers/layers";
+import { useSearchParams } from "react-router-dom";
 
 const descriptions = (state) => {
     switch (state) {
@@ -66,6 +67,7 @@ const SelectMultipleParcels = () => {
     const [ toolDescription, setToolDescription ] = useState(false);
     const [ sketchPolygon, setSketchPolygon ] = useState(null);
     const [ sketchActive, setSketchActive ] = useState(false);
+    const [routeParams, setSearchParams] = useSearchParams();
 
     const tooltipRef = useRef(null);
 
@@ -196,6 +198,9 @@ const SelectMultipleParcels = () => {
         //if(tool==="click"){
             setPrimaryResultFeature(null, true)
             setSearchResults(null, null)
+
+            // console.log("Removing all search parameters")
+            setSearchParams({})
             
         //}
         
