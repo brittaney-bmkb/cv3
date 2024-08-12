@@ -3,6 +3,7 @@ import Basemap from "@arcgis/core/Basemap";
 import { config } from "../../data/config";
 import Query from "@arcgis/core/rest/support/Query";
 import MapImageLayer from "@arcgis/core/layers/MapImageLayer";
+import Graphic from "@arcgis/core/Graphic";
 
 
 export async function removeLayer(map, name){
@@ -142,5 +143,45 @@ export async function createBaseMap(){
             portal:config.portal
           }
     })
+}
+
+
+export async function createGraphic(geometry, geometryType){
+
+  let symbol;
+
+  if(geometryType === "point"){
+    symbol = {
+      type: "simple-marker",  // autocasts as new SimpleMarkerSymbol()
+      style: "square",
+      color: "blue",
+      size: "8px",  // pixels
+      outline: {  // autocasts as new SimpleLineSymbol()
+        color: [ 255, 255, 0 ],
+        width: 3  // points
+      }
+    };
+  }
+  else{
+    symbol = {
+      type: "simple-fill",  // autocasts as new SimpleFillSymbol()
+      color: [ 232, 255, 0, 0.5 ],
+      style: "solid",
+      outline: {  // autocasts as new SimpleLineSymbol()
+        color: "blue",
+        width: 1,
+        style: "short-dash"
+      }
+    };
+  }
+
+  let graphic = new Graphic({
+    geometry: geometry,
+    symbol: symbol,
+  });
+  
+
+  return graphic
+
 }
 
