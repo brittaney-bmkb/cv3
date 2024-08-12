@@ -6,8 +6,10 @@ import Point from "@arcgis/core/geometry/Point";
 
 let namedLayers;
 let targetLayer
+let targetViewLayer
 
 export const initalizeLayers = async () => {
+    
     namedLayers = await createFeatureLayers()
 
     //define target layer
@@ -58,7 +60,7 @@ export const handleMultipleResults = async (results) => {
     let targetFeatures = [];
     let searchFeatures = [];
     
-    let addresses = []
+    //let addresses = []
 
     filteredResults.forEach(results => {
         // Ensure results and results.source are not null before accessing properties
@@ -71,28 +73,10 @@ export const handleMultipleResults = async (results) => {
                     return;
                 }
                 if (sourceEqualsTarget) {
-                    //get address values
-                    // if(results.source.searchFields.includes("street_address")){
-                    //     results.results.forEach(result => {
-                    //         if (result && result.feature) {
-                    //             let street_address = result.feature.attributes["street_address"]
-                    //             let city_state_zip = result.feature.attributes["city_state_zip"]
-                    //             let address_values = [ street_address, city_state_zip ]
-
-                    //             if(!addresses.includes(address_values)){
-                    //                 addresses.push(address_values)
-                    //             }
-
-                    //         } else {
-                    //             //console.error("Error: Missing feature in result.");
-
-                    //         }
-                    //     })
-                    // }
-                    // else{
+                    
                     results.results.forEach(result => {
                         if (result && result.feature) {
-                            let featureExists = addObjectToArrayIfNotExists(targetFeatures, result.feature)
+                            //let featureExists = addObjectToArrayIfNotExists(targetFeatures, result.feature)
                             //console.log("feature exists in array: ", featureExists)
                             //console.log("pushing feature to targetFeatures: ", result.feature)
                             targetFeatures.push(result.feature);
@@ -114,7 +98,7 @@ export const handleMultipleResults = async (results) => {
             } else {
                 ////console.log("Pushing results features to search features");
                 results.results.map(result => {
-                    searchFeatures.push(result.feature)
+                    searchFeatures.push([result.feature, results.source.name])
                 })
             }
         } else {
@@ -125,32 +109,48 @@ export const handleMultipleResults = async (results) => {
     //console.log("target results: ", targetFeatures)
     //console.log("search results: ", searchFeatures)
 
-    if(addresses.length > 0){ 
-        //Address to query
-        if(addresses.length > 0){
-            let features = await queryTargetLayerByAddress(addresses)
-
-            features.map(feature => {
-                let featureExists = addObjectToArrayIfNotExists(targetFeatures, feature)
-                //console.log("new feature exists: ", featureExists)
-                if(!featureExists){
-                    targetFeatures.push(feature)
-                }
-                
-            })
-        }
-    }
-
-
+    //If there are no matching features from the target (parcel layer)
+    //then perform spatial intersection using points from locator source
+    // && targetFeatures.length === 0
     if(searchFeatures.length > 0){
+        let features = []
+        console.log("search features: ", searchFeatures)
+        //if unit attribute is populated return features by querying target layer
+        const unitsPopulated = searchFeatures.filter(feature => feature[0].attributes.UnitName)
+        const noUnitsPopulated = searchFeatures.filter(feature => !feature[0].attributes.UnitName)
 
-        let features = await queryTargetLayerWithPointFeatures(searchFeatures, true)
+        if(unitsPopulated?.length > 0){
+            console.log("units populated: ", unitsPopulated)
+            let featuresWithUnits = await queryTargetLayerByAddress(unitsPopulated)
+            features = [...features, ...featuresWithUnits]
+        }
         
-        //console.log("Queried features from multipoint: ", features)
+        if(noUnitsPopulated?.length > 0){
+            console.log("no units populated: ", noUnitsPopulated)
+            //if search returned results with units from the parcel locator
+            //and features were returend from the queryTargetLayerByAddress() function
+            //skip the address locator results
+            if(unitsPopulated?.length > 0 && features.length > 0){
+                console.log("skipping addresss locator results")
+                let excludeAddressLocatorResults = noUnitsPopulated.filter(feature => feature[1] !== "Address Locator")
+                if(excludeAddressLocatorResults?.length > 0){
+                    let parcelLocatorFeaturesOnly = await queryTargetLayerWithPointFeatures(excludeAddressLocatorResults)
+                    features = [...features, ...parcelLocatorFeaturesOnly]
+                }
+            }
+            else{
+                console.log("performing point in polygon for results without units")
+                //if unit attribute is no populated return features using point in polygon
+                let featuresNoUnits = await queryTargetLayerWithPointFeatures(noUnitsPopulated)
+                features = [...features, ...featuresNoUnits]
+                console.log("features from queryTargetLayerWithPointFeatures: ", featuresNoUnits)
+            }
+            
+        }
 
         features.map(feature => {
             let featureExists = addObjectToArrayIfNotExists(targetFeatures, feature)
-            ////console.log("new feature exists: ", featureExists)
+            
             if(!featureExists){
                 targetFeatures.push(feature)
             }
@@ -159,91 +159,133 @@ export const handleMultipleResults = async (results) => {
     }
 
     //let uniqueTargetFeatures = [...new Set(targetFeatures.map(feature => feature.attributes['PIN14']))]
-
+    console.log("new features: ", targetFeatures)
     return {targetFeatures, searchFeatures}
 }
 
-const queryTargetLayerByAddress = async (addresses) => {
-    
+const queryTargetLayerByAddress = async (searchFeatures) => {
+
+    let targetFeatures = [] 
+    let where = ""
+
+
+    await Promise.all(searchFeatures.map(async (searchFeature, index) => {
+
+        let street_address = searchFeature[0].attributes['street_address']
+        let city_state_zip = searchFeature[0].attributes['city_state_zip']
+
+        where += `(street_address = '${street_address}' AND city_state_zip = '${city_state_zip}')`
+        if(index < searchFeatures.length -1){
+            where += ' OR '
+        }
+        
+    }))
+
     let query = new Query()
-    query.where = ''
-    //query.where = `address = '${address}' AND city_state_zip = '${city_state_zip}'`
+    query.where = where
     query.returnGeometry = true
     query.outFields = ["*"]
 
-     addresses.map((address, index) => {
-        let [ street_address, city_state_zip ] = address
-        //console.log("querying ", street_address, city_state_zip )
+    const { features } = await targetLayer.queryFeatures(query)
 
-        query.where += `(street_address = '${street_address}' AND city_state_zip = '${city_state_zip}')`
-        if(index < addresses.length -1){
-            query.where += ' OR '
-        }
+    targetFeatures = [...targetFeatures, ...features]
 
-        //console.log("where: ", query.where)
-     })
+    console.log("target features from addresses ", targetFeatures)
 
-     //console.log("Full address query = ", query.where)
-
-     //console.log("query: ", query)
+    return targetFeatures
     
-    const { features } = await targetLayer.queryFeatures(query);
-
-    //console.log(`Address query returned ${features.length} features`)
-
-    return features
 }
 
-export const queryTargetLayerWithPointFeatures = async (pointFeatures, includeBuffer) => {
-    let pointGeometry
+export const queryTargetLayerWithPointFeatures = async (searchFeatures) => {
+    //let points = Array.isArray(pointFeatures) ? pointFeatures : [pointFeatures]
+
     //console.log("feature geometry: ", pointFeatures)
 
-    if(Array.isArray(pointFeatures)){
+    let targetFeatures = [] 
 
-        if(pointFeatures.length === 1 && pointFeatures[0].geometry){
-            if(pointFeatures[0].geometry.type && pointFeatures[0].geometry.type === "point"){
-                pointGeometry = pointFeatures[0].geometry
-            }
+    await Promise.all(searchFeatures.map(async (searchFeature) => {
+
+        let includeBuffer = searchFeature[1] === "Address Locator" ? true : false
+        let point = searchFeature[0]
+
+        const query = new Query();
+        query.spatialRelationship = "intersects";
+        query.returnGeometry = true
+        query.outFields = ["*"]
+        query.geometry = point.geometry;
+
+        const { features } = await targetLayer.queryFeatures(query)
+
+        targetFeatures = [...targetFeatures, ...features]
+
+        //now do buffer after point to polygon intersection 
+        //is performed to get nearby features
+        if(includeBuffer){
+            query.distance = config.buffer_distance,
+            query.units = config.buffer_unit
         }
-        else{
-            let geometries = pointFeatures.map(point => {
-                return [point.geometry.x, point.geometry.y]
-              })
-              //console.log("feature geometry: ", geometries)
-    
-            pointGeometry = new Multipoint({
-            points: geometries,
-            spatialReference: pointFeatures[0].spatialReference
-            })
-        
-            //console.log("new multipoint feature: ", pointGeometry)
-        }
 
+        const bufferedFeatures = await targetLayer.queryFeatures(query)
 
-    }
+        targetFeatures = [...targetFeatures, ...bufferedFeatures.features]
+    }))
 
-    else{
-        pointGeometry = pointFeatures
-    }
+    console.log("target features from multiple points: ", targetFeatures)
 
-      const query = new Query();
-      query.geometry = pointGeometry;
-      query.spatialRelationship = "intersects";
-      query.returnGeometry = true
-      query.outFields = ["*"]
-      if(includeBuffer){
-        query.distance = config.buffer_distance,
-        query.units = config.buffer_unit
-      }
+    return targetFeatures
       
-      //query.outFields = parcelQueryFields
-    
-      const { features } = await targetLayer.queryFeatures(query);
-    
-      //console.log("queried features from click: ", features)
-    
-      return features
 }
+
+// export const queryTargetLayerWithPointFeatures = async (pointFeatures, includeBuffer) => {
+//     let pointGeometry
+//     //console.log("feature geometry: ", pointFeatures)
+
+//     if(Array.isArray(pointFeatures)){
+
+//         if(pointFeatures.length === 1 && pointFeatures[0].geometry){
+//             if(pointFeatures[0].geometry.type && pointFeatures[0].geometry.type === "point"){
+//                 pointGeometry = pointFeatures[0].geometry
+//             }
+//         }
+//         else{
+//             let geometries = pointFeatures.map(point => {
+//                 return [point.geometry.x, point.geometry.y]
+//               })
+//               //console.log("feature geometry: ", geometries)
+    
+//             pointGeometry = new Multipoint({
+//             points: geometries,
+//             spatialReference: pointFeatures[0].spatialReference
+//             })
+        
+//             //console.log("new multipoint feature: ", pointGeometry)
+//         }
+
+
+//     }
+
+//     else{
+//         pointGeometry = pointFeatures
+//     }
+
+//       const query = new Query();
+//       query.geometry = pointGeometry;
+//       query.spatialRelationship = "intersects";
+//       query.returnGeometry = true
+//       query.outFields = ["*"]
+//     //   if(includeBuffer){
+//     //     query.distance = config.buffer_distance,
+//     //     query.units = config.buffer_unit
+//     //   }
+      
+//       //query.outFields = parcelQueryFields
+    
+//       const { features } = await targetLayer.queryFeatures(query);
+    
+//       //console.log("queried features from click: ", features)
+    
+//       return features
+// }
 
 export async function queryTargetLayerWithCoordinates(coordinates){
 
@@ -270,7 +312,8 @@ export async function queryTargetLayerWithCoordinates(coordinates){
 export const queryTargeLayerWithPin10Pin14 = async (pin10, pin14) => {
 
     let where = ''
-    //console.log("pin14: ", pin14)
+    console.log("pin14: ", pin14)
+    console.log("pin10: ", pin10)
     if(pin10){
         where = `PIN10 IN (${pin10})`
     }
@@ -279,7 +322,7 @@ export const queryTargeLayerWithPin10Pin14 = async (pin10, pin14) => {
             where = where + `OR PIN14 IN (${pin14})`
         }
         else{
-            where =`PIN14 IN (${pin14})`
+            where = `PIN14 IN (${pin14})`
         }
         
     }

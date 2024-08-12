@@ -20,7 +20,7 @@ import BasemapWidget from "../Widgets/Basemap/BasemapWidget";
 import SelectMultipleParcels from "../SelectMultipleParcels/SelectMultipleParcels";
 import { useState } from "react";
 import MeasureSketchWidget from "../Widgets/Measure/MeasureSketchWidget";
-import MeasureViewModelWidget from "../Widgets/Measure/MeasureViewModelWidget";
+//import MeasureViewModelWidget from "../Widgets/Measure/MeasureViewModelWidget";
 
 
 const PanelContent = ({display}) => {

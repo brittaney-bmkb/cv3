@@ -107,7 +107,7 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
                 //console.log("setting previous search term: ", searchTerm)
                 //console.log("setting previous features as current search results", prevSearchFeatures)
                 setSearchParams({'search': searchTerm})
-                setIsQuerying(true)
+                //setIsQuerying(true)
                 //console.log("setting search features to null")
 
                 //setSearchResults(null, null)
