@@ -210,9 +210,9 @@ const WebMapComponentBeta = () => {
         //apply edits
         await layer.applyEdits(addEdits)
 
-        //const param = await returnSearchParam(updatedFeatures)
-        console.log("Removing all search parameters")
-        setSearchParams({})
+        // //const param = await returnSearchParam(updatedFeatures)
+        // console.log("Removing all search parameters")
+        // setSearchParams({})
         
     }
 
@@ -692,9 +692,9 @@ const WebMapComponentBeta = () => {
                         // //apply edits
                         await selectedParcelsPrimary.applyEdits(addEdits)
 
-                        //updating url parameters
-                        const param = await returnSearchParam(features)
-                        setSearchParams(param)
+                        // //updating url parameters
+                        // const param = await returnSearchParam(features)
+                        // setSearchParams(param)
                     }
                 }
 
