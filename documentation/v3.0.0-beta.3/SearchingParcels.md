@@ -16,21 +16,9 @@ User types in a complete PIN14 in the search bar and presses enter or clicks a r
 
 ### Process
 
-#### Step 1: `Search.jsx` - Search widget search-complete event fires and triggers functions to return features from search result
-- `search-complete` event handler is triggered and returns a search event containing the [search result object](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html#events-summary)
-
 | Code | Description |
 | --- | --- | 
-| <pre><code>searchWidget.current.on("search-complete", (event) => {<br>&nbsp;console.log("search complete event:", event)<br>&nbsp;let results;<br>&nbsp;results = event.results<br>&nbsp;console.log("results for multiple results: ", event)<br>&nbsp;setIsQuerying(true)<br>&nbsp;//get search result features<br>&nbsp;returnSearchResultFeatures(results, searchWidget.current.searchTerm)<br>&nbsp;//set search url parameter based on search term<br>&nbsp;setSearchParams({'search': searchWidget.current.searchTerm})<br>&nbsp;updateAppWithSearchResult()<br>&nbsp;setIsQuerying(false)<br>})</code></pre>| the search results are passed to the `returnSearchResultFeatures()` function which is referenced from `AppContext`|
-
-- the search results are passed to the `returnSearchResultFeatures()` function which is referenced from `AppContext`
-    - the `returnSearchResultFeatures()` wraps the `handleMultipleResults()` function referenced from `queryTargetLayer.js` 
-    - the `handleMultipleResults()` returns features by accessing the features from the `search results object` 
-        - this function checks if the search source is the same as the target layer source 
-        - if the search and target source are the same then the all the features are return without any manipulation. **NOTE: number of features returned are controlled by the `maxResults` `searchSource` setting in the `config.js`**
-        - if the search source is different (like a locator source) than the target layer then the geometry is used to query the target layer and the intersectiong target features are returned using the `queryTargetLayerWithPointFeatures` function
-        - for more info see `queryTargetLayer.md`
-    - Once the target features are returned, the `primaryResultFeature` and `searchResults` is set using the `setPrimaryResultFeature` and `setSearchResults`
+| <pre><code>searchWidget.current.on("search-complete", (event) => {<br><br>&nbsp;console.log("search complete event:", event)<br><br>&nbsp;let results;<br>&nbsp;results = event.results<br>&nbsp;console.log("results for multiple results: ", event)<br><br>&nbsp;setIsQuerying(true)<br><br>&nbsp;returnSearchResultFeatures(results,searchWidget.current.searchTerm)<br><br>&nbsp;setSearchParams({<br>&nbsp;&nbsp;&nbsp;&nbsp;'search': searchWidget.current.searchTerm<br>&nbsp;&nbsp;&nbsp;&nbsp;})<br><br>&nbsp;updateAppWithSearchResult()<br><br>&nbsp;setIsQuerying(false)<br>})</code></pre>| 1) **search-complete** event handler is triggered once the user presses enter or clicks a result and returns a search event containing search candidates inside the [search result object](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html#events-summary)<br><br> 2) The results property is set to the results variable<br><br> 3) **IsQuerying** state is set to true to trigger loading animation inside the results panel while result features and attributes are queried<br><br> 4) **returnSearchResultFeatures()** is executed with search results and the user provided PIN14 is referenced from the searchWidget searchTerm. This function updates the state of the primaryFeatureResult that is displayed as results in the result list and graphically as a layer in the webmap. See details in `/data/AppContext.md` <br><br> 5) **updateAppWithSearchResult()** executed to open left panel and display results list if the panel is closed and URL Parameter is updated with the **search** parameter and the searchWidget search term as the parameter value using the setSearchParams() function <br><br> 6) Once result features are returned **IsQuerying** state is set to false to remove loading animation|
 
 ### PIN10 Search
 User types in PIN10 and presses search or hits enter 
