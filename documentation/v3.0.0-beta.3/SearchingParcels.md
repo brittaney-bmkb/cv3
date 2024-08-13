@@ -60,22 +60,13 @@ User includes a search query `search= {a PIN14 value}` as a url parameter after 
 |---|---|---|---|---|
 | User types in url with "search=PIN14" | search=User Provided Pin | one result of PIN 14 | Displays one parcel and zooms  | Shows - formatted PIN 14 dash |
 
-### Process - this process accesses the search vaules from the url parameter then follows the steps from Complete PIN14 Search
+### Process
 
-#### Step 1: `Search.jsx` - Search widget useEffect hook accesses url parameters and executes search method
-- url paramter values are queried for each type:
-    - `pin` - parcel pin 10 or 14
-    - `search` - generic search string, full or partial pin or address
-    - `address` - address string
-- for this action the `search` parameter is accessed and updates the `genericSearch` state.
-    ``` 
-    setGenericSearch(routeParams.get("search")) 
-    ```
-- On load the `newSearch` global variable is set to true, so when the searchWidget initally mounts it meets the condition to perform a new search using the values accessed from the `genericSearch` state
-    ```
-    searchWidget.current.search(genericSearch)
-    ```
-- Once the search is performed on the `genericSearch`, the `search-complete` event handler is triggered and the steps from `Complete PIN14 Search` are performed 
+| Code | Description |
+| --- | --- | 
+| //on app load useEffect<br>useEffect(() =>{<br><br>&nbsp;initalizeSearchSources()<br><br>&nbsp;if(!primaryResultFeature){<br>&nbsp;&nbsp;...<br>&nbsp;&nbsp;setGenericSearch(routeParams.get("search"))<br>&nbsp;&nbsp;...<br>&nbsp;&nbsp;}<br>},[])<br><br>//Create Search AND watch for search events<br>useEffect(() => { <br><br>&nbsp;&nbsp;const createSearch = async () => {<br>&nbsp;&nbsp;...<br>&nbsp;&nbsp;<br>&nbsp;&nbsp;if(newSearch === true){<br>&nbsp;&nbsp;&nbsp;&nbsp;...<br>&nbsp;&nbsp;&nbsp;&nbsp;if(genericSearch){<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.log("DETECTED GENERIC SEARCH PARAM: ", genericSearch)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searchWidget.current.search(genericSearch)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searchWidget.current.searchTerm = genericSearch<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;...<br>&nbsp;&nbsp;}<br><br>}, [searchDiv, mapView, searchSources]) | 1) On initial load the on app load use effect hook is triggered to initialize search sources used by the search widget and update the state of the **genericSearch** variable by retrieving the **search** parameter value<br><br>2) Once **search sources, mapView, and the search div element** is present in the DOM, the **createSearch** useEffect function is triggered to create a new instance of the **searchWidget** and execute searches using the search strings derived from url parameters<br><br> 3) When a string is detected in the genericSearch variable then the string is passed as an argument to the **searchWidget** search method to trigger a new search<br><br>4) The search term is updated in the searchWidget to the genericSearch value that was passed to the search method<br><br> 5) Search results are then handled the same way described in the [Complete PIN14 Search](#complete-pin14-search) |
+
+---
 
 ### User includes a search query as a url parameter - PIN10
 User includes a search query `search= {a PIN10 value}` as a url parameter after the cookViewer url.
