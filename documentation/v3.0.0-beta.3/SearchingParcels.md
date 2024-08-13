@@ -1,7 +1,7 @@
 # Cookviewer Technical Documentation
 
 ## Methods for searching for parcels
-last updated: 2024-13-08
+last updated: 2024-08-13
 
 
 
@@ -12,7 +12,7 @@ User types in a complete PIN14 in the search bar and presses enter or clicks a r
 ### Expected Behavior
 | Action | URL Parameters | Property Results | Map | Search Term |
 |---|---|---|---|---|
-| User types or selects Full PIN 14 | search = User Provided PIN  | one result of PIN 14 | Displays one parcel and zooms  | Shows - formatted PIN 14 dash |
+| User types or selects Full PIN 14 | search = User Provided PIN  | one result of PIN 14 | Displays one parcel and zooms  | Shows - formatted PIN 14 dash if user selects a result or User Provided PIN if user presses enter |
 
 ### Process
 
