@@ -1,7 +1,7 @@
 # Cookviewer Technical Documentation
 
 ## Methods for searching for parcels
-last updated: 2024-30-07
+last updated: 2024-13-08
 
 
 
@@ -18,6 +18,11 @@ User types in a complete PIN14 in the search bar and presses enter or clicks a r
 
 #### Step 1: `Search.jsx` - Search widget search-complete event fires and triggers functions to return features from search result
 - `search-complete` event handler is triggered and returns a search event containing the [search result object](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html#events-summary)
+
+| Code | Description |
+| --- | --- | 
+| <pre><code>searchWidget.current.on("search-complete", (event) => {<br>&nbsp;console.log("search complete event:", event)<br>&nbsp;let results;<br>&nbsp;results = event.results<br>&nbsp;console.log("results for multiple results: ", event)<br>&nbsp;setIsQuerying(true)<br>&nbsp;//get search result features<br>&nbsp;returnSearchResultFeatures(results, searchWidget.current.searchTerm)<br>&nbsp;//set search url parameter based on search term<br>&nbsp;setSearchParams({'search': searchWidget.current.searchTerm})<br>&nbsp;updateAppWithSearchResult()<br>&nbsp;setIsQuerying(false)<br>})</code></pre>| the search results are passed to the `returnSearchResultFeatures()` function which is referenced from `AppContext`|
+
 - the search results are passed to the `returnSearchResultFeatures()` function which is referenced from `AppContext`
     - the `returnSearchResultFeatures()` wraps the `handleMultipleResults()` function referenced from `queryTargetLayer.js` 
     - the `handleMultipleResults()` returns features by accessing the features from the `search results object` 
