@@ -3,9 +3,12 @@
 ## Methods for searching for parcels
 last updated: 2024-08-13
 
-
+- [Complete PIN14 Search](#complete-pin14-search)
+- [PIN10 Search](#pin10-search)
+- [Partial PIN Search](#partial-pin-search)
 
 ## User uses PIN14, PIN10, or Partial PIN
+
 ### Complete PIN14 Search
 User types in a complete PIN14 in the search bar and presses enter or clicks a result from the parcel PIN search suggestions.
 
@@ -19,7 +22,7 @@ User types in a complete PIN14 in the search bar and presses enter or clicks a r
 | Code | Description |
 | --- | --- | 
 | searchWidget.current.on("search-complete", (event) => {<br><br>&nbsp;console.log("search complete event:", event)<br><br>&nbsp;let results;<br>&nbsp;results = event.results<br>&nbsp;console.log("results for multiple results: ", event)<br><br>&nbsp;setIsQuerying(true)<br><br>&nbsp;returnSearchResultFeatures(results,searchWidget.current.searchTerm)<br><br>&nbsp;setSearchParams({<br>&nbsp;&nbsp;&nbsp;&nbsp;'search': searchWidget.current.searchTerm<br>&nbsp;&nbsp;&nbsp;&nbsp;})<br><br>&nbsp;updateAppWithSearchResult()<br><br>&nbsp;setIsQuerying(false)<br>})| 1) **search-complete** event handler is triggered once the user presses enter or clicks a result and returns a search event containing search candidates inside the [search result object](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html#events-summary)<br><br> 2) The results property is set to the results variable<br><br> 3) **IsQuerying** state is set to true to trigger loading animation inside the results panel while result features and attributes are queried<br><br> 4) **returnSearchResultFeatures()** is executed with search results and the user provided PIN14 is referenced from the searchWidget searchTerm. This function updates the state of the primaryFeatureResult that is displayed as results in the result list and graphically as a layer in the webmap. See details in `/data/AppContext.md` <br><br> 5) **updateAppWithSearchResult()** executed to open left panel and display results list if the panel is closed and URL Parameter is updated with the **search** parameter and the searchWidget search term as the parameter value using the setSearchParams() function <br><br> 6) Once result features are returned **IsQuerying** state is set to false to remove loading animation|
-
+---
 ### PIN10 Search
 User types in PIN10 and presses search or hits enter 
 
@@ -30,19 +33,23 @@ User types in PIN10 and presses search or hits enter
 
 ### Process - this process is the same as Complete PIN14 Search
 - In the v3.0.0-beta.1 version the `autoSelect` property of the search widget was set to true, which prevented all the search results from being returned when a partial search string is entered
-- In this current version the `autoSelect` property is set to false which allows the search results to be controlled and fully accessed for the `search-complete` event handler. see `Change Log` for the `Search.jsx` component for more details
-
+- In the v3.0.0 version the [autoSelect property](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html#autoSelect) is set to false to prevent the app from selecting the first result and zooming to the geocoded point on the map. Instead the search results are managed using the `search-complete` event handler. see `Change Log` for the `Search.jsx` component for more details
+---
 ### Partial PIN Search
 User types in a partial pin number in the search bar and presses enter.
 
 ### Expected Behavior
 | Action | URL Parameters | Property Results | Map | Search Term|
 |---|---|---|---|---|
-| User types in partial PIN and presses enter | search=Users search term | If parcel layer source: Return all of the search result features where partial PIN is beginning of PIN14 / If parcel locator source: Returns al of the results where the partial pin is contained in PIN14 | Layer source: Return all of the parcels using the geometry from the search results. Locator source: Point in polygon query for each result or sql query where PIN14 is like partial pin | User search term |
+| User types in partial PIN and presses enter | search=Users search term | Returns all of the search result features where partial PIN is beginning of PIN14 | Returns all of the parcels using the geometry from the search results | User search term |
 
 ### Process - this process is the same as a complete PIN14 search
 - In the v3.0.0-beta.1 version the `autoSelect` property of the search widget was set to true, which prevented all the search results from being returned when a partial search string is entered
-- In this current version the `autoSelect` property is set to false which allows the search results to be controlled and fully accessed for the `search-complete` event handler. see `Change Log` for the `Search.jsx` component for more details
+- In the v3.0.0 version the [autoSelect property](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html#autoSelect) is set to false to prevent the app from selecting the first result and zooming to the geocoded point on the map. Instead the search results are managed using the `search-complete` event handler. see `Change Log` for the `Search.jsx` component for more details
+- In the v3.0.0 version the [Parcel Layer](https://gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/0) is used as a [LayerSearchSource](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search-LayerSearchSource.html) in the Search Widget to return results for Parcel PIN (PIN10 & PIN14) searches. 
+    - **Note**: PIN searches use PIN10, PIN14, PIN14_dash as searchFields which are all string fields. For LayerSearchSources there is no leading wildcard to return results that include or contain a portion of the PIN search string. The returned results are either exact matches or start with the user provided PIN search string, which allows partial string searches to be performed.   
+
+--- 
 
 ### User includes a search query as a url parameter - PIN14
 User includes a search query `search= {a PIN14 value}` as a url parameter after the cookViewer url.
