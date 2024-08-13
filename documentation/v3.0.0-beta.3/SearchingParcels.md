@@ -6,6 +6,10 @@ last updated: 2024-08-13
 - [Complete PIN14 Search](#complete-pin14-search)
 - [PIN10 Search](#pin10-search)
 - [Partial PIN Search](#partial-pin-search)
+- [URL Parameter Search - PIN14](#url-parameter-search---pin14)
+- [URL Parameter Search - PIN10](#url-parameter-search---pin10)
+- [URL Parameter Search - Partial PIN](#url-parameter-search---partial-pin)
+- [URL Parameter Search - Multiple PINs](#url-parameter-search-multiple-pins)
 
 ## User uses PIN14, PIN10, or Partial PIN
 
@@ -29,7 +33,7 @@ User types in PIN10 and presses search or hits enter
 ### Expected Behavior
 | Action | URL Parameters | Property Results | Map | Search Term |
 |---|---|---|---|---|
-| User types in PIN10 and presses search or hits enter ( does not select a suggestion) | search=Users search term | return all of parcel records where PIN10 is equal to search term | Displays all parcels with PIN10 | User search term |
+| User types in PIN10 and presses search or hits enter ( does not select a suggestion) | search=Users search term | return all of parcel records that start with the PIN10 string provided by the user | Displays all parcels that start with the PIN10 string provided by the user | User search term |
 
 ### Process - this process is the same as Complete PIN14 Search
 - In the v3.0.0-beta.1 version the `autoSelect` property of the search widget was set to true, which prevented all the search results from being returned when a partial search string is entered
@@ -51,7 +55,9 @@ User types in a partial pin number in the search bar and presses enter.
 
 --- 
 
-### User includes a search query as a url parameter - PIN14
+### User includes a search query as a url parameter
+
+### URL Parameter Search - PIN14
 User includes a search query `search= {a PIN14 value}` as a url parameter after the cookViewer url.
 
 ### Expected Behavior
@@ -68,68 +74,50 @@ User includes a search query `search= {a PIN14 value}` as a url parameter after 
 
 ---
 
-### User includes a search query as a url parameter - PIN10
+### URL Parameter Search - PIN10
 User includes a search query `search= {a PIN10 value}` as a url parameter after the cookViewer url.
 
 ### Expected Behavior
 
 | Action                                | URL Parameters           | Property Results                                                 | Map                             | Search Term      |
 |---------------------------------------|--------------------------|------------------------------------------------------------------|---------------------------------|------------------|
-| User types in url with "search=PIN10" | search=Users search term | return all of parcel records where PIN10 is equal to search term | Displays all parcels with PIN10 | User search term |
+| User types in url with "search=PIN10" | search=Users search term | return all of parcel records that start with PIN10 search string provided by user | Displays all parcels that start with PIN10 search string provided by user | User search term |
 
-### Process - this process accesses the search vaules from the url parameter then follows the steps from Complete PIN14 Search
+### Process 
 
-#### Step 1: `Search.jsx` - Search widget useEffect hook accesses url parameters and executes search method
-- url paramter values are queried for each type:
-    - `pin` - parcel pin 10 or 14
-    - `search` - generic search string, full or partial pin or address
-    - `address` - address string
-- for this action the `search` parameter is accessed and updates the `genericSearch` state.
-    ``` 
-    setGenericSearch(routeParams.get("search")) 
-    ```
-- On load the `newSearch` global variable is set to true, so when the searchWidget initally mounts it meets the condition to perform a new search using the values accessed from the `genericSearch` state
-    ```
-    searchWidget.current.search(genericSearch)
-    ```
-- Once the search is performed on the `genericSearch`, the `search-complete` event handler is triggered and the steps from `Complete PIN14 Search` are performed 
+This process accesses the search vaules from the url parameter then follows the steps from [URL Parameter Search - PIN14](#url-parameter-search---pin14)
 
-### User includes a search query as a url parameter - Partial PIN
+---
+
+### URL Parameter Search - Partial PIN
 User includes a search query `search= {a Partial PIN value}` as a url parameter after the cookViewer url.
 
 ### Expected Behavior
 
 | Action                      | URL Parameters          | Property Results                                                                                                                                                                                             | Map                                                                                                                                                                                              | Search Term      |
 |-----------------------------|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------|
-| url search with partial PIN | search=user search term | If parcel layer source: Return all of the search result features where partial PIN is beginning of PIN14/If parcel locator source: Returns al of the results where the partial pin is contained in PIN14 | Layer source: Return all of the parcels using the geometry from the search results.//Locator source: Point in polygon query for each result or sql query where PIN14 is like partial pin | User search term |
+| url search with partial PIN | search=user search term | Return all of the search result features where partial PIN is beginning of PIN14 | Return all of the parcels using the geometry from the search results | User search term |
 
-### Process - this process accesses the search vaules from the url parameter then follows the steps from Complete PIN14 Search
+### Process
 
-#### Step 1: `Search.jsx` - Search widget useEffect hook accesses url parameters and executes search method
-- url paramter values are queried for each type:
-    - `pin` - parcel pin 10 or 14
-    - `search` - generic search string, full or partial pin or address
-    - `address` - address string
-- for this action the `search` parameter is accessed and updates the `genericSearch` state.
-    ``` 
-    setGenericSearch(routeParams.get("search")) 
-    ```
-- On load the `newSearch` global variable is set to true, so when the searchWidget initally mounts it meets the condition to perform a new search using the values accessed from the `genericSearch` state
-    ```
-    searchWidget.current.search(genericSearch)
-    ```
-- Once the search is performed on the `genericSearch`, the `search-complete` event handler is triggered and the steps from `Complete PIN14 Search` are performed 
+This process accesses the search vaules from the url parameter then follows the steps from [URL Parameter Search - PIN14](#url-parameter-search---pin14)
 
-### User includes a search query as a url parameter - Multiple PINs
-User includes a search query `PIN14= {a list of PIN14s}' and/or 'PIN10={a list of PIN10s}` as a url parameter after the cookViewer url.
+---
+
+### URL Parameter Search - Multiple PINs
+User includes a search query `pin14= {a list of PIN14s}' and/or 'pin10={a list of PIN10s}` as a url parameter after the cookViewer url.
 
 ### Expected Behavior
 
 | Action                       | URL Parameters                                     | Property Results                                                                                                         | Map                                                            | Search Term |
 |------------------------------|----------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|-------------|
-| url search for multiple pins | PIN14={list of PIN14} and/or PIN10={list of PIN10} | Parcel layer source: Return all parcels from sql parcel query where PIN14 in {list of PIN14} or PIN10 in {list of PIN10} | DIsplay the parcel geometry from the parcel layer source query | Null        |
+| url search for multiple pins | pin14={list of PIN14} and/or pin10={list of PIN10} | Return all parcels from sql parcel query where PIN14 in {list of PIN14} or PIN10 in {list of PIN10} | Display the parcel geometry from the parcel layer source query | Null        |
 
-### Process - this process accesses the search vaules from the url parameter then follows the steps from Complete PIN14 Search
+### Process
+
+| Code | Description |
+| --- | --- | 
+| //on app load useEffect<br>useEffect(() =>{<br><br>&nbsp;initalizeSearchSources()<br><br>&nbsp;if(!primaryResultFeature){<br>&nbsp;&nbsp;...<br>&nbsp;&nbsp;let pin10 = routeParams.get("pin10")<br>&nbsp;&nbsp;if(pin10){<br>&nbsp;&nbsp;&nbsp;&nbsp;let pin10Array = pin10.replace(/-/g,'').split(',')<br>&nbsp;&nbsp;&nbsp;&nbsp;let formattedPin10 = pin10Array?.length > 1 ? `${pin10Array.join(",")}` : `'${pin10Array}'`<br>&nbsp;&nbsp;&nbsp;&nbsp;setPin10Search(formattedPin10)<br>&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;let pin14 = routeParams.get("pin14")<br>&nbsp;&nbsp;if(pin14){<br>&nbsp;&nbsp;&nbsp;&nbsp;let pin14Array = pin14.replace(/-/g,'').split(',')<br>&nbsp;&nbsp;&nbsp;&nbsp;let formattedPin14 = pin14Array?.length > 1 ? `${pin14Array.join(",")}` : `'${pin14Array}'`<br>&nbsp;&nbsp;&nbsp;&nbsp;setPin14Search(formattedPin14)<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;...<br>&nbsp;&nbsp;}<br>},[])<br><br>//Create Search AND watch for search events<br>useEffect(() => {<br><br>&nbsp;&nbsp;const createSearch = async () => {<br>&nbsp;&nbsp;&nbsp;&nbsp;...<br>&nbsp;&nbsp;&nbsp;&nbsp;if(newSearch === true){<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(pin10Search OR pin14Search){<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;let features = await returnFeaturesByPin10Pin14( pin10Search, pin14Search)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mapView.goTo(features)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;...<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}, [searchDiv, mapView, searchSources]) | 1) On initial load the on app load use effect hook is triggered to initialize search sources used by the search widget and retrieves values from routeParams: pin10 and pin14.<br><br>2) If values are not null then the values are formatted to remove hyphens and split the string into an array.<br><br>3) if pin14 and/or pin10 values are not null then the searchWidget is bypassed and the formatted pin14 and/or pin10 are passed to the returnFeaturesByPin10Pin14() function to return parcel features by querying the PIN14 and PIN10 fields  4) Once features are returned the map zooms the features extent|
 
 #### Step 1: `Search.jsx` - Search widget useEffect hook accesses url parameters and executes search method
 - url paramter values are queried for each type:
