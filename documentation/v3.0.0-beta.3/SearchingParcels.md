@@ -10,6 +10,7 @@ last updated: 2024-08-13
 - [URL Parameter Search - PIN10](#url-parameter-search---pin10)
 - [URL Parameter Search - Partial PIN](#url-parameter-search---partial-pin)
 - [URL Parameter Search - Multiple PINs](#url-parameter-search---multiple-pins)
+- [Street Address Search - Address Locator Result Selected](#street-address-search---address-locator-result-selected)
 
 ## User uses PIN14, PIN10, or Partial PIN
 
@@ -286,25 +287,77 @@ useEffect(() => {
 </tr>
 </table>
 
-
-
-
 ---
 
 ## User uses Street Address, Partial Street Address, or Intersection
-### Street Address entered and address locator suggestion selected
+
+### Street Address Search - Address Locator Result Selected
 User types in a complete address in the search bar and selects a result from the address locator suggestions.
 
 ### Expected Behavior
 
 | Action                                                                                                                      | URL Parameters                    | Property Results                                                             | Map                                                                                           | Search Term                |
 |-----------------------------------------------------------------------------------------------------------------------------|-----------------------------------|------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|----------------------------|
-| User types in an address and locator address suggestions are returned, user selects  one of the  address locator suggestion | search="StAddr"+ "City"+ "Postal" | Returns the intersecting parcels and buffered parcels from the address point | zoom in, display marker, display buffer ring, display parcels that intersect with buffer ring | "StAddr"+ "City"+ "Postal" |
+| User types in an address and locator address suggestions are returned, user selects  one of the  address locator suggestion | search="StAddr"+ "City"+ "Postal" | Returns a buffers for each geocoded address point and parcels that intersect | zoom in, display marker, display buffer ring, display parcels that intersect with buffer ring | "StAddr"+ "City"+ "Postal" |
 
-### Process - this process follows the same steps as Complete PIN14 Search with one change
-- When a search result from the address locator suggestions is selected, it triggers a spatial query between the search result point feature and the target layer (parcel layers)
-- When the `queryTargetLayerWithPointFeatures` accepts the search result features and a boolean to determine if a buffer distance should be includeed in the query
-- For address locator search results the boolean is set to true and the `buffer_distance` & `buffer_unit` variables accessed from `config.js` are included in the `Query` object to perform a spatial intersection query with a buffer distance 
+### Process
+
+<table>
+<th>Code Snippet - AppContext.jsx</th>
+<th>Description</th>
+<tr>
+<td>
+
+```
+const returnSearchResultFeatures = async (results, newSearchTerm) => {
+
+    const { handleMultipleResults } = await import('../arcgis/search/queryTargetLayer')
+    const { returnBufferGeometry } = await import('../arcgis/geoprocessing/geoprocessing')
+
+    //console.log("Performing new target layer query")
+    setSearchBufferGeometry(null, null)
+    
+    const{ targetFeatures } = await handleMultipleResults(results)
+
+    //console.log("target features returned: ", targetFeatures)
+    //console.log("results returned: ", results)
+
+    setPrimaryResultFeature(targetFeatures, true)
+
+    //console.log("seting previous feature: ", targetFeatures)
+    setSearchResults(results, targetFeatures, newSearchTerm, targetFeatures)
+    //}
+
+    //created buffer graphic here
+    //if results include Address Locator source
+    //update state of searchBuffer and pass point geometries
+    
+    const addressLocatorResultGeometry = results.filter(result => result.source.name === "Address Locator")
+                                            .flatMap(filteredResults => filteredResults.results)
+                                            .map(flattenedResults => flattenedResults.feature.geometry)
+    
+    
+    const bufferGeometries = await Promise.all(addressLocatorResultGeometry.map(async(geometry) => {
+
+        console.log("buffer geometry: ", geometry)
+        return await returnBufferGeometry(geometry, config.buffer_distance, config.buffer_unit)
+
+    }))
+
+    console.log("address locator buffer geometries calculated: ", bufferGeometries)
+    setSearchBufferGeometry(addressLocatorResultGeometry, bufferGeometries)
+
+}
+```
+
+</td>
+<td>
+1) This process follows the same steps as Complete PIN14 Search with an additional step to create the buffer geometry. The additional step happens in the returnSearchResultFeatures() function that is executed inside the SearchBar.jsx component, described in the Complete PIN14 Search Process table.<br><br>2) returnSearchResultFeatures() sets the state of the searchBufferGeometry to null for both the address point and address buffer geometry.<br><br>3) Search results are passed to the handleMultipleResults() function to return parcel features. For Address Locator results and the buffer_distance and buffer_unit variables are accessed from config.js are included in the parcel layer spatial query.<br><br>4) Parcel features are passed to setPrimaryResultFeature() and setSearchResults() to update the state of the selected parcels in the webmap and search results displayed in the results panel.<br><br>5) The search results are then filtered to detect results where the search source is equal to "Address Locator", and the geometry of those geocoded results are returned in the addressLocatorResultGeometry array.<br><br>6) Each geometry is then passed to the returnBufferGeometry function to create the buffered polygon geometries for the map display.<br><br>7) The geometry of the geocoded results and buffered polygon geometries are passed to the setSearchBufferGeometry() function to update the states of the searchResultPoint and searchBufferGeometry to trigger the WebMapComponentBeta.jsx component to create buffer graphics and display them in the webmap.
+</td>
+</tr>
+</table>
+
+---
 
 ### Street Address entered and parcel address suggestion selected
 User types in an address and selects a parcel address search result from the dropdown.
