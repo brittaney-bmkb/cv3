@@ -68,9 +68,61 @@ User includes a search query `search= {a PIN14 value}` as a url parameter after 
 
 ### Process
 
-| Code | Description |
-| --- | --- | 
-| //on app load useEffect<br>useEffect(() =>{<br><br>&nbsp;initalizeSearchSources()<br><br>&nbsp;if(!primaryResultFeature){<br>&nbsp;&nbsp;...<br>&nbsp;&nbsp;setGenericSearch(routeParams.get("search"))<br>&nbsp;&nbsp;...<br>&nbsp;&nbsp;}<br>},[])<br><br>//Create Search AND watch for search events<br>useEffect(() => { <br><br>&nbsp;&nbsp;const createSearch = async () => {<br>&nbsp;&nbsp;...<br>&nbsp;&nbsp;<br>&nbsp;&nbsp;if(newSearch === true){<br>&nbsp;&nbsp;&nbsp;&nbsp;...<br>&nbsp;&nbsp;&nbsp;&nbsp;if(genericSearch){<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;console.log("DETECTED GENERIC SEARCH PARAM: ", genericSearch)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searchWidget.current.search(genericSearch)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;searchWidget.current.searchTerm = genericSearch<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;...<br>&nbsp;&nbsp;}<br><br>}, [searchDiv, mapView, searchSources]) | 1) On initial load the on app load use effect hook is triggered to initialize search sources used by the search widget and update the state of the **genericSearch** variable by retrieving the **search** parameter value<br><br>2) Once **search sources, mapView, and the search div element** is present in the DOM, the **createSearch** useEffect function is triggered to create a new instance of the **searchWidget** and execute searches using the search strings derived from url parameters<br><br> 3) When a string is detected in the genericSearch variable then the string is passed as an argument to the **searchWidget** search method to trigger a new search<br><br>4) The search term is updated in the searchWidget to the genericSearch value that was passed to the search method<br><br> 5) Search results are then handled the same way described in the [Complete PIN14 Search](#complete-pin14-search) |
+<table>
+<th>Code Snippet - SearchBar.jsx</th>
+<th>Description</th>
+<tr>
+<td>
+
+```
+useEffect(() => {
+    initalizeSearchSources()
+    if(!primaryResultFeature){
+
+        ...
+        
+        setGenericSearch(routeParams.get("search"))
+    }
+}, [])
+
+useEffect(() => {
+
+    const createSearch = async () => {
+
+        if(searchDiv.current && searchSources){
+
+            if(!searchWidget.current && mapView){
+
+                ...
+
+                if(newSearch === true){
+                    if(genericSearch){
+                        console.log("DETECTED GENERIC SEARCH PARAM: ", genericSearch)
+                        searchWidget.current.search(genericSearch)
+                        //searchWidget.current.searchTerm = genericSearch
+                    }
+
+                    ...
+                }
+            }
+
+        }
+
+        ...
+
+    }
+
+    createSearch()
+
+},[searchDiv, mapView, searchSources])
+
+```
+</td>
+<td>
+1) On initial load the on app load use effect hook is triggered to initialize search sources used by the search widget and update the state of the **genericSearch** variable by retrieving the **search** parameter value<br><br>2) Once **search sources, mapView, and the search div element** is present in the DOM, the **createSearch** useEffect function is triggered to create a new instance of the **searchWidget** and execute searches using the search strings derived from url parameters<br><br> 3) When a string is detected in the genericSearch variable then the string is passed as an argument to the **searchWidget** search method to trigger a new search<br><br>4) The search term is updated in the searchWidget to the genericSearch value that was passed to the search method<br><br> 5) Search results are then handled the same way described in the [Complete PIN14 Search](#complete-pin14-search) 
+</td>
+</tr>
+</table>
 
 ---
 
@@ -116,7 +168,7 @@ User includes a search query `pin14= {a list of PIN14s}' and/or 'pin10={a list o
 ### Process
 
 <table>
-<th>Code</th>
+<th>Code Snippet - SearchBar.jsx</th>
 <th>Description</th>
 <tr>
 <td>
