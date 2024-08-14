@@ -9,7 +9,7 @@ last updated: 2024-08-13
 - [URL Parameter Search - PIN14](#url-parameter-search---pin14)
 - [URL Parameter Search - PIN10](#url-parameter-search---pin10)
 - [URL Parameter Search - Partial PIN](#url-parameter-search---partial-pin)
-- [URL Parameter Search - Multiple PINs](#url-parameter-search-multiple-pins)
+- [URL Parameter Search - Multiple PINs](#url-parameter-search---multiple-pins)
 
 ## User uses PIN14, PIN10, or Partial PIN
 
@@ -115,24 +115,82 @@ User includes a search query `pin14= {a list of PIN14s}' and/or 'pin10={a list o
 
 ### Process
 
-| Code | Description |
-| --- | --- | 
-| //on app load useEffect<br>useEffect(() =>{<br><br>&nbsp;initalizeSearchSources()<br><br>&nbsp;if(!primaryResultFeature){<br>&nbsp;&nbsp;...<br>&nbsp;&nbsp;let pin10 = routeParams.get("pin10")<br>&nbsp;&nbsp;if(pin10){<br>&nbsp;&nbsp;&nbsp;&nbsp;let pin10Array = pin10.replace(/-/g,'').split(',')<br>&nbsp;&nbsp;&nbsp;&nbsp;let formattedPin10 = pin10Array?.length > 1 ? `${pin10Array.join(",")}` : `'${pin10Array}'`<br>&nbsp;&nbsp;&nbsp;&nbsp;setPin10Search(formattedPin10)<br>&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;let pin14 = routeParams.get("pin14")<br>&nbsp;&nbsp;if(pin14){<br>&nbsp;&nbsp;&nbsp;&nbsp;let pin14Array = pin14.replace(/-/g,'').split(',')<br>&nbsp;&nbsp;&nbsp;&nbsp;let formattedPin14 = pin14Array?.length > 1 ? `${pin14Array.join(",")}` : `'${pin14Array}'`<br>&nbsp;&nbsp;&nbsp;&nbsp;setPin14Search(formattedPin14)<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;...<br>&nbsp;&nbsp;}<br>},[])<br><br>//Create Search AND watch for search events<br>useEffect(() => {<br><br>&nbsp;&nbsp;const createSearch = async () => {<br>&nbsp;&nbsp;&nbsp;&nbsp;...<br>&nbsp;&nbsp;&nbsp;&nbsp;if(newSearch === true){<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(pin10Search OR pin14Search){<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;let features = await returnFeaturesByPin10Pin14( pin10Search, pin14Search)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mapView.goTo(features)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;...<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}, [searchDiv, mapView, searchSources]) | 1) On initial load the on app load use effect hook is triggered to initialize search sources used by the search widget and retrieves values from routeParams: pin10 and pin14.<br><br>2) If values are not null then the values are formatted to remove hyphens and split the string into an array.<br><br>3) if pin14 and/or pin10 values are not null then the searchWidget is bypassed and the formatted pin14 and/or pin10 are passed to the returnFeaturesByPin10Pin14() function to return parcel features by querying the PIN14 and PIN10 fields  4) Once features are returned the map zooms the features extent|
+<table>
+<th>Code</th>
+<th>Description</th>
+<tr>
+<td>
 
-#### Step 1: `Search.jsx` - Search widget useEffect hook accesses url parameters and executes search method
-- url paramter values are queried for each type:
-    - `pin` - parcel pin 10 or 14
-    - `search` - generic search string, full or partial pin or address
-    - `address` - address string
-- for this action the `search` parameter is accessed and updates the `genericSearch` state.
-    ``` 
-    setGenericSearch(routeParams.get("search")) 
-    ```
-- On load the `newSearch` global variable is set to true, so when the searchWidget initally mounts it meets the condition to perform a new search using the values accessed from the `genericSearch` state
-    ```
-    searchWidget.current.search(genericSearch)
-    ```
-- Once the search is performed on the `genericSearch`, the `search-complete` event handler is triggered and the steps from `Complete PIN14 Search` are performed 
+```
+useEffect(() => {
+    initalizeSearchSources()
+    if(!primaryResultFeature){
+
+        ...
+
+        let pin10 = routeParams.get("pin10")
+        if(pin10){
+            let pin10Array = pin10.replace(/-/g,'').split(',')
+            let formattedPin10 = pin10Array?.length > 1 ? `${pin10Array.join(",")}` : `'${pin10Array}'`
+            setPin10Search(formattedPin10)
+        }
+        
+        let pin14 = routeParams.get("pin14")
+        if(pin14){
+            let pin14Array = pin14.replace(/-/g,'').split(',')
+            let formattedPin14 = pin14Array?.length > 1 ? `${pin14Array.join(',')}` : `'${pin14Array}'`
+            setPin14Search(formattedPin14)
+        }
+        
+        ...
+    }
+}, [])
+
+
+useEffect(() => {
+
+    const createSearch = async () => {
+
+        if(searchDiv.current && searchSources){
+
+            if(!searchWidget.current && mapView){
+
+                ...
+
+                if(newSearch === true){
+
+                    ...
+
+                    if(pin10Search || pin14Search){
+                        let features = await returnFeaturesByPin10Pin14(pin10Search, pin14Search)
+                        mapView.goTo(features)
+                    }
+                }
+            }
+
+        }
+
+        ...
+
+    }
+
+    createSearch()
+
+},[searchDiv, mapView, searchSources])
+
+```
+
+</td>
+<td>
+ 1) On initial load the on app load use effect hook is triggered to initialize search sources used by the search widget and retrieves values from routeParams: pin10 and pin14.<br><br>2) If values are not null then the values are formatted to remove hyphens and split the string into an array.<br><br>3) if pin14 and/or pin10 values are not null then the searchWidget is bypassed and the formatted pin14 and/or pin10 are passed to the returnFeaturesByPin10Pin14() function to return parcel features by querying the PIN14 and PIN10 fields<br><br>  4) Once features are returned the map zooms the features extent|
+</td>
+</tr>
+</table>
+
+
+
+
+---
 
 ## User uses Street Address, Partial Street Address, or Intersection
 ### Street Address entered and address locator suggestion selected
