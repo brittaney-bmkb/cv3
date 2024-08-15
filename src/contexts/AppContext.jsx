@@ -820,6 +820,8 @@ export const AppProvider = ({children}) => {
 
         //const { comparableParcels} = state
         setComparableParcels(null)
+        setPanelSecondaryVisibility(false)
+
         //removeGraphics("secondary")
 
        
