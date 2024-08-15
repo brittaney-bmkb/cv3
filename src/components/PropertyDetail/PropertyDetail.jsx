@@ -296,7 +296,7 @@ panelContentTitleMain["borderColor"] = color
 
 //conditional links based on 
 let pin14 = property?.attributes['PIN14']
-let primaryPin14 = primaryResultFeature[0]?.attributes['PIN14']
+let primaryPin14 = primaryResultFeature ? primaryResultFeature[0]?.attributes['PIN14'] : null
 
 return(
     <Box 
