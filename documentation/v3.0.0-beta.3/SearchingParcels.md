@@ -1,57 +1,112 @@
 # Cookviewer Technical Documentation
 
 ## Methods for searching for parcels
-last updated: 2024-30-07
+last updated: 2024-08-13
 
-
+- [Complete PIN14 Search](#complete-pin14-search)
+- [PIN10 Search](#pin10-search)
+- [Partial PIN Search](#partial-pin-search)
+- [URL Parameter Search - PIN14](#url-parameter-search---pin14)
+- [URL Parameter Search - PIN10](#url-parameter-search---pin10)
+- [URL Parameter Search - Partial PIN](#url-parameter-search---partial-pin)
+- [URL Parameter Search - Multiple PINs](#url-parameter-search---multiple-pins)
+- [Street Address Search - Address Locator Result Selected](#street-address-search---address-locator-result-selected)
+- [Street Address Search - Parcel Address Locator Result Selected](#street-address-search---parcel-address-locator-result-selected)
 
 ## User uses PIN14, PIN10, or Partial PIN
+
 ### Complete PIN14 Search
 User types in a complete PIN14 in the search bar and presses enter or clicks a result from the parcel PIN search suggestions.
 
 ### Expected Behavior
 | Action | URL Parameters | Property Results | Map | Search Term |
 |---|---|---|---|---|
-| User types or selects Full PIN 14 | search = User Provided PIN  | one result of PIN 14 | Displays one parcel and zooms  | Shows - formatted PIN 14 dash |
+| User types or selects Full PIN 14 | search = User Provided PIN  | one result of PIN 14 | Displays one parcel and zooms  | Shows - formatted PIN 14 dash if user selects a result or User Provided PIN if user presses enter |
 
 ### Process
 
-#### Step 1: `Search.jsx` - Search widget search-complete event fires and triggers functions to return features from search result
-- `search-complete` event handler is triggered and returns a search event containing the [search result object](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html#events-summary)
-- the search results are passed to the `returnSearchResultFeatures()` function which is referenced from `AppContext`
-    - the `returnSearchResultFeatures()` wraps the `handleMultipleResults()` function referenced from `queryTargetLayer.js` 
-    - the `handleMultipleResults()` returns features by accessing the features from the `search results object` 
-        - this function checks if the search source is the same as the target layer source 
-        - if the search and target source are the same then the all the features are return without any manipulation. **NOTE: number of features returned are controlled by the `maxResults` `searchSource` setting in the `config.js`**
-        - if the search source is different (like a locator source) than the target layer then the geometry is used to query the target layer and the intersectiong target features are returned using the `queryTargetLayerWithPointFeatures` function
-        - for more info see `queryTargetLayer.md`
-    - Once the target features are returned, the `primaryResultFeature` and `searchResults` is set using the `setPrimaryResultFeature` and `setSearchResults`
+<table>
+<th>Code Snippet - SearchBar.jsx</th>
+<th>Description</th>
+<tr>
+<td>
 
+```
+useEffect(() => {
+
+    const createSearch = async () => {
+
+        ...
+
+        if(searchWidget.current){
+
+            searchWidget.current.on("search-complete", async (event) => {
+  
+                console.log("search complete event:", event)
+
+                let results;
+                
+                results = event.results
+ 
+                setIsQuerying(true)
+
+                //get search result features
+                await returnSearchResultFeatures(results, searchWidget.current.searchTerm)
+        
+                updateAppWithSearchResult()
+
+                setIsQuerying(false)
+            })
+
+            ...
+        }
+
+    }
+
+    createSearch()
+
+},[searchDiv, mapView, searchSources])
+
+```
+</td>
+<td>
+1) **search-complete** event handler is triggered once the user presses enter or clicks a result and returns a search event containing search candidates inside the [search result object](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html#events-summary)<br><br> 2) The results property is set to the results variable<br><br> 3) **IsQuerying** state is set to true to trigger loading animation inside the results panel while result features and attributes are queried<br><br> 4) **returnSearchResultFeatures()** is executed with search results and the user provided PIN14 is referenced from the searchWidget searchTerm. This function updates the state of the primaryFeatureResult that is displayed as results in the result list and graphically as a layer in the webmap. See details in `/data/AppContext.md` <br><br> 5) **updateAppWithSearchResult()** executed to open left panel and display results list if the panel is closed and URL Parameter is updated with the **search** parameter and the searchWidget search term as the parameter value using the setSearchParams() function <br><br> 6) Once result features are returned **IsQuerying** state is set to false to remove loading animation
+</td>
+</tr>
+</table>
+
+---
 ### PIN10 Search
 User types in PIN10 and presses search or hits enter 
 
 ### Expected Behavior
 | Action | URL Parameters | Property Results | Map | Search Term |
 |---|---|---|---|---|
-| User types in PIN10 and presses search or hits enter ( does not select a suggestion) | search=Users search term | return all of parcel records where PIN10 is equal to search term | Displays all parcels with PIN10 | User search term |
+| User types in PIN10 and presses search or hits enter ( does not select a suggestion) | search=Users search term | return all of parcel records that start with the PIN10 string provided by the user | Displays all parcels that start with the PIN10 string provided by the user | User search term |
 
 ### Process - this process is the same as Complete PIN14 Search
 - In the v3.0.0-beta.1 version the `autoSelect` property of the search widget was set to true, which prevented all the search results from being returned when a partial search string is entered
-- In this current version the `autoSelect` property is set to false which allows the search results to be controlled and fully accessed for the `search-complete` event handler. see `Change Log` for the `Search.jsx` component for more details
-
+- In the v3.0.0 version the [autoSelect property](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html#autoSelect) is set to false to prevent the app from selecting the first result and zooming to the geocoded point on the map. Instead the search results are managed using the `search-complete` event handler. see `Change Log` for the `Search.jsx` component for more details
+---
 ### Partial PIN Search
 User types in a partial pin number in the search bar and presses enter.
 
 ### Expected Behavior
 | Action | URL Parameters | Property Results | Map | Search Term|
 |---|---|---|---|---|
-| User types in partial PIN and presses enter | search=Users search term | If parcel layer source: Return all of the search result features where partial PIN is beginning of PIN14 / If parcel locator source: Returns al of the results where the partial pin is contained in PIN14 | Layer source: Return all of the parcels using the geometry from the search results. Locator source: Point in polygon query for each result or sql query where PIN14 is like partial pin | User search term |
+| User types in partial PIN and presses enter | search=Users search term | Returns all of the search result features where partial PIN is beginning of PIN14 | Returns all of the parcels using the geometry from the search results | User search term |
 
 ### Process - this process is the same as a complete PIN14 search
 - In the v3.0.0-beta.1 version the `autoSelect` property of the search widget was set to true, which prevented all the search results from being returned when a partial search string is entered
-- In this current version the `autoSelect` property is set to false which allows the search results to be controlled and fully accessed for the `search-complete` event handler. see `Change Log` for the `Search.jsx` component for more details
+- In the v3.0.0 version the [autoSelect property](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search.html#autoSelect) is set to false to prevent the app from selecting the first result and zooming to the geocoded point on the map. Instead the search results are managed using the `search-complete` event handler. see `Change Log` for the `Search.jsx` component for more details
+- In the v3.0.0 version the [Parcel Layer](https://gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/0) is used as a [LayerSearchSource](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search-LayerSearchSource.html) in the Search Widget to return results for Parcel PIN (PIN10 & PIN14) searches. 
+    - **Note**: PIN searches use PIN10, PIN14, PIN14_dash as searchFields which are all string fields. For LayerSearchSources there is no leading wildcard to return results that include or contain a portion of the PIN search string. The returned results are either exact matches or start with the user provided PIN search string, which allows partial string searches to be performed.   
 
-### User includes a search query as a url parameter - PIN14
+--- 
+
+### User includes a search query as a url parameter
+
+### URL Parameter Search - PIN14
 User includes a search query `search= {a PIN14 value}` as a url parameter after the cookViewer url.
 
 ### Expected Behavior
@@ -60,135 +115,331 @@ User includes a search query `search= {a PIN14 value}` as a url parameter after 
 |---|---|---|---|---|
 | User types in url with "search=PIN14" | search=User Provided Pin | one result of PIN 14 | Displays one parcel and zooms  | Shows - formatted PIN 14 dash |
 
-### Process - this process accesses the search vaules from the url parameter then follows the steps from Complete PIN14 Search
+### Process
 
-#### Step 1: `Search.jsx` - Search widget useEffect hook accesses url parameters and executes search method
-- url paramter values are queried for each type:
-    - `pin` - parcel pin 10 or 14
-    - `search` - generic search string, full or partial pin or address
-    - `address` - address string
-- for this action the `search` parameter is accessed and updates the `genericSearch` state.
-    ``` 
-    setGenericSearch(routeParams.get("search")) 
-    ```
-- On load the `newSearch` global variable is set to true, so when the searchWidget initally mounts it meets the condition to perform a new search using the values accessed from the `genericSearch` state
-    ```
-    searchWidget.current.search(genericSearch)
-    ```
-- Once the search is performed on the `genericSearch`, the `search-complete` event handler is triggered and the steps from `Complete PIN14 Search` are performed 
+<table>
+<th>Code Snippet - SearchBar.jsx</th>
+<th>Description</th>
+<tr>
+<td>
 
-### User includes a search query as a url parameter - PIN10
+```
+useEffect(() => {
+    initalizeSearchSources()
+    if(!primaryResultFeature){
+
+        ...
+        
+        setGenericSearch(routeParams.get("search"))
+    }
+}, [])
+
+useEffect(() => {
+
+    const createSearch = async () => {
+
+        if(searchDiv.current && searchSources){
+
+            if(!searchWidget.current && mapView){
+
+                ...
+
+                if(newSearch === true){
+                    if(genericSearch){
+                        console.log("DETECTED GENERIC SEARCH PARAM: ", genericSearch)
+                        searchWidget.current.search(genericSearch)
+                        //searchWidget.current.searchTerm = genericSearch
+                    }
+
+                    ...
+                }
+            }
+
+        }
+
+        ...
+
+    }
+
+    createSearch()
+
+},[searchDiv, mapView, searchSources])
+
+```
+</td>
+<td>
+1) On initial load the on app load use effect hook is triggered to initialize search sources used by the search widget and update the state of the **genericSearch** variable by retrieving the **search** parameter value<br><br>2) Once **search sources, mapView, and the search div element** is present in the DOM, the **createSearch** useEffect function is triggered to create a new instance of the **searchWidget** and execute searches using the search strings derived from url parameters<br><br> 3) When a string is detected in the genericSearch variable then the string is passed as an argument to the **searchWidget** search method to trigger a new search<br><br>4) The search term is updated in the searchWidget to the genericSearch value that was passed to the search method<br><br> 5) Search results are then handled the same way described in the [Complete PIN14 Search](#complete-pin14-search) 
+</td>
+</tr>
+</table>
+
+---
+
+### URL Parameter Search - PIN10
 User includes a search query `search= {a PIN10 value}` as a url parameter after the cookViewer url.
 
 ### Expected Behavior
 
 | Action                                | URL Parameters           | Property Results                                                 | Map                             | Search Term      |
 |---------------------------------------|--------------------------|------------------------------------------------------------------|---------------------------------|------------------|
-| User types in url with "search=PIN10" | search=Users search term | return all of parcel records where PIN10 is equal to search term | Displays all parcels with PIN10 | User search term |
+| User types in url with "search=PIN10" | search=Users search term | return all of parcel records that start with PIN10 search string provided by user | Displays all parcels that start with PIN10 search string provided by user | User search term |
 
-### Process - this process accesses the search vaules from the url parameter then follows the steps from Complete PIN14 Search
+### Process 
 
-#### Step 1: `Search.jsx` - Search widget useEffect hook accesses url parameters and executes search method
-- url paramter values are queried for each type:
-    - `pin` - parcel pin 10 or 14
-    - `search` - generic search string, full or partial pin or address
-    - `address` - address string
-- for this action the `search` parameter is accessed and updates the `genericSearch` state.
-    ``` 
-    setGenericSearch(routeParams.get("search")) 
-    ```
-- On load the `newSearch` global variable is set to true, so when the searchWidget initally mounts it meets the condition to perform a new search using the values accessed from the `genericSearch` state
-    ```
-    searchWidget.current.search(genericSearch)
-    ```
-- Once the search is performed on the `genericSearch`, the `search-complete` event handler is triggered and the steps from `Complete PIN14 Search` are performed 
+This process accesses the search vaules from the url parameter then follows the steps from [URL Parameter Search - PIN14](#url-parameter-search---pin14)
 
-### User includes a search query as a url parameter - Partial PIN
+---
+
+### URL Parameter Search - Partial PIN
 User includes a search query `search= {a Partial PIN value}` as a url parameter after the cookViewer url.
 
 ### Expected Behavior
 
 | Action                      | URL Parameters          | Property Results                                                                                                                                                                                             | Map                                                                                                                                                                                              | Search Term      |
 |-----------------------------|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------|
-| url search with partial PIN | search=user search term | If parcel layer source: Return all of the search result features where partial PIN is beginning of PIN14/If parcel locator source: Returns al of the results where the partial pin is contained in PIN14 | Layer source: Return all of the parcels using the geometry from the search results.//Locator source: Point in polygon query for each result or sql query where PIN14 is like partial pin | User search term |
+| url search with partial PIN | search=user search term | Return all of the search result features where partial PIN is beginning of PIN14 | Return all of the parcels using the geometry from the search results | User search term |
 
-### Process - this process accesses the search vaules from the url parameter then follows the steps from Complete PIN14 Search
+### Process
 
-#### Step 1: `Search.jsx` - Search widget useEffect hook accesses url parameters and executes search method
-- url paramter values are queried for each type:
-    - `pin` - parcel pin 10 or 14
-    - `search` - generic search string, full or partial pin or address
-    - `address` - address string
-- for this action the `search` parameter is accessed and updates the `genericSearch` state.
-    ``` 
-    setGenericSearch(routeParams.get("search")) 
-    ```
-- On load the `newSearch` global variable is set to true, so when the searchWidget initally mounts it meets the condition to perform a new search using the values accessed from the `genericSearch` state
-    ```
-    searchWidget.current.search(genericSearch)
-    ```
-- Once the search is performed on the `genericSearch`, the `search-complete` event handler is triggered and the steps from `Complete PIN14 Search` are performed 
+This process accesses the search vaules from the url parameter then follows the steps from [URL Parameter Search - PIN14](#url-parameter-search---pin14)
 
-### User includes a search query as a url parameter - Multiple PINs
-User includes a search query `PIN14= {a list of PIN14s}' and/or 'PIN10={a list of PIN10s}` as a url parameter after the cookViewer url.
+---
+
+### URL Parameter Search - Multiple PINs
+User includes a search query `pin14= {a list of PIN14s}' and/or 'pin10={a list of PIN10s}` as a url parameter after the cookViewer url.
 
 ### Expected Behavior
 
 | Action                       | URL Parameters                                     | Property Results                                                                                                         | Map                                                            | Search Term |
 |------------------------------|----------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|-------------|
-| url search for multiple pins | PIN14={list of PIN14} and/or PIN10={list of PIN10} | Parcel layer source: Return all parcels from sql parcel query where PIN14 in {list of PIN14} or PIN10 in {list of PIN10} | DIsplay the parcel geometry from the parcel layer source query | Null        |
+| url search for multiple pins | pin14={list of PIN14} and/or pin10={list of PIN10} | Return all parcels from sql parcel query where PIN14 in {list of PIN14} or PIN10 in {list of PIN10} | Display the parcel geometry from the parcel layer source query | Null        |
 
-### Process - this process accesses the search vaules from the url parameter then follows the steps from Complete PIN14 Search
+### Process
 
-#### Step 1: `Search.jsx` - Search widget useEffect hook accesses url parameters and executes search method
-- url paramter values are queried for each type:
-    - `pin` - parcel pin 10 or 14
-    - `search` - generic search string, full or partial pin or address
-    - `address` - address string
-- for this action the `search` parameter is accessed and updates the `genericSearch` state.
-    ``` 
-    setGenericSearch(routeParams.get("search")) 
-    ```
-- On load the `newSearch` global variable is set to true, so when the searchWidget initally mounts it meets the condition to perform a new search using the values accessed from the `genericSearch` state
-    ```
-    searchWidget.current.search(genericSearch)
-    ```
-- Once the search is performed on the `genericSearch`, the `search-complete` event handler is triggered and the steps from `Complete PIN14 Search` are performed 
+<table>
+<th>Code Snippet - SearchBar.jsx</th>
+<th>Description</th>
+<tr>
+<td>
+
+```
+useEffect(() => {
+    initalizeSearchSources()
+    if(!primaryResultFeature){
+
+        ...
+
+        let pin10 = routeParams.get("pin10")
+        if(pin10){
+            let pin10Array = pin10.replace(/-/g,'').split(',')
+            let formattedPin10 = pin10Array?.length > 1 ? `${pin10Array.join(",")}` : `'${pin10Array}'`
+            setPin10Search(formattedPin10)
+        }
+        
+        let pin14 = routeParams.get("pin14")
+        if(pin14){
+            let pin14Array = pin14.replace(/-/g,'').split(',')
+            let formattedPin14 = pin14Array?.length > 1 ? `${pin14Array.join(',')}` : `'${pin14Array}'`
+            setPin14Search(formattedPin14)
+        }
+        
+        ...
+    }
+}, [])
+
+
+useEffect(() => {
+
+    const createSearch = async () => {
+
+        if(searchDiv.current && searchSources){
+
+            if(!searchWidget.current && mapView){
+
+                ...
+
+                if(newSearch === true){
+
+                    ...
+
+                    if(pin10Search || pin14Search){
+                        let features = await returnFeaturesByPin10Pin14(pin10Search, pin14Search)
+                        mapView.goTo(features)
+                    }
+                }
+            }
+
+        }
+
+        ...
+
+    }
+
+    createSearch()
+
+},[searchDiv, mapView, searchSources])
+
+```
+
+</td>
+<td>
+ 1) On initial load the on app load use effect hook is triggered to initialize search sources used by the search widget and retrieves values from routeParams: pin10 and pin14.<br><br>2) If values are not null then the values are formatted to remove hyphens and split the string into an array.<br><br>3) if pin14 and/or pin10 values are not null then the searchWidget is bypassed and the formatted pin14 and/or pin10 are passed to the returnFeaturesByPin10Pin14() function to return parcel features by querying the PIN14 and PIN10 fields<br><br>  4) Once features are returned the map zooms the features extent|
+</td>
+</tr>
+</table>
+
+---
 
 ## User uses Street Address, Partial Street Address, or Intersection
-### Street Address entered and address locator suggestion selected
+
+### Street Address Search - Address Locator Result Selected
 User types in a complete address in the search bar and selects a result from the address locator suggestions.
 
 ### Expected Behavior
 
 | Action                                                                                                                      | URL Parameters                    | Property Results                                                             | Map                                                                                           | Search Term                |
 |-----------------------------------------------------------------------------------------------------------------------------|-----------------------------------|------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|----------------------------|
-| User types in an address and locator address suggestions are returned, user selects  one of the  address locator suggestion | search="StAddr"+ "City"+ "Postal" | Returns the intersecting parcels and buffered parcels from the address point | zoom in, display marker, display buffer ring, display parcels that intersect with buffer ring | "StAddr"+ "City"+ "Postal" |
+| User types in an address and locator address suggestions are returned, user selects  one of the  address locator suggestion | search="StAddr"+ "City"+ "Postal" | Returns a buffers for each geocoded address point and parcels that intersect | zoom in, display marker, display buffer ring, display parcels that intersect with buffer ring | "StAddr"+ "City"+ "Postal" |
 
-### Process - this process follows the same steps as Complete PIN14 Search with one change
-- When a search result from the address locator suggestions is selected, it triggers a spatial query between the search result point feature and the target layer (parcel layers)
-- When the `queryTargetLayerWithPointFeatures` accepts the search result features and a boolean to determine if a buffer distance should be includeed in the query
-- For address locator search results the boolean is set to true and the `buffer_distance` & `buffer_unit` variables accessed from `config.js` are included in the `Query` object to perform a spatial intersection query with a buffer distance 
+### Process
 
-### Street Address entered and parcel address suggestion selected
-User types in an address and selects a parcel address search result from the dropdown.
+<table>
+<th>Code Snippet - AppContext.jsx</th>
+<th>Description</th>
+<tr>
+<td>
+
+```
+const returnSearchResultFeatures = async (results, newSearchTerm) => {
+
+    const { handleMultipleResults } = await import('../arcgis/search/queryTargetLayer')
+    const { returnBufferGeometry } = await import('../arcgis/geoprocessing/geoprocessing')
+
+    //console.log("Performing new target layer query")
+    setSearchBufferGeometry(null, null)
+    
+    const{ targetFeatures } = await handleMultipleResults(results)
+
+    //console.log("target features returned: ", targetFeatures)
+    //console.log("results returned: ", results)
+
+    setPrimaryResultFeature(targetFeatures, true)
+
+    //console.log("seting previous feature: ", targetFeatures)
+    setSearchResults(results, targetFeatures, newSearchTerm, targetFeatures)
+    //}
+
+    //created buffer graphic here
+    //if results include Address Locator source
+    //update state of searchBuffer and pass point geometries
+    
+    const addressLocatorResultGeometry = results.filter(result => result.source.name === "Address Locator")
+                                            .flatMap(filteredResults => filteredResults.results)
+                                            .map(flattenedResults => flattenedResults.feature.geometry)
+    
+    
+    const bufferGeometries = await Promise.all(addressLocatorResultGeometry.map(async(geometry) => {
+
+        console.log("buffer geometry: ", geometry)
+        return await returnBufferGeometry(geometry, config.buffer_distance, config.buffer_unit)
+
+    }))
+
+    console.log("address locator buffer geometries calculated: ", bufferGeometries)
+    setSearchBufferGeometry(addressLocatorResultGeometry, bufferGeometries)
+
+}
+```
+
+</td>
+<td>
+1) This process follows the same steps as Complete PIN14 Search with an additional step to create the buffer geometry. The additional step happens in the returnSearchResultFeatures() function that is executed inside the SearchBar.jsx component, described in the Complete PIN14 Search Process table.<br><br>2) returnSearchResultFeatures() sets the state of the searchBufferGeometry to null for both the address point and address buffer geometry.<br><br>3) Search results are passed to the handleMultipleResults() function to return parcel features. For Address Locator results and the buffer_distance and buffer_unit variables are accessed from config.js are included in the parcel layer spatial query.<br><br>4) Parcel features are passed to setPrimaryResultFeature() and setSearchResults() to update the state of the selected parcels in the webmap and search results displayed in the results panel.<br><br>5) The search results are then filtered to detect results where the search source is equal to "Address Locator", and the geometry of those geocoded results are returned in the addressLocatorResultGeometry array.<br><br>6) Each geometry is then passed to the returnBufferGeometry function to create the buffered polygon geometries for the map display.<br><br>7) The geometry of the geocoded results and buffered polygon geometries are passed to the setSearchBufferGeometry() function to update the states of the searchResultPoint and searchBufferGeometry to trigger the WebMapComponentBeta.jsx component to create buffer graphics and display them in the webmap.
+</td>
+</tr>
+</table>
+
+---
+
+### Street Address Search - Parcel Address Locator Result Selected
+User types in an address and selects a Parcel Address search result from the dropdown.
 
 ### Expected Behavior
 
 | Action                                                                                                                   | URL Parameters                    | Property Results                                                                                                                           | Map                                          | Search Term                                 |
 |--------------------------------------------------------------------------------------------------------------------------|-----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------|---------------------------------------------|
-| User types in an address and parcel address suggestions are returned, user selects  one of the parcel address suggestion | search=street_addr+city_state_zip | Return all of parcels from parcel layer query: where=street_address LIKE 'Result.street_address% AND city_state_zip= Result.city_state_zip | Displays all parcels from parcel layer query | Result.street_address+result.city_state_zip |
+| User types in an address and parcel address suggestions are returned, user selects  one of the parcel address suggestions | search=street_addr+city_state_zip | Returns all of parcels where parcel address locator geocoded results intersect with parcel layer features | Displays all of parcels where parcel address locator geocoded results intersect with parcel layer features  | Result.street_address+result.city_state_zip |
 
-### Process checks if the search result source fields includes 'street_address' to indicate that the results were selected from the parcel address search source, then performs a query on the target layer using the street_address and city_state_zip values
+### Process
 
-#### Step 1: Follows steps from Complete PIN14 Search with an additional condition to check if search result source fields includes `street_address`. 
-- After determining that the search result was selected from the parcel address search source the street_address and city_state_zip values are extracted from each search result
-- The extracted values are pushed into the address array
-- If the address array is populated then a query is perfromed on the target layer using the `queryTargetLayerByAddress` function
-- The addresses are passed to the `queryTargetLayerByAddress` function and parsed into a query string `(street_address = '${street_address}' AND city_state_zip = '${city_state_zip}')`
-- the query string is passed to the query.where property 
-- the target layer features are queried using the new query with the query string
-- features are returned and added to the targetFeatures array
+<table>
+<th>Code Snippet - QueryTargetLayer.js</th>
+<th>Description</th>
+<tr>
+<td>
+
+```
+export const handleMultipleResults = async (results) => {
+
+    let filteredResults = results.filter(results => results.results.length > 0)
+
+    let targetFeatures = [];
+    let searchFeatures = [];
+    
+    ...
+
+    if(searchFeatures.length > 0){
+        let features = []
+
+        const unitsPopulated = searchFeatures.filter(feature => feature[0].attributes.UnitName)
+        const noUnitsPopulated = searchFeatures.filter(feature => !feature[0].attributes.UnitName)
+
+        if(unitsPopulated?.length > 0){
+
+            let featuresWithUnits = await queryTargetLayerByAddress(unitsPopulated)
+            features = [...features, ...featuresWithUnits]
+        }
+        
+        if(noUnitsPopulated?.length > 0){
+
+            if(unitsPopulated?.length > 0 && features.length > 0){
+        
+                let excludeAddressLocatorResults = noUnitsPopulated.filter(feature => feature[1] !== "Address Locator")
+                if(excludeAddressLocatorResults?.length > 0){
+                    let parcelLocatorFeaturesOnly = await queryTargetLayerWithPointFeatures(excludeAddressLocatorResults)
+                    features = [...features, ...parcelLocatorFeaturesOnly]
+                }
+            }
+            else{
+ 
+                let featuresNoUnits = await queryTargetLayerWithPointFeatures(noUnitsPopulated)
+                features = [...features, ...featuresNoUnits]
+                console.log("features from queryTargetLayerWithPointFeatures: ", featuresNoUnits)
+            }
+            
+        }
+
+        features.map(feature => {
+            let featureExists = addObjectToArrayIfNotExists(targetFeatures, feature)
+            
+            if(!featureExists){
+                targetFeatures.push(feature)
+            }
+            
+        })
+    }
+
+    return {targetFeatures, searchFeatures}
+}
+```
+
+</td>
+<td>
+1) Follows the same steps as the Street Address Search - Address Locator Result Selected, with the EXCLUSION of a buffer distance for selecting parcels in the handleMultipleResults() function.<br><br>2) When the handleMultipleResults() function is executed with the search results,  all search results that do not share the same sources as the parcel layer is appended to the searchFeatures array.3) The searchFeatures array is filtered to identify search results that include the UnitName field only associated with the Parcel Address Locator data source. If UnitName is populated then parcel features are queried using the queryTargetLayerByAddress() function to only return parcels matching the street address with the unit number.<br><br>4) If there are other search results without the UnitName field (Address Locator results) or where the UnitName field is null (Parcel Address Locator results), then the features array and unitsPopulated array are checked to see if other parcel features with units were already returned. If there are already parcel features returned, the assumption is that these are the most relevant results based on a search suggestion selected and queries using address locator results are skipped to remove noise
+</td>
+</tr>
+</table>
+
+--- 
 
 ### Street Address with Unit entered and address locator suggestion selected
 User types in a complete address in the search bar and selects a result from the address locator suggestions.
