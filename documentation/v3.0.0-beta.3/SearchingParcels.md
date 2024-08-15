@@ -15,9 +15,9 @@ last updated: 2024-08-13
 - [Street Address with Unit Search - Address Locator Suggestion selected](#street-address-with-unit-search---address-locator-suggestion-selected)
 - [Street Address with Unit Search - Parcel Address Locator Suggestion Selected](#street-address-with-unit-search---parcel-locator-suggestion-selected)
 - [Partial Street Address Search -  Users Presses Enter](#partial-street-address-search---users-presses-enter)
--[Intersection Search - Address Locator Suggestion Selected](#intersection-search---address-locator-suggestion-selected)
--[URL Parameter Search - Partial or Full Address](#url-parameter-search---partial-or-full-address)
--[URL Parameter Search - Intersection](#url-parameter-search---intersection)
+- [Intersection Search - Address Locator Suggestion Selected](#intersection-search---address-locator-suggestion-selected)
+- [URL Parameter Search - Partial or Full Address](#url-parameter-search---partial-or-full-address)
+- [URL Parameter Search - Intersection](#url-parameter-search---intersection)
 
 ## User uses PIN14, PIN10, or Partial PIN
 
