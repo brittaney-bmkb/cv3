@@ -11,6 +11,7 @@ last updated: 2024-08-13
 - [URL Parameter Search - Partial PIN](#url-parameter-search---partial-pin)
 - [URL Parameter Search - Multiple PINs](#url-parameter-search---multiple-pins)
 - [Street Address Search - Address Locator Result Selected](#street-address-search---address-locator-result-selected)
+- [Street Address Search - Parcel Address Locator Result Selected](#street-address-search---parcel-address-locator-result-selected)
 
 ## User uses PIN14, PIN10, or Partial PIN
 
@@ -359,25 +360,86 @@ const returnSearchResultFeatures = async (results, newSearchTerm) => {
 
 ---
 
-### Street Address entered and parcel address suggestion selected
-User types in an address and selects a parcel address search result from the dropdown.
+### Street Address Search - Parcel Address Locator Result Selected
+User types in an address and selects a Parcel Address search result from the dropdown.
 
 ### Expected Behavior
 
 | Action                                                                                                                   | URL Parameters                    | Property Results                                                                                                                           | Map                                          | Search Term                                 |
 |--------------------------------------------------------------------------------------------------------------------------|-----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------|---------------------------------------------|
-| User types in an address and parcel address suggestions are returned, user selects  one of the parcel address suggestion | search=street_addr+city_state_zip | Return all of parcels from parcel layer query: where=street_address LIKE 'Result.street_address% AND city_state_zip= Result.city_state_zip | Displays all parcels from parcel layer query | Result.street_address+result.city_state_zip |
+| User types in an address and parcel address suggestions are returned, user selects  one of the parcel address suggestions | search=street_addr+city_state_zip | Returns all of parcels where parcel address locator geocoded results intersect with parcel layer features | Displays all of parcels where parcel address locator geocoded results intersect with parcel layer features  | Result.street_address+result.city_state_zip |
 
-### Process checks if the search result source fields includes 'street_address' to indicate that the results were selected from the parcel address search source, then performs a query on the target layer using the street_address and city_state_zip values
+### Process
 
-#### Step 1: Follows steps from Complete PIN14 Search with an additional condition to check if search result source fields includes `street_address`. 
-- After determining that the search result was selected from the parcel address search source the street_address and city_state_zip values are extracted from each search result
-- The extracted values are pushed into the address array
-- If the address array is populated then a query is perfromed on the target layer using the `queryTargetLayerByAddress` function
-- The addresses are passed to the `queryTargetLayerByAddress` function and parsed into a query string `(street_address = '${street_address}' AND city_state_zip = '${city_state_zip}')`
-- the query string is passed to the query.where property 
-- the target layer features are queried using the new query with the query string
-- features are returned and added to the targetFeatures array
+<table>
+<th>Code Snippet - QueryTargetLayer.js</th>
+<th>Description</th>
+<tr>
+<td>
+
+```
+export const handleMultipleResults = async (results) => {
+
+    let filteredResults = results.filter(results => results.results.length > 0)
+
+    let targetFeatures = [];
+    let searchFeatures = [];
+    
+    ...
+
+    if(searchFeatures.length > 0){
+        let features = []
+
+        const unitsPopulated = searchFeatures.filter(feature => feature[0].attributes.UnitName)
+        const noUnitsPopulated = searchFeatures.filter(feature => !feature[0].attributes.UnitName)
+
+        if(unitsPopulated?.length > 0){
+
+            let featuresWithUnits = await queryTargetLayerByAddress(unitsPopulated)
+            features = [...features, ...featuresWithUnits]
+        }
+        
+        if(noUnitsPopulated?.length > 0){
+
+            if(unitsPopulated?.length > 0 && features.length > 0){
+        
+                let excludeAddressLocatorResults = noUnitsPopulated.filter(feature => feature[1] !== "Address Locator")
+                if(excludeAddressLocatorResults?.length > 0){
+                    let parcelLocatorFeaturesOnly = await queryTargetLayerWithPointFeatures(excludeAddressLocatorResults)
+                    features = [...features, ...parcelLocatorFeaturesOnly]
+                }
+            }
+            else{
+ 
+                let featuresNoUnits = await queryTargetLayerWithPointFeatures(noUnitsPopulated)
+                features = [...features, ...featuresNoUnits]
+                console.log("features from queryTargetLayerWithPointFeatures: ", featuresNoUnits)
+            }
+            
+        }
+
+        features.map(feature => {
+            let featureExists = addObjectToArrayIfNotExists(targetFeatures, feature)
+            
+            if(!featureExists){
+                targetFeatures.push(feature)
+            }
+            
+        })
+    }
+
+    return {targetFeatures, searchFeatures}
+}
+```
+
+</td>
+<td>
+1) Follows the same steps as the Street Address Search - Address Locator Result Selected, with the EXCLUSION of a buffer distance for selecting parcels in the handleMultipleResults() function.<br><br>2) When the handleMultipleResults() function is executed with the search results,  all search results that do not share the same sources as the parcel layer is appended to the searchFeatures array.3) The searchFeatures array is filtered to identify search results that include the UnitName field only associated with the Parcel Address Locator data source. If UnitName is populated then parcel features are queried using the queryTargetLayerByAddress() function to only return parcels matching the street address with the unit number.<br><br>4) If there are other search results without the UnitName field (Address Locator results) or where the UnitName field is null (Parcel Address Locator results), then the features array and unitsPopulated array are checked to see if other parcel features with units were already returned. If there are already parcel features returned, the assumption is that these are the most relevant results based on a search suggestion selected and queries using address locator results are skipped to remove noise
+</td>
+</tr>
+</table>
+
+--- 
 
 ### Street Address with Unit entered and address locator suggestion selected
 User types in a complete address in the search bar and selects a result from the address locator suggestions.
