@@ -5,10 +5,11 @@ import UseAppContext from "../../contexts/AppContext"
 import LinearProgress from '@mui/material/LinearProgress';
 import { CalciteLoader } from "@esri/calcite-components-react";
 import { useEffect } from "react";
+import { config } from "../../data/config";
 
 const ResultsList = ({results, primaryLableColor, noResultsMessage}) => {
 
-    const { isQuerying, translateText, searchBufferGeometry } = UseAppContext()
+    const { isQuerying, translateText, searchBufferGeometry, searchTerm } = UseAppContext()
 
     //console.log("list results ", results)
 
@@ -21,9 +22,15 @@ const ResultsList = ({results, primaryLableColor, noResultsMessage}) => {
 
     return(
         <Box id="results-list-container">
-            <Box id="results-message-container">
-
-            </Box>
+            {searchBufferGeometry ? 
+                <Box id="results-message-container" p={2}>
+                    <Typography variant="h6">
+                        {`${translateText("Property results include parcels within")} ${config.buffer_distance} ${translateText(config.buffer_unit)} ${translateText("of")} ${searchTerm}`}
+                    </Typography>
+                </Box>
+                : null
+            }
+            
         <List sx={{
             height:"100%", 
             display: "flex", 
