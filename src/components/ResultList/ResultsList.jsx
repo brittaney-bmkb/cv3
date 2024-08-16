@@ -8,7 +8,7 @@ import { useEffect } from "react";
 
 const ResultsList = ({results, primaryLableColor, noResultsMessage}) => {
 
-    const { isQuerying, translateText, setIsQuerying, primaryResultFeature } = UseAppContext()
+    const { isQuerying, translateText, searchBufferGeometry } = UseAppContext()
 
     //console.log("list results ", results)
 
@@ -20,6 +20,10 @@ const ResultsList = ({results, primaryLableColor, noResultsMessage}) => {
     // }, [results, primaryResultFeature])
 
     return(
+        <Box id="results-list-container">
+            <Box id="results-message-container">
+
+            </Box>
         <List sx={{
             height:"100%", 
             display: "flex", 
@@ -58,6 +62,8 @@ const ResultsList = ({results, primaryLableColor, noResultsMessage}) => {
                 </Box>}
             
         </List>
+        </Box>
+
     )
 }
 
