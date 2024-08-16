@@ -397,13 +397,14 @@ const Info = () => {
             <Typography
             variant="body1"
             >
-                {translateText("Please call the Cook County Assessor’s Office at (312) 443-7550")}
+                {translateText("Please call the Cook County Assessor’s Office")}
             </Typography>
             <Typography
             variant="body1"
             >
                 <span>118 North Clark Street, Room #320
                 <br /><span>Chicago, Illinois 60602</span>
+                <br /><span>(312) 443-7550</span>
                 </span>
             </Typography>
             </Box>  
@@ -417,18 +418,21 @@ const Info = () => {
             <Typography
             variant="body2"
             >
-                {translateText("For questions about Parcel maps or Legal Descriptions:")}
+                {translateText("For questions about Parcel maps, Legal Descriptions & Taxing Districts:")}
             </Typography>
             <Typography
             variant="body1"
             >
-                {translateText("Please call the Cook County Clerk’s Office at (312) 603-5640")}
+                <span>{translateText("Please call the Cook County Clerk’s Office at ")}
+                    <a href="mailto:clerk.maps@cookcountyil.gov">clerk.maps@cookcountyil.gov</a>
+                </span>
             </Typography>
             <Typography
             variant="body1"
             >
                 <span>118 North Clark Street, Room #434
                 <br /><span>Chicago, Illinois 60602</span>
+                <br /><span>(312) 603-5640</span>
                 </span>
             </Typography>
             </Box>  
@@ -447,21 +451,21 @@ const Info = () => {
             <Typography
             variant="body1"
             >
-                {translateText("Please call the Cook County Clerk's Recordings Division at (312) 603-5050")}
+                <span>{translateText("Please call the Cook County Clerk's Recordings Division at ")}
+                    <a href="mailto:clerk.recordings@cookcountyil.gov">clerk.recordings@cookcountyil.gov</a>
+                </span>
             </Typography>
             <Typography
             variant="body1"
             >
-                <span>118 North Clark Street, First Floor
+                <span>118 N. Clark St., Room #120
                 <br /><span>Chicago, Illinois 60602</span>
+                <br /><span>(312) 603-5050</span>
                 </span>
             </Typography>
             </Box>           
             
         </Box>
-            
-
-
         </Box>
     )
 }
