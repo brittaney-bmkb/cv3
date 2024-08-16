@@ -16,7 +16,7 @@ export const theme = createTheme({
             outline: {
                 width:5,
                 style: "short-dot",
-                color: "#E58F65",
+                color: "#BD4B00",
             }
         },
         secondarySelected: {
@@ -24,7 +24,7 @@ export const theme = createTheme({
             color: [ 255, 128, 0, 0 ],
             outline: {
                 width:5,
-                color: "#E58F65",
+                color: "#BD4B00",
             }
         }
     },
@@ -57,9 +57,11 @@ export const theme = createTheme({
             main:"#0D4D96",
             light: "#009ADA",
             contrastText:"#f5f5f5",
+            dark:"#071943",
+            complementary:"#96560d"
         },
         secondary:{
-            main:"#E58F65",
+            main:"#BD4B00",
             light:"#F5D2C2"
         },
         info:{
@@ -67,6 +69,17 @@ export const theme = createTheme({
             light:"#BEB7B3",
             dark:"#72635D"
         },
+        accessibilityButton:{
+            main:"#b3d1ff",
+            light:"#eff5ff",
+            dark:"#475366",
+            complementary:"#ffe1b3",
+        },
+        accessibilityText:{
+            main:"#928884",
+            light:"#ffffff",
+            dark:"#000000"
+        },          
     },
     shape: {
         borderRadius: 20

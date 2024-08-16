@@ -8,13 +8,12 @@ const FeedbackDialog = ({open, onClose}) => {
 
     return(
         <Dialog
-        open={open}
-        onClose={onClose}
-        aria-labelledby="feedback-dialog-title"
-        aria-describedby="feedback-dialog-description"
+            open={open}
+            onClose={onClose}
+            aria-labelledby="feedback-dialog-title"
         >
-            <IconButton sx={{position:"absolute", right:8, top:8}} onClick={onClose}><CloseOutlined/></IconButton>
-            <DialogTitle>Feedback</DialogTitle>
+            <IconButton aria-label ="close-outlined-button" sx={{position:"absolute", right:8, top:8}} onClick={onClose}><CloseOutlined/></IconButton>
+            <DialogTitle id="feedback-dialog-title" >Feedback</DialogTitle>
         </Dialog>
     )
 }
@@ -70,15 +69,14 @@ export const FeedbackGeneral = ({open, onClose}) => {
 
     return(
         <Dialog
-        fullScreen = {screenWidth < theme.breakpoints.values.sm ? true : false}
-        fullWidth
-        open={open}
-        onClose={onClose}
-        aria-labelledby="CookViewer 3.0 Simple Feedback"
-        aria-describedby="CookViewer 3.0 Simple Feedback"
+            fullScreen = {screenWidth < theme.breakpoints.values.sm ? true : false}
+            fullWidth
+            open={open}
+            onClose={onClose}
+            aria-labelledby="cookviewer-dialog-title"
         >
-            <IconButton sx={{position:"absolute", right:8, top:8}} onClick={handleClose}><CloseOutlined/></IconButton>
-            <DialogTitle>{translateText("General Feedback")}</DialogTitle>
+            <IconButton aria-label ="close-outlined-button" sx={{position:"absolute", right:8, top:8}} onClick={handleClose}><CloseOutlined/></IconButton>
+            <DialogTitle id="cookviewer-dialog-title">{translateText("General Feedback")}</DialogTitle>
             <DialogContent>
                 <div style={embedContainerStyle}>
                 <iframe 
@@ -152,11 +150,10 @@ export const FeedbackExtended = ({open, onClose}) => {
         fullWidth
         open={open}
         onClose={onClose}
-        aria-labelledby="CookViewer 3.0 Extended Feedback"
-        aria-describedby="CookViewer 3.0 Extended Feedback"
+        aria-labelledby="cookviewer-dialog-title"
         >
-            <IconButton sx={{position:"absolute", right:8, top:8}} onClick={handleClose}><CloseOutlined/></IconButton>
-            <DialogTitle>
+            <IconButton aria-label ="close-outlined-button" sx={{position:"absolute", right:8, top:8}} onClick={handleClose}><CloseOutlined/></IconButton>
+            <DialogTitle id="cookviewer-dialog-title">
                 <Typography variant="h2" color={theme.main.text.dark}>
                     {translateText("Feedback")}
                 </Typography>
@@ -233,15 +230,14 @@ export const FeedbackSearch = ({open, onClose}) => {
 
     return(
         <Dialog
-        fullScreen = {screenWidth < theme.breakpoints.values.sm ? true : false}
-        fullWidth
-        open={open}
-        onClose={onClose}
-        aria-labelledby="CookViewer 3.0 Search Feedback"
-        aria-describedby="CookViewer 3.0 Search Feedback"
+            fullScreen = {screenWidth < theme.breakpoints.values.sm ? true : false}
+            fullWidth
+            open={open}
+            onClose={onClose}
+            aria-labelledby="cookviewer-dialog-title"
         >
-            <IconButton sx={{position:"absolute", right:8, top:8}} onClick={handleClose}><CloseOutlined/></IconButton>
-            <DialogTitle>
+            <IconButton aria-label ="close-outlined-button" sx={{position:"absolute", right:8, top:8}} onClick={handleClose}><CloseOutlined/></IconButton>
+            <DialogTitle id="cookviewer-dialog-title">
                 <Typography variant="h2" color={theme.main.text.dark}>
                     {translateText("Search Feedback")}
                 </Typography>

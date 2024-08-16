@@ -230,6 +230,7 @@ const layerListVMCustom = () => {
                                                     <Checkbox
                                                         color="primary"
                                                         checked={layer.visible}
+                                                        inputProps={{ 'aria-label': layer.title }}
                                                     />
                                                     </ListItemButton>
                                                 

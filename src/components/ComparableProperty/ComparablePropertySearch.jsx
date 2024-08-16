@@ -272,7 +272,8 @@ const ComparablePropertySearch= () => {
                     <Typography variant="body2">{translateText(key)}</Typography>
                 </Box>
                 <CustomStyledTextField 
-                id={value}
+                // id={value}
+                inputProps={{ "id" : "source-property-input-prefilled",  "aria-label": "source-property-input-prefilled", "aria-labelledby":"source-property-input-prefilled" }}
                 variant="outlined" 
                 fullWidth 
                 margin="dense" 
@@ -291,7 +292,8 @@ const ComparablePropertySearch= () => {
             <Typography variant="body2">{`${translateText("Building Square Feet")}`}</Typography>
             <Box display="flex" flexDirection="row" alignItems="center" columnGap={1}>
                   <CustomStyledTextField
-                  id="building-sqft-min"
+                //   id="building-sqft-min"
+                  inputProps={{ "id" : "building-sqft-min-input",  "aria-label": "building-sqft-min-input", "aria-labelledby":"building-sqft-min-input" }}
                   required
                   variant="outlined" 
                   fullWidth 
@@ -307,7 +309,8 @@ const ComparablePropertySearch= () => {
                   />
                   <Typography variant="body2">{translateText("to")}</Typography>
                   <CustomStyledTextField
-                  id="building-sqft-max"
+                //   id="building-sqft-max"
+                  inputProps={{ "id" : "building-sqft-max-input",  "aria-label": "building-sqft-max-input", "aria-labelledby":"building-sqft-max-input" }}
                   required
                   variant="outlined" 
                   fullWidth 
@@ -326,7 +329,8 @@ const ComparablePropertySearch= () => {
             <Typography variant="body2">{`${translateText("Land Square Feet")}`}</Typography>
             <Box display="flex" flexDirection="row" alignItems="center" columnGap={1}>
                   <CustomStyledTextField
-                  id="land-sqft-min"
+                //   id="land-sqft-min"
+                  inputProps={{ "id" : "land-sqft-min-input",  "aria-label": "land-sqft-min-input", "aria-labelledby":"land-sqft-min-input" }}
                   required
                   variant="outlined" 
                   fullWidth 
@@ -342,7 +346,8 @@ const ComparablePropertySearch= () => {
                   />
                   <Typography variant="body2">{translateText("to")}</Typography>
                   <CustomStyledTextField
-                  id="land-sqft-max"
+                //   id="land-sqft-max"
+                  inputProps={{ "id" : "land-sqft-max-input",  "aria-label": "land-sqft-max-input", "aria-labelledby":"land-sqft-max-input" }}
                   required
                   variant="outlined" 
                   fullWidth 
@@ -368,7 +373,8 @@ const ComparablePropertySearch= () => {
                 <CustomStyledTextField 
                 select
                 required
-                id={"construction-type"}
+                // id={"construction-type"}
+                inputProps={{ "id" : "construction-type-input",  "aria-label": "construction-type-input", "aria-labelledby":"construction-type-input" }}
                 variant="outlined" 
                 fullWidth 
                 margin="dense" 
@@ -393,7 +399,8 @@ const ComparablePropertySearch= () => {
                         <Box display="flex" flexDirection="row" alignItems="center" columnGap={1}>
                         <CustomStyledTextField
                         required
-                        id="age-min"
+                        // id="age-min"
+                        inputProps={{ "id" : "age-min-input",  "aria-label": "age-min-input", "aria-labelledby":"age-min-input" }}
                         variant="outlined" 
                         fullWidth 
                         margin="dense" 
@@ -409,7 +416,8 @@ const ComparablePropertySearch= () => {
                         <Typography variant="body2">{translateText("to")}</Typography>
                         <CustomStyledTextField
                         required
-                        id="age-max"
+                        // id="age-max"
+                        inputProps={{ "id" : "age-max-input",  "aria-label": "age-max-input", "aria-labelledby":"age-max-input" }}
                         variant="outlined" 
                         fullWidth 
                         margin="dense" 
@@ -432,7 +440,8 @@ const ComparablePropertySearch= () => {
                 </Box>
                 <CustomStyledTextField 
                 select
-                id={"radius-type"}
+                // id={"radius-type"}
+                inputProps={{ "id" : "radius-type-input",  "aria-label": "radius-type-input", "aria-labelledby":"radius-type-input" }}
                 variant="outlined" 
                 fullWidth 
                 margin="dense" 

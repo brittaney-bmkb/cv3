@@ -78,6 +78,7 @@ const PrintWidgetCustom = () => {
                     id="print-title" 
                     //label="Title" 
                     variant="outlined" 
+                    inputProps={{ "id" : "map-title",  "aria-label": "map-title" }} 
                     size="small"
                     value={mapTitle}
                     placeholder="Title"
@@ -88,9 +89,10 @@ const PrintWidgetCustom = () => {
             <Stack direction="row" sx={{alignItems:"center"}}  spacing={2}>
                 <Typography variant="body2" sx={{display:"flex", flexGrow:1}}>{translateText("Layout orientation")}</Typography>
                 <Select
-                value={layoutValue}
-                onChange={handleLayoutOptionChange}
-                sx={{width: 'auto', height:40}}
+                    value={layoutValue}
+                    onChange={handleLayoutOptionChange}
+                    inputProps={{ "id" : "layout-orientation",  "aria-label": "layout-orientation", "aria-labelledby":"layout-orientation"}} 
+                    sx={{width: 'auto', height:40}}
                 >
                     {formatLayoutOptions}
                 </Select>
@@ -98,9 +100,10 @@ const PrintWidgetCustom = () => {
             <Stack direction="row" sx={{alignItems:"center"}}  spacing={2}>
                 <Typography variant="body2" sx={{display:"flex", flexGrow:1}}>{translateText("Output format")}</Typography>
                 <Select
-                value={formatValue}
-                onChange={handleFormatOptionChange}
-                sx={{width: 'auto', height:40}}
+                    inputProps={{ "id" : "map-title",  "aria-label": "map-title", "aria-labelledby":"map-title" }}
+                    value={formatValue}
+                    onChange={handleFormatOptionChange}
+                    sx={{width: 'auto', height:40}}
                 >
                     {formatDropdownOptions}
                 </Select>

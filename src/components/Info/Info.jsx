@@ -163,14 +163,15 @@ const Info = () => {
                     <Typography
                     variant="body2"
                     >
-                        {`${translateText("For more detailed release notes click")} `}
+                        {`${translateText("Read detailed ")} `}
                         <span>
                             <Link
                             target="_blank"
                             rel="noopener"
                             href="https://cookviewer3-info-cookcountyil.hub.arcgis.com/"
+                            aria-label={translateText("Read more detailed release notes.")} 
                             >
-                               {translateText("here") }
+                                {translateText("release notes.") }
                             </Link>
                         </span>
 
@@ -249,14 +250,15 @@ const Info = () => {
                     <Typography
                     variant="body2"
                     >
-                        {`${translateText("For more detailed release notes click")} `}
+                        {`${translateText("Read detailed ")} `}
                         <span>
                             <Link
                             target="_blank"
                             rel="noopener"
                             href="https://cookviewer3-info-cookcountyil.hub.arcgis.com/"
+                            aria-label={translateText("Read more detailed release notes.")} 
                             >
-                               {translateText("here") }
+                                {translateText("release notes.") }
                             </Link>
                         </span>
 
@@ -327,14 +329,15 @@ const Info = () => {
                     <Typography
                     variant="body2"
                     >
-                        {`${translateText("For more detailed release notes click")} `}
+                        {`${translateText("Read detailed ")} `}
                         <span>
                             <Link
                             target="_blank"
                             rel="noopener"
                             href="https://cookviewer3-info-cookcountyil.hub.arcgis.com/"
-                            >
-                               {translateText("here") }
+                            aria-label={translateText("Read more detailed release notes.")} 
+                            > 
+                                {translateText("release notes.")}
                             </Link>
                         </span>
 
