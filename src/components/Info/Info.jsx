@@ -342,6 +342,123 @@ const Info = () => {
                 </Stack>
             </AccordionDetails>
         </Accordion>
+
+        <Box 
+        id="contact-info-container"
+        display="flex"
+        flexDirection="column"
+        rowGap={2}
+        >
+            <Typography
+                variant="h4"
+                color="primary"
+            >
+                {translateText("Contact Us")}
+            </Typography>
+
+            <Box 
+            id="gis-contact"
+            display="flex"
+            flexDirection="column"
+            rowGap={1}
+            >
+            <Typography
+            variant="body2"
+            >
+                {translateText("For questions about issues with using CookViewer or other GIS inquiries:")}
+            </Typography>
+            <Typography
+            variant="body1"
+            >
+                <span>{translateText("Email the Cook County GIS Department at ")}
+                    <a href="mailto:gis@cookcountyil.gov">gis@cookcountyil.gov</a>
+                </span>
+            </Typography>
+            <Typography
+            variant="body1"
+            >
+                <span>69 West Washington Suite 2700
+                <br /><span>Chicago, Illinois 60602</span>
+                </span>
+            </Typography>
+            </Box>   
+
+            <Box 
+            id="assessor-contact"
+            display="flex"
+            flexDirection="column"
+            rowGap={1}
+            >
+            <Typography
+            variant="body2"
+            >
+                {translateText("For questions about Assessment Information:")}
+            </Typography>
+            <Typography
+            variant="body1"
+            >
+                {translateText("Please call the Cook County Assessor’s Office at (312) 443-7550")}
+            </Typography>
+            <Typography
+            variant="body1"
+            >
+                <span>118 North Clark Street, Room #320
+                <br /><span>Chicago, Illinois 60602</span>
+                </span>
+            </Typography>
+            </Box>  
+
+            <Box 
+            id="parcel-maps-contact"
+            display="flex"
+            flexDirection="column"
+            rowGap={1}
+            >
+            <Typography
+            variant="body2"
+            >
+                {translateText("For questions about Parcel maps or Legal Descriptions:")}
+            </Typography>
+            <Typography
+            variant="body1"
+            >
+                {translateText("Please call the Cook County Clerk’s Office at (312) 603-5640")}
+            </Typography>
+            <Typography
+            variant="body1"
+            >
+                <span>118 North Clark Street, Room #434
+                <br /><span>Chicago, Illinois 60602</span>
+                </span>
+            </Typography>
+            </Box>  
+
+            <Box 
+            id="plat-request-contact"
+            display="flex"
+            flexDirection="column"
+            rowGap={1}
+            >
+            <Typography
+            variant="body2"
+            >
+                {translateText("For Plat requests or for other recorded documents:")}
+            </Typography>
+            <Typography
+            variant="body1"
+            >
+                {translateText("Please call the Cook County Clerk's Recordings Division at (312) 603-5050")}
+            </Typography>
+            <Typography
+            variant="body1"
+            >
+                <span>118 North Clark Street, First Floor
+                <br /><span>Chicago, Illinois 60602</span>
+                </span>
+            </Typography>
+            </Box>           
+            
+        </Box>
             
 
 
