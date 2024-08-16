@@ -89,6 +89,7 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
     };
 
     const handleFeedback = () => {
+        console.log("opening feedback ")
         setOpenFeedbackDialog(true)
     }
 
@@ -226,11 +227,11 @@ const PanelHeader = ( {text, descriptionText, results, exportButton, clearButton
 
             <ExportDialog open={openExportDialog} onClose={handleCloseExport} dataDescription={text}/>
             
-            {/* {
+            {
                 ["Property Results" ,"Comparable Results","Nearby Results"].includes(text) ? 
                     <FeedbackSearch open={openFeedbackDialog} onClose={handleCloseFeedback}/> :
                     <FeedbackGeneral open={openFeedbackDialog} onClose={handleCloseFeedback}/>
-            } */}
+            }
             
             
 
