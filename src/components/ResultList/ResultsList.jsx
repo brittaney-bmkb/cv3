@@ -2,27 +2,16 @@ import { Box, List, ListItem, Stack, Typography } from "@mui/material"
 import ResultCard from "../ResultCard/ResultCard"
 import { theme } from "../../theme"
 import UseAppContext from "../../contexts/AppContext"
-import LinearProgress from '@mui/material/LinearProgress';
 import { CalciteLoader } from "@esri/calcite-components-react";
-import { useEffect } from "react";
 import { config } from "../../data/config";
 
 const ResultsList = ({results, primaryLableColor, noResultsMessage}) => {
 
     const { isQuerying, translateText, searchBufferGeometry, searchTerm } = UseAppContext()
 
-    //console.log("list results ", results)
-
-    // useEffect(() => {
-
-    //     if(!results && !primaryResultFeature){
-    //         setIsQuerying(true)
-    //     }
-    // }, [results, primaryResultFeature])
-
     return(
         <Box id="results-list-container">
-            {searchBufferGeometry ? 
+            {searchBufferGeometry?.length > 0 ? 
                 <Box id="results-message-container" p={2}>
                     <Typography variant="h6">
                         {`${translateText("Property results include parcels within")} ${config.buffer_distance} ${translateText(config.buffer_unit)} ${translateText("of")} ${searchTerm}`}
@@ -38,11 +27,6 @@ const ResultsList = ({results, primaryLableColor, noResultsMessage}) => {
             flex: 1
             }}>
             {
-            // isQuerying === true ? 
-            //     <Box display="flex" width='100%' alignItems="center" justifyContent="center" p={1}>
-                    
-            //     </Box>
-            //     : 
             results && results.length > 0 ? 
             results.map((result, i) => {
                 return(
