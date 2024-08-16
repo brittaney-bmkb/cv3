@@ -380,7 +380,7 @@ const Info = () => {
             <Typography
             variant="body1"
             >
-                <span>161 North Clark St., Suite 500
+                <span>161 North Clark Street, Suite 500
                 <br /><span>Chicago, Illinois 60601</span>
                 </span>
             </Typography>
@@ -460,7 +460,7 @@ const Info = () => {
             <Typography
             variant="body1"
             >
-                <span>118 N. Clark St., Room #120
+                <span>118 North Clark Street, Room #120
                 <br /><span>Chicago, Illinois 60602</span>
                 <br /><span>(312) 603-5050</span>
                 </span>
