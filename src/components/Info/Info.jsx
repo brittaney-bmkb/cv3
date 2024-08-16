@@ -342,9 +342,130 @@ const Info = () => {
                 </Stack>
             </AccordionDetails>
         </Accordion>
+
+        <Box 
+        id="contact-info-container"
+        display="flex"
+        flexDirection="column"
+        rowGap={2}
+        >
+            <Typography
+                variant="h4"
+                color="primary"
+            >
+                {translateText("Contact Us")}
+            </Typography>
+
+            <Box 
+            id="gis-contact"
+            display="flex"
+            flexDirection="column"
+            rowGap={1}
+            >
+            <Typography
+            variant="body2"
+            >
+                {translateText("For questions about issues with using CookViewer or other GIS inquiries:")}
+            </Typography>
+            <Typography
+            variant="body1"
+            >
+                <span>{translateText("Email the Cook County GIS Department at ")}
+                    <a href="mailto:gis@cookcountyil.gov">gis@cookcountyil.gov</a>
+                </span>
+            </Typography>
+            <Typography
+            variant="body1"
+            >
+                <span>69 West Washington Suite 2700
+                <br /><span>Chicago, Illinois 60602</span>
+                </span>
+            </Typography>
+            </Box>   
+
+            <Box 
+            id="assessor-contact"
+            display="flex"
+            flexDirection="column"
+            rowGap={1}
+            >
+            <Typography
+            variant="body2"
+            >
+                {translateText("For questions about Assessment Information:")}
+            </Typography>
+            <Typography
+            variant="body1"
+            >
+                {translateText("Please call the Cook County Assessor’s Office")}
+            </Typography>
+            <Typography
+            variant="body1"
+            >
+                <span>118 North Clark Street, Room #320
+                <br /><span>Chicago, Illinois 60602</span>
+                <br /><span>(312) 443-7550</span>
+                </span>
+            </Typography>
+            </Box>  
+
+            <Box 
+            id="parcel-maps-contact"
+            display="flex"
+            flexDirection="column"
+            rowGap={1}
+            >
+            <Typography
+            variant="body2"
+            >
+                {translateText("For questions about Parcel maps, Legal Descriptions & Taxing Districts:")}
+            </Typography>
+            <Typography
+            variant="body1"
+            >
+                <span>{translateText("Please call the Cook County Clerk’s Office at ")}
+                    <a href="mailto:clerk.maps@cookcountyil.gov">clerk.maps@cookcountyil.gov</a>
+                </span>
+            </Typography>
+            <Typography
+            variant="body1"
+            >
+                <span>118 North Clark Street, Room #434
+                <br /><span>Chicago, Illinois 60602</span>
+                <br /><span>(312) 603-5640</span>
+                </span>
+            </Typography>
+            </Box>  
+
+            <Box 
+            id="plat-request-contact"
+            display="flex"
+            flexDirection="column"
+            rowGap={1}
+            >
+            <Typography
+            variant="body2"
+            >
+                {translateText("For Plat requests or for other recorded documents:")}
+            </Typography>
+            <Typography
+            variant="body1"
+            >
+                <span>{translateText("Please call the Cook County Clerk's Recordings Division at ")}
+                    <a href="mailto:clerk.recordings@cookcountyil.gov">clerk.recordings@cookcountyil.gov</a>
+                </span>
+            </Typography>
+            <Typography
+            variant="body1"
+            >
+                <span>118 N. Clark St., Room #120
+                <br /><span>Chicago, Illinois 60602</span>
+                <br /><span>(312) 603-5050</span>
+                </span>
+            </Typography>
+            </Box>           
             
-
-
+        </Box>
         </Box>
     )
 }
