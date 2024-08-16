@@ -377,8 +377,8 @@ const Info = () => {
             <Typography
             variant="body1"
             >
-                <span>69 West Washington Suite 2700
-                <br /><span>Chicago, Illinois 60602</span>
+                <span>161 North Clark St., Suite 500
+                <br /><span>Chicago, Illinois 60601</span>
                 </span>
             </Typography>
             </Box>   
