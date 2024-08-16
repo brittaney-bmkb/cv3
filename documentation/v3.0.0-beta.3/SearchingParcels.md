@@ -12,6 +12,12 @@ last updated: 2024-08-13
 - [URL Parameter Search - Multiple PINs](#url-parameter-search---multiple-pins)
 - [Street Address Search - Address Locator Result Selected](#street-address-search---address-locator-result-selected)
 - [Street Address Search - Parcel Address Locator Result Selected](#street-address-search---parcel-address-locator-result-selected)
+- [Street Address with Unit Search - Address Locator Suggestion selected](#street-address-with-unit-search---address-locator-suggestion-selected)
+- [Street Address with Unit Search - Parcel Address Locator Suggestion Selected](#street-address-with-unit-search---parcel-locator-suggestion-selected)
+- [Partial Street Address Search -  Users Presses Enter](#partial-street-address-search---users-presses-enter)
+- [Intersection Search - Address Locator Suggestion Selected](#intersection-search---address-locator-suggestion-selected)
+- [URL Parameter Search - Partial or Full Address](#url-parameter-search---partial-or-full-address)
+- [URL Parameter Search - Intersection](#url-parameter-search---intersection)
 
 ## User uses PIN14, PIN10, or Partial PIN
 
@@ -304,12 +310,14 @@ User types in a complete address in the search bar and selects a result from the
 ### Process
 
 <table>
-<th>Code Snippet - AppContext.jsx</th>
+<th>Code Snippet - AppContext.jsx and queryTargetLayer.js</th>
 <th>Description</th>
 <tr>
 <td>
 
 ```
+
+//AppContext.jsx
 const returnSearchResultFeatures = async (results, newSearchTerm) => {
 
     const { handleMultipleResults } = await import('../arcgis/search/queryTargetLayer')
@@ -349,11 +357,99 @@ const returnSearchResultFeatures = async (results, newSearchTerm) => {
     setSearchBufferGeometry(addressLocatorResultGeometry, bufferGeometries)
 
 }
+
+//queryTargetLayer.js
+
+export const handleMultipleResults = async (results) => {
+
+    let filteredResults = results.filter(results => results.results.length > 0)
+
+    // Create arrays to store features
+    let targetFeatures = [];
+    let searchFeatures = [];
+    
+    filteredResults.forEach(results => {
+
+        if (results && results.source) {
+            if (results.source.layer) {
+                ...
+            } else {
+                results.results.map(result => {
+                    searchFeatures.push([result.feature, results.source.name])
+                })
+            }
+        }
+    });
+
+    if(searchFeatures.length > 0){
+        let features = []
+        console.log("search features: ", searchFeatures)
+
+        let parcelLocatorResults = searchFeatures.filter(feature => feature[1] !== "Address Locator")
+        let addressLocatorResults = searchFeatures.filter(feature => feature[1] === "Address Locator")
+
+        ...
+        
+        if(addressLocatorResults?.length > 0){
+            console.log("performing point in polygon for results for address locator results")
+            let addressLocatorFeatures = await queryTargetLayerWithPointFeatures(addressLocatorResults)
+            features = [...features, ...addressLocatorFeatures]
+            console.log("features from queryTargetLayerWithPointFeatures: ", addressLocatorFeatures)
+        }
+
+        features.map(feature => {
+            let featureExists = addObjectToArrayIfNotExists(targetFeatures, feature)
+            
+            if(!featureExists){
+                targetFeatures.push(feature)
+            }
+            
+        })
+    }
+
+    return {targetFeatures, searchFeatures}
+}
+
+export const queryTargetLayerWithPointFeatures = async (searchFeatures) => {
+
+    let targetFeatures = [] 
+
+    await Promise.all(searchFeatures.map(async (searchFeature) => {
+
+        let includeBuffer = searchFeature[1] === "Address Locator" ? true : false
+        let point = searchFeature[0]
+
+        const query = new Query();
+        query.spatialRelationship = "intersects";
+        query.returnGeometry = true
+        query.outFields = ["*"]
+        query.geometry = point.geometry;
+
+        const { features } = await targetLayer.queryFeatures(query)
+
+        targetFeatures = [...targetFeatures, ...features]
+
+        //now do buffer after point to polygon intersection 
+        //is performed to get nearby features
+        if(includeBuffer){
+            query.distance = config.buffer_distance,
+            query.units = config.buffer_unit
+        }
+
+        const bufferedFeatures = await targetLayer.queryFeatures(query)
+
+        targetFeatures = [...targetFeatures, ...bufferedFeatures.features]
+    }))
+
+    return targetFeatures
+
+}
+
 ```
 
 </td>
 <td>
-1) This process follows the same steps as Complete PIN14 Search with an additional step to create the buffer geometry. The additional step happens in the returnSearchResultFeatures() function that is executed inside the SearchBar.jsx component, described in the Complete PIN14 Search Process table.<br><br>2) returnSearchResultFeatures() sets the state of the searchBufferGeometry to null for both the address point and address buffer geometry.<br><br>3) Search results are passed to the handleMultipleResults() function to return parcel features. For Address Locator results and the buffer_distance and buffer_unit variables are accessed from config.js are included in the parcel layer spatial query.<br><br>4) Parcel features are passed to setPrimaryResultFeature() and setSearchResults() to update the state of the selected parcels in the webmap and search results displayed in the results panel.<br><br>5) The search results are then filtered to detect results where the search source is equal to "Address Locator", and the geometry of those geocoded results are returned in the addressLocatorResultGeometry array.<br><br>6) Each geometry is then passed to the returnBufferGeometry function to create the buffered polygon geometries for the map display.<br><br>7) The geometry of the geocoded results and buffered polygon geometries are passed to the setSearchBufferGeometry() function to update the states of the searchResultPoint and searchBufferGeometry to trigger the WebMapComponentBeta.jsx component to create buffer graphics and display them in the webmap.
+1) This process follows the same steps as Complete PIN14 Search with an additional step to create the buffer geometry. The additional step happens in the returnSearchResultFeatures() function that is executed inside the SearchBar.jsx component, described in the Complete PIN14 Search Process table.<br><br>2) returnSearchResultFeatures() sets the state of the searchBufferGeometry to null for both the address point and address buffer geometry.<br><br>3) Search results are passed to the handleMultipleResults() function to return parcel features. For Address Locator results and the buffer_distance and buffer_unit variables are accessed from config.js are included in the parcel layer spatial query executed in the queryTargetLayerWithPointFeatures() function.<br><br>4) Parcel features are passed to setPrimaryResultFeature() and setSearchResults() to update the state of the selected parcels in the webmap and search results displayed in the results panel.<br><br>5) The search results are then filtered to detect results where the search source is equal to "Address Locator", and the geometry of those geocoded results are returned in the addressLocatorResultGeometry array.<br><br>6) Each geometry is then passed to the returnBufferGeometry function to create the buffered polygon geometries for the map display.<br><br>7) The geometry of the geocoded results and buffered polygon geometries are passed to the setSearchBufferGeometry() function to update the states of the searchResultPoint and searchBufferGeometry to trigger the WebMapComponentBeta.jsx component to create buffer graphics and display them in the webmap.
 </td>
 </tr>
 </table>
@@ -367,7 +463,7 @@ User types in an address and selects a Parcel Address search result from the dro
 
 | Action                                                                                                                   | URL Parameters                    | Property Results                                                                                                                           | Map                                          | Search Term                                 |
 |--------------------------------------------------------------------------------------------------------------------------|-----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------|---------------------------------------------|
-| User types in an address and parcel address suggestions are returned, user selects  one of the parcel address suggestions | search=street_addr+city_state_zip | Returns all of parcels where parcel address locator geocoded results intersect with parcel layer features | Displays all of parcels where parcel address locator geocoded results intersect with parcel layer features  | Result.street_address+result.city_state_zip |
+| User types in an address and parcel address suggestions are returned, user selects  one of the parcel address suggestions | search=street_addr+city_state_zip | Returns all of parcels from parcel layer query where= street_address LIKE search result street_address% and city_state_zip = search result city_state_zip   | Displays all of parcels from parcel layer query where= street_address LIKE search result street_address% and city_state_zip = search result city_state_zip  | Result.street_address+result.city_state_zip |
 
 ### Process
 
@@ -385,38 +481,37 @@ export const handleMultipleResults = async (results) => {
     let targetFeatures = [];
     let searchFeatures = [];
     
-    ...
+    filteredResults.forEach(results => {
 
+        if (results && results.source) {
+            if (results.source.layer) {
+
+                ...
+
+            } else {
+                results.results.map(result => {
+                    searchFeatures.push([result.feature, results.source.name])
+                })
+            }
+        }
+    });
+
+    //If there are no matching features from the target (parcel layer)
+    //then perform spatial intersection using points for Address Locator source
+    // OR SQL query for Parcel Address Locator source
     if(searchFeatures.length > 0){
         let features = []
+        console.log("search features: ", searchFeatures)
 
-        const unitsPopulated = searchFeatures.filter(feature => feature[0].attributes.UnitName)
-        const noUnitsPopulated = searchFeatures.filter(feature => !feature[0].attributes.UnitName)
+        let parceLocatorResults = searchFeatures.filter(feature => feature[1] !== "Address Locator")
+        let addressLocatorResults = searchFeatures.filter(feature => feature[1] === "Address Locator")
 
-        if(unitsPopulated?.length > 0){
-
-            let featuresWithUnits = await queryTargetLayerByAddress(unitsPopulated)
-            features = [...features, ...featuresWithUnits]
+        if(parceLocatorResults?.length > 0){
+            let parcelLocatorFeaturesOnly = await queryTargetLayerByAddress(parceLocatorResults)
+            features = [...features, ...parcelLocatorFeaturesOnly]
         }
         
-        if(noUnitsPopulated?.length > 0){
-
-            if(unitsPopulated?.length > 0 && features.length > 0){
-        
-                let excludeAddressLocatorResults = noUnitsPopulated.filter(feature => feature[1] !== "Address Locator")
-                if(excludeAddressLocatorResults?.length > 0){
-                    let parcelLocatorFeaturesOnly = await queryTargetLayerWithPointFeatures(excludeAddressLocatorResults)
-                    features = [...features, ...parcelLocatorFeaturesOnly]
-                }
-            }
-            else{
- 
-                let featuresNoUnits = await queryTargetLayerWithPointFeatures(noUnitsPopulated)
-                features = [...features, ...featuresNoUnits]
-                console.log("features from queryTargetLayerWithPointFeatures: ", featuresNoUnits)
-            }
-            
-        }
+        ...
 
         features.map(feature => {
             let featureExists = addObjectToArrayIfNotExists(targetFeatures, feature)
@@ -424,59 +519,81 @@ export const handleMultipleResults = async (results) => {
             if(!featureExists){
                 targetFeatures.push(feature)
             }
-            
         })
     }
 
     return {targetFeatures, searchFeatures}
 }
+
+const queryTargetLayerByAddress = async (searchFeatures) => {
+
+    let targetFeatures = [] 
+    let where = ""
+
+    await Promise.all(searchFeatures.map(async (searchFeature, index) => {
+
+        let street_address = searchFeature[0].attributes['street_address']
+        let city_state_zip = searchFeature[0].attributes['city_state_zip']
+
+        where += `(street_address LIKE '${street_address}%' AND city_state_zip = '${city_state_zip}')`
+        if(index < searchFeatures.length -1){
+            where += ' OR '
+        }
+        
+    }))
+
+    let query = new Query()
+    query.where = where
+    query.returnGeometry = true
+    query.outFields = ["*"]
+
+    const { features } = await targetLayer.queryFeatures(query)
+
+    targetFeatures = [...targetFeatures, ...features]
+
+    return targetFeatures
+    
+}
+
+
 ```
 
 </td>
 <td>
-1) Follows the same steps as the Street Address Search - Address Locator Result Selected, with the EXCLUSION of a buffer distance for selecting parcels in the handleMultipleResults() function.<br><br>2) When the handleMultipleResults() function is executed with the search results,  all search results that do not share the same sources as the parcel layer is appended to the searchFeatures array.3) The searchFeatures array is filtered to identify search results that include the UnitName field only associated with the Parcel Address Locator data source. If UnitName is populated then parcel features are queried using the queryTargetLayerByAddress() function to only return parcels matching the street address with the unit number.<br><br>4) If there are other search results without the UnitName field (Address Locator results) or where the UnitName field is null (Parcel Address Locator results), then the features array and unitsPopulated array are checked to see if other parcel features with units were already returned. If there are already parcel features returned, the assumption is that these are the most relevant results based on a search suggestion selected and queries using address locator results are skipped to remove noise
+1) Follows the same steps as the Street Address Search - Address Locator Result Selected, with the EXCLUSION of a spatial query used to select parcel features. A SQL query is used because locator geocoded results remove duplicates that can exclude points for parcel records that share the same address<br><br>2) When the handleMultipleResults() function is executed with the search results,  all search results that do not share the same sources as the parcel layer is appended to the searchFeatures array.<br><br>3) The searchFeatures array is filtered to parse out Parcel Address locator results and Address locator results.<br><br>4) If there are Parcel Address locator results the results are passed to the queryTargetLayerByAddress() function<br><br>5) The queryTargetLayerByAddress function performs a SQL query to return parcel features by querying the street_address and city_state_zip fields against the locator results street_address and city_state_zip attributes.
 </td>
 </tr>
 </table>
 
 --- 
 
-### Street Address with Unit entered and address locator suggestion selected
+### Street Address with Unit Search - Address Locator Suggestion selected
 User types in a complete address in the search bar and selects a result from the address locator suggestions.
 
 ### Expected Behavior
 
 | Action                                                                                                                                                                                     | URL Parameters          | Property Results                                             | Map                                                            | Search Term      |
 |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|--------------------------------------------------------------|----------------------------------------------------------------|------------------|
-| User types in search for address with unit and selects an address locator suggestion (Search: 2555 W LELAND AVE, #301, CHICAGO, IL, 60625 Selects: 2555 W LELAND AVE, CHICAGO, IL, 60625 ) | search=user search term | point in polygon search with result for units in search area | DIsplay the parcel geometry from the parcel layer source query | User search term |
+| User types in search for address with unit and selects an address locator suggestion (Search: 2555 W LELAND AVE, #301, CHICAGO, IL, 60625 Selects: 2555 W LELAND AVE, CHICAGO, IL, 60625 ) | search=user search term | point in polygon search with buffer distance with result for units in search area | Display the parcel geometry from the parcel layer source query | User search term |
 
-### Process - this process follows the same steps as Complete PIN14 Search with one change
-- When a search result from the address locator suggestions is selected, it triggers a spatial query between the search result point feature and the target layer (parcel layers)
-- When the `queryTargetLayerWithPointFeatures` accepts the search result features and a boolean to determine if a buffer distance should be includeed in the query
-- For address locator search results the boolean is set to true and the `buffer_distance` & `buffer_unit` variables accessed from `config.js` are included in the `Query` object to perform a spatial intersection query with a buffer distance 
+### Process - Follows the same steps as the Street Address Search - Address Locator Result Selected
 
+---
 
-### Street Address with Unit entered and parcel address suggestion selected
+### Street Address with Unit Search - Parcel Address Locator Suggestion Selected
 User types in an address with unit and selects a parcel address search result from the dropdown.
 
 ### Expected Behavior
 
 | Action                                                                                                                           | URL Parameters          | Property Results                                                                                                   | Map                                                            | Search Term      |
 |----------------------------------------------------------------------------------------------------------------------------------|-------------------------|--------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|------------------|
-| User types in search for address with unit and selects a parcel locator suggestion (2555 W LELAND AVE, #301, CHICAGO, IL, 60625) | search=user search term | Parcel layer source:  If unit is populated, return parcels from sql query using full address (all address fields). | DIsplay the parcel geometry from the parcel layer source query | User search term |
+| User types in search for address with unit and selects a parcel locator suggestion (2555 W LELAND AVE, #301, CHICAGO, IL, 60625) | search=user search term | Parcel Address locator soruce: return parcels from sql query using full address (all address fields). | DIsplay the parcel geometry from the parcel layer source query | User search term |
 
-### Process checks if the search result source fields includes 'street_address' to indicate that the results were selected from the parcel address search source, then performs a query on the target layer using the street_address and city_state_zip values
+### Process: Follows steps from Street Address Search - Parcel Address Locator Result Selected
 
-#### Step 1: Follows steps from Complete PIN14 Search with an additional condition to check if search result source fields includes `street_address`. 
-- After determining that the search result was selected from the parcel address search source the street_address and city_state_zip values are extracted from each search result
-- The extracted values are pushed into the address array
-- If the address array is populated then a query is perfromed on the target layer using the `queryTargetLayerByAddress` function
-- The addresses are passed to the `queryTargetLayerByAddress` function and parsed into a query string `(street_address = '${street_address}' AND city_state_zip = '${city_state_zip}')`
-- the query string is passed to the query.where property 
-- the target layer features are queried using the new query with the query string
-- features are returned and added to the targetFeatures array
+---
 
-### User types partial Street Address and presses enter
+### Partial Street Address Search -  Users Presses Enter
 User types in a partial address in the search bar and presses enter. 
 
 #### Examples
@@ -487,55 +604,39 @@ User types in a partial address in the search bar and presses enter.
 
 | Action                                                                                                                                                                          | URL Parameters          | Property Results                                                                                                                                                                                                                                                                                                          | Map                                                                                                                                                                                                                                                                                             | Search Term      |
 |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------|
-| User types in a partial street address and presses enter (A Ex: Apt Building w/ multiple addresses: 4621 N Rockwell vs 4621 S Rockwell | B Ex: 913 East Olive; 69 W Washington) | search=user search term | Search term is submitted to the address locator service - if search term is contained in any of the fields - attributes of the match and an address point is returned - that is then used to find a buffer spatial intersect with parcel layer and those are returned and displayed in the Property Results pane | ParcelLayer source: Return all of the parcels using the geometry from the search results.//Parcel Locator source: Point in polygon query for each result or sql query where PIN14 is like partial pin//Address Locator: buffer from address point; display; display buffer ring | User search term |
+| User types in a partial street address and presses enter (A Ex: Apt Building w/ multiple addresses: 4621 N Rockwell vs 4621 S Rockwell | B Ex: 913 East Olive; 69 W Washington) | search=user search term | Search term is submitted to the Address and Parcel Address locator sources - if search term is contained in any of the fields - attributes of the match and an address point is returned - that is then used to find a buffer spatial intersect with parcel layer and those are returned and displayed in the Property Results pane. For Parcel Address locator results parcels are returned from sql query using full address (all address fields) | Parcel Locator source: SQL query for each result using full address (all address fields)//Address Locator: buffer from address point; display; display buffer ring | User search term |
 
-### Process - this process follows the same steps as Complete PIN14 Search with one change
-- When a search result from the address locator suggestions is selected, it triggers a spatial query between the search result point feature and the target layer (parcel layers)
-- When the `queryTargetLayerWithPointFeatures` accepts the search result features and a boolean to determine if a buffer distance should be includeed in the query
-- For address locator search results the boolean is set to true and the `buffer_distance` & `buffer_unit` variables accessed from `config.js` are included in the `Query` object to perform a spatial intersection query with a buffer distance 
+### Process - this process follows the a combination of Street Address Search - Address Locator Result Selected and Street Address Search - Parcel Address Locator Result Selected steps
 
-### Intersection entered and address locator suggestion selected
+---
+
+### Intersection Search - Address Locator Suggestion Selected
 User types an intersection in the search bar and selects a result from the address locator suggestions.
 
 ### Expected Behavior
 
 | Action                                                                  | URL Parameters                                                         | Property Results                            | Map                                                                                                                      | Search Term          |
 |-------------------------------------------------------------------------|------------------------------------------------------------------------|---------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|----------------------|
-| User types in an intersection and selects suggested result from locator | search= user search term with string replace to replace '&' with 'and' | Show parcels that intersect with the buffer | zoom in, display marker, display buffer ring, display parcels that intersect with buffer ring. Only With Address Locator | User selected result |
+| User types in an intersection and selects suggested result from locator | search= user search term with string replace to replace '&' with 'and' (note the string replace is not implemented, '&' is automatically replaced in the url paramter with "++") | Show parcels that intersect with the buffer | zoom in, display marker, display buffer ring, display parcels that intersect with buffer ring. Only With Address Locator | User selected result |
 
-### Process - this process follows the same steps as Complete PIN14 Search with one change
-- When a search result from the address locator suggestions is selected, it triggers a spatial query between the search result point feature and the target layer (parcel layers)
-- When the `queryTargetLayerWithPointFeatures` accepts the search result features and a boolean to determine if a buffer distance should be includeed in the query
-- For address locator search results the boolean is set to true and the `buffer_distance` & `buffer_unit` variables accessed from `config.js` are included in the `Query` object to perform a spatial intersection query with a buffer distance 
+### Process - Follows steps from Street Address Search - Address Locator Result Selected
 
+---
 
-### User includes a search query as a url parameter - partial or full address
+### URL Parameter Search - Partial or Full Address
 User includes a search query `search= {user search term}` as a url parameter after the cookViewer url.
 
 ### Expected Behavior
 
 | Action                                  | URL Parameters          | Property Results                                                                                                                                                                                                                                                                      | Map                                                                                                                                                                                                                                                                                             | Search Term      |
 |-----------------------------------------|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------|
-| url search with partial or full address | search=user search term | A. Address Locator: returns all candidates and buffered parcels | B. Parcel Locator: Returns all candidates, NO buffer. Depends on source - If parcel results no Address locator Show parcel that intersects w/address point first & if parcel true do we prioritize? YES? we can try | ParcelLayer source: Return all of the parcels using the geometry from the search results.//Parcel Locator source: Point in polygon query for each result or sql query where PIN14 is like partial pin//Address Locator: buffer from address point; display; display buffer ring | User search term |
+| url search with partial or full address | search=user search term | A. Address Locator: returns all candidates and buffered parcels | B. Parcel Locator: Returns all candidates, NO buffer. Depends on source - If parcel results no Address locator Show parcel that intersects w/address point first & if parcel true do we prioritize? YES? we can try | ParcelLayer source: Return all of the parcels using the geometry from the search results.//Parcel Locator source:  sql query where using all address fields//Address Locator: buffer from address point; display; display buffer ring | User search term |
 
-### Process - this process accesses the search vaules from the url parameter then follows the steps from Complete PIN14 Search
+### Process - this process follows the a combination of Street Address Search - Address Locator Result Selected and Street Address Search - Parcel Address Locator Result Selected steps
 
-#### Step 1: `Search.jsx` - Search widget useEffect hook accesses url parameters and executes search method
-- url paramter values are queried for each type:
-    - `pin` - parcel pin 10 or 14
-    - `search` - generic search string, full or partial pin or address
-    - `address` - address string
-- for this action the `search` parameter is accessed and updates the `genericSearch` state.
-    ``` 
-    setGenericSearch(routeParams.get("search")) 
-    ```
-- On load the `newSearch` global variable is set to true, so when the searchWidget initally mounts it meets the condition to perform a new search using the values accessed from the `genericSearch` state
-    ```
-    searchWidget.current.search(genericSearch)
-    ```
-- Once the search is performed on the `genericSearch`, the `search-complete` event handler is triggered and the steps from `Complete PIN14 Search` are performed 
+---
 
-### User includes a search query as a url parameter - intersection
+### URL Parameter Search - Intersection
 User includes a search query `search= {user search term}` as a url parameter after the cookViewer url.
 
 ### Expected Behavior
@@ -544,19 +645,6 @@ User includes a search query `search= {user search term}` as a url parameter aft
 |-----------------------------|-------------------------------------|---------------------------------------------|--------------------------------------------------------------------------|------------------|
 | url search for intersection | search= user search term with 'and' | Returns all candidates and buffered parcels | Address Locator: buffer from address point; display; display buffer ring | User search term |
 
-### Process - this process accesses the search vaules from the url parameter then follows the steps from Complete PIN14 Search
+### Process -  this process follows Street Address Search - Address Locator Result Selected
 
-#### Step 1: `Search.jsx` - Search widget useEffect hook accesses url parameters and executes search method
-- url paramter values are queried for each type:
-    - `pin` - parcel pin 10 or 14
-    - `search` - generic search string, full or partial pin or address
-    - `address` - address string
-- for this action the `search` parameter is accessed and updates the `genericSearch` state.
-    ``` 
-    setGenericSearch(routeParams.get("search")) 
-    ```
-- On load the `newSearch` global variable is set to true, so when the searchWidget initally mounts it meets the condition to perform a new search using the values accessed from the `genericSearch` state
-    ```
-    searchWidget.current.search(genericSearch)
-    ```
-- Once the search is performed on the `genericSearch`, the `search-complete` event handler is triggered and the steps from `Complete PIN14 Search` are performed 
+---
