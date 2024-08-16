@@ -474,7 +474,7 @@ export const AppProvider = ({children}) => {
         //update url parameters
         console.log("setting url parameters for select multiple draw tool results")
         const  param = await returnSearchParam(features)
-
+        console.log("new url param: ", param)
         setSearchParams(param)
 
     }
@@ -820,6 +820,8 @@ export const AppProvider = ({children}) => {
 
         //const { comparableParcels} = state
         setComparableParcels(null)
+        setPanelSecondaryVisibility(false)
+
         //removeGraphics("secondary")
 
        

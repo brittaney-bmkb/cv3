@@ -209,6 +209,11 @@ const WebMapComponentBeta = () => {
 
         //apply edits
         await layer.applyEdits(addEdits)
+
+        // //const param = await returnSearchParam(updatedFeatures)
+        // console.log("Removing all search parameters")
+        // setSearchParams({})
+        
     }
 
     const addFeatures = async (results, multiple, typeIsFeature) => {
@@ -260,7 +265,7 @@ const WebMapComponentBeta = () => {
         setPrimaryResultFeature(features, false)
         setSearchResults(null, features, null, features)
 
-        console.log("updating URL parameters for select multiple - click tool")
+        console.log("adding URL parameters for select multiple - click tool")
         const param = await returnSearchParam(features)
         setSearchParams(param)
 
@@ -298,6 +303,10 @@ const WebMapComponentBeta = () => {
 
         setPrimaryResultFeature(updatedFeatures, false)
         setSearchResults(null, updatedFeatures, null, updatedFeatures)
+
+        console.log("removing URL parameters for select multiple - click tool")
+        const param = await returnSearchParam(updatedFeatures)
+        setSearchParams(param)
 
         if(!panelDisplay || panelDisplay !== "resultsList"){
             setPanelDisplay("resultsList")
@@ -498,7 +507,6 @@ const WebMapComponentBeta = () => {
         setHitTestLayers(newHitTestLayers)
     }
 
-
     //configure map on load
     useEffect(() => {
 
@@ -683,6 +691,10 @@ const WebMapComponentBeta = () => {
 
                         // //apply edits
                         await selectedParcelsPrimary.applyEdits(addEdits)
+
+                        // //updating url parameters
+                        // const param = await returnSearchParam(features)
+                        // setSearchParams(param)
                     }
                 }
 

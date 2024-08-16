@@ -110,42 +110,25 @@ export const handleMultipleResults = async (results) => {
     //console.log("search results: ", searchFeatures)
 
     //If there are no matching features from the target (parcel layer)
-    //then perform spatial intersection using points from locator source
-    // && targetFeatures.length === 0
+    //then perform spatial intersection using points for Address Locator source
+    // OR SQL query for Parcel Address Locator source
     if(searchFeatures.length > 0){
         let features = []
         console.log("search features: ", searchFeatures)
-        //if unit attribute is populated return features by querying target layer
-        const unitsPopulated = searchFeatures.filter(feature => feature[0].attributes.UnitName)
-        const noUnitsPopulated = searchFeatures.filter(feature => !feature[0].attributes.UnitName)
 
-        if(unitsPopulated?.length > 0){
-            console.log("units populated: ", unitsPopulated)
-            let featuresWithUnits = await queryTargetLayerByAddress(unitsPopulated)
-            features = [...features, ...featuresWithUnits]
+        let parcelLocatorResults = searchFeatures.filter(feature => feature[1] !== "Address Locator")
+        let addressLocatorResults = searchFeatures.filter(feature => feature[1] === "Address Locator")
+
+        if(parcelLocatorResults?.length > 0){
+            let parcelLocatorFeaturesOnly = await queryTargetLayerByAddress(parcelLocatorResults)
+            features = [...features, ...parcelLocatorFeaturesOnly]
         }
         
-        if(noUnitsPopulated?.length > 0){
-            console.log("no units populated: ", noUnitsPopulated)
-            //if search returned results with units from the parcel locator
-            //and features were returend from the queryTargetLayerByAddress() function
-            //skip the address locator results
-            if(unitsPopulated?.length > 0 && features.length > 0){
-                console.log("skipping addresss locator results")
-                let excludeAddressLocatorResults = noUnitsPopulated.filter(feature => feature[1] !== "Address Locator")
-                if(excludeAddressLocatorResults?.length > 0){
-                    let parcelLocatorFeaturesOnly = await queryTargetLayerWithPointFeatures(excludeAddressLocatorResults)
-                    features = [...features, ...parcelLocatorFeaturesOnly]
-                }
-            }
-            else{
-                console.log("performing point in polygon for results without units")
-                //if unit attribute is no populated return features using point in polygon
-                let featuresNoUnits = await queryTargetLayerWithPointFeatures(noUnitsPopulated)
-                features = [...features, ...featuresNoUnits]
-                console.log("features from queryTargetLayerWithPointFeatures: ", featuresNoUnits)
-            }
-            
+        if(addressLocatorResults?.length > 0){
+            console.log("performing point in polygon for results for address locator results")
+            let addressLocatorFeatures = await queryTargetLayerWithPointFeatures(addressLocatorResults)
+            features = [...features, ...addressLocatorFeatures]
+            console.log("features from queryTargetLayerWithPointFeatures: ", addressLocatorFeatures)
         }
 
         features.map(feature => {
@@ -174,7 +157,7 @@ const queryTargetLayerByAddress = async (searchFeatures) => {
         let street_address = searchFeature[0].attributes['street_address']
         let city_state_zip = searchFeature[0].attributes['city_state_zip']
 
-        where += `(street_address = '${street_address}' AND city_state_zip = '${city_state_zip}')`
+        where += `(street_address LIKE '${street_address}%' AND city_state_zip = '${city_state_zip}')`
         if(index < searchFeatures.length -1){
             where += ' OR '
         }
