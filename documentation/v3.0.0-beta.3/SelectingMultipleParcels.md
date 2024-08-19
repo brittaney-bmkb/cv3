@@ -1,8 +1,13 @@
 # Cookviewer Technical Documentation
 
 ## Methods for selecting Multiple parcels
-last updated: 2024-08-07
+last updated: 2024-08-19
 
+- [Background](#background)
+- [Approach](#approach)
+- [Selecting parcels with Click](#selecting-parcels-with-click)
+- [Selecting parcels with Draw](#selecting-parcels-with-draw)
+  
 ## Background
 The ability to select multiple parcels was requested multiple times in feedback during the beta process. In the previous version of CookViewer the user could draw a rectangle and intersecting parcels would be selected. 
 
