@@ -252,7 +252,7 @@ const PanelContent = ({display}) => {
                 //divider={true}
                 >
                     <PanelHeader 
-                        text="Measure BETA"
+                        text="Measure"
                         closeButton={true}
                         panel={"widget"}
                         descriptionText="Select a tool to activate." //TODO needs to translate thi
