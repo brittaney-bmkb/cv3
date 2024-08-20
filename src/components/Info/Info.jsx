@@ -401,7 +401,7 @@ const Info = () => {
             variant="body1"
             >
                 <span>{translateText("Please contact the ")}
-                    <a href="https://www.cookcountyassessor.com/contact" target="_blank">{translateText("Cook County Assesor's Office")}</a>
+                    <a href="https://www.cookcountyassessor.com/contact" target="_blank">{translateText("Cook County Assessor's Office")}</a>
                 </span>
             </Typography>
             <Typography
