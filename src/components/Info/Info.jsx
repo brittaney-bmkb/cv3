@@ -400,13 +400,16 @@ const Info = () => {
             <Typography
             variant="body1"
             >
-                {translateText("Please call the Cook County Assessor’s Office at (312) 443-7550")}
+                <span>{translateText("Please contact the ")}
+                    <a href="https://www.cookcountyassessor.com/contact" target="_blank">{translateText("Cook County Assesor's Office")}</a>
+                </span>
             </Typography>
             <Typography
             variant="body1"
             >
                 <span>118 North Clark Street, Room #320
                 <br /><span>Chicago, Illinois 60602</span>
+                <br /><span>(312) 443-7550</span>
                 </span>
             </Typography>
             </Box>  
