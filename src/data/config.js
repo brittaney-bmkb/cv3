@@ -124,7 +124,7 @@ export const config = {
             popupEnabled: false,
             singleLineFieldName:"SingleLine",
             suggestionsEnabled:true,
-            url:"https://test-gis.cookcountyil.gov/traditional/rest/services/Locator/parcelAddress/GeocodeServer"
+            url:"https://gis.cookcountyil.gov/traditional/rest/services/Locator/parcelAddresses/GeocodeServer"
         },
         {
             apiKey: null,
