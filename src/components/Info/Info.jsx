@@ -22,7 +22,7 @@ const Info = () => {
                 <Typography
                 variant="body1"
                 >
-                    {translateText("Welcome to CookViewer 3.0 Beta – your go-to for property information! With enhanced features, expanded language support, and thanks to your invaluable feedback, we've made improvements to better serve you. We hear you and are implementing your suggestions! Discover comprehensive property details at your fingertips. Explore the What's New section to learn about recent updates.")}
+                    {translateText("Welcome to CookViewer 3.0 – your ultimate source for Cook County property information! Access detailed property insights with ease, now with a modernized user experience, enhanced features, and expanded language support. Dive into the \"What's New\" section to explore the latest updates. We value your feedback, which helps us continue improving to better serve you.")}
                 </Typography>
             </Box>
 
@@ -99,15 +99,13 @@ const Info = () => {
                     </Stack>
                 </Stack>
 
-                <Typography
-                variant="h4"
-                color="primary"
-                >
+                {/* <Typography variant="h4" color="primary" >
                     {translateText("Whats New?")}
-                </Typography>
+                </Typography> */}
             </Box>
 
-             <Accordion
+            {/* CookViewer 3.0 Beta - 3 */}
+            {/* <Accordion
             defaultExpanded
             square={true}
             >
@@ -178,9 +176,11 @@ const Info = () => {
                     </Typography>
                 </Stack>
             </AccordionDetails>
-            </Accordion>    
+            </Accordion>     */}
 
-            <Accordion
+
+            {/* CookViewer 3.0 Beta - 2 */}
+            {/* <Accordion
             square={true}
             >
             <AccordionSummary
@@ -265,86 +265,82 @@ const Info = () => {
                     </Typography>
                 </Stack>
             </AccordionDetails>
-            </Accordion>    
-        <Accordion
-        square={true}
-        
-        >
-            <AccordionSummary
-            expandIcon={<ExpandMore/>}
-            >   
-            <Stack gap={1}>
-                <Typography
-                variant="body2"
-                >
-                    {translateText("CookViewer 3.0 Beta-1")}
-                </Typography>
-                <Typography>
-                    {translateText("Release: April 12 2024", true)}
-                </Typography>
-            </Stack>
-                
-            </AccordionSummary>
-            <AccordionDetails>
+            </Accordion>     */}
 
-                <Stack gap={2}>
-                    <Typography
-                    variant="body2"
-                    >
-                        {translateText("Enhancements")}
-                    </Typography>
+            {/* CookViewer 3.0 Beta - 1 */}
+            {/* <Accordion square={true}>
+                <AccordionSummary
+                expandIcon={<ExpandMore/>}
+                >   
                     <Stack gap={1}>
-                    <Typography variant="body1">
-                        <span style={{ 
-                            fontWeight: 600,
-                            fontSize:14
-                            }}>{translateText("Search by PIN14", true)} - </span>
-                        {translateText("New capabilities for condominium property searches, including full PIN 14 search functionality", true)}
-                    </Typography>
-                    <Typography variant="body1">
-                        <span style={{ 
-                            fontWeight: 600,
-                            fontSize:14
-                            }}>{translateText("Spanish Language Support")} - </span>
-                        {translateText("Expanded language support for English and Spanish")}
-                    </Typography>
-
-                    <Typography variant="body1">
-                        <span style={{ 
-                            fontWeight: 600,
-                            fontSize:14
-                            }}>{translateText("Mobile Accessibility")} - </span>
-                        {translateText("Improved mobile experience, making property information more accessible and user-friendly on smartphones and tablets")}
-                    </Typography>
-
-                    <Typography variant="body1">
-                        <span style={{ 
-                            fontWeight: 600,
-                            fontSize:14
-                            }}>{translateText("Historical Imagery")} - </span>
-                        {translateText("Users can now see the evolution of properties and landscapes using aerial imagery spanning from 1998 to 2023", true)}
-                    </Typography>
+                        <Typography
+                        variant="body2"
+                        >
+                            {translateText("CookViewer 3.0 Beta-1")}
+                        </Typography>
+                        <Typography>
+                            {translateText("Release: April 12 2024", true)}
+                        </Typography>
                     </Stack>
+                </AccordionSummary>
 
-                    <Typography
-                    variant="body2"
-                    >
-                        {`${translateText("Read detailed ")} `}
-                        <span>
-                            <Link
-                            target="_blank"
-                            rel="noopener"
-                            href="https://cookviewer3-info-cookcountyil.hub.arcgis.com/"
-                            aria-label={translateText("Read more detailed release notes.")} 
-                            > 
-                                {translateText("release notes.")}
-                            </Link>
-                        </span>
+                <AccordionDetails>
+                    <Stack gap={2}>
+                        <Typography
+                        variant="body2"
+                        >
+                            {translateText("Enhancements")}
+                        </Typography>
+                        <Stack gap={1}>
+                        <Typography variant="body1">
+                            <span style={{ 
+                                fontWeight: 600,
+                                fontSize:14
+                                }}>{translateText("Search by PIN14", true)} - </span>
+                            {translateText("New capabilities for condominium property searches, including full PIN 14 search functionality", true)}
+                        </Typography>
+                        <Typography variant="body1">
+                            <span style={{ 
+                                fontWeight: 600,
+                                fontSize:14
+                                }}>{translateText("Spanish Language Support")} - </span>
+                            {translateText("Expanded language support for English and Spanish")}
+                        </Typography>
+                        <Typography variant="body1">
+                            <span style={{ 
+                                fontWeight: 600,
+                                fontSize:14
+                                }}>{translateText("Mobile Accessibility")} - </span>
+                            {translateText("Improved mobile experience, making property information more accessible and user-friendly on smartphones and tablets")}
+                        </Typography>
 
-                    </Typography>
-                </Stack>
-            </AccordionDetails>
-        </Accordion>
+                        <Typography variant="body1">
+                            <span style={{ 
+                                fontWeight: 600,
+                                fontSize:14
+                                }}>{translateText("Historical Imagery")} - </span>
+                            {translateText("Users can now see the evolution of properties and landscapes using aerial imagery spanning from 1998 to 2023", true)}
+                        </Typography>
+                        </Stack>
+
+                        <Typography
+                        variant="body2"
+                        >
+                            {`${translateText("Read detailed ")} `}
+                            <span>
+                                <Link
+                                target="_blank"
+                                rel="noopener"
+                                href="https://cookviewer3-info-cookcountyil.hub.arcgis.com/"
+                                aria-label={translateText("Read more detailed release notes.")} 
+                                > 
+                                    {translateText("release notes.")}
+                                </Link>
+                            </span>
+                        </Typography>
+                    </Stack>
+                </AccordionDetails>
+            </Accordion> */}
 
         <Box 
         id="contact-info-container"
