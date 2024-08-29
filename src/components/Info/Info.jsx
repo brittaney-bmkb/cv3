@@ -22,7 +22,7 @@ const Info = () => {
                 <Typography
                 variant="body1"
                 >
-                    {translateText("Welcome to CookViewer 3.0 – your ultimate source for Cook County property information! Access detailed property insights with ease, now with a modernized user experience, enhanced features, and expanded language support. Dive into the \"What's New\" section to explore the latest updates. We value your feedback, which helps us continue improving to better serve you.")}
+                    {translateText("Welcome to CookViewer 3.0 – your ultimate source for Cook County property information! Access detailed property insights with ease, now with a modernized user experience, enhanced features, and expanded language support. Dive into the 'What's New' section to explore the latest updates. We value your feedback, which helps us continue improving to better serve you.")}
                 </Typography>
             </Box>
 
@@ -99,13 +99,13 @@ const Info = () => {
                     </Stack>
                 </Stack>
 
-                {/* <Typography variant="h4" color="primary" >
+                <Typography variant="h4" color="primary" >
                     {translateText("Whats New?")}
-                </Typography> */}
+                </Typography>
             </Box>
 
-            {/* CookViewer 3.0 Beta - 3 */}
-            {/* <Accordion
+            {/* CookViewer 3.0 */}
+            <Accordion
             defaultExpanded
             square={true}
             >
@@ -116,10 +116,10 @@ const Info = () => {
                 <Typography
                 variant="body2"
                 >
-                    {translateText("CookViewer 3.0 Beta-3")}
+                    {translateText("CookViewer 3.0")}
                 </Typography>
                 <Typography>
-                    {translateText("Release: July 15 2024", true)}
+                    {translateText("Release: September 05 2024", true)}
                 </Typography>
             </Stack>
                 
@@ -137,25 +137,34 @@ const Info = () => {
                         <span style={{ 
                             fontWeight: 600,
                             fontSize:14
-                            }}>{translateText("Measure Widget BETA")} - </span>
-                        {translateText("Users can now measure distance and area using the measure widget")}
+                            }}>{translateText("Search")} - </span>
+                        {translateText("New capabilities for condominium property searches, including full PIN 14 search functionality. The search widget is now powered by Cook County’s parcel dataset and two new address locators that contain address attributes for parcels and street addresses within Cook County, IL. With these upgrades, it offers smarter suggestions and more flexible address matching, making it easier to find what you’re looking for.")}
                     </Typography>
 
                     <Typography variant="body1">
                         <span style={{ 
                             fontWeight: 600,
                             fontSize:14
-                            }}>{translateText("Select Multiple Parcels")} - </span>
-                        {translateText("Users can now select multiple parcels by clicking parcels in the map or drawing a shape around them")}
+                            }}>{translateText("Spanish Language Support")} - </span>
+                        {translateText("Expanded language support for English and Spanish")}
                     </Typography>
 
                     <Typography variant="body1">
                         <span style={{ 
                             fontWeight: 600,
                             fontSize:14
-                            }}>{translateText("Find Parcel Dimensions")} - </span>
-                        {translateText("Users can view parcel dimensions using the Tax Map Viewer application found in the Data and Resources section at the bottom of the property detail")}
+                            }}>{translateText("Mobile Responsive")} - </span>
+                        {translateText("Improved mobile experience, making property information more accessible and user-friendly on smartphones and tablets.")}
                     </Typography>
+
+                    <Typography variant="body1">
+                        <span style={{ 
+                            fontWeight: 600,
+                            fontSize:14
+                            }}>{translateText("Historical Imagery")} - </span>
+                        {translateText("Users can now see the evolution of properties and landscapes using aerial imagery spanning from 1998 to 2023.")}
+                    </Typography>
+
                     </Stack>
 
                     <Typography
@@ -174,9 +183,10 @@ const Info = () => {
                         </span>
 
                     </Typography>
+
                 </Stack>
             </AccordionDetails>
-            </Accordion>     */}
+            </Accordion>    
 
 
             {/* CookViewer 3.0 Beta - 2 */}
