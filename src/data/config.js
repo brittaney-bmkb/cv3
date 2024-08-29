@@ -5,7 +5,7 @@ export const config = {
     bannerMessage:"This application and the data being presented are still undergoing development and refinement. For more consistent results open CookViewer Classic",
     bannerLinkText: "open CookViewer Classic",
     bannerLinkHtml:"https://maps.cookcountyil.gov/cookviewer/", 
-    bannerColor:"#EDBE1C",
+    bannerColor:"#F0F4F8",
     //IMAGES ROOT DIRECTORY
     image_directory: "https://maps.cookcountyil.gov/files/apps/cookviewer/images",
     //NAVBAR
