@@ -22,7 +22,7 @@ const Info = () => {
                 <Typography
                 variant="body1"
                 >
-                    {translateText("Welcome to CookViewer 3.0 - your ultimate source for Cook County property information! Access detailed property insights with ease, now with a modernized user experience, enhanced features, and expanded language support. Dive into the 'What's New' section to explore the latest updates. We value your feedback, which helps us continue improving to better serve you.")}
+                    {translateText("Welcome to CookViewer 3.0 - your ultimate source for Cook County property information! Access detailed property insights with ease, now with a modernized user experience, enhanced features, and expanded language support. Dive into the 'What's New' section to explore the latest updates. We value your feedback, which helps us continue improving to better serve you.", true)}
                 </Typography>
             </Box>
 
@@ -138,7 +138,7 @@ const Info = () => {
                             fontWeight: 600,
                             fontSize:14
                             }}>{translateText("Search")} - </span>
-                        {translateText("New capabilities for condominium property searches, including full PIN 14 search functionality. The search widget is now powered by Cook County's parcel dataset and two new address locators that contain address attributes for parcels and street addresses within Cook County, IL. With these upgrades, it offers smarter suggestions and more flexible address matching, making it easier to find what you're looking for.")}
+                        {translateText("New capabilities for condominium property searches, including full PIN 14 search functionality. The search widget is now powered by Cook County's parcel dataset and two new address locators that contain address attributes for parcels and street addresses within Cook County, IL. With these upgrades, it offers smarter suggestions and more flexible address matching, making it easier to find what you're looking for.", true)}
                     </Typography>
 
                     <Typography variant="body1">
