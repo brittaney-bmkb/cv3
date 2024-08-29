@@ -16,19 +16,28 @@ const Notifications = () => {
         setOpen(!open)
     }
 
-    const hyperlink = (
+
+const BannerMessage = () => {
+    const translatedMessage = translateText(config.bannerMessage);
+    const translatedLinkText = translateText(config.bannerLinkText);
+    const [beforeLink, afterLink] = translatedMessage.split(translatedLinkText);
+
+    return (
+        <span>
+            {beforeLink}
                 <Link
                     variant="body1"
-                    href="https://maps.cookcountyil.gov/cookviewer/"
+                    href={config.bannerLinkHtml}
                     target="_blank"
                     rel="noreferrer"
-                    sx={{
-                        fontWeight: 600, 
-                        color:theme.palette.primary.main, }}
+                    sx={{ fontWeight: 600, color: theme.palette.primary.main }}
                 >
-                    {`${translateText(config.bannerLinkText)}.`}
+                    {translatedLinkText}
                 </Link>
-    )
+            {afterLink}
+        </span>
+        );
+    };
 
     return(
         <Box pt={1} display="flex" flexDirection="column" bgcolor={config.bannerColor} alignItems="center" justifyContent="center" width="100%">
@@ -44,11 +53,9 @@ const Notifications = () => {
                 align="center" 
                 sx={{display:"flex"}}
                 >
-                    <span> 
-                    {translateText(config.bannerMessage).replace(translateText(config.bannerLinkText),"")}
-                    </span>
-                    {hyperlink}
-                   
+                    <span>
+                        <BannerMessage />
+                    </span>                    
                 </Typography>
             </Collapse>  
             <div 

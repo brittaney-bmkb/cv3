@@ -898,7 +898,7 @@ export const AppProvider = ({children}) => {
                         return textReplace[language]
                     })
 
-                ////console.log("TRANSLATED TEXT: ", translation)
+                // console.log("TRANSLATED TEXT: ", translation)
                 if(translation && translation.length){
                     if(numericValues && text !== config.bannerHeader){
                         if(text.match(/[()]/g)){
