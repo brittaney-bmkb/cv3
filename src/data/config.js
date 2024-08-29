@@ -2,8 +2,8 @@ export const config = {
     //show alert banner
     showBanner: true,
     bannerHeader:"Welcome to CookViewer 3.0!",
-    bannerMessage:"We hope you enjoy the modernized user experience. To access the previous version of CookViewer, visit the CookViewer v2 page",
-    bannerLinkText: " visit the CookViewer v2 page",
+    bannerMessage:"We hope you enjoy the modernized user experience. The previous version of CookViewer will still be available for a limited time.",
+    bannerLinkText: "The previous version of CookViewer",
     bannerLinkHtml:"https://maps.cookcountyil.gov/cookviewer/", 
     bannerColor:"#EDBE1C",
     //IMAGES ROOT DIRECTORY

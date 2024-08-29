@@ -27,7 +27,7 @@ const BannerMessage = () => {
             {beforeLink}
                 <Link
                     variant="body1"
-                    href="https://maps.cookcountyil.gov/cookviewer/" // THIS NEEDS TO BE UPDATED
+                    href={config.bannerLinkHtml}
                     target="_blank"
                     rel="noreferrer"
                     sx={{ fontWeight: 600, color: theme.palette.primary.main }}
