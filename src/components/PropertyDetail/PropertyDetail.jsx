@@ -1,7 +1,7 @@
-import { Box, CircularProgress, Divider, Typography, useMediaQuery } from "@mui/material"
+import { Box, Button, CircularProgress, Divider, Typography, useMediaQuery } from "@mui/material"
 import StyledButtonFilledPrimary from "../Button/Button"
 import UseAppContext from "../../contexts/AppContext"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { theme } from "../../theme"
 import { returnMunicipality } from "../../arcgis/geoprocessing/geoprocessing"
 import { Link } from "react-router-dom"
@@ -38,6 +38,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
 
     const { primaryResultFeature, clearResultsComparables, panelWidgetVisible, setPanelWidgetVisibility, screenWidth, dataDictionary, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, translateText, language } = UseAppContext()
 
+    const districtInfoRef = useRef(null)
 
     const [ categories, setCategories ] = useState(null)
     const [ muni, setMuni ] = useState({})
@@ -134,7 +135,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                 ...new Set(
                     dataDictionary
                         .filter(data => !categoriesToExclude.includes(data.attributes['category']))
-                        .sort((a, b) => a.attributes['details_category_order'] > b.attributes['details_category_order'] ? 1:-1)
+                        .sort((a, b) => a.attributes['Property_Details_Category_Order'] > b.attributes['Property_Details_Category_Order'] ? 1:-1)
                         .map(data => data.attributes['category'])
                 )
             ];
@@ -293,6 +294,16 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                             alignContent={textAlignment}>
     
                             {
+                                data.attributes['field'] == "View District Details" ? 
+                                <Button variant="text" sx={{textTransform:"none", p:0}}>
+                                    <Typography
+                                    variant="h5"
+                                    >
+                                        View District Details   
+                                    </Typography>
+                                </Button>
+                                 :
+                                
                                 data.attributes['field'] === "comparable_properties" ?
                                     propertyComparison(data.attributes['field']) :
     
@@ -334,6 +345,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                                                                     color: category === "top" && subIndex == 0 && pin14 === primaryPin14 ? propertyColor1 : category === "top" && subIndex == 0 && pin14 !== primaryPin14 ? propertyColor2 : theme.main.text.dark
                                                                 }}>
                                                                 {
+                                                                    
                                                                     property?.attributes[data.attributes['field']] && data.attributes['type'] === "text" ?
                                                                         translateText(property?.attributes[data.attributes['field']]) :
                                                                         property?.attributes[data.attributes['field']] ?
@@ -372,13 +384,14 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                 <Box id={`${data.attributes['field']}-BOX`} key={data.attributes['field']} display="flex" flexDirection="column" width="100%">
                     {headerContent && (
                         <Box
+                            id={headerContent.replace(" ","-")}
                             display="flex"
                             justifyContent={textAlignment}
                             pb={category !== "top" ? 1 : 0}
                         >
-                            <Typography variant="h6">
-                                {headerContent}
-                            </Typography>
+                             <Typography variant="h6">
+                                    {headerContent}
+                             </Typography>
                         </Box>
                     )}
     
