@@ -295,7 +295,9 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
     
                             {
                                 data.attributes['field'] == "View District Details" ? 
-                                <Button variant="text" sx={{textTransform:"none", p:0}}>
+                                <Button 
+                                variant="text" 
+                                sx={{textTransform:"none", p:0}}>
                                     <Typography
                                     variant="h5"
                                     >
@@ -419,7 +421,15 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         }
     
         return (
-            <Box id={category} key={category} display="flex" flexDirection="column" width="100%" pt={category !== "top" ? 1 : 0} rowGap={category !== "top" ? 1 : 0}>
+            <Box 
+            id={category} 
+            key={category} 
+            ref={category=="District Info" ? districtInfoRef: null}
+            display="flex" 
+            flexDirection="column" 
+            width="100%" 
+            pt={category !== "top" ? 1 : 0} 
+            rowGap={category !== "top" ? 1 : 0}>
                 {category !== "top" ? <Typography variant="h2">{translateText(category)}</Typography> : null}
                 <Box
                     id={"property-detail-data-container"}
