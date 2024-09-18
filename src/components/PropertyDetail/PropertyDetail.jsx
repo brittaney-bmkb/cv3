@@ -48,7 +48,6 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
     const [ textAlignment, setTextAlignment ] = useState("left")
     //const [ zoningInfo, setZoningInfo ] = useState()
     
-
     const panelContentTitleMain = {
         display:"flex",
         border: 3,
@@ -61,6 +60,11 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         height:"fit-content",
         color:"",
         borderColor:""
+    }
+
+    function jumpToDistrictInfo(){
+
+        districtInfoRef.current?.scrollIntoView()
     }
 
     function handleClick(display){
@@ -297,7 +301,9 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                                 data.attributes['field'] == "View District Details" ? 
                                 <Button 
                                 variant="text" 
-                                sx={{textTransform:"none", p:0}}>
+                                sx={{textTransform:"none", p:0}}
+                                onClick={jumpToDistrictInfo}
+                                >
                                     <Typography
                                     variant="h5"
                                     >
