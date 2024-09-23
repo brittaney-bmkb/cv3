@@ -856,7 +856,7 @@ const WebMapComponentBeta = () => {
         >
         <ArcgisMap
         ref={arcgisMapRef}
-        itemId="779a9643c58f4a48a002a9b277a8bcc7"
+        itemId={config.webmap_id}
 
         onArcgisViewReadyChange={(event) => {
             ////console.log('MapView ready', event);
