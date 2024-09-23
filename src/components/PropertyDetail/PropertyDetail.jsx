@@ -259,6 +259,32 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         const propIsResSfMf = properties.every(property => {
             return single_multi_improvements_class_list.includes(parseInt(property?.attributes["BCLASS"]));
         })
+
+        const unitSchool = properties.every(property => {
+            console.log("Unit School: ", property?.attributes['tax_school_unified_district_name'])
+            return property?.attributes['tax_school_unified_district_name']
+        })
+
+        const elementarySchool = properties.every(property => {
+            return property?.attributes['tax_school_elementary_district_name']
+        })
+
+        const highSchool = properties.every(property => {
+            return property?.attributes['tax_school_secondary_district_name']
+        })
+
+        console.log("unit school prop: ", unitSchool)
+        if (!elementarySchool){
+            excludeFields.push("tax_school_elementary_district_name")
+        }
+
+        if (!highSchool){
+            excludeFields.push("tax_school_secondary_district_name")
+        }
+
+        if (!unitSchool){
+            excludeFields.push("tax_school_unified_district_name")
+        }
     
         if (!propIsResCondo) {
             excludeFields.push("res_condo_chars_link")
@@ -266,6 +292,8 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         if (!propIsResSfMf) {
             excludeFields.push("hist_sf_mf_imp_chars_link")
         }
+
+        console.log("excluded fields: ", excludeFields)
     
         let filteredData = dataDictionary
             ?.filter((data) => data.attributes['category'] === category && !excludeFields.includes(data.attributes['field']))
@@ -275,6 +303,8 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         if (!filteredData || filteredData.length === 0) {
             return null; // Return null if there's no data
         }
+
+        console.log("filteredData: ", filteredData)
     
         let data = filteredData.map((data, subIndex) => {
             // Prepare the content
@@ -282,6 +312,8 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
             //this gets moved up as the main function 
             const propertyContent = properties.map((property, propIndex) => {
                 if (property) {
+
+                    console.log("property: ", property)
                     let color = property === property1 ? propertyColor1 : propertyColor2;
                     panelContentTitleMain["color"] = color;
                     panelContentTitleMain["borderColor"] = color;
@@ -355,7 +387,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                                                                 {
                                                                     
                                                                     property?.attributes[data.attributes['field']] && data.attributes['type'] === "text" ?
-                                                                        translateText(property?.attributes[data.attributes['field']]) :
+                                                                        translateText(property?.attributes[data.attributes['field']], false) :
                                                                         property?.attributes[data.attributes['field']] ?
                                                                             `${prefix(data.attributes['type'])}${addCommaSeparator(property?.attributes[data.attributes['field']], data.attributes['type'])}` :
                                                                             translateText("Data unavailable")
