@@ -307,7 +307,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                                     <Typography
                                     variant="h5"
                                     >
-                                        View District Details   
+                                        {translateText("View District Details")   }
                                     </Typography>
                                 </Button>
                                  :
