@@ -46,7 +46,6 @@ const SearchBar = () => {
         newSearch, 
         setPanelPrimaryVisibility,
         setPanelDisplay, 
-        mapView, 
         searchSources, 
         clearResults, 
         panelPrimaryVisible, 
@@ -54,9 +53,7 @@ const SearchBar = () => {
         setPrimaryResultFeature,
         initalizeSearchSources,
         returnSearchResultFeatures,
-        setSearchResults,
         searchFeatures,
-        searchTerm,
         anyAttributesIncluded,
         setIsQuerying,
         panelDisplay
@@ -97,8 +94,8 @@ const SearchBar = () => {
         const createSearch = async () => {
 
             if(searchDiv.current && searchSources){
-
-                if(!searchWidget.current && mapView){
+                // && mapView
+                if(!searchWidget.current){
 
                     searchWidget.current = new Search({
                         locationEnabled:false,
@@ -121,7 +118,7 @@ const SearchBar = () => {
                             //if pin10 or pin14 search params return values
                             //bypass the seach and query the parcels directly from the service
                             let features = await returnFeaturesByPin10Pin14(pin10Search, pin14Search)
-                            mapView.goTo(features)
+                            //mapView.goTo(features)
                         }
                     }
                 }
@@ -163,7 +160,7 @@ const SearchBar = () => {
 
         createSearch()
 
-    },[searchDiv, mapView, searchSources])
+    },[searchDiv, searchSources])
     
     //on app load
     useEffect(() => {
