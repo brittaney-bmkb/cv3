@@ -1,7 +1,7 @@
-import { Box, CircularProgress, Divider, Typography, useMediaQuery } from "@mui/material"
+import { Box, Button, CircularProgress, Divider, Typography, useMediaQuery } from "@mui/material"
 import StyledButtonFilledPrimary from "../Button/Button"
 import UseAppContext from "../../contexts/AppContext"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { theme } from "../../theme"
 import { returnMunicipality } from "../../arcgis/geoprocessing/geoprocessing"
 import { Link } from "react-router-dom"
@@ -38,6 +38,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
 
     const { primaryResultFeature, clearResultsComparables, panelWidgetVisible, setPanelWidgetVisibility, screenWidth, dataDictionary, setPanelDisplay, setPanelPrimaryVisibility, setPanelSecondaryVisibility, setPanelDisplaySecondary, translateText, language } = UseAppContext()
 
+    const districtInfoRef = useRef(null)
 
     const [ categories, setCategories ] = useState(null)
     const [ muni, setMuni ] = useState({})
@@ -47,7 +48,6 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
     const [ textAlignment, setTextAlignment ] = useState("left")
     //const [ zoningInfo, setZoningInfo ] = useState()
     
-
     const panelContentTitleMain = {
         display:"flex",
         border: 3,
@@ -60,6 +60,11 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         height:"fit-content",
         color:"",
         borderColor:""
+    }
+
+    function jumpToDistrictInfo(){
+
+        districtInfoRef.current?.scrollIntoView()
     }
 
     function handleClick(display){
@@ -134,7 +139,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                 ...new Set(
                     dataDictionary
                         .filter(data => !categoriesToExclude.includes(data.attributes['category']))
-                        .sort((a, b) => a.attributes['details_category_order'] > b.attributes['details_category_order'] ? 1:-1)
+                        .sort((a, b) => a.attributes['Property_Details_Category_Order'] > b.attributes['Property_Details_Category_Order'] ? 1:-1)
                         .map(data => data.attributes['category'])
                 )
             ];
@@ -254,6 +259,32 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         const propIsResSfMf = properties.every(property => {
             return single_multi_improvements_class_list.includes(parseInt(property?.attributes["BCLASS"]));
         })
+
+        const unitSchool = properties.every(property => {
+            console.log("Unit School: ", property?.attributes['tax_school_unified_district_name'])
+            return property?.attributes['tax_school_unified_district_name']
+        })
+
+        const elementarySchool = properties.every(property => {
+            return property?.attributes['tax_school_elementary_district_name']
+        })
+
+        const highSchool = properties.every(property => {
+            return property?.attributes['tax_school_secondary_district_name']
+        })
+
+        console.log("unit school prop: ", unitSchool)
+        if (!elementarySchool){
+            excludeFields.push("tax_school_elementary_district_name")
+        }
+
+        if (!highSchool){
+            excludeFields.push("tax_school_secondary_district_name")
+        }
+
+        if (!unitSchool){
+            excludeFields.push("tax_school_unified_district_name")
+        }
     
         if (!propIsResCondo) {
             excludeFields.push("res_condo_chars_link")
@@ -261,6 +292,8 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         if (!propIsResSfMf) {
             excludeFields.push("hist_sf_mf_imp_chars_link")
         }
+
+        console.log("excluded fields: ", excludeFields)
     
         let filteredData = dataDictionary
             ?.filter((data) => data.attributes['category'] === category && !excludeFields.includes(data.attributes['field']))
@@ -270,6 +303,8 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         if (!filteredData || filteredData.length === 0) {
             return null; // Return null if there's no data
         }
+
+        console.log("filteredData: ", filteredData)
     
         let data = filteredData.map((data, subIndex) => {
             // Prepare the content
@@ -277,6 +312,8 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
             //this gets moved up as the main function 
             const propertyContent = properties.map((property, propIndex) => {
                 if (property) {
+
+                    console.log("property: ", property)
                     let color = property === property1 ? propertyColor1 : propertyColor2;
                     panelContentTitleMain["color"] = color;
                     panelContentTitleMain["borderColor"] = color;
@@ -293,6 +330,20 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                             alignContent={textAlignment}>
     
                             {
+                                data.attributes['field'] == "View District Details" ? 
+                                <Button 
+                                variant="text" 
+                                sx={{textTransform:"none", p:0}}
+                                onClick={jumpToDistrictInfo}
+                                >
+                                    <Typography
+                                    variant="h5"
+                                    >
+                                        {translateText("View District Details")   }
+                                    </Typography>
+                                </Button>
+                                 :
+                                
                                 data.attributes['field'] === "comparable_properties" ?
                                     propertyComparison(data.attributes['field']) :
     
@@ -334,8 +385,9 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                                                                     color: category === "top" && subIndex == 0 && pin14 === primaryPin14 ? propertyColor1 : category === "top" && subIndex == 0 && pin14 !== primaryPin14 ? propertyColor2 : theme.main.text.dark
                                                                 }}>
                                                                 {
+                                                                    
                                                                     property?.attributes[data.attributes['field']] && data.attributes['type'] === "text" ?
-                                                                        translateText(property?.attributes[data.attributes['field']]) :
+                                                                        translateText(property?.attributes[data.attributes['field']], false) :
                                                                         property?.attributes[data.attributes['field']] ?
                                                                             `${prefix(data.attributes['type'])}${addCommaSeparator(property?.attributes[data.attributes['field']], data.attributes['type'])}` :
                                                                             translateText("Data unavailable")
@@ -372,13 +424,14 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                 <Box id={`${data.attributes['field']}-BOX`} key={data.attributes['field']} display="flex" flexDirection="column" width="100%">
                     {headerContent && (
                         <Box
+                            id={headerContent.replace(" ","-")}
                             display="flex"
                             justifyContent={textAlignment}
                             pb={category !== "top" ? 1 : 0}
                         >
-                            <Typography variant="h6">
-                                {headerContent}
-                            </Typography>
+                             <Typography variant="h6">
+                                    {headerContent}
+                             </Typography>
                         </Box>
                     )}
     
@@ -406,7 +459,15 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         }
     
         return (
-            <Box id={category} key={category} display="flex" flexDirection="column" width="100%" pt={category !== "top" ? 1 : 0} rowGap={category !== "top" ? 1 : 0}>
+            <Box 
+            id={category} 
+            key={category} 
+            ref={category=="District Info" ? districtInfoRef: null}
+            display="flex" 
+            flexDirection="column" 
+            width="100%" 
+            pt={category !== "top" ? 1 : 0} 
+            rowGap={category !== "top" ? 1 : 0}>
                 {category !== "top" ? <Typography variant="h2">{translateText(category)}</Typography> : null}
                 <Box
                     id={"property-detail-data-container"}
