@@ -870,11 +870,14 @@ export const AppProvider = ({children}) => {
 
         const {language, textTranslationDictionary} = state
 
-        
-        if(text && textTranslationDictionary){
+        //console.log(textTranslationDictionary)
+        const textIsNotNumber = Number.isNaN(parseInt(text))
+
+        if(text && textTranslationDictionary && textIsNotNumber){
             
             if(Object.keys(textTranslationDictionary).includes(text)){
-                
+
+                console.log("TRANSLATED TEXT: ", text, textTranslationDictionary[text][language])
                 return textTranslationDictionary[text][language]
             }
 
@@ -898,7 +901,7 @@ export const AppProvider = ({children}) => {
                         return textReplace[language]
                     })
 
-                // console.log("TRANSLATED TEXT: ", translation)
+                console.log("TRANSLATED TEXT: ", translation)
                 if(translation && translation.length){
                     if(numericValues && text !== config.bannerHeader){
                         if(text.match(/[()]/g)){
