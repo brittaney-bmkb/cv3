@@ -15,6 +15,7 @@ Welcome to the repository for our CookViewer application. This README provides e
 - [NPM Modules](#npm-modules)
 - [Usage](#usage)
 - [Customization](#customization)
+    - [Services](###services)
 - [TODOS](#todos)
 - [Deployment](#deployment)
 - [Contributing](#contributing)
@@ -114,6 +115,23 @@ project-root/
 ├── README.md
 ├── package.json
 └── .gitignore
+
+### Cookviewer 3 Services and Webmaps
+In addition to the direct application customization that can be accompolished by updating the config.json file, the application webmap and support services can be customized in ArcGIS Online and ArcGIS Pro. 
+
+#### Services: 
+**CookViewer3Parcels** - Referenced Map Service that contains parcel data and parcel geometries displayed in the webmap. This service is included in the `config.json` file for 2 config props: 
+- `target_layer_url` - Parcel feature layer url is used to identify the Current Parcel layer in the AGO webmap to allow the user to click and select parcels within the webmap
+- `layer_sources url` - Parcel feature layer is used as search layer source for the `Search.jsx` component
+Service URLS:
+- PROD:
+- TEST: 
+
+**Data Dictionary** - Hosted table that controls the data display in the PropertyDetails.jsx component and Property Detail Panel in the application. This table includes fields that are referenced from the CookViewer3Parcels service and injects the field values into the the application. The data value, display label, data category, display order, and hyperlinked text are all controlled by this table. The data dictionary service url is an input to the `data_dictionary` prop in `config.json`
+- PROD: https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/ArcGIS/rest/services/cookviewer_data_dictionary_view/FeatureServer/0 : AGO ID: d2dd12d8fc874948830636b2ba4b0f72
+- TEST: https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/arcgis/rest/services/cookviewer_data_dictionary_test_data/FeatureServer/0 | AGO ID: d2dd12d8fc874948830636b2ba4b0f72
+**Cook
+
 
 ## TODOS
 [Insert details on parts of the project that are still in progress/development. These could be future enhancements, plans to migrate to newer versions of a code base, future deprecation of a code base etc.]
