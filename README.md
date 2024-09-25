@@ -125,7 +125,7 @@ In addition to the direct application customization that can be accompolished by
 - `layer_sources url` - Parcel feature layer is used as search layer source for the `Search.jsx` component
 Service URLS:
 - **PROD**: https://gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer
-- **TEST**: 
+- **TEST**: https://test-gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer
 
 **Data Dictionary** - Hosted table that controls the data display in the PropertyDetails.jsx component and Property Detail Panel in the application. This table includes fields that are referenced from the CookViewer3Parcels service and injects the field values into the the application. The data value, display label, data category, display order, and hyperlinked text are all controlled by this table. The data dictionary service url is an input to the `data_dictionary` prop in `config.json`
 - **PROD**: https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/ArcGIS/rest/services/cookviewer_data_dictionary_view/FeatureServer/0 : AGO ID: d2dd12d8fc874948830636b2ba4b0f72
