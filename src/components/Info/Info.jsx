@@ -104,9 +104,89 @@ const Info = () => {
                 </Typography>
             </Box>
 
-            {/* CookViewer 3.0 */}
+            {/* CookViewer 3.0.1 */}
             <Accordion
             defaultExpanded
+            square={true}
+            >
+            <AccordionSummary
+            expandIcon={<ExpandMore/>}
+            >   
+            <Stack gap={1}>
+                <Typography
+                variant="body2"
+                >
+                    {translateText("CookViewer 3.0.1")}
+                </Typography>
+                <Typography>
+                    {translateText("Release: September 26 2024", true)}
+                </Typography>
+            </Stack>
+                
+            </AccordionSummary>
+            <AccordionDetails>
+            <Stack gap={2}>
+                    <Typography
+                    variant="body2"
+                    >
+                        {translateText("Enhancements")}
+                    </Typography>
+                    <Stack gap={1}>
+                    <Typography variant="body1">
+                        <span style={{ 
+                            fontWeight: 600,
+                            fontSize:14
+                            }}>{translateText("District Info")} - </span>
+                        {translateText("Users can now view a summary of political and taxing district info by clicking the 'View District Details' link in the the property detail panel or by scrolling to the bottom of the panel")}
+                    </Typography>
+
+                    <Typography variant="body1">
+                        <span style={{ 
+                            fontWeight: 600,
+                            fontSize:14
+                            }}>{translateText("Highway System Labels")} - </span>
+                        {translateText("Users can now view the Highway System layer with labels displayed in the map")}
+                    </Typography>
+
+                    </Stack>
+                    <Typography
+                    variant="body2"
+                    >
+                        {translateText("Bug Fixes")}
+                    </Typography>
+                    <Stack gap={1}>
+                    <Typography variant="body1">
+                        <span style={{ 
+                            fontWeight: 600,
+                            fontSize:14
+                            }}>{translateText("Mobile Search Bar")} - </span>
+                        {translateText("The mobile search bar will now load without having to close the Info Panel when the application loads")}
+                    </Typography>
+                    </Stack>
+
+                    <Typography
+                    variant="body2"
+                    >
+                        {`${translateText("Read detailed ")} `}
+                        <span>
+                            <Link
+                            target="_blank"
+                            rel="noopener"
+                            href="https://cookviewer3-info-cookcountyil.hub.arcgis.com/"
+                            aria-label={translateText("Read more detailed release notes.")} 
+                            >
+                                {translateText("release notes.") }
+                            </Link>
+                        </span>
+
+                    </Typography>
+
+                </Stack>
+            </AccordionDetails>
+            </Accordion>   
+
+            {/* CookViewer 3.0 */}
+            <Accordion
             square={true}
             >
             <AccordionSummary

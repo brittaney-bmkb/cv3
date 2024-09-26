@@ -261,29 +261,29 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         })
 
         const unitSchool = properties.every(property => {
-            console.log("Unit School: ", property?.attributes['tax_school_unified_district_name'])
-            return property?.attributes['tax_school_unified_district_name']
+            //console.log("Unit School: ", property?.attributes['tax_school_unified_dist_name'])
+            return property?.attributes['tax_school_unified_dist_name']
         })
 
         const elementarySchool = properties.every(property => {
-            return property?.attributes['tax_school_elementary_district_name']
+            return property?.attributes['tax_school_elem_dist_name']
         })
 
         const highSchool = properties.every(property => {
-            return property?.attributes['tax_school_secondary_district_name']
+            return property?.attributes['tax_school_sec_dist_name']
         })
 
-        console.log("unit school prop: ", unitSchool)
+        //console.log("unit school prop: ", unitSchool)
         if (!elementarySchool){
-            excludeFields.push("tax_school_elementary_district_name")
+            excludeFields.push("tax_school_elem_dist_name")
         }
 
         if (!highSchool){
-            excludeFields.push("tax_school_secondary_district_name")
+            excludeFields.push("tax_school_sec_dist_name")
         }
 
         if (!unitSchool){
-            excludeFields.push("tax_school_unified_district_name")
+            excludeFields.push("tax_school_unified_dist_name")
         }
     
         if (!propIsResCondo) {
@@ -293,7 +293,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
             excludeFields.push("hist_sf_mf_imp_chars_link")
         }
 
-        console.log("excluded fields: ", excludeFields)
+        //console.log("excluded fields: ", excludeFields)
     
         let filteredData = dataDictionary
             ?.filter((data) => data.attributes['category'] === category && !excludeFields.includes(data.attributes['field']))
@@ -304,7 +304,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
             return null; // Return null if there's no data
         }
 
-        console.log("filteredData: ", filteredData)
+        //console.log("filteredData: ", filteredData)
     
         let data = filteredData.map((data, subIndex) => {
             // Prepare the content
@@ -313,7 +313,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
             const propertyContent = properties.map((property, propIndex) => {
                 if (property) {
 
-                    console.log("property: ", property)
+                    //console.log("property: ", property)
                     let color = property === property1 ? propertyColor1 : propertyColor2;
                     panelContentTitleMain["color"] = color;
                     panelContentTitleMain["borderColor"] = color;
@@ -500,10 +500,10 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
             <Box display="flex" flexDirection="column" rowGap={1} sx={{overflowY:"auto", overflowX:"hidden"}}  flexGrow={1} minHeight={0} pl={1} pr={2} boxSizing="content-box">
             {categories?.map((category, index) => {
 
-                if(category === "Property Comparision" && !property1 ){
+                if(category === "Property Comparison" && !property1 ){
                     return null
                 }
-                else if(category === "Property Comparision" && property1 && property2){
+                else if(category === "Property Comparison" && property1 && property2){
                     return null
                 }
                 else{
