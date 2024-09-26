@@ -266,7 +266,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         })
 
         const elementarySchool = properties.every(property => {
-            return property?.attributes['tax_school_elem_dist_nam']
+            return property?.attributes['tax_school_elem_dist_name']
         })
 
         const highSchool = properties.every(property => {
@@ -275,7 +275,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
 
         //console.log("unit school prop: ", unitSchool)
         if (!elementarySchool){
-            excludeFields.push("tax_school_elem_dist_nam")
+            excludeFields.push("tax_school_elem_dist_name")
         }
 
         if (!highSchool){
@@ -313,7 +313,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
             const propertyContent = properties.map((property, propIndex) => {
                 if (property) {
 
-                    //console.log("property: ", property)
+                    console.log("property: ", property)
                     let color = property === property1 ? propertyColor1 : propertyColor2;
                     panelContentTitleMain["color"] = color;
                     panelContentTitleMain["borderColor"] = color;
