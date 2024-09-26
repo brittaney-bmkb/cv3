@@ -313,7 +313,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
             const propertyContent = properties.map((property, propIndex) => {
                 if (property) {
 
-                    console.log("property: ", property)
+                    //console.log("property: ", property)
                     let color = property === property1 ? propertyColor1 : propertyColor2;
                     panelContentTitleMain["color"] = color;
                     panelContentTitleMain["borderColor"] = color;
