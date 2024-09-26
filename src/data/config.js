@@ -29,7 +29,7 @@ export const config = {
     //PRINT OPTIONS
     print_orientation_options : ['Landscape', 'Portrait'],
     //DATA DICTIONARY SERVICE
-    data_dictionary: "https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/ArcGIS/rest/services/cookviewer_data_dictionary_view/FeatureServer/0",
+    data_dictionary: "https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/arcgis/rest/services/cookviewer_data_dictionary_test_data/FeatureServer/0",
     // TARGET LAYER CONFIGURATION: Specify the name of the target layer and the fields to display in results.
     // MAKE SURE THE NAME OF THIS LAYER IS EXACTLY THE SAME IN THE LAYERSOURCES ARRAY
     target_layer_name: "Parcels Current", // Name of the target layer in LayerSources
