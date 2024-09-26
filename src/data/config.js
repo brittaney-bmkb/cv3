@@ -33,7 +33,7 @@ export const config = {
     // TARGET LAYER CONFIGURATION: Specify the name of the target layer and the fields to display in results.
     // MAKE SURE THE NAME OF THIS LAYER IS EXACTLY THE SAME IN THE LAYERSOURCES ARRAY
     target_layer_name: "Parcels Current", // Name of the target layer in LayerSources
-    target_layer_url: "https://test-gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/0",
+    target_layer_url: "https://gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/0",
     target_layer_out_fields: ["PIN10","PIN14","PIN14_dash","street_address","city_state_zip","OBJECTID"],// Fields to display in the results pane (array of strings).
     //FIELD TO REFERENCE FOR CREATING URL PARAM WHEN CLICKING IN MAP
     target_layer_id_field: "PIN10",
