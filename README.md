@@ -145,8 +145,10 @@ Service URLS:
 - Cook Address Multirole Locator: https://gis.cookcountyil.gov/traditional/rest/services/Locator/CookAddressMultirole/GeocodeServer
 
 **Web Map** - Cookviewer consumes a webmap hosted in ArcGIS online that allows the user to view/interact with parcels and cookviewer dynamic data layers
-- **PROD**: https://cookcountyil.maps.arcgis.com/apps/mapviewer/index.html?webmap=779a9643c58f4a48a002a9b277a8bcc7 | AGO ID: 779a9643c58f4a48a002a9b277a8bcc7
-- **TEST**: https://cookcountyil.maps.arcgis.com/apps/mapviewer/index.html?webmap=15c4eb52c7bb468d93c5946cb8e9d6ce | AGO ID: 15c4eb52c7bb468d93c5946cb8e9d6ce
+- **PROD**: https://cookcountyil.maps.arcgis.com/apps/mapviewer/index.html?webmap=779a9643c58f4a48a002a9b277a8bcc7
+    - AGO ITEM: https://cookcountyil.maps.arcgis.com/home/item.html?id=779a9643c58f4a48a002a9b277a8bcc7
+- **TEST**: https://cookcountyil.maps.arcgis.com/apps/mapviewer/index.html?webmap=15c4eb52c7bb468d93c5946cb8e9d6ce
+    - AGO ITEM: https://cookcountyil.maps.arcgis.com/home/item.html?id=15c4eb52c7bb468d93c5946cb8e9d6ce
   
 **ArcGIS Pro Project** - References webmap, data dictionary, and translated text services listed above to view/edit in one place.
 **PROD & TEST**: \\gisfsp2\gisanalysts\portalServices\service_maps\Application_Services\cookviewer3  
