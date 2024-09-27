@@ -128,8 +128,10 @@ Service URLS:
 - **TEST**: https://test-gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer
 
 **Data Dictionary** - Hosted table that controls the data display in the PropertyDetails.jsx component and Property Detail Panel in the application. This table includes fields that are referenced from the CookViewer3Parcels service and injects the field values into the the application. The data value, display label, data category, display order, and hyperlinked text are all controlled by this table. The data dictionary service url is an input to the `data_dictionary` prop in `config.json`
-- **PROD**: https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/arcgis/rest/services/cookviewer_data_dictionary/FeatureServer/0 : AGO ID: bad878a14eea412abca437a6e1edc89d
-- **TEST**: https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/arcgis/rest/services/cookviewer_data_dictionary_test_data/FeatureServer/0 | AGO ID: d2dd12d8fc874948830636b2ba4b0f72
+- **PROD**: https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/arcgis/rest/services/cookviewer_data_dictionary/FeatureServer/0
+    - AGO ITEM: https://cookcountyil.maps.arcgis.com/home/item.html?id=bad878a14eea412abca437a6e1edc89d
+- **TEST**: https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/arcgis/rest/services/cookviewer_data_dictionary_test_data/FeatureServer/0
+    - AGO ITEM: https://cookcountyil.maps.arcgis.com/home/item.html?id=d2dd12d8fc874948830636b2ba4b0f72
 
 **Translated Text** - Hosted service that controls the translation of application text. This hosted table includes two tables: 
 - Cookviewer translated text general - controls 90% of translation in the app excluding text in the help dialog
