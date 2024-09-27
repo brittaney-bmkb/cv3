@@ -27,7 +27,7 @@ The `PropertyDetail.jsx` component is dependent on 4 data sources defined in con
     - PROD: 
         - SERVICE URL: https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/arcgis/rest/services/cookviewer_data_dictionary/FeatureServer/0| 
         - AGO ITEM: https://cookcountyil.maps.arcgis.com/home/item.html?id=bad878a14eea412abca437a6e1edc89d
-    - TEST: 
+    - TEST: Change made to test service 9/27/2024 to make Property Details Category Order field name match prod
         - SERVICE URL: https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/arcgis/rest/services/cookviewer_data_dictionary_test_data/FeatureServer/0
         - AGO ITEM: https://cookcountyil.maps.arcgis.com/home/item.html?id=d2dd12d8fc874948830636b2ba4b0f72
 
