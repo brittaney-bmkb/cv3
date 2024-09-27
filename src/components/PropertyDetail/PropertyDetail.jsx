@@ -139,7 +139,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
                 ...new Set(
                     dataDictionary
                         .filter(data => !categoriesToExclude.includes(data.attributes['category']))
-                        .sort((a, b) => a.attributes['Property_Details_Category_Order'] > b.attributes['Property_Details_Category_Order'] ? 1:-1)
+                        .sort((a, b) => a.attributes['details_category_order'] > b.attributes['details_category_order'] ? 1:-1)
                         .map(data => data.attributes['category'])
                 )
             ];
