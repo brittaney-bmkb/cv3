@@ -63,12 +63,12 @@ Its important to note that as of V3.0.1 some property details are conditionally 
     - **tax_school_unified_dist_name** - hides tax_school_unified_dist_name field from the `data dictionary` service if Parcel Current attribute value is null
     - **tax_school_elem_dist_name** - hides tax_school_elem_dist_name field from the `data dictionary` service if Parcel Current attribute value is null
     - **tax_school_sec_dist_name** - hides tax_school_sec_dist_name field from the `data dictionary` service if Parcel Current attribute value is null
-    -**View District Details** - field value from the `data dictionary` service to trigger a button to be created in the Property Detail panel that acts as a bookmark to jump to the District Info section at the bottom of the Property Detail panel
-    -**comparable_properties** - field value from the `data dictionary` service to trigger the `propertyComparison` function to create a button to open the Property Comparison panel
-    -**nearby_properties** - field value from the `data dictionary` service to trigger the `nearbyProperties` function to create a button to open the Nearby Properties panel
-    -**incorp_unincorp_state** - field value from the `data dictionary` service to trigger the `incorp_unincorp` function to perfrom a spatial calculation and diplay the incorporated municipality value or unincorporated value displayed under the Municipality label in the Property Detail panel
-    -**zoning_info** - field value from the `data dictionary` service to trigger the `zoningInfo` function to return the zoning info message under the Zoning Information label in the Property Detail panel
-    -**Any fields that end with "_link"**- On line 361 in the PropertyDetail.jsx component, any field value from the `data dictionary` service that ends with '_link' will trigger the `returnHyperlink` function to parse data from the `hyperlink_text`,  `hyperlink_params` and `hyperlink_url` fields to create a clickable link out to webpage in a new tab 
-    -**credit** - values in the credit field from the `data dictionary` are included below property detail data if values are not null 
+    - **View District Details** - field value from the `data dictionary` service to trigger a button to be created in the Property Detail panel that acts as a bookmark to jump to the District Info section at the bottom of the Property Detail panel
+    - **comparable_properties** - field value from the `data dictionary` service to trigger the `propertyComparison` function to create a button to open the Property Comparison panel
+    - **nearby_properties** - field value from the `data dictionary` service to trigger the `nearbyProperties` function to create a button to open the Nearby Properties panel
+    - **incorp_unincorp_state** - field value from the `data dictionary` service to trigger the `incorp_unincorp` function to perfrom a spatial calculation and diplay the incorporated municipality value or unincorporated value displayed under the Municipality label in the Property Detail panel
+    - **zoning_info** - field value from the `data dictionary` service to trigger the `zoningInfo` function to return the zoning info message under the Zoning Information label in the Property Detail panel
+    - **Any fields that end with "_link"**- On line 361 in the PropertyDetail.jsx component, any field value from the `data dictionary` service that ends with '_link' will trigger the `returnHyperlink` function to parse data from the `hyperlink_text`,  `hyperlink_params` and `hyperlink_url` fields to create a clickable link out to webpage in a new tab 
+    - **credit** - values in the credit field from the `data dictionary` are included below property detail data if values are not null 
 
 
