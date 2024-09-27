@@ -56,7 +56,7 @@ Optional fields:
 - **credit**: will display credited sources below hyperlinks
 
 ## Conditional & Calculated Values
-Its important to note that as of V3.0.1 specific property details are conditionally displayed or calcualted by referencing specific field values from the `Current Parcel` service and the `data dictionary` service. A number of attribute fields from the `Current Parcels` service and `data dictionary` field values are **hard coded** in the `PropertyDetail.jsx` component, so special care should be applied when customizing both the `Current Parcel` service and the `data dictionary` service. Hard coded fields can be found in: 
+Its important to note that as of V3.0.1 some property details are conditionally displayed or calcualted by referencing specific field values from the `Current Parcel` service and the `data dictionary` service. A number of attribute fields from the `Current Parcels` service and `data dictionary` field values are **hard coded** in the `PropertyDetail.jsx` component, so special care should be applied when customizing both the `Current Parcel` service and the `data dictionary` service. Hard coded fields can be found in: 
 
 - `fetchpropertyDetailData()` - function that creates each element in the dom and injects values from the Current Parcels service or calculated values into the inner html. Hard coded fields include:
     - **BCLASS** - used to check if a property is a residential condo or single family/multifamily class. Depending on the class a hyperlink is created to display links to open data defined by the "res_condo_chars_link" and "hist_sf_mf_imp_chars_link" field values in the `data dictionary` service
