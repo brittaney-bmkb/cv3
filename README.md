@@ -137,7 +137,8 @@ Service URLS:
 - Cookviewer translated text general - controls 90% of translation in the app excluding text in the help dialog
 - Cookviewer translated text help - controls translations for all text in the help dialog
 Service URLS:
--**PROD & TEST**: https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/ArcGIS/rest/services/cookviewer_translated_text/FeatureServer | AGO ID: c428e191a8114a4aa41b4fb12b16c998
+- **PROD & TEST**: https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/ArcGIS/rest/services/cookviewer_translated_text/FeatureServer
+    - AGO ITEM: https://cookcountyil.maps.arcgis.com/home/item.html?id=c428e191a8114a4aa41b4fb12b16c998
 
 **Locator Search Sources** - Cookviewer powers the `Search.jsx` component with the CookViewer3Parcels as a layer search source and two locator services as locator search sources
 - Parcel Address Locator: https://gis.cookcountyil.gov/traditional/rest/services/Locator/parcelAddresses/GeocodeServer
