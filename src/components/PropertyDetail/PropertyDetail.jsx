@@ -235,7 +235,7 @@ const propertyDetail = ({property1, property2, propertyColor1, propertyColor2}) 
         ////console.log("muni message ", msg)
 
         if(msg === "Cook County Zone Lookup"){
-            return returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], property?.attributes)
+            return returnHyperlink(data.attributes['hyperlink_text'], data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], data.attributes['field'], property?.attributes)
         }
         else{
             return(
