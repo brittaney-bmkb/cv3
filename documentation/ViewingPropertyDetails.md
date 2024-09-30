@@ -27,7 +27,7 @@ The `PropertyDetail.jsx` component is dependent on 4 data sources defined in con
     - PROD: 
         - SERVICE URL: https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/arcgis/rest/services/cookviewer_data_dictionary/FeatureServer/0| 
         - AGO ITEM: https://cookcountyil.maps.arcgis.com/home/item.html?id=bad878a14eea412abca437a6e1edc89d
-    - TEST: 
+    - TEST: Change made to test service 9/27/2024 to make Property Details Category Order field name match prod
         - SERVICE URL: https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/arcgis/rest/services/cookviewer_data_dictionary_test_data/FeatureServer/0
         - AGO ITEM: https://cookcountyil.maps.arcgis.com/home/item.html?id=d2dd12d8fc874948830636b2ba4b0f72
 
@@ -56,19 +56,19 @@ Optional fields:
 - **credit**: will display credited sources below hyperlinks
 
 ## Conditional & Calculated Values
-Its important to note that as of V3.0.1 specific property details are conditionally displayed or calcualted by referencing specific field values from the `Current Parcel` service and the `data dictionary` service. A number of attribute fields from the `Current Parcels` service and `data dictionary` field values are **hard coded** in the `PropertyDetail.jsx` component, so special care should be applied when customizing both the `Current Parcel` service and the `data dictionary` service. Hard coded fields can be found in: 
+Its important to note that as of V3.0.1 some property details are conditionally displayed or calcualted by referencing specific field values from the `Current Parcel` service and the `data dictionary` service. A number of attribute fields from the `Current Parcels` service and `data dictionary` field values are **hard coded** in the `PropertyDetail.jsx` component, so special care should be applied when customizing both the `Current Parcel` service and the `data dictionary` service. Hard coded fields can be found in: 
 
 - `fetchpropertyDetailData()` - function that creates each element in the dom and injects values from the Current Parcels service or calculated values into the inner html. Hard coded fields include:
     - **BCLASS** - used to check if a property is a residential condo or single family/multifamily class. Depending on the class a hyperlink is created to display links to open data defined by the "res_condo_chars_link" and "hist_sf_mf_imp_chars_link" field values in the `data dictionary` service
     - **tax_school_unified_dist_name** - hides tax_school_unified_dist_name field from the `data dictionary` service if Parcel Current attribute value is null
     - **tax_school_elem_dist_name** - hides tax_school_elem_dist_name field from the `data dictionary` service if Parcel Current attribute value is null
     - **tax_school_sec_dist_name** - hides tax_school_sec_dist_name field from the `data dictionary` service if Parcel Current attribute value is null
-    -**View District Details** - field value from the `data dictionary` service to trigger a button to be created in the Property Detail panel that acts as a bookmark to jump to the District Info section at the bottom of the Property Detail panel
-    -**comparable_properties** - field value from the `data dictionary` service to trigger the `propertyComparison` function to create a button to open the Property Comparison panel
-    -**nearby_properties** - field value from the `data dictionary` service to trigger the `nearbyProperties` function to create a button to open the Nearby Properties panel
-    -**incorp_unincorp_state** - field value from the `data dictionary` service to trigger the `incorp_unincorp` function to perfrom a spatial calculation and diplay the incorporated municipality value or unincorporated value displayed under the Municipality label in the Property Detail panel
-    -**zoning_info** - field value from the `data dictionary` service to trigger the `zoningInfo` function to return the zoning info message under the Zoning Information label in the Property Detail panel
-    -**Any fields that end with "_link"**- On line 361 in the PropertyDetail.jsx component, any field value from the `data dictionary` service that ends with '_link' will trigger the `returnHyperlink` function to parse data from the `hyperlink_text`,  `hyperlink_params` and `hyperlink_url` fields to create a clickable link out to webpage in a new tab 
-    -**credit** - values in the credit field from the `data dictionary` are included below property detail data if values are not null 
+    - **View District Details** - field value from the `data dictionary` service to trigger a button to be created in the Property Detail panel that acts as a bookmark to jump to the District Info section at the bottom of the Property Detail panel
+    - **comparable_properties** - field value from the `data dictionary` service to trigger the `propertyComparison` function to create a button to open the Property Comparison panel
+    - **nearby_properties** - field value from the `data dictionary` service to trigger the `nearbyProperties` function to create a button to open the Nearby Properties panel
+    - **incorp_unincorp_state** - field value from the `data dictionary` service to trigger the `incorp_unincorp` function to perfrom a spatial calculation and diplay the incorporated municipality value or unincorporated value displayed under the Municipality label in the Property Detail panel
+    - **zoning_info** - field value from the `data dictionary` service to trigger the `zoningInfo` function to return the zoning info message under the Zoning Information label in the Property Detail panel
+    - **Any fields that end with "_link"**- On line 361 in the PropertyDetail.jsx component, any field value from the `data dictionary` service that ends with '_link' will trigger the `returnHyperlink` function to parse data from the `hyperlink_text`,  `hyperlink_params` and `hyperlink_url` fields to create a clickable link out to webpage in a new tab 
+    - **credit** - values in the credit field from the `data dictionary` are included below property detail data if values are not null 
 
 
