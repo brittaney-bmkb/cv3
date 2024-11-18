@@ -1,11 +1,16 @@
 export const config = {
     //show alert banner
     showBanner: true,
-    bannerHeader:"Welcome to CookViewer 3.0!",
-    bannerMessage:"We hope you enjoy the modernized user experience. The previous version of CookViewer will still be available for a limited time.",
-    bannerLinkText: "The previous version of CookViewer",
-    bannerLinkHtml:"https://maps.cookcountyil.gov/cookviewerv2/", 
-    bannerColor:"#F0F4F8",
+    // bannerHeader:"Welcome to CookViewer 3.0!",
+    // bannerMessage:"We hope you enjoy the modernized user experience. The previous version of CookViewer will still be available for a limited time.",
+    // bannerLinkText: "The previous version of CookViewer",
+    // bannerLinkHtml:"https://maps.cookcountyil.gov/cookviewerv2/", 
+    // bannerColor:"#F0F4F8",
+    bannerHeader:"Intermittent Downtime",
+    bannerMessage:"CookViewer will have intermittent downtime between November 19 and November 22 due to system updates. Users may experience issues viewing parcels and using CookViewer tools.",
+    // bannerLinkText: "The previous version of CookViewer",
+    // bannerLinkHtml:"https://maps.cookcountyil.gov/cookviewerv2/", 
+    bannerColor:"#edbe1c",
     //IMAGES ROOT DIRECTORY
     image_directory: "https://maps.cookcountyil.gov/files/apps/cookviewer/images",
     //NAVBAR
