@@ -330,6 +330,7 @@ export async function compareProperities(whereQuery, searchDistance, feature, qu
     let featureGeometry = feature[0]?.geometry;
     
     //TODO: TAKE OUT AFTER TESTING
+    //Make sure to take out
     console.log("featureGeometry: ", featureGeometry)
     console.log("feature.geometry: ", feature.geometry)
 
