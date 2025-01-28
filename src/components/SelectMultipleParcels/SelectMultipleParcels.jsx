@@ -205,8 +205,7 @@ const SelectMultipleParcels = () => {
             setSearchParams({})
             
         //}
-        // handleSelectDraw
-        
+
         setActionButtonsVisible(false)
     }
 
