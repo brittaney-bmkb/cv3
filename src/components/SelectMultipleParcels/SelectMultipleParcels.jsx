@@ -193,6 +193,8 @@ const SelectMultipleParcels = () => {
 
         if(polygonGraphicsLayer.current && tool==="draw"){
             polygonGraphicsLayer.current.remove(sketchPolygon)
+            //start new sketch view model create session
+            await createSketchViewModel()
         }
 
         //if(tool==="click"){
@@ -203,7 +205,7 @@ const SelectMultipleParcels = () => {
             setSearchParams({})
             
         //}
-        
+        // handleSelectDraw
         
         setActionButtonsVisible(false)
     }
