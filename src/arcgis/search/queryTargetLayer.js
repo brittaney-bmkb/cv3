@@ -329,10 +329,6 @@ export async function compareProperities(whereQuery, searchDistance, feature, qu
     query.outFields = ["*"]
     let featureGeometry = feature[0]?.geometry;
     
-    //TODO: TAKE OUT AFTER TESTING
-    //Make sure to take out
-    console.log("featureGeometry: ", featureGeometry)
-    console.log("feature.geometry: ", feature.geometry)
 
     if(searchDistance && searchDistance > 0){
         query.geometry = featureGeometry
