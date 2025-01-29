@@ -327,19 +327,20 @@ export async function compareProperities(whereQuery, searchDistance, feature, qu
     query.where = whereQuery
     query.returnGeometry = true
     query.outFields = ["*"]
+    let featureGeometry = feature[0]?.geometry;
+    
 
     if(searchDistance && searchDistance > 0){
-      query.geometry = feature.geometry
-      query.spatialRelationship = "intersects"
-      query.distance = searchDistance
-      query.units = "miles"
-  
+        query.geometry = featureGeometry
+        query.spatialRelationship = "intersects"
+        query.distance = searchDistance
+        query.units = "miles"
     }
 
     let {features} = await targetLayer.queryFeatures(query)
 
     return features
-  }
+    }
 
   export async function nearbyProperties(searchDistance, units, feature, queryFields){
 
