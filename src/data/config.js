@@ -53,7 +53,7 @@ export const config = {
     //LANGUAGES
     defaultLanguage: "english",
     languages:["english","spanish"],
-    language_codes:{"english":"en","spanish":"es"},
+    language_codes:{"english":"en-US","spanish":"es"},
     //APP TRANSLATION TEXT
     translation_text:"https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/ArcGIS/rest/services/cookviewer_translated_text/FeatureServer/1",
     translation_text_help:"https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/ArcGIS/rest/services/cookviewer_translated_text/FeatureServer/4",
