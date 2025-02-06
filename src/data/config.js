@@ -108,6 +108,7 @@ export const config = {
                 minSuggestCharacters: 2, // Minimum characters for search suggestions.
                 outFields: [ "PIN14","PIN10","PIN14_dash"], // IMPORTANT put the field that will be used to perfrom search query as the first item in the array. Fields to return in search results (array of strings).
                 orderByFields: ["PIN14"], // Fields for sorting search results (array of strings).
+                placeholder:"Search by 10 or 14 digit parcel PIN",
                 searchFields: ["PIN10", "PIN14", "PIN14_dash"], // Fields used for searching (array of strings).
                 suggestionsEnabled: true, // Enable/disable suggestions for this search source (boolean).
                 autoNavigate: false, // Automatically navigate to the result on selection (boolean).
@@ -127,6 +128,7 @@ export const config = {
             minSuggestCharacters: 3,
             name: "Parcel Address Locator",
             outFields:["street_address","city_state_zip","UnitName"],
+            placeholder:"Search by parcel address",
             popupEnabled: false,
             singleLineFieldName:"SingleLine",
             suggestionsEnabled:true,
@@ -140,6 +142,7 @@ export const config = {
             minSuggestCharacters: 3,
             name: "Address Locator",
             outFields:["StAddr", "City", "Postal","UnitName"],
+            placeholder:"Search by street address",
             popupEnabled: false,
             singleLineFieldName:"SingleLine",
             suggestionsEnabled:true,
