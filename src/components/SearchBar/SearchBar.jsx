@@ -243,13 +243,20 @@ const SearchBar = () => {
         }
 
         //update layer names of search sources
-        let updatedSearchSources = searchSources.map(searchSource => {
+        let updatedSearchSources = searchSources?.map(searchSource => {
             console.log("translating search source layer name:", searchSource.name)
-            searchSource.name = translateText(searchSource.name)
+            let translatedName = translateText(searchSource.name)
+            searchSource.name = translatedName
+            console.log("updated search source name: ", translatedName)
 
             return searchSource
         })
-        console.log("updated search sources: ", updatedSearchSources)
+        
+
+        if(updatedSearchSources){
+            searchWidget.current.searchSources = updatedSearchSources
+        }
+        
 
     },[searchWidget, language])
 
