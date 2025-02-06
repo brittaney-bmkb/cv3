@@ -331,12 +331,22 @@ export const AppProvider = ({children}) => {
     }
 
     const translateSearchSources = async (searchSources) => {
+
+        //const {language, textTranslationDictionary} = state
+
+        //console.log("translated text:" , textTranslationDictionary)
         // Wait for all translations to complete using Promise.all
         await Promise.all(searchSources?.map(async (searchSource) => {
             console.log("translating search source layer name:", searchSource.name);
-            let translatedName = await translateText(searchSource.name);  // Assuming translateText returns a Promise
+            let translatedName = await translateText(searchSource.name);    
             searchSource.name = translatedName;
             console.log("updated search source name: ", translatedName);
+
+            console.log("original placeholder: ", searchSource.placeholder)
+            let translatedPlaceholder = await translateText(searchSource.placeholder, true)
+            console.log("translated placeholder: ", translatedPlaceholder)
+            searchSource.placeholder = translatedPlaceholder;
+            
     
             return searchSource;
         }));
