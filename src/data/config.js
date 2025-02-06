@@ -100,7 +100,7 @@ export const config = {
            },
            searchSources: [
             {
-                name: "Parcel Pin", // Name of the search source.
+                name: "Parcel PIN", // Name of the search source.
                 displayField: "PIN14_dash", // Field used for displaying search suggestions.
                 exactMatch: false, // Exact match search (boolean).
                 maxResults: 1000, // Maximum number of search results.
