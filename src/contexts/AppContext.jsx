@@ -344,8 +344,16 @@ export const AppProvider = ({children}) => {
     }
 
     const arrayAllSame = (array) => {
+
+        if (array.every(value => value === null)) {
+            return false;
+        }    
+
+        // Filter out null values from the array
+        const filteredArray = array.filter(value => value !== null);
+
         // Use the every method to check if all elements are strictly equal to the previous element
-        return array.every((value, index, arr) => index === 0 || value === arr[index - 1]);
+        return filteredArray?.every((value, index, arr) => index === 0 || value === arr[index - 1]);
     }
 
     const attributesStartWithString = (array, attributeName, prefix) => {
