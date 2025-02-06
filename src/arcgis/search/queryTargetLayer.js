@@ -116,8 +116,8 @@ export const handleMultipleResults = async (results) => {
         let features = []
         console.log("search features: ", searchFeatures)
 
-        let parcelLocatorResults = searchFeatures.filter(feature => feature[1] !== "Address Locator")
-        let addressLocatorResults = searchFeatures.filter(feature => feature[1] === "Address Locator")
+        let parcelLocatorResults = searchFeatures.filter(feature => !isAddressLocator(feature[1]))
+        let addressLocatorResults = searchFeatures.filter(feature => isAddressLocator(feature[1]))
 
         if(parcelLocatorResults?.length > 0){
             let parcelLocatorFeaturesOnly = await queryTargetLayerByAddress(parcelLocatorResults)
@@ -179,6 +179,10 @@ const queryTargetLayerByAddress = async (searchFeatures) => {
     
 }
 
+const isAddressLocator = (searchFeature) => {
+    return searchFeature === "Address Locator"  || searchFeature === "Localizador de Direcciones"
+}
+
 export const queryTargetLayerWithPointFeatures = async (searchFeatures) => {
     //let points = Array.isArray(pointFeatures) ? pointFeatures : [pointFeatures]
 
@@ -188,7 +192,8 @@ export const queryTargetLayerWithPointFeatures = async (searchFeatures) => {
 
     await Promise.all(searchFeatures.map(async (searchFeature) => {
 
-        let includeBuffer = searchFeature[1] === "Address Locator"  | searchFeature[1] === "Localizador de Direcciones" ? true : false
+        let addressLocator = isAddressLocator(searchFeature[1])
+        let includeBuffer =  addressLocator ? true : false
         let point = searchFeature[0]
 
         const query = new Query();
