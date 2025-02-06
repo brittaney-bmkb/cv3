@@ -754,7 +754,7 @@ export const AppProvider = ({children}) => {
     //in use [v3.0.0-beta.2]
     const returnSearchResultFeatures = async (results, newSearchTerm) => {
 
-        const { handleMultipleResults } = await import('../arcgis/search/queryTargetLayer')
+        const { handleMultipleResults, isAddressLocator } = await import('../arcgis/search/queryTargetLayer')
         const { returnBufferGeometry } = await import('../arcgis/geoprocessing/geoprocessing')
     
         //console.log("Performing new target layer query")
@@ -776,7 +776,7 @@ export const AppProvider = ({children}) => {
         //if results include Address Locator source
         //update state of searchBuffer and pass point geometries
         
-        const addressLocatorResultGeometry = results.filter(result => result.source.name === "Address Locator")
+        const addressLocatorResultGeometry = results.filter(result => isAddressLocator(result.source.name))
                                              .flatMap(filteredResults => filteredResults.results)
                                              .map(flattenedResults => flattenedResults.feature.geometry)
         
