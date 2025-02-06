@@ -242,6 +242,15 @@ const SearchBar = () => {
             searchWidget.current.allPlaceholder = translateText('Search by address, pin, or intersection')
         }
 
+        //update layer names of search sources
+        let updatedSearchSources = searchSources.map(searchSource => {
+            console.log("translating search source layer name:", searchSource.name)
+            searchSource.name = translateText(searchSource.name)
+
+            return searchSource
+        })
+        console.log("updated search sources: ", updatedSearchSources)
+
     },[searchWidget, language])
 
     return(
