@@ -179,7 +179,7 @@ const queryTargetLayerByAddress = async (searchFeatures) => {
     
 }
 
-const isAddressLocator = (searchFeature) => {
+export const isAddressLocator = (searchFeature) => {
     return searchFeature === "Address Locator"  || searchFeature === "Localizador de Direcciones"
 }
 
@@ -193,6 +193,7 @@ export const queryTargetLayerWithPointFeatures = async (searchFeatures) => {
     await Promise.all(searchFeatures.map(async (searchFeature) => {
 
         let addressLocator = isAddressLocator(searchFeature[1])
+        console.log("is address locator: ", addressLocator)
         let includeBuffer =  addressLocator ? true : false
         let point = searchFeature[0]
 
