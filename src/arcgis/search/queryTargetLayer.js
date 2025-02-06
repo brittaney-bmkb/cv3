@@ -188,7 +188,7 @@ export const queryTargetLayerWithPointFeatures = async (searchFeatures) => {
 
     await Promise.all(searchFeatures.map(async (searchFeature) => {
 
-        let includeBuffer = searchFeature[1] === "Address Locator" ? true : false
+        let includeBuffer = searchFeature[1] === "Address Locator"  | searchFeature[1] === "Localizador de Direcciones" ? true : false
         let point = searchFeature[0]
 
         const query = new Query();
