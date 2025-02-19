@@ -404,44 +404,45 @@ export const AppProvider = ({children}) => {
                 param = {"pin14": paramValue}
             }
             else if(isMultiFeatures === true && pin10Match === false){
+                //Milestone 3.0.2 update removing address url param
                 // && pinsStringSimilar === false
                 //if there are multple features and pin10s do not match and pin14 dash are not the same
-                if(addressMatch === true){
-                    //if addresses are the same
-                    //console.log("addresses match")
-                    paramValue = attributes["street_address"]
-                    param = {"address": paramValue}
-                }
-                else{
-                    //if addresses and pin10 does not match
-                    //placing location param with list of pins
-                    //paramValue = `${x},${y}`
-                    //param = {"location": paramValue}
+                // if(addressMatch === true){
+                //     //if addresses are the same
+                //     //console.log("addresses match")
+                //     paramValue = attributes["street_address"]
+                //     param = {"address": paramValue}
+                // }
+                // else{
+                //if addresses and pin10 does not match
+                //placing location param with list of pins
+                //paramValue = `${x},${y}`
+                //param = {"location": paramValue}
 
-                    //get list of all unique pins
-                    //check if any pin10 are the same and filter out pin14s
-                    //that start with pin10
-                    let pin14s = features.map(feature => feature.attributes['PIN14'])
-                    // let pin10Unique = [...new Set(pin10s)]
-                    ////console.log("Location Param - Unique pin10s: ", pin10Unique)
-                    let pin10Dups = await extractDuplicates(features, "PIN10")
-                    ////console.log("Location Param - Duplicate pin14s: ", pin14s)
-                    ////console.log("Location Param - Duplicate pin10s: ", pin10Dups)
-                    
-                    // Filter out PIN14 values that start with any values in pin10Dups
-                    let filteredPin14s = pin14s.filter(pin14 => !pin10Dups.some(pin10Dup => pin14.startsWith(pin10Dup)));
-                    ////console.log("Location Param - Filtered pin14s: ", filteredPin14s);
-                    let paramPins = [...filteredPin14s, ...pin10Dups]
-                    //console.log("Final list of url params = ", paramPins)
+                //get list of all unique pins
+                //check if any pin10 are the same and filter out pin14s
+                //that start with pin10
+                let pin14s = features.map(feature => feature.attributes['PIN14'])
+                // let pin10Unique = [...new Set(pin10s)]
+                ////console.log("Location Param - Unique pin10s: ", pin10Unique)
+                let pin10Dups = await extractDuplicates(features, "PIN10")
+                ////console.log("Location Param - Duplicate pin14s: ", pin14s)
+                ////console.log("Location Param - Duplicate pin10s: ", pin10Dups)
+                
+                // Filter out PIN14 values that start with any values in pin10Dups
+                let filteredPin14s = pin14s.filter(pin14 => !pin10Dups.some(pin10Dup => pin14.startsWith(pin10Dup)));
+                ////console.log("Location Param - Filtered pin14s: ", filteredPin14s);
+                let paramPins = [...filteredPin14s, ...pin10Dups]
+                //console.log("Final list of url params = ", paramPins)
 
-                    paramValue = paramPins
-                    if(pin10Dups?.length > 0){
-                        param["pin10"] = `'${pin10Dups.join("','")}'`
-                    }
-                    if(filteredPin14s?.length){
-                        param["pin14"] = `'${filteredPin14s.join("','")}'`
-                    }
+                paramValue = paramPins
+                if(pin10Dups?.length > 0){
+                    param["pin10"] = `'${pin10Dups.join("','")}'`
                 }
+                if(filteredPin14s?.length){
+                    param["pin14"] = `'${filteredPin14s.join("','")}'`
+                }
+                //}
             }
             else if(isMultiFeatures === true && pin10Match === true){
                 //paramValue = attributes["PIN10"]
