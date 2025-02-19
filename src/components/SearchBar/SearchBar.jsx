@@ -4,6 +4,7 @@ import Search from "@arcgis/core/widgets/Search.js";
 import UseAppContext from "../../contexts/AppContext";
 import { useEffect, useRef, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom"
+import { config } from "../../data/config";
 
 const arrayAllSame = (array) => {
     // Use the every method to check if all elements are strictly equal to the previous element
@@ -35,6 +36,11 @@ const extractDuplicates = async (array, attributeName) => {
 
   }
 
+
+  const deepCopyArray = (arr) => {
+    return JSON.parse(JSON.stringify(arr));
+  };
+
 const SearchBar = () => {
 
     const {
@@ -56,7 +62,7 @@ const SearchBar = () => {
         searchFeatures,
         anyAttributesIncluded,
         setIsQuerying,
-        panelDisplay
+        panelDisplay,
      } = UseAppContext()
 
     //get url parameters
@@ -237,10 +243,19 @@ const SearchBar = () => {
 
 
     useEffect(() => {
-
+        
+        const updateSearchText = async () => {
         if(searchWidget.current){
             searchWidget.current.allPlaceholder = translateText('Search by address, pin, or intersection')
+            let updatedSearchSources = await initalizeSearchSources()
+            searchWidget.current.sources = updatedSearchSources
+            
         }
+    }
+        
+
+        updateSearchText()
+        
 
     },[searchWidget, language])
 

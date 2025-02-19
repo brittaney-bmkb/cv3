@@ -330,6 +330,34 @@ export const AppProvider = ({children}) => {
         
     }
 
+    const translateSearchSources = async (searchSources) => {
+
+        //const {language, textTranslationDictionary} = state
+
+        //console.log("translated text:" , textTranslationDictionary)
+        // Wait for all translations to complete using Promise.all
+        await Promise.all(searchSources?.map(async (searchSource) => {
+            console.log("translating search source layer name:", searchSource.name);
+            let translatedName = await translateText(searchSource.name);    
+            searchSource.name = translatedName;
+            console.log("updated search source name: ", translatedName);
+
+            console.log("original placeholder: ", searchSource.placeholder)
+            let translatedPlaceholder = await translateText(searchSource.placeholder, true)
+            console.log("translated placeholder: ", translatedPlaceholder)
+            searchSource.placeholder = translatedPlaceholder;
+            
+    
+            return searchSource;
+        }));
+    
+        // Everything below this code will wait for the loop to finish
+        console.log("Translation complete. Now continuing with other operations...");
+        // Any other code you want to run after the loop
+
+        return searchSources
+    }
+
     const initalizeSearchSources = async () => {
             
         const { createSearchSources } = await import('../arcgis/search/searchSources')
@@ -339,8 +367,17 @@ export const AppProvider = ({children}) => {
         await initalizeLayers()
         
         let searchSources = await createSearchSources()
+
+        console.log("original search sources: ", searchSources)
+
+        //handle text translation
+       let updatedSearchSources =  await translateSearchSources(searchSources)
+
+       console.log("updated search sources: ", updatedSearchSources)
     
-        await setSearchSources(searchSources)
+        await setSearchSources(updatedSearchSources)
+
+        return updatedSearchSources
     }
 
     const arrayAllSame = (array) => {
@@ -726,7 +763,7 @@ export const AppProvider = ({children}) => {
     //in use [v3.0.0-beta.2]
     const returnSearchResultFeatures = async (results, newSearchTerm) => {
 
-        const { handleMultipleResults } = await import('../arcgis/search/queryTargetLayer')
+        const { handleMultipleResults, isAddressLocator } = await import('../arcgis/search/queryTargetLayer')
         const { returnBufferGeometry } = await import('../arcgis/geoprocessing/geoprocessing')
     
         //console.log("Performing new target layer query")
@@ -748,7 +785,7 @@ export const AppProvider = ({children}) => {
         //if results include Address Locator source
         //update state of searchBuffer and pass point geometries
         
-        const addressLocatorResultGeometry = results.filter(result => result.source.name === "Address Locator")
+        const addressLocatorResultGeometry = results.filter(result => isAddressLocator(result.source.name))
                                              .flatMap(filteredResults => filteredResults.results)
                                              .map(flattenedResults => flattenedResults.feature.geometry)
         
