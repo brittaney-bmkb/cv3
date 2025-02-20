@@ -285,7 +285,7 @@ const PanelContent = ({display}) => {
                 minHeight={0} 
                 flexGrow={1}>
                     <PanelHeader
-                    text="Basemaps" 
+                    text="Aerial Imagery" 
                     closeButton={true}
                     panel={"widget"}
                     descriptionText="Select a basemap from the options below to update the map"

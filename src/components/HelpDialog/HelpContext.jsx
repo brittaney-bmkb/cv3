@@ -448,7 +448,7 @@ const HelpContent = ({display}) => {
                 <Box>
                     <DialogTitle>
                         <Typography variant="h2" color={theme.main.text.dark} > 
-                        {translateText("help_basemaps_title")}
+                        {translateText("Aerial Imagery")}
                         {/* Basemaps  */}
                         </Typography>
                     </DialogTitle>
