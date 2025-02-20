@@ -61,7 +61,7 @@ This would display the overview section of the help content.
   4. Compare Properties
   5. Measure
   6. Layers
-  7. Basemaps
+  7. Aerial Imagery (Basemaps)
   8. Print
   9. Clear, Export, and Feedback
 - Images are used to illustrate various features and are enlargeable through a modal view.
