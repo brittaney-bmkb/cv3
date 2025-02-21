@@ -103,10 +103,104 @@ const Info = () => {
                     {translateText("Whats New?")}
                 </Typography>
             </Box>
+            {/* CookViewer 3.0.2 */}
+            <Accordion
+            defaultExpanded
+            square={true}
+            >
+            <AccordionSummary
+            expandIcon={<ExpandMore/>}
+            >   
+            <Stack gap={1}>
+                <Typography
+                variant="body2"
+                >
+                    {translateText("CookViewer 3.0.2")}
+                </Typography>
+                <Typography>
+                    {translateText("Release: September 20 2025", true)}
+                </Typography>
+            </Stack>
+                
+            </AccordionSummary>
+            <AccordionDetails>
+            <Stack gap={2}>
+                    <Typography
+                    variant="body2"
+                    >
+                        {translateText("Enhancements")}
+                    </Typography>
+                    <Stack gap={1}>
+                    <Typography variant="body1">
+                        <span style={{ 
+                            fontWeight: 600,
+                            fontSize:14
+                            }}>{translateText("Unincorporated Zoning Layer")} - </span>
+                        {translateText("he Unincorporated Zoning layer is now viewable for more zoom levels.")}
+                    </Typography>
+
+
+                    </Stack>
+                    <Typography
+                    variant="body2"
+                    >
+                        {translateText("Bug Fixes")}
+                    </Typography>
+                    <Stack gap={1}>
+                    <Typography variant="body1">
+                        <span style={{ 
+                            fontWeight: 600,
+                            fontSize:14
+                            }}>{translateText("Missing Translations")} - </span>
+                        {translateText("Spanish translations are now enabled for the search bar, including search sources and placeholder text.")}
+                    </Typography>
+                    <Typography variant="body1">
+                        <span style={{ 
+                            fontWeight: 600,
+                            fontSize:14
+                            }}>{translateText("URL Parameter Fix")} - </span>
+                        {translateText("Search results now correctly generate pin10 and/or pin14 values in the application URL, allowing users to save search settings and return to their results. Previously, multiple parcel searches could return address=0 when parcel address data was unavailable, preventing users from navigating back to their search results.")}
+                    </Typography>
+                    <Typography variant="body1">
+                        <span style={{ 
+                            fontWeight: 600,
+                            fontSize:14
+                            }}>{translateText("Select Multiple Parcels")} - </span>
+                        {translateText("Draw polygon tool “start new” button now triggers a restart.")}
+                    </Typography>
+                    <Typography variant="body1">
+                        <span style={{ 
+                            fontWeight: 600,
+                            fontSize:14
+                            }}>{translateText("Comparable Search")} - </span>
+                        {translateText("Search radius option will now filter results based on distance set by the user. Prior to this fix, the search distance set by the user was not impacting the number of results.")}
+                    </Typography>
+                    </Stack>
+                    
+
+                    <Typography
+                    variant="body2"
+                    >
+                        {`${translateText("Read detailed ")} `}
+                        <span>
+                            <Link
+                            target="_blank"
+                            rel="noopener"
+                            href="https://cookviewer3-info-cookcountyil.hub.arcgis.com/"
+                            aria-label={translateText("Read more detailed release notes.")} 
+                            >
+                                {translateText("release notes.") }
+                            </Link>
+                        </span>
+
+                    </Typography>
+
+                </Stack>
+            </AccordionDetails>
+            </Accordion> 
 
             {/* CookViewer 3.0.1 */}
             <Accordion
-            defaultExpanded
             square={true}
             >
             <AccordionSummary
