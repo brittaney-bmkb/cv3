@@ -136,7 +136,7 @@ const Info = () => {
                             fontWeight: 600,
                             fontSize:14
                             }}>{translateText("Unincorporated Zoning Layer")} - </span>
-                        {translateText("he Unincorporated Zoning layer is now viewable for more zoom levels.")}
+                        {translateText("The Unincorporated Zoning layer is now viewable for more zoom levels.")}
                     </Typography>
 
 
