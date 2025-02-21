@@ -81,7 +81,7 @@ const MapButtonGroup = () => {
             <StyledButtonFilledPrimary text={translateText("Select Multiple Parcels")}  startIcon={<CalciteIcon icon="add-in-new"/>} onClick={ () => {handleClick('select')}}  textVarient="subTitle1" />
             <StyledButtonFilledPrimary text={translateText("Measure")}  startIcon={<StraightenIcon/>} onClick={ () => {handleClick('measureWidget')}}  textVarient="subTitle1" />
             <StyledButtonFilledPrimary text={translateText("Layers")}   startIcon={<LayersOutlinedIcon/>} onClick={ () => {handleClick('layersWidget')} }  textVarient="subTitle1" />
-            <StyledButtonFilledPrimary text={translateText("Basemaps")} startIcon={<GridViewIcon/>}  onClick={ () => {handleClick('basemapsWidget')} }  textVarient="subTitle1" />
+            <StyledButtonFilledPrimary text={translateText("Aerial Imagery")} startIcon={<GridViewIcon/>}  onClick={ () => {handleClick('basemapsWidget')} }  textVarient="subTitle1" />
             <StyledButtonFilledPrimary text={translateText("Print")}    startIcon={<LocalPrintshopIcon/>} onClick={ () => {handleClick('printWidget')} }  textVarient="subTitle1" />           
             </Box>
             }

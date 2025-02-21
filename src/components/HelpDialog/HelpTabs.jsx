@@ -66,7 +66,7 @@ const HelpTabs = () => {
                     <Tab label={translateText("Compare Properties")} sx={{ textTransform: "none" }} {...a11yProps(4)} wrapped />
                     <Tab label={translateText("Measure")} sx={{ textTransform: "none" }} {...a11yProps(5)} />
                     <Tab label={translateText("Layers")} sx={{ textTransform: "none" }} {...a11yProps(6)} />
-                    <Tab label={translateText("Basemaps")} sx={{ textTransform: "none" }} {...a11yProps(7)} />
+                    <Tab label={translateText("Aerial Imagery")} sx={{ textTransform: "none" }} {...a11yProps(7)} />
                     <Tab label={translateText("Print")} sx={{ textTransform: "none" }} {...a11yProps(8)} />
                     <Tab label={translateText("Clear, Export, Feedback")} sx={{ textTransform: "none" }} {...a11yProps(9)} />
                 
