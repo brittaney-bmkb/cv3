@@ -5,6 +5,13 @@
 The `Search` component is a React component designed to integrate and manage a search widget within a mapping application. It utilizes the ArcGIS API for JavaScript `SearchWidget` to provide a powerful and customizable search functionality for users interacting with the map.
 
 ### Change Log
+## [v3.0.2] - 2025-02-26
+
+### Changed
+- the `updateSearchText` function now executes the `initalizeSearchSources` function and passes an updated object of search sources to the sources property of the searchWidget when the language changes in the app. This allows the search source names and placeholder text to be replaced with English or Spanish translations depending on the user language selection.
+
+
+### Change Log
 ## [v3.0.0-beta.2] - 2024-04-25
 
 ### Changed
