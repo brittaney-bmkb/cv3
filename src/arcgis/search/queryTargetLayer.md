@@ -1,4 +1,15 @@
-### Functions Documentation
+**Functions Documentation: queryTargetLayer**
+
+### Overview
+
+The `queryTargetLayer` script contains a series of functions designed to query, format, and return search results after a user completes a search using the ArcGIS Search widget.
+
+### Change Log
+## [v3.0.2] - 2025-02-26
+
+### Changed
+- the `isAddressLocator` function was added to account for translations to the search source names when identifying the source of search results. The function accepts the search source value and checks if it is equal to `Address Locator` or `Localizador de Direcciones`. 
+  - this function is called in the `handleMultipleResults` & and `queryTargetLayerWithPointFeatures` function to determine if a buffer will be used to select nearby parcels
 
 #### `isTargetLayer(layerUrl)`
 - **Description**: Checks if the provided layer URL matches the target layer URL defined in the configuration.
