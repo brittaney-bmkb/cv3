@@ -306,9 +306,10 @@ export const AppProvider = ({children}) => {
         })
     }
 
-
-
-
+    /**
+     * Initializes the map by setting up the map container, search sources,
+     * and zooming to the appropriate extent based on selected features.
+     */
 
     const loadMap = async () => {
 
@@ -330,6 +331,11 @@ export const AppProvider = ({children}) => {
         
     }
 
+    /**
+     * Translates search source names and placeholders into the current language.
+     * @param {Array} searchSources - List of search source objects to translate.
+     * @returns {Promise<Array>} - The updated search sources with translated names.
+     */
     const translateSearchSources = async (searchSources) => {
 
         //const {language, textTranslationDictionary} = state
@@ -358,6 +364,10 @@ export const AppProvider = ({children}) => {
         return searchSources
     }
 
+    /**
+     * Initializes search sources by creating them and applying translations.
+     * @returns {Promise<Array>} - The updated and translated search sources.
+     */
     const initalizeSearchSources = async () => {
             
         const { createSearchSources } = await import('../arcgis/search/searchSources')
@@ -380,6 +390,11 @@ export const AppProvider = ({children}) => {
         return updatedSearchSources
     }
 
+    /**
+     * Checks if all elements in an array are the same, ignoring null values.
+     * @param {Array} array - The array to check.
+     * @returns {boolean} - True if all non-null elements are the same, false otherwise.
+     */
     const arrayAllSame = (array) => {
 
         if (array.every(value => value === null)) {
@@ -393,12 +408,26 @@ export const AppProvider = ({children}) => {
         return filteredArray?.every((value, index, arr) => index === 0 || value === arr[index - 1]);
     }
 
+    /**
+     * Determines if all objects in an array have an attribute starting with a given prefix.
+     * @param {Array} array - The array of objects.
+     * @param {string} attributeName - The attribute to check.
+     * @param {string} prefix - The prefix to check for.
+     * @returns {boolean} - True if all attributes start with the prefix, false otherwise.
+     */
+
     const attributesStartWithString = (array, attributeName, prefix) => {
         // Use the every method to check if all attributes start with the specified string
         //console.log(`checking if features ${attributeName} startswith: ${prefix}` )
         return array.every(obj => obj.attributes[attributeName].startsWith(prefix));
       };
 
+    /**
+     * Extracts duplicate values of a specified attribute from an array of objects.
+     * @param {Array} array - The array of objects.
+     * @param {string} attributeName - The attribute to check for duplicates.
+     * @returns {Promise<Array>} - An array of duplicate values.
+     */
     const extractDuplicates = async (array, attributeName) => {
     // Step 1: Extract PIN10 values
     let values = array.map(feature => feature.attributes[attributeName]);
@@ -418,6 +447,11 @@ export const AppProvider = ({children}) => {
     
     }
 
+    /**
+     * Returns search parameters based on the selected primary result feature.
+     * @param {Object|Array} primaryResultFeature - The selected feature(s).
+     * @returns {Promise<Object>} - The search parameters.
+     */
     const returnSearchParam = async (primaryResultFeature) => {
 
         let features = Array.isArray(primaryResultFeature) ? primaryResultFeature : [primaryResultFeature]
@@ -496,7 +530,10 @@ export const AppProvider = ({children}) => {
         return  param
     }
 
-
+    /**
+     * Queries parcels based on a given polygon and updates search results.
+     * @param {Object} polygon - The polygon geometry used for querying.
+     */
     const queryPolygon = async (polygon) => {
 
         const { panelDisplay, panelPrimaryVisible } = state
@@ -526,6 +563,10 @@ export const AppProvider = ({children}) => {
     }
 
 
+    /**
+     * Queries parcels based on a map click point.
+     * @param {Object} point - The point geometry from the map click.
+     */
     //Function to query parcels based on mouse click point
     //in use [v3.0.0-beta.2]
     const queryMapPoint = async (point) => {
@@ -622,6 +663,10 @@ export const AppProvider = ({children}) => {
 
     }
 
+    /**
+     * Queries parcel features based on coordinates.
+     * @param {Object} coordinates - The x/y coordinates.
+     */
     //Function to return parcel features using x/x coordinates
     //in use [v3.0.0-beta.2]
     //deprecated in [v3.0.0-beta-3]
@@ -647,6 +692,12 @@ export const AppProvider = ({children}) => {
         }
     }
 
+    /**
+     * Queries features based on PIN10 and PIN14 values.
+     * @param {string} pin10 - The PIN10 value.
+     * @param {string} pin14 - The PIN14 value.
+     * @returns {Promise<Array>} - The queried features.
+     */
     const returnFeaturesByPin10Pin14 = async (pin10, pin14) => {
 
         const { queryTargeLayerWithPin10Pin14 } = await import("../arcgis/search/queryTargetLayer")
@@ -669,6 +720,12 @@ export const AppProvider = ({children}) => {
         return features
     }
 
+    /**
+     * Checks if any properties in one array have attributes['PIN14'] matching another array.
+     * @param {Array} array1 - First array of objects.
+     * @param {Array} array2 - Second array of objects.
+     * @returns {boolean} - True if any match is found, false otherwise.
+     */
     // Function to check if any properties attributes['PIN14'] are included in another array of objects
     const anyAttributesIncluded = (array1, array2) => {
         // Extract the attributes['PIN14'] values from the first array
@@ -712,6 +769,11 @@ export const AppProvider = ({children}) => {
         return queryFields
     }
 
+    /**
+     * Selects the result from the list based on the provided result and updates the state.
+     * @param {string} result - The identifier for the result to be selected.
+     * @returns {void} - No return value.
+     */
     const selectResultFromList = async (result) => {
         //console.log("Result PIN : ", result)
         const { searchFeatures, searchTerm, prevSearchFeatures } = state
@@ -732,6 +794,11 @@ export const AppProvider = ({children}) => {
         // createGraphic(selectedFeature, "primary", theme.palette.primary.main)
     }
 
+
+    /**
+     * Adds a secondary feature to the map and updates the map's extent.
+     * @returns {void} - No return value.
+     */
     const addSecondaryFeatureToMap = async () => {
         const { secondaryResultFeature, primaryResultFeature, comparableParcels } = state
 
@@ -751,6 +818,12 @@ export const AppProvider = ({children}) => {
         zoomToExtent([secondaryResultFeature, primaryResultFeature])
     }
 
+
+    /**
+     * Toggles the visibility of a map layer.
+     * @param {string} layerName - The name of the layer to toggle.
+     * @returns {void} - No return value.
+     */
     const toggleMapLayer = async (layerName) => {
 
         //update graphic in map
@@ -759,6 +832,13 @@ export const AppProvider = ({children}) => {
         toggleLayer(layerName)
     }
 
+
+    /**
+     * Returns comparable parcel features based on the provided results and search term.
+     * @param {Array} results - Array of results to be used for comparison.
+     * @param {string} newSearchTerm - The new search term to use for filtering results.
+     * @returns {void} - No return value.
+     */
     //Function to return comparable parcel features
     //in use [v3.0.0-beta.2]
     const returnSearchResultFeatures = async (results, newSearchTerm) => {
@@ -802,6 +882,11 @@ export const AppProvider = ({children}) => {
 
     }
 
+    /**
+     * Renders search results on the map based on the widget results.
+     * @param {Array} searchWidgetResults - Array of search results from the widget.
+     * @returns {void} - No return value.
+     */
     const renderSearchResults = async (searchWidgetResults) => {
 
         //console.log("FUNCTION: renderSearchResults" )
@@ -832,6 +917,10 @@ export const AppProvider = ({children}) => {
         
     }
 
+    /**
+     * Clears all search results, graphics, and resets relevant states.
+     * @returns {void} - No return value.
+     */
     const clearResults = async () => {
         //const { removeGraphics } = await import('../arcgis/webmap/webmap')
         
@@ -861,6 +950,10 @@ export const AppProvider = ({children}) => {
         //setIsQuerying(false)
     }
 
+    /**
+     * Clears comparable results and resets secondary panel visibility.
+     * @returns {void} - No return value.
+     */
     const clearResultsComparables = async () => {
         //const { removeGraphics } = await import('../arcgis/webmap/webmap')
 
@@ -873,6 +966,12 @@ export const AppProvider = ({children}) => {
        
     }
 
+    /**
+     * Searches for comparable properties within a specified query and distance.
+     * @param {string} whereQuery - The query to filter comparable properties.
+     * @param {number} searchDistance - The distance for searching comparable properties.
+     * @returns {void} - No return value.
+     */
     //Function to return comparable parcel features
     //in use [v3.0.0-beta.2]
     const searchComparableProperties = async (whereQuery, searchDistance) => {
@@ -897,6 +996,12 @@ export const AppProvider = ({children}) => {
         }
     }
 
+    /**
+     * Searches for nearby properties within a specified distance and unit.
+     * @param {number} searchDistance - The distance to search for nearby properties.
+     * @param {string} units - The units of measurement for the search distance.
+     * @returns {void} - No return value.
+     */
     //Function to return nearby parcel features
     //in use [v3.0.0-beta.2]
     const searchNearbyProperties = async (searchDistance, units) => {
@@ -912,6 +1017,12 @@ export const AppProvider = ({children}) => {
         setIsQuerying(false)
     }
 
+    /**
+     * Translates the given text into the specified language using the translation dictionary.
+     * @param {string} text - The text to translate.
+     * @param {number} skipNum - The flag to skip number translation if necessary.
+     * @returns {string} - The translated text.
+     */
     const translateText = (text, skipNum) => {
 
         const {language, textTranslationDictionary} = state
