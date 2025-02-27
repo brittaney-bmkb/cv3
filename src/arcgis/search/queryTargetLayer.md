@@ -10,6 +10,7 @@ The `queryTargetLayer` script contains a series of functions designed to query, 
 ### Changed
 - the `isAddressLocator` function was added to account for translations to the search source names when identifying the source of search results. The function accepts the search source value and checks if it is equal to `Address Locator` or `Localizador de Direcciones`. 
   - this function is called in the `handleMultipleResults` & and `queryTargetLayerWithPointFeatures` function to determine if a buffer will be used to select nearby parcels
+  - this change was part of a fix for (issue #260)[https://github.com/CCGOVBOT/app-cookviewer-3/issues/260]
 
 #### `isTargetLayer(layerUrl)`
 - **Description**: Checks if the provided layer URL matches the target layer URL defined in the configuration.
