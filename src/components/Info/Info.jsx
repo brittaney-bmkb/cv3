@@ -1,7 +1,7 @@
 import { Accordion, AccordionDetails, AccordionSummary, Box, Link, Stack, Typography } from "@mui/material"
 import UseAppContext from "../../contexts/AppContext"
 import { ExpandMore, Search, SelectAllOutlined } from "@mui/icons-material"
-import { CalciteIcon } from "@esri/calcite-components-react"
+// import { CalciteIcon } from "@esri/calcite-components-react"
 import { theme } from "../../theme"
 
 const Info = () => {
@@ -42,7 +42,7 @@ const Info = () => {
                 id="select"
                 direction="row" 
                 gap={1}>
-                    <CalciteIcon icon="select" scale="m"/>
+                    {/* <CalciteIcon icon="select" scale="m"/> */}
                     <Stack>
                     <Typography
                     variant="body2"
@@ -82,7 +82,7 @@ const Info = () => {
                 direction="row" 
                 gap={1}>
 
-                    <CalciteIcon icon="add-in-new" scale="m"/>
+                    {/* <CalciteIcon icon="add-in-new" scale="m"/> */}
 
                     {/* <Search/> */}
                     <Stack>
