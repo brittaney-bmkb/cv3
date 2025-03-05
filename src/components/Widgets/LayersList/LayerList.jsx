@@ -1,4 +1,4 @@
-import { ArcgisLayerList } from "@arcgis/map-components-react"
+// import { ArcgisLayerList } from "@arcgis/map-components-react"
 import { useEffect, useRef } from "react"
 import UseAppContext from "../../../contexts/AppContext"
 
@@ -24,16 +24,17 @@ const LayerList = () => {
     }, [layerListRef, mapView])
 
     return(
-        <ArcgisLayerList
-        ref={layerListRef}
-        visibilityAppearance="checkbox"
-        dragEnabled={true}
-        visibleElementsStatusIndicators={false}
-        listItemCreatedFunction = { (event) => {
-            const item = event.item
-            item.title = translateText(item.title)
-        }}
-        />
+        <></>
+        // <ArcgisLayerList
+        // ref={layerListRef}
+        // visibilityAppearance="checkbox"
+        // dragEnabled={true}
+        // visibleElementsStatusIndicators={false}
+        // listItemCreatedFunction = { (event) => {
+        //     const item = event.item
+        //     item.title = translateText(item.title)
+        // }}
+        // />
     )
 
 }

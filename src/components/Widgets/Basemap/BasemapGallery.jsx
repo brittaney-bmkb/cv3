@@ -1,9 +1,11 @@
-import { ArcgisBasemapGallery } from "@arcgis/map-components-react"
+
 import PortalBasemapsSource from "@arcgis/core/widgets/BasemapGallery/support/PortalBasemapsSource.js";
 import { useEffect, useRef, useState } from "react"
 import { config } from "../../../data/config";
 import UseAppContext from "../../../contexts/AppContext";
 import { Box } from "@mui/material";
+import "@arcgis/map-components/components/arcgis-basemap-gallery";
+
 
 const BasemapGallery = () => {
 
@@ -36,7 +38,7 @@ const BasemapGallery = () => {
     }, [basemapGalleryRef])
 
     return(
-        <ArcgisBasemapGallery
+        <arcgis-basemap-gallery
             ref={basemapGalleryRef}
             source = {source}
         />

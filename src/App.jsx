@@ -4,7 +4,9 @@ import NavBar from './components/NavBar/NavBar'
 import { Box, Stack, Grid, ThemeProvider, createTheme, Button } from '@mui/material'
 import Panel, { BottomPanel, LeftPanel, SecondaryPanel, WidgetPanel } from './components/Panel/Panel'
 import TableRowsOutlinedIcon from '@mui/icons-material/TableRowsOutlined';
-import '@esri/calcite-components/dist/calcite/calcite.css';
+
+// import '@esri/calcite-components/dist/calcite/calcite.css';
+
 import MapButtonGroup from './components/MapButtonGroup'
 import { AppProvider } from './contexts/AppContext'
 import { ToggleIconButton } from './components/Button/Button'
