@@ -6,42 +6,9 @@ import { useEffect, useRef, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom"
 import { config } from "../../data/config";
 
-const arrayAllSame = (array) => {
-    // Use the every method to check if all elements are strictly equal to the previous element
-    return array.every((value, index, arr) => index === 0 || value === arr[index - 1]);
-}
+import "@arcgis/map-components/components/arcgis-search"
 
-const attributesStartWithString = (array, attributeName, prefix) => {
-  // Use the every method to check if all attributes start with the specified string
-  //console.log(`checking if features ${attributeName} startswith: ${prefix}` )
-  return array.every(obj => obj.attributes[attributeName].startsWith(prefix));
-};
-
-const extractDuplicates = async (array, attributeName) => {
-  // Step 1: Extract PIN10 values
-  let values = array.map(feature => feature.attributes[attributeName]);
-
-  //console.log("values: ", values)
-
-  // Step 2: Use a frequency counter to count occurrences of each PIN10
-  let valueCounts = values.reduce((acc, pin) => {
-      acc[pin] = (acc[pin] || 0) + 1;
-      return acc;
-  }, {});
-
-  // Step 3: Filter out the PIN10 values that appear more than once
-  let dups = Object.keys(valueCounts).filter(value => valueCounts[value] > 1);
-
-  return dups
-
-  }
-
-
-  const deepCopyArray = (arr) => {
-    return JSON.parse(JSON.stringify(arr));
-  };
-
-const SearchBar = () => {
+const SearchBarComponent = () => {
 
     const {
         x, 
@@ -76,7 +43,7 @@ const SearchBar = () => {
     //create a reference to the search  DOM  element
     const searchDiv = useRef(null)
     //create a reference to the search widget DOM element
-    const searchWidget = useRef(null)
+    const searchComponent = useRef(null)
 
 
     const updateAppWithSearchResult = () => {
@@ -90,34 +57,24 @@ const SearchBar = () => {
             setPanelDisplay("resultsList")
         } 
 
-        setSearchParams({'search': searchWidget.current.searchTerm})
+        setSearchParams({'search': searchComponent.current.searchTerm})
     }
 
     
     //Create Search AND watch for search events
+    //update this to only handle url parameters
     useEffect(() => {
 
         const createSearch = async () => {
 
             if(searchDiv.current && searchSources){
                 // && mapView
-                if(!searchWidget.current){
-
-                    searchWidget.current = new Search({
-                        locationEnabled:false,
-                        includeDefaultSources: false,
-                        container: searchDiv.current,
-                        sources: searchSources,
-                        resultGraphicEnabled:false,
-                        autoSelect: false,
-                        allPlaceholder: translateText('Search by address, pin, or intersection'),
-                    })
-
+                if(searchComponent.current){
                     if(newSearch === true){
                         if(genericSearch){
                             console.log("DETECTED GENERIC SEARCH PARAM: ", genericSearch)
-                            searchWidget.current.search(genericSearch)
-                            //searchWidget.current.searchTerm = genericSearch
+                            searchComponent.current.search(genericSearch)
+                            //searchComponent.current.searchTerm = genericSearch
                         }
     
                         if(pin10Search || pin14Search){
@@ -130,38 +87,6 @@ const SearchBar = () => {
                 }
 
             }
-
-            if(searchWidget.current){
-
-                searchWidget.current.on("search-complete", async (event) => {
-                    //searchWidget.current.on("search-complete", (event) => {
-                    console.log("search complete event:", event)
-
-                    let results;
-                    
-                    results = event.results
-                    //console.log("results for multiple results: ", event)
-                    setIsQuerying(true)
-                    //get search result features
-                    await returnSearchResultFeatures(results, searchWidget.current.searchTerm)
-         
-                    updateAppWithSearchResult()
-
-                    setIsQuerying(false)
-                })
-
-                //to do enable clear results to empty searchFeatures array
-                searchWidget.current.on("search-clear", function(event){
-                    // The results are stored in the event Object[]
-                    //console.log("Search input textbox was cleared.");
-                    setGenericSearch(null)
-                    setPin14Search(null)
-                    setPin10Search(null)
-
-                    clearResults();
-                  });
-            }
-
         }
 
         createSearch()
@@ -197,11 +122,12 @@ const SearchBar = () => {
         }
     }, [])
 
-    //primaryResultFeature use effect
+    //Primary Search Feature Changes
+    //Clear url search term and update url parameters
     useEffect(() => {
 
-        if(!primaryResultFeature && searchWidget.current){
-            searchWidget.current.searchTerm = null
+        if(!primaryResultFeature && searchComponent.current){
+            searchComponent.current.searchTerm = null
         }
         
         if(primaryResultFeature){
@@ -210,7 +136,7 @@ const SearchBar = () => {
             let pin14ParamValue = routeParams.get("pin14")
 
             if(!searchParamValue && (pin10ParamValue || pin14ParamValue)){
-                searchWidget.current.searchTerm = null
+                searchComponent.current.searchTerm = null
             }
 
             
@@ -242,36 +168,66 @@ const SearchBar = () => {
     }, [searchFeatures, primaryResultFeature])
 
 
-    useEffect(() => {
+    // useEffect(() => {
         
-        const updateSearchText = async () => {
-        if(searchWidget.current){
-            searchWidget.current.allPlaceholder = translateText('Search by address, pin, or intersection')
-            let updatedSearchSources = await initalizeSearchSources()
-            searchWidget.current.sources = updatedSearchSources
+    //     const updateSearchText = async () => {
+    //     if(searchComponent.current){
+    //         searchComponent.current.allPlaceholder = translateText('Search by address, pin, or intersection')
+    //         let updatedSearchSources = await initalizeSearchSources()
+    //         searchComponent.current.sources = updatedSearchSources
             
-        }
-    }
+    //     }
+    // }
         
 
-        updateSearchText()
+    //     updateSearchText()
         
 
-    },[searchWidget, language])
+    // },[searchComponent, language])
 
     return(
-        <Box 
-        //ref={searchDiv}
-        flex={1} 
-        height={40} 
-        bgcolor="white" 
-        display="flex" 
-        sx={{padding: "0 10px", borderRadius: theme.shape.borderRadius}}
-        >
-            {/* <InputBase placeholder="Search..."/> */}
-        </Box>
+        <>
+        { searchSources ?
+            <arcgis-search
+                ref={searchComponent}
+                sources={searchSources}
+                includeDefaultSourcesDisabled
+                locationDisabled
+                resultGraphicDisabled
+                autoSelectDisabled
+                //allPlaceholder={translateText('Search by address, pin, or intersection')}
 
+                //HANDLE SEARCH EVENTS
+                //COMPLETE SEARCH
+                onarcgisComplete = {async (event) => {
+                    console.log("Search complete event:", event)
+                    
+                    const results = event.detail.results
+                    const searchTerm = event.detail.searchTerm
+                    
+                    await returnSearchResultFeatures(results, searchTerm)
+
+                    updateAppWithSearchResult()
+                }}
+
+                //CLEAR RESULTS
+                onarcgisClear = {async (event) => {
+                    console.log("Search was cleared")
+
+                    setGenericSearch(null)
+                    setPin14Search(null)
+                    setPin10Search(null)
+
+                    clearResults()
+
+                }}
+            />
+            :null
+        }
+        </>
+        
+        
     )
 }
 
-export default SearchBar
+export default SearchBarComponent

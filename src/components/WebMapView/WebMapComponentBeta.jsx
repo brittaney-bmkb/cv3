@@ -850,15 +850,16 @@ const WebMapComponentBeta = () => {
     }, [panelDisplayWidget, panelWidgetVisible, arcgisMapRef.current])
 
     return(
-        <Box
-        display="flex"
-        width="100%"
-        height="100%"
-        justifyContent={screenWidth < theme.breakpoints.values.md ? "center" : "left"}
-        >
+        // <Box
+        // display="flex"
+        // width="100%"
+        // height="100%"
+        // justifyContent={screenWidth < theme.breakpoints.values.md ? "center" : "left"}
+        // >
         <arcgis-map
         ref={arcgisMapRef}
         item-id={config.webmap_id}
+        zoom={8}
 
         onarcgisViewReadyChange={(event) => {
             console.log('MapView ready', event);
@@ -900,41 +901,41 @@ const WebMapComponentBeta = () => {
         >   
         <arcgis-zoom position="top-right"/>
         </arcgis-map>
-        <Box 
-            id="mapButtonGroup"
-            // justifyContent={screenWidth < theme.breakpoints.values.md ? "center" : "left"} 
-            position="absolute" 
-            pt={2}
-            pl={screenWidth < theme.breakpoints.values.md ? 0 : 2}
-            zIndex={2}
-            sx={{boxSizing:"border-box"}}
-            height="auto"
-            width="auto"
-            >
-                <MapButtonGroup/>
-            </Box>
+        // <Box 
+        //     id="mapButtonGroup"
+        //     // justifyContent={screenWidth < theme.breakpoints.values.md ? "center" : "left"} 
+        //     position="absolute" 
+        //     pt={2}
+        //     pl={screenWidth < theme.breakpoints.values.md ? 0 : 2}
+        //     zIndex={2}
+        //     sx={{boxSizing:"border-box"}}
+        //     height="auto"
+        //     width="auto"
+        //     >
+        //         <MapButtonGroup/>
+        //     </Box>
 
-            <Fade 
-                appear
-                in={!panelWidgetVisible}>
-                    <IconButton 
-                    onClick={handleClick}
-                    sx={{
-                        position: "absolute",
-                        bgcolor:theme.palette.primary.main, 
-                        zIndex:"modal",
-                        display:!panelWidgetVisible && screenWidth <= theme.breakpoints.values.sm ? "flex" : "none",
-                        width:50,
-                        height:50,
-                        flexDirection:"column",
-                        bottom:20,
-                        boxShadow:5
-                        }}>
-                        <TableRowsOutlined htmlColor="white"/>
-                        <Typography variant="subtitle1" color="white">{translateText("Data")}</Typography>
-                    </IconButton>
-                </Fade>
-        </Box>
+            // <Fade 
+            //     appear
+            //     in={!panelWidgetVisible}>
+            //         <IconButton 
+            //         onClick={handleClick}
+            //         sx={{
+            //             position: "absolute",
+            //             bgcolor:theme.palette.primary.main, 
+            //             zIndex:"modal",
+            //             display:!panelWidgetVisible && screenWidth <= theme.breakpoints.values.sm ? "flex" : "none",
+            //             width:50,
+            //             height:50,
+            //             flexDirection:"column",
+            //             bottom:20,
+            //             boxShadow:5
+            //             }}>
+            //             <TableRowsOutlined htmlColor="white"/>
+            //             <Typography variant="subtitle1" color="white">{translateText("Data")}</Typography>
+            //         </IconButton>
+            //     </Fade>
+        // </Box>
         
 
     )
