@@ -18,6 +18,17 @@ import { config } from './data/config'
 import HelpDialog from './components/HelpDialog/HelpDialog'
 import WebMapComponentBeta from './components/WebMapView/WebMapComponentBeta'
 
+//Calcite Components
+import "@esri/calcite-components/dist/components/calcite-shell";
+import "@esri/calcite-components/dist/components/calcite-shell-panel";
+import "@esri/calcite-components/dist/components/calcite-panel";
+import "@esri/calcite-components/dist/components/calcite-block";
+import "@esri/calcite-components/dist/components/calcite-action-bar";
+import "@esri/calcite-components/dist/components/calcite-action-group";
+import "@esri/calcite-components/dist/components/calcite-action-bar";
+import "@esri/calcite-components/dist/components/calcite-action";
+import "@esri/calcite-components/dist/components/calcite-label";
+
 function App() {
 
   const [mapVisible, setMapVisible] = useState(true)
