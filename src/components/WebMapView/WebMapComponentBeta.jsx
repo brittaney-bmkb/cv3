@@ -1,4 +1,3 @@
-import { ArcgisMap, ArcgisZoom } from "@arcgis/map-components-react"
 import { useEffect, useRef, useState } from "react";
 import UseAppContext from "../../contexts/AppContext";
 import { createFeatureLayerFromGraphics, createFeatureLayerFromFeatures, removeLayer, createGraphic } from "../../arcgis/layers/layers";
@@ -17,7 +16,8 @@ const webmapParcelLayerTitle = config.target_layer_name
 const comparableParcelTitle = "Comparable Parcels"
 const selectedComparableParcelTitle = "Selected Comparable Parcels"
 
-import "@arcgis/map-components/dist/components/arcgis-map";
+import "@arcgis/map-components/components/arcgis-map";
+import "@arcgis/map-components/components/arcgis-zoom";
 
 const WebMapComponentBeta = () => {
 
@@ -860,46 +860,45 @@ const WebMapComponentBeta = () => {
         ref={arcgisMapRef}
         item-id={config.webmap_id}
 
-        // onArcgisViewReadyChange={(event) => {
-        //     ////console.log('MapView ready', event);
-        //     setMapLoading(false)
-        //     setMapView(event.target.view)
-        //     }}
-        // onArcgisViewChange={(event) => {
-        //     //////console.log("view change: ", event)
-        //     if(panelDisplayWidget === "layersWidget" && panelWidgetVisible){
-        //         setMapViewScale(event.target.view)
-        //     }
+        onarcgisViewReadyChange={(event) => {
+            console.log('MapView ready', event);
+            setMapLoading(false)
+            setMapView(event.target.view)
+            }}
+        onarcgisViewChange={(event) => {
+            console.log("view change: ", event)
+            if(panelDisplayWidget === "layersWidget" && panelWidgetVisible){
+                setMapViewScale(event.target.view)
+            }
             
-        // }}
-        // onArcgisViewClick={(event) => {
+        }}
+        onarcgisViewClick={(event) => {
             
-        //     if(event.detail.native.button === 2){
-        //         ////console.log("onArcgisViewClick: right click, button =", event.detail.native.button)
-        //     }
-        //     else{
-        //         ////console.log("onArcgisViewClick: left click, button =", event.detail.native.button)
-        //         // handleViewClick(event.detail.mapPoint)
-        //         let foundSelectGraphic = findLayerByTitle(arcgisMapRef.current.map, "selectGraphic")
-        //         let foundMeasureGraphic = findLayerByTitle(arcgisMapRef.current.map, "measureGraphic") //no longer needed 
+            if(event.detail.native.button === 2){
+                ////console.log("onArcgisViewClick: right click, button =", event.detail.native.button)
+            }
+            else{
+                ////console.log("onArcgisViewClick: left click, button =", event.detail.native.button)
+                // handleViewClick(event.detail.mapPoint)
+                let foundSelectGraphic = findLayerByTitle(arcgisMapRef.current.map, "selectGraphic")
+                let foundMeasureGraphic = findLayerByTitle(arcgisMapRef.current.map, "measureGraphic") //no longer needed 
 
-        //         // console.log("CURRENT MAP ON CLICK", arcgisMapRef.current.map)
+                // console.log("CURRENT MAP ON CLICK", arcgisMapRef.current.map)
 
-        //         // console.log("found MEASURE graphic: ", foundMeasureGraphic)
-        //         if( !foundSelectGraphic  || !selectMultiple || !measureWidgetState){
-        //         // if((!foundSelectGraphic && !foundMeasureGraphic) || !selectMultiple || (!isMeasuring)){ //TODO this is for the measureSketchWidget
-        //             // console.log("The if block executes because one of the conditions is falsy.");
+                // console.log("found MEASURE graphic: ", foundMeasureGraphic)
+                if( !foundSelectGraphic  || !selectMultiple || !measureWidgetState){
+                // if((!foundSelectGraphic && !foundMeasureGraphic) || !selectMultiple || (!isMeasuring)){ //TODO this is for the measureSketchWidget
+                    // console.log("The if block executes because one of the conditions is falsy.");
                     
-        //             handleHitTest(event)
-        //         }
+                    handleHitTest(event)
+                }
                 
 
-        //     }
-        // }}
+            }
+        }}
         // // onArcgisViewPointerMove={}
-
-
         >   
+        <arcgis-zoom position="top-right"/>
         </arcgis-map>
         <Box 
             id="mapButtonGroup"
@@ -912,7 +911,7 @@ const WebMapComponentBeta = () => {
             height="auto"
             width="auto"
             >
-                {/* <MapButtonGroup/> */}
+                <MapButtonGroup/>
             </Box>
 
             <Fade 
