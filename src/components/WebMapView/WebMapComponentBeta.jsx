@@ -1,4 +1,3 @@
-import { ArcgisMap, ArcgisZoom } from "@arcgis/map-components-react"
 import { useEffect, useRef, useState } from "react";
 import UseAppContext from "../../contexts/AppContext";
 import { createFeatureLayerFromGraphics, createFeatureLayerFromFeatures, removeLayer, createGraphic } from "../../arcgis/layers/layers";
@@ -16,6 +15,9 @@ const selectedParcelTitle = "Selected Parcel"
 const webmapParcelLayerTitle = config.target_layer_name
 const comparableParcelTitle = "Comparable Parcels"
 const selectedComparableParcelTitle = "Selected Comparable Parcels"
+
+import "@arcgis/map-components/components/arcgis-map";
+import "@arcgis/map-components/components/arcgis-zoom";
 
 const WebMapComponentBeta = () => {
 
@@ -854,23 +856,23 @@ const WebMapComponentBeta = () => {
         height="100%"
         justifyContent={screenWidth < theme.breakpoints.values.md ? "center" : "left"}
         >
-        <ArcgisMap
+        <arcgis-map
         ref={arcgisMapRef}
-        itemId={config.webmap_id}
+        item-id={config.webmap_id}
 
-        onArcgisViewReadyChange={(event) => {
-            ////console.log('MapView ready', event);
+        onarcgisViewReadyChange={(event) => {
+            console.log('MapView ready', event);
             setMapLoading(false)
             setMapView(event.target.view)
             }}
-        onArcgisViewChange={(event) => {
-            //////console.log("view change: ", event)
+        onarcgisViewChange={(event) => {
+            console.log("view change: ", event)
             if(panelDisplayWidget === "layersWidget" && panelWidgetVisible){
                 setMapViewScale(event.target.view)
             }
             
         }}
-        onArcgisViewClick={(event) => {
+        onarcgisViewClick={(event) => {
             
             if(event.detail.native.button === 2){
                 ////console.log("onArcgisViewClick: right click, button =", event.detail.native.button)
@@ -894,11 +896,10 @@ const WebMapComponentBeta = () => {
 
             }
         }}
-        // onArcgisViewPointerMove={}
-
-
+        // // onArcgisViewPointerMove={}
         >   
-        </ArcgisMap>
+        <arcgis-zoom position="top-right"/>
+        </arcgis-map>
         <Box 
             id="mapButtonGroup"
             // justifyContent={screenWidth < theme.breakpoints.values.md ? "center" : "left"} 

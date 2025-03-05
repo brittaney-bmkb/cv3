@@ -10,34 +10,33 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@arcgis/core": "^4.28.10",
-    "@arcgis/map-components": "^4.29.10",
-    "@arcgis/map-components-react": "^4.29.10",
+    "@arcgis/core": "^4.32.5",
+    "@arcgis/map-components": "^4.32.9",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
-    "@esri/calcite-components": "^2.3.0",
-    "@esri/calcite-components-react": "^2.3.0",
+    "@esri/calcite-components": "^3.0.3",
+    "@esri/calcite-components-react": "^3.0.3",
     "@esri/calcite-ui-icons": "^3.26.0",
     "@fontsource/barlow": "^5.0.8",
     "@mui/icons-material": "^5.15.6",
     "@mui/material": "^5.15.6",
     "file-saver": "^2.0.5",
-    "react": "^18.2.0",
+    "react": "^19.0.0",
     "react-csv": "^2.2.2",
     "react-csv-downloader": "^3.1.0",
-    "react-dom": "^18.2.0",
+    "react-dom": "^19.0.0",
     "react-router-dom": "^6.22.0",
     "sheetjs-style": "^0.15.8",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
-    "@types/react": "^18.2.43",
-    "@types/react-dom": "^18.2.17",
-    "@vitejs/plugin-react": "^4.2.1",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^8.55.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
-    "vite": "^5.0.8"
+    "vite": "^6.1.1"
   }
 }
