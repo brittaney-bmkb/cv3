@@ -5,12 +5,18 @@ import './index.css'
 import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import { ThemeProvider } from '@mui/material'
 import { theme } from './theme.js'
-import { setAssetPath } from '@esri/calcite-components/dist/components';
-setAssetPath(window.location.href + '/assets');
+
+// import { setAssetPath } from '@esri/calcite-components';
+// setAssetPath(window.location.href);
+
 //setAssetPath("https://unpkg.com/@esri/calcite-components/dist/calcite/assets");
-import { defineCustomElements } from "@arcgis/map-components/dist/loader";
-// Register custom elements
-defineCustomElements(window, { resourcesUrl: "https://js.arcgis.com/map-components/4.32/assets" });
+// import { defineCustomElements } from "@arcgis/map-components/dist/loader";
+// // Register custom elements
+// defineCustomElements(window, { resourcesUrl: "https://js.arcgis.com/map-components/4.32/assets" });
+
+// import "@esri/calcite-components/dist/calcite/calcite.css";
+// import { setAssetPath } from "@esri/calcite-components/dist/components";
+// setAssetPath(window.location.href);
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
