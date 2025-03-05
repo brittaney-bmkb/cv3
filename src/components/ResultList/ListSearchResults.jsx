@@ -1,21 +1,26 @@
 
+import { CalciteList, CalciteListItem } from "@esri/calcite-components-react"
 import UseAppContext from "../../contexts/AppContext"
-import ListItem from "../ListItem/ListItem"
 
 const ListSearchResults = () => {
     
     const {searchFeatures} = UseAppContext()
     
     return(
-        <>
+        <CalciteList>
         {
             searchFeatures?.map(feature => {
                 return(
-                    <ListItem key={feature.attributes['PIN14_dash']} label={feature.attributes['PIN14_dash']}/>
+                    <CalciteListItem 
+                    key={feature.attributes['PIN14_dash']} 
+                    label={feature.attributes['PIN14_dash']}
+                    selectionAppearance="border"
+                    selectionMode="none"
+                    />
                 )
             })
         }
-        </>
+        </CalciteList>
     )
 }
 
