@@ -17,6 +17,29 @@ body{
   font-family: Barlow
 }
 
+/* CALCITE CUSTOM STYLES */
+
+calcite-label.header{
+  --calcite-label-text-color: #ffffff
+}
+
+calcite-panel.header{
+  --calcite-panel-header-background-color: #0D4D96;
+}
+calcite-action.header{
+  --calcite-action-background-color: #0D4D96;
+  --calcite-action-background-color-hover: #009ADA;
+  --calcite-action-text-color: #ffffff
+}
+
+/* ESRI COMPNENTS CUSTOM STYLES */
+.esri-search{
+  width:auto;
+  max-width: 600px;
+  min-width: 400px;
+}
+
+/* OTHER */
 
 .main {
   height: calc(100vh - var(--safe-area-height));
@@ -41,11 +64,7 @@ arcgis-layer-list{
 }
 
 
-.esri-search{
-  width:auto;
-  max-width: 600px;
-  min-width: 300px;
-}
+
 
 @media (max-width:500px){
   .esri-search{
