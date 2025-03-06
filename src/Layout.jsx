@@ -16,23 +16,13 @@ import { config } from "./data/config";
 import Header from "./components/Header/Header";
 import PanelInfo from "./components/Panel/PanelInfo";
 import { useCallback, useState } from "react";
+import PanelPropertyDetail from "./components/Panel/PanelPropertyDetail";
 
 
 const Layout = () => {
 
-    const useToggle = (initialState = false) => {
-        const [state, setState] = useState(initialState);
-      
-        const toggle = useCallback(() => {
-          setState(prevState => !prevState);
-        }, []);
-      
-        return [state, toggle];
-      };
-
     // State of panels
-    const {infoPanelClosed, setInfoPanel} = UseAppContext()
-
+    const { setInfoPanel, setSearchResultsPanel, setPropertyDetailPanel, propertyDetailPanelClosed, infoPanelClosed, searchResultsPanelClosed } = UseAppContext()
 
     return(
         <CalciteShell>
@@ -45,11 +35,30 @@ const Layout = () => {
                         {/* ACTION BAR */}
                         <CalciteActionBar slot="action-bar">
                             <CalciteActionGroup>
-                                <CalciteAction text="info" icon="information" textEnabled onClick={() => {setInfoPanel(false)}}></CalciteAction>
+                                <CalciteAction text="Info" icon="information" textEnabled active={!infoPanelClosed}
+                                onClick={() => {
+                                    setInfoPanel(false)
+                                    setSearchResultsPanel(true)
+                                    setPropertyDetailPanel(true)
+                                    }}></CalciteAction>
+                                <CalciteAction text="Results" icon="list-rectangle" textEnabled active={!searchResultsPanelClosed}
+                                onClick={() => {
+                                    setSearchResultsPanel(false)
+                                    setInfoPanel(true)
+                                    setPropertyDetailPanel(true)
+                                    }}></CalciteAction>
+                                <CalciteAction text="Property" icon="pin" textEnabled active={!propertyDetailPanelClosed}
+                                onClick={() => {
+                                    setSearchResultsPanel(true)
+                                    setInfoPanel(true)
+                                    setPropertyDetailPanel(false)
+                                }}></CalciteAction>
                             </CalciteActionGroup>
                         </CalciteActionBar>
                         {/* PRIMARY PANEL */}
                         <PanelInfo/>
+                        <PanelSearchResults/>
+                        <PanelPropertyDetail/>
 
                     </CalciteShellPanel>
                     

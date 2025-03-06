@@ -29,6 +29,7 @@ calcite-label.header{
 
 calcite-panel.panel-start{
   --calcite-panel-header-background-color: #ffffff;
+  height: 100vh;
 }
 
 calcite-panel.header{

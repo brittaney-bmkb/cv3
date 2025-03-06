@@ -20,6 +20,24 @@ export const AppProvider = ({children}) => {
         })
     } 
 
+    const setSearchResultsPanel = (open) => {
+        dispatch({
+            type:"SET_SEARCH_RESULTS_PANEL",
+             payload: {
+                searchResultsPanelClosed: open,
+            }
+        })
+    } 
+
+    const setPropertyDetailPanel = (open) => {
+        dispatch({
+            type:"SET_PROPERTY_DETAIL_PANEL",
+             payload: {
+                propertyDetailPanelClosed: open,
+            }
+        })
+    } 
+
     const setComparableType = (comparableType) => {
         dispatch({
             type:"SET_COMPARABLE_TYPE",
@@ -784,7 +802,7 @@ export const AppProvider = ({children}) => {
      * @returns {void} - No return value.
      */
     const selectResultFromList = async (result) => {
-        ////console.log("Result PIN : ", result)
+        console.log("Result PIN : ", result)
         const { searchFeatures, searchTerm, prevSearchFeatures } = state
         const selectedFeature = searchFeatures.filter((feature) => feature.attributes['PIN14_dash'] == result)
         ////console.log("selectedFeature: ", selectedFeature)
@@ -1189,7 +1207,12 @@ export const AppProvider = ({children}) => {
         returnSearchParam,
         //PANEL CONTROLS
         setInfoPanel,
-        infoPanelClosed: state.infoPanelClosed
+        infoPanelClosed: state.infoPanelClosed,
+        setSearchResultsPanel,
+        searchResultsPanelClosed: state.searchResultsPanelClosed,
+        setPropertyDetailPanel,
+        propertyDetailPanelClosed: state.propertyDetailPanelClosed
+
     }
 
     // useEffect( () => {

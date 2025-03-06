@@ -44,7 +44,8 @@ export const initialState = {
     comparableType: null,
     //PANEL STATES
     infoPanelClosed: false,
-
+    searchResultsPanelClosed: true,
+    propertyDetailPanelClosed: true,
 }
 
 const AppReducer = (state, action) => {
@@ -57,9 +58,22 @@ const AppReducer = (state, action) => {
         return {
             ...state, 
             infoPanelClosed: payload.infoPanelClosed
-        }        
+        }  
         
+        
+        case "SET_SEARCH_RESULTS_PANEL":
+            console.log("SEARCH RESULTS OPEN")
+        return {
+            ...state, 
+            searchResultsPanelClosed: payload.searchResultsPanelClosed
+        } 
 
+        case "SET_PROPERTY_DETAIL_PANEL":
+        return {
+            ...state, 
+            propertyDetailPanelClosed: payload.propertyDetailPanelClosed
+        } 
+    
         case "SET_COMPARABLE_TYPE":
         //console.log("SET_COMPARABLE_TYPE")
         return {

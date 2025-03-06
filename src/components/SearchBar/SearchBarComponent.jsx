@@ -30,6 +30,8 @@ const SearchBarComponent = () => {
         anyAttributesIncluded,
         setIsQuerying,
         panelDisplay,
+        setSearchResultsPanel,
+        setInfoPanel
      } = UseAppContext()
 
     //get url parameters
@@ -208,6 +210,9 @@ const SearchBarComponent = () => {
                     await returnSearchResultFeatures(results, searchTerm)
 
                     updateAppWithSearchResult()
+
+                    setSearchResultsPanel(false)
+                    setInfoPanel(true)
                 }}
 
                 //CLEAR RESULTS

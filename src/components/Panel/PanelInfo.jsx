@@ -19,7 +19,18 @@ const PanelInfo = () => {
     const { infoPanelClosed, setInfoPanel, translateText } = UseAppContext()
 
     return (
-        <CalcitePanel id="panel-start" closed={infoPanelClosed} closable class='panel-start' heading="Info" calcitePanelClose={() => {setInfoPanel(true)}}>
+        <CalcitePanel 
+        id="info-panel" 
+        closed={infoPanelClosed} 
+        closable 
+        class='panel-start' 
+        heading="Info" 
+        overlayPositioning="fixed"
+        calcitePanelClose={() => {
+            setInfoPanel(true)
+        }}
+        style={{display: infoPanelClosed ? 'none': 'flex'}}
+        >
             <CalciteBlock open collapsible={false}>
                 {/* SEARCH RESULTS LABEL*/}
                 <div>

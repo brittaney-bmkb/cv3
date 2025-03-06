@@ -1,42 +1,56 @@
 
-import { CalciteChip, CalciteIcon, CalciteLabel, CalciteList, CalciteListItem } from "@esri/calcite-components-react"
+import { CalciteLabel, CalciteList, CalciteListItem } from "@esri/calcite-components-react"
 import UseAppContext from "../../contexts/AppContext"
 
 const ListSearchResults = () => {
     
-    const {searchFeatures} = UseAppContext()
+    const {
+        searchFeatures, 
+        selectResultFromList, 
+        setSearchBufferGeometry,
+        setSearchResultsPanel,
+        setInfoPanel,
+        setPropertyDetailPanel
+    } = UseAppContext()
     
     return(
-        <CalciteList>
+        <CalciteList
+        selectionAppearance="border"
+        selectionMode="single"
+        >
         {
             searchFeatures?.map(feature => {
                 return(
                     <CalciteListItem 
-                    key={feature.attributes['PIN14_dash']} 
-                    label={feature.attributes['PIN14_dash']}
-                    selectionAppearance="border"
-                    selectionMode="multiple"
-                    
+                        key={feature.attributes['PIN14_dash']} 
+                        label={feature.attributes['PIN14_dash']}
+                        selectionAppearance="border"
+                        selectionMode="single"
+                        iconEnd="pin"
+                        onCalciteListItemSelect={() => {
+                            selectResultFromList(feature.attributes['PIN14_dash'])
+                            setSearchBufferGeometry(null, null)
+                            setSearchResultsPanel(true)
+                            setInfoPanel(true)
+                            setPropertyDetailPanel(false)
+
+                        }}
                     >
-                    <div slot="content" style={{display: "flex",}}>
-                    <CalciteIcon icon="pin"/>
-                        <div>
-                        
-                        <CalciteLabel scale="l">
-                            {feature.attributes['PIN14_dash']}
+                    <div slot="content" class="description" style={{marginLeft:'10px'}}>
+                        <CalciteLabel scale="m" >
+                            <span>
+                            {`PIN: ${feature.attributes['PIN14_dash']}`}
+                            </span>
+                        </CalciteLabel>
+                        <CalciteLabel scale="s" >
+                            <span>
+                            {feature.attributes['street_address']}<br/>{feature.attributes['city_state_zip']}
+                            </span>
                         </CalciteLabel>
 
-                            <CalciteLabel>
-                                {feature.attributes['street_address']}
-                            </CalciteLabel>
-                            <CalciteLabel>
-                                {feature.attributes['city_state_zip']}
-                            </CalciteLabel>
-                        </div>
-                        
-     
                         
                     </div>
+                        
                         
                     </CalciteListItem>
                 )
