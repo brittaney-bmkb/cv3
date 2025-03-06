@@ -11,6 +11,15 @@ export const AppProvider = ({children}) => {
 
     const [state, dispatch] = useReducer(AppReducer, initialState)
 
+    const setInfoPanel = (open) => {
+        dispatch({
+            type:"SET_INFO_PANEL",
+             payload: {
+                infoPanelClosed: open,
+            }
+        })
+    } 
+
     const setComparableType = (comparableType) => {
         dispatch({
             type:"SET_COMPARABLE_TYPE",
@@ -1177,7 +1186,10 @@ export const AppProvider = ({children}) => {
         setComparableType,
         comparableType: state.comparableType,
         returnFeaturesByPin10Pin14,
-        returnSearchParam
+        returnSearchParam,
+        //PANEL CONTROLS
+        setInfoPanel,
+        infoPanelClosed: state.infoPanelClosed
     }
 
     // useEffect( () => {

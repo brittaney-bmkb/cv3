@@ -18,9 +18,17 @@ body{
 }
 
 /* CALCITE CUSTOM STYLES */
+calcite-block-section.info-section-header{
+  --calcite-block-section-header-text-color: #0D4D96;
+  --calcite-block-section-text-color: #0D4D96;
+}
 
 calcite-label.header{
   --calcite-label-text-color: #ffffff
+}
+
+calcite-panel.panel-start{
+  --calcite-panel-header-background-color: #ffffff;
 }
 
 calcite-panel.header{

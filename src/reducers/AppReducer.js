@@ -42,6 +42,8 @@ export const initialState = {
     openHelpDialog: false,
     selectMultiple: null,
     comparableType: null,
+    //PANEL STATES
+    infoPanelClosed: false,
 
 }
 
@@ -50,6 +52,13 @@ const AppReducer = (state, action) => {
     const {type, payload} = action
 
     switch(type){
+
+        case "SET_INFO_PANEL":
+        return {
+            ...state, 
+            infoPanelClosed: payload.infoPanelClosed
+        }        
+        
 
         case "SET_COMPARABLE_TYPE":
         //console.log("SET_COMPARABLE_TYPE")

@@ -14,8 +14,26 @@ import PanelSearchResults from "./components/Panel/PanelSearchResults";
 import UseAppContext from "./contexts/AppContext";
 import { config } from "./data/config";
 import Header from "./components/Header/Header";
+import PanelInfo from "./components/Panel/PanelInfo";
+import { useCallback, useState } from "react";
+
 
 const Layout = () => {
+
+    const useToggle = (initialState = false) => {
+        const [state, setState] = useState(initialState);
+      
+        const toggle = useCallback(() => {
+          setState(prevState => !prevState);
+        }, []);
+      
+        return [state, toggle];
+      };
+
+    // State of panels
+    const {infoPanelClosed, setInfoPanel} = UseAppContext()
+
+
     return(
         <CalciteShell>
             <CalcitePanel  class='header'>
@@ -27,18 +45,12 @@ const Layout = () => {
                         {/* ACTION BAR */}
                         <CalciteActionBar slot="action-bar">
                             <CalciteActionGroup>
-                                <CalciteAction text="Add" icon="plus"></CalciteAction>
+                                <CalciteAction text="info" icon="information" textEnabled onClick={() => {setInfoPanel(false)}}></CalciteAction>
                             </CalciteActionGroup>
                         </CalciteActionBar>
                         {/* PRIMARY PANEL */}
-                        <CalcitePanel scale="l">
-                            {/* PANEL CONTENT */}
-                            {/* <CalciteBlock heading="Panel" open>
-                               
-                                <SearchBarComponent/>
-                            </CalciteBlock> */}
-                            <PanelSearchResults/>
-                        </CalcitePanel>
+                        <PanelInfo/>
+
                     </CalciteShellPanel>
                     
                     {/* WEBMAP */}
