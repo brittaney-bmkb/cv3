@@ -4,8 +4,6 @@ import {
     CalciteAction, 
     CalciteActionBar, 
     CalciteActionGroup, 
-    CalciteBlock, 
-    CalciteLabel, 
     CalcitePanel, 
     CalciteShell, 
     CalciteShellPanel 
@@ -14,14 +12,15 @@ import WebMapComponentBeta from "./components/WebMapView/WebMapComponentBeta"
 import SearchBarComponent from "./components/SearchBar/SearchBarComponent";
 import PanelSearchResults from "./components/Panel/PanelSearchResults";
 import UseAppContext from "./contexts/AppContext";
+import { config } from "./data/config";
+import Header from "./components/Header/Header";
 
 const Layout = () => {
-
-    
-
     return(
-        <CalciteShell content-behind>
-            <CalcitePanel heading="title">
+        <CalciteShell>
+            <CalcitePanel  class='header'>
+                {/* HEADER */}
+                <Header/>
                 <CalciteShell>
                     {/* LEFT PANEL */}
                     <CalciteShellPanel  width="m" slot="panel-start" position="start" id="shell-panel-start">
@@ -34,17 +33,18 @@ const Layout = () => {
                         {/* PRIMARY PANEL */}
                         <CalcitePanel scale="l">
                             {/* PANEL CONTENT */}
-                            <CalciteBlock heading="Panel" open>
-                                {/* SEARCH */}
+                            {/* <CalciteBlock heading="Panel" open>
+                               
                                 <SearchBarComponent/>
-                            </CalciteBlock>
+                            </CalciteBlock> */}
                             <PanelSearchResults/>
                         </CalcitePanel>
                     </CalciteShellPanel>
-        
-                        <WebMapComponentBeta/>
-     
+                    
+                    {/* WEBMAP */}
+                    <WebMapComponentBeta/>
 
+                    {/* MAP TOOLS */}
                     <CalciteShellPanel slot="panel-end" position="end" id="shell-panel-end" collapsed>
                         {/* ACTION BAR */}
                         <CalciteActionBar slot="action-bar">
@@ -60,6 +60,7 @@ const Layout = () => {
                 </CalciteShell>
             
             </CalcitePanel>
+
         
 
     </CalciteShell>

@@ -14,6 +14,8 @@ export const config = {
     //IMAGES ROOT DIRECTORY
     image_directory: "https://maps.cookcountyil.gov/files/apps/cookviewer/images",
     //NAVBAR
+    title: "CookViewer",
+    description: "Cook County Parcel Viewer",
     //App Logo
     logo:"https://maps.cookcountyil.gov/cdn/cook/cook_logo.png",
     //App Pages

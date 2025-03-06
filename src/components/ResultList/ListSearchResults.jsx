@@ -1,5 +1,5 @@
 
-import { CalciteLabel, CalciteList, CalciteListItem } from "@esri/calcite-components-react"
+import { CalciteChip, CalciteIcon, CalciteLabel, CalciteList, CalciteListItem } from "@esri/calcite-components-react"
 import UseAppContext from "../../contexts/AppContext"
 
 const ListSearchResults = () => {
@@ -16,18 +16,26 @@ const ListSearchResults = () => {
                     label={feature.attributes['PIN14_dash']}
                     selectionAppearance="border"
                     selectionMode="multiple"
-                    open
+                    
                     >
-                    <div slot="default">
-                        <CalciteLabel>
+                    <div slot="content" style={{display: "flex",}}>
+                    <CalciteIcon icon="pin"/>
+                        <div>
                         
+                        <CalciteLabel scale="l">
+                            {feature.attributes['PIN14_dash']}
                         </CalciteLabel>
-                        <CalciteLabel>
-                            {feature.attributes['street_address']}
-                        </CalciteLabel>
-                        <CalciteLabel>
-                            {feature.attributes['city_state_zip']}
-                        </CalciteLabel>
+
+                            <CalciteLabel>
+                                {feature.attributes['street_address']}
+                            </CalciteLabel>
+                            <CalciteLabel>
+                                {feature.attributes['city_state_zip']}
+                            </CalciteLabel>
+                        </div>
+                        
+     
+                        
                     </div>
                         
                     </CalciteListItem>
