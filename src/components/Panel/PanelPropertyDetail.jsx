@@ -1,3 +1,5 @@
+'use client'
+
 import { 
     CalciteAction, 
     CalciteActionBar, 
@@ -8,8 +10,10 @@ import {
     CalcitePanel, 
 } from "@esri/calcite-components-react"
 import UseAppContext from "../../contexts/AppContext";
+import { returnMunicipality } from "../../arcgis/geoprocessing/geoprocessing"
 import { config } from "../../data/config";
 import { useEffect, useState } from "react";
+import { ListItem } from "@mui/material";
 
 
 //TODO - Update Export dialog and add trigger to export action
@@ -29,6 +33,8 @@ function addCommaSeparator(value, type) {
     }
   }
 
+
+
 const PanelSearchResults = () => {
 
     const { 
@@ -44,7 +50,8 @@ const PanelSearchResults = () => {
     } = UseAppContext()
 
     const [ categories, setCategories ] = useState(null)
-    
+    const [ muni, setMuni ] = useState({})
+
     //Get Property Data Fields to Display
     useEffect(() => {
         if (dataDictionary) {
@@ -60,21 +67,38 @@ const PanelSearchResults = () => {
             ];
 
             setCategories(filteredCategories);
-
-
-            // let filteredData = filteredCategories.map(category => {
-            //     return dataDictionary?.filter((data) => data.attributes['category'] === category
-            //     //  && !excludeFields.includes(data.attributes['field'])
-            //     )
-            //     .sort((a, b) => a.attributes['category_order'] > b.attributes['category_order'] ? 1 : -1)
-            //     .map((data) => data); //not sure if needed. 
-        
-                
-            // })
-
-            // setDisplayData(filteredData)
         }
     }, [dataDictionary]);
+
+    const calculateFieldValues = async (feature, field) => {
+            if(field === 'incorp_unincorp_state'){
+                let message
+                const muniValueReturned = await returnMunicipality(feature);
+                const muniValue = muniValueReturned ? 
+                `${translateText('Incorporated')} ${muniValueReturned}` : 
+                `${translateText('Unincorporated')} ${feature.attributes['township_name']}`
+
+                if(muniValueReturned){
+                    message = translateText('Please contact municipality')
+                }
+                else{
+                    message = translateText('Cook County Zone Lookup')
+                }
+                console.log("muni: ", muniValue, message)
+                return(
+                    <CalciteListItem 
+                    key={field}
+                    label={muniValue}
+                    description={message}
+                    />
+                )
+            }
+            else{
+                return null
+                
+            }
+        }
+
 
 
     return (
@@ -125,12 +149,12 @@ const PanelSearchResults = () => {
                         //Property Details
                         <CalciteList
                          filterEnabled
-                         filterPlaceholder={"Search for property details"}
+                         filterPlaceholder={"Filter property details"}
                          interactionMode="static"
                          selectionMode="none"
                         >
                             {
-                                primaryResultFeature && categories?.map(category => {
+                                primaryResultFeature && categories?.map( category => {
                                     return(
                                         <CalciteListItemGroup heading={translateText(category)}>
                                             {
@@ -176,14 +200,7 @@ const PanelSearchResults = () => {
 
                                                     //check if data type is money if value is not null for selected parcel
                                                     if(data?.attributes['type'] === 'calc'){
-                                                        return(
-                                                            <CalciteListItem
-                                                            key={data?.attributes['field']}
-                                                            label={data?.attributes['field']}
-                                                            description={data?.attributes['label']}
-                                                            >
-                                                            </CalciteListItem>
-                                                        )
+                                                        calculateFieldValues(primaryResultFeature[0], data?.attributes['field'])
                                                     }
 
                                                     
