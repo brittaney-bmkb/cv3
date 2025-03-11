@@ -43,6 +43,10 @@ calcite-shell-panel.left-panel{
   --calcite-shell-panel-max-width: 400px;
 }
 
+calcite-shell-panel.right-panel{
+  --calcite-shell-panel-max-width: 200px;
+}
+
 calcite-panel.panel-start{
   --calcite-panel-header-background-color: #ffffff;
   height: 100vh;

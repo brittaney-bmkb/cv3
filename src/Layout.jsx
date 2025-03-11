@@ -30,7 +30,8 @@ const Layout = () => {
         propertyDetailPanelClosed, 
         infoPanelClosed, 
         searchResultsPanelClosed,
-        comparablePanelClosed 
+        comparablePanelClosed,
+        setComparablePanel 
     } = UseAppContext()
 
 
@@ -52,9 +53,9 @@ const Layout = () => {
                 <Header/>
                 <CalciteShell>
                     {/* LEFT PANEL */}
-                    <CalciteShellPanel  width="l" slot="panel-start" position="start" id="shell-panel-start" class='left-panel' collapsed={leftPanelCollapsed}>
+                    <CalciteShellPanel  width="l" slot="panel-start" position="start" id="shell-panel-start" className='left-panel' collapsed={leftPanelCollapsed}>
                         {/* ACTION BAR */}
-                        <CalciteActionBar slot="action-bar">
+                        <CalciteActionBar slot="action-bar" expanded>
                             <CalciteActionGroup>
                                 <CalciteAction text="Info" icon="information" textEnabled active={!infoPanelClosed}
                                 onClick={() => {
@@ -87,11 +88,19 @@ const Layout = () => {
                     <WebMapComponentBeta/>
 
                     {/* MAP TOOLS */}
-                    <CalciteShellPanel slot="panel-end" position="end" id="shell-panel-end" collapsed={comparablePanelClosed}>
+                    <CalciteShellPanel width="l" className="right-panel" slot="panel-end" position="end" id="shell-panel-end" collapsed={comparablePanelClosed}>
                         {/* ACTION BAR */}
-                        <CalciteActionBar slot="action-bar">
+                        <CalciteActionBar slot="action-bar" expanded>
                             <CalciteActionGroup>
-                                <CalciteAction text="Add" icon="plus"></CalciteAction>
+                                <CalciteAction 
+                                    text="Compare" 
+                                    icon="compare" 
+                                    textEnabled 
+                                    onClick={() => {
+                                        setComparablePanel(false)
+                                    }}>
+
+                                </CalciteAction>
                             </CalciteActionGroup>
                         </CalciteActionBar>
 
