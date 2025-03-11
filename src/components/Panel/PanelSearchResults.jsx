@@ -34,7 +34,7 @@ const PanelSearchResults = () => {
                 heading={translateText('Search Results')} 
                 description= {searchBufferGeometry ? `${translateText("Property results include parcels within")} ${config.buffer_distance} ${translateText(config.buffer_unit)} ${translateText("of")} ${searchTerm}`: null}
                 overlayPositioning="fixed"
-                calcitePanelClose={() => {
+                onCalcitePanelClose={() => {
                     setSearchResultsPanel(true)
                 }}
                 style={{display: searchResultsPanelClosed ? 'none': 'flex'}}

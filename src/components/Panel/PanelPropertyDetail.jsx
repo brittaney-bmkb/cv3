@@ -256,7 +256,7 @@ const PanelSearchResults = () => {
                 //PROPERTY HEADER: PIN AND ADDRESS 
                 heading={translateText('Property Detail')}
                 overlayPositioning="fixed"
-                calcitePanelClose={() => {
+                onCalcitePanelClose={() => {
                     setPropertyDetailPanel(true)
                 }}
                 style={{display: propertyDetailPanelClosed ? 'none': 'flex'}}

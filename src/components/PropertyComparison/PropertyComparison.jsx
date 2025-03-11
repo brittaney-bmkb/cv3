@@ -13,7 +13,7 @@ const PropertyComparison = () => {
             className='panel-start' 
             heading={translateText('Comparable Search')} 
             //description= {translateText("Search for similar properties")}
-            calcitePanelClose={() => {
+            onCalcitePanelClose={() => {
                 setComparablePanel(true)
             }}
             style={{display: comparablePanelClosed ? 'none': 'flex'}}
