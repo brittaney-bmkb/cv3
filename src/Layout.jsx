@@ -31,7 +31,7 @@ const Layout = () => {
                 <Header/>
                 <CalciteShell>
                     {/* LEFT PANEL */}
-                    <CalciteShellPanel  width="m" slot="panel-start" position="start" id="shell-panel-start">
+                    <CalciteShellPanel  width="l" slot="panel-start" position="start" id="shell-panel-start" class='left-panel'>
                         {/* ACTION BAR */}
                         <CalciteActionBar slot="action-bar">
                             <CalciteActionGroup>

@@ -4,6 +4,9 @@ import {
     CalciteAction, 
     CalciteActionBar, 
     CalciteBlock, 
+    CalciteButton, 
+    CalciteLabel, 
+    CalciteLink, 
     CalciteList, 
     CalciteListItem, 
     CalciteListItemGroup, 
@@ -33,6 +36,22 @@ function addCommaSeparator(value, type) {
     }
   }
 
+  const returnHyperlink = (params, url, attributes) => {
+
+    let urlFormatted = url
+    let paramsValues = params.split(",")
+    let showLink = true
+
+    if(attributes){
+        paramsValues.map((param) => {
+            ////console.log("Replacing: ", `{${param}}`)
+            urlFormatted = urlFormatted.replace(`{${param}}`, attributes[param])
+        })
+
+        ////console.log("url text: ", text, urlFormatted)
+    }
+    return urlFormatted
+}
 
 
 const PanelSearchResults = () => {
@@ -50,7 +69,19 @@ const PanelSearchResults = () => {
     } = UseAppContext()
 
     const [ categories, setCategories ] = useState(null)
-    const [ muni, setMuni ] = useState({})
+    
+    const [ calculatedValues, setCalculatedValues ] = useState({
+        incorp_unincorp_state: {
+            label: '',
+            description: '',
+            button: false
+        },
+        zoning_info: {
+            label: '',
+            description: '',
+            button: true
+        }
+    })
 
     //Get Property Data Fields to Display
     useEffect(() => {
@@ -70,35 +101,57 @@ const PanelSearchResults = () => {
         }
     }, [dataDictionary]);
 
-    const calculateFieldValues = async (feature, field) => {
-            if(field === 'incorp_unincorp_state'){
-                let message
-                const muniValueReturned = await returnMunicipality(feature);
-                const muniValue = muniValueReturned ? 
-                `${translateText('Incorporated')} ${muniValueReturned}` : 
-                `${translateText('Unincorporated')} ${feature.attributes['township_name']}`
+    useEffect(() => {
+        const calculateFieldValues = async (feature) => {
+            if (dataDictionary) {
+                // Create an array of promises for all the async tasks
+                const promises = dataDictionary.map(async (data) => {
+                    if (data.attributes['type'] === 'calc') {
+                        if (data.attributes['field'] === 'incorp_unincorp_state') {
+                            let message;
+                            const muniValueReturned = await returnMunicipality(feature);
+                            const muniValue = muniValueReturned
+                                ? `${translateText('Incorporated')} ${muniValueReturned}`
+                                : `${translateText('Unincorporated')} ${feature.attributes['township_name']}`;
+    
+                            if (muniValueReturned) {
+                                message = translateText('Please contact municipality');
+                            } else {
+                                message = translateText('Cook County Zone Lookup');
+                            }
+    
+                            setCalculatedValues(prevState => ({
+                                ...prevState,
+                                incorp_unincorp_state: {
+                                    ...prevState.incorp_unincorp_state,
+                                    label: muniValue,
+                                    description: translateText('Municipality'),
+                                    button: false
+                                },
+                                zoning_info: {
+                                    ...prevState.zoning_info,
+                                    label: message,
+                                    description: translateText('Zoning Information'),
+                                    button: muniValueReturned ? false : true
+                                }
+                            }));
 
-                if(muniValueReturned){
-                    message = translateText('Please contact municipality')
-                }
-                else{
-                    message = translateText('Cook County Zone Lookup')
-                }
-                console.log("muni: ", muniValue, message)
-                return(
-                    <CalciteListItem 
-                    key={field}
-                    label={muniValue}
-                    description={message}
-                    />
-                )
-            }
-            else{
-                return null
-                
-            }
-        }
+                            
+                        }
+                    }
+                });
+    
+                // Wait for all async operations to complete
+                await Promise.all(promises);
 
+                console.log("calculated values use effect: ", calculatedValues)
+            }
+        };
+    
+        calculateFieldValues(primaryResultFeature[0]);
+
+    }, [primaryResultFeature, dataDictionary]);
+    
 
 
     return (
@@ -200,7 +253,49 @@ const PanelSearchResults = () => {
 
                                                     //check if data type is money if value is not null for selected parcel
                                                     if(data?.attributes['type'] === 'calc'){
-                                                        calculateFieldValues(primaryResultFeature[0], data?.attributes['field'])
+
+                                                        if(calculatedValues[data?.attributes['field']]){
+                                                            if(calculatedValues[data?.attributes['field']]['button']){
+                                                                const hyperlink = returnHyperlink(data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], primaryResultFeature[0]?.attributes)
+                                                                return(
+                                                                    <CalciteListItem
+                                                                    key={data?.attributes['field']}
+                                                                    label={calculatedValues[data?.attributes['field']]['label']}
+                                                                    description={calculatedValues[data?.attributes['field']]['description']}
+                                                                    open
+                                                                    >
+                                                                        <div slot="content">
+                                                                            <CalciteButton 
+                                                                            label={calculatedValues[data?.attributes['field']]['label']}
+                                                                            iconStart="launch"
+                                                                            href={hyperlink} 
+                                                                            target="_blank"
+                                                                            scale='m'>
+                                                                                {calculatedValues[data?.attributes['field']]['label']}
+                                                                            </CalciteButton>
+                                                                            <CalciteLabel scale='s' class='description'>
+                                                                                {calculatedValues[data?.attributes['field']]['description']}
+                                                                            </CalciteLabel>
+                                                                        </div>
+                                                                    </CalciteListItem>
+                                                                )
+                                                            }
+                                                            else{
+                                                                return(
+                                                                    <CalciteListItem
+                                                                    key={data?.attributes['field']}
+                                                                    label={calculatedValues[data?.attributes['field']]['label']}
+                                                                    description={calculatedValues[data?.attributes['field']]['description']}
+                                                                    >
+                                                                    </CalciteListItem>
+                                                                )
+
+                                                            }
+                                                            
+                                                        }
+
+                                                        
+                                                        
                                                     }
 
                                                     

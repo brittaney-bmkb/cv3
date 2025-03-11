@@ -14,7 +14,7 @@ body{
   height: 100%;
   width: calc(100%);
   box-sizing: border-box;
-  font-family: Barlow
+  font-family:  "Avenir Next", Avenir, "Helvetica Neue", sans-serif;
 }
 
 /* CALCITE CUSTOM STYLES */
@@ -25,6 +25,15 @@ calcite-block-section.info-section-header{
 
 calcite-label.header{
   --calcite-label-text-color: #ffffff
+}
+
+calcite-label.description{
+  margin-top: 5px;
+  --calcite-label-text-color: #6a6a6a
+}
+
+calcite-shell-panel.left-panel{
+  --calcite-shell-panel-max-width: 300px;
 }
 
 calcite-panel.panel-start{
