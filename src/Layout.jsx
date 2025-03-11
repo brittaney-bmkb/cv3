@@ -15,14 +15,35 @@ import UseAppContext from "./contexts/AppContext";
 import { config } from "./data/config";
 import Header from "./components/Header/Header";
 import PanelInfo from "./components/Panel/PanelInfo";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import PanelPropertyDetail from "./components/Panel/PanelPropertyDetail";
+import PropertyComparison from "./components/PropertyComparison/PropertyComparison";
 
 
 const Layout = () => {
 
     // State of panels
-    const { setInfoPanel, setSearchResultsPanel, setPropertyDetailPanel, propertyDetailPanelClosed, infoPanelClosed, searchResultsPanelClosed } = UseAppContext()
+    const { 
+        setInfoPanel, 
+        setSearchResultsPanel, 
+        setPropertyDetailPanel, 
+        propertyDetailPanelClosed, 
+        infoPanelClosed, 
+        searchResultsPanelClosed,
+        comparablePanelClosed 
+    } = UseAppContext()
+
+
+    const [leftPanelCollapsed, setLeftPanelCollapsed] = useState(false) 
+
+    useEffect(() => {
+
+        const allPanelsClosed =  [propertyDetailPanelClosed, infoPanelClosed, searchResultsPanelClosed].every(panel => panel === true); 
+        setLeftPanelCollapsed(allPanelsClosed)
+
+        console.log("left panel closed: ", propertyDetailPanelClosed, infoPanelClosed, searchResultsPanelClosed)
+
+    }, [propertyDetailPanelClosed, infoPanelClosed, searchResultsPanelClosed])
 
     return(
         <CalciteShell>
@@ -31,7 +52,7 @@ const Layout = () => {
                 <Header/>
                 <CalciteShell>
                     {/* LEFT PANEL */}
-                    <CalciteShellPanel  width="l" slot="panel-start" position="start" id="shell-panel-start" class='left-panel'>
+                    <CalciteShellPanel  width="l" slot="panel-start" position="start" id="shell-panel-start" class='left-panel' collapsed={leftPanelCollapsed}>
                         {/* ACTION BAR */}
                         <CalciteActionBar slot="action-bar">
                             <CalciteActionGroup>
@@ -66,20 +87,20 @@ const Layout = () => {
                     <WebMapComponentBeta/>
 
                     {/* MAP TOOLS */}
-                    <CalciteShellPanel slot="panel-end" position="end" id="shell-panel-end" collapsed>
+                    <CalciteShellPanel slot="panel-end" position="end" id="shell-panel-end" collapsed={comparablePanelClosed}>
                         {/* ACTION BAR */}
                         <CalciteActionBar slot="action-bar">
                             <CalciteActionGroup>
                                 <CalciteAction text="Add" icon="plus"></CalciteAction>
                             </CalciteActionGroup>
                         </CalciteActionBar>
-                        {/* SECONDARY PANEL */}
-                        <CalcitePanel heading="secondary panel" closable>
 
-                        </CalcitePanel>
+                        {/* SECONDARY PANEL */}
+                        <PropertyComparison/>
+
                     </CalciteShellPanel>
                 </CalciteShell>
-            
+                                
             </CalcitePanel>
 
         

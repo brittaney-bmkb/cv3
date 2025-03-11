@@ -20,16 +20,16 @@ const PanelInfo = () => {
 
     return (
         <CalcitePanel 
-        id="info-panel" 
-        closed={infoPanelClosed} 
-        closable 
-        class='panel-start' 
-        heading="Info" 
-        overlayPositioning="fixed"
-        calcitePanelClose={() => {
-            setInfoPanel(true)
-        }}
-        style={{display: infoPanelClosed ? 'none': 'flex'}}
+            id="info-panel" 
+            closed={infoPanelClosed} 
+            closable 
+            class='panel-start' 
+            heading="Info" 
+            overlayPositioning="fixed"
+            onCalcitePanelClose={(e) => {
+                setInfoPanel(true)
+            }}
+            style={{display: infoPanelClosed ? 'none': 'flex'}}
         >
             <CalciteBlock open collapsible={false}>
                 {/* SEARCH RESULTS LABEL*/}

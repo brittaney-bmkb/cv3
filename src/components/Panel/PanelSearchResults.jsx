@@ -30,7 +30,7 @@ const PanelSearchResults = () => {
                 id="search-results-panel" 
                 closed={searchResultsPanelClosed} 
                 closable 
-                class='panel-start' 
+                className='panel-start' 
                 heading={translateText('Search Results')} 
                 description= {searchBufferGeometry ? `${translateText("Property results include parcels within")} ${config.buffer_distance} ${translateText(config.buffer_unit)} ${translateText("of")} ${searchTerm}`: null}
                 overlayPositioning="fixed"

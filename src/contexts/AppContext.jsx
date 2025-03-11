@@ -38,6 +38,15 @@ export const AppProvider = ({children}) => {
         })
     } 
 
+    const setComparablePanel = (open) => {
+        dispatch({
+            type: "SET_COMPARABLE_PANEL",
+            payload: {
+                comparablePanelClosed: open
+            }
+        })
+    }
+
     const setComparableType = (comparableType) => {
         dispatch({
             type:"SET_COMPARABLE_TYPE",
@@ -1211,7 +1220,9 @@ export const AppProvider = ({children}) => {
         setSearchResultsPanel,
         searchResultsPanelClosed: state.searchResultsPanelClosed,
         setPropertyDetailPanel,
-        propertyDetailPanelClosed: state.propertyDetailPanelClosed
+        propertyDetailPanelClosed: state.propertyDetailPanelClosed,
+        comparablePanelClosed: state.comparablePanelClosed,
+        setComparablePanel
 
     }
 
