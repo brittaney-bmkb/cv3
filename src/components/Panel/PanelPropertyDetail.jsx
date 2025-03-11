@@ -70,17 +70,29 @@ const PanelSearchResults = () => {
 
     const [ categories, setCategories ] = useState(null)
     
+    //CALCULATED VALUES, LINKS, & BUTTONS
+    //TODO ADD ONCLICK FUNCTION TO BUTTONS
     const [ calculatedValues, setCalculatedValues ] = useState({
         incorp_unincorp_state: {
             label: '',
             description: '',
-            button: false
+            type: null
         },
         zoning_info: {
             label: '',
             description: '',
-            button: true
-        }
+            type: null
+        },
+        comparable_properties: {
+            label: '',
+            description: '',
+            type: 'button'
+        },
+        nearby_properties: {
+            label: '',
+            description: '',
+            type: 'button'
+        },
     })
 
     //Get Property Data Fields to Display
@@ -104,9 +116,11 @@ const PanelSearchResults = () => {
     useEffect(() => {
         const calculateFieldValues = async (feature) => {
             if (dataDictionary) {
-                // Create an array of promises for all the async tasks
+                
                 const promises = dataDictionary.map(async (data) => {
-                    if (data.attributes['type'] === 'calc') {
+                    if (data.attributes['type'] === 'calc' || data.attributes['type'] === 'button') {
+
+                        // Municipality & ZONING
                         if (data.attributes['field'] === 'incorp_unincorp_state') {
                             let message;
                             const muniValueReturned = await returnMunicipality(feature);
@@ -126,17 +140,40 @@ const PanelSearchResults = () => {
                                     ...prevState.incorp_unincorp_state,
                                     label: muniValue,
                                     description: translateText('Municipality'),
-                                    button: false
+                                    type: null
                                 },
                                 zoning_info: {
                                     ...prevState.zoning_info,
                                     label: message,
                                     description: translateText('Zoning Information'),
-                                    button: muniValueReturned ? false : true
+                                    type: muniValueReturned ? 'link' : null
                                 }
                             }));
+                        }
 
-                            
+                        //PROPERTY COMPARISON
+                        if(data.attributes['field'] === 'comparable_properties'){
+                            setCalculatedValues(prevState => ({
+                                ...prevState,
+                                comparable_properties: {
+                                    ...prevState.comparable_properties,
+                                    label: translateText("Comparable Properties"),
+                                    description:data.attributes['label'],
+                                    type: 'button'
+                                },
+                            }));
+                        }
+
+                        if(data.attributes['field'] === 'nearby_properties'){
+                            setCalculatedValues(prevState => ({
+                                ...prevState,
+                                nearby_properties: {
+                                    ...prevState.nearby_properties,
+                                    label: translateText("Nearby Parcels"),
+                                    description:data.attributes['label'],
+                                    type: 'button'
+                                }
+                            }));
                         }
                     }
                 });
@@ -147,8 +184,11 @@ const PanelSearchResults = () => {
                 console.log("calculated values use effect: ", calculatedValues)
             }
         };
-    
-        calculateFieldValues(primaryResultFeature[0]);
+        
+        if(primaryResultFeature){
+            calculateFieldValues(primaryResultFeature[0]);
+        }
+        
 
     }, [primaryResultFeature, dataDictionary]);
     
@@ -252,10 +292,10 @@ const PanelSearchResults = () => {
                                                     }
 
                                                     //check if data type is money if value is not null for selected parcel
-                                                    if(data?.attributes['type'] === 'calc'){
+                                                    if(data?.attributes['type'] === 'calc' || data?.attributes['type'] === 'button'){
 
                                                         if(calculatedValues[data?.attributes['field']]){
-                                                            if(calculatedValues[data?.attributes['field']]['button']){
+                                                            if(calculatedValues[data?.attributes['field']]['type']  === 'link'){
                                                                 const hyperlink = returnHyperlink(data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], primaryResultFeature[0]?.attributes)
                                                                 return(
                                                                     <CalciteListItem
@@ -269,6 +309,29 @@ const PanelSearchResults = () => {
                                                                             label={calculatedValues[data?.attributes['field']]['label']}
                                                                             iconStart="launch"
                                                                             href={hyperlink} 
+                                                                            target="_blank"
+                                                                            scale='m'>
+                                                                                {calculatedValues[data?.attributes['field']]['label']}
+                                                                            </CalciteButton>
+                                                                            <CalciteLabel scale='s' class='description'>
+                                                                                {calculatedValues[data?.attributes['field']]['description']}
+                                                                            </CalciteLabel>
+                                                                        </div>
+                                                                    </CalciteListItem>
+                                                                )
+                                                            }
+                                                            if(calculatedValues[data?.attributes['field']]['type']  === 'button'){
+                                                                return(
+                                                                    <CalciteListItem
+                                                                    key={data?.attributes['field']}
+                                                                    label={calculatedValues[data?.attributes['field']]['label']}
+                                                                    description={calculatedValues[data?.attributes['field']]['description']}
+                                                                    open
+                                                                    >
+                                                                        <div slot="content">
+                                                                            <CalciteButton 
+                                                                            label={calculatedValues[data?.attributes['field']]['label']}
+                                                                            iconStart="launch"
                                                                             target="_blank"
                                                                             scale='m'>
                                                                                 {calculatedValues[data?.attributes['field']]['label']}
