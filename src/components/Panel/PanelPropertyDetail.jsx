@@ -4,6 +4,7 @@ import {
     CalciteAction, 
     CalciteActionBar, 
     CalciteBlock, 
+    CalciteBlockSection, 
     CalciteButton, 
     CalciteLabel, 
     CalciteLink, 
@@ -69,6 +70,7 @@ const PanelSearchResults = () => {
     } = UseAppContext()
 
     const [ categories, setCategories ] = useState(null)
+    const [ headerData, setHeaderData] = useState({})
     
     //CALCULATED VALUES, LINKS, & BUTTONS
     //TODO ADD ONCLICK FUNCTION TO BUTTONS
@@ -110,16 +112,36 @@ const PanelSearchResults = () => {
             ];
 
             setCategories(filteredCategories);
+
+            
         }
     }, [dataDictionary]);
 
     useEffect(() => {
         const calculateFieldValues = async (feature) => {
             if (dataDictionary) {
-                
+
                 const promises = dataDictionary.map(async (data) => {
                     const field = data.attributes['field']
                     const dataType = data.attributes['type']
+
+
+                    if(data.attributes['category'] === 'top'){
+
+                        setHeaderData(prevState => {
+                            const updatedState = { ...prevState };
+                    
+                            // Dynamically update or add the new field
+                            if (!updatedState[field]) {
+                                updatedState[field] = '';
+                            }
+                            updatedState[field] = feature.attributes[field]
+                            return updatedState;
+                        })
+
+                        console.log("header data: ", headerData)
+                    }
+                    
 
                     if (dataType === 'calc' || dataType === 'button') {
 
@@ -231,13 +253,22 @@ const PanelSearchResults = () => {
                 closed={propertyDetailPanelClosed} 
                 closable 
                 class='panel-start' 
-                heading={translateText('Property Detail')} 
+                //PROPERTY HEADER: PIN AND ADDRESS 
+                heading={translateText('Property Detail')}
                 overlayPositioning="fixed"
                 calcitePanelClose={() => {
                     setPropertyDetailPanel(true)
                 }}
                 style={{display: propertyDetailPanelClosed ? 'none': 'flex'}}
                 >   
+                    <div slot="content-top">
+                        <CalciteLabel scale="l"class='DetailHeader' >
+                            { headerData ? headerData[Object.keys(headerData)[0]]:null}
+                        </CalciteLabel>
+                        <CalciteLabel scale="m" class='DetailHeader'>
+                            { headerData ? `${headerData[Object.keys(headerData)[1]]}, ${headerData[Object.keys(headerData)[2]]}` :null}
+                        </CalciteLabel>
+                    </div>
                     {/* SEARCH RESULT ACTIONS */}
                     <CalciteActionBar slot="action-bar" layout="horizontal" expandDisabled> 
                         <CalciteAction 
@@ -264,181 +295,181 @@ const PanelSearchResults = () => {
                             scale="s"
                         />
                     </CalciteActionBar>
-        
-                    <CalciteBlock open collapsible={false}>
+                    
+                    
+                    {/* PROPERTY DETAILS */}
                     {!searchFeatures ?  translateText(`Search for new property`)
                     
-                        : 
+                    : 
 
-                        //Property Details
-                        <CalciteList
-                         filterEnabled
-                         filterPlaceholder={"Filter property details"}
-                         interactionMode="static"
-                         selectionMode="none"
-                        >
-                            {
-                                primaryResultFeature && categories?.map( category => {
-                                    return(
-                                        <CalciteListItemGroup heading={translateText(category)}>
-                                            {
-                                                dataDictionary
-                                                ?.filter((data) => data.attributes['category'] === category)
-                                                .map((data, i) => {
+                    //Property Details
+                    <CalciteList
+                     label={ headerData ? headerData[Object.keys(headerData)[0]]:null}
+                     filterEnabled
+                     filterPlaceholder={"Filter property details"}
+                     interactionMode="static"
+                     selectionMode="none"
+                    >
+                        {
+                            primaryResultFeature && categories?.map( category => {
+                                return(
+                                    <CalciteListItemGroup heading={translateText(category)}>
+                                        {
+                                            dataDictionary
+                                            ?.filter((data) => data.attributes['category'] === category)
+                                            .map((data, i) => {
 
-                                                    //check if data type is text and check if value is not null for selected parcel
-                                                    if(['text' , 'text or int'].includes(data?.attributes['type'])){
-                                                        if(primaryResultFeature[0]?.attributes[data?.attributes['field']]){
-                                                            return(
-                                                                <CalciteListItem
-                                                                    key={data?.attributes['field']}
-                                                                    label={primaryResultFeature[0]?.attributes[data?.attributes['field']]}
-                                                                    description={data?.attributes['label']}
+                                                //check if data type is text and check if value is not null for selected parcel
+                                                if(['text' , 'text or int'].includes(data?.attributes['type'])){
+                                                    if(primaryResultFeature[0]?.attributes[data?.attributes['field']]){
+                                                        return(
+                                                            <CalciteListItem
+                                                                key={data?.attributes['field']}
+                                                                label={primaryResultFeature[0]?.attributes[data?.attributes['field']]}
+                                                                description={data?.attributes['label']}
+                                                                >
+                                                            </CalciteListItem>
+                                                        )
+                                                    }
+
+                                                    //TODO REMOVE HARD CODED VALUE
+                                                    else if(data?.attributes['field'] === 'View District Details'){
+                                                        return(
+                                                            <CalciteListItem
+                                                            key={data?.attributes['field']}
+                                                            label={translateText(data?.attributes['field'])}
+                                                            >
+                                                                <div slot="content">
+                                                                    <CalciteButton
+                                                                    class='hyperlink-button' 
+                                                                    label={translateText(data?.attributes['field'])}
+                                                                    iconStart="launch"
+                                                                    //href={hyperlink} 
+                                                                    target="_blank"
+                                                                    scale='m'
                                                                     >
-                                                                </CalciteListItem>
-                                                            )
-                                                        }
+                                                                        {translateText(data?.attributes['field'])}
+                                                                    </CalciteButton>
+                                                                    <CalciteLabel scale='s' class='description'>
+                                                                        {data?.attributes['label']}
+                                                                    </CalciteLabel>
+                                                                </div>
+                                                            </CalciteListItem>
+                                                        )
+                                                    }
+                                                    
+                                                }
 
-                                                        //TODO REMOVE HARD CODED VALUE
-                                                        else if(data?.attributes['field'] === 'View District Details'){
+                                                //check if data type is int or double and check if value is not null for selected parcel
+                                                if(data?.attributes['type'] === 'int or double' && primaryResultFeature[0]?.attributes[data?.attributes['field']]){
+                                                    return(
+                                                        <CalciteListItem
+                                                        key={data?.attributes['field']}
+                                                        label={addCommaSeparator(primaryResultFeature[0]?.attributes[data?.attributes['field']], data?.attributes['type'])}
+                                                        description={data?.attributes['label']}
+                                                        >
+                                                        </CalciteListItem>
+                                                    )
+                                                }
+
+                                                //check if data type is money if value is not null for selected parcel
+                                                if(data?.attributes['type'] === 'money' && primaryResultFeature[0]?.attributes[data?.attributes['field']]){
+                                                    return(
+                                                        <CalciteListItem
+                                                        key={data?.attributes['field']}
+                                                        label={`$${addCommaSeparator(primaryResultFeature[0]?.attributes[data?.attributes['field']], data?.attributes['type'])}`}
+                                                        description={data?.attributes['label']}
+                                                        >
+                                                        </CalciteListItem>
+                                                    )
+                                                }
+
+                                                //check if data type is money if value is not null for selected parcel
+                                                if(data?.attributes['type'] === 'calc' || data?.attributes['type'] === 'button'){
+
+                                                    if(calculatedValues[data?.attributes['field']]){
+                                                        if(calculatedValues[data?.attributes['field']]['type']  === 'link'){
+                                                            const hyperlink = returnHyperlink(data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], primaryResultFeature[0]?.attributes)
                                                             return(
                                                                 <CalciteListItem
                                                                 key={data?.attributes['field']}
-                                                                label={translateText(data?.attributes['field'])}
+                                                                label={calculatedValues[data?.attributes['field']]['label']}
+                                                                description={calculatedValues[data?.attributes['field']]['description']}
+                                                                open
                                                                 >
                                                                     <div slot="content">
-                                                                        <CalciteButton
+                                                                        <CalciteButton 
                                                                         class='hyperlink-button' 
-                                                                        label={translateText(data?.attributes['field'])}
+                                                                        label={calculatedValues[data?.attributes['field']]['label']}
                                                                         iconStart="launch"
-                                                                        //href={hyperlink} 
+                                                                        href={hyperlink} 
                                                                         target="_blank"
                                                                         scale='m'
                                                                         >
-                                                                            {translateText(data?.attributes['field'])}
+                                                                            {calculatedValues[data?.attributes['field']]['label']}
                                                                         </CalciteButton>
                                                                         <CalciteLabel scale='s' class='description'>
-                                                                            {data?.attributes['label']}
+                                                                            {calculatedValues[data?.attributes['field']]['description']}
                                                                         </CalciteLabel>
                                                                     </div>
                                                                 </CalciteListItem>
                                                             )
                                                         }
-                                                        
-                                                    }
-
-                                                    //check if data type is int or double and check if value is not null for selected parcel
-                                                    if(data?.attributes['type'] === 'int or double' && primaryResultFeature[0]?.attributes[data?.attributes['field']]){
-                                                        return(
-                                                            <CalciteListItem
-                                                            key={data?.attributes['field']}
-                                                            label={addCommaSeparator(primaryResultFeature[0]?.attributes[data?.attributes['field']], data?.attributes['type'])}
-                                                            description={data?.attributes['label']}
-                                                            >
-                                                            </CalciteListItem>
-                                                        )
-                                                    }
-
-                                                    //check if data type is money if value is not null for selected parcel
-                                                    if(data?.attributes['type'] === 'money' && primaryResultFeature[0]?.attributes[data?.attributes['field']]){
-                                                        return(
-                                                            <CalciteListItem
-                                                            key={data?.attributes['field']}
-                                                            label={`$${addCommaSeparator(primaryResultFeature[0]?.attributes[data?.attributes['field']], data?.attributes['type'])}`}
-                                                            description={data?.attributes['label']}
-                                                            >
-                                                            </CalciteListItem>
-                                                        )
-                                                    }
-
-                                                    //check if data type is money if value is not null for selected parcel
-                                                    if(data?.attributes['type'] === 'calc' || data?.attributes['type'] === 'button'){
-
-                                                        if(calculatedValues[data?.attributes['field']]){
-                                                            if(calculatedValues[data?.attributes['field']]['type']  === 'link'){
-                                                                const hyperlink = returnHyperlink(data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], primaryResultFeature[0]?.attributes)
-                                                                return(
-                                                                    <CalciteListItem
-                                                                    key={data?.attributes['field']}
-                                                                    label={calculatedValues[data?.attributes['field']]['label']}
-                                                                    description={calculatedValues[data?.attributes['field']]['description']}
-                                                                    open
-                                                                    >
-                                                                        <div slot="content">
-                                                                            <CalciteButton 
-                                                                            class='hyperlink-button' 
-                                                                            label={calculatedValues[data?.attributes['field']]['label']}
-                                                                            iconStart="launch"
-                                                                            href={hyperlink} 
-                                                                            target="_blank"
-                                                                            scale='m'
-                                                                            >
-                                                                                {calculatedValues[data?.attributes['field']]['label']}
-                                                                            </CalciteButton>
-                                                                            <CalciteLabel scale='s' class='description'>
-                                                                                {calculatedValues[data?.attributes['field']]['description']}
-                                                                            </CalciteLabel>
-                                                                        </div>
-                                                                    </CalciteListItem>
-                                                                )
-                                                            }
-                                                            if(calculatedValues[data?.attributes['field']]['type']  === 'button'){
-                                                                return(
-                                                                    <CalciteListItem
-                                                                    key={data?.attributes['field']}
-                                                                    label={calculatedValues[data?.attributes['field']]['label']}
-                                                                    description={calculatedValues[data?.attributes['field']]['description']}
-                                                                    open
-                                                                    >
-                                                                        <div slot="content">
-                                                                            <CalciteButton 
-                                                                            class='hyperlink-button' 
-                                                                            label={calculatedValues[data?.attributes['field']]['label']}
-                                                                            iconStart="launch"
-                                                                            target="_blank"
-                                                                            scale='m'>
-                                                                                {calculatedValues[data?.attributes['field']]['label']}
-                                                                            </CalciteButton>
-                                                                            <CalciteLabel scale='s' class='description'>
-                                                                                {calculatedValues[data?.attributes['field']]['description']}
-                                                                            </CalciteLabel>
-                                                                        </div>
-                                                                    </CalciteListItem>
-                                                                )
-                                                            }
-                                                            else{
-                                                                return(
-                                                                    <CalciteListItem
-                                                                    key={data?.attributes['field']}
-                                                                    label={calculatedValues[data?.attributes['field']]['label']}
-                                                                    description={calculatedValues[data?.attributes['field']]['description']}
-                                                                    >
-                                                                    </CalciteListItem>
-                                                                )
-
-                                                            }
-                                                            
+                                                        if(calculatedValues[data?.attributes['field']]['type']  === 'button'){
+                                                            return(
+                                                                <CalciteListItem
+                                                                key={data?.attributes['field']}
+                                                                label={calculatedValues[data?.attributes['field']]['label']}
+                                                                description={calculatedValues[data?.attributes['field']]['description']}
+                                                                open
+                                                                >
+                                                                    <div slot="content">
+                                                                        <CalciteButton 
+                                                                        class='hyperlink-button' 
+                                                                        label={calculatedValues[data?.attributes['field']]['label']}
+                                                                        iconStart="launch"
+                                                                        target="_blank"
+                                                                        scale='m'>
+                                                                            {calculatedValues[data?.attributes['field']]['label']}
+                                                                        </CalciteButton>
+                                                                        <CalciteLabel scale='s' class='description'>
+                                                                            {calculatedValues[data?.attributes['field']]['description']}
+                                                                        </CalciteLabel>
+                                                                    </div>
+                                                                </CalciteListItem>
+                                                            )
                                                         }
+                                                        else{
+                                                            return(
+                                                                <CalciteListItem
+                                                                key={data?.attributes['field']}
+                                                                label={calculatedValues[data?.attributes['field']]['label']}
+                                                                description={calculatedValues[data?.attributes['field']]['description']}
+                                                                >
+                                                                </CalciteListItem>
+                                                            )
 
-                                                        
+                                                        }
                                                         
                                                     }
 
                                                     
-                                                })
-                                            }
-                                        </CalciteListItemGroup>
-                                    )
-                                })
-                            }
+                                                    
+                                                }
+
+                                                
+                                            })
+                                        }
+                                    </CalciteListItemGroup>
+                                )
+                            })
+                        }
 
 
-                        </CalciteList>
-                    }
-                    
-                    
+                    </CalciteList>
+                }
 
-                    </CalciteBlock>
+
             </CalcitePanel>
     )
 }

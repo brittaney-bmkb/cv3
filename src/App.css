@@ -30,6 +30,9 @@ calcite-block-section.info-section-header{
 calcite-label.header{
   --calcite-label-text-color: #ffffff
 }
+calcite-label.DetailHeader{
+  --calcite-label-margin-bottom: 5px
+}
 
 calcite-label.description{
   margin-top: 5px;
@@ -37,7 +40,7 @@ calcite-label.description{
 }
 
 calcite-shell-panel.left-panel{
-  --calcite-shell-panel-max-width: 450px;
+  --calcite-shell-panel-max-width: 400px;
 }
 
 calcite-panel.panel-start{
