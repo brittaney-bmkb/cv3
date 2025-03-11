@@ -92,7 +92,7 @@ const PanelSearchResults = () => {
             label: '',
             description: '',
             type: 'button'
-        },
+        }
     })
 
     //Get Property Data Fields to Display
@@ -118,10 +118,13 @@ const PanelSearchResults = () => {
             if (dataDictionary) {
                 
                 const promises = dataDictionary.map(async (data) => {
-                    if (data.attributes['type'] === 'calc' || data.attributes['type'] === 'button') {
+                    const field = data.attributes['field']
+                    const dataType = data.attributes['type']
+
+                    if (dataType === 'calc' || dataType === 'button') {
 
                         // Municipality & ZONING
-                        if (data.attributes['field'] === 'incorp_unincorp_state') {
+                        if (field === 'incorp_unincorp_state') {
                             let message;
                             const muniValueReturned = await returnMunicipality(feature);
                             const muniValue = muniValueReturned
@@ -146,13 +149,13 @@ const PanelSearchResults = () => {
                                     ...prevState.zoning_info,
                                     label: message,
                                     description: translateText('Zoning Information'),
-                                    type: muniValueReturned ? 'link' : null
+                                    type: muniValueReturned ? null : 'link'
                                 }
                             }));
                         }
 
                         //PROPERTY COMPARISON
-                        if(data.attributes['field'] === 'comparable_properties'){
+                        if(field === 'comparable_properties'){
                             setCalculatedValues(prevState => ({
                                 ...prevState,
                                 comparable_properties: {
@@ -164,7 +167,7 @@ const PanelSearchResults = () => {
                             }));
                         }
 
-                        if(data.attributes['field'] === 'nearby_properties'){
+                        if(field === 'nearby_properties'){
                             setCalculatedValues(prevState => ({
                                 ...prevState,
                                 nearby_properties: {
@@ -175,6 +178,34 @@ const PanelSearchResults = () => {
                                 }
                             }));
                         }
+
+                        //EXTERNAL LINKS
+                        if(field.endsWith('_link')){
+
+                            console.log("Link field: ", field)
+                            setCalculatedValues(prevState => {
+                                const updatedState = { ...prevState };
+                        
+                                // Dynamically update or add the new field
+                                if (!updatedState[field]) {
+                                    updatedState[field] = {
+                                        label: '',
+                                        description: '',
+                                        type: null
+                                    };
+                                }
+                        
+                                updatedState[field] = {
+                                    ...updatedState[field],  // Preserve the existing values if the field exists
+                                    label: data.attributes['hyperlink_text'] || updatedState[field].label,
+                                    description: data.attributes['credit'] || updatedState[field].description,
+                                    type: 'link'  // Adjust as needed
+                                };
+                        
+                                return updatedState;
+                            })
+                        }
+
                     }
                 });
     
@@ -256,15 +287,44 @@ const PanelSearchResults = () => {
                                                 .map((data, i) => {
 
                                                     //check if data type is text and check if value is not null for selected parcel
-                                                    if(data?.attributes['type'] === 'text' && primaryResultFeature[0]?.attributes[data?.attributes['field']]){
-                                                        return(
-                                                            <CalciteListItem
-                                                            key={data?.attributes['field']}
-                                                            label={primaryResultFeature[0]?.attributes[data?.attributes['field']]}
-                                                            description={data?.attributes['label']}
-                                                            >
-                                                            </CalciteListItem>
-                                                        )
+                                                    if(['text' , 'text or int'].includes(data?.attributes['type'])){
+                                                        if(primaryResultFeature[0]?.attributes[data?.attributes['field']]){
+                                                            return(
+                                                                <CalciteListItem
+                                                                    key={data?.attributes['field']}
+                                                                    label={primaryResultFeature[0]?.attributes[data?.attributes['field']]}
+                                                                    description={data?.attributes['label']}
+                                                                    >
+                                                                </CalciteListItem>
+                                                            )
+                                                        }
+
+                                                        //TODO REMOVE HARD CODED VALUE
+                                                        else if(data?.attributes['field'] === 'View District Details'){
+                                                            return(
+                                                                <CalciteListItem
+                                                                key={data?.attributes['field']}
+                                                                label={translateText(data?.attributes['field'])}
+                                                                >
+                                                                    <div slot="content">
+                                                                        <CalciteButton
+                                                                        class='hyperlink-button' 
+                                                                        label={translateText(data?.attributes['field'])}
+                                                                        iconStart="launch"
+                                                                        //href={hyperlink} 
+                                                                        target="_blank"
+                                                                        scale='m'
+                                                                        >
+                                                                            {translateText(data?.attributes['field'])}
+                                                                        </CalciteButton>
+                                                                        <CalciteLabel scale='s' class='description'>
+                                                                            {data?.attributes['label']}
+                                                                        </CalciteLabel>
+                                                                    </div>
+                                                                </CalciteListItem>
+                                                            )
+                                                        }
+                                                        
                                                     }
 
                                                     //check if data type is int or double and check if value is not null for selected parcel
@@ -306,11 +366,13 @@ const PanelSearchResults = () => {
                                                                     >
                                                                         <div slot="content">
                                                                             <CalciteButton 
+                                                                            class='hyperlink-button' 
                                                                             label={calculatedValues[data?.attributes['field']]['label']}
                                                                             iconStart="launch"
                                                                             href={hyperlink} 
                                                                             target="_blank"
-                                                                            scale='m'>
+                                                                            scale='m'
+                                                                            >
                                                                                 {calculatedValues[data?.attributes['field']]['label']}
                                                                             </CalciteButton>
                                                                             <CalciteLabel scale='s' class='description'>
@@ -330,6 +392,7 @@ const PanelSearchResults = () => {
                                                                     >
                                                                         <div slot="content">
                                                                             <CalciteButton 
+                                                                            class='hyperlink-button' 
                                                                             label={calculatedValues[data?.attributes['field']]['label']}
                                                                             iconStart="launch"
                                                                             target="_blank"
