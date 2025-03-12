@@ -8,8 +8,19 @@ const ListComparisonResults = () => {
         comparableParcels, 
         setSecondaryResultFeature, 
         setComparisonResultsPanel,
-        setNearbyPanel
+        setNearbyPanel,
+        setComparisonDetailPanel
     } = UseAppContext()
+
+    const handleSelect = async (feature) => {
+
+        console.log("selecting feature: ", feature)
+        setSecondaryResultFeature(feature)
+        setComparisonResultsPanel(true)
+        setNearbyPanel(true)
+        setComparisonDetailPanel(false)
+
+    }
     
     return(
         <CalciteList
@@ -25,11 +36,7 @@ const ListComparisonResults = () => {
                         selectionAppearance="border"
                         selectionMode="single"
                         iconEnd="pin"
-                        onCalciteListItemSelect={() => {
-                            setSecondaryResultFeature(feature.attributes['PIN14_dash'])
-                            setComparisonResultsPanel(true)
-                            setNearbyPanel(true)
-                        }}
+                        onCalciteListItemSelect={() => {handleSelect(feature)}}
                     >
                     <div slot="content" class="description" style={{marginLeft:'10px'}}>
                         <CalciteLabel scale="m" >

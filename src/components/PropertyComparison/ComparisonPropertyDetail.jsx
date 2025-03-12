@@ -65,16 +65,16 @@ function addCommaSeparator(value, type) {
 
 
 
-const PanelPropertyDetail = () => {
+const ComparisonPropertyDetail = () => {
 
     const { 
-        searchFeatures, 
+        comparableParcels, 
         translateText, 
-        propertyDetailPanelClosed, 
-        setPropertyDetailPanel, 
-        clearResults,
+        comparisonDetailPanelClosed, 
+        setComparisonDetailPanel, 
+        clearResultsComparables,
         dataDictionary,
-        primaryResultFeature,
+        secondaryResultFeature,
         setComparablePanel,
         setNearbyPanel
     } = UseAppContext()
@@ -269,29 +269,30 @@ const PanelPropertyDetail = () => {
             }
         };
         
-        if(primaryResultFeature){
-            calculateFieldValues(primaryResultFeature[0]);
+        if(secondaryResultFeature){
+            console.log("secondary feature selected: ", secondaryResultFeature)
+            calculateFieldValues(secondaryResultFeature);
         }
         
 
-    }, [primaryResultFeature, dataDictionary]);
+    }, [secondaryResultFeature, dataDictionary]);
     
 
 
     return (
             <CalcitePanel 
                 id="property-detail-panel" 
-                closed={propertyDetailPanelClosed} 
+                closed={comparisonDetailPanelClosed} 
                 closable 
                 class='panel-start' 
                 
-                heading={translateText('Property Detail')}
+                heading={translateText('Comparison Property Detail')}
                 overlayPositioning="fixed"
                 onCalcitePanelClose={() => {
-                    setPropertyDetailPanel(true)
+                    setComparisonDetailPanel(true)
                 }}
                 //KEEP THIS SO PANELS CANT TAKE UP THE WHOLE SPACE OF THE SHELL
-                style={{display: propertyDetailPanelClosed ? 'none': 'flex'}}
+                style={{display: comparisonDetailPanelClosed ? 'none': 'flex'}}
                 >   
                     {/* PROPERTY HEADER: PIN AND ADDRESS  */}
                     {
@@ -317,15 +318,15 @@ const PanelPropertyDetail = () => {
                         <CalciteAction 
                             text="clear" 
                             icon="reset" 
-                            disabled={searchFeatures ? false : true} 
+                            disabled={comparableParcels ? false : true} 
                             textEnabled 
                             scale="s"
-                            onClick={clearResults}
+                            onClick={clearResultsComparables}
                         ></CalciteAction>
                         <CalciteAction 
                             text="export" 
                             icon="export" 
-                            disabled={searchFeatures ? false : true} 
+                            disabled={comparableParcels ? false : true} 
                             textEnabled 
                             scale="s"
                            //onClick={() => {setOpenExportDialog(true)}}
@@ -333,7 +334,7 @@ const PanelPropertyDetail = () => {
                         <CalciteAction 
                             text="feedback" 
                             icon="speech-bubble-exclamation" 
-                            disabled={searchFeatures ? false : true} 
+                            disabled={comparableParcels ? false : true} 
                             textEnabled 
                             scale="s"
                         />
@@ -341,7 +342,7 @@ const PanelPropertyDetail = () => {
                     
                     
                     {/* PROPERTY DETAILS */}
-                    {!searchFeatures ?  translateText(`Search for new property`)
+                    {!comparableParcels ?  translateText(`Search for new property`)
                     
                     : 
 
@@ -354,7 +355,7 @@ const PanelPropertyDetail = () => {
                      selectionMode="none"
                     >
                         {
-                            primaryResultFeature && categories?.map( category => {
+                            secondaryResultFeature && categories?.map( category => {
                                 return(
                                     <CalciteListItemGroup heading={translateText(category)}>
                                         {
@@ -364,11 +365,11 @@ const PanelPropertyDetail = () => {
 
                                                 //check if data type is text and check if value is not null for selected parcel
                                                 if(['text' , 'text or int'].includes(data?.attributes['type'])){
-                                                    if(primaryResultFeature[0]?.attributes[data?.attributes['field']]){
+                                                    if(secondaryResultFeature?.attributes[data?.attributes['field']]){
                                                         return(
                                                             <CalciteListItem
                                                                 key={data?.attributes['field']}
-                                                                label={primaryResultFeature[0]?.attributes[data?.attributes['field']]}
+                                                                label={secondaryResultFeature?.attributes[data?.attributes['field']]}
                                                                 description={data?.attributes['label']}
                                                                 >
                                                             </CalciteListItem>
@@ -404,11 +405,11 @@ const PanelPropertyDetail = () => {
                                                 }
 
                                                 //check if data type is int or double and check if value is not null for selected parcel
-                                                if(data?.attributes['type'] === 'int or double' && primaryResultFeature[0]?.attributes[data?.attributes['field']]){
+                                                if(data?.attributes['type'] === 'int or double' && secondaryResultFeature?.attributes[data?.attributes['field']]){
                                                     return(
                                                         <CalciteListItem
                                                         key={data?.attributes['field']}
-                                                        label={addCommaSeparator(primaryResultFeature[0]?.attributes[data?.attributes['field']], data?.attributes['type'])}
+                                                        label={addCommaSeparator(secondaryResultFeature?.attributes[data?.attributes['field']], data?.attributes['type'])}
                                                         description={data?.attributes['label']}
                                                         >
                                                         </CalciteListItem>
@@ -416,11 +417,11 @@ const PanelPropertyDetail = () => {
                                                 }
 
                                                 //check if data type is money if value is not null for selected parcel
-                                                if(data?.attributes['type'] === 'money' && primaryResultFeature[0]?.attributes[data?.attributes['field']]){
+                                                if(data?.attributes['type'] === 'money' && secondaryResultFeature?.attributes[data?.attributes['field']]){
                                                     return(
                                                         <CalciteListItem
                                                         key={data?.attributes['field']}
-                                                        label={`$${addCommaSeparator(primaryResultFeature[0]?.attributes[data?.attributes['field']], data?.attributes['type'])}`}
+                                                        label={`$${addCommaSeparator(secondaryResultFeature?.attributes[data?.attributes['field']], data?.attributes['type'])}`}
                                                         description={data?.attributes['label']}
                                                         >
                                                         </CalciteListItem>
@@ -433,13 +434,13 @@ const PanelPropertyDetail = () => {
                                                     if(calculatedValues[data?.attributes['field']]){
                                                         if(calculatedValues[data?.attributes['field']]['type']  === 'link'){
                                                             
-                                                            if(Object.keys(conditional_links).includes(data?.attributes['field']) && !conditional_links[data?.attributes['field']].includes(parseInt(primaryResultFeature[0].attributes['BCLASS']))){
+                                                            if(Object.keys(conditional_links).includes(data?.attributes['field']) && !conditional_links[data?.attributes['field']].includes(parseInt(secondaryResultFeature.attributes['BCLASS']))){
                                                                 //console.log("Open data link to res data: ", data?.attributes['field'])
                                                                 return null
                                                             }
                                                             
                                                             else{
-                                                                const hyperlink = returnHyperlink(data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], primaryResultFeature[0]?.attributes)
+                                                                const hyperlink = returnHyperlink(data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], secondaryResultFeature?.attributes)
                                                                 return(
                                                                     <CalciteListItem
                                                                     key={data?.attributes['field']}
@@ -528,4 +529,4 @@ const PanelPropertyDetail = () => {
     )
 }
 
-export default PanelPropertyDetail;
+export default ComparisonPropertyDetail;

@@ -20,6 +20,7 @@ import PanelPropertyDetail from "./components/Panel/PanelPropertyDetail";
 import PropertyComparison from "./components/PropertyComparison/PropertyComparison";
 import NearbyPanel from "./components/PropertyComparison/NearbyPanel";
 import ComparisonResults from "./components/PropertyComparison/ComparisonResults";
+import ComparisonPropertyDetail from "./components/PropertyComparison/ComparisonPropertyDetail";
 
 
 const Layout = () => {
@@ -38,7 +39,9 @@ const Layout = () => {
         setNearbyPanel,
         comparableParcels,
         setComparisonResultsPanel,
-        comparisonResultsClosed
+        comparisonResultsClosed,
+        comparisonDetailPanelClosed,
+        setComparisonDetailPanel
     } = UseAppContext()
 
 
@@ -47,19 +50,18 @@ const Layout = () => {
 
     useEffect(() => {
 
-        const allPanelsClosed =  [propertyDetailPanelClosed, infoPanelClosed, searchResultsPanelClosed].every(panel => panel === true); 
+        const allPanelsClosed =  [ propertyDetailPanelClosed, infoPanelClosed, searchResultsPanelClosed].every(panel => panel === true); 
         setLeftPanelCollapsed(allPanelsClosed)
 
-        console.log("left panel closed: ", propertyDetailPanelClosed, infoPanelClosed, searchResultsPanelClosed)
 
-    }, [propertyDetailPanelClosed, infoPanelClosed, searchResultsPanelClosed])
+    }, [propertyDetailPanelClosed, infoPanelClosed, searchResultsPanelClosed ])
 
     useEffect(() => {
 
-        const allPanelsClosed =  [nearbyPanelClosed, comparablePanelClosed, comparisonResultsClosed].every(panel => panel === true); 
+        const allPanelsClosed =  [comparisonDetailPanelClosed, nearbyPanelClosed, comparablePanelClosed, comparisonResultsClosed].every(panel => panel === true); 
         setRightPanelCollapsed(allPanelsClosed)
 
-    }, [nearbyPanelClosed, comparablePanelClosed, comparisonResultsClosed])
+    }, [nearbyPanelClosed, comparablePanelClosed, comparisonResultsClosed, comparisonDetailPanelClosed])
 
     return(
         <CalciteShell>
@@ -116,6 +118,7 @@ const Layout = () => {
                                         setComparablePanel(false)
                                         setNearbyPanel(true)
                                         setComparisonResultsPanel(true)
+                                        setComparisonDetailPanel(true)
                                     }}>
 
                                 </CalciteAction>
@@ -128,6 +131,7 @@ const Layout = () => {
                                         setNearbyPanel(false)
                                         setComparablePanel(true)
                                         setComparisonResultsPanel(true)
+                                        setComparisonDetailPanel(true)
                                     }}>
 
                                 </CalciteAction>
@@ -142,6 +146,7 @@ const Layout = () => {
                                             setComparisonResultsPanel(false)
                                             setNearbyPanel(true)
                                             setComparablePanel(true)
+                                            setComparisonDetailPanel(true)
                                         }}>
 
                                     </CalciteAction> : null
@@ -158,6 +163,7 @@ const Layout = () => {
                                             setNearbyPanel(true)
                                             setComparablePanel(true)
                                             setComparisonResultsPanel(true)
+                                            setComparisonDetailPanel(false)
                                         }}>
 
                                     </CalciteAction> : null
@@ -169,6 +175,7 @@ const Layout = () => {
                         <PropertyComparison/>
                         <NearbyPanel/>
                         <ComparisonResults/>
+                        <ComparisonPropertyDetail/>
 
                     </CalciteShellPanel>
                 </CalciteShell>

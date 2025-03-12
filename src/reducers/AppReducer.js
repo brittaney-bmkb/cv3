@@ -49,6 +49,7 @@ export const initialState = {
     comparablePanelClosed: true,
     nearbyPanelClosed: true,
     comparisonResultsClosed: true,
+    comparisonDetailPanelClosed: true
 }
 
 const AppReducer = (state, action) => {
@@ -93,6 +94,12 @@ const AppReducer = (state, action) => {
         return {
             ...state, 
             comparisonResultsClosed: payload.comparisonResultsClosed
+        } 
+
+        case "SET_COMPARISON_DETAIL_PANEL":
+        return {
+            ...state, 
+            comparisonDetailPanelClosed: payload.comparisonDetailPanelClosed
         } 
     
     

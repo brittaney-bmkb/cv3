@@ -65,6 +65,15 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setComparisonDetailPanel = (open) => {
+        dispatch({
+            type: "SET_COMPARISON_DETAIL_PANEL",
+            payload: {
+                comparisonDetailPanelClosed: open
+            }
+        })
+    }
+
     const setComparableType = (comparableType) => {
         dispatch({
             type:"SET_COMPARABLE_TYPE",
@@ -1066,7 +1075,8 @@ export const AppProvider = ({children}) => {
 
         
         let nearbyParcels = await nearbyProperties( searchDistance, units, primaryResultFeature, parcelQueryFields)
-    
+        
+        console.log("nearbyParcels")
         setComparableParcels(nearbyParcels)
         setIsQuerying(false)
     }
@@ -1244,7 +1254,9 @@ export const AppProvider = ({children}) => {
         nearbyPanelClosed: state.nearbyPanelClosed,
         setNearbyPanel,
         comparisonResultsClosed: state.comparisonResultsClosed,
-        setComparisonResultsPanel
+        setComparisonResultsPanel,
+        setComparisonDetailPanel,
+        comparisonDetailPanelClosed: state.comparisonDetailPanelClosed
 
     }
 
