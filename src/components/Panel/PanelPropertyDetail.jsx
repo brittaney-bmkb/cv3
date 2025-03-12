@@ -25,6 +25,17 @@ import { ListItem } from "@mui/material";
 //Add footer with pagination for parcels
 //Scrim when no property is selected
 
+const res_condo_class_list = [299, 399]
+const single_multi_improvements_class_list = [202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 218, 219, 224, 225, 234, 236, 278, 295, 297]
+
+//CONDITIONAL LINKS
+//ONLY DISPLAY IF PROPERTY CLASSIFICATION BCLASS
+//MATCHES CLASS LIST
+const conditional_links = {
+    'res_condo_chars_link' : res_condo_class_list,
+    'hist_sf_mf_imp_chars_link': single_multi_improvements_class_list
+}
+
 function addCommaSeparator(value, type) {
     // Convert the string to a number (if it's not already)
     const numericValue = parseFloat(value);
@@ -219,6 +230,8 @@ const PanelSearchResults = () => {
                         }
 
                         //EXTERNAL LINKS
+                        //Determine if links should be shown based on 
+                        //property classification
                         if(field.endsWith('_link')){
 
                             console.log("Link field: ", field)
@@ -417,31 +430,40 @@ const PanelSearchResults = () => {
 
                                                     if(calculatedValues[data?.attributes['field']]){
                                                         if(calculatedValues[data?.attributes['field']]['type']  === 'link'){
-                                                            const hyperlink = returnHyperlink(data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], primaryResultFeature[0]?.attributes)
-                                                            return(
-                                                                <CalciteListItem
-                                                                key={data?.attributes['field']}
-                                                                label={calculatedValues[data?.attributes['field']]['label']}
-                                                                description={calculatedValues[data?.attributes['field']]['description']}
-                                                                open
-                                                                >
-                                                                    <div slot="content">
-                                                                        <CalciteButton 
-                                                                        class='hyperlink-button' 
-                                                                        label={calculatedValues[data?.attributes['field']]['label']}
-                                                                        iconStart="launch"
-                                                                        href={hyperlink} 
-                                                                        target="_blank"
-                                                                        scale='m'
-                                                                        >
-                                                                            {calculatedValues[data?.attributes['field']]['label']}
-                                                                        </CalciteButton>
-                                                                        <CalciteLabel scale='s' class='description'>
-                                                                            {calculatedValues[data?.attributes['field']]['description']}
-                                                                        </CalciteLabel>
-                                                                    </div>
-                                                                </CalciteListItem>
-                                                            )
+                                                            
+                                                            if(Object.keys(conditional_links).includes(data?.attributes['field']) && !conditional_links[data?.attributes['field']].includes(parseInt(primaryResultFeature[0].attributes['BCLASS']))){
+                                                                console.log("Open data link to res data: ", data?.attributes['field'])
+                                                                return null
+                                                            }
+                                                            
+                                                            else{
+                                                                const hyperlink = returnHyperlink(data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], primaryResultFeature[0]?.attributes)
+                                                                return(
+                                                                    <CalciteListItem
+                                                                    key={data?.attributes['field']}
+                                                                    label={calculatedValues[data?.attributes['field']]['label']}
+                                                                    description={calculatedValues[data?.attributes['field']]['description']}
+                                                                    open
+                                                                    >
+                                                                        <div slot="content">
+                                                                            <CalciteButton 
+                                                                            class='hyperlink-button' 
+                                                                            label={calculatedValues[data?.attributes['field']]['label']}
+                                                                            iconStart="launch"
+                                                                            href={hyperlink} 
+                                                                            target="_blank"
+                                                                            scale='m'
+                                                                            >
+                                                                                {calculatedValues[data?.attributes['field']]['label']}
+                                                                            </CalciteButton>
+                                                                            <CalciteLabel scale='s' class='description'>
+                                                                                {calculatedValues[data?.attributes['field']]['description']}
+                                                                            </CalciteLabel>
+                                                                        </div>
+                                                                    </CalciteListItem>
+                                                                )
+                                                            }
+                                                            
                                                         }
                                                         if(calculatedValues[data?.attributes['field']]['type']  === 'button'){
                                                             return(
