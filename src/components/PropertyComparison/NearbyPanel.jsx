@@ -24,7 +24,14 @@ export const linearUnitOptions = {
 
 
 const NearbyPanel = () => {
-    const  { nearbyPanelClosed, setNearbyPanel, translateText, searchNearbyProperties } = UseAppContext()
+    const  { 
+        nearbyPanelClosed, 
+        setNearbyPanel, 
+        translateText, 
+        searchNearbyProperties, 
+        clearResultsComparables,
+        setComparisonResultsPanel
+     } = UseAppContext()
 
     const [selectedUnit, setSelectedUnit] = useState(Object.keys(linearUnitOptions)[0])
     const [searchRadius, setSearchRadius] = useState(0)
@@ -32,6 +39,16 @@ const NearbyPanel = () => {
     const handleSearchRadius = () => {
 
         searchNearbyProperties(searchRadius, selectedUnit)
+        setNearbyPanel(true)
+        setComparisonResultsPanel(false)
+
+    }
+
+    const handleReset = () => {
+
+        clearResultsComparables()
+        setSearchRadius(0)
+        setSelectedUnit(Object.keys(linearUnitOptions)[0])
     }
 
     return(
@@ -92,7 +109,7 @@ const NearbyPanel = () => {
             </CalciteBlock> 
 
             <div slot="footer-end" style={{display: "flex", gap: '20px'}}>
-                <CalciteButton iconStart="reset" appearance="outline" onClick={() => {setSearchRadius(0)}}>
+                <CalciteButton iconStart="reset" appearance="outline" onClick={() => {handleReset()}}>
                     Reset
                 </CalciteButton>
                 <CalciteButton className='hyperlink-button' onClick={() => handleSearchRadius()}>

@@ -56,6 +56,15 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setComparisonResultsPanel = (open) => {
+        dispatch({
+            type: "SET_COMPARISON_RESULTS_PANEL",
+            payload: {
+                comparisonResultsClosed: open
+            }
+        })
+    }
+
     const setComparableType = (comparableType) => {
         dispatch({
             type:"SET_COMPARABLE_TYPE",
@@ -1233,7 +1242,9 @@ export const AppProvider = ({children}) => {
         comparablePanelClosed: state.comparablePanelClosed,
         setComparablePanel,
         nearbyPanelClosed: state.nearbyPanelClosed,
-        setNearbyPanel
+        setNearbyPanel,
+        comparisonResultsClosed: state.comparisonResultsClosed,
+        setComparisonResultsPanel
 
     }
 

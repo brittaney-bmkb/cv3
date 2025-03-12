@@ -19,6 +19,7 @@ import { useCallback, useEffect, useState } from "react";
 import PanelPropertyDetail from "./components/Panel/PanelPropertyDetail";
 import PropertyComparison from "./components/PropertyComparison/PropertyComparison";
 import NearbyPanel from "./components/PropertyComparison/NearbyPanel";
+import ComparisonResults from "./components/PropertyComparison/ComparisonResults";
 
 
 const Layout = () => {
@@ -34,7 +35,10 @@ const Layout = () => {
         nearbyPanelClosed,
         setComparablePanel, 
         comparablePanelClosed,
-        setNearbyPanel
+        setNearbyPanel,
+        comparableParcels,
+        setComparisonResultsPanel,
+        comparisonResultsClosed
     } = UseAppContext()
 
 
@@ -52,10 +56,10 @@ const Layout = () => {
 
     useEffect(() => {
 
-        const allPanelsClosed =  [nearbyPanelClosed, comparablePanelClosed].every(panel => panel === true); 
+        const allPanelsClosed =  [nearbyPanelClosed, comparablePanelClosed, comparisonResultsClosed].every(panel => panel === true); 
         setRightPanelCollapsed(allPanelsClosed)
 
-    }, [nearbyPanelClosed, comparablePanelClosed])
+    }, [nearbyPanelClosed, comparablePanelClosed, comparisonResultsClosed])
 
     return(
         <CalciteShell>
@@ -104,31 +108,67 @@ const Layout = () => {
                         <CalciteActionBar slot="action-bar" expanded>
                             <CalciteActionGroup>
                                 <CalciteAction 
+                                    active={!comparablePanelClosed}
                                     text="Compare" 
                                     icon="compare" 
                                     textEnabled 
                                     onClick={() => {
                                         setComparablePanel(false)
                                         setNearbyPanel(true)
+                                        setComparisonResultsPanel(true)
                                     }}>
 
                                 </CalciteAction>
                                 <CalciteAction 
+                                    active={!nearbyPanelClosed}
                                     text="Nearby" 
                                     icon="rings-largest" 
                                     textEnabled 
                                     onClick={() => {
                                         setNearbyPanel(false)
                                         setComparablePanel(true)
+                                        setComparisonResultsPanel(true)
                                     }}>
 
                                 </CalciteAction>
+                                {
+                                    //IF THERE ARE COMPARABLE PARCELS DISPLAY COMPARABLE RESULTS
+                                    comparableParcels ? 
+                                    <CalciteAction 
+                                        text="Results" 
+                                        icon="list-rectangle"
+                                        textEnabled 
+                                        onClick={() => {
+                                            setComparisonResultsPanel(false)
+                                            setNearbyPanel(true)
+                                            setComparablePanel(true)
+                                        }}>
+
+                                    </CalciteAction> : null
+                                }
+
+{
+                                    //IF THERE ARE COMPARABLE PARCELS DISPLAY COMPARABLE RESULTS
+                                    comparableParcels ? 
+                                    <CalciteAction 
+                                        text="Property" 
+                                        icon="pin"
+                                        textEnabled 
+                                        onClick={() => {
+                                            setNearbyPanel(true)
+                                            setComparablePanel(true)
+                                            setComparisonResultsPanel(true)
+                                        }}>
+
+                                    </CalciteAction> : null
+                                }
                             </CalciteActionGroup>
                         </CalciteActionBar>
 
                         {/* SECONDARY PANEL */}
                         <PropertyComparison/>
                         <NearbyPanel/>
+                        <ComparisonResults/>
 
                     </CalciteShellPanel>
                 </CalciteShell>
