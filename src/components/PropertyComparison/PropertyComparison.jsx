@@ -31,7 +31,7 @@ const constructionTypes = [
     "Stucco"
 ]
 
-const radiusTypes = {
+export const radiusTypes = {
     "Eighth Mile": .125,
     "Quarter Mile": .25,
     "Half Mile": .5,

@@ -33,7 +33,8 @@ const Layout = () => {
         searchResultsPanelClosed,
         nearbyPanelClosed,
         setComparablePanel, 
-        comparablePanelClosed
+        comparablePanelClosed,
+        setNearbyPanel
     } = UseAppContext()
 
 
@@ -108,6 +109,17 @@ const Layout = () => {
                                     textEnabled 
                                     onClick={() => {
                                         setComparablePanel(false)
+                                        setNearbyPanel(true)
+                                    }}>
+
+                                </CalciteAction>
+                                <CalciteAction 
+                                    text="Nearby" 
+                                    icon="rings-largest" 
+                                    textEnabled 
+                                    onClick={() => {
+                                        setNearbyPanel(false)
+                                        setComparablePanel(true)
                                     }}>
 
                                 </CalciteAction>
