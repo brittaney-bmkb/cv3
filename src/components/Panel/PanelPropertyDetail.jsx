@@ -434,7 +434,7 @@ const PanelSearchResults = () => {
                                                         if(calculatedValues[data?.attributes['field']]['type']  === 'link'){
                                                             
                                                             if(Object.keys(conditional_links).includes(data?.attributes['field']) && !conditional_links[data?.attributes['field']].includes(parseInt(primaryResultFeature[0].attributes['BCLASS']))){
-                                                                console.log("Open data link to res data: ", data?.attributes['field'])
+                                                                //console.log("Open data link to res data: ", data?.attributes['field'])
                                                                 return null
                                                             }
                                                             
