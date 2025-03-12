@@ -22,6 +22,8 @@ import { ListItem } from "@mui/material";
 
 //TODO - Update Export dialog and add trigger to export action
 //TODO - Update Feedback dialog and add trigger to feedback action
+//Add footer with pagination for parcels
+//Scrim when no property is selected
 
 function addCommaSeparator(value, type) {
     // Convert the string to a number (if it's not already)
@@ -55,6 +57,7 @@ function addCommaSeparator(value, type) {
 }
 
 
+
 const PanelSearchResults = () => {
 
     const { 
@@ -66,11 +69,22 @@ const PanelSearchResults = () => {
         setPropertyDetailPanel, 
         clearResults,
         dataDictionary,
-        primaryResultFeature
+        primaryResultFeature,
+        setComparablePanel
     } = UseAppContext()
 
     const [ categories, setCategories ] = useState(null)
-    const [ headerData, setHeaderData] = useState({})
+    const [ headerData, setHeaderData] = useState(null)
+
+    const handleClick = (prop) => {
+
+        console.log("Handle click triggered for: ", prop)
+        if(calculatedValues[prop] && calculatedValues[prop].onClick){
+            console.log("Executing triggered for: ", prop)
+            calculatedValues[prop].onClick()
+        }
+    }
+    
     
     //CALCULATED VALUES, LINKS, & BUTTONS
     //TODO ADD ONCLICK FUNCTION TO BUTTONS
@@ -88,12 +102,15 @@ const PanelSearchResults = () => {
         comparable_properties: {
             label: '',
             description: '',
-            type: 'button'
+            type: 'button',
+            onClick: () => setComparablePanel(false)
         },
         nearby_properties: {
             label: '',
             description: '',
-            type: 'button'
+            type: 'button',
+            //UPDATE TO NEARBY PANEL
+            onClick: () => setComparablePanel(true)
         }
     })
 
@@ -261,14 +278,25 @@ const PanelSearchResults = () => {
                 }}
                 style={{display: propertyDetailPanelClosed ? 'none': 'flex'}}
                 >   
+                    
+                    {
+                    headerData ?
                     <div slot="content-top">
                         <CalciteLabel scale="l"class='DetailHeader' >
-                            { headerData ? headerData[Object.keys(headerData)[0]]:null}
+                            { headerData[Object.keys(headerData)[0]]}
                         </CalciteLabel>
                         <CalciteLabel scale="m" class='DetailHeader'>
-                            { headerData ? `${headerData[Object.keys(headerData)[1]]}, ${headerData[Object.keys(headerData)[2]]}` :null}
+                            {`${headerData[Object.keys(headerData)[1]]}, ${headerData[Object.keys(headerData)[2]]}`}
                         </CalciteLabel>
-                    </div>
+                        </div>
+                        : 
+                        <CalciteLabel>
+                            {translateText("Search for new property")}
+                        </CalciteLabel>
+                        
+                    }
+                        
+                    
                     {/* SEARCH RESULT ACTIONS */}
                     <CalciteActionBar slot="action-bar" layout="horizontal" expandDisabled> 
                         <CalciteAction 
@@ -429,7 +457,9 @@ const PanelSearchResults = () => {
                                                                         label={calculatedValues[data?.attributes['field']]['label']}
                                                                         iconStart="launch"
                                                                         target="_blank"
-                                                                        scale='m'>
+                                                                        scale='m'
+                                                                        onClick={() => {handleClick(data?.attributes['field'])}}
+                                                                        >
                                                                             {calculatedValues[data?.attributes['field']]['label']}
                                                                         </CalciteButton>
                                                                         <CalciteLabel scale='s' class='description'>
