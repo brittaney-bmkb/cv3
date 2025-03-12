@@ -41,16 +41,84 @@ const radiusTypes = {
 
 const PropertyComparison = () => {
 
-    const { translateText, setComparablePanel,  comparablePanelClosed, primaryResultFeature} = UseAppContext()
+    const { setComparableType, searchComparableProperties, translateText, setComparablePanel,  comparablePanelClosed, primaryResultFeature} = UseAppContext()
 
     const [ buildingSqFtMin, setBuildingSqFtMin ] = useState(0)
     const [ buildingSqFtMax, setBuildingSqFtMax ] = useState(0)
     const [ landSqFtMin, setLandSqFtMin ] = useState(0)
     const [ landSqFtMax, setLandSqFtMax ] = useState(0)
-    const [ constructionTypeValue, setConstructionTypeValue ] = useState(constructionTypes[0])
+    const [ constructionType, setConstructionType ] = useState(constructionTypes[0])
     const [ ageMax, setAgeMax ] = useState(0)
     const [ ageMin, setAgeMin ] = useState(0)
     const [ radiusTypeValue, setRadiusTypeValue ] = useState(Object.keys(radiusTypes)[0])
+    const [ sourceParcel, setSourceParcel ] = useState(null)
+
+    useEffect(() => {
+    
+            if(primaryResultFeature){
+                let features = Array.isArray(primaryResultFeature) ? primaryResultFeature[0] : primaryResultFeature
+                setSourceParcel(features)
+            }
+    
+        },[primaryResultFeature])
+
+
+    const handleSetQuery = async () => {
+        //AND BCLASS = '${bClass}'
+        let query =`township_name = '${sourceParcel.attributes['township_name']}' AND NBHD = ${sourceParcel.attributes['NBHD']} AND BCLASS = '${sourceParcel.attributes['BCLASS']}' AND PIN14 <> '${sourceParcel.attributes['PIN14']}'` 
+        
+        if(buildingSqFtMin && buildingSqFtMin > 0 && buildingSqFtMax && buildingSqFtMax > 0){
+            query = query + ` AND (BLDGSQFT >= ${buildingSqFtMin} AND BLDGSQFT <= ${buildingSqFtMax})`
+        } 
+        else if(!buildingSqFtMin || buildingSqFtMin === 0){
+            if(buildingSqFtMax && buildingSqFtMax > 0){
+                query = query + ` AND BLDGSQFT <= ${buildingSqFtMax}`
+            }
+        }
+        else if(!buildingSqFtMax || buildingSqFtMax === 0 ){
+            if(buildingSqFtMin && buildingSqFtMin > 0){
+                query = query + ` AND BLDGSQFT >= ${buildingSqFtMin}`
+            }
+        }
+
+        if(landSqFtMin && landSqFtMin > 0 && landSqFtMax && landSqFtMax > 0){
+            query = query + ` AND (LANDSF >= ${landSqFtMin} AND LANDSF <= ${landSqFtMax})`
+        } 
+        else if(!landSqFtMin || landSqFtMin === 0){
+            if(landSqFtMax && landSqFtMax > 0){
+                query = query + ` AND LANDSF <= ${landSqFtMax}`
+            }
+        }
+        else if(!landSqFtMax || landSqFtMax === 0 ){
+            if(landSqFtMin && landSqFtMin > 0){
+                query = query + ` AND LANDSF >= ${landSqFtMin}`
+            }
+        }
+
+        if(ageMin && ageMin > 0 && ageMax && ageMax > 0){
+            query = query + ` AND (BLDGAGE >= ${ageMin} AND BLDGAGE <= ${ageMax})`
+        } 
+        else if(!ageMin || ageMin === 0){
+            if(ageMax && ageMax > 0){
+                query = query + ` AND BLDGAGE <= ${ageMax}`
+            }
+        }
+        else if(!ageMax || ageMax === 0 ){
+            if(ageMin && ageMin > 0){
+                query = query + ` AND BLDGAGE >= ${ageMin}`
+            }
+        }
+        
+        query = ['None','Any'].includes(constructionType) ? query :  query + ` AND bldg_const_desc = '${constructionType}'`
+
+        console.log("Comparable query = ", query, radiusTypes[radiusTypeValue])
+
+        await searchComparableProperties(query,radiusTypes[radiusTypeValue])
+
+        setComparableType("comparable")
+
+        //return query
+    }
     
     useEffect(() => {
 
@@ -241,9 +309,9 @@ const PropertyComparison = () => {
                     <CalciteDropdown 
                         width="l"
                         onCalciteDropdownSelect={(e) => { console.log(e ); 
-                            setConstructionTypeValue(e.target.selectedItems[0].textContent)}}
+                            setConstructionType(e.target.selectedItems[0].textContent)}}
                     >
-                        <CalciteButton form='comparable-search' className="hyperlink-button" width="full" slot="trigger">{translateText(constructionTypeValue)}</CalciteButton>
+                        <CalciteButton form='comparable-search' className="hyperlink-button" width="full" slot="trigger">{translateText(constructionType)}</CalciteButton>
                         <CalciteDropdownGroup selection-mode="single">
                         {constructionTypes.map((constructionType, i) => {
                             return(
@@ -321,7 +389,7 @@ const PropertyComparison = () => {
                 <CalciteButton iconStart="reset" appearance="outline">
                     Reset
                 </CalciteButton>
-                <CalciteButton iconStart="check" className='hyperlink-button'>
+                <CalciteButton className='hyperlink-button' onClick={() => handleSetQuery()}>
                     Search
                 </CalciteButton>
             </div>
