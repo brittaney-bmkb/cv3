@@ -18,6 +18,7 @@ import PanelInfo from "./components/Panel/PanelInfo";
 import { useCallback, useEffect, useState } from "react";
 import PanelPropertyDetail from "./components/Panel/PanelPropertyDetail";
 import PropertyComparison from "./components/PropertyComparison/PropertyComparison";
+import NearbyPanel from "./components/PropertyComparison/NearbyPanel";
 
 
 const Layout = () => {
@@ -30,12 +31,14 @@ const Layout = () => {
         propertyDetailPanelClosed, 
         infoPanelClosed, 
         searchResultsPanelClosed,
-        comparablePanelClosed,
-        setComparablePanel 
+        nearbyPanelClosed,
+        setComparablePanel, 
+        comparablePanelClosed
     } = UseAppContext()
 
 
     const [leftPanelCollapsed, setLeftPanelCollapsed] = useState(false) 
+    const [rightPanelCollapsed, setRightPanelCollapsed] = useState(false) 
 
     useEffect(() => {
 
@@ -46,9 +49,16 @@ const Layout = () => {
 
     }, [propertyDetailPanelClosed, infoPanelClosed, searchResultsPanelClosed])
 
+    useEffect(() => {
+
+        const allPanelsClosed =  [nearbyPanelClosed, comparablePanelClosed].every(panel => panel === true); 
+        setRightPanelCollapsed(allPanelsClosed)
+
+    }, [nearbyPanelClosed, comparablePanelClosed])
+
     return(
         <CalciteShell>
-            <CalcitePanel  class='header'>
+            <CalcitePanel  className='header'>
                 {/* HEADER */}
                 <Header/>
                 <CalciteShell>
@@ -88,7 +98,7 @@ const Layout = () => {
                     <WebMapComponentBeta/>
 
                     {/* MAP TOOLS */}
-                    <CalciteShellPanel width="l" className="right-panel" slot="panel-end" position="end" id="shell-panel-end" collapsed={comparablePanelClosed}>
+                    <CalciteShellPanel width="l" className="right-panel" slot="panel-end" position="end" id="shell-panel-end" collapsed={rightPanelCollapsed}>
                         {/* ACTION BAR */}
                         <CalciteActionBar slot="action-bar" expanded>
                             <CalciteActionGroup>
@@ -106,6 +116,7 @@ const Layout = () => {
 
                         {/* SECONDARY PANEL */}
                         <PropertyComparison/>
+                        <NearbyPanel/>
 
                     </CalciteShellPanel>
                 </CalciteShell>

@@ -47,6 +47,7 @@ export const initialState = {
     searchResultsPanelClosed: true,
     propertyDetailPanelClosed: true,
     comparablePanelClosed: true,
+    nearbyPanelClosed: true,
 }
 
 const AppReducer = (state, action) => {
@@ -80,6 +81,13 @@ const AppReducer = (state, action) => {
             ...state, 
             comparablePanelClosed: payload.comparablePanelClosed
         } 
+
+        case "SET_NEARBY_PANEL":
+        return {
+            ...state, 
+            nearbyPanelClosed: payload.nearbyPanelClosed
+        } 
+    
     
     
         case "SET_COMPARABLE_TYPE":

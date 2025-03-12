@@ -47,6 +47,15 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setNearbyPanel = (open) => {
+        dispatch({
+            type: "SET_NEARBY_PANEL",
+            payload: {
+                nearbyPanelClosed: open
+            }
+        })
+    }
+
     const setComparableType = (comparableType) => {
         dispatch({
             type:"SET_COMPARABLE_TYPE",
@@ -1222,7 +1231,9 @@ export const AppProvider = ({children}) => {
         setPropertyDetailPanel,
         propertyDetailPanelClosed: state.propertyDetailPanelClosed,
         comparablePanelClosed: state.comparablePanelClosed,
-        setComparablePanel
+        setComparablePanel,
+        nearbyPanelClosed: state.nearbyPanelClosed,
+        setNearbyPanel
 
     }
 

@@ -3,11 +3,8 @@
 import { 
     CalciteAction, 
     CalciteActionBar, 
-    CalciteBlock, 
-    CalciteBlockSection, 
     CalciteButton, 
     CalciteLabel, 
-    CalciteLink, 
     CalciteList, 
     CalciteListItem, 
     CalciteListItemGroup, 
@@ -17,7 +14,6 @@ import UseAppContext from "../../contexts/AppContext";
 import { returnMunicipality } from "../../arcgis/geoprocessing/geoprocessing"
 import { config } from "../../data/config";
 import { useEffect, useState } from "react";
-import { ListItem } from "@mui/material";
 
 
 //TODO - Update Export dialog and add trigger to export action
@@ -72,8 +68,6 @@ function addCommaSeparator(value, type) {
 const PanelSearchResults = () => {
 
     const { 
-        searchTerm, 
-        searchBufferGeometry, 
         searchFeatures, 
         translateText, 
         propertyDetailPanelClosed, 
@@ -81,7 +75,8 @@ const PanelSearchResults = () => {
         clearResults,
         dataDictionary,
         primaryResultFeature,
-        setComparablePanel
+        setComparablePanel,
+        setNearbyPanel
     } = UseAppContext()
 
     const [ categories, setCategories ] = useState(null)
@@ -114,14 +109,20 @@ const PanelSearchResults = () => {
             label: '',
             description: '',
             type: 'button',
-            onClick: () => setComparablePanel(false)
+            onClick: () => {
+                setComparablePanel(false)
+                setNearbyPanel(true)
+            }
         },
         nearby_properties: {
             label: '',
             description: '',
             type: 'button',
             //UPDATE TO NEARBY PANEL
-            onClick: () => setComparablePanel(true)
+            onClick: () => {
+                setNearbyPanel(false)
+                setComparablePanel(true)
+            }
         }
     })
 
@@ -283,15 +284,16 @@ const PanelSearchResults = () => {
                 closed={propertyDetailPanelClosed} 
                 closable 
                 class='panel-start' 
-                //PROPERTY HEADER: PIN AND ADDRESS 
+                
                 heading={translateText('Property Detail')}
                 overlayPositioning="fixed"
                 onCalcitePanelClose={() => {
                     setPropertyDetailPanel(true)
                 }}
+                //KEEP THIS SO PANELS CANT TAKE UP THE WHOLE SPACE OF THE SHELL
                 style={{display: propertyDetailPanelClosed ? 'none': 'flex'}}
                 >   
-                    
+                    {/* PROPERTY HEADER: PIN AND ADDRESS  */}
                     {
                     headerData ?
                     <div slot="content-top">
