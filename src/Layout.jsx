@@ -21,6 +21,7 @@ import NearbyPanel from "./components/PropertyComparison/NearbyPanel";
 import ComparisonResults from "./components/PropertyComparison/ComparisonResults";
 import ComparisonPropertyDetail from "./components/PropertyComparison/ComparisonPropertyDetail";
 import Layers from "./components/Layers/Layers";
+import Imagery from "./components/Imagery/Imagery";
 
 
 const Layout = () => {
@@ -168,7 +169,16 @@ const Layout = () => {
                                     onClick={() => {
                                         togglePanel('layers')
                                     }}>
+                                </CalciteAction>
 
+                                <CalciteAction 
+                                    active={!imageryPanelClosed}
+                                    text={translateText("Imagery")} 
+                                    icon="basemap" 
+                                    textEnabled 
+                                    onClick={() => {
+                                        togglePanel('imagery')
+                                    }}>
                                 </CalciteAction>
                             </CalciteActionGroup>
                         </CalciteActionBar>
@@ -179,6 +189,7 @@ const Layout = () => {
                         <ComparisonResults/>
                         <ComparisonPropertyDetail/>
                         <Layers/>
+                        <Imagery/>
 
                     </CalciteShellPanel>
                 </CalciteShell>
