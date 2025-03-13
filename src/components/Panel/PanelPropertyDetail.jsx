@@ -16,6 +16,7 @@ import { returnMunicipality } from "../../arcgis/geoprocessing/geoprocessing"
 import { config } from "../../data/config";
 import { useEffect, useState } from "react";
 import "@esri/calcite-components/components/calcite-scrim"
+import Inactive from "../Inactive/Inactive";
 
 
 
@@ -520,7 +521,7 @@ const PanelPropertyDetail = () => {
                             </> 
 
                 : 
-                <CalciteScrim>{translateText("Search for a parcel")} </CalciteScrim>
+                <Inactive/>
                 }
 
 

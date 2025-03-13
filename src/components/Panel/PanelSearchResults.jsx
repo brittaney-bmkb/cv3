@@ -8,6 +8,9 @@ import {
 import UseAppContext from "../../contexts/AppContext";
 import ListSearchResults from "../ResultList/ListSearchResults";
 import { config } from "../../data/config";
+import Inactive from "../Inactive/Inactive";
+
+
 
 
 //TODO - Update Export dialog and add trigger to export action
@@ -72,7 +75,8 @@ const PanelSearchResults = () => {
                         <ListSearchResults/>
                     </CalciteBlock>
                     : 
-                    <CalciteScrim>{translateText("Search for a parcel")} </CalciteScrim>}
+                    <Inactive/>
+                    }
             </CalcitePanel>
     )
 }
