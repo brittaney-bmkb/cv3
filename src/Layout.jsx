@@ -22,6 +22,7 @@ import ComparisonResults from "./components/PropertyComparison/ComparisonResults
 import ComparisonPropertyDetail from "./components/PropertyComparison/ComparisonPropertyDetail";
 import Layers from "./components/Layers/Layers";
 import Imagery from "./components/Imagery/Imagery";
+import Print from "./components/Print/Print";
 
 
 const Layout = () => {
@@ -180,6 +181,16 @@ const Layout = () => {
                                         togglePanel('imagery')
                                     }}>
                                 </CalciteAction>
+
+                                <CalciteAction 
+                                    active={!printPanelClosed}
+                                    text={translateText("Print")} 
+                                    icon="print" 
+                                    textEnabled 
+                                    onClick={() => {
+                                        togglePanel('print')
+                                    }}>
+                                </CalciteAction>
                             </CalciteActionGroup>
                         </CalciteActionBar>
 
@@ -190,6 +201,7 @@ const Layout = () => {
                         <ComparisonPropertyDetail/>
                         <Layers/>
                         <Imagery/>
+                        <Print/>
 
                     </CalciteShellPanel>
                 </CalciteShell>
