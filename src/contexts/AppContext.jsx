@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer, useRef } from "react";
 import AppReducer, { initialState } from '../reducers/AppReducer'
 import { config } from "../data/config";
 import { theme } from "../theme";
@@ -10,6 +10,8 @@ export const AppContext = createContext(initialState)
 export const AppProvider = ({children}) => {
 
     const [state, dispatch] = useReducer(AppReducer, initialState)
+
+    const arcgisMapRef = useRef(null)
 
     const setInfoPanel = (open) => {
         dispatch({
@@ -74,6 +76,33 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setLayersPanel = (open) => {
+        dispatch({
+            type: "SET_LAYERS_PANEL",
+            payload: {
+                layersPanelClosed: open
+            }
+        })
+    }
+
+    const setImageryPanel = (open) => {
+        dispatch({
+            type: "SET_IMAGERY_PANEL",
+            payload: {
+                imageryPanelClosed: open
+            }
+        })
+    }
+
+    const setPrintPanel = (open) => {
+        dispatch({
+            type: "SET_PRINT_PANEL",
+            payload: {
+                printPanelClosed: open
+            }
+        })
+    }
+
     const togglePanel = (panelName) => {
         switch (panelName) {
           case 'info':
@@ -81,16 +110,58 @@ export const AppProvider = ({children}) => {
             setPropertyDetailPanel(true);
             setSearchResultsPanel(true);
             break;
+
           case 'property':
             setPropertyDetailPanel(false);
             setInfoPanel(true);
             setSearchResultsPanel(true);
             break;
+
           case 'search':
             setSearchResultsPanel(false);
             setInfoPanel(true);
             setPropertyDetailPanel(true);
             break;
+
+        case 'nearby':
+            setLayersPanel(true);
+            setComparablePanel(true);
+            setNearbyPanel(false);
+            setImageryPanel(true)
+            setPrintPanel(true)
+            break;
+
+        case 'compare':
+            setLayersPanel(true);
+            setComparablePanel(false);
+            setNearbyPanel(true);
+            setImageryPanel(true)
+            setPrintPanel(true)
+            break;
+
+        case 'layers':
+            setLayersPanel(false);
+            setComparablePanel(true);
+            setNearbyPanel(true);
+            setImageryPanel(true)
+            setPrintPanel(true)
+            break;
+            
+        case 'imagery':
+            setLayersPanel(true);
+            setComparablePanel(true);
+            setNearbyPanel(true);
+            setImageryPanel(false)
+            setPrintPanel(true)
+            break; 
+
+        case 'print':
+            setLayersPanel(true);
+            setComparablePanel(true);
+            setNearbyPanel(true);
+            setImageryPanel(true)
+            setPrintPanel(false)
+            break; 
           default:
             break;
         }
@@ -1279,7 +1350,14 @@ export const AppProvider = ({children}) => {
         setComparisonResultsPanel,
         setComparisonDetailPanel,
         comparisonDetailPanelClosed: state.comparisonDetailPanelClosed,
-        togglePanel
+        togglePanel,
+        setLayersPanel,
+        layersPanelClosed: state.layersPanelClosed,
+        setImageryPanel,
+        imageryPanelClosed: state.imageryPanelClosed,
+        setPrintPanel,
+        printPanelClosed: state.printPanelClosed,
+        arcgisMapRef
 
     }
 

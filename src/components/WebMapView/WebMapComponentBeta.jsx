@@ -59,10 +59,11 @@ const WebMapComponentBeta = () => {
         setSearchBufferGeometry,
         anyAttributesIncluded,
         setPropertyDetailPanel,
-        togglePanel
+        togglePanel,
+        arcgisMapRef
         } = UseAppContext()
 
-    const arcgisMapRef = useRef(null)
+    //const arcgisMapRef = useRef(null)
     const [ mapLoading, setMapLoading ] = useState(true)
     const [ targetLayer, setTargetLayer ] = useState(null)
     const [ selectedParcelsPrimary, setSelectedParcelsPrimary ] = useState(null)

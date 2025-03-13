@@ -49,7 +49,10 @@ export const initialState = {
     comparablePanelClosed: true,
     nearbyPanelClosed: true,
     comparisonResultsClosed: true,
-    comparisonDetailPanelClosed: true
+    comparisonDetailPanelClosed: true,
+    layersPanelClosed: true,
+    imageryPanelClosed: true,
+    printPanelClosed:true
 }
 
 const AppReducer = (state, action) => {
@@ -101,7 +104,24 @@ const AppReducer = (state, action) => {
             ...state, 
             comparisonDetailPanelClosed: payload.comparisonDetailPanelClosed
         } 
-    
+
+        case "SET_LAYERS_PANEL":
+        return {
+            ...state, 
+            layersPanelClosed: payload.layersPanelClosed
+        } 
+
+        case "SET_IMAGERY_PANEL":
+        return {
+            ...state, 
+            imageryPanelClosed: payload.imageryPanelClosed
+        } 
+
+        case "SET_PRINT_PANEL":
+        return {
+            ...state, 
+            printPanelClosed: payload.printPanelClosed
+        }
     
     
         case "SET_COMPARABLE_TYPE":

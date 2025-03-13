@@ -1,12 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-
 import '@esri/calcite-components/dist/calcite/calcite.css';
-
 import { AppProvider } from './contexts/AppContext'
-
-// import PanelMobile from './components/Panel/Panel'
-
 import Layout from './Layout'
 
 //Calcite Components

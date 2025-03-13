@@ -4,7 +4,6 @@ import {
     CalciteAction, 
     CalciteActionBar, 
     CalciteActionGroup, 
-    CalcitePanel, 
     CalciteShell, 
     CalciteShellPanel 
 } from "@esri/calcite-components-react"
@@ -21,15 +20,13 @@ import PropertyComparison from "./components/PropertyComparison/PropertyComparis
 import NearbyPanel from "./components/PropertyComparison/NearbyPanel";
 import ComparisonResults from "./components/PropertyComparison/ComparisonResults";
 import ComparisonPropertyDetail from "./components/PropertyComparison/ComparisonPropertyDetail";
+import Layers from "./components/Layers/Layers";
 
 
 const Layout = () => {
 
     // State of panels
-    const { 
-        setInfoPanel, 
-        setSearchResultsPanel, 
-        setPropertyDetailPanel, 
+    const {  
         propertyDetailPanelClosed, 
         infoPanelClosed, 
         searchResultsPanelClosed,
@@ -43,7 +40,10 @@ const Layout = () => {
         comparisonDetailPanelClosed,
         setComparisonDetailPanel,
         translateText,
-        togglePanel
+        togglePanel,
+        layersPanelClosed,
+        printPanelClosed,
+        imageryPanelClosed
     } = UseAppContext()
 
 
@@ -59,10 +59,10 @@ const Layout = () => {
 
     useEffect(() => {
 
-        const allPanelsClosed =  [comparisonDetailPanelClosed, nearbyPanelClosed, comparablePanelClosed, comparisonResultsClosed].every(panel => panel === true); 
+        const allPanelsClosed =   [printPanelClosed, imageryPanelClosed, layersPanelClosed, comparisonDetailPanelClosed, nearbyPanelClosed, comparablePanelClosed, comparisonResultsClosed].every(panel => panel === true); 
         setRightPanelCollapsed(allPanelsClosed)
 
-    }, [nearbyPanelClosed, comparablePanelClosed, comparisonResultsClosed, comparisonDetailPanelClosed])
+    }, [printPanelClosed, imageryPanelClosed, layersPanelClosed, nearbyPanelClosed, comparablePanelClosed, comparisonResultsClosed, comparisonDetailPanelClosed])
 
     return(
         <CalciteShell>
@@ -112,10 +112,7 @@ const Layout = () => {
                                     icon="compare" 
                                     textEnabled 
                                     onClick={() => {
-                                        setComparablePanel(false)
-                                        setNearbyPanel(true)
-                                        setComparisonResultsPanel(true)
-                                        setComparisonDetailPanel(true)
+                                        togglePanel('compare')
                                     }}>
 
                                 </CalciteAction>
@@ -125,10 +122,7 @@ const Layout = () => {
                                     icon="rings-largest" 
                                     textEnabled 
                                     onClick={() => {
-                                        setNearbyPanel(false)
-                                        setComparablePanel(true)
-                                        setComparisonResultsPanel(true)
-                                        setComparisonDetailPanel(true)
+                                        togglePanel('nearby')
                                     }}>
 
                                 </CalciteAction>
@@ -149,7 +143,7 @@ const Layout = () => {
                                     </CalciteAction> : null
                                 }
 
-{
+                                {
                                     //IF THERE ARE COMPARABLE PARCELS DISPLAY COMPARABLE RESULTS
                                     comparableParcels ? 
                                     <CalciteAction 
@@ -165,6 +159,17 @@ const Layout = () => {
 
                                     </CalciteAction> : null
                                 }
+
+                                <CalciteAction 
+                                    active={!layersPanelClosed}
+                                    text={translateText("Layers")} 
+                                    icon="layers" 
+                                    textEnabled 
+                                    onClick={() => {
+                                        togglePanel('layers')
+                                    }}>
+
+                                </CalciteAction>
                             </CalciteActionGroup>
                         </CalciteActionBar>
 
@@ -173,6 +178,7 @@ const Layout = () => {
                         <NearbyPanel/>
                         <ComparisonResults/>
                         <ComparisonPropertyDetail/>
+                        <Layers/>
 
                     </CalciteShellPanel>
                 </CalciteShell>
