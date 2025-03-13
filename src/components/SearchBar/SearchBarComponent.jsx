@@ -69,21 +69,21 @@ const SearchBarComponent = () => {
 
         const createSearch = async () => {
 
-            if(searchDiv.current && searchSources){
+            if(searchSources){
+
                 // && mapView
                 if(searchComponent.current){
                     if(newSearch === true){
                         if(genericSearch){
                             console.log("DETECTED GENERIC SEARCH PARAM: ", genericSearch)
                             searchComponent.current.search(genericSearch)
-                            //searchComponent.current.searchTerm = genericSearch
+                            searchComponent.current.searchTerm = genericSearch
                         }
     
                         if(pin10Search || pin14Search){
                             //if pin10 or pin14 search params return values
                             //bypass the seach and query the parcels directly from the service
                             let features = await returnFeaturesByPin10Pin14(pin10Search, pin14Search)
-                            //mapView.goTo(features)
                         }
                     }
                 }
@@ -93,7 +93,7 @@ const SearchBarComponent = () => {
 
         createSearch()
 
-    },[searchDiv, searchSources])
+    },[searchSources])
     
     //on app load
     useEffect(() => {
@@ -120,6 +120,7 @@ const SearchBarComponent = () => {
                 setPin14Search(formattedPin14)
             }
             
+            console.log("generic search: ", routeParams.get("search"))
             setGenericSearch(routeParams.get("search"))
         }
     }, [])
