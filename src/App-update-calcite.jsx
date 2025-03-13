@@ -1,20 +1,12 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import NavBar from './components/NavBar/NavBar'
-import { Box, Stack, Grid, ThemeProvider, createTheme, Button } from '@mui/material'
-import Panel, { BottomPanel, LeftPanel, SecondaryPanel, WidgetPanel } from './components/Panel/Panel'
-import TableRowsOutlinedIcon from '@mui/icons-material/TableRowsOutlined';
+
 import '@esri/calcite-components/dist/calcite/calcite.css';
-import MapButtonGroup from './components/MapButtonGroup'
+
 import { AppProvider } from './contexts/AppContext'
-import { ToggleIconButton } from './components/Button/Button'
-import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
-import PanelMobile from './components/Panel/Panel'
-import Notifications from './components/Notifications/Notifications'
-import TranslateMenu from './components/NavBar/TranslateMenu'
-import { config } from './data/config'
-import HelpDialog from './components/HelpDialog/HelpDialog'
-import WebMapComponentBeta from './components/WebMapView/WebMapComponentBeta'
+
+// import PanelMobile from './components/Panel/Panel'
+
 import Layout from './Layout'
 
 //Calcite Components

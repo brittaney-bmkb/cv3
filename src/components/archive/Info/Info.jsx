@@ -1,8 +1,8 @@
 import { Accordion, AccordionDetails, AccordionSummary, Box, Link, Stack, Typography } from "@mui/material"
-import UseAppContext from "../../contexts/AppContext"
+import UseAppContext from "../../../contexts/AppContext"
 import { ExpandMore, Search, SelectAllOutlined } from "@mui/icons-material"
 // import { CalciteIcon } from "@esri/calcite-components-react"
-import { theme } from "../../theme"
+import { theme } from "../../../theme"
 
 const Info = () => {
 

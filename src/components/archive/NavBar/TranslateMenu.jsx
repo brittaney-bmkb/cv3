@@ -1,9 +1,9 @@
 import { CalciteIcon } from "@esri/calcite-components-react"
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, Stack, Typography } from "@mui/material"
-import UseAppContext from "../../contexts/AppContext"
-import { theme } from "../../theme"
+import UseAppContext from "../../../contexts/AppContext"
+import { theme } from "../../../theme"
 import * as intl from "@arcgis/core/intl.js";
-import { config } from "../../data/config";
+import { config } from "../../../data/config";
 
 
 const TranslateMenu = () => {
