@@ -352,7 +352,7 @@ const PanelPropertyDetail = () => {
                             
                             {categories?.map(category => {
                                 return(
-                                    <CalciteListItemGroup heading={translateText(category)}>
+                                    <CalciteListItemGroup key={category} heading={translateText(category)}>
                                         {
                                             dataDictionary
                                             ?.filter((data) => data.attributes['category'] === category)
