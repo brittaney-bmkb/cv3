@@ -58,11 +58,11 @@ function addCommaSeparator(value, type) {
 
     if(attributes){
         paramsValues.map((param) => {
-            ////console.log("Replacing: ", `{${param}}`)
+            //////console.log("Replacing: ", `{${param}}`)
             urlFormatted = urlFormatted.replace(`{${param}}`, attributes[param])
         })
 
-        ////console.log("url text: ", text, urlFormatted)
+        //////console.log("url text: ", text, urlFormatted)
     }
     return urlFormatted
 }
@@ -88,9 +88,9 @@ const PanelPropertyDetail = () => {
 
     const handleClick = (prop) => {
 
-        console.log("Handle click triggered for: ", prop)
+        //console.log("Handle click triggered for: ", prop)
         if(calculatedValues[prop] && calculatedValues[prop].onClick){
-            console.log("Executing triggered for: ", prop)
+            //console.log("Executing triggered for: ", prop)
             calculatedValues[prop].onClick()
         }
     }
@@ -172,7 +172,7 @@ const PanelPropertyDetail = () => {
                             return updatedState;
                         })
 
-                        console.log("header data: ", headerData)
+                        //console.log("header data: ", headerData)
                     }
                     
 
@@ -239,7 +239,7 @@ const PanelPropertyDetail = () => {
                         //property classification
                         if(field.endsWith('_link')){
 
-                            console.log("Link field: ", field)
+                            //console.log("Link field: ", field)
                             setCalculatedValues(prevState => {
                                 const updatedState = { ...prevState };
                         
@@ -269,7 +269,7 @@ const PanelPropertyDetail = () => {
                 // Wait for all async operations to complete
                 await Promise.all(promises);
 
-                console.log("calculated values use effect: ", calculatedValues)
+                //console.log("calculated values use effect: ", calculatedValues)
             }
         };
         
@@ -430,7 +430,7 @@ const PanelPropertyDetail = () => {
                                                         if(calculatedValues[data?.attributes['field']]['type']  === 'link'){
                                                             
                                                             if(Object.keys(conditional_links).includes(data?.attributes['field']) && !conditional_links[data?.attributes['field']].includes(parseInt(primaryResultFeature[0].attributes['BCLASS']))){
-                                                                //console.log("Open data link to res data: ", data?.attributes['field'])
+                                                                ////console.log("Open data link to res data: ", data?.attributes['field'])
                                                                 return null
                                                             }
                                                             

@@ -52,7 +52,8 @@ export const initialState = {
     comparisonDetailPanelClosed: true,
     layersPanelClosed: true,
     imageryPanelClosed: true,
-    printPanelClosed:true
+    printPanelClosed:true,
+    selectPanelClosed:true
 }
 
 const AppReducer = (state, action) => {
@@ -121,6 +122,12 @@ const AppReducer = (state, action) => {
         return {
             ...state, 
             printPanelClosed: payload.printPanelClosed
+        }
+
+        case "SET_SELECT_PANEL":
+        return {
+            ...state, 
+            selectPanelClosed: payload.selectPanelClosed
         }
     
     

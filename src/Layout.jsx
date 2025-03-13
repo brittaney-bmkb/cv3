@@ -23,6 +23,7 @@ import ComparisonPropertyDetail from "./components/PropertyComparison/Comparison
 import Layers from "./components/Layers/Layers";
 import Imagery from "./components/Imagery/Imagery";
 import Print from "./components/Print/Print";
+import Select from "./components/Select/Select";
 
 
 const Layout = () => {
@@ -45,7 +46,8 @@ const Layout = () => {
         togglePanel,
         layersPanelClosed,
         printPanelClosed,
-        imageryPanelClosed
+        imageryPanelClosed,
+        selectPanelClosed,
     } = UseAppContext()
 
 
@@ -61,10 +63,10 @@ const Layout = () => {
 
     useEffect(() => {
 
-        const allPanelsClosed =   [printPanelClosed, imageryPanelClosed, layersPanelClosed, comparisonDetailPanelClosed, nearbyPanelClosed, comparablePanelClosed, comparisonResultsClosed].every(panel => panel === true); 
+        const allPanelsClosed =   [selectPanelClosed, printPanelClosed, imageryPanelClosed, layersPanelClosed, comparisonDetailPanelClosed, nearbyPanelClosed, comparablePanelClosed, comparisonResultsClosed].every(panel => panel === true); 
         setRightPanelCollapsed(allPanelsClosed)
 
-    }, [printPanelClosed, imageryPanelClosed, layersPanelClosed, nearbyPanelClosed, comparablePanelClosed, comparisonResultsClosed, comparisonDetailPanelClosed])
+    }, [selectPanelClosed, printPanelClosed, imageryPanelClosed, layersPanelClosed, nearbyPanelClosed, comparablePanelClosed, comparisonResultsClosed, comparisonDetailPanelClosed])
 
     return(
         <CalciteShell>
@@ -191,6 +193,17 @@ const Layout = () => {
                                         togglePanel('print')
                                     }}>
                                 </CalciteAction>
+
+                                <CalciteAction 
+                                    active={!selectPanelClosed}
+                                    text={translateText("Select")} 
+                                    icon="select" 
+                                    textEnabled 
+                                    onClick={() => {
+                                        togglePanel('select')
+                                    }}>
+                                </CalciteAction>
+                                
                             </CalciteActionGroup>
                         </CalciteActionBar>
 
@@ -202,6 +215,7 @@ const Layout = () => {
                         <Layers/>
                         <Imagery/>
                         <Print/>
+                        <Select/>
 
                     </CalciteShellPanel>
                 </CalciteShell>

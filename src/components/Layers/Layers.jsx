@@ -6,7 +6,7 @@ const Layers = () => {
 
     const { layersPanelClosed, setLayersPanel, translateText, arcgisMapRef } = UseAppContext()
     
-    console.log("map view: ", arcgisMapRef.current)
+    //console.log("map view: ", arcgisMapRef.current)
     return(
         <CalcitePanel
         closed={layersPanelClosed}

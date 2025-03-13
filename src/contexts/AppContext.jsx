@@ -103,6 +103,15 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setSelectPanel = (open) => {
+        dispatch({
+            type: "SET_SELECT_PANEL",
+            payload: {
+                selectPanelClosed: open
+            }
+        })
+    }
+
     const togglePanel = (panelName) => {
         switch (panelName) {
           case 'info':
@@ -129,6 +138,7 @@ export const AppProvider = ({children}) => {
             setNearbyPanel(false);
             setImageryPanel(true)
             setPrintPanel(true)
+            setSelectPanel(true)
             break;
 
         case 'compare':
@@ -137,6 +147,7 @@ export const AppProvider = ({children}) => {
             setNearbyPanel(true);
             setImageryPanel(true)
             setPrintPanel(true)
+            setSelectPanel(true)
             break;
 
         case 'layers':
@@ -145,6 +156,7 @@ export const AppProvider = ({children}) => {
             setNearbyPanel(true);
             setImageryPanel(true)
             setPrintPanel(true)
+            setSelectPanel(true)
             break;
             
         case 'imagery':
@@ -153,6 +165,7 @@ export const AppProvider = ({children}) => {
             setNearbyPanel(true);
             setImageryPanel(false)
             setPrintPanel(true)
+            setSelectPanel(true)
             break; 
 
         case 'print':
@@ -161,6 +174,16 @@ export const AppProvider = ({children}) => {
             setNearbyPanel(true);
             setImageryPanel(true)
             setPrintPanel(false)
+            setSelectPanel(true)
+            break; 
+
+        case 'select':
+            setLayersPanel(true);
+            setComparablePanel(true);
+            setNearbyPanel(true);
+            setImageryPanel(true)
+            setPrintPanel(true)
+            setSelectPanel(false)
             break; 
           default:
             break;
@@ -1357,6 +1380,8 @@ export const AppProvider = ({children}) => {
         imageryPanelClosed: state.imageryPanelClosed,
         setPrintPanel,
         printPanelClosed: state.printPanelClosed,
+        setSelectPanel,
+        selectPanelClosed: state.selectPanelClosed,
         arcgisMapRef
 
     }
