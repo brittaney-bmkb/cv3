@@ -6,22 +6,46 @@ import "@esri/calcite-components/components/calcite-navigation-logo"
 import "@esri/calcite-components/components/calcite-menu"
 import "@esri/calcite-components/components/calcite-menu-item"
 import UseAppContext from "../../contexts/AppContext"
+import * as intl from "@arcgis/core/intl.js";
+
+function titleCase(s) {
+    return s.toLowerCase()
+            .split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+}
 
 const menuItems = {
     Help: {
         icon: "question",
+        subMenuItems: null
     },
     Feedback:{
-        icon:"speech-bubble-exclamation"
+        icon:"speech-bubble-exclamation",
+        subMenuItems: null
     },
     Translate: {
-        icon: "language-translate"
+        icon: "language-translate",
+        subMenuItems: config.language_codes
     }
 }
 
 const Header = () => {
 
-    const { translateText } = UseAppContext()
+    const { translateText, setLanguage } = UseAppContext()
+
+    const handleClick = (language) => {
+
+
+            console.log("selected language")
+            setLanguage(language)
+
+            //reference: https://developers.arcgis.com/javascript/latest/localization/
+            let locale_code = config.language_codes[language]
+            console.log("setting locale code to: ", locale_code)
+            intl.setLocale(locale_code)
+            console.log("locale code to: ", intl.getLocale())
+        }
 
     return(
             <CalciteNavigation slot="header">
@@ -41,53 +65,35 @@ const Header = () => {
                     {
                         Object.keys(menuItems).map(item => {
                             return(
-                                <CalciteMenuItem key={item} text={item} iconStart={menuItems[item].icon} >
+                                <CalciteMenuItem 
+                                key={item} 
+                                text={translateText(item)} 
+                                iconStart={menuItems[item].icon}
+                                label={item}
+                                >
+                                    {
+                                        menuItems[item].subMenuItems ? 
+                                        Object.keys(menuItems[item].subMenuItems).map(subMenuItem => {
+                                            return(
+                                                <CalciteMenuItem 
+                                                slot="submenu-item" 
+                                                key={subMenuItem} 
+                                                label={subMenuItem}
+                                                text={titleCase(translateText(subMenuItem))}
+                                                onCalciteMenuItemSelect={(e) => {
+                                                    console.log("menu item: ", e)
+                                                    handleClick(e.target.textContent)
+                                                }}
+                                                >{subMenuItem}</CalciteMenuItem>
+                                            )
+                                        })
+                                             : null
+                                    }
                                 </CalciteMenuItem>
                             )
                         })
                     }
                 </CalciteMenu>
-            <div id style={{display: 'flex', alignItems: 'center', height: '40px', marginTop: '5px'}} slot="header-content" class='header'>
-                <CalciteLabel layout="inline" class='header'>
-                    <div style={{
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        gap: 20, 
-                        width: '22vw',
-                        fontSize: '20px'}}>
-                        <img src={config.logo} width={50}/>
-                        <div 
-                        style={{
-                        display: 'flex', 
-                        flexDirection: 'column',
-                        gap: 5,}}>
-                        <div 
-                        style={{
-                        fontSize: '20px',
-                        fontWeight: 'bold',
-                        }}>
-                            {config.title}
-                        </div>
-                        <div 
-                        style={{
-                        fontSize: '16px'}}>
-                            {config.description}
-                        </div>
-                        </div>
-                    </div>
-                    
-                </CalciteLabel> 
-                    
-            </div>
-            <div slot="header-actions-end" style={{display: 'flex', alignItems: 'center'}}>
-                <CalciteActionBar slot="action-bar" layout="horizontal" expandDisabled  scale="l" overlayPositioning="absolute">
-        
-                        <CalciteAction text="Help" icon="question" textEnabled  class='header'></CalciteAction>
-                        <CalciteAction text="Feedback" icon="speech-bubble-exclamation" textEnabled  class='header'></CalciteAction>
-                        <CalciteAction text="Translate" icon="language-translate" textEnabled  class='header'></CalciteAction>
-                    
-                </CalciteActionBar>
-            </div>
             </CalciteNavigation>
     )
 }
