@@ -287,7 +287,7 @@ const PanelPropertyDetail = () => {
                 id="property-detail-panel" 
                 closed={propertyDetailPanelClosed} 
                 closable 
-                class='panel-start' 
+                className='panel-start' 
                 
                 heading={translateText('Property Detail')}
                 overlayPositioning="fixed"
@@ -332,7 +332,7 @@ const PanelPropertyDetail = () => {
 
                             <>   
                             <div slot="content-top">
-                            <CalciteLabel scale="l"class='DetailHeader' >
+                            <CalciteLabel scale="l"className='DetailHeader' >
                                 { headerData[Object.keys(headerData)[0]]}
                             </CalciteLabel>
                             <CalciteLabel scale="m" class='DetailHeader'>
