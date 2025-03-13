@@ -2,7 +2,8 @@ import {
     CalciteAction, 
     CalciteActionBar, 
     CalciteBlock, 
-    CalcitePanel, 
+    CalcitePanel,
+    CalciteScrim, 
 } from "@esri/calcite-components-react"
 import UseAppContext from "../../contexts/AppContext";
 import ListSearchResults from "../ResultList/ListSearchResults";
@@ -65,11 +66,13 @@ const PanelSearchResults = () => {
                             scale="s"
                         />
                     </CalciteActionBar>
-        
+                    {searchFeatures ? 
                     <CalciteBlock open collapsible={false}>
                         {/* SEARCH RESULTS LABEL*/}
-                        {searchFeatures ? <ListSearchResults/> : translateText(`Search for new property`)} 
+                        <ListSearchResults/>
                     </CalciteBlock>
+                    : 
+                    <CalciteScrim>{translateText("Search for a parcel")} </CalciteScrim>}
             </CalcitePanel>
     )
 }
