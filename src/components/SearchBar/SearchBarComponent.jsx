@@ -171,22 +171,22 @@ const SearchBarComponent = () => {
     }, [searchFeatures, primaryResultFeature])
 
 
-    // useEffect(() => {
+    useEffect(() => {
         
-    //     const updateSearchText = async () => {
-    //     if(searchComponent.current){
-    //         searchComponent.current.allPlaceholder = translateText('Search by address, pin, or intersection')
-    //         let updatedSearchSources = await initalizeSearchSources()
-    //         searchComponent.current.sources = updatedSearchSources
+        const updateSearchText = async () => {
+        if(searchComponent.current){
+            searchComponent.current.allPlaceholder = translateText('Search by address, pin, or intersection')
+            let updatedSearchSources = await initalizeSearchSources()
+            searchComponent.current.sources = updatedSearchSources
             
-    //     }
-    // }
+        }
+    }
         
 
-    //     updateSearchText()
+        updateSearchText()
         
 
-    // },[searchComponent, language])
+    },[searchComponent, language])
 
     return(
         <>
