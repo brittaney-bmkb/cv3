@@ -42,7 +42,8 @@ const Layout = () => {
         comparisonResultsClosed,
         comparisonDetailPanelClosed,
         setComparisonDetailPanel,
-        translateText
+        translateText,
+        togglePanel
     } = UseAppContext()
 
 
@@ -54,8 +55,7 @@ const Layout = () => {
         const allPanelsClosed =  [ propertyDetailPanelClosed, infoPanelClosed, searchResultsPanelClosed].every(panel => panel === true); 
         setLeftPanelCollapsed(allPanelsClosed)
 
-
-    }, [propertyDetailPanelClosed, infoPanelClosed, searchResultsPanelClosed ])
+    }, [propertyDetailPanelClosed, infoPanelClosed, searchResultsPanelClosed])
 
     useEffect(() => {
 
@@ -79,21 +79,15 @@ const Layout = () => {
                             <CalciteActionGroup>
                                 <CalciteAction text={translateText("Info")} icon="information" textEnabled active={!infoPanelClosed}
                                 onClick={() => {
-                                    setInfoPanel(false)
-                                    setSearchResultsPanel(true)
-                                    setPropertyDetailPanel(true)
+                                    togglePanel('info')
                                     }}></CalciteAction>
                                 <CalciteAction text={translateText("Results")} icon="list-rectangle" textEnabled active={!searchResultsPanelClosed}
                                 onClick={() => {
-                                    setSearchResultsPanel(false)
-                                    setInfoPanel(true)
-                                    setPropertyDetailPanel(true)
+                                    togglePanel('search')
                                     }}></CalciteAction>
                                 <CalciteAction text={translateText("Property")} icon="pin" textEnabled active={!propertyDetailPanelClosed}
                                 onClick={() => {
-                                    setSearchResultsPanel(true)
-                                    setInfoPanel(true)
-                                    setPropertyDetailPanel(false)
+                                    togglePanel('property')
                                 }}></CalciteAction>
                             </CalciteActionGroup>
                         </CalciteActionBar>

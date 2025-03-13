@@ -74,6 +74,28 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const togglePanel = (panelName) => {
+        switch (panelName) {
+          case 'info':
+            setInfoPanel(false);
+            setPropertyDetailPanel(true);
+            setSearchResultsPanel(true);
+            break;
+          case 'property':
+            setPropertyDetailPanel(false);
+            setInfoPanel(true);
+            setSearchResultsPanel(true);
+            break;
+          case 'search':
+            setSearchResultsPanel(false);
+            setInfoPanel(true);
+            setPropertyDetailPanel(true);
+            break;
+          default:
+            break;
+        }
+      };
+
     const setComparableType = (comparableType) => {
         dispatch({
             type:"SET_COMPARABLE_TYPE",
@@ -1256,7 +1278,8 @@ export const AppProvider = ({children}) => {
         comparisonResultsClosed: state.comparisonResultsClosed,
         setComparisonResultsPanel,
         setComparisonDetailPanel,
-        comparisonDetailPanelClosed: state.comparisonDetailPanelClosed
+        comparisonDetailPanelClosed: state.comparisonDetailPanelClosed,
+        togglePanel
 
     }
 

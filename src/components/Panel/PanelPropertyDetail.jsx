@@ -341,7 +341,7 @@ const PanelPropertyDetail = () => {
                             </div>
 
                             
-                            //Property Details
+                            
                             <CalciteList
                             label={ headerData ? headerData[Object.keys(headerData)[0]]:null}
                             filterEnabled

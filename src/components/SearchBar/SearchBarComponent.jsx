@@ -31,7 +31,8 @@ const SearchBarComponent = () => {
         setIsQuerying,
         panelDisplay,
         setSearchResultsPanel,
-        setInfoPanel
+        setInfoPanel,
+        togglePanel
      } = UseAppContext()
 
     //get url parameters
@@ -85,6 +86,8 @@ const SearchBarComponent = () => {
                             //bypass the seach and query the parcels directly from the service
                             let features = await returnFeaturesByPin10Pin14(pin10Search, pin14Search)
                         }
+
+                        togglePanel('search')
                     }
                 }
 
@@ -156,15 +159,15 @@ const SearchBarComponent = () => {
             if(!primaryInSearchFeature){
                 console.log("Setting primary panel to display results list: ", panelDisplay)
                 
-                setPanelDisplay("resultsList")
+                togglePanel('search')
             }
             else if(primaryInSearchFeature && panelDisplay === "info"){
-                setPanelDisplay("resultsList")
+                togglePanel('search')
             }
-            if(primaryResultFeature && !panelPrimaryVisible){
-                    setPanelPrimaryVisibility(true)
-                    setPanelDisplay("resultsList")
-                }
+            // if(primaryResultFeature && !panelPrimaryVisible){
+            //         setPanelPrimaryVisibility(true)
+            //         setPanelDisplay("resultsList")
+            //     }
     
            
         }

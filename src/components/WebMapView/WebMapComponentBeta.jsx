@@ -57,7 +57,9 @@ const WebMapComponentBeta = () => {
         searchBufferGeometry,
         searchResultPoint,
         setSearchBufferGeometry,
-        anyAttributesIncluded
+        anyAttributesIncluded,
+        setPropertyDetailPanel,
+        togglePanel
         } = UseAppContext()
 
     const arcgisMapRef = useRef(null)
@@ -271,13 +273,16 @@ const WebMapComponentBeta = () => {
         const param = await returnSearchParam(features)
         setSearchParams(param)
 
-        if(!panelDisplay || panelDisplay !== "resultsList"){
-            setPanelDisplay("resultsList")
-        }
+        // if(!panelDisplay || panelDisplay !== "resultsList"){
+        //     setPanelDisplay("resultsList")
+        // }
         
-        if(!panelPrimaryVisible || panelPrimaryVisible === false){
-            setPanelPrimaryVisibility(true)
-        }
+        // if(!panelPrimaryVisible || panelPrimaryVisible === false){
+        //     setPanelPrimaryVisibility(true)
+        // }
+
+
+        togglePanel('search')
         
         return addGraphics
     }
@@ -310,13 +315,15 @@ const WebMapComponentBeta = () => {
         const param = await returnSearchParam(updatedFeatures)
         setSearchParams(param)
 
-        if(!panelDisplay || panelDisplay !== "resultsList"){
-            setPanelDisplay("resultsList")
-        }
+        // if(!panelDisplay || panelDisplay !== "resultsList"){
+        //     setPanelDisplay("resultsList")
+        // }
         
-        if(!panelPrimaryVisible || panelPrimaryVisible === false){
-            setPanelPrimaryVisibility(true)
-        }
+        // if(!panelPrimaryVisible || panelPrimaryVisible === false){
+        //     setPanelPrimaryVisibility(true)
+        // }
+
+        togglePanel('search')
 
         return removeGraphics
     }
@@ -442,6 +449,7 @@ const WebMapComponentBeta = () => {
 
                             setPrimaryResultFeature(showParcelDetail, false)
                             setPanelDisplay("propertyDetail")
+                            setPropertyDetailPanel(false)
                         }
                     }  
                 }
