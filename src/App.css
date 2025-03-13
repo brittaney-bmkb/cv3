@@ -18,6 +18,22 @@ body{
 }
 
 /* CALCITE CUSTOM STYLES */
+
+calcite-navigation.org-brand{
+  --calcite-navigation-background-color: #0D4D96;
+  --calcite-navigation-text-color: #ffffff
+}
+
+calcite-navigation-logo.org-brand{
+  --calcite-navigation-logo-heading-text-color: #ffffff;
+  --calcite-navigation-logo-text-color: #ffffff
+}
+
+calcite-menu.org-brand{
+  --calcite-menu-background-color: #0D4D96;
+  --calcite-menu-text-color: #ffffff
+}
+
 calcite-button.hyperlink-button{
   --calcite-button-background-color: #0D4D96;
 }

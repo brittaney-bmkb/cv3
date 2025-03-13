@@ -11,8 +11,6 @@ import {
     CalcitePanel, 
 } from "@esri/calcite-components-react"
 import UseAppContext from "../../contexts/AppContext";
-import ListSearchResults from "../ResultList/ListSearchResults";
-
 
 const PanelInfo = () => {
 
@@ -24,7 +22,7 @@ const PanelInfo = () => {
             closed={infoPanelClosed} 
             closable 
             class='panel-start' 
-            heading="Info" 
+            heading={translateText("Info")} 
             overlayPositioning="fixed"
             onCalcitePanelClose={(e) => {
                 setInfoPanel(true)

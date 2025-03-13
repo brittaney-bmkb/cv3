@@ -41,7 +41,8 @@ const Layout = () => {
         setComparisonResultsPanel,
         comparisonResultsClosed,
         comparisonDetailPanelClosed,
-        setComparisonDetailPanel
+        setComparisonDetailPanel,
+        translateText
     } = UseAppContext()
 
 
@@ -76,19 +77,19 @@ const Layout = () => {
                         {/* ACTION BAR */}
                         <CalciteActionBar slot="action-bar" expanded>
                             <CalciteActionGroup>
-                                <CalciteAction text="Info" icon="information" textEnabled active={!infoPanelClosed}
+                                <CalciteAction text={translateText("Info")} icon="information" textEnabled active={!infoPanelClosed}
                                 onClick={() => {
                                     setInfoPanel(false)
                                     setSearchResultsPanel(true)
                                     setPropertyDetailPanel(true)
                                     }}></CalciteAction>
-                                <CalciteAction text="Results" icon="list-rectangle" textEnabled active={!searchResultsPanelClosed}
+                                <CalciteAction text={translateText("Results")} icon="list-rectangle" textEnabled active={!searchResultsPanelClosed}
                                 onClick={() => {
                                     setSearchResultsPanel(false)
                                     setInfoPanel(true)
                                     setPropertyDetailPanel(true)
                                     }}></CalciteAction>
-                                <CalciteAction text="Property" icon="pin" textEnabled active={!propertyDetailPanelClosed}
+                                <CalciteAction text={translateText("Property")} icon="pin" textEnabled active={!propertyDetailPanelClosed}
                                 onClick={() => {
                                     setSearchResultsPanel(true)
                                     setInfoPanel(true)
@@ -113,7 +114,7 @@ const Layout = () => {
                             <CalciteActionGroup>
                                 <CalciteAction 
                                     active={!comparablePanelClosed}
-                                    text="Compare" 
+                                    text={translateText("Compare")} 
                                     icon="compare" 
                                     textEnabled 
                                     onClick={() => {
@@ -126,7 +127,7 @@ const Layout = () => {
                                 </CalciteAction>
                                 <CalciteAction 
                                     active={!nearbyPanelClosed}
-                                    text="Nearby" 
+                                    text={translateText("Nearby" )}
                                     icon="rings-largest" 
                                     textEnabled 
                                     onClick={() => {

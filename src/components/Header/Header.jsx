@@ -48,20 +48,21 @@ const Header = () => {
         }
 
     return(
-            <CalciteNavigation slot="header">
+            <CalciteNavigation slot="header" className='org-brand'>
                 <CalciteNavigationLogo 
                 slot="logo" 
                 heading="CookViewer" 
                 description={translateText(config.description)}
-                thumbnail={config.logo}>
+                thumbnail={config.logo}
+                className="org-brand">
 
-                </CalciteNavigationLogo>
+                </CalciteNavigationLogo >
                 <div slot="content-start">
                     {/* SEARCH BAR */}
                     <SearchBarComponent/>
                 </div>
 
-                <CalciteMenu slot="content-end">
+                <CalciteMenu slot="content-end" className="org-brand">
                     {
                         Object.keys(menuItems).map(item => {
                             return(
