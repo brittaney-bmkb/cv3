@@ -1,10 +1,52 @@
-import { CalciteAction, CalciteActionBar, CalciteLabel } from "@esri/calcite-components-react"
+import { CalciteAction, CalciteActionBar, CalciteLabel, CalciteMenu, CalciteMenuItem, CalciteNavigation, CalciteNavigationLogo } from "@esri/calcite-components-react"
 import { config } from "../../data/config"
 import SearchBarComponent from "../SearchBar/SearchBarComponent"
+import "@esri/calcite-components/components/calcite-navigation"
+import "@esri/calcite-components/components/calcite-navigation-logo"
+import "@esri/calcite-components/components/calcite-menu"
+import "@esri/calcite-components/components/calcite-menu-item"
+import UseAppContext from "../../contexts/AppContext"
+
+const menuItems = {
+    Help: {
+        icon: "question",
+    },
+    Feedback:{
+        icon:"speech-bubble-exclamation"
+    },
+    Translate: {
+        icon: "language-translate"
+    }
+}
 
 const Header = () => {
+
+    const { translateText } = UseAppContext()
+
     return(
-            <>
+            <CalciteNavigation slot="header">
+                <CalciteNavigationLogo 
+                slot="logo" 
+                heading="CookViewer" 
+                description={translateText(config.description)}
+                thumbnail={config.logo}>
+
+                </CalciteNavigationLogo>
+                <div slot="content-start">
+                    {/* SEARCH BAR */}
+                    <SearchBarComponent/>
+                </div>
+
+                <CalciteMenu slot="content-end">
+                    {
+                        Object.keys(menuItems).map(item => {
+                            return(
+                                <CalciteMenuItem key={item} text={item} iconStart={menuItems[item].icon} >
+                                </CalciteMenuItem>
+                            )
+                        })
+                    }
+                </CalciteMenu>
             <div id style={{display: 'flex', alignItems: 'center', height: '40px', marginTop: '5px'}} slot="header-content" class='header'>
                 <CalciteLabel layout="inline" class='header'>
                     <div style={{
@@ -33,8 +75,7 @@ const Header = () => {
                         </div>
                         </div>
                     </div>
-                    {/* SEARCH BAR */}
-                    <SearchBarComponent/>
+                    
                 </CalciteLabel> 
                     
             </div>
@@ -47,7 +88,7 @@ const Header = () => {
                     
                 </CalciteActionBar>
             </div>
-            </>
+            </CalciteNavigation>
     )
 }
 

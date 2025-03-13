@@ -65,9 +65,11 @@ const Layout = () => {
 
     return(
         <CalciteShell>
-            <CalcitePanel  className='header'>
+            {/* HEADER */}
+            <Header/>
+            {/* <CalcitePanel  className='header'> */}
                 {/* HEADER */}
-                <Header/>
+                {/* <Header/> */}
                 <CalciteShell>
                     {/* LEFT PANEL */}
                     <CalciteShellPanel  width="l" slot="panel-start" position="start" id="shell-panel-start" className='left-panel' collapsed={leftPanelCollapsed}>
@@ -180,7 +182,7 @@ const Layout = () => {
                     </CalciteShellPanel>
                 </CalciteShell>
                                 
-            </CalcitePanel>
+            {/* </CalcitePanel> */}
 
         
 
