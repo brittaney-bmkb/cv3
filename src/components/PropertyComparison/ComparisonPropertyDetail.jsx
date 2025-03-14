@@ -284,7 +284,7 @@ const ComparisonPropertyDetail = () => {
                 id="property-detail-panel" 
                 closed={comparisonDetailPanelClosed} 
                 closable 
-                class='panel-start' 
+                className='panel-start' 
                 
                 heading={translateText('Comparison Property Detail')}
                 overlayPositioning="fixed"
@@ -298,10 +298,10 @@ const ComparisonPropertyDetail = () => {
                     {
                     headerData ?
                     <div slot="content-top">
-                        <CalciteLabel scale="l"class='DetailHeader' >
+                        <CalciteLabel scale="l"className='DetailHeader' >
                             { headerData[Object.keys(headerData)[0]]}
                         </CalciteLabel>
-                        <CalciteLabel scale="m" class='DetailHeader'>
+                        <CalciteLabel scale="m" className='DetailHeader'>
                             {`${headerData[Object.keys(headerData)[1]]}, ${headerData[Object.keys(headerData)[2]]}`}
                         </CalciteLabel>
                         </div>
@@ -385,7 +385,7 @@ const ComparisonPropertyDetail = () => {
                                                             >
                                                                 <div slot="content">
                                                                     <CalciteButton
-                                                                    class='hyperlink-button' 
+                                                                    className='hyperlink-button' 
                                                                     label={translateText(data?.attributes['field'])}
                                                                     iconStart="launch"
                                                                     //href={hyperlink} 
@@ -394,7 +394,7 @@ const ComparisonPropertyDetail = () => {
                                                                     >
                                                                         {translateText(data?.attributes['field'])}
                                                                     </CalciteButton>
-                                                                    <CalciteLabel scale='s' class='description'>
+                                                                    <CalciteLabel scale='s' className='description'>
                                                                         {data?.attributes['label']}
                                                                     </CalciteLabel>
                                                                 </div>
@@ -450,7 +450,7 @@ const ComparisonPropertyDetail = () => {
                                                                     >
                                                                         <div slot="content">
                                                                             <CalciteButton 
-                                                                            class='hyperlink-button' 
+                                                                            className='hyperlink-button' 
                                                                             label={calculatedValues[data?.attributes['field']]['label']}
                                                                             iconStart="launch"
                                                                             href={hyperlink} 
@@ -459,7 +459,7 @@ const ComparisonPropertyDetail = () => {
                                                                             >
                                                                                 {calculatedValues[data?.attributes['field']]['label']}
                                                                             </CalciteButton>
-                                                                            <CalciteLabel scale='s' class='description'>
+                                                                            <CalciteLabel scale='s' className='description'>
                                                                                 {calculatedValues[data?.attributes['field']]['description']}
                                                                             </CalciteLabel>
                                                                         </div>
@@ -478,7 +478,7 @@ const ComparisonPropertyDetail = () => {
                                                                 >
                                                                     <div slot="content">
                                                                         <CalciteButton 
-                                                                        class='hyperlink-button' 
+                                                                        className='hyperlink-button' 
                                                                         label={calculatedValues[data?.attributes['field']]['label']}
                                                                         iconStart="launch"
                                                                         target="_blank"
@@ -487,7 +487,7 @@ const ComparisonPropertyDetail = () => {
                                                                         >
                                                                             {calculatedValues[data?.attributes['field']]['label']}
                                                                         </CalciteButton>
-                                                                        <CalciteLabel scale='s' class='description'>
+                                                                        <CalciteLabel scale='s' className='description'>
                                                                             {calculatedValues[data?.attributes['field']]['description']}
                                                                         </CalciteLabel>
                                                                     </div>

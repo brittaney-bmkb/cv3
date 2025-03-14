@@ -36,7 +36,7 @@ const ListSearchResults = () => {
 
                         }}
                     >
-                    <div slot="content" class="description" style={{marginLeft:'10px'}}>
+                    <div slot="content" className="description" style={{marginLeft:'10px'}}>
                         <CalciteLabel scale="m" >
                             <span>
                             {`PIN: ${feature.attributes['PIN14_dash']}`}

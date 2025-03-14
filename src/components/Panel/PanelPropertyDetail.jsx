@@ -335,7 +335,7 @@ const PanelPropertyDetail = () => {
                             <CalciteLabel scale="l"className='DetailHeader' >
                                 { headerData[Object.keys(headerData)[0]]}
                             </CalciteLabel>
-                            <CalciteLabel scale="m" class='DetailHeader'>
+                            <CalciteLabel scale="m" className='DetailHeader'>
                                 {`${headerData[Object.keys(headerData)[1]]}, ${headerData[Object.keys(headerData)[2]]}`}
                             </CalciteLabel>
                             </div>
@@ -380,7 +380,7 @@ const PanelPropertyDetail = () => {
                                                             >
                                                                 <div slot="content">
                                                                     <CalciteButton
-                                                                    class='hyperlink-button' 
+                                                                    className='hyperlink-button' 
                                                                     label={translateText(data?.attributes['field'])}
                                                                     iconStart="launch"
                                                                     //href={hyperlink} 
@@ -389,7 +389,7 @@ const PanelPropertyDetail = () => {
                                                                     >
                                                                         {translateText(data?.attributes['field'])}
                                                                     </CalciteButton>
-                                                                    <CalciteLabel scale='s' class='description'>
+                                                                    <CalciteLabel scale='s' className='description'>
                                                                         {data?.attributes['label']}
                                                                     </CalciteLabel>
                                                                 </div>
@@ -445,7 +445,7 @@ const PanelPropertyDetail = () => {
                                                                     >
                                                                         <div slot="content">
                                                                             <CalciteButton 
-                                                                            class='hyperlink-button' 
+                                                                            className='hyperlink-button' 
                                                                             label={calculatedValues[data?.attributes['field']]['label']}
                                                                             iconStart="launch"
                                                                             href={hyperlink} 
@@ -454,7 +454,7 @@ const PanelPropertyDetail = () => {
                                                                             >
                                                                                 {calculatedValues[data?.attributes['field']]['label']}
                                                                             </CalciteButton>
-                                                                            <CalciteLabel scale='s' class='description'>
+                                                                            <CalciteLabel scale='s' className='description'>
                                                                                 {calculatedValues[data?.attributes['field']]['description']}
                                                                             </CalciteLabel>
                                                                         </div>
@@ -473,7 +473,7 @@ const PanelPropertyDetail = () => {
                                                                 >
                                                                     <div slot="content">
                                                                         <CalciteButton 
-                                                                        class='hyperlink-button' 
+                                                                        className='hyperlink-button' 
                                                                         label={calculatedValues[data?.attributes['field']]['label']}
                                                                         iconStart="launch"
                                                                         target="_blank"
@@ -482,7 +482,7 @@ const PanelPropertyDetail = () => {
                                                                         >
                                                                             {calculatedValues[data?.attributes['field']]['label']}
                                                                         </CalciteButton>
-                                                                        <CalciteLabel scale='s' class='description'>
+                                                                        <CalciteLabel scale='s' className='description'>
                                                                             {calculatedValues[data?.attributes['field']]['description']}
                                                                         </CalciteLabel>
                                                                     </div>

@@ -16,12 +16,12 @@ const Select = () => {
     const graphicsLayer = useRef(null)
 
     const [activeTool, setActiveTool] = useState(null)
-    const [ hitTestLayers, setHitTestLayers ] = useState([])
+    const [ hitTestLayers, setHitTestLayers ] = useState(null)
 
     const findTargetLayer = (map) => {
     
         let layer = map.allLayers.find((layer) => {
-            ////////console.log("Layer details: ", layer)
+            console.log("Layer details: ", layer)
             return `${layer.url}/${layer.layerId}` === config.target_layer_url
         })
 
@@ -32,13 +32,18 @@ const Select = () => {
         if (activeTool !== "cursor") return; // Ensure we're using the cursor tool
     
         const view = arcgisMapRef.current?.view;
-        if (!view || !graphicsLayer.current) return;
+        if (!view || !graphicsLayer.current || !hitTestLayers) return;
 
+        const opts = {
+            include: hitTestLayers
+        }
 
-    
-        const hitResponse = await view.hitTest(event);
+        const hitResponse = await view.hitTest(event, opts);
 
+        console.log("hittest view: ", view)
         console.log("hittest response: ", hitResponse)
+        console.log("hittest opts: ", opts)
+
         const selectedFeatures = hitResponse.results
             .map((result) => result.graphic)
             .filter((graphic) => graphic.layer === graphicsLayer.current);
@@ -116,6 +121,7 @@ const Select = () => {
                 map.add(graphicsLayer.current);
 
                 let layer = findTargetLayer(map)
+                setHitTestLayers([layer])
             }
         }
     }, [arcgisMapRef]);

@@ -3,7 +3,7 @@ import { CalciteBlock, CalcitePanel } from "@esri/calcite-components-react"
 import UseAppContext from "../../contexts/AppContext"
 import "@arcgis/map-components/components/arcgis-print";
 import { config } from "../../data/config";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 
 //TODO ADD PRINT TEMPLATES
@@ -15,16 +15,33 @@ const Print = () => {
 
     const handleClosePrintPanel = () => {
 
-        if(printRef.current){
-            printRef.current.destroy()
-        }
-
         setPrintPanel(true)
     }
 
     let portal = new Portal({
         url: config.portal// First instance
       });
+
+
+    useEffect(() => {
+
+        if(printRef.current && printPanelClosed){
+            if(printRef.current.showPrintAreaEnabled){
+                printRef.current.showPrintAreaEnabled = false
+            }
+            
+        }
+
+
+    },  [arcgisMapRef, printRef, printPanelClosed])
+
+
+    // useEffect(() => {
+
+    //     if(arcgisMapRef.current && printRef.current && !printRef.current.referenceElement){
+    //         printRef.current.referenceElement = arcgisMapRef.current
+    //     }
+    // },  [arcgisMapRef.current, printRef.current])
 
     return(
         <CalcitePanel
@@ -36,22 +53,14 @@ const Print = () => {
             handleClosePrintPanel()
         }}
         >
-            {
-                arcgisMapRef.current ? 
-                <CalciteBlock
-                open
-                //style={{height: '95%', overflow:'clip'}}
-                >   
+
                 <arcgis-print
                 ref={printRef}
-                referenceElement={arcgisMapRef.current}
-                portal={portal}
-                style={{overflow:'auto', height: '100%'}}
-                //showPrintAreaEnabled
+                referenceElement={arcgisMapRef.current ? arcgisMapRef.current : null}
+                //portal={portal ? portal : null}
+                //style={{overflow:'auto', height: '100%'}}
+                showPrintAreaEnabled
                 />
-            </CalciteBlock> : null
-            }
-            
 
         </CalcitePanel>
     )

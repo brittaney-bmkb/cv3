@@ -21,7 +21,7 @@ const PanelInfo = () => {
             id="info-panel" 
             closed={infoPanelClosed} 
             closable 
-            class='panel-start' 
+            className='panel-start' 
             heading={translateText("Info")} 
             overlayPositioning="fixed"
             onCalcitePanelClose={(e) => {
@@ -35,7 +35,7 @@ const PanelInfo = () => {
                     {translateText("Welcome to CookViewer 3.0 - your ultimate source for Cook County property information! Access detailed property insights with ease, now with a modernized user experience, enhanced features, and expanded language support. Dive into the 'What's New' section to explore the latest updates. We value your feedback, which helps us continue improving to better serve you.")}
                 </div>
 
-                <CalciteBlockSection class='info-section-header' open text={translateText("To get started you can:")}>
+                <CalciteBlockSection className='info-section-header' open text={translateText("To get started you can:")}>
                     <CalciteList interactionMode="static" selectionMode="none">
                         <CalciteListItem 
                         iconStart="select"
@@ -59,7 +59,7 @@ const PanelInfo = () => {
                 </CalciteBlockSection>
                 </CalciteBlock>
                 <CalciteBlock open heading={translateText("What's New")}>
-                <CalciteBlockSection class='info-section-header' open text={"CookViewer 3.0.2"}>
+                <CalciteBlockSection className='info-section-header' open text={"CookViewer 3.0.2"}>
                     <CalciteLabel scale="s">
                     {translateText("Release: February 27 2025", true)}
                     </CalciteLabel>
