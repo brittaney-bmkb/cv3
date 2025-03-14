@@ -875,37 +875,38 @@ const WebMapComponentBeta = () => {
             setMapLoading(false)
             setMapView(event.target.view)
             }}
-        onarcgisViewChange={(event) => {
-            //console.log("view change: ", event)
-            if(panelDisplayWidget === "layersWidget" && panelWidgetVisible){
-                setMapViewScale(event.target.view)
-            }
-            
-        }}
-        // onarcgisViewClick={(event) => {
-            
-        //     if(event.detail.native.button === 2){
-        //         //////console.log("onArcgisViewClick: right click, button =", event.detail.native.button)
+        // onarcgisViewChange={(event) => {
+        //     //console.log("view change: ", event)
+        //     if(panelDisplayWidget === "layersWidget" && panelWidgetVisible){
+        //         setMapViewScale(event.target.view)
         //     }
-        //     else{
-        //         //////console.log("onArcgisViewClick: left click, button =", event.detail.native.button)
-        //         // handleViewClick(event.detail.mapPoint)
-        //         let foundSelectGraphic = findLayerByTitle(arcgisMapRef.current.map, "selectGraphic")
-        //         let foundMeasureGraphic = findLayerByTitle(arcgisMapRef.current.map, "measureGraphic") //no longer needed 
-
-        //         // //console.log("CURRENT MAP ON CLICK", arcgisMapRef.current.map)
-
-        //         // //console.log("found MEASURE graphic: ", foundMeasureGraphic)
-        //         if( !foundSelectGraphic  || !selectMultiple || !measureWidgetState){
-        //         // if((!foundSelectGraphic && !foundMeasureGraphic) || !selectMultiple || (!isMeasuring)){ //TODO this is for the measureSketchWidget
-        //             // //console.log("The if block executes because one of the conditions is falsy.");
-                    
-        //             handleHitTest(event)
-        //         }
-                
-
-        //     }
+            
         // }}
+        onarcgisViewClick={(event) => {
+            
+            if(event.detail.native.button === 2){
+                //////console.log("onArcgisViewClick: right click, button =", event.detail.native.button)
+            }
+            else{
+
+                //query map click
+
+                // //////console.log("onArcgisViewClick: left click, button =", event.detail.native.button)
+                // // handleViewClick(event.detail.mapPoint)
+                // let foundSelectGraphic = findLayerByTitle(arcgisMapRef.current.map, "selectGraphic")
+                // let foundMeasureGraphic = findLayerByTitle(arcgisMapRef.current.map, "measureGraphic") //no longer needed 
+
+                // // //console.log("CURRENT MAP ON CLICK", arcgisMapRef.current.map)
+
+                // // //console.log("found MEASURE graphic: ", foundMeasureGraphic)
+                // if( !foundSelectGraphic  || !selectMultiple || !measureWidgetState){
+                // // if((!foundSelectGraphic && !foundMeasureGraphic) || !selectMultiple || (!isMeasuring)){ //TODO this is for the measureSketchWidget
+                //     // //console.log("The if block executes because one of the conditions is falsy.");
+                    
+                //     handleHitTest(event)
+                // }
+            }
+        }}
         // // onArcgisViewPointerMove={}
         >   
         <arcgis-zoom position="top-right"/>

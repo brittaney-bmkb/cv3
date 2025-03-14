@@ -373,9 +373,15 @@ export async function compareProperities(whereQuery, searchDistance, feature, qu
   }
 
 
-  export async function queryTargetLayerByPolygon(geometry){
+  export async function queryTargetLayerByPolygon(geometry, existingFeatures){
 
     let query = new Query()
+    if(existingFeatures){
+        console.log("existing features: ", existingFeatures)
+        const uniqueIds = existingFeatures.map(f => f.attributes[config.target_layer_id_field])
+        query.where = `${config.target_layer_id_field} NOT IN ('${uniqueIds.join("','")}')`;
+    }
+
     query.geometry = geometry
     query.spatialRelationship = "intersects"
     query.returnGeometry = true

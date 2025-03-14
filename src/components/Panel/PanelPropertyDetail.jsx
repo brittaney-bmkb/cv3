@@ -350,7 +350,7 @@ const PanelPropertyDetail = () => {
                             selectionMode="none"
                             >
                             
-                            {categories?.map(category => {
+                            {primaryResultFeature && categories?.map(category => {
                                 return(
                                     <CalciteListItemGroup key={category} heading={translateText(category)}>
                                         {

@@ -24,6 +24,7 @@ import Layers from "./components/Layers/Layers";
 import Imagery from "./components/Imagery/Imagery";
 import Print from "./components/Print/Print";
 import Select from "./components/Select/Select";
+import Map from "./components/Map/Map";
 
 
 const Layout = () => {
@@ -103,6 +104,7 @@ const Layout = () => {
                     </CalciteShellPanel>
                     
                     {/* WEBMAP */}
+                    {/* <Map/> */}
                     <WebMapComponentBeta/>
 
                     {/* MAP TOOLS */}

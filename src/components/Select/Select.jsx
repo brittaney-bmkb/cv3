@@ -5,66 +5,97 @@ import UseAppContext from "../../contexts/AppContext";
 import { useEffect, useRef, useState } from "react";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
 import * as unionOperator from "@arcgis/core/geometry/operators/unionOperator.js";
+import * as intersectsOperator from "@arcgis/core/geometry/operators/intersectsOperator.js";
 import "@esri/calcite-components/components/calcite-notice"
 import { config } from "../../data/config";
 
 const Select = () => {
 
-    const { selectPanelClosed, setSelectPanel, translateText, arcgisMapRef, queryPolygon, clearResults } = UseAppContext()
+    const {  deselectParcel, selectPanelClosed, setSelectPanel, translateText, arcgisMapRef, queryPolygon, clearResults, primaryResultFeature } = UseAppContext()
     
     const sketchRef = useRef(null)
     const graphicsLayer = useRef(null)
 
     const [activeTool, setActiveTool] = useState(null)
-    const [ hitTestLayers, setHitTestLayers ] = useState(null)
+    const [ mapClicks, setMapClicks ] = useState(null)
+    const [ deselectPins, setDeselectPins ] = useState(null)
 
-    const findTargetLayer = (map) => {
-    
-        let layer = map.allLayers.find((layer) => {
-            console.log("Layer details: ", layer)
-            return `${layer.url}/${layer.layerId}` === config.target_layer_url
-        })
-
-        return layer
-    }
-
+ 
     const handleClickSelection = async (event) => {
+        console.log("click selection");
         if (activeTool !== "cursor") return; // Ensure we're using the cursor tool
     
-        const view = arcgisMapRef.current?.view;
-        if (!view || !graphicsLayer.current || !hitTestLayers) return;
+        let mapPoint = event.detail.mapPoint;
 
-        const opts = {
-            include: hitTestLayers
+        //check if mapPoint interects with an existing selected feature
+        //console.log("selected parcels: ", selectedFeatures)
+        if(!primaryResultFeature|| primaryResultFeature.length === 0){
+            console.log("primaryResultFeature does not exist, adding initial selected parcel")
+            const features = await queryPolygon(mapPoint)
+            return
         }
+        else{
+            setMapClicks(mapPoint)
 
-        const hitResponse = await view.hitTest(event, opts);
+            // if (deselectPins.length === 0) {
+            //     console.log("Adding Parcel");
+            //     const features = await queryPolygon(mapPoint)
+            //     primaryResultRef.current = [...primaryResultRef.current, ...features];
+            //     console.log("selected Parcels: ", primaryResultRef.current)
+            // } else {
+            //     console.log("Removing Parcel", deselectPins);
 
-        console.log("hittest view: ", view)
-        console.log("hittest response: ", hitResponse)
-        console.log("hittest opts: ", opts)
+            //     // Ensure the parcel actually exists in state before attempting to remove
+            //     if (primaryResultRef.current.some(f => deselectPins.includes(f.attributes[config.target_layer_id_field]))) {
+            //         const filteredParcels = await deselectParcel(deselectPins);
+            //         primaryResultRef.current = filteredParcels;
 
-        const selectedFeatures = hitResponse.results
-            .map((result) => result.graphic)
-            .filter((graphic) => graphic.layer === graphicsLayer.current);
-    
-        if (selectedFeatures.length > 0) {
-            console.log("Selected Parcels:", selectedFeatures);
-    
-            // Extract geometries from selected parcels
-            const geometries = selectedFeatures.map((graphic) => graphic.geometry);
-            
-            // Perform union operation on multiple selected parcels
-            const queryGeometry = unionOperator.executeMany(geometries);
-    
-            if (queryGeometry) {
-                await queryPolygon(queryGeometry); // Query parcels using the unioned geometry
-            } else {
-                console.warn("Union operation returned an invalid geometry.");
+            //     } else {
+            //         console.log("Parcel already removed, skipping deselect.");
+            //     }
+            // } 
+            }
+        
+    };
+
+    useEffect(() => {
+
+        const handleSelectParcels = async () => {
+            if(mapClicks){
+                // Find features that intersect with the clicked point
+                let deselectPins = primaryResultFeature
+                .filter(feature => intersectsOperator.execute(mapClicks, feature.geometry))
+                .map(feature => feature.attributes[config.target_layer_id_field]);
+
+                console.log("Pins to deselect: ", deselectPins)
+
+                if(deselectPins.length === 0){
+                    const features = await queryPolygon(mapClicks)  
+                }
+                else{
+                    setDeselectPins(deselectPins)
+                }
             }
         }
-    };
-    
+
+        handleSelectParcels()
+
+    }, [mapClicks])
+
+
+    useEffect(() => {
+
+        const handleDeselectParcels = async () => {
+            if(deselectPins && deselectPins.length > 0){
+                const features = await deselectParcel(deselectPins); 
+            }
+        }
+
+        handleDeselectParcels()
+
+    }, [deselectPins])
+
+
     useEffect(() => {
         const mapElement = arcgisMapRef.current;
         if (!mapElement) return;
@@ -99,7 +130,7 @@ const Select = () => {
             return;
         }
     
-        await queryPolygon(queryGeometry);
+        await queryPolygon(queryGeometry, true);
         graphicsLayer.current.removeAll();
 
     }
@@ -119,9 +150,6 @@ const Select = () => {
             if (map) {
                 console.log("Adding graphics layer to map");
                 map.add(graphicsLayer.current);
-
-                let layer = findTargetLayer(map)
-                setHitTestLayers([layer])
             }
         }
     }, [arcgisMapRef]);

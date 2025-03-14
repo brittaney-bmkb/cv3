@@ -709,21 +709,51 @@ export const AppProvider = ({children}) => {
         return  param
     }
 
+    const deselectParcel = async (ids) => {
+
+        const { primaryResultFeature } = state
+
+        const filteredParcels = primaryResultFeature
+                                .filter(feature => !ids.includes(feature.attributes[config.target_layer_id_field]))
+                                .map(feature => feature)
+
+        // Update parcel selection and search result variables
+        setPrimaryResultFeature(filteredParcels)
+        
+        setSearchResults(null, filteredParcels)
+
+        const  param = await returnSearchParam(filteredParcels)
+        //console.log("new url param: ", param)
+        setSearchParams(param)
+
+        return filteredParcels
+    }
+
     /**
      * Queries parcels based on a given polygon and updates search results.
      * @param {Object} polygon - The polygon geometry used for querying.
      */
-    const queryPolygon = async (polygon) => {
+    const queryPolygon = async (polygon, newSelection) => {
 
-        const { panelDisplay, panelPrimaryVisible } = state
+        const { panelDisplay, panelPrimaryVisible, primaryResultFeature } = state
 
         const { queryTargetLayerByPolygon } = await import('../arcgis/search/queryTargetLayer')
 
         ////console.log("querying target layer by polygon geometry: ", polygon)
-        const features = await queryTargetLayerByPolygon(polygon)
+        const features = await queryTargetLayerByPolygon(polygon, primaryResultFeature)
 
-        setPrimaryResultFeature(features)
-        setSearchResults(null, features)
+        console.log("Queried Features: ", features)
+
+        const allFeatures = [
+            ...features,
+            ...(primaryResultFeature && !newSelection ? primaryResultFeature : [])
+        ];
+
+        console.log("Combined Features: ", allFeatures)
+
+        setPrimaryResultFeature(allFeatures)
+        
+        setSearchResults(null, allFeatures)
 
         if(!panelDisplay || panelDisplay !== "resultsList"){
             setPanelDisplay("resultsList")
@@ -735,10 +765,11 @@ export const AppProvider = ({children}) => {
 
         //update url parameters
         //console.log("setting url parameters for select multiple draw tool results")
-        const  param = await returnSearchParam(features)
+        const  param = await returnSearchParam(allFeatures)
         //console.log("new url param: ", param)
         setSearchParams(param)
 
+        return allFeatures
     }
 
 
@@ -1382,7 +1413,8 @@ export const AppProvider = ({children}) => {
         printPanelClosed: state.printPanelClosed,
         setSelectPanel,
         selectPanelClosed: state.selectPanelClosed,
-        arcgisMapRef
+        arcgisMapRef,
+        deselectParcel
 
     }
 
