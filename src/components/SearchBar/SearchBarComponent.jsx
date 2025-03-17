@@ -153,28 +153,32 @@ const SearchBarComponent = () => {
     },[primaryResultFeature])
     
 
-    useEffect(() => {
-        //when primaryResultFeature changes update the panel display
-        if(searchFeatures && primaryResultFeature){
+    // useEffect(() => {
+    //     //when primaryResultFeature changes update the panel display
+    //     if(searchFeatures && primaryResultFeature){
 
-            const primaryInSearchFeature = anyAttributesIncluded(primaryResultFeature, searchFeatures)
+    //         const primaryInSearchFeature = anyAttributesIncluded(primaryResultFeature, searchFeatures)
 
-            if(!primaryInSearchFeature){
-                console.log("Setting primary panel to display results list: ", panelDisplay)
+    //         if(!primaryInSearchFeature){
+    //             console.log("Setting primary panel to display results list: ", panelDisplay)
                 
-                togglePanel('search')
-            }
-            else if(primaryInSearchFeature && panelDisplay === "info"){
-                togglePanel('search')
-            }
-            // if(primaryResultFeature && !panelPrimaryVisible){
-            //         setPanelPrimaryVisibility(true)
-            //         setPanelDisplay("resultsList")
-            //     }
+    //             togglePanel('search')
+    //         }
+    //         else if(primaryInSearchFeature){
+    //             togglePanel('search')
+    //         }
+    //         // if(primaryResultFeature && !panelPrimaryVisible){
+    //         //         setPanelPrimaryVisibility(true)
+    //         //         setPanelDisplay("resultsList")
+    //         //     }
     
            
-        }
-    }, [searchFeatures, primaryResultFeature])
+    //     }
+    // }, [
+    //     searchFeatures, 
+    //     primaryResultFeature
+
+    // ])
 
 
     useEffect(() => {

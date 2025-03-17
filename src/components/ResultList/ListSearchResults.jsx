@@ -8,9 +8,7 @@ const ListSearchResults = () => {
         searchFeatures, 
         selectResultFromList, 
         setSearchBufferGeometry,
-        setSearchResultsPanel,
-        setInfoPanel,
-        setPropertyDetailPanel
+        togglePanel
     } = UseAppContext()
     
     return(
@@ -30,9 +28,7 @@ const ListSearchResults = () => {
                         onCalciteListItemSelect={() => {
                             selectResultFromList(feature.attributes['PIN14_dash'])
                             setSearchBufferGeometry(null, null)
-                            setSearchResultsPanel(true)
-                            setInfoPanel(true)
-                            setPropertyDetailPanel(false)
+                            togglePanel('property')
 
                         }}
                     >
