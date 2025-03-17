@@ -30,7 +30,7 @@ const NearbyPanel = () => {
         translateText, 
         searchNearbyProperties, 
         clearResultsComparables,
-        setComparisonResultsPanel
+        togglePanel
      } = UseAppContext()
 
     const [selectedUnit, setSelectedUnit] = useState(Object.keys(linearUnitOptions)[0])
@@ -39,8 +39,7 @@ const NearbyPanel = () => {
     const handleSearchRadius = () => {
 
         searchNearbyProperties(searchRadius, selectedUnit)
-        setNearbyPanel(true)
-        setComparisonResultsPanel(false)
+        togglePanel('compareResults')
 
     }
 

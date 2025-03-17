@@ -139,6 +139,8 @@ export const AppProvider = ({children}) => {
             setImageryPanel(true)
             setPrintPanel(true)
             setSelectPanel(true)
+            setComparisonResultsPanel(true)
+            setComparisonDetailPanel(true)
             break;
 
         case 'compare':
@@ -148,6 +150,29 @@ export const AppProvider = ({children}) => {
             setImageryPanel(true)
             setPrintPanel(true)
             setSelectPanel(true)
+            setComparisonResultsPanel(true)
+            setComparisonDetailPanel(true)
+            break;
+        case 'compareResults':
+            setLayersPanel(true);
+            setComparablePanel(true);
+            setNearbyPanel(true);
+            setImageryPanel(true)
+            setPrintPanel(true)
+            setSelectPanel(true)
+            setComparisonResultsPanel(false)
+            setComparisonDetailPanel(true)
+            break;
+
+        case 'compareProperty':
+            setLayersPanel(true);
+            setComparablePanel(true);
+            setNearbyPanel(true);
+            setImageryPanel(true)
+            setPrintPanel(true)
+            setSelectPanel(true)
+            setComparisonResultsPanel(true)
+            setComparisonDetailPanel(false)
             break;
 
         case 'layers':
@@ -157,6 +182,8 @@ export const AppProvider = ({children}) => {
             setImageryPanel(true)
             setPrintPanel(true)
             setSelectPanel(true)
+            setComparisonResultsPanel(true)
+            setComparisonDetailPanel(true)
             break;
             
         case 'imagery':
@@ -166,6 +193,8 @@ export const AppProvider = ({children}) => {
             setImageryPanel(false)
             setPrintPanel(true)
             setSelectPanel(true)
+            setComparisonResultsPanel(true)
+            setComparisonDetailPanel(true)
             break; 
 
         case 'print':
@@ -175,6 +204,8 @@ export const AppProvider = ({children}) => {
             setImageryPanel(true)
             setPrintPanel(false)
             setSelectPanel(true)
+            setComparisonResultsPanel(true)
+            setComparisonDetailPanel(true)
             break; 
 
         case 'select':
@@ -184,6 +215,8 @@ export const AppProvider = ({children}) => {
             setImageryPanel(true)
             setPrintPanel(true)
             setSelectPanel(false)
+            setComparisonResultsPanel(true)
+            setComparisonDetailPanel(true)
             break; 
           default:
             break;
@@ -740,7 +773,7 @@ export const AppProvider = ({children}) => {
         const { queryTargetLayerByPolygon } = await import('../arcgis/search/queryTargetLayer')
 
         ////console.log("querying target layer by polygon geometry: ", polygon)
-        const features = await queryTargetLayerByPolygon(polygon, primaryResultFeature)
+        const features = await queryTargetLayerByPolygon(polygon, primaryResultFeature && !newSelection ? primaryResultFeature : null)
 
         console.log("Queried Features: ", features)
 

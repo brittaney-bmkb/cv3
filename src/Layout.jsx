@@ -140,10 +140,7 @@ const Layout = () => {
                                         icon="list-rectangle"
                                         textEnabled 
                                         onClick={() => {
-                                            setComparisonResultsPanel(false)
-                                            setNearbyPanel(true)
-                                            setComparablePanel(true)
-                                            setComparisonDetailPanel(true)
+                                            togglePanel('compareResults')
                                         }}>
 
                                     </CalciteAction> : null
@@ -157,10 +154,7 @@ const Layout = () => {
                                         icon="pin"
                                         textEnabled 
                                         onClick={() => {
-                                            setNearbyPanel(true)
-                                            setComparablePanel(true)
-                                            setComparisonResultsPanel(true)
-                                            setComparisonDetailPanel(false)
+                                            togglePanel('compareDetail')
                                         }}>
 
                                     </CalciteAction> : null

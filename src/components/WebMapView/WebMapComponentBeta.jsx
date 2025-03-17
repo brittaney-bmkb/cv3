@@ -450,7 +450,8 @@ const WebMapComponentBeta = () => {
 
                             setPrimaryResultFeature(showParcelDetail, false)
                             setPanelDisplay("propertyDetail")
-                            setPropertyDetailPanel(false)
+                            
+                            togglePanel('property')
                         }
                     }  
                 }
@@ -890,21 +891,19 @@ const WebMapComponentBeta = () => {
             else{
 
                 //query map click
+                //////console.log("onArcgisViewClick: left click, button =", event.detail.native.button)
+                // handleViewClick(event.detail.mapPoint)
+                let foundSelectGraphic = findLayerByTitle(arcgisMapRef.current.map, "selectGraphic")
+                let foundMeasureGraphic = findLayerByTitle(arcgisMapRef.current.map, "measureGraphic") //no longer needed 
 
-                // //////console.log("onArcgisViewClick: left click, button =", event.detail.native.button)
-                // // handleViewClick(event.detail.mapPoint)
-                // let foundSelectGraphic = findLayerByTitle(arcgisMapRef.current.map, "selectGraphic")
-                // let foundMeasureGraphic = findLayerByTitle(arcgisMapRef.current.map, "measureGraphic") //no longer needed 
+                // //console.log("CURRENT MAP ON CLICK", arcgisMapRef.current.map)
 
-                // // //console.log("CURRENT MAP ON CLICK", arcgisMapRef.current.map)
-
-                // // //console.log("found MEASURE graphic: ", foundMeasureGraphic)
-                // if( !foundSelectGraphic  || !selectMultiple || !measureWidgetState){
-                // // if((!foundSelectGraphic && !foundMeasureGraphic) || !selectMultiple || (!isMeasuring)){ //TODO this is for the measureSketchWidget
-                //     // //console.log("The if block executes because one of the conditions is falsy.");
-                    
-                //     handleHitTest(event)
-                // }
+                // //console.log("found MEASURE graphic: ", foundMeasureGraphic)
+                if( !foundSelectGraphic  || !selectMultiple || !measureWidgetState){
+                // if((!foundSelectGraphic && !foundMeasureGraphic) || !selectMultiple || (!isMeasuring)){ //TODO this is for the measureSketchWidget
+                    // //console.log("The if block executes because one of the conditions is falsy.");
+                    handleHitTest(event)
+                }
             }
         }}
         // // onArcgisViewPointerMove={}

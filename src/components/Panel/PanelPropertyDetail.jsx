@@ -80,7 +80,8 @@ const PanelPropertyDetail = () => {
         dataDictionary,
         primaryResultFeature,
         setComparablePanel,
-        setNearbyPanel
+        setNearbyPanel,
+        togglePanel
     } = UseAppContext()
 
     const [ categories, setCategories ] = useState(null)
@@ -114,8 +115,7 @@ const PanelPropertyDetail = () => {
             description: '',
             type: 'button',
             onClick: () => {
-                setComparablePanel(false)
-                setNearbyPanel(true)
+                togglePanel('compare')
             }
         },
         nearby_properties: {
@@ -124,8 +124,7 @@ const PanelPropertyDetail = () => {
             type: 'button',
             //UPDATE TO NEARBY PANEL
             onClick: () => {
-                setNearbyPanel(false)
-                setComparablePanel(true)
+                togglePanel('nearby')
             }
         }
     })

@@ -9,16 +9,15 @@ const ListComparisonResults = () => {
         setSecondaryResultFeature, 
         setComparisonResultsPanel,
         setNearbyPanel,
-        setComparisonDetailPanel
+        setComparisonDetailPanel,
+        togglePanel
     } = UseAppContext()
 
     const handleSelect = async (feature) => {
 
         console.log("selecting feature: ", feature)
         setSecondaryResultFeature(feature)
-        setComparisonResultsPanel(true)
-        setNearbyPanel(true)
-        setComparisonDetailPanel(false)
+        togglePanel('compareDetail')
 
     }
     

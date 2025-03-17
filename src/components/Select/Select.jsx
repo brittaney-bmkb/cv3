@@ -18,44 +18,24 @@ const Select = () => {
 
     const [activeTool, setActiveTool] = useState(null)
     const [ mapClicks, setMapClicks ] = useState(null)
+    const [ selectedParcels, setSelectedParcels ] = useState(primaryResultFeature)
     const [ deselectPins, setDeselectPins ] = useState(null)
+
+    useEffect(() => {
+
+        if(selectPanelClosed && sketchRef.current){
+            sketchRef.current.cancel()
+        }
+
+    }, [selectPanelClosed])
 
  
     const handleClickSelection = async (event) => {
         console.log("click selection");
         if (activeTool !== "cursor") return; // Ensure we're using the cursor tool
     
-        let mapPoint = event.detail.mapPoint;
-
-        //check if mapPoint interects with an existing selected feature
-        //console.log("selected parcels: ", selectedFeatures)
-        if(!primaryResultFeature|| primaryResultFeature.length === 0){
-            console.log("primaryResultFeature does not exist, adding initial selected parcel")
-            const features = await queryPolygon(mapPoint)
-            return
-        }
-        else{
-            setMapClicks(mapPoint)
-
-            // if (deselectPins.length === 0) {
-            //     console.log("Adding Parcel");
-            //     const features = await queryPolygon(mapPoint)
-            //     primaryResultRef.current = [...primaryResultRef.current, ...features];
-            //     console.log("selected Parcels: ", primaryResultRef.current)
-            // } else {
-            //     console.log("Removing Parcel", deselectPins);
-
-            //     // Ensure the parcel actually exists in state before attempting to remove
-            //     if (primaryResultRef.current.some(f => deselectPins.includes(f.attributes[config.target_layer_id_field]))) {
-            //         const filteredParcels = await deselectParcel(deselectPins);
-            //         primaryResultRef.current = filteredParcels;
-
-            //     } else {
-            //         console.log("Parcel already removed, skipping deselect.");
-            //     }
-            // } 
-            }
-        
+        let mapPoint = event.detail.mapPoint;  
+         setMapClicks(mapPoint) 
     };
 
     useEffect(() => {
@@ -63,14 +43,23 @@ const Select = () => {
         const handleSelectParcels = async () => {
             if(mapClicks){
                 // Find features that intersect with the clicked point
-                let deselectPins = primaryResultFeature
-                .filter(feature => intersectsOperator.execute(mapClicks, feature.geometry))
-                .map(feature => feature.attributes[config.target_layer_id_field]);
-
+                let deselectPins = [] 
+                if(selectedParcels){
+                    selectedParcels
+                    .filter(feature => intersectsOperator.execute(mapClicks, feature.geometry))
+                    .map(feature => feature.attributes[config.target_layer_id_field]);
+                }
+               
                 console.log("Pins to deselect: ", deselectPins)
 
                 if(deselectPins.length === 0){
                     const features = await queryPolygon(mapClicks)  
+                    if(selectedParcels && selectedParcels.length > 0){
+                        setSelectedParcels([...selectedParcels, ...features])
+                    }
+                    else{
+                        setSelectedParcels(features)
+                    }
                 }
                 else{
                     setDeselectPins(deselectPins)
@@ -88,6 +77,7 @@ const Select = () => {
         const handleDeselectParcels = async () => {
             if(deselectPins && deselectPins.length > 0){
                 const features = await deselectParcel(deselectPins); 
+                setSelectedParcels(features)
             }
         }
 

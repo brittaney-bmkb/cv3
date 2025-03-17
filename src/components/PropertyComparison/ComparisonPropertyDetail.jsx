@@ -355,7 +355,7 @@ const ComparisonPropertyDetail = () => {
                      selectionMode="none"
                     >
                         {
-                            secondaryResultFeature && categories?.map( category => {
+                            comparableParcels && secondaryResultFeature && categories?.map( category => {
                                 return(
                                     <CalciteListItemGroup heading={translateText(category)}>
                                         {
