@@ -1,0 +1,112 @@
+import { CalciteAction, CalciteActionBar, CalciteActionGroup } from "@esri/calcite-components-react"
+import UseAppContext from "../../contexts/AppContext"
+
+const ActionBarEnd = () => {
+
+    const { 
+        translateText, 
+        togglePanel, 
+        nearbyPanelClosed, 
+        layersPanelClosed, 
+        imageryPanelClosed, 
+        printPanelClosed, 
+        selectPanelClosed,
+        comparablePanelClosed,
+        comparableParcels } = UseAppContext()
+
+    return(
+            <CalciteActionBar slot="action-bar" expanded>
+                <CalciteActionGroup>
+                    <CalciteAction 
+                        active={!comparablePanelClosed}
+                        text={translateText("Compare")} 
+                        icon="compare" 
+                        textEnabled 
+                        onClick={() => {
+                            togglePanel('compare')
+                        }}>
+
+                    </CalciteAction>
+                    <CalciteAction 
+                        active={!nearbyPanelClosed}
+                        text={translateText("Nearby" )}
+                        icon="rings-largest" 
+                        textEnabled 
+                        onClick={() => {
+                            togglePanel('nearby')
+                        }}>
+
+                    </CalciteAction>
+                    {
+                        //IF THERE ARE COMPARABLE PARCELS DISPLAY COMPARABLE RESULTS
+                        comparableParcels ? 
+                        <CalciteAction 
+                            text="Results" 
+                            icon="list-rectangle"
+                            textEnabled 
+                            onClick={() => {
+                                togglePanel('compareResults')
+                            }}>
+
+                        </CalciteAction> : null
+                    }
+
+                    {
+                        //IF THERE ARE COMPARABLE PARCELS DISPLAY COMPARABLE RESULTS
+                        comparableParcels ? 
+                        <CalciteAction 
+                            text="Property" 
+                            icon="pin"
+                            textEnabled 
+                            onClick={() => {
+                                togglePanel('compareDetail')
+                            }}>
+
+                        </CalciteAction> : null
+                    }
+
+                    <CalciteAction 
+                        active={!layersPanelClosed}
+                        text={translateText("Layers")} 
+                        icon="layers" 
+                        textEnabled 
+                        onClick={() => {
+                            togglePanel('layers')
+                        }}>
+                    </CalciteAction>
+
+                    <CalciteAction 
+                        active={!imageryPanelClosed}
+                        text={translateText("Imagery")} 
+                        icon="basemap" 
+                        textEnabled 
+                        onClick={() => {
+                            togglePanel('imagery')
+                        }}>
+                    </CalciteAction>
+
+                    <CalciteAction 
+                        active={!printPanelClosed}
+                        text={translateText("Print")} 
+                        icon="print" 
+                        textEnabled 
+                        onClick={() => {
+                            togglePanel('print')
+                        }}>
+                    </CalciteAction>
+
+                    <CalciteAction 
+                        active={!selectPanelClosed}
+                        text={translateText("Select")} 
+                        icon="select" 
+                        textEnabled 
+                        onClick={() => {
+                            togglePanel('select')
+                        }}>
+                    </CalciteAction>
+                    
+                </CalciteActionGroup>
+            </CalciteActionBar>
+    )
+}
+export default ActionBarEnd

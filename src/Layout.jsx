@@ -25,6 +25,8 @@ import Imagery from "./components/Imagery/Imagery";
 import Print from "./components/Print/Print";
 import Select from "./components/Select/Select";
 import Map from "./components/Map/Map";
+import ActionBarStart from "./components/ActionBar/ActionBarStart";
+import ActionBarEnd from "./components/ActionBar/ActionBarEnd";
 
 
 const Layout = () => {
@@ -80,22 +82,7 @@ const Layout = () => {
                     {/* LEFT PANEL */}
                     <CalciteShellPanel  width="l" slot="panel-start" position="start" id="shell-panel-start" className='left-panel' collapsed={leftPanelCollapsed}>
                         {/* ACTION BAR */}
-                        <CalciteActionBar slot="action-bar" expanded>
-                            <CalciteActionGroup>
-                                <CalciteAction text={translateText("Info")} icon="information" textEnabled active={!infoPanelClosed}
-                                onClick={() => {
-                                    togglePanel('info')
-                                    }}></CalciteAction>
-                                <CalciteAction text={translateText("Results")} icon="list-rectangle" textEnabled active={!searchResultsPanelClosed}
-                                onClick={() => {
-                                    togglePanel('search')
-                                    }}></CalciteAction>
-                                <CalciteAction text={translateText("Property")} icon="pin" textEnabled active={!propertyDetailPanelClosed}
-                                onClick={() => {
-                                    togglePanel('property')
-                                }}></CalciteAction>
-                            </CalciteActionGroup>
-                        </CalciteActionBar>
+                        <ActionBarStart/>
                         {/* PRIMARY PANEL */}
                         <PanelInfo/>
                         <PanelSearchResults/>
@@ -110,98 +97,7 @@ const Layout = () => {
                     {/* MAP TOOLS */}
                     <CalciteShellPanel width="l" className="right-panel" slot="panel-end" position="end" id="shell-panel-end" collapsed={rightPanelCollapsed}>
                         {/* ACTION BAR */}
-                        <CalciteActionBar slot="action-bar" expanded>
-                            <CalciteActionGroup>
-                                <CalciteAction 
-                                    active={!comparablePanelClosed}
-                                    text={translateText("Compare")} 
-                                    icon="compare" 
-                                    textEnabled 
-                                    onClick={() => {
-                                        togglePanel('compare')
-                                    }}>
-
-                                </CalciteAction>
-                                <CalciteAction 
-                                    active={!nearbyPanelClosed}
-                                    text={translateText("Nearby" )}
-                                    icon="rings-largest" 
-                                    textEnabled 
-                                    onClick={() => {
-                                        togglePanel('nearby')
-                                    }}>
-
-                                </CalciteAction>
-                                {
-                                    //IF THERE ARE COMPARABLE PARCELS DISPLAY COMPARABLE RESULTS
-                                    comparableParcels ? 
-                                    <CalciteAction 
-                                        text="Results" 
-                                        icon="list-rectangle"
-                                        textEnabled 
-                                        onClick={() => {
-                                            togglePanel('compareResults')
-                                        }}>
-
-                                    </CalciteAction> : null
-                                }
-
-                                {
-                                    //IF THERE ARE COMPARABLE PARCELS DISPLAY COMPARABLE RESULTS
-                                    comparableParcels ? 
-                                    <CalciteAction 
-                                        text="Property" 
-                                        icon="pin"
-                                        textEnabled 
-                                        onClick={() => {
-                                            togglePanel('compareDetail')
-                                        }}>
-
-                                    </CalciteAction> : null
-                                }
-
-                                <CalciteAction 
-                                    active={!layersPanelClosed}
-                                    text={translateText("Layers")} 
-                                    icon="layers" 
-                                    textEnabled 
-                                    onClick={() => {
-                                        togglePanel('layers')
-                                    }}>
-                                </CalciteAction>
-
-                                <CalciteAction 
-                                    active={!imageryPanelClosed}
-                                    text={translateText("Imagery")} 
-                                    icon="basemap" 
-                                    textEnabled 
-                                    onClick={() => {
-                                        togglePanel('imagery')
-                                    }}>
-                                </CalciteAction>
-
-                                <CalciteAction 
-                                    active={!printPanelClosed}
-                                    text={translateText("Print")} 
-                                    icon="print" 
-                                    textEnabled 
-                                    onClick={() => {
-                                        togglePanel('print')
-                                    }}>
-                                </CalciteAction>
-
-                                <CalciteAction 
-                                    active={!selectPanelClosed}
-                                    text={translateText("Select")} 
-                                    icon="select" 
-                                    textEnabled 
-                                    onClick={() => {
-                                        togglePanel('select')
-                                    }}>
-                                </CalciteAction>
-                                
-                            </CalciteActionGroup>
-                        </CalciteActionBar>
+                        <ActionBarEnd/>
 
                         {/* SECONDARY PANEL */}
                         <PropertyComparison/>
