@@ -87,7 +87,10 @@ const SearchBarComponent = () => {
                             let features = await returnFeaturesByPin10Pin14(pin10Search, pin14Search)
                         }
 
-                        togglePanel('search')
+                        if(primaryResultFeature && primaryResultFeature.length > 0){
+                            togglePanel('search')
+                        }
+                        
                     }
                 }
 
@@ -215,8 +218,10 @@ const SearchBarComponent = () => {
 
                     updateAppWithSearchResult()
 
-                    setSearchResultsPanel(false)
-                    setInfoPanel(true)
+                    if(primaryResultFeature && primaryResultFeature.length > 0){
+                        togglePanel('search')
+                    }
+                    
                 }}
 
                 //CLEAR RESULTS
