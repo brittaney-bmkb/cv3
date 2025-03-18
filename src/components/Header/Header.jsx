@@ -15,24 +15,29 @@ function titleCase(s) {
             .join(' ');
 }
 
-const menuItems = {
-    Help: {
-        icon: "question",
-        subMenuItems: null
-    },
-    Feedback:{
-        icon:"speech-bubble-exclamation",
-        subMenuItems: null
-    },
-    Translate: {
-        icon: "language-translate",
-        subMenuItems: config.language_codes
-    }
-}
+
 
 const Header = () => {
 
-    const { translateText, setLanguage } = UseAppContext()
+    const { translateText, setLanguage, setFeedbackDialog } = UseAppContext()
+
+    const menuItems = {
+        Help: {
+            icon: "question",
+            subMenuItems: null,
+            onClick: null
+        },
+        Feedback:{
+            icon:"speech-bubble-exclamation",
+            subMenuItems: null,
+            onClick: () => setFeedbackDialog(true, 'extended') // Correct syntax
+        },
+        Translate: {
+            icon: "language-translate",
+            subMenuItems: config.language_codes,
+            onClick: null
+        }
+    }
 
     const handleClick = (language) => {
 
@@ -71,6 +76,7 @@ const Header = () => {
                                 text={translateText(item)} 
                                 iconStart={menuItems[item].icon}
                                 label={item}
+                                onClick={menuItems[item].onClick ? menuItems[item].onClick : null}
                                 >
                                     {
                                         menuItems[item].subMenuItems ? 
