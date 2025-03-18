@@ -31,16 +31,13 @@ const Export = () => {
     const [dataTitle, setDataTitle] = useState(null)
     const [openNotice, setOpenNotice] = useState(false)
 
-    useEffect(() => {
-
-        
-
-    }, [])
-
-
-    const handleClose = () => {
-        setInputStatus('idle')
+    
+    const handleBeforeOpen = () => {
         setFileName(null)
+        setInputStatus('idle')
+    }
+    const handleClose = () => {
+        
         setExportOpen(false, exportDataSource)
     }
 
@@ -72,6 +69,7 @@ const Export = () => {
     const handleExport = async () => {
 
         if(!fileName){
+            setInputStatus('invalid')
             return
         }
 
@@ -118,6 +116,7 @@ const Export = () => {
         heading={translateText('Export')}
         description={translateText('Export data to CSV or Excel')}
         onCalciteDialogClose={() => {handleClose()}}
+        onCalciteDialogBeforeOpen={() => {handleBeforeOpen()}}
         >   
         <CalciteLabel style={{paddingBottom: 100, paddingTop:20}} >
             {dataTitle}
@@ -126,6 +125,7 @@ const Export = () => {
             status={inputStatus}
             scale="m" 
             placeholder="filename"
+            value={fileName}
             validationIcon="frown"
             validationMessage={translateText('Please enter filename')}
             onCalciteInputTextChange={(e) => {setFileName(e.target.value)}}

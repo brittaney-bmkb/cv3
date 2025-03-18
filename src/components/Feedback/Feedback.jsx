@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogTitle, IconButton, Typography } from "@mui
 import UseAppContext from "../../contexts/AppContext"
 import { theme } from "../../theme"
 import { useEffect, useState } from "react"
+import { CalciteDialog } from "@esri/calcite-components-react"
 
 const FeedbackDialog = ({open, onClose}) => {
 
@@ -262,3 +263,17 @@ export const FeedbackSearch = ({open, onClose}) => {
 
 
 export default FeedbackDialog
+
+
+export const Feedback = () => {
+
+    const { feedbackOpen, feedbackSource } = UseAppContext()
+
+    return(
+        <CalciteDialog
+        heading={}
+        >
+
+        </CalciteDialog>
+    )
+}

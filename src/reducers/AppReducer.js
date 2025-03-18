@@ -56,7 +56,9 @@ export const initialState = {
     selectPanelClosed:true,
     //DIALOG STATES
     exportOpen: false,
-    exportDataSource: null
+    exportDataSource: null,
+    feedbackOpen: false,
+    feedbackSource:null
 }
 
 const AppReducer = (state, action) => {
@@ -138,6 +140,13 @@ const AppReducer = (state, action) => {
             ...state, 
             exportOpen: payload.exportOpen,
             exportDataSource: payload.exportDataSource
+        }
+
+        case "SET_FEEDBACK_DIALOG":
+        return {
+            ...state, 
+            feedbackOpen: payload.feedbackOpen,
+            feedbackSource: payload.feedbackSource
         }
     
     

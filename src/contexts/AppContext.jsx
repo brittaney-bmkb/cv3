@@ -122,6 +122,16 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setFeedbackDialog = (open, source) => {
+        dispatch({
+            type: "SET_FEEDBACK_DIALOG",
+            payload: {
+                feedbackOpen: open,
+                feedbackSource: source
+            }
+        })
+    }
+
     const togglePanel = (panelName) => {
         switch (panelName) {
           case 'info':
@@ -778,7 +788,7 @@ export const AppProvider = ({children}) => {
      */
     const queryPolygon = async (polygon, newSelection) => {
 
-        const { panelDisplay, panelPrimaryVisible, primaryResultFeature } = state
+        const { primaryResultFeature } = state
 
         const { queryTargetLayerByPolygon } = await import('../arcgis/search/queryTargetLayer')
 
@@ -797,14 +807,6 @@ export const AppProvider = ({children}) => {
         setPrimaryResultFeature(allFeatures)
         
         setSearchResults(null, allFeatures)
-
-        if(!panelDisplay || panelDisplay !== "resultsList"){
-            setPanelDisplay("resultsList")
-        }
-        
-        if(!panelPrimaryVisible || panelPrimaryVisible === false){
-            setPanelPrimaryVisibility(true)
-        }
 
         //update url parameters
         //console.log("setting url parameters for select multiple draw tool results")
@@ -1461,7 +1463,10 @@ export const AppProvider = ({children}) => {
         //EXPORT DIALOG
         setExportOpen,
         exportOpen:state.exportOpen,
-        exportDataSource: state.exportDataSource
+        exportDataSource: state.exportDataSource,
+        setFeedbackDialog,
+        feedbackOpen: state.feedbackOpen,
+        feedbackSource: state.feedbackSource
 
     }
 
