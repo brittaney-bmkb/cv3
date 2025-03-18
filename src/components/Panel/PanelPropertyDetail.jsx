@@ -327,7 +327,7 @@ const PanelPropertyDetail = () => {
                     </CalciteActionBar>
                     
                         {
-                            (primaryResultFeature && categories && headerData) ? 
+                            (primaryResultFeature && primaryResultFeature[0] && categories && headerData) ? 
 
                             <>   
                             <div slot="content-top">
@@ -349,7 +349,7 @@ const PanelPropertyDetail = () => {
                             selectionMode="none"
                             >
                             
-                            {primaryResultFeature && categories?.map(category => {
+                            {primaryResultFeature && primaryResultFeature[0] && categories?.map(category => {
                                 return(
                                     <CalciteListItemGroup key={category} heading={translateText(category)}>
                                         {
@@ -428,7 +428,7 @@ const PanelPropertyDetail = () => {
                                                     if(calculatedValues[data?.attributes['field']]){
                                                         if(calculatedValues[data?.attributes['field']]['type']  === 'link'){
                                                             
-                                                            if(Object.keys(conditional_links).includes(data?.attributes['field']) && !conditional_links[data?.attributes['field']].includes(parseInt(primaryResultFeature[0].attributes['BCLASS']))){
+                                                            if(Object.keys(conditional_links).includes(data?.attributes['field']) && !conditional_links[data?.attributes['field']].includes(parseInt(primaryResultFeature[0]?.attributes['BCLASS']))){
                                                                 ////console.log("Open data link to res data: ", data?.attributes['field'])
                                                                 return null
                                                             }

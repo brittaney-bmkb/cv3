@@ -53,7 +53,10 @@ export const initialState = {
     layersPanelClosed: true,
     imageryPanelClosed: true,
     printPanelClosed:true,
-    selectPanelClosed:true
+    selectPanelClosed:true,
+    //DIALOG STATES
+    exportOpen: false,
+    exportDataSource: null
 }
 
 const AppReducer = (state, action) => {
@@ -128,6 +131,13 @@ const AppReducer = (state, action) => {
         return {
             ...state, 
             selectPanelClosed: payload.selectPanelClosed
+        }
+
+        case "SET_EXPORT_DIALOG":
+        return {
+            ...state, 
+            exportOpen: payload.exportOpen,
+            exportDataSource: payload.exportDataSource
         }
     
     

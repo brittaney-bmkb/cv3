@@ -112,6 +112,16 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setExportOpen = (open, source) => {
+        dispatch({
+            type: "SET_EXPORT_DIALOG",
+            payload: {
+                exportOpen: open,
+                exportDataSource: source
+            }
+        })
+    }
+
     const togglePanel = (panelName) => {
         switch (panelName) {
           case 'info':
@@ -1447,7 +1457,11 @@ export const AppProvider = ({children}) => {
         setSelectPanel,
         selectPanelClosed: state.selectPanelClosed,
         arcgisMapRef,
-        deselectParcel
+        deselectParcel,
+        //EXPORT DIALOG
+        setExportOpen,
+        exportOpen:state.exportOpen,
+        exportDataSource: state.exportDataSource
 
     }
 

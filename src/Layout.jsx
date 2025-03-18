@@ -27,6 +27,14 @@ import Select from "./components/Select/Select";
 import Map from "./components/Map/Map";
 import ActionBarStart from "./components/ActionBar/ActionBarStart";
 import ActionBarEnd from "./components/ActionBar/ActionBarEnd";
+import Export from "./components/Export/Export";
+
+
+import "@esri/calcite-components/dist/components/calcite-input-text"
+import "@esri/calcite-components/dist/components/calcite-input-number"
+import "@esri/calcite-components/dist/components/calcite-dropdown"
+import "@esri/calcite-components/dist/components/calcite-dropdown-group"
+import "@esri/calcite-components/dist/components/calcite-dropdown-item"
 
 
 const Layout = () => {
@@ -51,6 +59,7 @@ const Layout = () => {
         printPanelClosed,
         imageryPanelClosed,
         selectPanelClosed,
+        exportOpen
     } = UseAppContext()
 
 
@@ -110,6 +119,9 @@ const Layout = () => {
                         <Select/>
 
                     </CalciteShellPanel>
+
+                    <Export/>
+
                 </CalciteShell>
                                 
             {/* </CalcitePanel> */}
