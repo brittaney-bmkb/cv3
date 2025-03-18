@@ -59,7 +59,7 @@ const PanelSearchResults = () => {
                             disabled={searchFeatures ? false : true} 
                             textEnabled 
                             scale="s"
-                           onClick={() => {setExportOpen(true, 'searchResults')}}
+                            onClick={() => {setExportOpen(true, 'search')}}
                         ></CalciteAction>
                         <CalciteAction 
                             text="feedback" 

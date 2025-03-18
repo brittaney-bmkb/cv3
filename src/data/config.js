@@ -45,6 +45,7 @@ export const config = {
     //FIELD TO REFERENCE FOR CREATING URL PARAM WHEN CLICKING IN MAP
     target_layer_id_field: "PIN10",
     target_layer_unique_id: "PIN14",
+    target_layer_display_field: "PIN14_dash", //Controls how the export parcel title is dipslayed
     //MUNICIPALITY SERVICE- USED TO CALCULATE INCORPORATED VS UNINCORPORATED VALUES FOR MUNICIPALITY IN PROPERTY DETAIL
     municipality_url: "https://gis.cookcountyil.gov/traditional/rest/services/politicalBoundary/MapServer/2",
     // NEARBY SEARCH SETTINGS: Configure the buffer distance and unit for nearby searches.

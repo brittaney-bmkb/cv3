@@ -79,8 +79,7 @@ const PanelPropertyDetail = () => {
         clearResults,
         dataDictionary,
         primaryResultFeature,
-        setComparablePanel,
-        setNearbyPanel,
+        setExportOpen,
         togglePanel
     } = UseAppContext()
 
@@ -315,7 +314,7 @@ const PanelPropertyDetail = () => {
                             disabled={searchFeatures ? false : true} 
                             textEnabled 
                             scale="s"
-                           //onClick={() => {setOpenExportDialog(true)}}
+                            onClick={() => {setExportOpen(true, 'property')}}
                         ></CalciteAction>
                         <CalciteAction 
                             text="feedback" 

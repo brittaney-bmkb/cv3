@@ -8,6 +8,7 @@ import "@esri/calcite-components/dist/components/calcite-dropdown"
 import "@esri/calcite-components/dist/components/calcite-dropdown-group"
 import "@esri/calcite-components/dist/components/calcite-dropdown-item"
 import { exportToCsv, exportToExcel } from "../../export/export"
+import { config } from "../../data/config"
 
 const exportFileTypes = ['.csv', '.xlsx']
 
@@ -16,6 +17,7 @@ const Export = () => {
     const { 
         translateText, 
         primaryResultFeature, 
+        searchFeatures,
         comparableParcels,
         exportOpen, 
         exportDataSource,
@@ -29,31 +31,51 @@ const Export = () => {
     const [dataTitle, setDataTitle] = useState(null)
     const [openNotice, setOpenNotice] = useState(false)
 
+    useEffect(() => {
+
+        
+
+    }, [])
+
+
+    const handleClose = () => {
+        setInputStatus('idle')
+        setFileName(null)
+        setExportOpen(false, exportDataSource)
+    }
+
     const toggleSource = (exportDataSource) => {   
 
-        const isMultiple = primaryResultFeature?.length > 1
+        const isMultiple = searchFeatures?.length > 1
 
-        switch (exportDataSource) {
-            case 'searchResults':
-            setParcelSource(primaryResultFeature)
-            setDataTitle(translateText(`Parcel Search Result${isMultiple ? 's' : ''}`));
-            break;
-            case 'Property':
-            setParcelSource(primaryResultFeature)
-            setDataTitle(translateText(`Selected Parcel${isMultiple ? 's' : ''}`));
-            break;
+        if(!searchFeatures){
+            return
         }
+        else if(!primaryResultFeature){
+            return
+        }
+        else{
+            switch (exportDataSource) {
+                case 'search':
+                setParcelSource(searchFeatures)
+                setDataTitle(translateText(`Parcel Search Result${isMultiple ? 's' : ''}`));
+                break;
+                case 'property':
+                setParcelSource(primaryResultFeature)
+                setDataTitle(translateText(`Parcel PIN ${primaryResultFeature[0].attributes[config.target_layer_display_field]}`));
+                break;
+            }
+        }
+        
     }
 
     const handleExport = async () => {
 
         if(!fileName){
-            setInputStatus('invalid')
             return
         }
 
         else{
-            setInputStatus('valid')
             setIsExporting(true)
             if(fileType === '.csv'){
                 
@@ -95,7 +117,7 @@ const Export = () => {
         placement="center"
         heading={translateText('Export')}
         description={translateText('Export data to CSV or Excel')}
-        onCalciteDialogClose={() => {setExportOpen(false, exportDataSource)}}
+        onCalciteDialogClose={() => {handleClose()}}
         >   
         <CalciteLabel style={{paddingBottom: 100, paddingTop:20}} >
             {dataTitle}
@@ -143,7 +165,7 @@ const Export = () => {
         </div>
         
         <div slot="footer-end" style={{display: "flex", gap: '20px'}}>
-            <CalciteButton appearance="outline" onClick={() => {setExportOpen(false, exportDataSource)}}>
+            <CalciteButton appearance="outline" onClick={() => {handleClose()}}>
                 Cancel
             </CalciteButton>
             <CalciteButton 
