@@ -3,7 +3,8 @@ import { Dialog, DialogContent, DialogTitle, IconButton, Typography } from "@mui
 import UseAppContext from "../../contexts/AppContext"
 import { theme } from "../../theme"
 import { useEffect, useState } from "react"
-import { CalciteDialog } from "@esri/calcite-components-react"
+import { CalciteButton, CalciteDialog } from "@esri/calcite-components-react"
+import { config } from "../../data/config"
 
 const FeedbackDialog = ({open, onClose}) => {
 
@@ -267,12 +268,90 @@ export default FeedbackDialog
 
 export const Feedback = () => {
 
-    const { feedbackOpen, feedbackSource } = UseAppContext()
+    const { feedbackOpen, feedbackSource, setFeedbackDialog, translateText, language, deviceType } = UseAppContext()
+    const [dialogTitle, setDialogTitle] = useState(null)
+    const [dialogDescription, setDialogDescription] = useState(null)
+    const [feedbackUrl, setFeedbackUrl] = useState(null)
+    const [locale, setLocale] = useState(null)
+
+    useEffect(() => {
+        if(language === "english"){
+            setLocale("en")
+        }
+        if(language === "spanish"){
+            setLocale("es")
+        }
+    }, [language])
+
+    const handleClose = () => {
+
+        setFeedbackDialog(false, feedbackSource)
+    }
+
+    const toggleSource = (feedbackSource) => {   
+    
+        switch (feedbackSource) {
+            case 'search':
+                setFeedbackUrl(config.feedback_search)
+                setDialogTitle(translateText(`Search Feedback`));
+                setDialogDescription(translateText('Help us improve your experience! Let us know how well the search and results are working for you in the parcel viewer app. Your feedback helps us make the search more accurate and efficient.'))
+            break;
+            case 'extended':
+                setFeedbackUrl(config.feedback_extended)
+                setDialogTitle(translateText('CookViewer Feedback'));
+                setDialogDescription(translateText(''))
+            break;
+            case 'general':
+                setFeedbackUrl(config.feedback_general)
+                setDialogTitle(translateText('Parcel Data Feedback'));
+                setDialogDescription(translateText('Tell us what you think! After selecting a search result, did the property data meet your expectations? Your feedback helps us improve accuracy and ensure you get the information you need.'))
+            break;
+        default:
+            break;
+        }
+            
+            
+        }
+
+    useEffect(() => {
+
+        toggleSource(feedbackSource)
+
+    }, [feedbackSource])
 
     return(
         <CalciteDialog
-        heading={}
+        scale="l"
+        open={feedbackOpen}
+        placement="center"
+        heading={translateText(dialogTitle)}
+        description={translateText(dialogDescription)}
+        drag-enabled
+        resizable
+        onCalciteDialogClose={() => {handleClose()}}
         >
+            {setFeedbackUrl && (
+                <iframe 
+                width={'100%'}
+                style={{minHeight: 500}}
+                height={'100%'}
+                src={`${feedbackUrl}&locale=${locale}&field:device_type=${deviceType}`}
+                        allow="geolocation https://survey123.arcgis.com; camera https://survey123.arcgis.com"
+                />
+            )   
+            }
+
+        <div slot="footer-end" style={{display: "flex", gap: '20px'}}>
+            <CalciteButton 
+            className='hyperlink-button' 
+            onClick={() => handleClose()}
+            >
+                Done
+            </CalciteButton>
+        </div>
+            
+
+            
 
         </CalciteDialog>
     )

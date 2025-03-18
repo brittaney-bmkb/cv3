@@ -35,6 +35,7 @@ import "@esri/calcite-components/dist/components/calcite-input-number"
 import "@esri/calcite-components/dist/components/calcite-dropdown"
 import "@esri/calcite-components/dist/components/calcite-dropdown-group"
 import "@esri/calcite-components/dist/components/calcite-dropdown-item"
+import { Feedback } from "./components/Feedback/Feedback";
 
 
 const Layout = () => {
@@ -121,6 +122,7 @@ const Layout = () => {
                     </CalciteShellPanel>
 
                     <Export/>
+                    <Feedback/>
 
                 </CalciteShell>
                                 

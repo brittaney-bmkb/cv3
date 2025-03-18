@@ -80,7 +80,8 @@ const PanelPropertyDetail = () => {
         dataDictionary,
         primaryResultFeature,
         setExportOpen,
-        togglePanel
+        togglePanel,
+        setFeedbackDialog
     } = UseAppContext()
 
     const [ categories, setCategories ] = useState(null)
@@ -322,6 +323,7 @@ const PanelPropertyDetail = () => {
                             disabled={searchFeatures ? false : true} 
                             textEnabled 
                             scale="s"
+                            onClick={() => {setFeedbackDialog(true, 'general')}}
                         />
                     </CalciteActionBar>
                     
