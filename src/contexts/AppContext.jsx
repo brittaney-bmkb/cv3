@@ -133,6 +133,9 @@ export const AppProvider = ({children}) => {
     }
 
     const togglePanel = (panelName) => {
+
+        const { prevSearchFeatures, primaryResultFeature, searchTerm } = state
+
         switch (panelName) {
           case 'info':
             setInfoPanel(false);
@@ -147,6 +150,9 @@ export const AppProvider = ({children}) => {
             break;
 
           case 'search':
+            console.log("Toggleing back to search ")
+            setPrimaryResultFeature(prevSearchFeatures ? prevSearchFeatures : primaryResultFeature)
+            if (searchTerm) setSearchParams({'search': searchTerm})
             setSearchResultsPanel(false);
             setInfoPanel(true);
             setPropertyDetailPanel(true);
@@ -788,7 +794,7 @@ export const AppProvider = ({children}) => {
      */
     const queryPolygon = async (polygon, newSelection) => {
 
-        const { primaryResultFeature } = state
+        const { primaryResultFeature, searchTerm } = state
 
         const { queryTargetLayerByPolygon } = await import('../arcgis/search/queryTargetLayer')
 
@@ -806,7 +812,7 @@ export const AppProvider = ({children}) => {
 
         setPrimaryResultFeature(allFeatures)
         
-        setSearchResults(null, allFeatures)
+        setSearchResults(null, allFeatures, searchTerm, allFeatures)
 
         //update url parameters
         //console.log("setting url parameters for select multiple draw tool results")

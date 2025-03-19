@@ -101,8 +101,8 @@ const Layout = () => {
                     </CalciteShellPanel>
                     
                     {/* WEBMAP */}
-                    {/* <Map/> */}
-                    <WebMapComponentBeta/>
+                    <Map/>
+                    {/* <WebMapComponentBeta/> */}
 
                     {/* MAP TOOLS */}
                     <CalciteShellPanel width="l" className="right-panel" slot="panel-end" position="end" id="shell-panel-end" collapsed={rightPanelCollapsed}>

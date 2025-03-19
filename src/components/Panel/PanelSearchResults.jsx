@@ -11,10 +11,7 @@ import { config } from "../../data/config";
 import Inactive from "../Inactive/Inactive";
 
 
-
-
-//TODO - Update Export dialog and add trigger to export action
-//TODO - Update Feedback dialog and add trigger to feedback action
+//TODO - add hover highlight
 
 const PanelSearchResults = () => {
 

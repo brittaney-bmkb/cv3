@@ -45,7 +45,7 @@ const Select = () => {
                 // Find features that intersect with the clicked point
                 let deselectPins = [] 
                 if(selectedParcels){
-                    selectedParcels
+                    deselectPins = selectedParcels
                     .filter(feature => intersectsOperator.execute(mapClicks, feature.geometry))
                     .map(feature => feature.attributes[config.target_layer_id_field]);
                 }

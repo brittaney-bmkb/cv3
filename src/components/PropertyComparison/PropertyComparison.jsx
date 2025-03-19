@@ -185,8 +185,8 @@ const PropertyComparison = () => {
                         {translateText('Source PIN')}
                         <CalciteInputText
                             form='comparable-search'
-                            placeholder={primaryResultFeature ? primaryResultFeature[0].attributes['PIN14_dash']: null}
-                            value={primaryResultFeature ? primaryResultFeature[0].attributes['PIN14_dash']: null}
+                            placeholder={primaryResultFeature ? primaryResultFeature[0]?.attributes['PIN14_dash']: null}
+                            value={primaryResultFeature ? primaryResultFeature[0]?.attributes['PIN14_dash']: null}
                             readonly
                         />
                     </CalciteLabel>  
@@ -195,8 +195,8 @@ const PropertyComparison = () => {
                         {translateText('Township')}
                         <CalciteInputText
                             form='comparable-search'
-                            placeholder={primaryResultFeature ? primaryResultFeature[0].attributes['township_name']: null}
-                            value={primaryResultFeature ? primaryResultFeature[0].attributes['township_name']: null}
+                            placeholder={primaryResultFeature ? primaryResultFeature[0]?.attributes['township_name']: null}
+                            value={primaryResultFeature ? primaryResultFeature[0]?.attributes['township_name']: null}
                             readonly
                         />
                     </CalciteLabel>  
@@ -205,8 +205,8 @@ const PropertyComparison = () => {
                         {translateText('Neighborhood')}
                         <CalciteInputText
                             form='comparable-search'
-                            placeholder={primaryResultFeature ? primaryResultFeature[0].attributes['NBHD']: null}
-                            value={primaryResultFeature ? primaryResultFeature[0].attributes['NBHD']: null}
+                            placeholder={primaryResultFeature ? primaryResultFeature[0]?.attributes['NBHD']: null}
+                            value={primaryResultFeature ? primaryResultFeature[0]?.attributes['NBHD']: null}
                             readonly
                         />
                     </CalciteLabel> 
@@ -215,8 +215,8 @@ const PropertyComparison = () => {
                         {translateText('Property Class')}
                         <CalciteInputText
                             form='comparable-search'
-                            placeholder={primaryResultFeature ? primaryResultFeature[0].attributes['BCLASS']: null}
-                            value={primaryResultFeature ? primaryResultFeature[0].attributes['BCLASS']: null}
+                            placeholder={primaryResultFeature ? primaryResultFeature[0]?.attributes['BCLASS']: null}
+                            value={primaryResultFeature ? primaryResultFeature[0]?.attributes['BCLASS']: null}
                             readonly
                         />
                     </CalciteLabel> 

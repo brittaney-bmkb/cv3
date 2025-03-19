@@ -272,7 +272,7 @@ const PanelPropertyDetail = () => {
             }
         };
         
-        if(primaryResultFeature){
+        if(primaryResultFeature && primaryResultFeature[0]){
             calculateFieldValues(primaryResultFeature[0]);
         }
         

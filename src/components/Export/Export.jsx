@@ -111,6 +111,7 @@ const Export = () => {
         scale="s"
         width="s"
         drag-enabled
+        outsideCloseDisabled={false}
         open={exportOpen}
         placement="center"
         heading={translateText('Export')}
