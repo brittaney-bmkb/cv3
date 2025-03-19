@@ -25,6 +25,8 @@ const PanelSearchResults = () => {
         clearResults,
         setExportOpen,
         setFeedbackDialog,
+        exportOpen,
+        feedbackOpen
     } = UseAppContext()
 
     return (
@@ -57,7 +59,12 @@ const PanelSearchResults = () => {
                             disabled={searchFeatures ? false : true} 
                             textEnabled 
                             scale="s"
-                            onClick={() => {setExportOpen(true, 'search')}}
+                            onClick={() => {
+                                setExportOpen(true, 'search')
+                                if(feedbackOpen){
+                                    setFeedbackDialog(false)
+                                }
+                            }}
                         ></CalciteAction>
                         <CalciteAction 
                             text="feedback" 
@@ -65,7 +72,12 @@ const PanelSearchResults = () => {
                             disabled={searchFeatures ? false : true} 
                             textEnabled 
                             scale="s"
-                            onClick={() => {setFeedbackDialog(true, 'search')}}
+                            onClick={() => {
+                                setFeedbackDialog(true, 'search')
+                                if(exportOpen){
+                                    setExportOpen(false)
+                                }
+                            }}
                         />
                     </CalciteActionBar>
                     {searchFeatures ? 

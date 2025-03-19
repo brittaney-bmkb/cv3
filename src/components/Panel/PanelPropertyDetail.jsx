@@ -81,7 +81,9 @@ const PanelPropertyDetail = () => {
         primaryResultFeature,
         setExportOpen,
         togglePanel,
-        setFeedbackDialog
+        setFeedbackDialog,
+        feedbackOpen,
+        exportOpen
     } = UseAppContext()
 
     const [ categories, setCategories ] = useState(null)
@@ -315,7 +317,12 @@ const PanelPropertyDetail = () => {
                             disabled={searchFeatures ? false : true} 
                             textEnabled 
                             scale="s"
-                            onClick={() => {setExportOpen(true, 'property')}}
+                            onClick={() => {
+                                setExportOpen(true, 'property')
+                                if(feedbackOpen){
+                                    setFeedbackDialog(false)
+                                }
+                            }}
                         ></CalciteAction>
                         <CalciteAction 
                             text="feedback" 
@@ -323,7 +330,12 @@ const PanelPropertyDetail = () => {
                             disabled={searchFeatures ? false : true} 
                             textEnabled 
                             scale="s"
-                            onClick={() => {setFeedbackDialog(true, 'general')}}
+                            onClick={() => {
+                                setFeedbackDialog(true, 'general')
+                                if(exportOpen){
+                                    setExportOpen(false)
+                                }
+                            }}
                         />
                     </CalciteActionBar>
                     
