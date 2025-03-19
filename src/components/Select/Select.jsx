@@ -11,7 +11,18 @@ import { config } from "../../data/config";
 
 const Select = () => {
 
-    const {  deselectParcel, selectPanelClosed, setSelectPanel, translateText, arcgisMapRef, queryPolygon, clearResults, primaryResultFeature } = UseAppContext()
+    const {  
+        deselectParcel, 
+        selectPanelClosed, 
+        setSelectPanel, 
+        translateText, 
+        arcgisMapRef, 
+        queryPolygon, 
+        clearResults, 
+        primaryResultFeature,
+        propertyDetailPanelClosed,
+        searchFeatures,
+        togglePanel } = UseAppContext()
     
     const sketchRef = useRef(null)
     const graphicsLayer = useRef(null)
@@ -35,41 +46,57 @@ const Select = () => {
         if (activeTool !== "cursor") return; // Ensure we're using the cursor tool
     
         let mapPoint = event.detail.mapPoint;  
-         setMapClicks(mapPoint) 
-    };
+        setMapClicks(mapPoint) 
 
-    useEffect(() => {
-
-        const handleSelectParcels = async () => {
-            if(mapClicks){
-                // Find features that intersect with the clicked point
-                let deselectPins = [] 
-                if(selectedParcels){
-                    deselectPins = selectedParcels
-                    .filter(feature => intersectsOperator.execute(mapClicks, feature.geometry))
-                    .map(feature => feature.attributes[config.target_layer_id_field]);
-                }
-               
-                console.log("Pins to deselect: ", deselectPins)
-
-                if(deselectPins.length === 0){
-                    const features = await queryPolygon(mapClicks)  
-                    if(selectedParcels && selectedParcels.length > 0){
-                        setSelectedParcels([...selectedParcels, ...features])
-                    }
-                    else{
-                        setSelectedParcels(features)
-                    }
-                }
-                else{
-                    setDeselectPins(deselectPins)
-                }
-            }
+        // Find features that intersect with the clicked point
+        let deselectPins = [] 
+        if(searchFeatures && searchFeatures?.length > 0){
+            deselectPins = searchFeatures
+            .filter(feature => intersectsOperator.execute(mapPoint, feature.geometry))
+            .map(feature => feature.attributes[config.target_layer_id_field]);
         }
 
-        handleSelectParcels()
+        if(deselectPins.length === 0){
+            let features = await queryPolygon(mapPoint, false);
+        }    
+            
+        
 
-    }, [mapClicks])
+        console.log("Pins to deselect: ", deselectPins)
+    };
+
+    // useEffect(() => {
+
+    //     const handleSelectParcels = async () => {
+    //         if(mapClicks){
+    //             // Find features that intersect with the clicked point
+    //             let deselectPins = [] 
+    //             if(selectedParcels){
+    //                 deselectPins = selectedParcels
+    //                 .filter(feature => intersectsOperator.execute(mapClicks, feature.geometry))
+    //                 .map(feature => feature.attributes[config.target_layer_id_field]);
+    //             }
+               
+    //             console.log("Pins to deselect: ", deselectPins)
+
+    //             if(deselectPins.length === 0){
+    //                 const features = await queryPolygon(mapClicks)  
+    //                 if(selectedParcels && selectedParcels.length > 0){
+    //                     setSelectedParcels([...selectedParcels, ...features])
+    //                 }
+    //                 else{
+    //                     setSelectedParcels(features)
+    //                 }
+    //             }
+    //             else{
+    //                 setDeselectPins(deselectPins)
+    //             }
+    //         }
+    //     }
+
+    //     handleSelectParcels()
+
+    // }, [mapClicks])
 
 
     useEffect(() => {
@@ -89,6 +116,8 @@ const Select = () => {
     useEffect(() => {
         const mapElement = arcgisMapRef.current;
         if (!mapElement) return;
+
+        if(selectPanelClosed) return;
 
         // Attach event listener for clicking on parcels
         mapElement.addEventListener("arcgisViewClick", handleClickSelection);
@@ -120,8 +149,16 @@ const Select = () => {
             return;
         }
     
-        await queryPolygon(queryGeometry, true);
+        let features = await queryPolygon(queryGeometry, true);
         graphicsLayer.current.removeAll();
+
+        //turn on property detail panel if its not already on
+        if(propertyDetailPanelClosed && features?.length === 1){
+            togglePanel('property')
+        }
+        else{
+            togglePanel('search')
+        }
 
     }
 

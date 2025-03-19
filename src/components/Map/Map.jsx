@@ -15,8 +15,9 @@ const Map = () => {
         primaryResultFeature,
         newSearch,
         queryPolygon,
-        propertyDetailPanelClosed,
-        togglePanel
+        selectPanelClosed,
+        togglePanel,
+        searchFeatures
         } = UseAppContext()
 
     const [parcelLayer, setParcelLayer] = useState(null)
@@ -65,6 +66,8 @@ const Map = () => {
 
     const handleViewClick = async (event) => {
 
+        console.log("Map Clicked")
+        
         if(!arcgisMapRef.current){
             return
         }
@@ -76,27 +79,37 @@ const Map = () => {
             return
         }
         //select parcel using screen point
-        else{
-            let mapPoint = event.detail.mapPoint;
-            //check if map point intersects with selected parcel
-            const features = await queryPolygon(mapPoint, true)    
+        let mapPoint = event.detail.mapPoint;
+
+        const features = await queryPolygon(mapPoint, true) 
+          
+        if( features?.length === 1){
+            togglePanel('property')
         }
+        else{
+            togglePanel('search')
+        }
+
+            
     }
 
-    const handleParcelSelection = async (layerView) => {
+    const handleParcelSelection = async () => {
+
+        if(!arcgisMapRef.current?.view){
+            return
+        }
+        
+        const view = arcgisMapRef.current?.view
+
         console.log("highlighed layer: ", highlightSelect)
                     
         highlightSelect?.remove();
 
+        const layerView = await view.whenLayerView(parcelLayer)
         const highlight = layerView.highlight(primaryResultFeature, {name: "default"})
 
         //highlight selection
         setHighlightSelect(highlight)
-
-        //turn on property detail panel if its not already on
-        if(propertyDetailPanelClosed){
-            togglePanel('property')
-        }
 
         //Zoom to layer
         zoomToExtent(primaryResultFeature)
@@ -133,23 +146,24 @@ const Map = () => {
 
         //find parcel layer
         const targetLayer = await findTargetLayer(map)
-        const layerView = await view.whenLayerView(targetLayer)
-        setParcelLayer(layerView)
+        setParcelLayer(targetLayer)
     }
 
     //Clear all highlights when parcels are cleared
     useEffect(() => {
 
-        if(!primaryResultFeature || !primaryResultFeature[0]){
+        console.log("primary feature selection updated: ", primaryResultFeature)
+
+        if(!searchFeatures || !searchFeatures[0]){
             highlightSelect?.remove()
         }
         else{
             if(parcelLayer){
-                handleParcelSelection(parcelLayer)
+                handleParcelSelection()
             }
         }
 
-    }, [primaryResultFeature, parcelLayer])
+    }, [primaryResultFeature, parcelLayer, searchFeatures])
 
     return(
         <arcgis-map
@@ -158,7 +172,12 @@ const Map = () => {
         zoom={8}
 
         onarcgisViewReadyChange={(event) => {handleViewReady(event)}}
-        onarcgisViewClick={(event) => {handleViewClick(event)}}
+        onarcgisViewClick={(event) => {
+            if(selectPanelClosed){
+                handleViewClick(event)
+            }
+            
+        }}
         >   
         <arcgis-zoom position="top-right"/>
         </arcgis-map>

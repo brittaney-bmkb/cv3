@@ -134,7 +134,7 @@ export const AppProvider = ({children}) => {
 
     const togglePanel = (panelName) => {
 
-        const { prevSearchFeatures, primaryResultFeature, searchTerm } = state
+        const { prevSearchFeatures, searchFeatures, primaryResultFeature, searchTerm, newSearch } = state
 
         switch (panelName) {
           case 'info':
@@ -144,15 +144,22 @@ export const AppProvider = ({children}) => {
             break;
 
           case 'property':
+            if(!primaryResultFeature || !primaryResultFeature[0]){
+                setPrimaryResultFeature(searchFeatures)
+            }
             setPropertyDetailPanel(false);
             setInfoPanel(true);
             setSearchResultsPanel(true);
             break;
 
           case 'search':
-            console.log("Toggleing back to search ")
-            setPrimaryResultFeature(prevSearchFeatures ? prevSearchFeatures : primaryResultFeature)
-            if (searchTerm) setSearchParams({'search': searchTerm})
+            console.log("Toggling to search to display search results. New search: ", newSearch)
+            if(!newSearch){
+                console.log("Toggling to search to display previous features. New search: ", newSearch)
+                setPrimaryResultFeature(prevSearchFeatures ? prevSearchFeatures : primaryResultFeature)
+                if (searchTerm) setSearchParams({'search': searchTerm})
+            }
+            
             setSearchResultsPanel(false);
             setInfoPanel(true);
             setPropertyDetailPanel(true);
@@ -794,7 +801,7 @@ export const AppProvider = ({children}) => {
      */
     const queryPolygon = async (polygon, newSelection) => {
 
-        const { primaryResultFeature, searchTerm } = state
+        const { primaryResultFeature, searchTerm, searchFeatures } = state
 
         const { queryTargetLayerByPolygon } = await import('../arcgis/search/queryTargetLayer')
 
@@ -803,14 +810,23 @@ export const AppProvider = ({children}) => {
 
         console.log("Queried Features: ", features)
 
-        const allFeatures = [
-            ...features,
-            ...(primaryResultFeature && !newSelection ? primaryResultFeature : [])
-        ];
+        let allFeatures = []
+        // const allFeatures = [
+        //     ...features,
+        //     ...searchFeatures && !newSelection ? searchFeatures : []
+        // ];
 
+        if(!newSelection){
+            allFeatures = [...searchFeatures]
+            allFeatures.push(features[0])
+        }
+        else{
+            allFeatures = features
+        }
+ 
         console.log("Combined Features: ", allFeatures)
 
-        setPrimaryResultFeature(allFeatures)
+        setPrimaryResultFeature(allFeatures, newSelection)
         
         setSearchResults(null, allFeatures, searchTerm, allFeatures)
 
@@ -1036,23 +1052,13 @@ export const AppProvider = ({children}) => {
      * @returns {void} - No return value.
      */
     const selectResultFromList = async (result) => {
-        console.log("Result PIN : ", result)
+
         const { searchFeatures, searchTerm, prevSearchFeatures } = state
         const selectedFeature = searchFeatures.filter((feature) => feature.attributes['PIN14_dash'] == result)
-        ////console.log("selectedFeature: ", selectedFeature)
 
-        setPrimaryResultFeature(selectedFeature, true)
-
-        ////console.log("previous search term: ", searchTerm)
-        ////console.log("previous search features: ", prevSearchFeatures)
-        ////console.log("search features: ", searchFeatures )
+        setPrimaryResultFeature(selectedFeature, false)
         
         setSearchResults(null, searchFeatures, searchTerm, searchFeatures)
-  
-        // //update graphic in map
-        // const { createGraphic } = await import('../arcgis/webmap/webmap')
-
-        // createGraphic(selectedFeature, "primary", theme.palette.primary.main)
     }
 
 
