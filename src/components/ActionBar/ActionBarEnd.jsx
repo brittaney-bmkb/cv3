@@ -12,10 +12,17 @@ const ActionBarEnd = () => {
         printPanelClosed, 
         selectPanelClosed,
         comparablePanelClosed,
-        comparableParcels } = UseAppContext()
+        comparableParcels,
+        isMobile
+     } = UseAppContext()
 
     return(
-            <CalciteActionBar slot="action-bar" expanded>
+            <CalciteActionBar 
+            slot="action-bar" 
+            layout={isMobile ? "horizontal"  :'vertical'}
+            expandDisabled = {isMobile}
+            scale={isMobile ? 's' :'m'}
+            expanded>
                 <CalciteActionGroup>
                     <CalciteAction 
                         active={!comparablePanelClosed}

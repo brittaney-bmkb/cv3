@@ -58,7 +58,9 @@ export const initialState = {
     exportOpen: false,
     exportDataSource: null,
     feedbackOpen: false,
-    feedbackSource:null
+    feedbackSource:null,
+    //DEVICE STATE
+    isMobile: null
 }
 
 const AppReducer = (state, action) => {
@@ -147,6 +149,12 @@ const AppReducer = (state, action) => {
             ...state, 
             feedbackOpen: payload.feedbackOpen,
             feedbackSource: payload.feedbackSource
+        }
+
+        case "SET_MOBILE":
+        return {
+            ...state, 
+            isMobile: payload.isMobile,
         }
     
     

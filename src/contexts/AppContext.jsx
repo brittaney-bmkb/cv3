@@ -132,6 +132,15 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setIsMobile = (sm) => {
+        dispatch({
+            type: "SET_MOBILE",
+            payload: {
+                isMobile: sm,
+            }
+        })
+    }
+
     const togglePanel = (panelName) => {
 
         const { prevSearchFeatures, searchFeatures, primaryResultFeature, searchTerm, newSearch } = state
@@ -1478,7 +1487,10 @@ export const AppProvider = ({children}) => {
         exportDataSource: state.exportDataSource,
         setFeedbackDialog,
         feedbackOpen: state.feedbackOpen,
-        feedbackSource: state.feedbackSource
+        feedbackSource: state.feedbackSource,
+        //DEVICE STATE
+        setIsMobile,
+        isMobile: state.isMobile
 
     }
 
@@ -1495,6 +1507,21 @@ export const AppProvider = ({children}) => {
     //     initalizeSearchSources()
 
     // }, [])
+
+    useEffect(() => {
+
+        setIsMobile(window.innerWidth < 768); // Check on initial load
+
+        const mediaQuery = window.matchMedia("(max-width: 768px)");
+
+        const handleResize = (event) => {
+        setIsMobile(event.matches);
+        };
+
+
+        mediaQuery.addEventListener("change", handleResize); // Listen for changes
+        return () => mediaQuery.removeEventListener("change", handleResize); // Cleanup
+    }, []);
 
     useEffect(() => {
         //on initial load display info panel

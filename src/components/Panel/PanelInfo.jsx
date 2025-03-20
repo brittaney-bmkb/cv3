@@ -23,7 +23,7 @@ const PanelInfo = () => {
             closable 
             className='panel-start' 
             heading={translateText("Info")} 
-            overlayPositioning="fixed"
+            //overlayPositioning="fixed"
             onCalcitePanelClose={(e) => {
                 setInfoPanel(true)
             }}

@@ -60,12 +60,15 @@ const Layout = () => {
         printPanelClosed,
         imageryPanelClosed,
         selectPanelClosed,
-        exportOpen
+        exportOpen,
+        isMobile,
     } = UseAppContext()
 
 
     const [leftPanelCollapsed, setLeftPanelCollapsed] = useState(false) 
     const [rightPanelCollapsed, setRightPanelCollapsed] = useState(false) 
+
+    console.log("isMobile: ", isMobile)
 
     useEffect(() => {
 
@@ -90,7 +93,16 @@ const Layout = () => {
                 {/* <Header/> */}
                 <CalciteShell>
                     {/* LEFT PANEL */}
-                    <CalciteShellPanel  width="l" slot="panel-start" position="start" id="shell-panel-start" className='left-panel' collapsed={leftPanelCollapsed}>
+                    <CalciteShellPanel  
+                    width="l" 
+                    slot={isMobile ? "panel-bottom" : "panel-start" }
+                    displayMode={isMobile ? "float-all" : "dock"}
+                    layout={isMobile ? "horizontal" :"vertical"}
+                    height="l"
+                    position="start" 
+                    id="shell-panel-start" 
+                    className='left-panel' 
+                    collapsed={leftPanelCollapsed}>
                         {/* ACTION BAR */}
                         <ActionBarStart/>
                         {/* PRIMARY PANEL */}
@@ -105,7 +117,15 @@ const Layout = () => {
                     {/* <WebMapComponentBeta/> */}
 
                     {/* MAP TOOLS */}
-                    <CalciteShellPanel width="l" className="right-panel" slot="panel-end" position="end" id="shell-panel-end" collapsed={rightPanelCollapsed}>
+                    <CalciteShellPanel 
+                    width="l" 
+                    className="right-panel"
+                    slot={isMobile ? "panel-top" : "panel-end" }
+                    displayMode={isMobile ? "float" : "dock"}
+                    layout={isMobile ? "horizontal" :"vertical"}
+                     position="end" 
+                     id="shell-panel-end" 
+                     collapsed={rightPanelCollapsed}>
                         {/* ACTION BAR */}
                         <ActionBarEnd/>
 

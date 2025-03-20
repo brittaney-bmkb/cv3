@@ -330,7 +330,7 @@ export const Feedback = () => {
         resizable
         onCalciteDialogClose={() => {handleClose()}}
         >
-            {setFeedbackUrl && (
+            {feedbackUrl && (
                 <iframe 
                 width={'100%'}
                 style={{minHeight: 500}}

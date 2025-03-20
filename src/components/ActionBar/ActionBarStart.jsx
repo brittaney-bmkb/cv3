@@ -3,10 +3,22 @@ import UseAppContext from "../../contexts/AppContext"
 
 const ActionBarStart = () => {
 
-    const { translateText, togglePanel, infoPanelClosed, searchResultsPanelClosed, propertyDetailPanelClosed } = UseAppContext()
+    const { 
+        translateText, 
+        togglePanel, 
+        infoPanelClosed, 
+        searchResultsPanelClosed, 
+        propertyDetailPanelClosed, 
+        isMobile 
+    } = UseAppContext()
 
     return(
-        <CalciteActionBar slot="action-bar" expanded>
+        <CalciteActionBar 
+        slot="action-bar" 
+        layout={isMobile ? 'horizontal' : 'vertical'}
+        expandDisabled = {isMobile}
+        scale={isMobile ? 's' :'m'}
+        expanded>
             <CalciteActionGroup>
                 <CalciteAction text={translateText("Info")} icon="information" textEnabled active={!infoPanelClosed}
                 onClick={() => {
