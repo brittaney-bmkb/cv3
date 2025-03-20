@@ -13,11 +13,11 @@ function titleCase(s) {
 const menuItems = {
     Help: {
         icon: "question",
-        subMenuItems: null,
+        subMenuItems: {},
     },
     Feedback:{
         icon:"speech-bubble-exclamation",
-        subMenuItems: null,
+        subMenuItems: {},
     },
     Translate: {
         icon: "language-translate",
@@ -66,7 +66,7 @@ const HeaderMenu = () => {
                             }}
                         >
                             {
-                                menuItems[menuItem].subMenuItems.map(subMenuItem => {
+                                Object.keys(menuItems[menuItem].subMenuItems).map(subMenuItem => {
                                     return(
                                             <CalciteMenuItem 
                                                 slot="submenu-item" 
