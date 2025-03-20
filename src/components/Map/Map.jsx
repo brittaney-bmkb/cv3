@@ -132,10 +132,7 @@ const Map = () => {
             rotationEnabled: false
         }
 
-        // Append ActionBarMap using ref
-    if (actionRef.current) {
-        view.ui.add(actionRef.current, "top-right");
-    }
+   
 
         //set view highlight options
         const highlights = [
@@ -173,12 +170,33 @@ const Map = () => {
 
     }, [primaryResultFeature, parcelLayer, searchFeatures])
 
+    useEffect(() => {
+
+        if(!arcgisMapRef.current){
+            return
+        }
+
+        const view = arcgisMapRef.current.view
+
+        // Append ActionBarMap using ref
+        if (actionRef.current && isMobile) {
+            view.ui.add(actionRef.current, "top-right");
+        }
+        if(actionRef.current & !isMobile){
+            view.ui.remove(actionRef.current);
+    }
+
+    }, [isMobile, actionRef, arcgisMapRef])
+
     return(
         <>
-        {/* ActionBarMap rendered outside the Web Component */}
-        <div ref={actionRef} className="esri-widget">
-            <ActionBarMap />
-        </div>
+        {
+            isMobile ?
+            <div ref={actionRef} className="esri-widget">
+                <ActionBarMap />
+            </div> : null
+        }
+        
 
         {/* ArcGIS Map Component */}
         <arcgis-map

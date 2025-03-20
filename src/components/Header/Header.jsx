@@ -1,56 +1,27 @@
-import { CalciteAction, CalciteActionBar, CalciteLabel, CalciteMenu, CalciteMenuItem, CalciteNavigation, CalciteNavigationLogo } from "@esri/calcite-components-react"
+import { CalciteAction, CalciteActionBar, CalciteFlow, CalciteFlowItem, CalciteLabel, CalciteMenu, CalciteMenuItem, CalciteNavigation, CalciteNavigationLogo } from "@esri/calcite-components-react"
 import { config } from "../../data/config"
 import SearchBarComponent from "../SearchBar/SearchBarComponent"
+import HeaderMenu from "./HeaderMenu"
 import "@esri/calcite-components/components/calcite-navigation"
 import "@esri/calcite-components/components/calcite-navigation-logo"
 import "@esri/calcite-components/components/calcite-menu"
 import "@esri/calcite-components/components/calcite-menu-item"
+import "@esri/calcite-components/components/calcite-flow-item"
+import "@esri/calcite-components/components/calcite-flow"
 import UseAppContext from "../../contexts/AppContext"
 import * as intl from "@arcgis/core/intl.js";
-
-function titleCase(s) {
-    return s.toLowerCase()
-            .split(' ')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(' ');
-}
-
+import { useRef, useState } from "react"
 
 
 const Header = () => {
 
-    const { translateText, setLanguage, setFeedbackDialog } = UseAppContext()
+    const { 
+        translateText, 
+        setLanguage, 
+        setFeedbackDialog,
+        isMobile
+     } = UseAppContext()
 
-    const menuItems = {
-        Help: {
-            icon: "question",
-            subMenuItems: null,
-            onClick: null
-        },
-        Feedback:{
-            icon:"speech-bubble-exclamation",
-            subMenuItems: null,
-            onClick: () => setFeedbackDialog(true, 'extended') // Correct syntax
-        },
-        Translate: {
-            icon: "language-translate",
-            subMenuItems: config.language_codes,
-            onClick: null
-        }
-    }
-
-    const handleClick = (language) => {
-
-
-            console.log("selected language")
-            setLanguage(language)
-
-            //reference: https://developers.arcgis.com/javascript/latest/localization/
-            let locale_code = config.language_codes[language]
-            console.log("setting locale code to: ", locale_code)
-            intl.setLocale(locale_code)
-            console.log("locale code to: ", intl.getLocale())
-        }
 
     return(
             <CalciteNavigation slot="header" className='org-brand'>
@@ -62,45 +33,22 @@ const Header = () => {
                 className="org-brand">
 
                 </CalciteNavigationLogo >
-                <div slot="content-start">
-                    {/* SEARCH BAR */}
-                    <SearchBarComponent/>
-                </div>
+                {
+                    !isMobile ? 
+                    <div slot="content-start">
+                        {/* SEARCH BAR */}
+                        <SearchBarComponent/>
+                    </div>
+                    :null
+                }
+               
 
-                <CalciteMenu slot="content-end" className="org-brand">
-                    {
-                        Object.keys(menuItems).map(item => {
-                            return(
-                                <CalciteMenuItem 
-                                key={item} 
-                                text={translateText(item)} 
-                                iconStart={menuItems[item].icon}
-                                label={item}
-                                onClick={menuItems[item].onClick ? menuItems[item].onClick : null}
-                                >
-                                    {
-                                        menuItems[item].subMenuItems ? 
-                                        Object.keys(menuItems[item].subMenuItems).map(subMenuItem => {
-                                            return(
-                                                <CalciteMenuItem 
-                                                slot="submenu-item" 
-                                                key={subMenuItem} 
-                                                label={subMenuItem}
-                                                text={titleCase(translateText(subMenuItem))}
-                                                onCalciteMenuItemSelect={(e) => {
-                                                    console.log("menu item: ", e)
-                                                    handleClick(e.target.textContent)
-                                                }}
-                                                >{subMenuItem}</CalciteMenuItem>
-                                            )
-                                        })
-                                             : null
-                                    }
-                                </CalciteMenuItem>
-                            )
-                        })
-                    }
-                </CalciteMenu>
+            {
+                isMobile ?
+                null:
+                <HeaderMenu/>
+            }
+              
             </CalciteNavigation>
     )
 }

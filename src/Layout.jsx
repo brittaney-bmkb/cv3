@@ -69,8 +69,6 @@ const Layout = () => {
     const [leftPanelCollapsed, setLeftPanelCollapsed] = useState(false) 
     const [rightPanelCollapsed, setRightPanelCollapsed] = useState(false) 
 
-    console.log("isMobile: ", isMobile)
-
     useEffect(() => {
 
         const allPanelsClosed =  [ propertyDetailPanelClosed, infoPanelClosed, searchResultsPanelClosed].every(panel => panel === true); 
