@@ -19,6 +19,15 @@ body{
 
 /* CALCITE CUSTOM STYLES */
 
+calcite-flow.overlay-menu {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; 
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
 calcite-navigation.org-brand{
   --calcite-navigation-background-color: #0D4D96;
   --calcite-navigation-text-color: #ffffff
