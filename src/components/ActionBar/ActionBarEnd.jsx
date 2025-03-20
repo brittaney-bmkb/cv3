@@ -19,11 +19,21 @@ const ActionBarEnd = () => {
     return(
             <CalciteActionBar 
             slot="action-bar" 
-            layout={isMobile ? "horizontal"  :'vertical'}
+            layout={isMobile ? 'horizontal' : 'vertical'}
             expandDisabled = {isMobile}
             scale={isMobile ? 's' :'m'}
+            
             expanded>
-                <CalciteActionGroup>
+                <CalciteActionGroup
+                layout={isMobile ? 'horizontal' : 'vertical'}
+                expandDisabled = {isMobile}
+                scale={isMobile ? 's' :'m'}
+                expanded
+                >
+                    {
+                        !isMobile ?
+                    <>
+                    
                     <CalciteAction 
                         active={!comparablePanelClosed}
                         text={translateText("Compare")} 
@@ -44,9 +54,13 @@ const ActionBarEnd = () => {
                         }}>
 
                     </CalciteAction>
+                    </>
+                    :null
+                    }
                     {
                         //IF THERE ARE COMPARABLE PARCELS DISPLAY COMPARABLE RESULTS
-                        comparableParcels ? 
+                        comparableParcels && !isMobile  ? 
+                        <>
                         <CalciteAction 
                             text="Results" 
                             icon="list-rectangle"
@@ -55,12 +69,9 @@ const ActionBarEnd = () => {
                                 togglePanel('compareResults')
                             }}>
 
-                        </CalciteAction> : null
-                    }
+                        </CalciteAction> 
 
-                    {
                         //IF THERE ARE COMPARABLE PARCELS DISPLAY COMPARABLE RESULTS
-                        comparableParcels ? 
                         <CalciteAction 
                             text="Property" 
                             icon="pin"
@@ -69,7 +80,9 @@ const ActionBarEnd = () => {
                                 togglePanel('compareDetail')
                             }}>
 
-                        </CalciteAction> : null
+                        </CalciteAction>
+                        </>
+                         : null
                     }
 
                     <CalciteAction 
@@ -111,6 +124,18 @@ const ActionBarEnd = () => {
                             togglePanel('select')
                         }}>
                     </CalciteAction>
+
+                    <CalciteAction 
+                        //active={!selectPanelClosed}
+                        text={translateText("Measure")} 
+                        icon="measure" 
+                        textEnabled 
+                        // onClick={() => {
+                        //     togglePanel('select')
+                        // }}
+                        >
+                    </CalciteAction>
+
                     
                 </CalciteActionGroup>
             </CalciteActionBar>

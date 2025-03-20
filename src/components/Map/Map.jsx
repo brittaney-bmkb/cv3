@@ -4,8 +4,9 @@ import UseAppContext from "../../contexts/AppContext";
 import "@arcgis/map-components/components/arcgis-map";
 import "@arcgis/map-components/components/arcgis-zoom";
 import { config } from "../../data/config";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine.js";
+import ActionBarMap from "../ActionBar/ActionBarMap";
 
 const Map = () => {
 
@@ -17,9 +18,11 @@ const Map = () => {
         queryPolygon,
         selectPanelClosed,
         togglePanel,
-        searchFeatures
+        searchFeatures,
+        isMobile
         } = UseAppContext()
-
+    
+    const actionRef = useRef(null)
     const [parcelLayer, setParcelLayer] = useState(null)
     const [highlightSelect, setHighlightSelect] = useState(null)
     
@@ -129,6 +132,11 @@ const Map = () => {
             rotationEnabled: false
         }
 
+        // Append ActionBarMap using ref
+    if (actionRef.current) {
+        view.ui.add(actionRef.current, "top-right");
+    }
+
         //set view highlight options
         const highlights = [
             {
@@ -166,21 +174,27 @@ const Map = () => {
     }, [primaryResultFeature, parcelLayer, searchFeatures])
 
     return(
-        <arcgis-map
-        ref={arcgisMapRef}
-        item-id={config.webmap_id}
-        zoom={8}
+        <>
+        {/* ActionBarMap rendered outside the Web Component */}
+        <div ref={actionRef} className="esri-widget">
+            <ActionBarMap />
+        </div>
 
-        onarcgisViewReadyChange={(event) => {handleViewReady(event)}}
-        onarcgisViewClick={(event) => {
-            if(selectPanelClosed){
-                handleViewClick(event)
-            }
-            
-        }}
-        >   
-        <arcgis-zoom position="top-right"/>
+        {/* ArcGIS Map Component */}
+        <arcgis-map
+            ref={arcgisMapRef}
+            item-id={config.webmap_id}
+            zoom={8}
+            onarcgisViewReadyChange={handleViewReady}
+            onarcgisViewClick={(event) => {
+                if (selectPanelClosed) {
+                    handleViewClick(event);
+                }
+            }}
+        >
+            <arcgis-zoom position="top-right" />
         </arcgis-map>
+    </>
     )
 }
 

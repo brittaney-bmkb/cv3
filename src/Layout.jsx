@@ -36,6 +36,7 @@ import "@esri/calcite-components/dist/components/calcite-dropdown"
 import "@esri/calcite-components/dist/components/calcite-dropdown-group"
 import "@esri/calcite-components/dist/components/calcite-dropdown-item"
 import { Feedback } from "./components/Feedback/Feedback";
+import ActionBarMap from "./components/ActionBar/ActionBarMap";
 
 
 const Layout = () => {
@@ -96,7 +97,7 @@ const Layout = () => {
                     <CalciteShellPanel  
                     width="l" 
                     slot={isMobile ? "panel-bottom" : "panel-start" }
-                    displayMode={isMobile ? "float-all" : "dock"}
+                    displayMode={isMobile ? "float" : "dock"}
                     layout={isMobile ? "horizontal" :"vertical"}
                     height="l"
                     position="start" 
@@ -120,15 +121,15 @@ const Layout = () => {
                     <CalciteShellPanel 
                     width="l" 
                     className="right-panel"
-                    slot={isMobile ? "panel-top" : "panel-end" }
-                    displayMode={isMobile ? "float" : "dock"}
+                    slot={isMobile ? "panel-bottom" : "panel-end" }
+                    displayMode={isMobile ? "overlay" : "dock"}
                     layout={isMobile ? "horizontal" :"vertical"}
-                     position="end" 
+                    height={isMobile ? "l" : 'm'}
+                     position="end"
                      id="shell-panel-end" 
                      collapsed={rightPanelCollapsed}>
                         {/* ACTION BAR */}
-                        <ActionBarEnd/>
-
+                        {/* <ActionBarEnd/> */}
                         {/* SECONDARY PANEL */}
                         <PropertyComparison/>
                         <NearbyPanel/>
