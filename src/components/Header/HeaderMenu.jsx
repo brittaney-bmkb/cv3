@@ -9,7 +9,7 @@ import "@esri/calcite-components/components/calcite-menu-item"
 import "@esri/calcite-components/components/calcite-flow-item"
 import "@esri/calcite-components/components/calcite-flow"
 import { FlowItem } from "@esri/calcite-components/components/calcite-flow-item";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 function titleCase(s) {
     return s.toLowerCase()
@@ -113,6 +113,8 @@ export const HeaderMenuMobile = () => {
     const [ menuOpen, setMenuOpen ] = useState(false)
     const flowRef = useRef(null)
     const [flowItems, setFlowItems] = useState([]);
+    const [flowOpen, setFlowOpen] = useState(false)
+    const [flowOpenTitle, setFlowOpenTitle] = useState(false)
 
     const handleClick = (language) => {
         console.log("selected language")
@@ -126,14 +128,15 @@ export const HeaderMenuMobile = () => {
     }
 
     const createFlowItem = (title) => {
-        const newFlowItem = (
+
+        const newFlowItem = 
             <CalciteFlowItem 
-                key={title} 
-                heading={title} 
-                onCalciteFlowItemBack={() => removeFlowItem(title)}
-                selected
+            key={title}
+            heading={title}
+            ref={flowRef}
+            onCalciteFlowItemBack={() => removeFlowItem({title})}
             >
-                <CalciteMenu layout="vertical">
+                <CalciteMenu key={title} layout="vertical">
                     {Object.keys(menuItems[title].subMenuItems).map(submenuItem => {
                         return(
                             <CalciteMenuItem 
@@ -142,17 +145,78 @@ export const HeaderMenuMobile = () => {
                         />
                         )
                     })}
-                </CalciteMenu>
-            </CalciteFlowItem>
-        );
+        </CalciteMenu>
+        </CalciteFlowItem>
+         
+
 
         // Add the new flow item while deselecting others
-        setFlowItems((prev) => [...prev.map(item => ({ ...item, selected: false })), newFlowItem]);
+        setFlowItems((prev) => [...prev, newFlowItem]);
     };
 
     const removeFlowItem = (title) => {
         setFlowItems((prev) => prev.filter(item => item.key !== title));
     };
+
+    const flowMenuItems = <CalciteFlowItem 
+                        heading="Menu" 
+                        ref={flowRef}
+                        key={"menu"}
+                        onCalciteFlowItemBack={() => removeFlowItem("Menu")}
+                        ><CalciteMenu layout="vertical">
+        {Object.keys(menuItems).map(menuItem => {
+            if(menuItems[menuItem].subMenuItems){
+                return(
+                    <CalciteMenuItem  
+                    key={menuItem}
+                    text={menuItem}
+                    iconStart={menuItems[menuItem].icon}
+                    label={menuItem}
+                    breadcrumb
+                    // onCalciteMenuItemSelect={() => {
+                    //     //createFlowItem(menuItem)
+                    // }}
+                    >             
+                    </CalciteMenuItem>
+                )                         
+            }
+            else{
+                return(
+                    <CalciteMenuItem
+                    key={menuItem}
+                    text={translateText(menuItem)} 
+                    iconStart={menuItems[menuItem].icon}
+                    label={menuItem}
+                    text-enabled
+                    onCalciteMenuItemSelect={() => {
+                        if(menuItem === 'Feedback'){
+                            setFeedbackDialog(true, 'extended')
+                        }
+                        
+                        else{
+                            setMenuOpen(false)
+                        }
+                        
+                    }}></CalciteMenuItem>
+                )
+            }
+        })}
+    </CalciteMenu>
+    </CalciteFlowItem>
+
+
+
+    // useEffect(() => {
+
+    //     if(flowOpen && flowOpenTitle){
+    //         createFlowItem(flowOpenTitle)
+    //     }
+    //     else{
+    //         setFlowItems([flowMenuItems])
+    //     }
+
+    // },[flowOpen, flowOpenTitle])
+
 
 
     return(
@@ -163,48 +227,15 @@ export const HeaderMenuMobile = () => {
         className="hyperlink-button"
         width="full"
         scale="l"
-        onClick={() => {setMenuOpen(!menuOpen)}}
+        onClick={() => {
+            setMenuOpen(!menuOpen)
+            setFlowOpen(!flowOpen)
+        }}
         /> 
 
         {
         menuOpen ? 
         <CalciteFlow slot="navigation-tertiary" className='overlay-menu'>
-            <CalciteFlowItem heading="Menu" ref={flowRef}>
-                <CalciteMenu
-                layout="vertical"
-                >
-                    {Object.keys(menuItems).map(menuItem => {
-
-                        if(menuItems[menuItem].subMenuItems){
-                            return(
-                                <></>
-                            )                         
-                        }
-                        else{
-                            return(
-                                <CalciteMenuItem
-                                key={menuItem}
-                                text={translateText(menuItem)} 
-                                iconStart={menuItems[menuItem].icon}
-                                label={menuItem}
-                                text-enabled
-                                onCalciteMenuItemSelect={() => {
-                                    if(menuItem === 'Feedback'){
-                                        setFeedbackDialog(true, 'extended')
-                                    }
-                                    
-                                    else{
-                                        setMenuOpen(false)
-                                    }
-                                    
-                                }}></CalciteMenuItem>
-                            )
-                        }
-
-                        
-                    })}
-                </CalciteMenu>
-            </CalciteFlowItem>
             {flowItems}
         </CalciteFlow>
         : null }
