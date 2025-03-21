@@ -34,7 +34,8 @@ const Header = () => {
 
             {
                 isMobile ?
-                <HeaderMenuMobile/>:
+                <HeaderMenuMobile/>
+                :
                 <HeaderMenu/>
             }
               

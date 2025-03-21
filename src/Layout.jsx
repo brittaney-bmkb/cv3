@@ -84,15 +84,15 @@ const Layout = () => {
     }, [selectPanelClosed, printPanelClosed, imageryPanelClosed, layersPanelClosed, nearbyPanelClosed, comparablePanelClosed, comparisonResultsClosed, comparisonDetailPanelClosed])
 
     return(
-        <CalciteShell>
+        <CalciteShell contentBehind ={isMobile}>
             {/* HEADER */}
             <Header/>
             {/* <CalcitePanel  className='header'> */}
                 {/* HEADER */}
                 {/* <Header/> */}
-                <CalciteShell
+                {/* <CalciteShell
                 contentBehind ={isMobile}
-                >
+                > */}
                     {/* LEFT PANEL */}
                     <CalciteShellPanel  
                     width="l" 
@@ -104,7 +104,7 @@ const Layout = () => {
                     id="shell-panel-start" 
                     className='left-panel' 
                     collapsed={leftPanelCollapsed}
-                    style={{paddingBottom: isMobile ? 50 : 0}}
+                    //style={{paddingBottom: isMobile ? 60 : 0}}
                     >   
                         {/* ACTION BAR */}
                         <ActionBarStart/>
@@ -147,7 +147,7 @@ const Layout = () => {
                     <Export/>
                     <Feedback/>
 
-                </CalciteShell>
+                {/* </CalciteShell> */}
                                 
             {/* </CalcitePanel> */}
 

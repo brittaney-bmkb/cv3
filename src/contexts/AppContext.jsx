@@ -1508,20 +1508,40 @@ export const AppProvider = ({children}) => {
 
     // }, [])
 
+
     useEffect(() => {
+        const handleResize = () => {
+            ////console.log("Resize event triggered");
+            const width = window.innerWidth
+            ////console.log("window width: ", width)
+            setIsMobile(width < 768)
+        }
+    
+        window.addEventListener('resize', handleResize);
 
-        setIsMobile(window.innerWidth < 768); // Check on initial load
-
-        const mediaQuery = window.matchMedia("(max-width: 768px)");
-
-        const handleResize = (event) => {
-        setIsMobile(event.matches);
+        handleResize();
+        
+        return () => {
+          window.removeEventListener('resize', handleResize);
         };
+      }, [window.innerWidth]);
 
 
-        mediaQuery.addEventListener("change", handleResize); // Listen for changes
-        return () => mediaQuery.removeEventListener("change", handleResize); // Cleanup
-    }, []);
+    // useEffect(() => {
+
+    //     const width = window.innerWidth
+    //     setIsMobile(width < 768); // Check on initial load
+
+    //     const mediaQuery = window.matchMedia("(max-width: 768px)");
+
+    //     const handleResize = (event) => {
+    //     setIsMobile(event.matches);
+    //     };
+
+
+    //     mediaQuery.addEventListener("change", handleResize); // Listen for changes
+    //     return () => mediaQuery.removeEventListener("change", handleResize); // Cleanup
+    // }, []);
 
     useEffect(() => {
         //on initial load display info panel
