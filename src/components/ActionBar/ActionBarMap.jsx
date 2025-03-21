@@ -17,7 +17,7 @@ const ActionBarMap = () => {
         <CalciteActionPad
         position="end"
         scale="s"
-        expanded={false}
+        expanded
         >
             <CalciteAction 
                 active={!layersPanelClosed}
