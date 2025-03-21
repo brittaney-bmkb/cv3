@@ -11,8 +11,6 @@ const Header = () => {
 
     const { 
         translateText, 
-        setLanguage, 
-        setFeedbackDialog,
         isMobile
      } = UseAppContext()
 
@@ -27,7 +25,7 @@ const Header = () => {
                 className="org-brand">
 
                 </CalciteNavigationLogo >
-                <div slot={isMobile ? "navigation-secondary" :"content-start"}>
+                <div slot={isMobile ? "navigation-secondary" :"content-start"} className='cook-search'>
                     {/* SEARCH BAR */}
                     <SearchBarComponent/>
                 </div>

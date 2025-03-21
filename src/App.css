@@ -19,6 +19,10 @@ body{
 
 /* CALCITE CUSTOM STYLES */
 
+calcite-navigation.cook-search {
+  --calcite-navigation-width: 100%
+}
+
 calcite-flow.overlay-menu {
   position: fixed;
   display: flex;

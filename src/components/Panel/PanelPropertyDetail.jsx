@@ -83,7 +83,8 @@ const PanelPropertyDetail = () => {
         togglePanel,
         setFeedbackDialog,
         feedbackOpen,
-        exportOpen
+        exportOpen,
+        isMobile
     } = UseAppContext()
 
     const [ categories, setCategories ] = useState(null)
@@ -289,9 +290,7 @@ const PanelPropertyDetail = () => {
                 closed={propertyDetailPanelClosed} 
                 closable 
                 className='panel-start' 
-                
                 heading={translateText('Property Detail')}
-                overlayPositioning="fixed"
                 onCalcitePanelClose={() => {
                     setPropertyDetailPanel(true)
                 }}
@@ -302,12 +301,16 @@ const PanelPropertyDetail = () => {
                         
                     
                     {/* SEARCH RESULT ACTIONS */}
-                    <CalciteActionBar slot="action-bar" layout="horizontal" expandDisabled> 
+                    <CalciteActionBar 
+                    slot={isMobile ? "header-menu-actions" : "action-bar"} 
+                    layout={isMobile ? "vertical" : "horizontal"}
+                    expandDisabled
+                    > 
                         <CalciteAction 
                             text="clear" 
                             icon="reset" 
                             disabled={searchFeatures ? false : true} 
-                            textEnabled 
+                            textEnabled
                             scale="s"
                             onClick={clearResults}
                         ></CalciteAction>
@@ -315,7 +318,7 @@ const PanelPropertyDetail = () => {
                             text="export" 
                             icon="export" 
                             disabled={searchFeatures ? false : true} 
-                            textEnabled 
+                            textEnabled
                             scale="s"
                             onClick={() => {
                                 setExportOpen(true, 'property')
@@ -328,7 +331,7 @@ const PanelPropertyDetail = () => {
                             text="feedback" 
                             icon="speech-bubble-exclamation" 
                             disabled={searchFeatures ? false : true} 
-                            textEnabled 
+                            textEnabled
                             scale="s"
                             onClick={() => {
                                 setFeedbackDialog(true, 'general')
@@ -343,8 +346,9 @@ const PanelPropertyDetail = () => {
                             (primaryResultFeature && primaryResultFeature[0] && categories && headerData) ? 
 
                             <>   
-                            <div slot="content-top">
-                            <CalciteLabel scale="l"className='DetailHeader' >
+      
+                            <div slot={isMobile ? "header-content" : "content-top"}>
+                            <CalciteLabel scale={isMobile ? "m" : "l"} className='DetailHeader' >
                                 { headerData[Object.keys(headerData)[0]]}
                             </CalciteLabel>
                             <CalciteLabel scale="m" className='DetailHeader'>
@@ -352,7 +356,6 @@ const PanelPropertyDetail = () => {
                             </CalciteLabel>
                             </div>
 
-                            
                             
                             <CalciteList
                             label={ headerData ? headerData[Object.keys(headerData)[0]]:null}

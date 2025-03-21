@@ -90,18 +90,22 @@ const Layout = () => {
             {/* <CalcitePanel  className='header'> */}
                 {/* HEADER */}
                 {/* <Header/> */}
-                <CalciteShell>
+                <CalciteShell
+                contentBehind ={isMobile}
+                >
                     {/* LEFT PANEL */}
                     <CalciteShellPanel  
                     width="l" 
                     slot={isMobile ? "panel-bottom" : "panel-start" }
-                    displayMode={isMobile ? "float" : "dock"}
+                    displayMode={isMobile ? "float-all" : "dock"}
                     layout={isMobile ? "horizontal" :"vertical"}
                     height="l"
                     position="start" 
                     id="shell-panel-start" 
                     className='left-panel' 
-                    collapsed={leftPanelCollapsed}>
+                    collapsed={leftPanelCollapsed}
+                    style={{paddingBottom: isMobile ? 50 : 0}}
+                    >   
                         {/* ACTION BAR */}
                         <ActionBarStart/>
                         {/* PRIMARY PANEL */}
@@ -127,7 +131,7 @@ const Layout = () => {
                      id="shell-panel-end" 
                      collapsed={rightPanelCollapsed}>
                         {/* ACTION BAR */}
-                        {/* <ActionBarEnd/> */}
+                        {isMobile ? null : <ActionBarEnd/>}
                         {/* SECONDARY PANEL */}
                         <PropertyComparison/>
                         <NearbyPanel/>

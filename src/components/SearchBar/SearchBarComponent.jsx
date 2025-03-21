@@ -202,6 +202,7 @@ const SearchBarComponent = () => {
         <>
         { searchSources ?
             <arcgis-search
+                
                 ref={searchComponent}
                 sources={searchSources}
                 includeDefaultSourcesDisabled

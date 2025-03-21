@@ -19,6 +19,7 @@ const ActionBarStart = () => {
         expandDisabled = {isMobile}
         scale={isMobile ? 's' :'m'}
         
+        
         expanded>
             <CalciteActionGroup>
                 <CalciteAction text={translateText("Info")} icon="information" textEnabled active={!infoPanelClosed}

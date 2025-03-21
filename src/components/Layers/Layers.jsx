@@ -4,7 +4,13 @@ import "@arcgis/map-components/components/arcgis-layer-list";
 
 const Layers = () => {
 
-    const { layersPanelClosed, setLayersPanel, translateText, arcgisMapRef } = UseAppContext()
+    const { 
+        layersPanelClosed, 
+        setLayersPanel, 
+        translateText, 
+        arcgisMapRef,
+        isMobile
+     } = UseAppContext()
     
     //console.log("map view: ", arcgisMapRef.current)
     return(
@@ -12,10 +18,11 @@ const Layers = () => {
         closed={layersPanelClosed}
         closable
         heading={translateText("Layers")}
-        style={{display: layersPanelClosed ? 'none': 'flex'}}
+        style={{display: layersPanelClosed ? 'none': 'inherit'}}
         onCalcitePanelClose={() => {
             setLayersPanel(true)
         }}
+        scale={isMobile ? "s" : "m"}
         >
             {
                 arcgisMapRef.current ? 
@@ -23,7 +30,8 @@ const Layers = () => {
                 open
                 heading="Add a layer to the map"
                 description={translateText("Toggle layers to show/hide them in the map")}
-                style={{height: '95%', overflow:'clip'}}
+                scale={isMobile ? "s" : "m"}
+                style={{height: '100%', overflow:'clip'}}
                 >   
                 <arcgis-layer-list
                 referenceElement={arcgisMapRef.current}
@@ -31,7 +39,8 @@ const Layers = () => {
                 showFilter
                 filterPlaceholder={translateText("Search for layers")}
                 />
-            </CalciteBlock> : null
+             </CalciteBlock> 
+            : null
             }
             
 
