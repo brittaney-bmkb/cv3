@@ -27,14 +27,11 @@ const Header = () => {
                 className="org-brand">
 
                 </CalciteNavigationLogo >
-                {
-                    !isMobile ? 
-                    <div slot="content-start">
-                        {/* SEARCH BAR */}
-                        <SearchBarComponent/>
-                    </div>
-                    :null
-                }
+                <div slot={isMobile ? "navigation-secondary" :"content-start"}>
+                    {/* SEARCH BAR */}
+                    <SearchBarComponent/>
+                </div>
+
                
 
             {
