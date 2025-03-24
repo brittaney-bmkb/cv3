@@ -1,4 +1,6 @@
-import { CalcitePanel } from "@esri/calcite-components-react"
+import { CalcitePanel, CalciteStepper } from "@esri/calcite-components-react"
+
+
 
 
 const ComparisonPanel = ({panelContent, panelHeading, id, closed, setClose}) => {

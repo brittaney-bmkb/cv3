@@ -58,7 +58,6 @@ const ActionBarEnd = () => {
                     :null
                     }
                     {
-                        //IF THERE ARE COMPARABLE PARCELS DISPLAY COMPARABLE RESULTS
                         comparableParcels && !isMobile  ? 
                         <>
                         <CalciteAction 
@@ -70,8 +69,6 @@ const ActionBarEnd = () => {
                             }}>
 
                         </CalciteAction> 
-
-                        //IF THERE ARE COMPARABLE PARCELS DISPLAY COMPARABLE RESULTS
                         <CalciteAction 
                             text="Property" 
                             icon="pin"

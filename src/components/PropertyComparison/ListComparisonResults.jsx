@@ -17,7 +17,7 @@ const ListComparisonResults = () => {
 
         console.log("selecting feature: ", feature)
         setSecondaryResultFeature(feature)
-        togglePanel('compareDetail')
+        //togglePanel('compareDetail')
 
     }
     

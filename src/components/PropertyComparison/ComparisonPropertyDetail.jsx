@@ -3,6 +3,7 @@
 import { 
     CalciteAction, 
     CalciteActionBar, 
+    CalciteBlock,
     CalciteButton, 
     CalciteLabel, 
     CalciteList, 
@@ -280,31 +281,37 @@ const ComparisonPropertyDetail = () => {
 
 
     return (
-            <CalcitePanel 
-                id="property-detail-panel" 
-                closed={comparisonDetailPanelClosed} 
-                closable 
-                className='panel-start' 
+        <>
+            {/* // <CalcitePanel 
+            //     id="property-detail-panel" 
+            //     closed={comparisonDetailPanelClosed} 
+            //     closable 
+            //     className='panel-start' 
                 
-                heading={translateText('Comparison Property Detail')}
-                overlayPositioning="fixed"
-                onCalcitePanelClose={() => {
-                    setComparisonDetailPanel(true)
-                }}
-                //KEEP THIS SO PANELS CANT TAKE UP THE WHOLE SPACE OF THE SHELL
-                style={{display: comparisonDetailPanelClosed ? 'none': 'flex'}}
-                >   
+            //     heading={translateText('Comparison Property Detail')}
+            //     overlayPositioning="fixed"
+            //     onCalcitePanelClose={() => {
+            //         setComparisonDetailPanel(true)
+            //     }}
+            //     //KEEP THIS SO PANELS CANT TAKE UP THE WHOLE SPACE OF THE SHELL
+            //     style={{display: comparisonDetailPanelClosed ? 'none': 'flex'}}
+            //    >    */}
                     {/* PROPERTY HEADER: PIN AND ADDRESS  */}
                     {
                     headerData ?
-                    <div slot="content-top">
-                        <CalciteLabel scale="l"className='DetailHeader' >
+                    <CalciteBlock 
+                    heading= { headerData[Object.keys(headerData)[0]]}
+                    description=  {`${headerData[Object.keys(headerData)[1]]}, ${headerData[Object.keys(headerData)[2]]}`}
+                    //slot="content-top"
+                    >
+                        {/* <CalciteLabel scale="l"className='DetailHeader' >
                             { headerData[Object.keys(headerData)[0]]}
                         </CalciteLabel>
                         <CalciteLabel scale="m" className='DetailHeader'>
                             {`${headerData[Object.keys(headerData)[1]]}, ${headerData[Object.keys(headerData)[2]]}`}
-                        </CalciteLabel>
-                        </div>
+                        </CalciteLabel>*/}
+                        
+                        </CalciteBlock> 
                         : 
                         <CalciteLabel>
                             {translateText("Search for new property")}
@@ -312,8 +319,7 @@ const ComparisonPropertyDetail = () => {
                         
                     }
                         
-                    
-                    {/* SEARCH RESULT ACTIONS */}
+                    <CalciteBlock open>
                     <CalciteActionBar slot="action-bar" layout="horizontal" expandDisabled> 
                         <CalciteAction 
                             text="clear" 
@@ -339,6 +345,9 @@ const ComparisonPropertyDetail = () => {
                             scale="s"
                         />
                     </CalciteActionBar>
+                    </CalciteBlock>
+                    {/* SEARCH RESULT ACTIONS */}
+                    
                     
                     
                     {/* PROPERTY DETAILS */}
@@ -522,10 +531,11 @@ const ComparisonPropertyDetail = () => {
 
 
                     </CalciteList>
-                }
+                        }
 
-
-            </CalcitePanel>
+{/* 
+        </CalcitePanel> */}
+            </>
     )
 }
 

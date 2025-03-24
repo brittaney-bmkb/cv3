@@ -135,8 +135,8 @@ const Layout = () => {
                         {/* SECONDARY PANEL */}
                         <PropertyComparison/>
                         <NearbyPanel/>
-                        <ComparisonResults/>
-                        <ComparisonPropertyDetail/>
+                        {/* <ComparisonResults/>
+                        <ComparisonPropertyDetail/> */}
                         <Layers/>
                         <Imagery/>
                         <Print/>
