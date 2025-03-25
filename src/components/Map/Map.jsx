@@ -12,31 +12,27 @@ import ActionBarMap from "../ActionBar/ActionBarMap";
 //https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html#highlights
 const highlights = [
     {
-    name: "default",
+    name: "default", //this is the highlight config for the primary selected parcel
     color:  "#0D4D96",
     haloOpacity: 1,
     haloColor: "#0D4D96",
     fillOpacity: .1,
     },
     {
-    name: "compare",
+    name: "compare", //this is the highlight for comparables - will eventually be used for nearby
     color:  "#FFA500",
     haloOpacity: 1,
     haloColor: "#FFA500",
     fillOpacity: 0,
     },
     {
-    name: "compare-select",
+    name: "compare-select", //this is the highlight for comparable parcel that is selected - will eventually be used for nearby
     color:  "#FFA500",
     haloOpacity: 1,
     haloColor: "#FFA500",
     fillOpacity: .1,
     }
 ]
-
-
-
-
 
 
 const Map = () => {
