@@ -34,7 +34,7 @@ export const radiusTypes = {
     "None": "None",
 }
 
-const ComparisonForm = (setQueryString) => {
+const ComparisonForm = ({refElement, setCurrentStep}) => {
 
     const { setComparableType, searchComparableProperties, translateText, setComparablePanel,  comparablePanelClosed, primaryResultFeature} = UseAppContext()
 
@@ -58,6 +58,13 @@ const ComparisonForm = (setQueryString) => {
         },[primaryResultFeature])
 
     const handleSetQuery = async () => {
+
+        if(!refElement) return;
+
+        console.log("Stepper: ", refElement)
+        setCurrentStep([1])
+        refElement.nextStep()
+
         //AND BCLASS = '${bClass}'
         let query =`township_name = '${sourceParcel.attributes['township_name']}' AND NBHD = ${sourceParcel.attributes['NBHD']} AND BCLASS = '${sourceParcel.attributes['BCLASS']}' AND PIN14 <> '${sourceParcel.attributes['PIN14']}'` 
         
@@ -156,15 +163,19 @@ const ComparisonForm = (setQueryString) => {
 
     return(
             <form 
-                
-                //onSubmit={} 
+                className="property-comparison-form"
                 id="comparable-search"
             >
-                <CalciteBlock 
-                style={{width: '100%'}}
-                open 
-                heading={translateText("Source Property")}
-                description={translateText("some text")}>
+                <div className="form-section">
+
+                    <div className="form-header" 
+                    >
+                        {translateText("Source Property")}
+                    </div>
+                    <div className="form-description" 
+                    >
+                        {translateText("Some text")}
+                    </div>
                 
                     <CalciteLabel>
                         {translateText('Source PIN')}
@@ -173,6 +184,7 @@ const ComparisonForm = (setQueryString) => {
                             placeholder={primaryResultFeature ? primaryResultFeature[0]?.attributes['PIN14_dash']: null}
                             value={primaryResultFeature ? primaryResultFeature[0]?.attributes['PIN14_dash']: null}
                             readonly
+                            disabled
                         />
                     </CalciteLabel>  
 
@@ -183,6 +195,7 @@ const ComparisonForm = (setQueryString) => {
                             placeholder={primaryResultFeature ? primaryResultFeature[0]?.attributes['township_name']: null}
                             value={primaryResultFeature ? primaryResultFeature[0]?.attributes['township_name']: null}
                             readonly
+                            disabled
                         />
                     </CalciteLabel>  
 
@@ -193,6 +206,7 @@ const ComparisonForm = (setQueryString) => {
                             placeholder={primaryResultFeature ? primaryResultFeature[0]?.attributes['NBHD']: null}
                             value={primaryResultFeature ? primaryResultFeature[0]?.attributes['NBHD']: null}
                             readonly
+                            disabled
                         />
                     </CalciteLabel> 
 
@@ -203,92 +217,102 @@ const ComparisonForm = (setQueryString) => {
                             placeholder={primaryResultFeature ? primaryResultFeature[0]?.attributes['BCLASS']: null}
                             value={primaryResultFeature ? primaryResultFeature[0]?.attributes['BCLASS']: null}
                             readonly
+                            disabled
                         />
                     </CalciteLabel> 
-                </CalciteBlock>
+                                    
+                </div>
 
-                <CalciteBlock 
-                open 
-                heading={translateText("Property Size")}
-                description={translateText("some text")}>
-                    <CalciteLabel>
-                    {translateText('Building Square Feet')}
-                    </CalciteLabel>
-                    <div style={{display:'flex', gap: 10}}>
-                        <CalciteLabel
-                        scale="s"
-                        >
-                            {translateText('Minimum')}
-                            <CalciteInputNumber
-                                form='comparable-search'
-                                //placeholder={buildingSqFtMin}
-                                value={`${buildingSqFtMin}`}
-                                onCalciteInputNumberChange={(e) =>setBuildingSqFtMin(e.target.value)}
-                                min={"0"}
-                                max={`${buildingSqFtMax}`}
-                                step="1"
-                                readonly
-                                validationMessage={'test'}
-                            />
+                <div className="form-section">
+                    <div className="form-header" 
+                    >
+                        {translateText("Property Size")}
+                    </div>
+                    <div className="form-description" 
+                    >
+                        {translateText("Some text")}
+                    </div>
+                        <CalciteLabel>
+                        {translateText('Building Square Feet')}
                         </CalciteLabel>
-                        <CalciteLabel
-                        scale="s"
-                        >
-                            {translateText('Maximum')}
-                            <CalciteInputNumber
-                                form='comparable-search'
-                                placeholder={0}
-                                value={`${buildingSqFtMax}`}
-                                onCalciteInputNumberChange={(e) =>setBuildingSqFtMax(e.target.value)}
-                                step="1"
-                                min={`${buildingSqFtMin}`}
-                                readonly
-                            />
-                        </CalciteLabel> 
+                        <div style={{display:'flex', gap: 10}}>
+                            <CalciteLabel
+                            scale="s"
+                            >
+                                {translateText('Minimum')}
+                                <CalciteInputNumber
+                                    form='comparable-search'
+                                    //placeholder={buildingSqFtMin}
+                                    value={`${buildingSqFtMin}`}
+                                    onCalciteInputNumberChange={(e) =>setBuildingSqFtMin(e.target.value)}
+                                    min={"0"}
+                                    max={`${buildingSqFtMax}`}
+                                    step="1"
+                                    
+                                    validationMessage={'test'}
+                                />
+                            </CalciteLabel>
+                            <CalciteLabel
+                            scale="s"
+                            >
+                                {translateText('Maximum')}
+                                <CalciteInputNumber
+                                    form='comparable-search'
+                                    placeholder={0}
+                                    value={`${buildingSqFtMax}`}
+                                    onCalciteInputNumberChange={(e) =>setBuildingSqFtMax(e.target.value)}
+                                    step="1"
+                                    min={`${buildingSqFtMin}`}
+                                    
+                                />
+                            </CalciteLabel> 
+                        </div>
+
+                        <CalciteLabel>
+                        {translateText('Land Square Feet')}
+                        </CalciteLabel>
+                        <div style={{display:'flex', gap: 10}}>
+                            <CalciteLabel
+                            scale="s"
+                            >
+                                {translateText('Minimum')}
+                                <CalciteInputNumber
+                                    form='comparable-search'
+                                    //placeholder={buildingSqFtMin}
+                                    value={`${landSqFtMin}`}
+                                    onCalciteInputNumberChange={(e) =>setLandSqFtMin(e.target.value)}
+                                    min={"0"}
+                                    max={`${landSqFtMax}`}
+                                    step="1"
+                                    
+                                />
+                            </CalciteLabel>
+                            <CalciteLabel
+                            scale="s"
+                            >
+                                {translateText('Maximum')}
+                                <CalciteInputNumber
+                                    form='comparable-search'
+                                    placeholder={0}
+                                    value={`${landSqFtMax}`}
+                                    onCalciteInputNumberChange={(e) =>setLandSqFtMax(e.target.value)}
+                                    step="1"
+                                    min={`${landSqFtMin}`}
+                                    
+                                />
+                            </CalciteLabel> 
+                        </div>
                     </div>
 
-                    <CalciteLabel>
-                    {translateText('Land Square Feet')}
-                    </CalciteLabel>
-                    <div style={{display:'flex', gap: 10}}>
-                        <CalciteLabel
-                        scale="s"
-                        >
-                            {translateText('Minimum')}
-                            <CalciteInputNumber
-                                form='comparable-search'
-                                //placeholder={buildingSqFtMin}
-                                value={`${landSqFtMin}`}
-                                onCalciteInputNumberChange={(e) =>setLandSqFtMin(e.target.value)}
-                                min={"0"}
-                                max={`${landSqFtMax}`}
-                                step="1"
-                                readonly
-                                validationMessage={'test'}
-                            />
-                        </CalciteLabel>
-                        <CalciteLabel
-                        scale="s"
-                        >
-                            {translateText('Maximum')}
-                            <CalciteInputNumber
-                                form='comparable-search'
-                                placeholder={0}
-                                value={`${landSqFtMax}`}
-                                onCalciteInputNumberChange={(e) =>setLandSqFtMax(e.target.value)}
-                                step="1"
-                                min={`${landSqFtMin}`}
-                                readonly
-                            />
-                        </CalciteLabel> 
+                <div className="form-section">
+                    <div className="form-header" 
+                    >
+                        {translateText("Characteristics")}
                     </div>
-                </CalciteBlock>
-
-                <CalciteBlock 
-                open 
-                heading={translateText("Characteristics")}
-                description={translateText("some text")}>
-
+                    <div className="form-description" 
+                    >
+                        {translateText("Some text")}
+                    </div>
                     <CalciteLabel layout="inline">
                         {translateText("Construction Type")}
                     <CalciteDropdown 
@@ -324,8 +348,6 @@ const ComparisonForm = (setQueryString) => {
                                 min={"0"}
                                 max={`${ageMax}`}
                                 step="1"
-                                readonly
-                                validationMessage={'test'}
                             />
                         </CalciteLabel>
                         <CalciteLabel
@@ -339,7 +361,7 @@ const ComparisonForm = (setQueryString) => {
                                 onCalciteInputNumberChange={(e) =>setAgeMax(e.target.value)}
                                 step="1"
                                 min={`${ageMin}`}
-                                readonly
+                                
                             />
                         </CalciteLabel> 
                     </div>
@@ -364,15 +386,19 @@ const ComparisonForm = (setQueryString) => {
                     </CalciteLabel>
                     </div>
                     
+                </div>    
                     
-                    
-                </CalciteBlock>
+                {/* </CalciteBlock> */}
 
                 <div slot="footer-end" style={{display: "flex", gap: '20px', justifyContent:'end'}}>
                 <CalciteButton iconStart="reset" appearance="outline">
                     Reset
                 </CalciteButton>
-                <CalciteButton className='hyperlink-button' onClick={() => handleSetQuery()}>
+                <CalciteButton 
+                className='hyperlink-button' 
+                onClick={() => handleSetQuery()
+
+                }>
                     Search
                 </CalciteButton>
                 </div>

@@ -830,7 +830,7 @@ export const AppProvider = ({children}) => {
             allFeatures.push(features[0])
         }
         else{
-            allFeatures = features
+            allFeatures = [...features]
         }
  
         console.log("Combined Features: ", allFeatures)

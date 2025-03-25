@@ -5,19 +5,26 @@ import UseAppContext from "../../contexts/AppContext"
 
 const Inactive = () => {
 
-    const {translateText} = UseAppContext()
+    const {translateText, primaryResultFeature} = UseAppContext()
 
     return(
-        <CalciteScrim>
-            <CalciteChip 
-            kind="neutral"
-            scale='l'
-            label={translateText("Search for a parcel")}
-            value={translateText("Search for a parcel")}
-            >
-                {translateText("Search for a parcel")}
-            </CalciteChip>
-        </CalciteScrim>
+       <>
+        {
+            primaryResultFeature ? null :  
+            <CalciteScrim>
+                <CalciteChip 
+                kind="neutral"
+                scale='l'
+                label={translateText("Search for a parcel")}
+                value={translateText("Search for a parcel")}
+                >
+                    {translateText("Search for a parcel")}
+                </CalciteChip>
+            </CalciteScrim>
+        }
+       
+       </>
+
     )
 }
 

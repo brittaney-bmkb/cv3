@@ -25,6 +25,7 @@ const Map = () => {
     const actionRef = useRef(null)
     const [parcelLayer, setParcelLayer] = useState(null)
     const [highlightSelect, setHighlightSelect] = useState(null)
+    const [clickedFeature, setClickedFeature] = useState(null)
     
     
     const findTargetLayer = (map) => {
@@ -39,6 +40,8 @@ const Map = () => {
 
     const zoomToExtent = async (features) => {
 
+        console.log("features selected: ", features)
+
         let extent
 
         if(Array.isArray(features)){
@@ -51,14 +54,14 @@ const Map = () => {
         }
 
         else{
-            if('geometry' in features){
-                extent = features.geometry
-            }
-            else{
+            // if('geometry' in features){
+            //     extent = features.geometry
+            // }
+            // else{
                 //////console.log("zoom to extent: ", features)
                 //////console.log("quering extent ")
                 extent = await features.queryExtent()
-            }
+            //}
         }
         
         if(extent){
@@ -85,18 +88,16 @@ const Map = () => {
         let mapPoint = event.detail.mapPoint;
 
         const features = await queryPolygon(mapPoint, true) 
+
+        console.log("Clicked Features: ", features)
+        setClickedFeature(features)
           
-        if( features?.length === 1){
-            togglePanel('property')
-        }
-        else{
-            togglePanel('search')
-        }
+
 
             
     }
 
-    const handleParcelSelection = async () => {
+    const handleParcelSelection = async (feature) => {
 
         if(!arcgisMapRef.current?.view){
             return
@@ -104,18 +105,18 @@ const Map = () => {
         
         const view = arcgisMapRef.current?.view
 
-        console.log("highlighed layer: ", highlightSelect)
+        // console.log("highlighed layer: ", highlightSelect)
                     
         highlightSelect?.remove();
 
         const layerView = await view.whenLayerView(parcelLayer)
-        const highlight = layerView.highlight(primaryResultFeature, {name: "default"})
+        const highlight = layerView.highlight(feature, {name: "default"})
 
         //highlight selection
         setHighlightSelect(highlight)
 
         //Zoom to layer
-        zoomToExtent(primaryResultFeature)
+        zoomToExtent(feature)
     }
 
     const handleViewReady = async (event) => {
@@ -132,7 +133,6 @@ const Map = () => {
             rotationEnabled: false
         }
 
-   
 
         //set view highlight options
         const highlights = [
@@ -157,18 +157,24 @@ const Map = () => {
     //Clear all highlights when parcels are cleared
     useEffect(() => {
 
-        console.log("primary feature selection updated: ", primaryResultFeature)
-
         if(!searchFeatures || !searchFeatures[0]){
             highlightSelect?.remove()
         }
         else{
-            if(parcelLayer){
-                handleParcelSelection()
+            if(parcelLayer && (primaryResultFeature || clickedFeature)){
+                console.log("primary feature selection updated: ", primaryResultFeature? primaryResultFeature : clickedFeature)
+                handleParcelSelection(primaryResultFeature? primaryResultFeature : clickedFeature)
+
+                if( primaryResultFeature?.length === 1){
+                    togglePanel('property')
+                }
+                else{
+                    togglePanel('search')
+                }
             }
         }
 
-    }, [primaryResultFeature, parcelLayer, searchFeatures])
+    }, [primaryResultFeature, parcelLayer, searchFeatures, clickedFeature])
 
     useEffect(() => {
 

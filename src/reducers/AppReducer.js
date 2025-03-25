@@ -194,7 +194,7 @@ const AppReducer = (state, action) => {
             }
 
         case "SET_PRIMARY_RESULT_FEATURE":
-            //console.log("SET_PRIMARY_RESULT_FEATURE: ", payload.primaryResultFeature)
+            console.log("SET_PRIMARY_RESULT_FEATURE: ", payload.primaryResultFeature)
             return{
                 ...state,
                 primaryResultFeature:payload.primaryResultFeature,

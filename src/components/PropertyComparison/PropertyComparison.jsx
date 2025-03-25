@@ -25,12 +25,13 @@ import "@esri/calcite-components/dist/components/calcite-dropdown-item"
 import "@esri/calcite-components/dist/components/calcite-stepper";
 import "@esri/calcite-components/dist/components/calcite-stepper-item";
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import ComparisonForm from "./ComparisonForm"
 import ComparisionStepper from "./ComparisonStepper"
 import ComparisonResults from "./ComparisonResults"
 import ListComparisonResults from "./ListComparisonResults"
 import ComparisonPropertyDetail from "./ComparisonPropertyDetail"
+import Inactive from "../Inactive/Inactive"
 
 const constructionTypes = [
     "Any",
@@ -59,12 +60,22 @@ const PropertyComparison = () => {
         comparablePanelClosed, 
         primaryResultFeature} = UseAppContext()
 
+    const stepperRef = useRef(null)
     const [ radius, setRadius ] = useState(null)
     const [ queryString, setQueryString] = useState(null)
     const [ sourceParcel, setSourceParcel ] = useState(null)
 
+    const [currentStep, setCurrentStep] = useState(0)
 
+    const handleStepChange = (event) => {
 
+        const selectedStepIndex = event.target.items.filter((item) => item.selected)
+                                                .map((item, i) => i)
+
+        console.log("Selected Step Index: ", selectedStepIndex)
+
+        setCurrentStep(selectedStepIndex[0])
+    }
 
     return(
         <CalcitePanel 
@@ -72,30 +83,45 @@ const PropertyComparison = () => {
             closed={comparablePanelClosed} 
             closable 
             className='panel-start' 
-            heading={translateText('Comparable Search')} 
+            heading={translateText('Property Comparison')} 
             //description= {translateText("Search for similar properties")}
             onCalcitePanelClose={() => {
+                setComparablePanel(true)
                 clearResultsComparables()
             }}
             style={{display: comparablePanelClosed ? 'none': 'flex'}}
             >   
-
-            <CalciteStepper numbered layout="horizontal">
+             <Inactive/>
+            
+            <CalciteStepper 
+            ref={stepperRef}
+            title={translateText('Property Comparison')} 
+            numbered 
+            layout="horizontal"
+            scale="s"
+            style={{overflow:"auto"}}
+            oncalciteStepperChange = {(event) => {
+                handleStepChange(event)
+            }}
+            >
                 <CalciteStepperItem
-                selected
+                selected={currentStep===0}
                 heading={translateText("Search")}
                 //description={translateText("Search for similar properties")}
                 >
-                    <ComparisonForm/>
-            </CalciteStepperItem>
-            <CalciteStepperItem
-            heading={translateText("Results")}
-            //description={translateText("View Results")}
-            >
-                <ListComparisonResults/> 
-            </CalciteStepperItem>
+                    <ComparisonForm refElement={stepperRef.current} setCurrentStep={setCurrentStep}/>
+                </CalciteStepperItem>
+
+                <CalciteStepperItem
+                //selected={currentStep===1}
+                heading={translateText("Results")}
+                //description={translateText("View Results")}
+                >
+                    <ListComparisonResults/> 
+                </CalciteStepperItem>
 
             <CalciteStepperItem
+            //selected={currentStep===2}
             heading={translateText("Property")}
             //description={translateText("View Comparable Property Details")}
             >
@@ -103,6 +129,15 @@ const PropertyComparison = () => {
             </CalciteStepperItem>
 
             </CalciteStepper>
+            
+            {/* <div slot="footer-end" style={{display: "flex", gap: '20px', justifyContent:'end'}}>
+            <CalciteButton iconStart="reset" appearance="outline">
+                Reset
+            </CalciteButton>
+            <CalciteButton className='hyperlink-button' onClick={() => handleSetQuery()}>
+                Search
+            </CalciteButton>
+            </div> */}
 
             {/*  */}
 

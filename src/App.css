@@ -22,6 +22,40 @@ body{
 
 /* CALCITE CUSTOM STYLES */
 
+.form-section{
+  border-bottom:1px solid var(--calcite-color-border-1);
+  margin-bottom: var(--calcite-spacing-lg);
+}
+
+.form-header{
+  font-size: var(--calcite-font-size);
+  font-weight: var(--calcite-font-weight-medium);
+  padding-bottom: var(--calcite-spacing-base);
+  color:var(--calcite-color-text-2)
+}
+
+.form-description{
+  font-size: var(--calcite-font-size-sm);
+  font-weight: var(--calcite-font-weight-light);
+  padding-bottom: var(--calcite-spacing-md);
+  color:var(--calcite-color-text-2)
+}
+
+.property-comparison-form{
+  background-color: var(--calcite-color-foreground-1);
+  width:inherit;
+  padding: 12px;
+}
+
+calcite-stepper{
+  background-color: var(--calcite-color-foreground-1);
+  padding: var(--calcite-spacing-base);
+}
+
+.stepper-item-content{
+  -calcite-stepper-item-spacing-unit-m: 0px
+}
+
 calcite-navigation.cook-search {
   --calcite-navigation-width: 100%
 }
@@ -119,8 +153,8 @@ arcgis-layer-list{
   background-color: transparent;
 }
 
-.esri-widget--panel{
+/* .esri-widget--panel{
   background-color: transparent;
-}
+} */
 
 
