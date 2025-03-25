@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer, useRef } from "react";
 import AppReducer, { initialState } from '../reducers/AppReducer'
 import { config } from "../data/config";
 import { theme } from "../theme";
@@ -10,6 +10,260 @@ export const AppContext = createContext(initialState)
 export const AppProvider = ({children}) => {
 
     const [state, dispatch] = useReducer(AppReducer, initialState)
+
+    const arcgisMapRef = useRef(null)
+
+    const setInfoPanel = (open) => {
+        dispatch({
+            type:"SET_INFO_PANEL",
+             payload: {
+                infoPanelClosed: open,
+            }
+        })
+    } 
+
+    const setSearchResultsPanel = (open) => {
+        dispatch({
+            type:"SET_SEARCH_RESULTS_PANEL",
+             payload: {
+                searchResultsPanelClosed: open,
+            }
+        })
+    } 
+
+    const setPropertyDetailPanel = (open) => {
+        dispatch({
+            type:"SET_PROPERTY_DETAIL_PANEL",
+             payload: {
+                propertyDetailPanelClosed: open,
+            }
+        })
+    } 
+
+    const setComparablePanel = (open) => {
+        dispatch({
+            type: "SET_COMPARABLE_PANEL",
+            payload: {
+                comparablePanelClosed: open
+            }
+        })
+    }
+
+    const setNearbyPanel = (open) => {
+        dispatch({
+            type: "SET_NEARBY_PANEL",
+            payload: {
+                nearbyPanelClosed: open
+            }
+        })
+    }
+
+    const setComparisonResultsPanel = (open) => {
+        dispatch({
+            type: "SET_COMPARISON_RESULTS_PANEL",
+            payload: {
+                comparisonResultsClosed: open
+            }
+        })
+    }
+
+    const setComparisonDetailPanel = (open) => {
+        dispatch({
+            type: "SET_COMPARISON_DETAIL_PANEL",
+            payload: {
+                comparisonDetailPanelClosed: open
+            }
+        })
+    }
+
+    const setLayersPanel = (open) => {
+        dispatch({
+            type: "SET_LAYERS_PANEL",
+            payload: {
+                layersPanelClosed: open
+            }
+        })
+    }
+
+    const setImageryPanel = (open) => {
+        dispatch({
+            type: "SET_IMAGERY_PANEL",
+            payload: {
+                imageryPanelClosed: open
+            }
+        })
+    }
+
+    const setPrintPanel = (open) => {
+        dispatch({
+            type: "SET_PRINT_PANEL",
+            payload: {
+                printPanelClosed: open
+            }
+        })
+    }
+
+    const setSelectPanel = (open) => {
+        dispatch({
+            type: "SET_SELECT_PANEL",
+            payload: {
+                selectPanelClosed: open
+            }
+        })
+    }
+
+    const setExportOpen = (open, source) => {
+        dispatch({
+            type: "SET_EXPORT_DIALOG",
+            payload: {
+                exportOpen: open,
+                exportDataSource: source
+            }
+        })
+    }
+
+    const setFeedbackDialog = (open, source) => {
+        dispatch({
+            type: "SET_FEEDBACK_DIALOG",
+            payload: {
+                feedbackOpen: open,
+                feedbackSource: source
+            }
+        })
+    }
+
+    const setIsMobile = (sm) => {
+        dispatch({
+            type: "SET_MOBILE",
+            payload: {
+                isMobile: sm,
+            }
+        })
+    }
+
+    const togglePanel = (panelName) => {
+
+        const { prevSearchFeatures, searchFeatures, primaryResultFeature, searchTerm, newSearch } = state
+
+        switch (panelName) {
+          case 'info':
+            setInfoPanel(false);
+            setPropertyDetailPanel(true);
+            setSearchResultsPanel(true);
+            break;
+
+          case 'property':
+            if(!primaryResultFeature || !primaryResultFeature[0]){
+                setPrimaryResultFeature(searchFeatures)
+            }
+            setPropertyDetailPanel(false);
+            setInfoPanel(true);
+            setSearchResultsPanel(true);
+            break;
+
+          case 'search':
+            console.log("Toggling to search to display search results. New search: ", newSearch)
+            if(!newSearch){
+                console.log("Toggling to search to display previous features. New search: ", newSearch)
+                setPrimaryResultFeature(prevSearchFeatures ? prevSearchFeatures : primaryResultFeature)
+                if (searchTerm) setSearchParams({'search': searchTerm})
+            }
+            
+            setSearchResultsPanel(false);
+            setInfoPanel(true);
+            setPropertyDetailPanel(true);
+            break;
+
+        case 'nearby':
+            setLayersPanel(true);
+            setComparablePanel(true);
+            setNearbyPanel(false);
+            setImageryPanel(true)
+            setPrintPanel(true)
+            setSelectPanel(true)
+            setComparisonResultsPanel(true)
+            setComparisonDetailPanel(true)
+            break;
+
+        case 'compare':
+            setLayersPanel(true);
+            setComparablePanel(false);
+            setNearbyPanel(true);
+            setImageryPanel(true)
+            setPrintPanel(true)
+            setSelectPanel(true)
+            setComparisonResultsPanel(true)
+            setComparisonDetailPanel(true)
+            break;
+        case 'compareResults':
+            setLayersPanel(true);
+            setComparablePanel(true);
+            setNearbyPanel(true);
+            setImageryPanel(true)
+            setPrintPanel(true)
+            setSelectPanel(true)
+            setComparisonResultsPanel(false)
+            setComparisonDetailPanel(true)
+            break;
+
+        case 'compareProperty':
+            setLayersPanel(true);
+            setComparablePanel(true);
+            setNearbyPanel(true);
+            setImageryPanel(true)
+            setPrintPanel(true)
+            setSelectPanel(true)
+            setComparisonResultsPanel(true)
+            setComparisonDetailPanel(false)
+            break;
+
+        case 'layers':
+            setLayersPanel(false);
+            setComparablePanel(true);
+            setNearbyPanel(true);
+            setImageryPanel(true)
+            setPrintPanel(true)
+            setSelectPanel(true)
+            setComparisonResultsPanel(true)
+            setComparisonDetailPanel(true)
+            break;
+            
+        case 'imagery':
+            setLayersPanel(true);
+            setComparablePanel(true);
+            setNearbyPanel(true);
+            setImageryPanel(false)
+            setPrintPanel(true)
+            setSelectPanel(true)
+            setComparisonResultsPanel(true)
+            setComparisonDetailPanel(true)
+            break; 
+
+        case 'print':
+            setLayersPanel(true);
+            setComparablePanel(true);
+            setNearbyPanel(true);
+            setImageryPanel(true)
+            setPrintPanel(false)
+            setSelectPanel(true)
+            setComparisonResultsPanel(true)
+            setComparisonDetailPanel(true)
+            break; 
+
+        case 'select':
+            setLayersPanel(true);
+            setComparablePanel(true);
+            setNearbyPanel(true);
+            setImageryPanel(true)
+            setPrintPanel(true)
+            setSelectPanel(false)
+            setComparisonResultsPanel(true)
+            setComparisonDetailPanel(true)
+            break; 
+          default:
+            break;
+        }
+      };
 
     const setComparableType = (comparableType) => {
         dispatch({
@@ -340,17 +594,17 @@ export const AppProvider = ({children}) => {
 
         //const {language, textTranslationDictionary} = state
 
-        //console.log("translated text:" , textTranslationDictionary)
+        ////console.log("translated text:" , textTranslationDictionary)
         // Wait for all translations to complete using Promise.all
         await Promise.all(searchSources?.map(async (searchSource) => {
-            console.log("translating search source layer name:", searchSource.name);
+            //console.log("translating search source layer name:", searchSource.name);
             let translatedName = await translateText(searchSource.name);    
             searchSource.name = translatedName;
-            console.log("updated search source name: ", translatedName);
+            //console.log("updated search source name: ", translatedName);
 
-            console.log("original placeholder: ", searchSource.placeholder)
+            //console.log("original placeholder: ", searchSource.placeholder)
             let translatedPlaceholder = await translateText(searchSource.placeholder, true)
-            console.log("translated placeholder: ", translatedPlaceholder)
+            //console.log("translated placeholder: ", translatedPlaceholder)
             searchSource.placeholder = translatedPlaceholder;
             
     
@@ -358,7 +612,7 @@ export const AppProvider = ({children}) => {
         }));
     
         // Everything below this code will wait for the loop to finish
-        console.log("Translation complete. Now continuing with other operations...");
+        //console.log("Translation complete. Now continuing with other operations...");
         // Any other code you want to run after the loop
 
         return searchSources
@@ -378,12 +632,12 @@ export const AppProvider = ({children}) => {
         
         let searchSources = await createSearchSources()
 
-        console.log("original search sources: ", searchSources)
+        //console.log("original search sources: ", searchSources)
 
         //handle text translation
        let updatedSearchSources =  await translateSearchSources(searchSources)
 
-       console.log("updated search sources: ", updatedSearchSources)
+       //console.log("updated search sources: ", updatedSearchSources)
     
         await setSearchSources(updatedSearchSources)
 
@@ -418,7 +672,7 @@ export const AppProvider = ({children}) => {
 
     const attributesStartWithString = (array, attributeName, prefix) => {
         // Use the every method to check if all attributes start with the specified string
-        //console.log(`checking if features ${attributeName} startswith: ${prefix}` )
+        ////console.log(`checking if features ${attributeName} startswith: ${prefix}` )
         return array.every(obj => obj.attributes[attributeName].startsWith(prefix));
       };
 
@@ -432,7 +686,7 @@ export const AppProvider = ({children}) => {
     // Step 1: Extract PIN10 values
     let values = array.map(feature => feature.attributes[attributeName]);
     
-    //console.log("values: ", values)
+    ////console.log("values: ", values)
     
     // Step 2: Use a frequency counter to count occurrences of each PIN10
     let valueCounts = values.reduce((acc, pin) => {
@@ -480,7 +734,7 @@ export const AppProvider = ({children}) => {
                 //if there are multple features and pin10s do not match and pin14 dash are not the same
                 // if(addressMatch === true){
                 //     //if addresses are the same
-                //     //console.log("addresses match")
+                //     ////console.log("addresses match")
                 //     paramValue = attributes["street_address"]
                 //     param = {"address": paramValue}
                 // }
@@ -495,16 +749,16 @@ export const AppProvider = ({children}) => {
                 //that start with pin10
                 let pin14s = features.map(feature => feature.attributes['PIN14'])
                 // let pin10Unique = [...new Set(pin10s)]
-                ////console.log("Location Param - Unique pin10s: ", pin10Unique)
+                //////console.log("Location Param - Unique pin10s: ", pin10Unique)
                 let pin10Dups = await extractDuplicates(features, "PIN10")
-                ////console.log("Location Param - Duplicate pin14s: ", pin14s)
-                ////console.log("Location Param - Duplicate pin10s: ", pin10Dups)
+                //////console.log("Location Param - Duplicate pin14s: ", pin14s)
+                //////console.log("Location Param - Duplicate pin10s: ", pin10Dups)
                 
                 // Filter out PIN14 values that start with any values in pin10Dups
                 let filteredPin14s = pin14s.filter(pin14 => !pin10Dups.some(pin10Dup => pin14.startsWith(pin10Dup)));
-                ////console.log("Location Param - Filtered pin14s: ", filteredPin14s);
+                //////console.log("Location Param - Filtered pin14s: ", filteredPin14s);
                 let paramPins = [...filteredPin14s, ...pin10Dups]
-                //console.log("Final list of url params = ", paramPins)
+                ////console.log("Final list of url params = ", paramPins)
 
                 paramValue = paramPins
                 if(pin10Dups?.length > 0){
@@ -525,41 +779,85 @@ export const AppProvider = ({children}) => {
             }
         }
 
-        //console.log("url param: ", param)
+        ////console.log("url param: ", param)
 
         return  param
+    }
+
+    const deselectParcel = async (ids) => {
+
+        const { primaryResultFeature } = state
+
+        const filteredParcels = primaryResultFeature
+                                .filter(feature => !ids.includes(feature.attributes[config.target_layer_id_field]))
+                                .map(feature => feature)
+
+        // Update parcel selection and search result variables
+        setPrimaryResultFeature(filteredParcels)
+        
+        setSearchResults(null, filteredParcels)
+
+        const  param = await returnSearchParam(filteredParcels)
+        //console.log("new url param: ", param)
+        setSearchParams(param)
+
+        return filteredParcels
     }
 
     /**
      * Queries parcels based on a given polygon and updates search results.
      * @param {Object} polygon - The polygon geometry used for querying.
      */
-    const queryPolygon = async (polygon) => {
+    const queryPolygon = async (polygon, newSelection) => {
 
-        const { panelDisplay, panelPrimaryVisible } = state
+        const { primaryResultFeature, searchTerm, searchFeatures, comparableParcels } = state
 
         const { queryTargetLayerByPolygon } = await import('../arcgis/search/queryTargetLayer')
 
-        //console.log("querying target layer by polygon geometry: ", polygon)
-        const features = await queryTargetLayerByPolygon(polygon)
-
-        setPrimaryResultFeature(features)
-        setSearchResults(null, features)
-
-        if(!panelDisplay || panelDisplay !== "resultsList"){
-            setPanelDisplay("resultsList")
-        }
+        ////console.log("querying target layer by polygon geometry: ", polygon)
+        const features = await queryTargetLayerByPolygon(polygon, primaryResultFeature && !newSelection ? primaryResultFeature : null)
         
-        if(!panelPrimaryVisible || panelPrimaryVisible === false){
-            setPanelPrimaryVisibility(true)
+        console.log("Queried Features: ", features)
+
+        //Check if the features is a comparable feature
+        const comparablePIN14s = comparableParcels.map((feature) => feature.attributes[config.target_layer_id_field])
+        const matchingFeatures = features.filter((feature)=> comparablePIN14s.includes(feature.attributes[config.target_layer_id_field]))
+                                        .map((feature) => feature)
+
+
+        let allFeatures = []
+
+        if(matchingFeatures.length === 0 ){
+            
+            if(!newSelection){
+                allFeatures = [...searchFeatures]
+                allFeatures.push(features[0])
+            }
+            else{
+                allFeatures = [...features]
+            }
+     
+            console.log("Combined Features: ", allFeatures)
+    
+            setPrimaryResultFeature(allFeatures, newSelection)
+            
+            setSearchResults(null, allFeatures, searchTerm, allFeatures)
+
+            //update url parameters
+            //console.log("setting url parameters for select multiple draw tool results")
+            const  param = await returnSearchParam(allFeatures)
+            //console.log("new url param: ", param)
+            setSearchParams(param)
         }
 
-        //update url parameters
-        console.log("setting url parameters for select multiple draw tool results")
-        const  param = await returnSearchParam(features)
-        console.log("new url param: ", param)
-        setSearchParams(param)
+        else if(matchingFeatures.length === 1 && features.length === 1){
+            console.log("Comparable Parcel: ", features)
+            setSecondaryResultFeature(features[0])
+        }
 
+
+
+        return allFeatures
     }
 
 
@@ -572,9 +870,9 @@ export const AppProvider = ({children}) => {
     const queryMapPoint = async (point) => {
         
         // let fields 
-        //console.log("Point from click: ", point)
+        ////console.log("Point from click: ", point)
         setCoordinates(point.x, point.y)
-        //console.log("x/y", point.x, point.y)
+        ////console.log("x/y", point.x, point.y)
 
         const { selectMultiple, 
             panelDisplaySecondary, 
@@ -589,7 +887,7 @@ export const AppProvider = ({children}) => {
         //const { peformQueryFeatures, createGraphic, zoomToExtent, removeGraphics } = await import('../arcgis/webmap/webmap')
         const { queryTargetLayerWithPointFeatures } = await import('../arcgis/search/queryTargetLayer')
 
-        //console.log("Passing query fields: ", parcelQueryFields)
+        ////console.log("Passing query fields: ", parcelQueryFields)
 
         // if(!parcelQueryFields){
         //     fields = await loadDataDictionary()
@@ -601,19 +899,19 @@ export const AppProvider = ({children}) => {
         //let selectedFeatures = await peformQueryFeatures(point, fields)
         let selectedFeatures = await queryTargetLayerWithPointFeatures(point)
 
-        //console.log("Queried Features: ", selectedFeatures)
+        ////console.log("Queried Features: ", selectedFeatures)
 
         //check if queried features are secondary comparables
-        //console.log("comparableParcels: ", comparableParcels)
+        ////console.log("comparableParcels: ", comparableParcels)
 
         let secondaryFeatures = []
         if(comparableParcels){
             secondaryFeatures = comparableParcels.filter((feature) => feature.attributes['PIN14'] === selectedFeatures[0].attributes['PIN14'])
-            //console.log("Secondary feature selected: ", secondaryFeatures) 
+            ////console.log("Secondary feature selected: ", secondaryFeatures) 
         }
 
         if(secondaryFeatures?.length > 0){
-            //console.log("found comparable features from mouse click: ", selectedFeatures)
+            ////console.log("found comparable features from mouse click: ", selectedFeatures)
             setSecondaryResultFeature(secondaryFeatures[0])
 
             if(screenWidth < theme.breakpoints.values.lg){
@@ -633,7 +931,7 @@ export const AppProvider = ({children}) => {
             let resultFeatures = selectedFeatures
 
             if(selectMultiple && primaryResultFeature){
-                //console.log("multiple features selected")
+                ////console.log("multiple features selected")
                 let features = Array.isArray(primaryResultFeature) ? primaryResultFeature : [primaryResultFeature]
                 resultFeatures = [...features, ...selectedFeatures]
             }
@@ -672,13 +970,13 @@ export const AppProvider = ({children}) => {
     //deprecated in [v3.0.0-beta-3]
     const returnLocationFeatures = async (coordinates) => {
 
-        //console.log("Returning location features")
+        ////console.log("Returning location features")
         const { queryTargetLayerWithCoordinates } = await import("../arcgis/search/queryTargetLayer")
 
         const { panelDisplay, panelPrimaryVisible } = state
 
         let features = await queryTargetLayerWithCoordinates(coordinates)
-        //console.log("target features from x/y: ", features)
+        ////console.log("target features from x/y: ", features)
 
         setPrimaryResultFeature(features, true)
         setSearchResults(null, features, null)
@@ -734,7 +1032,7 @@ export const AppProvider = ({children}) => {
         // Iterate over each object in the second array and check if its attributes['PIN14'] value is included in the attributes1 array
         for (let obj of array2) {
             if (attributes1.includes(obj.attributes['PIN14'])) {
-                return true; // If a match is found, return true
+                return obj.attributes['PIN14']; // If a match is found, return true
             }
         }
 
@@ -750,7 +1048,7 @@ export const AppProvider = ({children}) => {
 
         let { features } = await readFeatureLayerData(config.data_dictionary, ["*"], "field IS NOT NULL")
 
-        ////console.log("DATA DICTIONARY: ", features)
+        //////console.log("DATA DICTIONARY: ", features)
         setDataDictionary(features)
 
         //to do make sure pin10 id field is included
@@ -762,10 +1060,10 @@ export const AppProvider = ({children}) => {
                                           ...new Set(features.filter((feature) => feature.attributes['hyperlink_params'] !== null)
                                           .map((feature) => feature.attributes['hyperlink_params'].trim()))]
 
-        ////console.log("Query Fields: ", queryFields)
+        //////console.log("Query Fields: ", queryFields)
         //setParcelQueryFields(queryFields)
 
-        ////console.log("loadDataDictionary - parcel query fields: ", parcelQueryFields)
+        //////console.log("loadDataDictionary - parcel query fields: ", parcelQueryFields)
         return queryFields
     }
 
@@ -775,23 +1073,13 @@ export const AppProvider = ({children}) => {
      * @returns {void} - No return value.
      */
     const selectResultFromList = async (result) => {
-        //console.log("Result PIN : ", result)
+
         const { searchFeatures, searchTerm, prevSearchFeatures } = state
         const selectedFeature = searchFeatures.filter((feature) => feature.attributes['PIN14_dash'] == result)
-        //console.log("selectedFeature: ", selectedFeature)
 
-        setPrimaryResultFeature(selectedFeature, true)
-
-        //console.log("previous search term: ", searchTerm)
-        //console.log("previous search features: ", prevSearchFeatures)
-        //console.log("search features: ", searchFeatures )
+        setPrimaryResultFeature(selectedFeature, false)
         
         setSearchResults(null, searchFeatures, searchTerm, searchFeatures)
-  
-        // //update graphic in map
-        // const { createGraphic } = await import('../arcgis/webmap/webmap')
-
-        // createGraphic(selectedFeature, "primary", theme.palette.primary.main)
     }
 
 
@@ -806,7 +1094,7 @@ export const AppProvider = ({children}) => {
         const { createGraphic, zoomToExtent, updateSecondaryGraphic } = await import('../arcgis/webmap/webmap')
         const { theme } = await import ('../theme')
 
-        //console.log("creating new graphic for selectedFeature: ", secondaryResultFeature)
+        ////console.log("creating new graphic for selectedFeature: ", secondaryResultFeature)
 
         const secondaryPIN14 = secondaryResultFeature.attributes['PIN14']
 
@@ -846,18 +1134,18 @@ export const AppProvider = ({children}) => {
         const { handleMultipleResults, isAddressLocator } = await import('../arcgis/search/queryTargetLayer')
         const { returnBufferGeometry } = await import('../arcgis/geoprocessing/geoprocessing')
     
-        //console.log("Performing new target layer query")
+        ////console.log("Performing new target layer query")
         setSearchBufferGeometry(null, null)
         
         const{ targetFeatures } = await handleMultipleResults(results)
 
-        //console.log("target features returned: ", targetFeatures)
-        //console.log("results returned: ", results)
+        ////console.log("target features returned: ", targetFeatures)
+        ////console.log("results returned: ", results)
 
         setPrimaryResultFeature(targetFeatures, true)
 
 
-        //console.log("seting previous feature: ", targetFeatures)
+        ////console.log("seting previous feature: ", targetFeatures)
         setSearchResults(results, targetFeatures, newSearchTerm, targetFeatures)
         //}
 
@@ -872,12 +1160,12 @@ export const AppProvider = ({children}) => {
         
         const bufferGeometries = await Promise.all(addressLocatorResultGeometry.map(async(geometry) => {
 
-            console.log("buffer geometry: ", geometry)
+            //console.log("buffer geometry: ", geometry)
             return await returnBufferGeometry(geometry, config.buffer_distance, config.buffer_unit)
 
         }))
 
-        console.log("address locator buffer geometries calculated: ", bufferGeometries)
+        //console.log("address locator buffer geometries calculated: ", bufferGeometries)
         setSearchBufferGeometry(addressLocatorResultGeometry, bufferGeometries)
 
     }
@@ -889,12 +1177,12 @@ export const AppProvider = ({children}) => {
      */
     const renderSearchResults = async (searchWidgetResults) => {
 
-        //console.log("FUNCTION: renderSearchResults" )
+        ////console.log("FUNCTION: renderSearchResults" )
         let fields
         const { querySearchResults } = await import('../arcgis/webmap/webmap')
         const { parcelQueryFields, panelDisplay, primaryResultFeature } = state
 
-        //console.log("Query Fields: ", parcelQueryFields)
+        ////console.log("Query Fields: ", parcelQueryFields)
         if(!parcelQueryFields){
             fields = await loadDataDictionary()
         }
@@ -904,7 +1192,7 @@ export const AppProvider = ({children}) => {
 
         const features = await querySearchResults(searchWidgetResults, fields)
 
-        //console.log("queried features: ", features)
+        ////console.log("queried features: ", features)
         setSearchResults(searchWidgetResults, features)
 
         //if(!primaryResultFeature){
@@ -936,7 +1224,7 @@ export const AppProvider = ({children}) => {
         setSearchBufferGeometry(null, null)
 
         if(["comparablePropertySearch", "nearbyProperties", "resultsListComparables", "resultsListNearby", "propertyDetailComparable", "propertyDetailNearby"].includes(panelDisplaySecondary)){
-            //console.log("CLEAR RESULTS: closing secondary panel. Secondary Panel =", panelDisplaySecondary )
+            ////console.log("CLEAR RESULTS: closing secondary panel. Secondary Panel =", panelDisplaySecondary )
             setPanelSecondaryVisibility(false)
         }
 
@@ -984,7 +1272,7 @@ export const AppProvider = ({children}) => {
 
         setComparableParcels(features)
 
-        //console.log("New Comparable features: ", state.comparableParcels)
+        ////console.log("New Comparable features: ", state.comparableParcels)
 
         if(screenWidth < theme.breakpoints.values.lg){
             setPanelPrimaryVisibility(true)
@@ -1008,11 +1296,12 @@ export const AppProvider = ({children}) => {
         setIsQuerying(true)
         const { nearbyProperties } = await import('../arcgis/search/queryTargetLayer')
         const { primaryResultFeature, parcelQueryFields } = state  
-        //console.log(`Searching for properties within ${searchDistance}`)
+        ////console.log(`Searching for properties within ${searchDistance}`)
 
         
         let nearbyParcels = await nearbyProperties( searchDistance, units, primaryResultFeature, parcelQueryFields)
-    
+        
+        console.log("nearbyParcels")
         setComparableParcels(nearbyParcels)
         setIsQuerying(false)
     }
@@ -1027,19 +1316,19 @@ export const AppProvider = ({children}) => {
 
         const {language, textTranslationDictionary} = state
 
-        //console.log(textTranslationDictionary)
+        ////console.log(textTranslationDictionary)
         const textIsNotNumber = Number.isNaN(parseInt(text))
 
         if(text && textTranslationDictionary && textIsNotNumber){
             
             if(Object.keys(textTranslationDictionary).includes(text)){
 
-                //console.log("TRANSLATED TEXT: ", text, textTranslationDictionary[text][language])
+                ////console.log("TRANSLATED TEXT: ", text, textTranslationDictionary[text][language])
                 return textTranslationDictionary[text][language]
             }
 
             else{
-                ////console.log("text to translate: ", text)
+                //////console.log("text to translate: ", text)
                 let numericValues
                 let textToReplace = text
                 if(text.match(/\d+/g) && !text.includes("-") && !skipNum){
@@ -1049,7 +1338,7 @@ export const AppProvider = ({children}) => {
                     //replace numeric and parentheses 
                     textToReplace = text.replace(numericValues, "").replace(/[()]/g, "").trim()
 
-                    ////console.log("Found numeric values: ", numericValues, textToReplace)
+                    //////console.log("Found numeric values: ", numericValues, textToReplace)
                 }
 
                 let translation = Object.values(textTranslationDictionary).filter(textReplace => 
@@ -1058,7 +1347,7 @@ export const AppProvider = ({children}) => {
                         return textReplace[language]
                     })
 
-                //console.log("TRANSLATED TEXT: ", translation)
+                ////console.log("TRANSLATED TEXT: ", translation)
                 if(translation && translation.length){
                     if(numericValues && text !== config.bannerHeader){
                         if(text.match(/[()]/g)){
@@ -1177,7 +1466,44 @@ export const AppProvider = ({children}) => {
         setComparableType,
         comparableType: state.comparableType,
         returnFeaturesByPin10Pin14,
-        returnSearchParam
+        returnSearchParam,
+        //PANEL CONTROLS
+        setInfoPanel,
+        infoPanelClosed: state.infoPanelClosed,
+        setSearchResultsPanel,
+        searchResultsPanelClosed: state.searchResultsPanelClosed,
+        setPropertyDetailPanel,
+        propertyDetailPanelClosed: state.propertyDetailPanelClosed,
+        comparablePanelClosed: state.comparablePanelClosed,
+        setComparablePanel,
+        nearbyPanelClosed: state.nearbyPanelClosed,
+        setNearbyPanel,
+        comparisonResultsClosed: state.comparisonResultsClosed,
+        setComparisonResultsPanel,
+        setComparisonDetailPanel,
+        comparisonDetailPanelClosed: state.comparisonDetailPanelClosed,
+        togglePanel,
+        setLayersPanel,
+        layersPanelClosed: state.layersPanelClosed,
+        setImageryPanel,
+        imageryPanelClosed: state.imageryPanelClosed,
+        setPrintPanel,
+        printPanelClosed: state.printPanelClosed,
+        setSelectPanel,
+        selectPanelClosed: state.selectPanelClosed,
+        arcgisMapRef,
+        deselectParcel,
+        //EXPORT DIALOG
+        setExportOpen,
+        exportOpen:state.exportOpen,
+        exportDataSource: state.exportDataSource,
+        setFeedbackDialog,
+        feedbackOpen: state.feedbackOpen,
+        feedbackSource: state.feedbackSource,
+        //DEVICE STATE
+        setIsMobile,
+        isMobile: state.isMobile
+
     }
 
     // useEffect( () => {
@@ -1194,6 +1520,41 @@ export const AppProvider = ({children}) => {
 
     // }, [])
 
+
+    useEffect(() => {
+        const handleResize = () => {
+            ////console.log("Resize event triggered");
+            const width = window.innerWidth
+            ////console.log("window width: ", width)
+            setIsMobile(width < 768)
+        }
+    
+        window.addEventListener('resize', handleResize);
+
+        handleResize();
+        
+        return () => {
+          window.removeEventListener('resize', handleResize);
+        };
+      }, [window.innerWidth]);
+
+
+    // useEffect(() => {
+
+    //     const width = window.innerWidth
+    //     setIsMobile(width < 768); // Check on initial load
+
+    //     const mediaQuery = window.matchMedia("(max-width: 768px)");
+
+    //     const handleResize = (event) => {
+    //     setIsMobile(event.matches);
+    //     };
+
+
+    //     mediaQuery.addEventListener("change", handleResize); // Listen for changes
+    //     return () => mediaQuery.removeEventListener("change", handleResize); // Cleanup
+    // }, []);
+
     useEffect(() => {
         //on initial load display info panel
 
@@ -1206,20 +1567,20 @@ export const AppProvider = ({children}) => {
         const loadParcelFields = async () => {
             let fields = await loadDataDictionary()
             setParcelQueryFields(fields)
-            //console.log("Parcel query fields: ", fields)
+            ////console.log("Parcel query fields: ", fields)
         }
 
         loadParcelFields();
-        //console.log("Parcel query fields: ", state.parcelQueryFields)
+        ////console.log("Parcel query fields: ", state.parcelQueryFields)
       },[])
 
 
     
     useEffect(() => {
         const handleResize = () => {
-            //console.log("Resize event triggered");
+            ////console.log("Resize event triggered");
             const width = window.innerWidth
-            //console.log("window width: ", width)
+            ////console.log("window width: ", width)
             setScreenWidth(width)
         }
     
@@ -1247,7 +1608,7 @@ export const AppProvider = ({children}) => {
             let helpData = await readFeatureLayerData(config.translation_text_help, ["*"], "english IS NOT NULL", false)
             let helpText = await returnTranslatedText(helpData.features)
 
-            ////console.log("translated help text: ", helpText)
+            //////console.log("translated help text: ", helpText)
 
             let text = {
                 ...generalText,
@@ -1277,7 +1638,7 @@ export const AppProvider = ({children}) => {
     //   useEffect(() => {
 
     //     if(state.panelDisplayWidget !== "measureWidget" || state.panelWidgetVisible === false){
-    //         //console.log("Measure Widget: ", state.measureWidget)
+    //         ////console.log("Measure Widget: ", state.measureWidget)
     //         if(state.measureWidgetState && state.measureWidget){
     //             await setMeasureWidgetState(null)
     //             await state.measureWidget.when()
@@ -1292,12 +1653,12 @@ export const AppProvider = ({children}) => {
     // useEffect(() => {
     //     const clearMeasureWidget = async () => {
     //         if (state.panelDisplayWidget !== "measureWidget" || state.panelWidgetVisible === false) {
-    //             ////console.log("Measure Widget: ", state.measureWidget);
+    //             //////console.log("Measure Widget: ", state.measureWidget);
     //             if (state.measureWidget) {
-    //                 //console.log("Measure Widget: ", state.measureWidget);
+    //                 ////console.log("Measure Widget: ", state.measureWidget);
     //                 // await state.measureWidget.when();
     //                 state.measureWidget.clear();
-    //                 //console.log("Destroying Measure Widget: ");
+    //                 ////console.log("Destroying Measure Widget: ");
     //                 state.measureWidget.destroy();
     //                 //setMeasureWidget(null)
     //                 setMeasureWidgetState(null);

@@ -14,6 +14,8 @@ export const config = {
     //IMAGES ROOT DIRECTORY
     image_directory: "https://maps.cookcountyil.gov/files/apps/cookviewer/images",
     //NAVBAR
+    title: "CookViewer",
+    description: "Cook County Parcel Viewer",
     //App Logo
     logo:"https://maps.cookcountyil.gov/cdn/cook/cook_logo.png",
     //App Pages
@@ -33,6 +35,10 @@ export const config = {
     secondary_color:'',
     //PRINT OPTIONS
     print_orientation_options : ['Landscape', 'Portrait'],
+    //FEEDBACK URLS
+    feedback_general:'//survey123.arcgis.com/share/ba8f1d610701420abc33612ef1d3378a?hide=navbar,footer',
+    feedback_extended:'//survey123.arcgis.com/share/640dd8fd0d064eb880b65cc3d238f87f?hide=navbar,footer',
+    feedback_search:'//survey123.arcgis.com/share/6c24e84d3ac24024a311b7e81045c382?hide=navbar,footer',
     //DATA DICTIONARY SERVICE
     data_dictionary: "https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/arcgis/rest/services/cookviewer_data_dictionary/FeatureServer/0",
     // TARGET LAYER CONFIGURATION: Specify the name of the target layer and the fields to display in results.
@@ -43,6 +49,7 @@ export const config = {
     //FIELD TO REFERENCE FOR CREATING URL PARAM WHEN CLICKING IN MAP
     target_layer_id_field: "PIN10",
     target_layer_unique_id: "PIN14",
+    target_layer_display_field: "PIN14_dash", //Controls how the export parcel title is dipslayed
     //MUNICIPALITY SERVICE- USED TO CALCULATE INCORPORATED VS UNINCORPORATED VALUES FOR MUNICIPALITY IN PROPERTY DETAIL
     municipality_url: "https://gis.cookcountyil.gov/traditional/rest/services/politicalBoundary/MapServer/2",
     // NEARBY SEARCH SETTINGS: Configure the buffer distance and unit for nearby searches.

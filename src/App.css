@@ -6,7 +6,10 @@
 
 html,
 body{
-  padding-top: env(safe-area-inset-top);
+  height: 100%
+    /* min-height: -webkit-fill-available; */
+
+  /* padding-top: env(safe-area-inset-top);
   padding-bottom: env(safe-area-inset-bottom) ;
   padding-top: constant(safe-area-inset-top);
   padding-bottom: constant(safe-area-inset-bottom) ;
@@ -14,13 +17,129 @@ body{
   height: 100%;
   width: calc(100%);
   box-sizing: border-box;
-  font-family: Barlow
+  font-family:  "Avenir Next", Avenir, "Helvetica Neue", sans-serif; */
+}
+
+/* CALCITE CUSTOM STYLES */
+
+.form-section{
+  border-bottom:1px solid var(--calcite-color-border-1);
+  margin-bottom: var(--calcite-spacing-lg);
+}
+
+.form-header{
+  font-size: var(--calcite-font-size);
+  font-weight: var(--calcite-font-weight-medium);
+  padding-bottom: var(--calcite-spacing-base);
+  color:var(--calcite-color-text-2)
+}
+
+.form-description{
+  font-size: var(--calcite-font-size-sm);
+  font-weight: var(--calcite-font-weight-light);
+  padding-bottom: var(--calcite-spacing-md);
+  color:var(--calcite-color-text-2)
+}
+
+calcite-stepper{
+  background-color: var(--calcite-color-foreground-1);
+  padding: var(--calcite-spacing-lg);
+}
+
+/* .property-comparison-form{
+  flex-grow: 1;
+  min-height: 0;
+  overflow: auto;
+} */
+
+.stepper-item-content{
+  -calcite-stepper-item-spacing-unit-m: 0px;
+  width: inherit;
+}
+
+calcite-navigation.cook-search {
+  --calcite-navigation-width: 100%
+}
+
+calcite-flow.overlay-menu {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; 
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+calcite-navigation.org-brand{
+  --calcite-navigation-background-color: #0D4D96;
+  --calcite-navigation-text-color: #ffffff
+}
+
+calcite-navigation-logo.org-brand{
+  --calcite-navigation-logo-heading-text-color: #ffffff;
+  --calcite-navigation-logo-text-color: #ffffff
+}
+
+calcite-menu.org-brand{
+  --calcite-menu-background-color: #0D4D96;
+  --calcite-menu-text-color: #ffffff
+}
+
+calcite-button.hyperlink-button{
+  --calcite-button-background-color: #0D4D96;
+}
+
+calcite-block-section.info-section-header{
+  --calcite-block-section-header-text-color: #0D4D96;
+  --calcite-block-section-text-color: #0D4D96;
+}
+
+calcite-label.header{
+  --calcite-label-text-color: #ffffff
+}
+calcite-label.DetailHeader{
+  --calcite-label-margin-bottom: 5px
+}
+
+calcite-label.description{
+  margin-top: 5px;
+  --calcite-label-text-color: #6a6a6a
+}
+
+calcite-shell-panel.left-panel{
+  --calcite-shell-panel-max-width: 300px;
+
+}
+
+calcite-shell-panel.right-panel{
+  --calcite-shell-panel-max-width: 200px;
+}
+
+calcite-panel.panel-start{
+  --calcite-panel-header-background-color: #ffffff;
+  /* height: 100vh; */
 }
 
 
-.main {
-  height: calc(100vh - var(--safe-area-height));
+calcite-panel.header{
+  --calcite-panel-header-background-color: #0D4D96;
 }
+calcite-action.header{
+  --calcite-action-background-color: #0D4D96;
+  --calcite-action-background-color-hover: #009ADA;
+  --calcite-action-text-color: #ffffff
+}
+
+/* ESRI COMPNENTS CUSTOM STYLES */
+.esri-search{
+  width:100%;
+  /* max-width: 600px; */
+  min-width: 400px;
+}
+
+/* OTHER */
+
+
 
 arcgis-map{
   width: 100%
@@ -36,65 +155,8 @@ arcgis-layer-list{
   background-color: transparent;
 }
 
-.esri-widget--panel{
+/* .esri-widget--panel{
   background-color: transparent;
-}
+} */
 
 
-.esri-search{
-  width:auto;
-  max-width: 600px;
-  min-width: 300px;
-}
-
-@media (max-width:500px){
-  .esri-search{
-    width: 95vw;
-  }
-}
-
-.esri-measurement-widget-content__measurement-item__value{
-  padding: 3%;
-  background-color: lightgrey !important;
-} 
-
-.esri-zoom{
-  right: 10px;
-  top: 20px;
-}
-
-.esri-home{
-  right: 10px;
-  top: 90px;
-}
-
-.esri-locate {
-  right: 10px;
-  top: 130px;
-}
-
-@media (max-width:500px){
-  .esri-zoom{
-    right: 10px;
-    top: 80px;
-  }
-
-  .esri-home{
-    right: 10px;
-    top: 150px;
-  }
-
-  .esri-locate {
-    right: 10px;
-    top: 190px;
-  }
-}
-
-.esri-distance-measurement-2d__clear-button{
-  border-radius: 20px !important;
-}
-
-/* Example CSS rule to change the cursor to a pointer */
-.element-class {
-  cursor: pointer;
-}

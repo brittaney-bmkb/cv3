@@ -18,84 +18,29 @@ import { config } from './data/config'
 import HelpDialog from './components/HelpDialog/HelpDialog'
 import WebMapComponentBeta from './components/WebMapView/WebMapComponentBeta'
 
+//Calcite Components
+import "@esri/calcite-components/dist/components/calcite-shell";
+import "@esri/calcite-components/dist/components/calcite-shell-panel";
+import "@esri/calcite-components/dist/components/calcite-panel";
+import "@esri/calcite-components/dist/components/calcite-block";
+import "@esri/calcite-components/dist/components/calcite-block-section";
+import "@esri/calcite-components/dist/components/calcite-block-group";
+import "@esri/calcite-components/dist/components/calcite-action-bar";
+import "@esri/calcite-components/dist/components/calcite-action-group";
+import "@esri/calcite-components/dist/components/calcite-action-bar";
+import "@esri/calcite-components/dist/components/calcite-action";
+import "@esri/calcite-components/dist/components/calcite-label";
+import "@esri/calcite-components/dist/components/calcite-input"
+import "@esri/calcite-components/dist/components/calcite-input-text"
+import "@esri/calcite-components/dist/components/calcite-input-number"
+import "@esri/calcite-components/dist/components/calcite-dropdown"
+import Layout from './Layout'
+
 function App() {
-
-  const [mapVisible, setMapVisible] = useState(true)
-  const [screenWidth, setScreenWidth] = useState(true)
-  const [componentHeight, setComponentHeight] = useState(window.innerHeight);
-
-  function handleClick(){
-    setMapVisible(!mapVisible)
-  }
-
-  useEffect(() => {
-    const handleResize = () => {
-        ////console.log("Resize event triggered");
-        const width = window.innerWidth
-        ////console.log("window width: ", width)
-        setScreenWidth(width)
-        setComponentHeight(window.innerHeight);
-    }
-
-    // const resizeOps = () => {
-    //   //console.log("Setting inner window height: ", window.innerHeight)
-    //   document.documentElement.style.setProperty("--doc-height", `${window.innerHeight}px`);
-    // };
-
-    window.addEventListener('resize', handleResize);
-    //window.addEventListener("resize", resizeOps);
-
-    handleResize();
-    //resizeOps();
-    
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      //window.removeEventListener('resize', resizeOps);
-    };
-
-    //window.innerHeight
-  }, [window.innerWidth, window.innerWidth]);
 
   return (
     <AppProvider>
-      <Box id="main" display="flex" flexDirection="column"  style={{height: `calc(${componentHeight}px - (var(--safe-area-top) + var(--safe-area-bottom)))`}}>
-        {config.showBanner === true ? <Notifications/> : null}
-          <NavBar/>
-        <Stack id="main-stack" direction="row" justifyContent="space-between" flexGrow={1} minHeight={0}>
-          <LeftPanel/>
-          <Box flexDirection="column" flex={4} padding={0} display="flex" alignItems="center">
-              {/* <Box flexDirection="column" alignItems="left" width="100%" display={{xs:'none', sm:'flex', md:'flex'}}>
-                <MapButtonGroup/>
-              </Box>
-              <Box flexDirection="column" alignItems="center" width="100%" display={{xs: mapVisible ? 'flex' : 'none', sm:'none', md:'none'}}>
-                <MapButtonGroup/>
-              </Box> */}
-
-              { screenWidth >= 600  ? 
-              <Box display="flex" width="100%" height="100%">
-                <WebMapComponentBeta/>
-                {/* <WebMapView/> */}
-              </Box>
-               : 
-              <PanelMobile/>}
-  
-            <BottomPanel/>
-          </Box>
-          <WidgetPanel/>
-          <SecondaryPanel/>
-          
-        </Stack>
-        {/* <Box width="auto" height="auto" position="absolute" bottom={20} left="45%" display={{xs:"block", sm: "none"}}>
-          <ToggleIconButton 
-            text={ mapVisible ? "Data" : "Map" } 
-            icon={ mapVisible ? <TableRowsOutlinedIcon/> : <MapOutlinedIcon/> } 
-            onClick={handleClick}
-          />
-        </Box> */}
-        
-        <TranslateMenu/>
-        <HelpDialog/>
-      </Box>
+     <Layout.jsx/>
     </AppProvider>
   )
 }

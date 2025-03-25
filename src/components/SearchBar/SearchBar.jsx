@@ -261,7 +261,7 @@ const SearchBar = () => {
 
     return(
         <Box 
-        ref={searchDiv}
+        //ref={searchDiv}
         flex={1} 
         height={40} 
         bgcolor="white" 

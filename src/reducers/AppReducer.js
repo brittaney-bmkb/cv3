@@ -42,7 +42,25 @@ export const initialState = {
     openHelpDialog: false,
     selectMultiple: null,
     comparableType: null,
-
+    //PANEL STATES
+    infoPanelClosed: false,
+    searchResultsPanelClosed: true,
+    propertyDetailPanelClosed: true,
+    comparablePanelClosed: true,
+    nearbyPanelClosed: true,
+    comparisonResultsClosed: true,
+    comparisonDetailPanelClosed: true,
+    layersPanelClosed: true,
+    imageryPanelClosed: true,
+    printPanelClosed:true,
+    selectPanelClosed:true,
+    //DIALOG STATES
+    exportOpen: false,
+    exportDataSource: null,
+    feedbackOpen: false,
+    feedbackSource:null,
+    //DEVICE STATE
+    isMobile: null
 }
 
 const AppReducer = (state, action) => {
@@ -51,6 +69,95 @@ const AppReducer = (state, action) => {
 
     switch(type){
 
+        case "SET_INFO_PANEL":
+        return {
+            ...state, 
+            infoPanelClosed: payload.infoPanelClosed
+        }  
+        
+        
+        case "SET_SEARCH_RESULTS_PANEL":
+            console.log("SEARCH RESULTS OPEN")
+        return {
+            ...state, 
+            searchResultsPanelClosed: payload.searchResultsPanelClosed
+        } 
+
+        case "SET_PROPERTY_DETAIL_PANEL":
+        return {
+            ...state, 
+            propertyDetailPanelClosed: payload.propertyDetailPanelClosed
+        } 
+
+        case "SET_COMPARABLE_PANEL":
+        return {
+            ...state, 
+            comparablePanelClosed: payload.comparablePanelClosed
+        } 
+
+        case "SET_NEARBY_PANEL":
+        return {
+            ...state, 
+            nearbyPanelClosed: payload.nearbyPanelClosed
+        } 
+
+        case "SET_COMPARISON_RESULTS_PANEL":
+        return {
+            ...state, 
+            comparisonResultsClosed: payload.comparisonResultsClosed
+        } 
+
+        case "SET_COMPARISON_DETAIL_PANEL":
+        return {
+            ...state, 
+            comparisonDetailPanelClosed: payload.comparisonDetailPanelClosed
+        } 
+
+        case "SET_LAYERS_PANEL":
+        return {
+            ...state, 
+            layersPanelClosed: payload.layersPanelClosed
+        } 
+
+        case "SET_IMAGERY_PANEL":
+        return {
+            ...state, 
+            imageryPanelClosed: payload.imageryPanelClosed
+        } 
+
+        case "SET_PRINT_PANEL":
+        return {
+            ...state, 
+            printPanelClosed: payload.printPanelClosed
+        }
+
+        case "SET_SELECT_PANEL":
+        return {
+            ...state, 
+            selectPanelClosed: payload.selectPanelClosed
+        }
+
+        case "SET_EXPORT_DIALOG":
+        return {
+            ...state, 
+            exportOpen: payload.exportOpen,
+            exportDataSource: payload.exportDataSource
+        }
+
+        case "SET_FEEDBACK_DIALOG":
+        return {
+            ...state, 
+            feedbackOpen: payload.feedbackOpen,
+            feedbackSource: payload.feedbackSource
+        }
+
+        case "SET_MOBILE":
+        return {
+            ...state, 
+            isMobile: payload.isMobile,
+        }
+    
+    
         case "SET_COMPARABLE_TYPE":
         //console.log("SET_COMPARABLE_TYPE")
         return {
@@ -87,7 +194,7 @@ const AppReducer = (state, action) => {
             }
 
         case "SET_PRIMARY_RESULT_FEATURE":
-            //console.log("SET_PRIMARY_RESULT_FEATURE: ", payload.primaryResultFeature)
+            console.log("SET_PRIMARY_RESULT_FEATURE: ", payload.primaryResultFeature)
             return{
                 ...state,
                 primaryResultFeature:payload.primaryResultFeature,
