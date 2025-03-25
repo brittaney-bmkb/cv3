@@ -74,6 +74,10 @@ const PropertyComparison = () => {
         setCurrentStep(0)
     }, [])
 
+    useEffect(() => {
+        setCurrentStep(2)
+    }, [secondaryResultFeature])
+
     return(
         <CalcitePanel 
             id="comparable-panel" 

@@ -810,40 +810,52 @@ export const AppProvider = ({children}) => {
      */
     const queryPolygon = async (polygon, newSelection) => {
 
-        const { primaryResultFeature, searchTerm, searchFeatures } = state
+        const { primaryResultFeature, searchTerm, searchFeatures, comparableParcels } = state
 
         const { queryTargetLayerByPolygon } = await import('../arcgis/search/queryTargetLayer')
 
         ////console.log("querying target layer by polygon geometry: ", polygon)
         const features = await queryTargetLayerByPolygon(polygon, primaryResultFeature && !newSelection ? primaryResultFeature : null)
-
+        
         console.log("Queried Features: ", features)
 
+        //Check if the features is a comparable feature
+        const comparablePIN14s = comparableParcels.map((feature) => feature.attributes[config.target_layer_id_field])
+        const matchingFeatures = features.filter((feature)=> comparablePIN14s.includes(feature.attributes[config.target_layer_id_field]))
+                                        .map((feature) => feature)
+
+
         let allFeatures = []
-        // const allFeatures = [
-        //     ...features,
-        //     ...searchFeatures && !newSelection ? searchFeatures : []
-        // ];
 
-        if(!newSelection){
-            allFeatures = [...searchFeatures]
-            allFeatures.push(features[0])
+        if(matchingFeatures.length === 0 ){
+            
+            if(!newSelection){
+                allFeatures = [...searchFeatures]
+                allFeatures.push(features[0])
+            }
+            else{
+                allFeatures = [...features]
+            }
+     
+            console.log("Combined Features: ", allFeatures)
+    
+            setPrimaryResultFeature(allFeatures, newSelection)
+            
+            setSearchResults(null, allFeatures, searchTerm, allFeatures)
+
+            //update url parameters
+            //console.log("setting url parameters for select multiple draw tool results")
+            const  param = await returnSearchParam(allFeatures)
+            //console.log("new url param: ", param)
+            setSearchParams(param)
         }
-        else{
-            allFeatures = [...features]
+
+        else if(matchingFeatures.length === 1 && features.length === 1){
+            console.log("Comparable Parcel: ", features)
+            setSecondaryResultFeature(features[0])
         }
- 
-        console.log("Combined Features: ", allFeatures)
 
-        setPrimaryResultFeature(allFeatures, newSelection)
-        
-        setSearchResults(null, allFeatures, searchTerm, allFeatures)
 
-        //update url parameters
-        //console.log("setting url parameters for select multiple draw tool results")
-        const  param = await returnSearchParam(allFeatures)
-        //console.log("new url param: ", param)
-        setSearchParams(param)
 
         return allFeatures
     }
@@ -1020,7 +1032,7 @@ export const AppProvider = ({children}) => {
         // Iterate over each object in the second array and check if its attributes['PIN14'] value is included in the attributes1 array
         for (let obj of array2) {
             if (attributes1.includes(obj.attributes['PIN14'])) {
-                return true; // If a match is found, return true
+                return obj.attributes['PIN14']; // If a match is found, return true
             }
         }
 

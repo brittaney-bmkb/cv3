@@ -5,7 +5,7 @@ import "@arcgis/map-components/components/arcgis-map";
 import "@arcgis/map-components/components/arcgis-zoom";
 import { config } from "../../data/config";
 import { useEffect, useRef, useState } from "react";
-import * as geometryEngine from "@arcgis/core/geometry/geometryEngine.js";
+import * as unionOperator from "@arcgis/core/geometry/operators/unionOperator.js";
 import ActionBarMap from "../ActionBar/ActionBarMap";
 
 //set view highlight options
@@ -36,6 +36,9 @@ const highlights = [
 
 
 
+
+
+
 const Map = () => {
 
     const { 
@@ -58,7 +61,6 @@ const Map = () => {
     const [highlightComparable, setHighlightComparable] = useState(null)
     const [clickedFeature, setClickedFeature] = useState(null)
     
-    
     const findTargetLayer = (map) => {
 
         let layer = map.allLayers.find((layer) => {
@@ -77,9 +79,9 @@ const Map = () => {
 
         if(Array.isArray(features)){
             const geometries = features.map((feature) => feature.geometry);
-            //console.log("geometries: ", geometries)
+            console.log("geometries: ", geometries)
             if(geometries?.length > 0){
-                extent = geometryEngine.union(geometries);
+                extent = unionOperator.executeMany(geometries);
             }
             
         }
@@ -91,7 +93,8 @@ const Map = () => {
             // else{
                 //////console.log("zoom to extent: ", features)
                 //////console.log("quering extent ")
-                extent = await features.queryExtent()
+               // extent = await features.queryExtent()
+               extent = features.geometry
             //}
         }
         
@@ -131,20 +134,19 @@ const Map = () => {
 
     const handleParcelSelection = async (feature, name) => {
 
-        if(!arcgisMapRef.current?.view){
+        if(!arcgisMapRef.current) {
+            return
+        }
+
+        const view = arcgisMapRef.current?.view
+
+        if(!view){
             return
         }
         
-        const view = arcgisMapRef.current?.view
+        const layerView = await view?.whenLayerView(parcelLayer)
+        const highlight = await layerView?.highlight(feature, {name: name})
 
-        // console.log("highlighed layer: ", highlightSelect)
-                    
-        //highlightSelect?.remove();
-
-        const layerView = await view.whenLayerView(parcelLayer)
-        const highlight = layerView.highlight(feature, {name: name})
-
- 
 
         //Zoom to layer
         zoomToExtent(feature)
@@ -166,9 +168,6 @@ const Map = () => {
             rotationEnabled: false
         }
 
-
-        
-
         view.highlights = highlights
 
         setMapView(view)
@@ -181,47 +180,66 @@ const Map = () => {
     //Clear all highlights when parcels are cleared
     useEffect(() => {
 
-        highlightSelect?.remove()
-
-        if(!searchFeatures || !searchFeatures[0]) return
-
-        if(parcelLayer && (primaryResultFeature || clickedFeature)){
-            console.log("primary feature selection updated: ", primaryResultFeature? primaryResultFeature : clickedFeature)
-            let highlight = handleParcelSelection(primaryResultFeature? primaryResultFeature : clickedFeature, 'default')
-            //highlight selection
-            setHighlightSelect(highlight)
-            if( primaryResultFeature?.length === 1){
-                togglePanel('property')
+        const primarySelection = async () => {
+            console.log("highlightSelect: ", highlightSelect)
+            highlightSelect?.remove()
+    
+            if(!searchFeatures || !searchFeatures[0]){
+                highlightSelect?.remove()
             }
-            else{
-                togglePanel('search')
+    
+            if(parcelLayer && (primaryResultFeature || clickedFeature)){
+                console.log("primary feature selection updated: ", primaryResultFeature? primaryResultFeature : clickedFeature)
+                let highlight = await handleParcelSelection(primaryResultFeature? primaryResultFeature : clickedFeature, 'default')
+                //highlight selection
+                setHighlightSelect(highlight)
+                if( primaryResultFeature?.length === 1){
+                    togglePanel('property')
+                }
+                else{
+                    togglePanel('search')
+                }
             }
         }
         
+        primarySelection()
 
     }, [primaryResultFeature, parcelLayer, searchFeatures, clickedFeature])
 
 
     useEffect(() => {
 
-        highlightComparable?.remove()
+        const highlightComparables = async () => {
+            console.log("highlightComparable: ", highlightComparable)
+            highlightComparable?.remove()
 
-        if(!comparableParcels || comparableParcels.length === 0) return
-        
-        let highlight = handleParcelSelection(comparableParcels, 'compare')
-        setHighlightComparable(highlight)
+            if(!comparableParcels || comparableParcels.length === 0){
+                highlightComparable?.remove()
+            }
+            
+            let highlight = await handleParcelSelection(comparableParcels, 'compare')
+            setHighlightComparable(highlight)
+        } 
+
+        highlightComparables()
+
 
     }, [comparableParcels])
 
     useEffect(() => {
 
-        highlightSelectComparable?.remove()
+        const highlightSelectedComparable = async () => {
+            highlightSelectComparable?.remove()
         
-        if(!secondaryResultFeature) return
+            if(!secondaryResultFeature){
+                highlightSelectComparable?.remove()
+            }
+    
+            let highlight = await handleParcelSelection(secondaryResultFeature, 'compare-select')
+            setHighlightSelectComparable(highlight)
+        }
 
-        let highlight = handleParcelSelection(secondaryResultFeature, 'compare-select')
-        setHighlightSelectComparable(highlight)
-        
+        highlightSelectedComparable()
 
         
     }, [secondaryResultFeature])

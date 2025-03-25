@@ -7,6 +7,7 @@ const ListComparisonResults = ({refElement, setCurrentStep}) => {
     const {
         comparableParcels, 
         setSecondaryResultFeature, 
+        secondaryResultFeature
     } = UseAppContext()
 
     const handleSelect = async (feature) => {
@@ -35,6 +36,7 @@ const ListComparisonResults = ({refElement, setCurrentStep}) => {
                         selectionMode="single"
                         iconEnd="pin"
                         onCalciteListItemSelect={() => {handleSelect(feature)}}
+                        selected={secondaryResultFeature?.attributes['PIN14_dash'] === feature.attributes['PIN14_dash'] }
                     >
                     <div slot="content" className="description" style={{marginLeft:'10px'}}>
                         <CalciteLabel scale="m" >
