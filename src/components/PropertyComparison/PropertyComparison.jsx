@@ -1,7 +1,6 @@
 import { 
-    CalciteBlock, 
-    CalciteBlockGroup, 
-    CalciteBlockSection, 
+    CalciteAction,
+    CalciteActionBar,
     CalciteButton, 
     CalciteDropdown, 
     CalciteDropdownGroup, 
@@ -16,12 +15,6 @@ import {
 } from "@esri/calcite-components-react"
 import UseAppContext from "../../contexts/AppContext"
 
-import "@esri/calcite-components/dist/components/calcite-input-text"
-import "@esri/calcite-components/dist/components/calcite-input-number"
-import "@esri/calcite-components/dist/components/calcite-dropdown"
-import "@esri/calcite-components/dist/components/calcite-dropdown-group"
-import "@esri/calcite-components/dist/components/calcite-dropdown-item"
-
 import "@esri/calcite-components/dist/components/calcite-stepper";
 import "@esri/calcite-components/dist/components/calcite-stepper-item";
 
@@ -33,64 +26,108 @@ import ListComparisonResults from "./ListComparisonResults"
 import ComparisonPropertyDetail from "./ComparisonPropertyDetail"
 import Inactive from "../Inactive/Inactive"
 
-const constructionTypes = [
-    "Any",
-    "None",
-    "Frame",
-    "Masonry",
-    "Frame and Masonry",
-    "Stucco"
-]
-
-export const radiusTypes = {
-    "Eighth Mile": .125,
-    "Quarter Mile": .25,
-    "Half Mile": .5,
-    "Mile": 1,
-    "None": "None",
-}
 
 const PropertyComparison = () => {
 
     const { 
         clearResultsComparables, 
-        searchComparableProperties, 
         translateText, 
         setComparablePanel,  
-        comparablePanelClosed, 
-        primaryResultFeature} = UseAppContext()
+        comparablePanelClosed,
+        comparableParcels,
+        secondaryResultFeature ,
+        setFeedbackDialog,
+        setExportOpen,
+        exportOpen,
+        feedbackOpen
+        } = UseAppContext()
 
     const stepperRef = useRef(null)
-    const [ radius, setRadius ] = useState(null)
-    const [ queryString, setQueryString] = useState(null)
-    const [ sourceParcel, setSourceParcel ] = useState(null)
 
     const [currentStep, setCurrentStep] = useState(0)
+    const [title, setTitle] = useState('Property Comparison')
 
     const handleStepChange = (event) => {
 
-        const selectedStepIndex = event.target.items.filter((item) => item.selected)
-                                                .map((item, i) => i)
+        const selectedStepIndex = event.target.selectedItem.itemPosition
 
         console.log("Selected Step Index: ", selectedStepIndex)
 
-        setCurrentStep(selectedStepIndex[0])
+        setCurrentStep(selectedStepIndex)
     }
+
+    useEffect(() => {
+
+        if(currentStep===0){
+            setTitle('Property Comparison')
+        }
+        else if(currentStep===1 && comparableParcels){
+            setTitle(`Property Comparison Results (${comparableParcels.length})`)
+        }
+        else if(currentStep===2 && secondaryResultFeature){
+            setTitle('Property Comparison Detail')
+        }
+
+    }, [currentStep, comparableParcels, secondaryResultFeature])
+
+    useEffect(() => {
+        setCurrentStep(0)
+    }, [])
 
     return(
         <CalcitePanel 
             id="comparable-panel" 
             closed={comparablePanelClosed} 
             closable 
-            className='panel-start' 
-            heading={translateText('Property Comparison')} 
-            //description= {translateText("Search for similar properties")}
+            className='panel-end' 
+            heading={translateText(title)} 
+
             onCalcitePanelClose={() => {
                 setComparablePanel(true)
                 clearResultsComparables()
             }}
             style={{display: comparablePanelClosed ? 'none': 'flex'}}
             >   
+
+            {
+                currentStep > 0 ?
+                <CalciteActionBar slot="action-bar" layout="horizontal" expandDisabled> 
+                    <CalciteAction 
+                        text="clear" 
+                        icon="reset" 
+                        disabled={comparableParcels ? false : true} 
+                        textEnabled 
+                        scale="s"
+                        onClick={clearResultsComparables}
+                    ></CalciteAction>
+                    <CalciteAction 
+                        text="export" 
+                        icon="export" 
+                        disabled={comparableParcels ? false : true} 
+                        textEnabled 
+                        scale="s"
+                        onClick={() => {
+                            setExportOpen(true, currentStep === 1  ? 'comparable-search' : 'comparable-property')
+                            if(feedbackOpen){
+                                setFeedbackDialog(false)
+                            }
+                        }}
+                    ></CalciteAction>
+                    <CalciteAction 
+                        text="feedback" 
+                        icon="speech-bubble-exclamation" 
+                        disabled={comparableParcels ? false : true} 
+                        textEnabled 
+                        scale="s"
+                        onClick={() => {
+                            setFeedbackDialog(true, 'general')
+                            if(exportOpen){
+                                setExportOpen(false)
+                            }
+                        }}
+                    />
+                </CalciteActionBar> : null
+            }
              <Inactive/>
             
             <CalciteStepper 
@@ -99,48 +136,33 @@ const PropertyComparison = () => {
             numbered 
             layout="horizontal"
             scale="s"
-            style={{overflow:"auto"}}
-            // oncalciteStepperChange = {(event) => {
-            //     handleStepChange(event)
-            // }}
+            onCalciteStepperChange={(event) => {
+                handleStepChange(event)
+            }}
             >
                 <CalciteStepperItem
                 selected={currentStep===0}
                 heading={translateText("Search")}
-                //description={translateText("Search for similar properties")}
                 >
                     <ComparisonForm refElement={stepperRef.current} setCurrentStep={setCurrentStep}/>
                 </CalciteStepperItem>
 
                 <CalciteStepperItem
-                //selected={currentStep===1}
+                selected={currentStep===1}
                 heading={translateText("Results")}
-                //description={translateText("View Results")}
                 >
-                    <ListComparisonResults refElement={stepperRef.current} setCurrentStep={setCurrentStep}/> 
+                    {comparableParcels ? <ListComparisonResults refElement={stepperRef.current} setCurrentStep={setCurrentStep}/> : <Inactive/>}
                 </CalciteStepperItem>
 
             <CalciteStepperItem
-            //selected={currentStep===2}
+            selected={currentStep===2}
             heading={translateText("Property")}
-            //description={translateText("View Comparable Property Details")}
             >
-                <ComparisonPropertyDetail/> 
+                
+                {secondaryResultFeature ? <ComparisonPropertyDetail/> : <Inactive/>}
             </CalciteStepperItem>
 
             </CalciteStepper>
-            
-            {/* <div slot="footer-end" style={{display: "flex", gap: '20px', justifyContent:'end'}}>
-            <CalciteButton iconStart="reset" appearance="outline">
-                Reset
-            </CalciteButton>
-            <CalciteButton className='hyperlink-button' onClick={() => handleSetQuery()}>
-                Search
-            </CalciteButton>
-            </div> */}
-
-            {/*  */}
-
 
                
         </CalcitePanel>

@@ -297,55 +297,21 @@ const ComparisonPropertyDetail = () => {
             //     style={{display: comparisonDetailPanelClosed ? 'none': 'flex'}}
             //    >    */}
                     {/* PROPERTY HEADER: PIN AND ADDRESS  */}
-                    {
-                    headerData ?
-                    <CalciteBlock 
-                    heading= { headerData[Object.keys(headerData)[0]]}
-                    description=  {`${headerData[Object.keys(headerData)[1]]}, ${headerData[Object.keys(headerData)[2]]}`}
-                    //slot="content-top"
-                    >
-                        {/* <CalciteLabel scale="l"className='DetailHeader' >
-                            { headerData[Object.keys(headerData)[0]]}
-                        </CalciteLabel>
-                        <CalciteLabel scale="m" className='DetailHeader'>
-                            {`${headerData[Object.keys(headerData)[1]]}, ${headerData[Object.keys(headerData)[2]]}`}
-                        </CalciteLabel>*/}
+                <CalciteBlock 
+                heading= { headerData ? headerData[Object.keys(headerData)[0]] : ""}
+                description=  {headerData ? `${headerData[Object.keys(headerData)[1]]}, ${headerData[Object.keys(headerData)[2]]}`: ""}
+                //slot="content-top"
+                >
+                    {/* <CalciteLabel scale="l"className='DetailHeader' >
+                        { headerData[Object.keys(headerData)[0]]}
+                    </CalciteLabel>
+                    <CalciteLabel scale="m" className='DetailHeader'>
+                        {`${headerData[Object.keys(headerData)[1]]}, ${headerData[Object.keys(headerData)[2]]}`}
+                    </CalciteLabel>*/}
+                    
+                    </CalciteBlock> 
                         
-                        </CalciteBlock> 
-                        : 
-                        <CalciteLabel>
-                            {translateText("Search for new property")}
-                        </CalciteLabel>
-                        
-                    }
-                        
-                    <CalciteBlock open>
-                    <CalciteActionBar slot="action-bar" layout="horizontal" expandDisabled> 
-                        <CalciteAction 
-                            text="clear" 
-                            icon="reset" 
-                            disabled={comparableParcels ? false : true} 
-                            textEnabled 
-                            scale="s"
-                            onClick={clearResultsComparables}
-                        ></CalciteAction>
-                        <CalciteAction 
-                            text="export" 
-                            icon="export" 
-                            disabled={comparableParcels ? false : true} 
-                            textEnabled 
-                            scale="s"
-                           //onClick={() => {setOpenExportDialog(true)}}
-                        ></CalciteAction>
-                        <CalciteAction 
-                            text="feedback" 
-                            icon="speech-bubble-exclamation" 
-                            disabled={comparableParcels ? false : true} 
-                            textEnabled 
-                            scale="s"
-                        />
-                    </CalciteActionBar>
-                    </CalciteBlock>
+                    
                     {/* SEARCH RESULT ACTIONS */}
                     
                     

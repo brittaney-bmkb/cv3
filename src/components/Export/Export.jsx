@@ -17,6 +17,7 @@ const Export = () => {
     const { 
         translateText, 
         primaryResultFeature, 
+        secondaryResultFeature,
         searchFeatures,
         comparableParcels,
         exportOpen, 
@@ -60,6 +61,14 @@ const Export = () => {
                 case 'property':
                 setParcelSource(primaryResultFeature)
                 setDataTitle(translateText(`Parcel PIN ${primaryResultFeature[0].attributes[config.target_layer_display_field]}`));
+                break;
+                case 'comparable-property':
+                setParcelSource(secondaryResultFeature)
+                setDataTitle(translateText(`Parcel PIN ${secondaryResultFeature.attributes[config.target_layer_display_field]}`));
+                break;
+                case 'comparable-search':
+                setParcelSource(comparableParcels)
+                setDataTitle(translateText(`Comparable Parcel Search Result${isMultiple ? 's' : ''}`));
                 break;
             }
         }

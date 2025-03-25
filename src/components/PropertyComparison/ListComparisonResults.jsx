@@ -15,7 +15,7 @@ const ListComparisonResults = ({refElement, setCurrentStep}) => {
         setSecondaryResultFeature(feature)
         //togglePanel('compareDetail')
         if(!refElement) return;
-        setCurrentStep([2])
+        setCurrentStep(2)
         refElement.nextStep()
 
     }

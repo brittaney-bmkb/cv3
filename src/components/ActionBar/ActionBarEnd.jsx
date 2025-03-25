@@ -57,31 +57,6 @@ const ActionBarEnd = () => {
                     </>
                     :null
                     }
-                    {
-                        comparableParcels && !isMobile  ? 
-                        <>
-                        <CalciteAction 
-                            text="Results" 
-                            icon="list-rectangle"
-                            textEnabled 
-                            onClick={() => {
-                                togglePanel('compareResults')
-                            }}>
-
-                        </CalciteAction> 
-                        <CalciteAction 
-                            text="Property" 
-                            icon="pin"
-                            textEnabled 
-                            onClick={() => {
-                                togglePanel('compareDetail')
-                            }}>
-
-                        </CalciteAction>
-                        </>
-                         : null
-                    }
-
                     <CalciteAction 
                         active={!layersPanelClosed}
                         text={translateText("Layers")} 

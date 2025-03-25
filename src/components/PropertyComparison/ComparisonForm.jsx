@@ -1,5 +1,4 @@
-import {     
-    CalciteBlock, 
+import {      
     CalciteButton, 
     CalciteDropdown, 
     CalciteDropdownGroup, 
@@ -62,7 +61,7 @@ const ComparisonForm = ({refElement, setCurrentStep}) => {
         if(!refElement) return;
 
         console.log("Stepper: ", refElement)
-        setCurrentStep([1])
+        setCurrentStep(1)
         refElement.nextStep()
 
         //AND BCLASS = '${bClass}'
@@ -117,8 +116,6 @@ const ComparisonForm = ({refElement, setCurrentStep}) => {
         await searchComparableProperties(query,radiusTypes[radiusTypeValue])
 
         setComparableType("comparable")
-
-        //return query
     }
         
         useEffect(() => {
@@ -392,14 +389,14 @@ const ComparisonForm = ({refElement, setCurrentStep}) => {
 
                 <div slot="footer-end" style={{display: "flex", gap: '20px', justifyContent:'end'}}>
                 <CalciteButton iconStart="reset" appearance="outline">
-                    Reset
+                    {translateText('Reset')}
                 </CalciteButton>
                 <CalciteButton 
                 className='hyperlink-button' 
                 onClick={() => handleSetQuery()
 
                 }>
-                    Search
+                    {translateText('Search')}
                 </CalciteButton>
                 </div>
 

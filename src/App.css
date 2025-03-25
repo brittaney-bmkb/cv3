@@ -41,19 +41,20 @@ body{
   color:var(--calcite-color-text-2)
 }
 
-.property-comparison-form{
-  background-color: var(--calcite-color-foreground-1);
-  width:inherit;
-  padding: 12px;
-}
-
 calcite-stepper{
   background-color: var(--calcite-color-foreground-1);
-  padding: var(--calcite-spacing-base);
+  padding: var(--calcite-spacing-lg);
 }
 
+/* .property-comparison-form{
+  flex-grow: 1;
+  min-height: 0;
+  overflow: auto;
+} */
+
 .stepper-item-content{
-  -calcite-stepper-item-spacing-unit-m: 0px
+  -calcite-stepper-item-spacing-unit-m: 0px;
+  width: inherit;
 }
 
 calcite-navigation.cook-search {
@@ -118,6 +119,7 @@ calcite-panel.panel-start{
   --calcite-panel-header-background-color: #ffffff;
   /* height: 100vh; */
 }
+
 
 calcite-panel.header{
   --calcite-panel-header-background-color: #0D4D96;
