@@ -106,32 +106,13 @@ const ComparisonPropertyDetail = () => {
             description: '',
             type: null
         },
-        comparable_properties: {
-            label: '',
-            description: '',
-            type: 'button',
-            onClick: () => {
-                setComparablePanel(false)
-                setNearbyPanel(true)
-            }
-        },
-        nearby_properties: {
-            label: '',
-            description: '',
-            type: 'button',
-            //UPDATE TO NEARBY PANEL
-            onClick: () => {
-                setNearbyPanel(false)
-                setComparablePanel(true)
-            }
-        }
     })
 
     //Get Property Data Fields to Display
     useEffect(() => {
         if (dataDictionary) {
 
-            let categoriesToExclude =  ['top', null] 
+            let categoriesToExclude =  ['top', null, 'Property Comparison'] 
             const filteredCategories = [
                 ...new Set(
                     dataDictionary
@@ -205,32 +186,6 @@ const ComparisonPropertyDetail = () => {
                                 }
                             }));
                         }
-
-                        //PROPERTY COMPARISON
-                        if(field === 'comparable_properties'){
-                            setCalculatedValues(prevState => ({
-                                ...prevState,
-                                comparable_properties: {
-                                    ...prevState.comparable_properties,
-                                    label: translateText("Comparable Properties"),
-                                    description:data.attributes['label'],
-                                    type: 'button'
-                                },
-                            }));
-                        }
-
-                        if(field === 'nearby_properties'){
-                            setCalculatedValues(prevState => ({
-                                ...prevState,
-                                nearby_properties: {
-                                    ...prevState.nearby_properties,
-                                    label: translateText("Nearby Parcels"),
-                                    description:data.attributes['label'],
-                                    type: 'button'
-                                }
-                            }));
-                        }
-
                         //EXTERNAL LINKS
                         //Determine if links should be shown based on 
                         //property classification

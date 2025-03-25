@@ -8,23 +8,53 @@ import { useEffect, useRef, useState } from "react";
 import * as geometryEngine from "@arcgis/core/geometry/geometryEngine.js";
 import ActionBarMap from "../ActionBar/ActionBarMap";
 
+//set view highlight options
+//https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html#highlights
+const highlights = [
+    {
+    name: "default",
+    color:  "#0D4D96",
+    haloOpacity: 1,
+    haloColor: "#0D4D96",
+    fillOpacity: .1,
+    },
+    {
+    name: "compare",
+    color:  "#FFA500",
+    haloOpacity: 1,
+    haloColor: "#FFA500",
+    fillOpacity: 0,
+    },
+    {
+    name: "compare-select",
+    color:  "#FFA500",
+    haloOpacity: 1,
+    haloColor: "#FFA500",
+    fillOpacity: .1,
+    }
+]
+
+
+
 const Map = () => {
 
     const { 
         setMapView, 
         arcgisMapRef,
         primaryResultFeature,
-        newSearch,
+        secondaryResultFeature,
         queryPolygon,
         selectPanelClosed,
         togglePanel,
         searchFeatures,
-        isMobile
+        isMobile,
+        comparableParcels
         } = UseAppContext()
     
     const actionRef = useRef(null)
     const [parcelLayer, setParcelLayer] = useState(null)
     const [highlightSelect, setHighlightSelect] = useState(null)
+    const [highlightSelectComparable, setHighlightSelectComparable] = useState(null)
     const [clickedFeature, setClickedFeature] = useState(null)
     
     
@@ -97,7 +127,8 @@ const Map = () => {
             
     }
 
-    const handleParcelSelection = async (feature) => {
+
+    const handleParcelSelection = async (feature, name) => {
 
         if(!arcgisMapRef.current?.view){
             return
@@ -107,10 +138,10 @@ const Map = () => {
 
         // console.log("highlighed layer: ", highlightSelect)
                     
-        highlightSelect?.remove();
+        //highlightSelect?.remove();
 
         const layerView = await view.whenLayerView(parcelLayer)
-        const highlight = layerView.highlight(feature, {name: "default"})
+        const highlight = layerView.highlight(feature, {name: name})
 
         //highlight selection
         setHighlightSelect(highlight)
@@ -134,16 +165,7 @@ const Map = () => {
         }
 
 
-        //set view highlight options
-        const highlights = [
-            {
-            name: "default",
-            color:  "#0D4D96",
-            haloOpacity: 1,
-            haloColor: "#0D4D96",
-            fillOpacity: 0.1,
-            }
-        ]
+        
 
         view.highlights = highlights
 
@@ -163,7 +185,7 @@ const Map = () => {
         else{
             if(parcelLayer && (primaryResultFeature || clickedFeature)){
                 console.log("primary feature selection updated: ", primaryResultFeature? primaryResultFeature : clickedFeature)
-                handleParcelSelection(primaryResultFeature? primaryResultFeature : clickedFeature)
+                handleParcelSelection(primaryResultFeature? primaryResultFeature : clickedFeature, 'default')
 
                 if( primaryResultFeature?.length === 1){
                     togglePanel('property')
@@ -175,6 +197,21 @@ const Map = () => {
         }
 
     }, [primaryResultFeature, parcelLayer, searchFeatures, clickedFeature])
+
+
+    useEffect(() => {
+
+        if(!comparableParcels || comparableParcels.length === 0) return
+
+        handleParcelSelection(comparableParcels, 'compare')
+    }, [comparableParcels])
+
+    useEffect(() => {
+
+        if(!secondaryResultFeature) return
+
+        handleParcelSelection(secondaryResultFeature, 'compare-select')
+    }, [secondaryResultFeature])
 
     useEffect(() => {
 
