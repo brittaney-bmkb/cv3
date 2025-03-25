@@ -55,6 +55,7 @@ const Map = () => {
     const [parcelLayer, setParcelLayer] = useState(null)
     const [highlightSelect, setHighlightSelect] = useState(null)
     const [highlightSelectComparable, setHighlightSelectComparable] = useState(null)
+    const [highlightComparable, setHighlightComparable] = useState(null)
     const [clickedFeature, setClickedFeature] = useState(null)
     
     
@@ -143,11 +144,12 @@ const Map = () => {
         const layerView = await view.whenLayerView(parcelLayer)
         const highlight = layerView.highlight(feature, {name: name})
 
-        //highlight selection
-        setHighlightSelect(highlight)
+ 
 
         //Zoom to layer
         zoomToExtent(feature)
+
+        return highlight
     }
 
     const handleViewReady = async (event) => {
@@ -179,38 +181,49 @@ const Map = () => {
     //Clear all highlights when parcels are cleared
     useEffect(() => {
 
-        if(!searchFeatures || !searchFeatures[0]){
-            highlightSelect?.remove()
-        }
-        else{
-            if(parcelLayer && (primaryResultFeature || clickedFeature)){
-                console.log("primary feature selection updated: ", primaryResultFeature? primaryResultFeature : clickedFeature)
-                handleParcelSelection(primaryResultFeature? primaryResultFeature : clickedFeature, 'default')
+        highlightSelect?.remove()
 
-                if( primaryResultFeature?.length === 1){
-                    togglePanel('property')
-                }
-                else{
-                    togglePanel('search')
-                }
+        if(!searchFeatures || !searchFeatures[0]) return
+
+        if(parcelLayer && (primaryResultFeature || clickedFeature)){
+            console.log("primary feature selection updated: ", primaryResultFeature? primaryResultFeature : clickedFeature)
+            let highlight = handleParcelSelection(primaryResultFeature? primaryResultFeature : clickedFeature, 'default')
+            //highlight selection
+            setHighlightSelect(highlight)
+            if( primaryResultFeature?.length === 1){
+                togglePanel('property')
+            }
+            else{
+                togglePanel('search')
             }
         }
+        
 
     }, [primaryResultFeature, parcelLayer, searchFeatures, clickedFeature])
 
 
     useEffect(() => {
 
-        if(!comparableParcels || comparableParcels.length === 0) return
+        highlightComparable?.remove()
 
-        handleParcelSelection(comparableParcels, 'compare')
+        if(!comparableParcels || comparableParcels.length === 0) return
+        
+        let highlight = handleParcelSelection(comparableParcels, 'compare')
+        setHighlightComparable(highlight)
+
     }, [comparableParcels])
 
     useEffect(() => {
 
+        highlightSelectComparable?.remove()
+        
         if(!secondaryResultFeature) return
 
-        handleParcelSelection(secondaryResultFeature, 'compare-select')
+        let highlight = handleParcelSelection(secondaryResultFeature, 'compare-select')
+        setHighlightSelectComparable(highlight)
+        
+
+        
     }, [secondaryResultFeature])
 
     useEffect(() => {
