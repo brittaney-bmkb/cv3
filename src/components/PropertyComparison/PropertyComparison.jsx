@@ -100,9 +100,9 @@ const PropertyComparison = () => {
             layout="horizontal"
             scale="s"
             style={{overflow:"auto"}}
-            oncalciteStepperChange = {(event) => {
-                handleStepChange(event)
-            }}
+            // oncalciteStepperChange = {(event) => {
+            //     handleStepChange(event)
+            // }}
             >
                 <CalciteStepperItem
                 selected={currentStep===0}
@@ -117,7 +117,7 @@ const PropertyComparison = () => {
                 heading={translateText("Results")}
                 //description={translateText("View Results")}
                 >
-                    <ListComparisonResults/> 
+                    <ListComparisonResults refElement={stepperRef.current} setCurrentStep={setCurrentStep}/> 
                 </CalciteStepperItem>
 
             <CalciteStepperItem

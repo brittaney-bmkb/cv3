@@ -2,15 +2,11 @@
 import { CalciteLabel, CalciteList, CalciteListItem } from "@esri/calcite-components-react"
 import UseAppContext from "../../contexts/AppContext"
 
-const ListComparisonResults = () => {
+const ListComparisonResults = ({refElement, setCurrentStep}) => {
     
     const {
         comparableParcels, 
         setSecondaryResultFeature, 
-        setComparisonResultsPanel,
-        setNearbyPanel,
-        setComparisonDetailPanel,
-        togglePanel
     } = UseAppContext()
 
     const handleSelect = async (feature) => {
@@ -18,6 +14,9 @@ const ListComparisonResults = () => {
         console.log("selecting feature: ", feature)
         setSecondaryResultFeature(feature)
         //togglePanel('compareDetail')
+        if(!refElement) return;
+        setCurrentStep([2])
+        refElement.nextStep()
 
     }
     
