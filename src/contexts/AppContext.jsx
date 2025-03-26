@@ -820,9 +820,13 @@ export const AppProvider = ({children}) => {
         console.log("Queried Features: ", features)
 
         //Check if the features is a comparable feature
-        const comparablePIN14s = comparableParcels.map((feature) => feature.attributes[config.target_layer_id_field])
-        const matchingFeatures = features.filter((feature)=> comparablePIN14s.includes(feature.attributes[config.target_layer_id_field]))
-                                        .map((feature) => feature)
+        let matchingFeatures = []
+        if(comparableParcels){
+            const comparablePIN14s = comparableParcels.map((feature) => feature.attributes[config.target_layer_id_field])
+            matchingFeatures = features.filter((feature)=> comparablePIN14s.includes(feature.attributes[config.target_layer_id_field]))
+                                            .map((feature) => feature)
+        }
+        
 
 
         let allFeatures = []
