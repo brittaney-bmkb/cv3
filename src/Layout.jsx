@@ -1,25 +1,17 @@
 
 
 import { 
-    CalciteAction, 
-    CalciteActionBar, 
-    CalciteActionGroup, 
     CalciteShell, 
     CalciteShellPanel 
 } from "@esri/calcite-components-react"
-import WebMapComponentBeta from "./components/WebMapView/WebMapComponentBeta"
-import SearchBarComponent from "./components/SearchBar/SearchBarComponent";
 import PanelSearchResults from "./components/Panel/PanelSearchResults";
 import UseAppContext from "./contexts/AppContext";
-import { config } from "./data/config";
 import Header from "./components/Header/Header";
 import PanelInfo from "./components/Panel/PanelInfo";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import PanelPropertyDetail from "./components/Panel/PanelPropertyDetail";
 import PropertyComparison from "./components/PropertyComparison/PropertyComparison";
-import NearbyPanel from "./components/PropertyComparison/NearbyPanel";
-import ComparisonResults from "./components/PropertyComparison/ComparisonResults";
-import ComparisonPropertyDetail from "./components/PropertyComparison/ComparisonPropertyDetail";
+import NearbyPanel from "./components/PropertyNearby/NearbyPanel";
 import Layers from "./components/Layers/Layers";
 import Imagery from "./components/Imagery/Imagery";
 import Print from "./components/Print/Print";
@@ -36,7 +28,7 @@ import "@esri/calcite-components/dist/components/calcite-dropdown"
 import "@esri/calcite-components/dist/components/calcite-dropdown-group"
 import "@esri/calcite-components/dist/components/calcite-dropdown-item"
 import { Feedback } from "./components/Feedback/Feedback";
-import ActionBarMap from "./components/ActionBar/ActionBarMap";
+
 
 
 const Layout = () => {
@@ -47,22 +39,14 @@ const Layout = () => {
         infoPanelClosed, 
         searchResultsPanelClosed,
         nearbyPanelClosed,
-        setComparablePanel, 
         comparablePanelClosed,
-        setNearbyPanel,
-        comparableParcels,
-        setComparisonResultsPanel,
         comparisonResultsClosed,
         comparisonDetailPanelClosed,
-        setComparisonDetailPanel,
-        translateText,
-        togglePanel,
         layersPanelClosed,
         printPanelClosed,
         imageryPanelClosed,
         selectPanelClosed,
-        exportOpen,
-        isMobile,
+        isMobile
     } = UseAppContext()
 
 

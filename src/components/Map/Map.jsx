@@ -71,6 +71,8 @@ const Map = () => {
 
         console.log("features selected: ", features)
 
+        if(!features) return;
+
         let extent
 
         if(Array.isArray(features)){
@@ -83,15 +85,7 @@ const Map = () => {
         }
 
         else{
-            // if('geometry' in features){
-            //     extent = features.geometry
-            // }
-            // else{
-                //////console.log("zoom to extent: ", features)
-                //////console.log("quering extent ")
-               // extent = await features.queryExtent()
                extent = features.geometry
-            //}
         }
         
         if(extent){

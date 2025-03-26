@@ -1,14 +1,6 @@
 import { 
     CalciteAction,
     CalciteActionBar,
-    CalciteButton, 
-    CalciteDropdown, 
-    CalciteDropdownGroup, 
-    CalciteDropdownItem, 
-    CalciteInput, 
-    CalciteInputNumber, 
-    CalciteInputText, 
-    CalciteLabel, 
     CalcitePanel, 
     CalciteStepper,
     CalciteStepperItem
@@ -57,13 +49,13 @@ const PropertyComparison = () => {
     useEffect(() => {
 
         if(currentStep===0){
-            setTitle('Property Comparison')
+            setTitle('Nearby Search')
         }
         else if(currentStep===1 && comparableParcels){
-            setTitle(`Property Comparison Results (${comparableParcels.length})`)
+            setTitle(`Nearby Property Results (${comparableParcels.length})`)
         }
         else if(currentStep===2 && secondaryResultFeature){
-            setTitle('Property Comparison Detail')
+            setTitle('Nearby Property Detail')
         }
 
     }, [currentStep, comparableParcels, secondaryResultFeature])
@@ -74,6 +66,16 @@ const PropertyComparison = () => {
         }
         
     }, [secondaryResultFeature])
+
+
+    useEffect(() => {
+
+        if(comparablePanelClosed){
+            clearResultsComparables()
+            setCurrentStep(0)
+        }
+
+    }, [comparablePanelClosed])
 
     return(
         <CalcitePanel 
@@ -86,6 +88,7 @@ const PropertyComparison = () => {
             onCalcitePanelClose={() => {
                 setComparablePanel(true)
                 clearResultsComparables()
+                setCurrentStep(0)
             }}
             style={{display: comparablePanelClosed ? 'none': 'flex'}}
             >   
