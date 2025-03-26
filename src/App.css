@@ -57,6 +57,7 @@ calcite-stepper{
   width: inherit;
 }
 
+
 calcite-navigation.cook-search {
   --calcite-navigation-width: 100%
 }
@@ -117,7 +118,7 @@ calcite-shell-panel.right-panel{
 
 calcite-panel.panel-start{
   --calcite-panel-header-background-color: #ffffff;
-  /* height: 100vh; */
+  height: 50vh;
 }
 
 

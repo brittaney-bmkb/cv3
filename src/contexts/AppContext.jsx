@@ -143,13 +143,17 @@ export const AppProvider = ({children}) => {
 
     const togglePanel = (panelName) => {
 
-        const { prevSearchFeatures, searchFeatures, primaryResultFeature, searchTerm, newSearch } = state
+        const { prevSearchFeatures, searchFeatures, primaryResultFeature, searchTerm, newSearch, isMobile } = state
 
         switch (panelName) {
           case 'info':
             setInfoPanel(false);
             setPropertyDetailPanel(true);
             setSearchResultsPanel(true);
+            if(isMobile){
+                setComparablePanel(true);
+                setNearbyPanel(true);
+            }
             break;
 
           case 'property':
@@ -159,6 +163,10 @@ export const AppProvider = ({children}) => {
             setPropertyDetailPanel(false);
             setInfoPanel(true);
             setSearchResultsPanel(true);
+            if(isMobile){
+                setComparablePanel(true);
+                setNearbyPanel(true);
+            }
             break;
 
           case 'search':
@@ -172,6 +180,10 @@ export const AppProvider = ({children}) => {
             setSearchResultsPanel(false);
             setInfoPanel(true);
             setPropertyDetailPanel(true);
+            if(isMobile){
+                setComparablePanel(true);
+                setNearbyPanel(true);
+            }
             break;
 
         case 'nearby':
@@ -183,6 +195,12 @@ export const AppProvider = ({children}) => {
             setSelectPanel(true)
             setComparisonResultsPanel(true)
             setComparisonDetailPanel(true)
+            if(isMobile){
+                setInfoPanel(true);
+                setPropertyDetailPanel(true);
+                setSearchResultsPanel(true);
+
+            }
             break;
 
         case 'compare':
@@ -194,6 +212,12 @@ export const AppProvider = ({children}) => {
             setSelectPanel(true)
             setComparisonResultsPanel(true)
             setComparisonDetailPanel(true)
+            if(isMobile){
+                setInfoPanel(true);
+                setPropertyDetailPanel(true);
+                setSearchResultsPanel(true);
+
+            }
             break;
         case 'compareResults':
             setLayersPanel(true);
@@ -820,9 +844,13 @@ export const AppProvider = ({children}) => {
         console.log("Queried Features: ", features)
 
         //Check if the features is a comparable feature
-        const comparablePIN14s = comparableParcels.map((feature) => feature.attributes[config.target_layer_id_field])
-        const matchingFeatures = features.filter((feature)=> comparablePIN14s.includes(feature.attributes[config.target_layer_id_field]))
-                                        .map((feature) => feature)
+        let matchingFeatures = []
+        if(comparableParcels){
+            const comparablePIN14s = comparableParcels.map((feature) => feature.attributes[config.target_layer_id_field])
+            matchingFeatures = features.filter((feature)=> comparablePIN14s.includes(feature.attributes[config.target_layer_id_field]))
+                                            .map((feature) => feature)
+        }
+        
 
 
         let allFeatures = []
@@ -1247,7 +1275,7 @@ export const AppProvider = ({children}) => {
 
         //const { comparableParcels} = state
         setComparableParcels(null)
-        setPanelSecondaryVisibility(false)
+        setSecondaryResultFeature(null)
 
         //removeGraphics("secondary")
 
