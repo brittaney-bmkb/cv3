@@ -55,10 +55,17 @@ const Layout = () => {
 
     useEffect(() => {
 
-        const allPanelsClosed =  [ propertyDetailPanelClosed, infoPanelClosed, searchResultsPanelClosed].every(panel => panel === true); 
-        setLeftPanelCollapsed(allPanelsClosed)
+        if(!isMobile){
+            const allPanelsClosed =  [ propertyDetailPanelClosed, infoPanelClosed, searchResultsPanelClosed].every(panel => panel === true); 
+            setLeftPanelCollapsed(allPanelsClosed)
+        }
 
-    }, [propertyDetailPanelClosed, infoPanelClosed, searchResultsPanelClosed])
+        if(isMobile){
+            const allPanelsClosed =  [ propertyDetailPanelClosed, infoPanelClosed, searchResultsPanelClosed, nearbyPanelClosed, comparablePanelClosed ].every(panel => panel === true); 
+            setLeftPanelCollapsed(allPanelsClosed)
+        }
+
+    }, [propertyDetailPanelClosed, infoPanelClosed, searchResultsPanelClosed, nearbyPanelClosed, comparablePanelClosed])
 
     useEffect(() => {
 
@@ -96,6 +103,13 @@ const Layout = () => {
                         <PanelInfo/>
                         <PanelSearchResults/>
                         <PanelPropertyDetail/>
+                        {
+                            isMobile ?
+                        <>
+                            <PropertyComparison/>
+                            <NearbyPanel/>
+                        </> : null
+                        }
 
                     </CalciteShellPanel>
                     
@@ -117,8 +131,13 @@ const Layout = () => {
                         {/* ACTION BAR */}
                         {isMobile ? null : <ActionBarEnd/>}
                         {/* SECONDARY PANEL */}
-                        <PropertyComparison/>
-                        <NearbyPanel/>
+                        {
+                            isMobile ? null : 
+                        <>
+                            <PropertyComparison/>
+                            <NearbyPanel/>
+                        </>
+                        }
                         {/* <ComparisonResults/>
                         <ComparisonPropertyDetail/> */}
                         <Layers/>

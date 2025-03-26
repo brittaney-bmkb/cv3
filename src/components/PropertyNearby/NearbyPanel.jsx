@@ -35,7 +35,8 @@ const NearbyPanel = () => {
         clearResultsComparables,
         comparableParcels,
         secondaryResultFeature,
-        primaryResultFeature
+        primaryResultFeature,
+        isMobile
      } = UseAppContext()
 
     const stepperRef = useRef(null)
@@ -106,7 +107,7 @@ const NearbyPanel = () => {
             id="nearby-panel" 
             closed={nearbyPanelClosed} 
             closable 
-            className='panel-start' 
+            className={isMobile ? 'panel-start' : 'panel-end' }
             heading={translateText(title)} 
             //description= {translateText("Search for similar properties")}
             onCalcitePanelClose={() => {
@@ -224,12 +225,14 @@ const NearbyPanel = () => {
                 </CalciteStepperItem>
                 <CalciteStepperItem
                 selected={currentStep===1}
+                disabled={comparableParcels?false:true}
                 heading={translateText("Results")}
                 >
                     {comparableParcels ? <ListComparisonResults refElement={stepperRef.current} setCurrentStep={setCurrentStep}/> : <Inactive/>}
                 </CalciteStepperItem>
 
                 <CalciteStepperItem
+                disabled={secondaryResultFeature?false:true}
                 selected={currentStep===2}
                 heading={translateText("Property")}
                 >

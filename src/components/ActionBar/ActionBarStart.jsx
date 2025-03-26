@@ -9,7 +9,9 @@ const ActionBarStart = () => {
         infoPanelClosed, 
         searchResultsPanelClosed, 
         propertyDetailPanelClosed, 
-        isMobile 
+        isMobile,
+        comparablePanelClosed,
+        nearbyPanelClosed
     } = UseAppContext()
 
     return(
@@ -18,22 +20,42 @@ const ActionBarStart = () => {
         layout={isMobile ? 'horizontal' : 'vertical'}
         expandDisabled = {isMobile}
         scale={isMobile ? 's' :'m'}
-        
-        
         expanded>
-            <CalciteActionGroup>
-                <CalciteAction text={translateText("Info")} icon="information" textEnabled active={!infoPanelClosed}
+            <CalciteActionGroup  
+            slot="actions-end">
+                <CalciteAction text={translateText("Info")} icon="information" textEnabled={isMobile ? false : true} active={!infoPanelClosed}
                 onClick={() => {
                     togglePanel('info')
                     }}></CalciteAction>
-                <CalciteAction text={translateText("Results")} icon="list-rectangle" textEnabled active={!searchResultsPanelClosed}
+            </CalciteActionGroup>
+            <CalciteActionGroup
+            className="start-actions"
+            >
+                <CalciteAction text={translateText("Results")} icon="list-rectangle" textEnabled={isMobile ? false : true} active={!searchResultsPanelClosed}
                 onClick={() => {
                     togglePanel('search')
                     }}></CalciteAction>
-                <CalciteAction text={translateText("Property")} icon="pin" textEnabled active={!propertyDetailPanelClosed}
+                <CalciteAction text={translateText("Property")} icon="pin" textEnabled={isMobile ? false : true} active={!propertyDetailPanelClosed}
                 onClick={() => {
                     togglePanel('property')
                 }}></CalciteAction>
+
+                {
+                    isMobile ? 
+                <>
+                
+                <CalciteAction text={translateText("Compare")} icon="compare" textEnabled={isMobile ? false : true} active={!comparablePanelClosed}
+                onClick={() => {
+                    togglePanel('compare')
+                }}></CalciteAction>
+                <CalciteAction text={translateText("Nearby")} icon="rings-largest" textEnabled={isMobile ? false : true} active={!nearbyPanelClosed}
+                onClick={() => {
+                    togglePanel('nearby')
+                }}></CalciteAction>
+
+                </>
+                :null
+            }
             </CalciteActionGroup>
         </CalciteActionBar>
     )

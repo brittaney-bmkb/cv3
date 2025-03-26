@@ -29,7 +29,8 @@ const PropertyComparison = () => {
         setFeedbackDialog,
         setExportOpen,
         exportOpen,
-        feedbackOpen
+        feedbackOpen,
+        isMobile
         } = UseAppContext()
 
     const stepperRef = useRef(null)
@@ -49,13 +50,13 @@ const PropertyComparison = () => {
     useEffect(() => {
 
         if(currentStep===0){
-            setTitle('Nearby Search')
+            setTitle('Comparable Property Search')
         }
         else if(currentStep===1 && comparableParcels){
-            setTitle(`Nearby Property Results (${comparableParcels.length})`)
+            setTitle(`Comparable Property Results (${comparableParcels.length})`)
         }
         else if(currentStep===2 && secondaryResultFeature){
-            setTitle('Nearby Property Detail')
+            setTitle('Comparable Property Detail')
         }
 
     }, [currentStep, comparableParcels, secondaryResultFeature])
@@ -82,7 +83,7 @@ const PropertyComparison = () => {
             id="comparable-panel" 
             closed={comparablePanelClosed} 
             closable 
-            className='panel-end' 
+            className={isMobile ? 'panel-end' : 'panel-start' }
             heading={translateText(title)} 
 
             onCalcitePanelClose={() => {
@@ -152,6 +153,7 @@ const PropertyComparison = () => {
                 </CalciteStepperItem>
 
                 <CalciteStepperItem
+                disabled={comparableParcels?false:true}
                 selected={currentStep===1}
                 heading={translateText("Results")}
                 >
@@ -159,6 +161,7 @@ const PropertyComparison = () => {
                 </CalciteStepperItem>
 
                 <CalciteStepperItem
+                disabled={secondaryResultFeature?false:true}
                 selected={currentStep===2}
                 heading={translateText("Property")}
                 >
