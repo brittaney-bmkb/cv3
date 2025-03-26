@@ -1,6 +1,10 @@
 import { CalciteBlock, CalcitePanel } from "@esri/calcite-components-react"
 import UseAppContext from "../../contexts/AppContext"
 import "@arcgis/map-components/components/arcgis-layer-list";
+import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
+
+import { useEffect, useRef, useState } from "react";
+import { config } from "../../data/config";
 
 const Layers = () => {
 
@@ -12,7 +16,74 @@ const Layers = () => {
         isMobile
      } = UseAppContext()
     
-    //console.log("map view: ", arcgisMapRef.current)
+    const layerListRef = useRef(null);
+
+    const [visibleLayers, setVisibleLayers] = useState([]);
+
+
+    const handleLayerChanges = () => {
+
+        if (!arcgisMapRef.current) return;
+
+        const map = arcgisMapRef.current.map;
+        if (!map) return;
+
+        const visibleParcelYears = map.allLayers.items
+                                        .filter((layer) => layer.title === config.historical_group_name) // Correct equality check
+                                        .flatMap((groupLayer) => groupLayer.allLayers.items) // Flatten into a single array
+                                        .filter((item) => item.visible)
+                                        .map((item) => {
+                                            const numbers = item.title.match(/\d+/g); // Extract numeric values
+                                            return numbers ? numbers.join("") : null; // Join and return numbers, or null if none
+                                        })
+                                        .filter((num) => num !== null);
+
+
+        setVisibleLayers([...visibleParcelYears])
+    }
+
+    useEffect(() => {
+        if (!arcgisMapRef.current) return;
+
+        const map = arcgisMapRef.current.map;
+        if (!map) return;
+
+        // Filter out group layers
+        const updateVisibleLayers = () => {
+            const nonGroupLayers = map.allLayers.filter(layer => !layer.layers);
+            const visible = nonGroupLayers.filter(layer => layer.visible);
+            setVisibleLayers([...visible]);
+        };
+
+        // Listen for layer additions/removals/movements
+        map.allLayers.on("change", (event) => {
+            console.log("Layer added: ", event.added);
+            console.log("Layer removed: ", event.removed);
+            console.log("Layer moved: ", event.moved);
+            updateVisibleLayers();
+        });
+
+        // Watch for visibility changes in layers
+        const visibilityWatcher = reactiveUtils.watch(
+            () => map.allLayers.filter(layer => layer.visible),
+            (newVisibleLayers, oldVisibleLayers) => {
+                console.log()
+
+                const added = newVisibleLayers.filter(layer => !oldVisibleLayers.includes(layer));
+                const removed = oldVisibleLayers.filter(layer => !newVisibleLayers.includes(layer));
+
+                added.forEach(layer => console.log(layer.title, "is now visible"));
+                removed.forEach(layer => console.log(layer.title, "is now hidden"));
+
+                setVisibleLayers(newVisibleLayers);
+            }
+        );
+
+        return () => {
+            visibilityWatcher.remove();
+        };
+    }, [arcgisMapRef]);
+
     return(
         <CalcitePanel
         closed={layersPanelClosed}
@@ -34,10 +105,12 @@ const Layers = () => {
                 style={{height: '100%', overflow:'clip'}}
                 >   
                 <arcgis-layer-list
+                ref={layerListRef}
                 referenceElement={arcgisMapRef.current}
                 visibilityAppearance="checkbox"
                 showFilter
                 filterPlaceholder={translateText("Search for layers")}
+                onClick={() => {handleLayerChanges()}}
                 />
              </CalciteBlock> 
             : null
