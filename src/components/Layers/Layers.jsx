@@ -2,9 +2,21 @@ import { CalciteBlock, CalcitePanel } from "@esri/calcite-components-react"
 import UseAppContext from "../../contexts/AppContext"
 import "@arcgis/map-components/components/arcgis-layer-list";
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
+import LabelClass from "@arcgis/core/layers/support/LabelClass.js";
 
 import { useEffect, useRef, useState } from "react";
 import { config } from "../../data/config";
+
+
+const pin10LabelClass = new LabelClass({
+    labelExpressionInfo: { expression: "$feature.PIN10" },
+    symbol: {
+      type: "text",  // autocasts as new TextSymbol()
+      color: "black",
+      haloSize: 1,
+      haloColor: "white"
+    }
+  });
 
 const Layers = () => {
 
@@ -28,18 +40,36 @@ const Layers = () => {
         const map = arcgisMapRef.current.map;
         if (!map) return;
 
-        const visibleParcelYears = map.allLayers.items
+        const visibleParcelYears = map.layers.items
                                         .filter((layer) => layer.title === config.historical_group_name) // Correct equality check
                                         .flatMap((groupLayer) => groupLayer.allLayers.items) // Flatten into a single array
                                         .filter((item) => item.visible)
-                                        .map((item) => {
-                                            const numbers = item.title.match(/\d+/g); // Extract numeric values
-                                            return numbers ? numbers.join("") : null; // Join and return numbers, or null if none
-                                        })
-                                        .filter((num) => num !== null);
+                                        .map((item) => item)
+                                        // .map((item) => {
+                                        //     const numbers = item.title.match(/\d+/g); // Extract numeric values
+                                        //     return numbers ? numbers.join("") : null; // Join and return numbers, or null if none
+                                        // })
+                                        // .filter((num) => num !== null);
 
+        //update labelingInfos
+        visibleParcelYears.map((layer) => {
+            if(layer.visible){
+                layer.labelingInfo = pin10LabelClass
+            }
+            else{
+                layer.labelingInfo = null
+            }
+            
+        })
 
         setVisibleLayers([...visibleParcelYears])
+
+        console.log("visible parcel years: ", visibleParcelYears)
+    }
+
+    const handleLabels = () => {
+
+
     }
 
     useEffect(() => {
