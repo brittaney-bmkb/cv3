@@ -20,8 +20,6 @@ import "@esri/calcite-components/dist/components/calcite-stepper-item";
 
 import { useEffect, useRef, useState } from "react"
 import ComparisonForm from "./ComparisonForm"
-import ComparisionStepper from "./ComparisonStepper"
-import ComparisonResults from "./ComparisonResults"
 import ListComparisonResults from "./ListComparisonResults"
 import ComparisonPropertyDetail from "./ComparisonPropertyDetail"
 import Inactive from "../Inactive/Inactive"
@@ -71,11 +69,10 @@ const PropertyComparison = () => {
     }, [currentStep, comparableParcels, secondaryResultFeature])
 
     useEffect(() => {
-        setCurrentStep(0)
-    }, [])
-
-    useEffect(() => {
-        setCurrentStep(2)
+        if(secondaryResultFeature && secondaryResultFeature.length > 0){
+            setCurrentStep(2)
+        }
+        
     }, [secondaryResultFeature])
 
     return(
@@ -158,13 +155,13 @@ const PropertyComparison = () => {
                     {comparableParcels ? <ListComparisonResults refElement={stepperRef.current} setCurrentStep={setCurrentStep}/> : <Inactive/>}
                 </CalciteStepperItem>
 
-            <CalciteStepperItem
-            selected={currentStep===2}
-            heading={translateText("Property")}
-            >
-                
-                {secondaryResultFeature ? <ComparisonPropertyDetail/> : <Inactive/>}
-            </CalciteStepperItem>
+                <CalciteStepperItem
+                selected={currentStep===2}
+                heading={translateText("Property")}
+                >
+                    
+                    {secondaryResultFeature ? <ComparisonPropertyDetail/> : <Inactive/>}
+                </CalciteStepperItem>
 
             </CalciteStepper>
 
