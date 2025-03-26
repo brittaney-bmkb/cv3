@@ -13,9 +13,9 @@ import ActionBarMap from "../ActionBar/ActionBarMap";
 const highlights = [
     {
     name: "default", //this is the highlight config for the primary selected parcel
-    color:  "#0D4D96",
+    color:  "#FFD700",
     haloOpacity: 1,
-    haloColor: "#0D4D96",
+    haloColor: "#FFD700",
     fillOpacity: .1,
     },
     {
