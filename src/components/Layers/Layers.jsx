@@ -63,19 +63,26 @@ const Layers = () => {
         let activeCondition = ''
         let inactiveCondition = ''
         
-        const yearsArray = visibleParcelYears.map((year) => {return `InGIS <= ${year}`})
+        const yearsArrayActive = visibleParcelYears.map((year) => {return `InGIS <= ${year}`})
+        const yearsArrayInactive = visibleParcelYears.map((year) => {return `(InGIS <= ${year} AND LastActive >= ${year})`})
         
-        if(yearsArray.length === 0 && !targetLayer.visible){
-            labelsLayer.layersVisible = false
+        if(visibleParcelYears.length === 0 && !targetLayer.visible){
+            labelsLayer.labelsVisible = false
             return
         }
+        else{
+            labelsLayer.labelsVisible = true
+        }
 
-        if(yearsArray.length > 0){
-            activeCondition =  activeCondition + `((${yearsArray.join(' OR ')}) AND LastActive IS NULL)`
-            inactiveCondition = inactiveCondition + `(${yearsArray.join(' OR ')}) AND LastActive IS NOT NULL`
+        if(yearsArrayActive.length > 0){
+            activeCondition =  activeCondition + `((${yearsArrayActive.join(' OR ')}) AND LastActive IS NULL)`
+            
             if(targetLayer.visible){    
                 activeCondition = activeCondition + ' OR '
             }
+        }
+        if(yearsArrayInactive.length > 0){
+            inactiveCondition = inactiveCondition + `(${yearsArrayInactive.join(' OR ')})`
         }
         else{
             inactiveCondition = inactiveCondition + "PIN10 IS NULL"
