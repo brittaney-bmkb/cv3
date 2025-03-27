@@ -1,8 +1,7 @@
 import { CalciteBlock, CalcitePanel } from "@esri/calcite-components-react"
 import UseAppContext from "../../contexts/AppContext"
 import "@arcgis/map-components/components/arcgis-layer-list";
-import * as reactiveUtils from "@arcgis/core/core/reactiveUtils.js";
-import LabelClass from "@arcgis/core/layers/support/LabelClass.js";
+
 
 import { useEffect, useRef, useState } from "react";
 import { config } from "../../data/config";
@@ -14,45 +13,35 @@ const Layers = () => {
         setLayersPanel, 
         translateText, 
         arcgisMapRef,
-        isMobile
+        isMobile,
+        mapView
      } = UseAppContext()
     
     const layerListRef = useRef(null);
 
-    const [visibleLayers, setVisibleLayers] = useState([]);
-    const [ maxYear, setMaxYear ] = useState()
-
     useEffect(() => {
-
-        const getCurrentYear = async () => {
-
-            if(!arcgisMapRef.current) return;
-
-            const map = arcgisMapRef.current.map
-    
-            const labelsLayer = map.allLayers.find((layer) => layer.title === config.parcel_label_layer)
-            
-            const { features } = await labelsLayer.queryFeatures()
-
-            const years = features.map((feature) => feature.InGIS)
-            
-            const max = Math.max(...years)
-
-            setMaxYear(max)
-        }
-
-        getCurrentYear()
-
-    }, [arcgisMapRef])
-
-
-    const handleLayerChanges = () => {
 
         if (!arcgisMapRef.current) return;
 
         const map = arcgisMapRef.current.map;
+        
         if (!map) return;
 
+        handleLayerChanges()
+      
+    }, [arcgisMapRef, mapView])
+
+
+    const handleLayerChanges = () => {
+
+
+        if (!arcgisMapRef.current) return;
+
+        const map = arcgisMapRef.current.map;
+        
+        if (!map) return;
+
+        console.log("Updating labels")
         const targetLayer  = map.allLayers.find((layer) => layer.title === config.target_layer_name)
     
         const visibleParcelYears = map.layers.items
@@ -71,10 +60,6 @@ const Layers = () => {
 
         console.log("labelsLayer.labelingInfo: ", labelsLayer.labelingInfo)
 
-
-        labelsLayer.labelingInfo = []
-        
-
         let activeCondition = ''
         let inactiveCondition = ''
         
@@ -92,64 +77,31 @@ const Layers = () => {
                 activeCondition = activeCondition + ' OR '
             }
         }
+        else{
+            inactiveCondition = inactiveCondition + "PIN10 IS NULL"
+        }
         
         if(targetLayer.visible){
             console.log("target layer is visible")
             activeCondition = activeCondition  + "LastActive IS NULL"
         }
 
-    
-
-        //START HERE TO UPDATE LABEL CLASS 
-        //REFERENCE EXISTING LABEL CLASS
-        //look for 'inactive' string in label expression to determin if
-        //label class is active or inactive
-        //const activeLabelClasss = labelsLayer.labelingInfo.filter((label) => label.labelExpression.Info.expression)
-
-        //TEMP LABEL CLASSES
-        const activeLabelClasses = {
-            labelExpressionInfo: {
-                expression: `$feature.PIN10`
-            },
-            where: activeCondition,
-        };
-
-        const inactiveLabelClasses = {
-            labelExpressionInfo: {
-                expression: `'Inactive:' + $feature.PIN10`
-            },
-            where: inactiveCondition,
-        };
         
-        console.log("labels activeCondition: ", activeCondition)
-        console.log("labels inactiveCondition: ", inactiveCondition)
+        labelsLayer.labelingInfo.map((labelClass) => {
+            console.log("label class names: ", labelClass.name)
 
-        console.log("labelsLayer.labelingInfo: ", labelsLayer.labelingInfo)
-
-
-        const labelsArray = []
-        if(activeCondition !== ""){
-            labelsArray.push(activeLabelClasses) 
-        }
-        if(inactiveCondition !==""){
-            labelsArray.push(inactiveLabelClasses) 
-        }
-
-        labelsLayer.labelingInfo = labelsArray
-        if(labelsArray.length > 0){
-            labelsLayer.labelsVisible = true
-        }
-        
-
-        if(yearsArray.length === 0 && targetLayer.visible === false){
-            labelsLayer.labelsVisible = false
-        }
-
-    
-        setVisibleLayers([...visibleParcelYears])
-
-        console.log("visible parcel years: ", visibleParcelYears)
+            let name = labelClass.name
+            if(name.toLowerCase() === 'inactive' && inactiveCondition !== ""){
+                console.log("adding inactive condition: ", inactiveCondition)
+                labelClass.where = inactiveCondition
+            }
+            if(name.toLowerCase() === 'active' && activeCondition !== ""){
+                console.log("adding active condition: ", activeCondition)
+                labelClass.where = activeCondition
+            }
+        })
     }
+
 
 
     return(

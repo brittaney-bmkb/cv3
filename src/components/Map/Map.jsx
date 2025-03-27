@@ -124,15 +124,11 @@ const Map = () => {
 
     const handleParcelSelection = async (feature, name) => {
 
-        if(!arcgisMapRef.current) {
-            return
-        }
+        if(!arcgisMapRef.current) return;
 
-        const view = arcgisMapRef.current?.view
+        const view = arcgisMapRef.current.view
 
-        if(!view){
-            return
-        }
+        if(!view) return;
         
         const layerView = await view?.whenLayerView(parcelLayer)
         const highlight = await layerView?.highlight(feature, {name: name})
