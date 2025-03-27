@@ -42,6 +42,8 @@ export const config = {
     //DATA DICTIONARY SERVICE
     data_dictionary: "https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/arcgis/rest/services/cookviewer_data_dictionary/FeatureServer/0",
     // TARGET LAYER CONFIGURATION: Specify the name of the target layer and the fields to display in results.
+    //PARCEL LABELS LAYER
+    parcel_label_layer: "Labels",
     //PARCEL ARCHIVE LAYER GROUP
     historical_group_name: "Parcel Archive",
     // MAKE SURE THE NAME OF THIS LAYER IS EXACTLY THE SAME IN THE LAYERSOURCES ARRAY

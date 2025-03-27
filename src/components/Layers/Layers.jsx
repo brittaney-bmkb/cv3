@@ -7,17 +7,6 @@ import LabelClass from "@arcgis/core/layers/support/LabelClass.js";
 import { useEffect, useRef, useState } from "react";
 import { config } from "../../data/config";
 
-
-const pin10LabelClass = new LabelClass({
-    labelExpressionInfo: { expression: "$feature.PIN10" },
-    symbol: {
-      type: "text",  // autocasts as new TextSymbol()
-      color: "black",
-      haloSize: 1,
-      haloColor: "white"
-    }
-  });
-
 const Layers = () => {
 
     const { 
@@ -31,6 +20,30 @@ const Layers = () => {
     const layerListRef = useRef(null);
 
     const [visibleLayers, setVisibleLayers] = useState([]);
+    const [ maxYear, setMaxYear ] = useState()
+
+    useEffect(() => {
+
+        const getCurrentYear = async () => {
+
+            if(!arcgisMapRef.current) return;
+
+            const map = arcgisMapRef.current.map
+    
+            const labelsLayer = map.allLayers.find((layer) => layer.title === config.parcel_label_layer)
+            
+            const { features } = await labelsLayer.queryFeatures()
+
+            const years = features.map((feature) => feature.InGIS)
+            
+            const max = Math.max(...years)
+
+            setMaxYear(max)
+        }
+
+        getCurrentYear()
+
+    }, [arcgisMapRef])
 
 
     const handleLayerChanges = () => {
@@ -40,79 +53,104 @@ const Layers = () => {
         const map = arcgisMapRef.current.map;
         if (!map) return;
 
+        const targetLayer  = map.allLayers.find((layer) => layer.title === config.target_layer_name)
+    
         const visibleParcelYears = map.layers.items
                                         .filter((layer) => layer.title === config.historical_group_name) // Correct equality check
                                         .flatMap((groupLayer) => groupLayer.allLayers.items) // Flatten into a single array
                                         .filter((item) => item.visible)
                                         .map((item) => item)
-                                        // .map((item) => {
-                                        //     const numbers = item.title.match(/\d+/g); // Extract numeric values
-                                        //     return numbers ? numbers.join("") : null; // Join and return numbers, or null if none
-                                        // })
-                                        // .filter((num) => num !== null);
+                                        .map((item) => {
+                                            const numbers = item.title.match(/\d+/g); // Extract numeric values
+                                            return numbers ? numbers.join("") : null; // Join and return numbers, or null if none
+                                        })
+                                        .filter((num) => num !== null);
 
         //update labelingInfos
-        visibleParcelYears.map((layer) => {
-            if(layer.visible){
-                layer.labelingInfo = pin10LabelClass
-            }
-            else{
-                layer.labelingInfo = null
-            }
-            
-        })
+        const labelsLayer = map.allLayers.find((layer) => layer.title === config.parcel_label_layer)
 
+        console.log("labelsLayer.labelingInfo: ", labelsLayer.labelingInfo)
+
+
+        labelsLayer.labelingInfo = []
+        
+
+        let activeCondition = ''
+        let inactiveCondition = ''
+        
+        const yearsArray = visibleParcelYears.map((year) => {return `InGIS <= ${year}`})
+        
+        if(yearsArray.length === 0 && !targetLayer.visible){
+            labelsLayer.layersVisible = false
+            return
+        }
+
+        if(yearsArray.length > 0){
+            activeCondition =  activeCondition + `((${yearsArray.join(' OR ')}) AND LastActive IS NULL)`
+            inactiveCondition = inactiveCondition + `(${yearsArray.join(' OR ')}) AND LastActive IS NOT NULL`
+            if(targetLayer.visible){    
+                activeCondition = activeCondition + ' OR '
+            }
+        }
+        
+        if(targetLayer.visible){
+            console.log("target layer is visible")
+            activeCondition = activeCondition  + "LastActive IS NULL"
+        }
+
+    
+
+        //START HERE TO UPDATE LABEL CLASS 
+        //REFERENCE EXISTING LABEL CLASS
+        //look for 'inactive' string in label expression to determin if
+        //label class is active or inactive
+        //const activeLabelClasss = labelsLayer.labelingInfo.filter((label) => label.labelExpression.Info.expression)
+
+        //TEMP LABEL CLASSES
+        const activeLabelClasses = {
+            labelExpressionInfo: {
+                expression: `$feature.PIN10`
+            },
+            where: activeCondition,
+        };
+
+        const inactiveLabelClasses = {
+            labelExpressionInfo: {
+                expression: `'Inactive:' + $feature.PIN10`
+            },
+            where: inactiveCondition,
+        };
+        
+        console.log("labels activeCondition: ", activeCondition)
+        console.log("labels inactiveCondition: ", inactiveCondition)
+
+        console.log("labelsLayer.labelingInfo: ", labelsLayer.labelingInfo)
+
+
+        const labelsArray = []
+        if(activeCondition !== ""){
+            labelsArray.push(activeLabelClasses) 
+        }
+        if(inactiveCondition !==""){
+            labelsArray.push(inactiveLabelClasses) 
+        }
+
+        labelsLayer.labelingInfo = labelsArray
+        if(labelsArray.length > 0){
+            labelsLayer.labelsVisible = true
+        }
+        
+
+        if(yearsArray.length === 0 && targetLayer.visible === false){
+            labelsLayer.labelsVisible = false
+        }
+
+    
         setVisibleLayers([...visibleParcelYears])
 
         console.log("visible parcel years: ", visibleParcelYears)
     }
 
-    const handleLabels = () => {
-
-
-    }
-
-    useEffect(() => {
-        if (!arcgisMapRef.current) return;
-
-        const map = arcgisMapRef.current.map;
-        if (!map) return;
-
-        // Filter out group layers
-        const updateVisibleLayers = () => {
-            const nonGroupLayers = map.allLayers.filter(layer => !layer.layers);
-            const visible = nonGroupLayers.filter(layer => layer.visible);
-            setVisibleLayers([...visible]);
-        };
-
-        // Listen for layer additions/removals/movements
-        map.allLayers.on("change", (event) => {
-            console.log("Layer added: ", event.added);
-            console.log("Layer removed: ", event.removed);
-            console.log("Layer moved: ", event.moved);
-            updateVisibleLayers();
-        });
-
-        // Watch for visibility changes in layers
-        const visibilityWatcher = reactiveUtils.watch(
-            () => map.allLayers.filter(layer => layer.visible),
-            (newVisibleLayers, oldVisibleLayers) => {
-                console.log()
-
-                const added = newVisibleLayers.filter(layer => !oldVisibleLayers.includes(layer));
-                const removed = oldVisibleLayers.filter(layer => !newVisibleLayers.includes(layer));
-
-                added.forEach(layer => console.log(layer.title, "is now visible"));
-                removed.forEach(layer => console.log(layer.title, "is now hidden"));
-
-                setVisibleLayers(newVisibleLayers);
-            }
-        );
-
-        return () => {
-            visibilityWatcher.remove();
-        };
-    }, [arcgisMapRef]);
 
     return(
         <CalcitePanel
