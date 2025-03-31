@@ -67,7 +67,7 @@ const Layers = () => {
         const yearsArrayActive = visibleParcelYears.map((year) => {return `InGIS <= ${year}`})
         const yearsArrayInactive = visibleParcelYears.map((year) => {return `(InGIS <= ${year} AND LastActive >= ${year})`})
         
-        if(visibleParcelYears.length === 0 && !targetLayer.visible){
+        if(visibleParcelYears.length === 0 && (!targetLayer.visible || ! targetLayer.parent.visible)){
             labelsLayer.labelsVisible = false
             return
         }
