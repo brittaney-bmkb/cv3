@@ -58,6 +58,7 @@ const Layers = () => {
         //update labelingInfos
         const labelsLayer = map.allLayers.find((layer) => layer.title === config.parcel_label_layer)
 
+        if(!labelsLayer) return;
         console.log("labelsLayer.labelingInfo: ", labelsLayer.labelingInfo)
 
         let activeCondition = ''

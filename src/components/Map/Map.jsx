@@ -128,10 +128,10 @@ const Map = () => {
 
         const view = arcgisMapRef.current.view
 
-        if(!view) return;
+        if(!view || !parcelLayer) return;
         
-        const layerView = await view?.whenLayerView(parcelLayer)
-        const highlight = await layerView?.highlight(feature, {name: name})
+        const layerView = await view.whenLayerView(parcelLayer)
+        const highlight = await layerView.highlight(feature, {name: name})
 
 
         //Zoom to layer
