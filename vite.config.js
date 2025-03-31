@@ -4,6 +4,6 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base:"/cookviewer-statcked-labels",
+  base:"/cookviewer-stacked-labels",
   publicDir: 'public'
 })
