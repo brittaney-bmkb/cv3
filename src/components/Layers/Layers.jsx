@@ -47,7 +47,7 @@ const Layers = () => {
         const visibleParcelYears = map.layers.items
                                         .filter((layer) => layer.title === config.historical_group_name) // Correct equality check
                                         .flatMap((groupLayer) => groupLayer.allLayers.items) // Flatten into a single array
-                                        .filter((item) => item.visible)
+                                        .filter((item) => item.visible && item.parent.visible)
                                         .map((item) => item)
                                         .map((item) => {
                                             const numbers = item.title.match(/\d+/g); // Extract numeric values
@@ -78,7 +78,7 @@ const Layers = () => {
         if(yearsArrayActive.length > 0){
             activeCondition =  activeCondition + `((${yearsArrayActive.join(' OR ')}) AND LastActive IS NULL)`
             
-            if(targetLayer.visible){    
+            if(targetLayer.visible && targetLayer.parent.visible){    
                 activeCondition = activeCondition + ' OR '
             }
         }
@@ -89,8 +89,8 @@ const Layers = () => {
             inactiveCondition = inactiveCondition + "PIN10 IS NULL"
         }
         
-        if(targetLayer.visible){
-            console.log("target layer is visible")
+        if(targetLayer.visible  && targetLayer.parent.visible){
+            console.log("target layer is visible: ", targetLayer)
             activeCondition = activeCondition  + "LastActive IS NULL"
         }
 

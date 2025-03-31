@@ -3,10 +3,13 @@ import UseAppContext from "../../contexts/AppContext";
 
 import "@arcgis/map-components/components/arcgis-map";
 import "@arcgis/map-components/components/arcgis-zoom";
+import "@arcgis/map-components/components/arcgis-legend";
+import * as unionOperator from "@arcgis/core/geometry/operators/unionOperator.js";
+
 import { config } from "../../data/config";
 import { useEffect, useRef, useState } from "react";
-import * as unionOperator from "@arcgis/core/geometry/operators/unionOperator.js";
 import ActionBarMap from "../ActionBar/ActionBarMap";
+
 
 //set view highlight options
 //https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html#highlights
@@ -271,6 +274,7 @@ const Map = () => {
             }}
         >
             <arcgis-zoom position="top-right" />
+            <arcgis-legend position="bottom-right" legend-style="classic"></arcgis-legend>
         </arcgis-map>
     </>
     )
