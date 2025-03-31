@@ -34,7 +34,7 @@ const Layers = () => {
 
     const handleLayerChanges = () => {
 
-
+        const currentYear = 2024
         if (!arcgisMapRef.current) return;
 
         const map = arcgisMapRef.current.map;
@@ -79,6 +79,7 @@ const Layers = () => {
             activeCondition =  activeCondition + `((${yearsArrayActive.join(' OR ')}) AND LastActive IS NULL)`
             
             if(targetLayer.visible && targetLayer.parent.visible){    
+                
                 activeCondition = activeCondition + ' OR '
             }
         }
@@ -94,18 +95,96 @@ const Layers = () => {
             activeCondition = activeCondition  + "LastActive IS NULL"
         }
 
+        // ACTIVE ARCADE SCRIPT
+
+        let labelYearExpression = `
+
+        var label = ""
+
+        if($feature["Shape.STArea()"] > 800){
+        label = label + Mid($feature.PIN10, 0, 2) + "-" + Mid($feature.PIN10, 2, 2) + "-" + Mid($feature.PIN10, 4, 3) + "-" + Mid($feature.PIN10, 7, 3)
+        }
+        else{
+        //return Mid($feature.PIN10, 1, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 2, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 3, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 4, 1)  + TextFormatting.NewLine + Mid($feature.PIN10, 5, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 6, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 7, 1)+ TextFormatting.NewLine + Mid($feature.PIN10, 8, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 9, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 10, 1)
+        label = label + Mid($feature.PIN10, 0, 2) + "-" + Mid($feature.PIN10, 2, 2) + TextFormatting.NewLine + Mid($feature.PIN10, 4, 3) + "-"  + Mid($feature.PIN10, 7, 3)
+        }
+
+        var stackedYears = '' 
         
+        var years = [${visibleParcelYears}]
+
+        for(var index in years) {
+            if($feature.InGIS <= years[index] && ISEMPTY($feature.LastActive)){
+                stackedYears = stackedYears + years[index] + TextFormatting.NewLine
+            }
+        }
+
+        var addCurrentYear = ${targetLayer.visible  && targetLayer.parent.visible}
+        if(addCurrentYear){
+            stackedYears  = stackedYears + '${currentYear}' + TextFormatting.NewLine + label
+        }
+        else{
+            stackedYears  = stackedYears + label
+        }
+  
+        return stackedYears
+        
+
+        `
+
+        // INACTIVE ARCADE SCRIPT
+
+        let inactiveLabelYearExpression = `
+
+        var label = ""
+
+        if($feature["Shape.STArea()"] > 800){
+        label = label + Mid($feature.PIN10, 0, 2) + "-" + Mid($feature.PIN10, 2, 2) + "-" + Mid($feature.PIN10, 4, 3) + "-" + Mid($feature.PIN10, 7, 3)
+        }
+        else{
+        //return Mid($feature.PIN10, 1, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 2, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 3, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 4, 1)  + TextFormatting.NewLine + Mid($feature.PIN10, 5, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 6, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 7, 1)+ TextFormatting.NewLine + Mid($feature.PIN10, 8, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 9, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 10, 1)
+        label = label + Mid($feature.PIN10, 0, 2) + "-" + Mid($feature.PIN10, 2, 2) + TextFormatting.NewLine + Mid($feature.PIN10, 4, 3) + "-"  + Mid($feature.PIN10, 7, 3)
+        }
+
+        var stackedYears = '' 
+        
+        var years = [${visibleParcelYears}]
+
+        for(var index in years) {
+            if($feature.InGIS <= years[index] && $feature.LastActive >= years[index]){
+                stackedYears = stackedYears + years[index] + TextFormatting.NewLine
+            }
+        }
+
+        if(stackedYears != '') {
+        stackedYears  = stackedYears + label
+        }
+        
+
+  
+        return stackedYears
+        `
+        console.log("expression: ", inactiveLabelYearExpression)
+
         labelsLayer.labelingInfo.map((labelClass) => {
             console.log("label class names: ", labelClass.name)
 
             let name = labelClass.name
             if(name.toLowerCase() === 'inactive' && inactiveCondition !== ""){
-                console.log("adding inactive condition: ", inactiveCondition)
-                labelClass.where = inactiveCondition
+                 console.log("adding inactive condition: ", inactiveCondition)
+            //     labelClass.where = inactiveCondition
+                
+                labelClass.labelExpressionInfo  ={
+                    expression: inactiveLabelYearExpression
+                  };
             }
             if(name.toLowerCase() === 'active' && activeCondition !== ""){
                 console.log("adding active condition: ", activeCondition)
-                labelClass.where = activeCondition
+                //labelClass.where = activeCondition
+                
+                labelClass.labelExpressionInfo  ={
+                    expression: labelYearExpression
+                  };
             }
         })
     }

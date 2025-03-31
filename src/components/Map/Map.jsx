@@ -274,7 +274,7 @@ const Map = () => {
             }}
         >
             <arcgis-zoom position="top-right" />
-            <arcgis-legend position="bottom-right" legend-style="classic"></arcgis-legend>
+            {/* <arcgis-legend position="bottom-right" legend-style="classic"></arcgis-legend> */}
         </arcgis-map>
     </>
     )
