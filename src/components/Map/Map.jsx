@@ -170,6 +170,23 @@ const Map = () => {
     useEffect(() => {
 
         const primarySelection = async () => {
+
+  
+            if (!arcgisMapRef.current) return;
+    
+            const map = arcgisMapRef.current.map;
+            
+            if (!map) return;
+    
+            console.log("Updating labels")
+            const targetLayer  = map.allLayers.find((layer) => layer.title === config.target_layer_name)
+            //if targetlayer is not visible turn it on
+            if(!targetLayer.visible || !targetLayer.parent.visible){
+                targetLayer.visible = true
+                targetLayer.parent.visible = true
+            }
+
+
             console.log("highlightSelect: ", highlightSelect)
             highlightSelect?.remove()
     
