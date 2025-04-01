@@ -1,6 +1,7 @@
 import { CalciteBlock, CalcitePanel } from "@esri/calcite-components-react"
 import UseAppContext from "../../contexts/AppContext"
 import "@arcgis/map-components/components/arcgis-layer-list";
+import LabelClass from "@arcgis/core/layers/support/LabelClass.js";
 
 
 import { useEffect, useRef, useState } from "react";
@@ -16,6 +17,7 @@ const Layers = () => {
         isMobile,
         mapView
      } = UseAppContext()
+    
     
     const layerListRef = useRef(null);
 
@@ -34,7 +36,7 @@ const Layers = () => {
 
     const handleLayerChanges = () => {
 
-        const currentYear = 2024
+        let yOffset = -20
         if (!arcgisMapRef.current) return;
 
         const map = arcgisMapRef.current.map;
@@ -43,151 +45,68 @@ const Layers = () => {
 
         console.log("Updating labels")
         const targetLayer  = map.allLayers.find((layer) => layer.title === config.target_layer_name)
+        //targetLayer.labelsVisible = false
     
         const visibleParcelYears = map.layers.items
-                                        .filter((layer) => layer.title === config.historical_group_name) // Correct equality check
+                                        .filter((layer) => layer.title === config.historical_group_name || layer.title === 'Parcels') // Correct equality check
                                         .flatMap((groupLayer) => groupLayer.allLayers.items) // Flatten into a single array
                                         .filter((item) => item.visible && item.parent.visible)
                                         .map((item) => item)
-                                        .map((item) => {
-                                            const numbers = item.title.match(/\d+/g); // Extract numeric values
-                                            return numbers ? numbers.join("") : null; // Join and return numbers, or null if none
-                                        })
-                                        .filter((num) => num !== null);
 
-        //update labelingInfos
-        const labelsLayer = map.allLayers.find((layer) => layer.title === config.parcel_label_layer)
-
-        if(!labelsLayer) return;
-        console.log("labelsLayer.labelingInfo: ", labelsLayer.labelingInfo)
-
-        let activeCondition = ''
-        let inactiveCondition = ''
         
-        const yearsArrayActive = visibleParcelYears.map((year) => {return `InGIS <= ${year}`})
-        const yearsArrayInactive = visibleParcelYears.map((year) => {return `(InGIS <= ${year} AND LastActive >= ${year})`})
-        
-        if(visibleParcelYears.length === 0 && (!targetLayer.visible || ! targetLayer.parent.visible)){
-            labelsLayer.labelsVisible = false
-            return
-        }
-        else{
-            labelsLayer.labelsVisible = true
-        }
 
-        if(yearsArrayActive.length > 0){
-            activeCondition =  activeCondition + `((${yearsArrayActive.join(' OR ')}) AND LastActive IS NULL)`
-            
-            if(targetLayer.visible && targetLayer.parent.visible){    
+        
+        visibleParcelYears.map((layer, i) => {
+              console.log("layer.labelingInfo ", layer.labelingInfo)
+            // if(layer.labelingInfo.length == 0){
+                const numbers = layer.title.match(/\d+/g); // Extract numeric values
+                let title = numbers ? `'${numbers.join("")}: ' + label` : null;
                 
-                activeCondition = activeCondition + ' OR '
-            }
-        }
-        if(yearsArrayInactive.length > 0){
-            inactiveCondition = inactiveCondition + `(${yearsArrayInactive.join(' OR ')})`
-        }
-        else{
-            inactiveCondition = inactiveCondition + "PIN10 IS NULL"
-        }
-        
-        if(targetLayer.visible  && targetLayer.parent.visible){
-            console.log("target layer is visible: ", targetLayer)
-            activeCondition = activeCondition  + "LastActive IS NULL"
-        }
+                if(!title){
+                    title = 'label'
+                }
 
-        // ACTIVE ARCADE SCRIPT
+                let expression = `
+                var label = ""
 
-        let labelYearExpression = `
-
-        var label = ""
-
-        if($feature["Shape.STArea()"] > 800){
-        label = label + Mid($feature.PIN10, 0, 2) + "-" + Mid($feature.PIN10, 2, 2) + "-" + Mid($feature.PIN10, 4, 3) + "-" + Mid($feature.PIN10, 7, 3)
-        }
-        else{
-        //return Mid($feature.PIN10, 1, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 2, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 3, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 4, 1)  + TextFormatting.NewLine + Mid($feature.PIN10, 5, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 6, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 7, 1)+ TextFormatting.NewLine + Mid($feature.PIN10, 8, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 9, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 10, 1)
-        label = label + Mid($feature.PIN10, 0, 2) + "-" + Mid($feature.PIN10, 2, 2) + TextFormatting.NewLine + Mid($feature.PIN10, 4, 3) + "-"  + Mid($feature.PIN10, 7, 3)
-        }
-
-        var stackedYears = '' 
-        
-        var years = [${visibleParcelYears}]
-
-        for(var index in years) {
-            if($feature.InGIS <= years[index] && ISEMPTY($feature.LastActive)){
-                stackedYears = stackedYears + years[index] + TextFormatting.NewLine
-            }
-        }
-
-        var addCurrentYear = ${targetLayer.visible  && targetLayer.parent.visible}
-        if(addCurrentYear){
-            stackedYears  = stackedYears + '${currentYear}' + TextFormatting.NewLine + label
-        }
-        else{
-            stackedYears  = stackedYears + label
-        }
-  
-        return stackedYears
-        
-
-        `
-
-        // INACTIVE ARCADE SCRIPT
-
-        let inactiveLabelYearExpression = `
-
-        var label = ""
-
-        if($feature["Shape.STArea()"] > 800){
-        label = label + Mid($feature.PIN10, 0, 2) + "-" + Mid($feature.PIN10, 2, 2) + "-" + Mid($feature.PIN10, 4, 3) + "-" + Mid($feature.PIN10, 7, 3)
-        }
-        else{
-        //return Mid($feature.PIN10, 1, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 2, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 3, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 4, 1)  + TextFormatting.NewLine + Mid($feature.PIN10, 5, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 6, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 7, 1)+ TextFormatting.NewLine + Mid($feature.PIN10, 8, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 9, 1) + TextFormatting.NewLine + Mid($feature.PIN10, 10, 1)
-        label = label + Mid($feature.PIN10, 0, 2) + "-" + Mid($feature.PIN10, 2, 2) + TextFormatting.NewLine + Mid($feature.PIN10, 4, 3) + "-"  + Mid($feature.PIN10, 7, 3)
-        }
-
-        var stackedYears = '' 
-        
-        var years = [${visibleParcelYears}]
-
-        for(var index in years) {
-            if($feature.InGIS <= years[index] && $feature.LastActive >= years[index]){
-                stackedYears = stackedYears + years[index] + TextFormatting.NewLine
-            }
-        }
-
-        if(stackedYears != '') {
-        stackedYears  = stackedYears + label
-        }
-        
-
-  
-        return stackedYears
-        `
-        console.log("expression: ", inactiveLabelYearExpression)
-
-        labelsLayer.labelingInfo.map((labelClass) => {
-            console.log("label class names: ", labelClass.name)
-
-            let name = labelClass.name
-            if(name.toLowerCase() === 'inactive' && inactiveCondition !== ""){
-                 console.log("adding inactive condition: ", inactiveCondition)
-            //     labelClass.where = inactiveCondition
+                //if($feature["Shape.STArea()"] > 2000){
+                    label = label + Mid($feature.PIN10, 0, 2) + "-" + Mid($feature.PIN10, 2, 2) + "-" + Mid($feature.PIN10, 4, 3) + "-" + Mid($feature.PIN10, 7, 3)
+                //}
+                //else{
+                    //label = label + Mid($feature.PIN10, 0, 2) + "-" + Mid($feature.PIN10, 2, 2) + TextFormatting.NewLine + Mid($feature.PIN10, 4, 3) + "-"  + Mid($feature.PIN10, 7, 3)
+                //}
+                return ${title}
                 
-                labelClass.labelExpressionInfo  ={
-                    expression: inactiveLabelYearExpression
-                  };
-            }
-            if(name.toLowerCase() === 'active' && activeCondition !== ""){
-                console.log("adding active condition: ", activeCondition)
-                //labelClass.where = activeCondition
+                `
+
+                const labelClass = new LabelClass({  // autocasts as new LabelClass()
+                    symbol: {
+                        type: "text",
+                        color: [255, 255, 255, 255],  // white
+                        font: { family: "Arial Unicode MS", size: 10, weight: "bold" },
+                        haloColor: [0, 0, 0, 255],  // black
+                        haloSize: 1,
+                        yoffset: yOffset
+                    },
+                    labelExpressionInfo: {
+                        expression: expression
+                      },
+                  });
                 
-                labelClass.labelExpressionInfo  ={
-                    expression: labelYearExpression
-                  };
-            }
-        })
-    }
+                if(!layer.labelingInfo){
+                    layer.labelingInfo = [labelClass]
+                    layer.labelsVisible = true
+                }
+                else{
+                    layer.labelingInfo[0].symbol.yoffset = yOffset
+                    layer.labelingInfo[0].labelExpressionInfo.expression = expression
+                }
+                  
+
+                yOffset = yOffset+ 15
+            //}
+        })                                 
+ }
 
 
 
