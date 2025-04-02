@@ -37,7 +37,7 @@ const Layers = () => {
     const handleLayerChanges = () => {
 
         let yOffset = -20
-        let xOffset = -150
+        let xOffset = -125
         if (!arcgisMapRef.current) return;
 
         const map = arcgisMapRef.current.map;
@@ -71,10 +71,10 @@ const Layers = () => {
                 var label = ""
 
                 //if($feature["Shape.STArea()"] > 2000){
-                    label = label + Mid($feature.PIN10, 0, 2) + "-" + Mid($feature.PIN10, 2, 2) + "-" + Mid($feature.PIN10, 4, 3) + "-" + Mid($feature.PIN10, 7, 3)
+                    //label = label + Mid($feature.PIN10, 0, 2) + "-" + Mid($feature.PIN10, 2, 2) + "-" + Mid($feature.PIN10, 4, 3) + "-" + Mid($feature.PIN10, 7, 3)
                 //}
                 //else{
-                    //label = label + Mid($feature.PIN10, 0, 2) + "-" + Mid($feature.PIN10, 2, 2) + TextFormatting.NewLine + Mid($feature.PIN10, 4, 3) + "-"  + Mid($feature.PIN10, 7, 3)
+                    label = label + Mid($feature.PIN10, 0, 2) + "-" + Mid($feature.PIN10, 2, 2) + TextFormatting.NewLine + Mid($feature.PIN10, 4, 3) + "-"  + Mid($feature.PIN10, 7, 3)
                 //}
                 return ${title}
                 
@@ -85,21 +85,25 @@ const Layers = () => {
                     color = layer.renderer.symbol.data.symbol.symbolLayers[0].markerGraphics[0].symbol.symbolLayers[0].color
                 }
                 
-                console.log("layer color", color)
+                console.log("layer", layer)
                 let symbol = {
                     type: "text",
                     color:  color ? color : [255, 255, 255, 255], // white
                     font: { family: "Arial Unicode MS", size: 9, weight: "bold" },
                     haloColor: [0, 0, 0, 255],  // black
                     haloSize: 1.5,
-                    yoffset: i > 4 ? 0 : yOffset,
-                    xoffset: i > 4 ? xOffset : 0 
+                    yoffset: i > 1 || visibleParcelYears.length === 1? 0 : yOffset,
+                    xoffset: i > 1 ? xOffset : 0 
                 }
                 const labelClass = new LabelClass({  // autocasts as new LabelClass()
                     symbol: symbol,
                     labelExpressionInfo: {
                         expression: expression
                       },
+                    minScale: layer.minScale/2,
+                    maxScale: layer.maxScale,
+                    deconflictionStrategy: 'static',
+                    repeatLabel: false
                   });
                 
                 if(!layer.labelingInfo){
@@ -110,12 +114,15 @@ const Layers = () => {
                     //layer.labelingInfo[0].symbol.yoffset = yOffset
                     layer.labelingInfo[0].labelExpressionInfo.expression = expression
                     layer.labelingInfo[0].symbol = symbol
-                    layer.labelingInfo[0].deconflictionStrategy  = 'none'
+                    layer.labelingInfo[0].deconflictionStrategy  = 'static'
+                    layer.labelingInfo[0].minScale= layer.minScale/2
+                    layer.labelingInfo[0].maxScale= layer.maxScale
+                    layer.labelingInfo[0].repeatLabel = false
                 }
                   
 
-                yOffset = yOffset+ 20
-                xOffset = xOffset + 20
+                yOffset = yOffset + 30
+                xOffset = i === 2 ? xOffset + 100 : xOffset + 40
             //}
         })                                 
  }
