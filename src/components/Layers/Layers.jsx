@@ -37,6 +37,7 @@ const Layers = () => {
     const handleLayerChanges = () => {
 
         let yOffset = -20
+        let xOffset = -150
         if (!arcgisMapRef.current) return;
 
         const map = arcgisMapRef.current.map;
@@ -57,10 +58,10 @@ const Layers = () => {
 
         
         visibleParcelYears.map((layer, i) => {
-              console.log("layer.labelingInfo ", layer.labelingInfo)
+              
             // if(layer.labelingInfo.length == 0){
                 const numbers = layer.title.match(/\d+/g); // Extract numeric values
-                let title = numbers ? `'${numbers.join("")}: ' + label` : null;
+                let title = numbers ? `'${numbers.join("")}: ' + TextFormatting.NewLine + label` : null;
                 
                 if(!title){
                     title = 'label'
@@ -78,16 +79,24 @@ const Layers = () => {
                 return ${title}
                 
                 `
-
+                let color = null
+                if(layer.title !== config.target_layer_name){
+                    console.log(layer.renderer.symbol.data.symbol.symbolLayers)
+                    color = layer.renderer.symbol.data.symbol.symbolLayers[0].markerGraphics[0].symbol.symbolLayers[0].color
+                }
+                
+                console.log("layer color", color)
+                let symbol = {
+                    type: "text",
+                    color:  color ? color : [255, 255, 255, 255], // white
+                    font: { family: "Arial Unicode MS", size: 9, weight: "bold" },
+                    haloColor: [0, 0, 0, 255],  // black
+                    haloSize: 1.5,
+                    yoffset: i > 4 ? 0 : yOffset,
+                    xoffset: i > 4 ? xOffset : 0 
+                }
                 const labelClass = new LabelClass({  // autocasts as new LabelClass()
-                    symbol: {
-                        type: "text",
-                        color: [255, 255, 255, 255],  // white
-                        font: { family: "Arial Unicode MS", size: 10, weight: "bold" },
-                        haloColor: [0, 0, 0, 255],  // black
-                        haloSize: 1,
-                        yoffset: yOffset
-                    },
+                    symbol: symbol,
                     labelExpressionInfo: {
                         expression: expression
                       },
@@ -98,12 +107,15 @@ const Layers = () => {
                     layer.labelsVisible = true
                 }
                 else{
-                    layer.labelingInfo[0].symbol.yoffset = yOffset
+                    //layer.labelingInfo[0].symbol.yoffset = yOffset
                     layer.labelingInfo[0].labelExpressionInfo.expression = expression
+                    layer.labelingInfo[0].symbol = symbol
+                    layer.labelingInfo[0].deconflictionStrategy  = 'none'
                 }
                   
 
-                yOffset = yOffset+ 15
+                yOffset = yOffset+ 20
+                xOffset = xOffset + 20
             //}
         })                                 
  }
