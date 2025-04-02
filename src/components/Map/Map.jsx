@@ -181,6 +181,8 @@ const Map = () => {
             console.log("Updating labels")
             const targetLayer  = map.allLayers.find((layer) => layer.title === config.target_layer_name)
             //if targetlayer is not visible turn it on
+            if(!targetLayer) return;
+            
             if(!targetLayer.visible || !targetLayer.parent.visible){
                 targetLayer.visible = true
                 targetLayer.parent.visible = true
