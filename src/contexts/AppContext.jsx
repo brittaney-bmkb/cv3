@@ -141,6 +141,15 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setVisibleParcelYears = (list) => {
+        dispatch({
+            type: "SET_VISIBLE_PARCEL_YEARS",
+            payload: {
+                visibleParcelYears: list,
+            }
+        })
+    }
+
     const togglePanel = (panelName) => {
 
         const { prevSearchFeatures, searchFeatures, primaryResultFeature, searchTerm, newSearch, isMobile } = state

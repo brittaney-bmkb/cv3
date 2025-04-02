@@ -18,7 +18,7 @@ const Notifications = () => {
 
 
 const BannerMessage = () => {
-    const translatedMessage = translateText(config.bannerMessage);
+    const translatedMessage = translateText(config.bannerMessage, true);
     const translatedLinkText = translateText(config.bannerLinkText);
     const [beforeLink, afterLink] = translatedMessage.split(translatedLinkText);
 

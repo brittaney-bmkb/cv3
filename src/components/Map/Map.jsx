@@ -3,10 +3,13 @@ import UseAppContext from "../../contexts/AppContext";
 
 import "@arcgis/map-components/components/arcgis-map";
 import "@arcgis/map-components/components/arcgis-zoom";
+import "@arcgis/map-components/components/arcgis-legend";
+import * as unionOperator from "@arcgis/core/geometry/operators/unionOperator.js";
+
 import { config } from "../../data/config";
 import { useEffect, useRef, useState } from "react";
-import * as unionOperator from "@arcgis/core/geometry/operators/unionOperator.js";
 import ActionBarMap from "../ActionBar/ActionBarMap";
+
 
 //set view highlight options
 //https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html#highlights
@@ -124,18 +127,14 @@ const Map = () => {
 
     const handleParcelSelection = async (feature, name) => {
 
-        if(!arcgisMapRef.current) {
-            return
-        }
+        if(!arcgisMapRef.current) return;
 
-        const view = arcgisMapRef.current?.view
+        const view = arcgisMapRef.current.view
 
-        if(!view){
-            return
-        }
+        if(!view || !parcelLayer) return;
         
-        const layerView = await view?.whenLayerView(parcelLayer)
-        const highlight = await layerView?.highlight(feature, {name: name})
+        const layerView = await view.whenLayerView(parcelLayer)
+        const highlight = await layerView.highlight(feature, {name: name})
 
 
         //Zoom to layer
@@ -171,6 +170,23 @@ const Map = () => {
     useEffect(() => {
 
         const primarySelection = async () => {
+
+  
+            if (!arcgisMapRef.current) return;
+    
+            const map = arcgisMapRef.current.map;
+            
+            if (!map) return;
+    
+            console.log("Updating labels")
+            const targetLayer  = map.allLayers.find((layer) => layer.title === config.target_layer_name)
+            //if targetlayer is not visible turn it on
+            if(!targetLayer.visible || !targetLayer.parent.visible){
+                targetLayer.visible = true
+                targetLayer.parent.visible = true
+            }
+
+
             console.log("highlightSelect: ", highlightSelect)
             highlightSelect?.remove()
     
@@ -275,6 +291,7 @@ const Map = () => {
             }}
         >
             <arcgis-zoom position="top-right" />
+            {/* <arcgis-legend position="bottom-right" legend-style="classic"></arcgis-legend> */}
         </arcgis-map>
     </>
     )

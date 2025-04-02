@@ -42,6 +42,10 @@ export const config = {
     //DATA DICTIONARY SERVICE
     data_dictionary: "https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/arcgis/rest/services/cookviewer_data_dictionary/FeatureServer/0",
     // TARGET LAYER CONFIGURATION: Specify the name of the target layer and the fields to display in results.
+    //PARCEL LABELS LAYER
+    parcel_label_layer: "Labels",
+    //PARCEL ARCHIVE LAYER GROUP
+    historical_group_name: "Parcel Archive",
     // MAKE SURE THE NAME OF THIS LAYER IS EXACTLY THE SAME IN THE LAYERSOURCES ARRAY
     target_layer_name: "Parcels Current", // Name of the target layer in LayerSources
     target_layer_url: "https://test-gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/0",
@@ -65,7 +69,7 @@ export const config = {
     translation_text:"https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/ArcGIS/rest/services/cookviewer_translated_text/FeatureServer/1",
     translation_text_help:"https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/ArcGIS/rest/services/cookviewer_translated_text/FeatureServer/4",
     //WEB MAP ID
-    webmap_id: "15c4eb52c7bb468d93c5946cb8e9d6ce",
+    webmap_id:"15c4eb52c7bb468d93c5946cb8e9d6ce", //PROD: "779a9643c58f4a48a002a9b277a8bcc7",
     // LAYER SOURCES CONFIGURATION: Configure the layers for map and search sources for the search widget
     layer_sources: [
         // First Layer Source: Configure the parcelLayer

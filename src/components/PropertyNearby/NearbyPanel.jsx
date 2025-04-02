@@ -36,7 +36,9 @@ const NearbyPanel = () => {
         comparableParcels,
         secondaryResultFeature,
         primaryResultFeature,
-        isMobile
+        isMobile,
+        setExportOpen,
+        setFeedbackDialog  
      } = UseAppContext()
 
     const stepperRef = useRef(null)

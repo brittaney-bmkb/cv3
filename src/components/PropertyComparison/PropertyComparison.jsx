@@ -39,7 +39,7 @@ const PropertyComparison = () => {
     const [title, setTitle] = useState('Property Comparison')
 
     const handleStepChange = (event) => {
-
+        
         const selectedStepIndex = event.target.selectedItem.itemPosition
 
         console.log("Selected Step Index: ", selectedStepIndex)

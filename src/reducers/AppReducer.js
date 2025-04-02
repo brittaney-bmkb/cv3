@@ -60,7 +60,9 @@ export const initialState = {
     feedbackOpen: false,
     feedbackSource:null,
     //DEVICE STATE
-    isMobile: null
+    isMobile: null,
+    //HISTORICAL PARCELS
+    visibleParcelYears: []
 }
 
 const AppReducer = (state, action) => {
@@ -165,6 +167,13 @@ const AppReducer = (state, action) => {
             comparableType: payload.comparableType
         }        
         
+        case "SET_VISIBLE_PARCEL_YEARS":
+        //console.log("SET_COMPARABLE_TYPE")
+        return {
+            ...state, 
+            visibleParcelYears: payload.visibleParcelYears
+        }  
+
         case "SET_MAP_CONTAINER":
         //console.log("SET_MAP_CONTAINER")
         return {
