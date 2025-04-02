@@ -624,10 +624,6 @@ export const AppProvider = ({children}) => {
      * @returns {Promise<Array>} - The updated search sources with translated names.
      */
     const translateSearchSources = async (searchSources) => {
-
-        //const {language, textTranslationDictionary} = state
-
-        ////console.log("translated text:" , textTranslationDictionary)
         // Wait for all translations to complete using Promise.all
         await Promise.all(searchSources?.map(async (searchSource) => {
             //console.log("translating search source layer name:", searchSource.name);
@@ -740,58 +736,33 @@ export const AppProvider = ({children}) => {
      * @returns {Promise<Object>} - The search parameters.
      */
     const returnSearchParam = async (primaryResultFeature) => {
-
+        const {language} = state
         let features = Array.isArray(primaryResultFeature) ? primaryResultFeature : [primaryResultFeature]
         let attributes = features.length > 0 ? features[0].attributes : null
         let isMultiFeatures =  features.length > 1 ? true : false
 
         let paramValue = null
-        let param = {}
+        let param = {"lang": language}
 
         if(attributes){
             let pin10s = features?.map((feature) => feature.attributes["PIN10"])
             let addresses = features?.map((feature) => feature.attributes["street_address"])
             let pin10Match =  isMultiFeatures === true ? arrayAllSame(pin10s) : true
+            //remove?
             let addressMatch =  isMultiFeatures === true ? arrayAllSame(addresses) : true
-            //let pinsStringSimilar = isMultiFeatures === true ? attributesStartWithString(features, "PIN14_dash", searchTerm) : true
-            
+
             //check if multiple parcels are selected
             if(isMultiFeatures === false){
                 //single parcel selected so set pin to pin14
                 paramValue = attributes["PIN14"]
-                param = {"pin14": paramValue}
+                param["pin14"] = paramValue
             }
             else if(isMultiFeatures === true && pin10Match === false){
-                //Milestone 3.0.2 update removing address url param
-                // && pinsStringSimilar === false
-                //if there are multple features and pin10s do not match and pin14 dash are not the same
-                // if(addressMatch === true){
-                //     //if addresses are the same
-                //     ////console.log("addresses match")
-                //     paramValue = attributes["street_address"]
-                //     param = {"address": paramValue}
-                // }
-                // else{
-                //if addresses and pin10 does not match
-                //placing location param with list of pins
-                //paramValue = `${x},${y}`
-                //param = {"location": paramValue}
 
-                //get list of all unique pins
-                //check if any pin10 are the same and filter out pin14s
-                //that start with pin10
                 let pin14s = features.map(feature => feature.attributes['PIN14'])
-                // let pin10Unique = [...new Set(pin10s)]
-                //////console.log("Location Param - Unique pin10s: ", pin10Unique)
                 let pin10Dups = await extractDuplicates(features, "PIN10")
-                //////console.log("Location Param - Duplicate pin14s: ", pin14s)
-                //////console.log("Location Param - Duplicate pin10s: ", pin10Dups)
-                
-                // Filter out PIN14 values that start with any values in pin10Dups
                 let filteredPin14s = pin14s.filter(pin14 => !pin10Dups.some(pin10Dup => pin14.startsWith(pin10Dup)));
-                //////console.log("Location Param - Filtered pin14s: ", filteredPin14s);
                 let paramPins = [...filteredPin14s, ...pin10Dups]
-                ////console.log("Final list of url params = ", paramPins)
 
                 paramValue = paramPins
                 if(pin10Dups?.length > 0){
@@ -800,20 +771,14 @@ export const AppProvider = ({children}) => {
                 if(filteredPin14s?.length){
                     param["pin14"] = `'${filteredPin14s.join("','")}'`
                 }
-                //}
             }
             else if(isMultiFeatures === true && pin10Match === true){
-                //paramValue = attributes["PIN10"]
-                param = {"pin": paramValue}
+                param["pin"] = paramValue
             }
             else if(isMultiFeatures ===  true && pinsStringSimilar === true){
-                //paramValue = searchTerm
-                param = {"search" : searchTerm}
+                param["searchTerm"] = searchTerm
             }
         }
-
-        ////console.log("url param: ", param)
-
         return  param
     }
 
@@ -831,7 +796,6 @@ export const AppProvider = ({children}) => {
         setSearchResults(null, filteredParcels)
 
         const  param = await returnSearchParam(filteredParcels)
-        //console.log("new url param: ", param)
         setSearchParams(param)
 
         return filteredParcels
@@ -844,14 +808,10 @@ export const AppProvider = ({children}) => {
     const queryPolygon = async (polygon, newSelection) => {
 
         const { primaryResultFeature, searchTerm, searchFeatures, comparableParcels } = state
-
         const { queryTargetLayerByPolygon } = await import('../arcgis/search/queryTargetLayer')
-
-        ////console.log("querying target layer by polygon geometry: ", polygon)
         const features = await queryTargetLayerByPolygon(polygon, primaryResultFeature && !newSelection ? primaryResultFeature : null)
         
         console.log("Queried Features: ", features)
-
         //Check if the features is a comparable feature
         let matchingFeatures = []
         if(comparableParcels){
@@ -860,12 +820,8 @@ export const AppProvider = ({children}) => {
                                             .map((feature) => feature)
         }
         
-
-
         let allFeatures = []
-
         if(matchingFeatures.length === 0 ){
-            
             if(!newSelection){
                 allFeatures = [...searchFeatures]
                 allFeatures.push(features[0])
@@ -873,26 +829,17 @@ export const AppProvider = ({children}) => {
             else{
                 allFeatures = [...features]
             }
-     
-            console.log("Combined Features: ", allFeatures)
-    
             setPrimaryResultFeature(allFeatures, newSelection)
-            
             setSearchResults(null, allFeatures, searchTerm, allFeatures)
 
             //update url parameters
-            //console.log("setting url parameters for select multiple draw tool results")
             const  param = await returnSearchParam(allFeatures)
-            //console.log("new url param: ", param)
             setSearchParams(param)
         }
 
         else if(matchingFeatures.length === 1 && features.length === 1){
-            console.log("Comparable Parcel: ", features)
             setSecondaryResultFeature(features[0])
         }
-
-
 
         return allFeatures
     }
@@ -1253,25 +1200,17 @@ export const AppProvider = ({children}) => {
 
         setPrimaryResultFeature(null, true)
         setSearchResults(null, null)
-        //clear search params
         setSearchParams({})
-        //removeGraphics("primary");
-        //removeGraphics("secondary");
         setPanelDisplay("resultsList")
         setSearchBufferGeometry(null, null)
 
         if(["comparablePropertySearch", "nearbyProperties", "resultsListComparables", "resultsListNearby", "propertyDetailComparable", "propertyDetailNearby"].includes(panelDisplaySecondary)){
-            ////console.log("CLEAR RESULTS: closing secondary panel. Secondary Panel =", panelDisplaySecondary )
             setPanelSecondaryVisibility(false)
         }
-
-        //setSearchParams()
-
         const updatedUrl = `${window.location.pathname}`;
 
         // Use history.pushState to update the URL without refreshing the page
         window.history.pushState({ path: updatedUrl }, '', updatedUrl);
-
         //setIsQuerying(false)
     }
 
