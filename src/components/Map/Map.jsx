@@ -16,9 +16,9 @@ import ActionBarMap from "../ActionBar/ActionBarMap";
 const highlights = [
     {
     name: "default", //this is the highlight config for the primary selected parcel
-    color:  "#FFD700",
+    color:  "#0D4D96",
     haloOpacity: 1,
-    haloColor: "#FFD700",
+    haloColor: "#0D4D96",
     fillOpacity: .1,
     },
     {
@@ -181,6 +181,8 @@ const Map = () => {
             console.log("Updating labels")
             const targetLayer  = map.allLayers.find((layer) => layer.title === config.target_layer_name)
             //if targetlayer is not visible turn it on
+            if(!targetLayer) return;
+
             if(!targetLayer.visible || !targetLayer.parent.visible){
                 targetLayer.visible = true
                 targetLayer.parent.visible = true
