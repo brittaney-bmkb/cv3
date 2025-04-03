@@ -11,8 +11,6 @@ import "@arcgis/map-components/components/arcgis-search"
 const SearchBarComponent = () => {
 
     const {
-        x, 
-        y, 
         returnFeaturesByPin10Pin14,  
         language, 
         translateText,  
@@ -26,12 +24,7 @@ const SearchBarComponent = () => {
         setPrimaryResultFeature,
         initalizeSearchSources,
         returnSearchResultFeatures,
-        searchFeatures,
-        anyAttributesIncluded,
-        setIsQuerying,
-        panelDisplay,
-        setSearchResultsPanel,
-        setInfoPanel,
+        setLanguage,
         togglePanel
      } = UseAppContext()
 
@@ -60,7 +53,12 @@ const SearchBarComponent = () => {
             setPanelDisplay("resultsList")
         } 
 
-        setSearchParams({'search': searchComponent.current.searchTerm})
+        let lang = routeParams.get('lang')
+
+        setSearchParams({
+            'search': searchComponent.current.searchTerm,
+            'lang': lang ? lang : config.defaultLanguage
+        })
     }
 
     
@@ -128,6 +126,13 @@ const SearchBarComponent = () => {
             
             console.log("generic search: ", routeParams.get("search"))
             setGenericSearch(routeParams.get("search"))
+
+
+            //check language 'lang'  and update language global state
+            let lang = routeParams.get("lang")
+            if(lang){
+                setLanguage(lang)
+            }
         }
     }, [])
 

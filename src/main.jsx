@@ -33,6 +33,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <Route path="/:pin10?" element={ <App />}/>
               <Route path="/:pin14?" element={ <App />}/>
               <Route path=":address?" element={ <App />}/>
+              <Route path=":lang?" element={ <App />}/>
           </Routes>
       </BrowserRouter>
     </ThemeProvider>

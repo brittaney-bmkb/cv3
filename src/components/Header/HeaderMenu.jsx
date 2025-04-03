@@ -10,6 +10,7 @@ import "@esri/calcite-components/components/calcite-flow-item"
 import "@esri/calcite-components/components/calcite-flow"
 import { FlowItem } from "@esri/calcite-components/components/calcite-flow-item";
 import { useRef, useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 
 function titleCase(s) {
     return s.toLowerCase()
@@ -42,17 +43,26 @@ const HeaderMenu = () => {
         setFeedbackDialog,
     } = UseAppContext()
 
+    const [routeParams , setSearchParams] = useSearchParams()
+
     const handleClick = (language) => {
-
-
-        console.log("selected language")
-        setLanguage(language)
-
         //reference: https://developers.arcgis.com/javascript/latest/localization/
+        
+        setLanguage(language)
         let locale_code = config.language_codes[language]
-        console.log("setting locale code to: ", locale_code)
         intl.setLocale(locale_code)
-        console.log("locale code to: ", intl.getLocale())
+
+        const params = ["search", "pin10", "pin14"]
+        const newParams = {}
+
+        params.forEach((param) => {
+            let value = routeParams.get(param);
+            //short-circuit evaluation 
+            value && (newParams[param] = value);
+        });
+
+        newParams['lang'] = language
+        setSearchParams(newParams)
     }
 
     return(
@@ -107,6 +117,7 @@ export const HeaderMenuMobile = () => {
         translateText,
         setLanguage,
         setFeedbackDialog,
+        setSearchParams
     } = UseAppContext();
 
     const [menuOpen, setMenuOpen] = useState(false);
@@ -115,14 +126,24 @@ export const HeaderMenuMobile = () => {
 
 
     const handleClick = (language) => {
-        console.log("Selected language:", language);
-        setLanguage(language);
-
-        let locale_code = config.language_codes[language];
-        console.log("Setting locale code to:", locale_code);
-        intl.setLocale(locale_code);
-        console.log("Locale set to:", intl.getLocale());
+        
         setMenuOpen(false)
+        setLanguage(language);
+        let locale_code = config.language_codes[language];
+        intl.setLocale(locale_code);
+        
+        const params = ["search", "pin10", "pin14"]
+        const newParams = {}
+
+        params.forEach((param) => {
+            let value = routeParams.get(param);
+            //short-circuit evaluation 
+            value && (newParams[param] = value);
+        });
+
+        newParams['lang'] = language
+        setSearchParams(newParams)
+
     };
 
     const createFlowItem = (title, submenuItems) => {
