@@ -22,6 +22,7 @@ export const config = {
     // pages: ['Home','Data','Help'], // removed for now. 
     // PORTAL URL: Provide the URL to your ArcGIS Online organization or Portal for ArcGIS.
     portal:"https://cookcountyil.maps.arcgis.com/",
+    portal_gis: "https://gis.cookcountyil.gov/gisportal",
     //PRINT URL
     print_service_url: "https://gis.cookcountyil.gov/hosting/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task",
     // BASEMAP ID: Provide the ID of the basemap you want to use in the application.
