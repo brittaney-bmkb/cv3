@@ -46,6 +46,12 @@ const highlights = [
     }
 ]
 
+const typeColors = {
+  "Source Parcel": "#0D4D96",
+  "Comparable Parcels": "#FFA500",
+  "Nearby Parcels": "#90EE90"
+};
+
 
 const Map = () => {
 
@@ -200,12 +206,7 @@ const Map = () => {
         }));
     
       const createSelectedParcelsLayer = (view, graphics) => {
-        const typeColors = {
-          "Source Parcel": "#0D4D96",
-          "Comparable Parcels": "#FFA500",
-          "Nearby Parcels": "#90EE90"
-        };
-    
+      
         return new FeatureLayer({
           title: SELECTED_PARCEL,
           source: new Collection(graphics),
@@ -214,14 +215,21 @@ const Map = () => {
             new Field({ name: "OBJECTID", type: "oid" }),
             new Field({ name: "parcelSelectionType", type: "string" })
           ],
-          renderer: new SimpleRenderer({
-            symbol: new SimpleFillSymbol({ color: [0, 0, 0, 0], outline: { color: "#666", width: 4 } }),
-            visualVariables: [{
-              type: "color",
-              field: "parcelSelectionType",
-              stops: Object.entries(typeColors).map(([value, color]) => ({ value, color }))
-            }]
-          }),
+          renderer: {
+            type: "unique-value",
+            field: "parcelSelectionType",
+            defaultSymbol: { type: "simple-line"},
+            uniqueValueInfos: Object.entries(typeColors).map(([value, color]) => {
+              return {
+                value: value,
+                symbol: {
+                  type: "simple-line",
+                  color: color,
+                  width: 2
+                }
+              }
+            })
+          },
           spatialReference: view.spatialReference
         });
       };
@@ -309,7 +317,7 @@ const Map = () => {
     
       const clearSelectedParcelsByType = async (parcelSelectionType) => {
 
-        console.log(`Clearing ${parcelSelectionType} from map`)
+        
 
         if (!arcgisMapRef.current) return;
         const map = arcgisMapRef.current.map;
@@ -319,6 +327,7 @@ const Map = () => {
         if (!layer) return;
 
         const { features } = await layer.queryFeatures();
+        console.log(`Clearing ${parcelSelectionType} from map`)
         console.log("clearSelectedParcelsByType removing: ", features)
 
         const toDelete = features.filter(
@@ -372,17 +381,17 @@ const Map = () => {
             
             if (!map) return;
     
-            console.log("Updating labels")
+
             const targetLayer  = map.allLayers.find((layer) => layer.title === config.target_layer_name)
             //if targetlayer is not visible turn it on
             if(!targetLayer) return;
 
             if(!targetLayer.visible || !targetLayer.parent.visible){
+                console.log("Updating labels")
                 targetLayer.visible = true
                 targetLayer.parent.visible = true
             }
 
-            console.log("highlightSelect: ", highlightSelect)
             highlightSelect?.remove()
             
             
@@ -414,7 +423,6 @@ const Map = () => {
     useEffect(() => {
 
         const highlightComparables = async () => {
-            console.log("highlightComparable: ", highlightComparable)
             highlightComparable?.remove()
 
             if(!comparableParcels || comparableParcels.length === 0){
