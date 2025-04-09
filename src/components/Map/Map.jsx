@@ -36,14 +36,21 @@ const highlights = [
     fillOpacity: .1,
     },
     {
-    name: "compare", //this is the highlight for comparables - will eventually be used for nearby
+      name: SOURCE_PARCEL, //this is the highlight config for the primary selected parcel
+      color:  "#0D4D96",
+      haloOpacity: 1,
+      haloColor: "#0D4D96",
+      fillOpacity: .1,
+      },
+    {
+    name: COMPARABLE_PARCEL, //this is the highlight for comparable parcel that is selected
     color:  "#FFA500",
     haloOpacity: 1,
     haloColor: "#FFA500",
-    fillOpacity: 0,
+    fillOpacity: .1,
     },
     {
-    name: "compare-select", //this is the highlight for comparable parcel that is selected - will eventually be used for nearby
+    name: NEARBY_PARCEL, //this is the highlight for nearby parcel that is selected
     color:  "#FFA500",
     haloOpacity: 1,
     haloColor: "#FFA500",
@@ -70,7 +77,8 @@ const Map = () => {
         togglePanel,
         searchFeatures,
         isMobile,
-        comparableParcels
+        comparableParcels,
+        setPrimaryResultFeature
         } = UseAppContext()
     
     const actionRef = useRef(null)
@@ -166,14 +174,16 @@ const Map = () => {
 
         if(reselected?.length > 0){
           console.log("Clicked feature that is already selected")
-          highlightReselectedParcels(view, reselected)
+          //highlightReselectedParcels(view, reselected)
+          //update primary result feature with selected parcel
+          const features = await queryPolygon(mapPoint, false) 
+         
 
         }
         else{
           //if selecting new polygon
           const features = await queryPolygon(mapPoint, true) 
           console.log("Clicked Features: ", features)
-          setClickedFeature(features) 
         }
 
     }
@@ -271,19 +281,30 @@ const Map = () => {
       const highlightReselectedParcels = async (view, features) => {
 
           const map = arcgisMapRef.current.map
-          const layer = map.allLayers.find((layer) => layer.title === SELECTED_PARCEL)
-          const parcelSelectionType = features.map((feature) => feature.attributes["parcelSelectionType"])
+          if(!view && !map) return;
 
-          console.log("highlighting: ", parcelSelectionType)
+          const layer = map.allLayers.find((layer) => layer.title === SELECTED_PARCEL)
+
+          if(!layer) return;
+          const parcelSelectionType = features.map((feature) => feature.attributes["parcelSelectionType"])
+          const type = parcelSelectionType[0] ? parcelSelectionType[0] : SOURCE_PARCEL
+  
+          console.log("remove existing highlightHandlesRef.current: ", highlightHandlesRef.current)
+          highlightHandlesRef.current[type]?.remove()
+
+          console.log("highlighting: ", type)
           const layerView = await view.whenLayerView(layer);
 
-          //highlightHandlesRef.current[type] = 
-          
-          layerView.highlight(
+          const highlight = layerView.highlight(
             features.map(g => g.attributes.OBJECTID),
-            parcelSelectionType[0]
+            type
           );
-      
+
+          if(highlight){
+            highlightHandlesRef.current[type] = highlight
+          }
+          
+
       };
     
       const handleParcelSelection = async (featureOrEvent, name) => {
@@ -310,7 +331,7 @@ const Map = () => {
           const { features } = await layer.queryFeatures()
 
           const existing = await updateSelectedParcelsLayer(map, features, newGraphics, parcelSelectionType);
-          // await highlightReselectedParcels(map, view, newGraphics, features, parcelSelectionType);
+          
         }
         zoomToExtent(rawGraphics);
       };
@@ -336,11 +357,6 @@ const Map = () => {
 
         if (!toDelete.length) return;
         await layer.applyEdits({ deleteFeatures: toDelete });
-
-        // if (highlightHandlesRef.current?.[parcelSelectionType]) {
-        //   highlightHandlesRef.current[parcelSelectionType].remove();
-        //   delete highlightHandlesRef.current[parcelSelectionType];
-        // }
       };
     
 
@@ -358,7 +374,7 @@ const Map = () => {
             rotationEnabled: false
         }
 
-        //view.highlights = highlights
+        view.highlights = highlights
 
         setMapView(view)
 
@@ -370,7 +386,7 @@ const Map = () => {
     //Clear all highlights when parcels are cleared
     useEffect(() => {
 
-        const primarySelection = async () => {
+        const sourceFeatureSelection = async () => {
 
   
             if (!arcgisMapRef.current) return;
@@ -390,21 +406,16 @@ const Map = () => {
                 targetLayer.parent.visible = true
             }
 
-            //highlightSelect?.remove()
-            
-            
-    
             if(!searchFeatures || !searchFeatures[0]){
                 //highlightSelect?.remove()
                 clearSelectedParcelsByType('Source Parcel')
             }
     
-            if(parcelLayer && (primaryResultFeature)){
-                console.log("primary feature selection updated: ", primaryResultFeature)
-                let highlight = await handleParcelSelection(primaryResultFeature, 'default')
-                //highlight selection
-                //setHighlightSelect(highlight)
-                if( primaryResultFeature?.length === 1){
+            if(parcelLayer && (searchFeatures)){
+                console.log("primary feature selection updated: ", searchFeatures)
+                await handleParcelSelection(searchFeatures, 'default')
+
+                if( searchFeatures?.length === 1){
                     togglePanel('property')
                 }
                 else{
@@ -413,9 +424,25 @@ const Map = () => {
             }
         }
         
-        primarySelection()
+        sourceFeatureSelection()
 
-    }, [primaryResultFeature, parcelLayer, searchFeatures, clickedFeature])
+    }, [parcelLayer, searchFeatures])
+
+    useEffect(() => {
+
+      const highlightSelected = () => {
+
+        if(!primaryResultFeature || !arcgisMapRef.current) return; 
+
+        const view = arcgisMapRef.current.view
+
+        highlightReselectedParcels(view, primaryResultFeature)
+
+      }
+
+      highlightSelected()
+
+    }, [primaryResultFeature])
 
 
     useEffect(() => {

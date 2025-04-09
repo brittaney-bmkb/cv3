@@ -180,11 +180,11 @@ export const AppProvider = ({children}) => {
 
           case 'search':
             console.log("Toggling to search to display search results. New search: ", newSearch)
-            if(!newSearch){
-                console.log("Toggling to search to display previous features. New search: ", newSearch)
-                setPrimaryResultFeature(prevSearchFeatures ? prevSearchFeatures : primaryResultFeature)
-                if (searchTerm) setSearchParams({'search': searchTerm})
-            }
+            // if(!newSearch){
+            //     console.log("Toggling to search to display previous features. New search: ", newSearch)
+            //     setPrimaryResultFeature(prevSearchFeatures ? prevSearchFeatures : primaryResultFeature)
+            //     if (searchTerm) setSearchParams({'search': searchTerm})
+            // }
             
             setSearchResultsPanel(false);
             setInfoPanel(true);
@@ -809,7 +809,7 @@ export const AppProvider = ({children}) => {
 
         const { primaryResultFeature, searchTerm, searchFeatures, comparableParcels } = state
         const { queryTargetLayerByPolygon } = await import('../arcgis/search/queryTargetLayer')
-        const features = await queryTargetLayerByPolygon(polygon, primaryResultFeature && !newSelection ? primaryResultFeature : null)
+        const features = await queryTargetLayerByPolygon(polygon)
         
         console.log("Queried Features: ", features)
         //Check if the features is a comparable feature
@@ -825,18 +825,22 @@ export const AppProvider = ({children}) => {
             if(!newSelection){
                 console.log("adding selection to search features: ", searchFeatures)
                 allFeatures.push(features[0])
+                setPrimaryResultFeature(features, newSelection)
+                togglePanel("property")
             }
             else{
                 allFeatures = [...features]
+
+                console.log("setting new primary result features: ", allFeatures, newSelection)
+                setPrimaryResultFeature(allFeatures, newSelection)
+                setSearchResults(null, allFeatures, searchTerm, allFeatures)
             }
 
-            console.log("setting new primary result features: ", allFeatures, newSelection)
-            setPrimaryResultFeature(allFeatures, newSelection)
-            setSearchResults(null, allFeatures, searchTerm, allFeatures)
+             //update url parameters
+             const param = await returnSearchParam(allFeatures)
+             setSearchParams(param)
 
-            //update url parameters
-            const  param = await returnSearchParam(allFeatures)
-            setSearchParams(param)
+            
         }
 
         else if(matchingFeatures.length === 1 && features.length === 1){

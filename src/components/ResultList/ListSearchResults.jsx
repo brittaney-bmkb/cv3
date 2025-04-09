@@ -1,6 +1,8 @@
 
 import { CalciteLabel, CalciteList, CalciteListItem } from "@esri/calcite-components-react"
 import UseAppContext from "../../contexts/AppContext"
+import { useEffect, useState } from "react"
+import { config } from "../../data/config"
 
 const ListSearchResults = () => {
     
@@ -8,9 +10,19 @@ const ListSearchResults = () => {
         searchFeatures, 
         selectResultFromList, 
         setSearchBufferGeometry,
-        togglePanel
+        togglePanel,
+        primaryResultFeature
     } = UseAppContext()
     
+    const [ selectedPIN14, setSelectedPIN14 ] = useState()
+
+    useEffect(() => {
+
+        const pin14 = primaryResultFeature[0].attributes[config.target_layer_display_field]
+        setSelectedPIN14(pin14)
+
+    }, [primaryResultFeature])
+
     return(
         <CalciteList
         selectionAppearance="border"
@@ -25,6 +37,7 @@ const ListSearchResults = () => {
                         selectionAppearance="border"
                         selectionMode="single"
                         iconEnd="pin"
+                        selected={feature.attributes['PIN14_dash'] === selectedPIN14}
                         onCalciteListItemSelect={() => {
                             selectResultFromList(feature.attributes['PIN14_dash'])
                             setSearchBufferGeometry(null, null)
