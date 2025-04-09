@@ -22,15 +22,24 @@ const Select = () => {
         primaryResultFeature,
         propertyDetailPanelClosed,
         searchFeatures,
-        togglePanel } = UseAppContext()
+        togglePanel, 
+        setPrimaryResultFeature
+     } = UseAppContext()
     
     const sketchRef = useRef(null)
     const graphicsLayer = useRef(null)
 
-    const [activeTool, setActiveTool] = useState(null)
+    const [activeTool, setActiveTool] = useState("cursor")
     const [ mapClicks, setMapClicks ] = useState(null)
     const [ selectedParcels, setSelectedParcels ] = useState(primaryResultFeature)
     const [ deselectPins, setDeselectPins ] = useState(null)
+
+    const primaryResultFeatureRef = useRef(primaryResultFeature);
+
+    useEffect(() => {
+    primaryResultFeatureRef.current = primaryResultFeature;
+    }, [primaryResultFeature]);
+
 
     useEffect(() => {
 
@@ -43,61 +52,38 @@ const Select = () => {
  
     const handleClickSelection = async (event) => {
         console.log("click selection");
-        if (activeTool !== "cursor") return; // Ensure we're using the cursor tool
     
-        let mapPoint = event.detail.mapPoint;  
-        setMapClicks(mapPoint) 
-
-        // Find features that intersect with the clicked point
-        let deselectPins = [] 
-        if(searchFeatures && searchFeatures?.length > 0){
+        if (activeTool !== "cursor") return;
+    
+        const mapPoint = event.detail.mapPoint;
+        setMapClicks(mapPoint);
+    
+        let deselectPins = [];
+        if (searchFeatures?.length > 0) {
             deselectPins = searchFeatures
-            .filter(feature => intersectsOperator.execute(mapPoint, feature.geometry))
-            .map(feature => feature.attributes[config.target_layer_id_field]);
+                .filter(feature => intersectsOperator.execute(mapPoint, feature.geometry))
+                .map(feature => feature.attributes[config.target_layer_id_field]);
         }
-
-        if(deselectPins.length === 0){
-            let features = await queryPolygon(mapPoint, false);
-        }    
-            
-        
-
-        console.log("Pins to deselect: ", deselectPins)
+    
+        if (deselectPins.length === 0) {
+            const shouldReplaceSelection = !primaryResultFeatureRef.current || primaryResultFeatureRef.current.length === 0;
+    
+            console.log("Should replace selection? ", shouldReplaceSelection);
+    
+            const features = await queryPolygon(mapPoint, shouldReplaceSelection);
+            console.log("New parcel(s) from click: ", features);
+    
+            const updatedFeatures = shouldReplaceSelection
+                ? features
+                : [...primaryResultFeatureRef.current, ...features];
+    
+            setPrimaryResultFeature(updatedFeatures);
+            setSelectedParcels(updatedFeatures);
+        }
+    
+        console.log("Pins to deselect: ", deselectPins);
     };
-
-    // useEffect(() => {
-
-    //     const handleSelectParcels = async () => {
-    //         if(mapClicks){
-    //             // Find features that intersect with the clicked point
-    //             let deselectPins = [] 
-    //             if(selectedParcels){
-    //                 deselectPins = selectedParcels
-    //                 .filter(feature => intersectsOperator.execute(mapClicks, feature.geometry))
-    //                 .map(feature => feature.attributes[config.target_layer_id_field]);
-    //             }
-               
-    //             console.log("Pins to deselect: ", deselectPins)
-
-    //             if(deselectPins.length === 0){
-    //                 const features = await queryPolygon(mapClicks)  
-    //                 if(selectedParcels && selectedParcels.length > 0){
-    //                     setSelectedParcels([...selectedParcels, ...features])
-    //                 }
-    //                 else{
-    //                     setSelectedParcels(features)
-    //                 }
-    //             }
-    //             else{
-    //                 setDeselectPins(deselectPins)
-    //             }
-    //         }
-    //     }
-
-    //     handleSelectParcels()
-
-    // }, [mapClicks])
-
+    
 
     useEffect(() => {
 
@@ -114,6 +100,8 @@ const Select = () => {
 
 
     useEffect(() => {
+
+        console.log("watching for map clicks")
         const mapElement = arcgisMapRef.current;
         if (!mapElement) return;
 
@@ -126,7 +114,7 @@ const Select = () => {
             // Cleanup event listener when component unmounts or tool changes
             mapElement.removeEventListener("arcgisViewClick", handleClickSelection);
         };
-    }, [activeTool]);
+    }, [activeTool, arcgisMapRef, selectPanelClosed]);
 
     const handleSelection = async (e) => {
 

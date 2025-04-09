@@ -4,12 +4,21 @@ import UseAppContext from "../../contexts/AppContext";
 import "@arcgis/map-components/components/arcgis-map";
 import "@arcgis/map-components/components/arcgis-zoom";
 import "@arcgis/map-components/components/arcgis-legend";
+
 import * as unionOperator from "@arcgis/core/geometry/operators/unionOperator.js";
+import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
+import Graphic from "@arcgis/core/Graphic";
+import SimpleRenderer from "@arcgis/core/renderers/SimpleRenderer";
+import SimpleFillSymbol from "@arcgis/core/symbols/SimpleFillSymbol";
+import Field from "@arcgis/core/layers/support/Field";
+import Collection from "@arcgis/core/core/Collection";
 
 import { config } from "../../data/config";
 import { useEffect, useRef, useState } from "react";
 import ActionBarMap from "../ActionBar/ActionBarMap";
 
+
+const SELECTED_PARCEL = "Selected Parcels"
 
 //set view highlight options
 //https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html#highlights
@@ -59,6 +68,9 @@ const Map = () => {
     const [highlightSelectComparable, setHighlightSelectComparable] = useState(null)
     const [highlightComparable, setHighlightComparable] = useState(null)
     const [clickedFeature, setClickedFeature] = useState(null)
+
+    const selectedParcelsLayerRef = useRef(null);
+    const highlightHandlesRef = useRef({});
     
     const findTargetLayer = (map) => {
 
@@ -125,23 +137,205 @@ const Map = () => {
     }
 
 
-    const handleParcelSelection = async (feature, name) => {
+    // const handleParcelSelection = async (feature, name) => {
 
-        if(!arcgisMapRef.current) return;
+    //     console.log("Feature passed to handleParcelSelection:", feature);
 
-        const view = arcgisMapRef.current.view
+    //     if(!arcgisMapRef.current && !feature) return;
 
-        if(!view || !parcelLayer) return;
+    //     const view = arcgisMapRef.current.view
+
+    //     if(!view || !parcelLayer) return;
         
-        const layerView = await view.whenLayerView(parcelLayer)
-        const highlight = await layerView.highlight(feature, {name: name})
+    //     const layerView = await view.whenLayerView(parcelLayer)
+
+    //     if(!layerView) return;
+
+        
+
+    //     // const graphics = Array.isArray(feature) ? feature : [feature];
+
+    //     // if (!graphics.length || !graphics[0].geometry) {
+    //     //     console.warn("Highlighting failed due to empty or invalid graphics:", graphics);
+    //     //     return;
+    //     // }
+
+    //     // const highlight = await layerView.highlight(graphics, { name });
 
 
-        //Zoom to layer
-        zoomToExtent(feature)
 
-        return highlight
-    }
+    //     //Zoom to layer
+    //     zoomToExtent(feature)
+
+    //     //return highlight
+    // }
+
+    const getParcelSelectionType = (name) => {
+        switch (name) {
+          case "default": return "Source Parcel";
+          case "compare": return "Comparable Parcels";
+          case "nearby": return "Nearby Parcels";
+          default: return null;
+        }
+      };
+    
+      const getGraphicsFromFeatureOrEvent = async (featureOrEvent, view, map) => {
+        if (featureOrEvent?.detail?.screenPoint) {
+          const hit = await view.hitTest(featureOrEvent.detail.screenPoint);
+          const selectedLayer = map.allLayers.find((l) => l.title === SELECTED_PARCEL);
+          if (!selectedLayer) return [];
+          return hit.results.filter(r => r.graphic.layer === selectedLayer).map(r => r.graphic);
+        }
+        return Array.isArray(featureOrEvent) ? featureOrEvent : [featureOrEvent];
+      };
+    
+      const createGraphics = (graphics, type) =>
+        graphics.map((g, i) => new Graphic({
+          geometry: g.geometry,
+          attributes: {
+            OBJECTID: g.attributes.OBJECTID || crypto.randomUUID?.() || `${Date.now()}${i}`,
+            ...g.attributes,
+            parcelSelectionType: type
+          }
+        }));
+    
+      const createSelectedParcelsLayer = (view, graphics) => {
+        const typeColors = {
+          "Source Parcel": "#0D4D96",
+          "Comparable Parcels": "#FFA500",
+          "Nearby Parcels": "#90EE90"
+        };
+    
+        return new FeatureLayer({
+          title: SELECTED_PARCEL,
+          source: new Collection(graphics),
+          objectIdField: "OBJECTID",
+          fields: [
+            new Field({ name: "OBJECTID", type: "oid" }),
+            new Field({ name: "parcelSelectionType", type: "string" })
+          ],
+          renderer: new SimpleRenderer({
+            symbol: new SimpleFillSymbol({ color: [0, 0, 0, 0], outline: { color: "#666", width: 4 } }),
+            visualVariables: [{
+              type: "color",
+              field: "parcelSelectionType",
+              stops: Object.entries(typeColors).map(([value, color]) => ({ value, color }))
+            }]
+          }),
+          spatialReference: view.spatialReference
+        });
+      };
+    
+      const updateSelectedParcelsLayer = async (map, view, existing, graphics, type) => {
+
+        const layer = map.allLayers.find(layer => layer.title === SELECTED_PARCEL);
+        if (!layer) return [];
+
+        // const existing = layer.source.toArray();
+        console.log("existing features on selected parcels layer: ", existing)
+
+        const incomingIds = new Set(graphics.map(g => g.attributes.OBJECTID));
+
+        const toRemove = existing.filter(g => {
+          const isSameType = g.attributes.parcelSelectionType === type;
+          const isOverlapping = incomingIds.has(g.attributes.OBJECTID);
+          if (type === "Source Parcel") return true;
+          if (
+            (type === "Nearby Parcels" && g.attributes.parcelSelectionType === "Comparable Parcels") ||
+            (type === "Comparable Parcels" && g.attributes.parcelSelectionType === "Nearby Parcels")
+          ) return true;
+          return isOverlapping || isSameType;
+        });
+
+
+        console.log("removing: ", toRemove)
+
+        console.log("adding: ", graphics)
+        await layer.applyEdits({ deleteFeatures: toRemove, addFeatures: graphics });
+        // Force wait for the layer view to reflect the update
+        const layerView = await view.whenLayerView(layer);
+      
+        // Now `layer.source.toArray()` will reflect changes
+        const updated = layer.source.toArray();
+        console.log("Updated features on selected parcels layer: ", updated);
+
+        return existing;
+      };
+    
+      const highlightReselectedParcels = async (map, view, graphics, existing, type) => {
+        const layer = map.allLayers.find(layer => layer.title === SELECTED_PARCEL);
+        const existingIds = new Set(existing.map(g => g.attributes.OBJECTID));
+        const highlightCandidates = graphics.filter(g => existingIds.has(g.attributes.OBJECTID));
+        if (highlightHandlesRef.current[type]) {
+          highlightHandlesRef.current[type].remove();
+          delete highlightHandlesRef.current[type];
+        }
+        if (highlightCandidates.length > 0) {
+          const layerView = await view.whenLayerView(layer);
+          highlightHandlesRef.current[type] = layerView.highlight(
+            highlightCandidates.map(g => g.attributes.OBJECTID),
+            "default"
+          );
+        }
+      };
+    
+      const handleParcelSelection = async (featureOrEvent, name) => {
+        if (!arcgisMapRef.current || !featureOrEvent) return;
+
+        const view = arcgisMapRef.current.view;
+        const map = arcgisMapRef.current.map;
+        if (!view || !map) return;
+    
+        const parcelSelectionType = getParcelSelectionType(name);
+        if (!parcelSelectionType) return;
+    
+        const rawGraphics = await getGraphicsFromFeatureOrEvent(featureOrEvent, view, map);
+        if (!rawGraphics.length || !rawGraphics[0]?.geometry) return;
+    
+        const newGraphics = createGraphics(rawGraphics, parcelSelectionType);
+        let layer = map.allLayers.find(layer => layer.title === SELECTED_PARCEL);
+    
+        if (!layer) {
+          const newLayer = createSelectedParcelsLayer(view, newGraphics);
+          map.add(newLayer);
+        } else {
+
+          const { features } = await layer.queryFeatures()
+          const existing = await updateSelectedParcelsLayer(map, view, features, newGraphics, parcelSelectionType);
+          await highlightReselectedParcels(map, view, newGraphics, existing, parcelSelectionType);
+        }
+        zoomToExtent(rawGraphics);
+      };
+    
+      const clearSelectedParcelsByType = async (parcelSelectionType) => {
+
+        console.log(`Clearing ${parcelSelectionType} from map`)
+
+        if (!arcgisMapRef.current) return;
+        const map = arcgisMapRef.current.map;
+        if(!map) return;
+
+        const layer = map.allLayers.find((layer) => layer.title === SELECTED_PARCEL);
+        if (!layer) return;
+
+        const { features } = await layer.queryFeatures();
+        console.log("clearSelectedParcelsByType removing: ", features)
+
+        const toDelete = features.filter(
+          (f) => f.attributes.parcelSelectionType === parcelSelectionType
+        );
+
+        console.log("clearSelectedParcelsByTypee removing: ", toDelete)
+
+        if (!toDelete.length) return;
+        await layer.applyEdits({ deleteFeatures: toDelete });
+
+        if (highlightHandlesRef.current?.[parcelSelectionType]) {
+          highlightHandlesRef.current[parcelSelectionType].remove();
+          delete highlightHandlesRef.current[parcelSelectionType];
+        }
+      };
+    
 
     const handleViewReady = async (event) => {
 
@@ -188,17 +382,19 @@ const Map = () => {
                 targetLayer.parent.visible = true
             }
 
-
             console.log("highlightSelect: ", highlightSelect)
             highlightSelect?.remove()
+            
+            
     
             if(!searchFeatures || !searchFeatures[0]){
                 highlightSelect?.remove()
+                clearSelectedParcelsByType('Source Parcel')
             }
     
-            if(parcelLayer && (primaryResultFeature || clickedFeature)){
-                console.log("primary feature selection updated: ", primaryResultFeature? primaryResultFeature : clickedFeature)
-                let highlight = await handleParcelSelection(primaryResultFeature? primaryResultFeature : clickedFeature, 'default')
+            if(parcelLayer && (primaryResultFeature)){
+                console.log("primary feature selection updated: ", primaryResultFeature)
+                let highlight = await handleParcelSelection(primaryResultFeature, 'default')
                 //highlight selection
                 setHighlightSelect(highlight)
                 if( primaryResultFeature?.length === 1){
@@ -223,6 +419,7 @@ const Map = () => {
 
             if(!comparableParcels || comparableParcels.length === 0){
                 highlightComparable?.remove()
+                clearSelectedParcelsByType('compare')
             }
             
             let highlight = await handleParcelSelection(comparableParcels, 'compare')

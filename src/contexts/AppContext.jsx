@@ -820,15 +820,17 @@ export const AppProvider = ({children}) => {
                                             .map((feature) => feature)
         }
         
-        let allFeatures = []
+        let allFeatures = searchFeatures ? [...searchFeatures] : []
         if(matchingFeatures.length === 0 ){
             if(!newSelection){
-                allFeatures = [...searchFeatures]
+                console.log("adding selection to search features: ", searchFeatures)
                 allFeatures.push(features[0])
             }
             else{
                 allFeatures = [...features]
             }
+
+            console.log("setting new primary result features: ", allFeatures, newSelection)
             setPrimaryResultFeature(allFeatures, newSelection)
             setSearchResults(null, allFeatures, searchTerm, allFeatures)
 
