@@ -8,8 +8,11 @@ import "@arcgis/map-components/components/arcgis-legend";
 import * as unionOperator from "@arcgis/core/geometry/operators/unionOperator.js";
 import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import Graphic from "@arcgis/core/Graphic";
-import SimpleRenderer from "@arcgis/core/renderers/SimpleRenderer";
-import SimpleFillSymbol from "@arcgis/core/symbols/SimpleFillSymbol";
+
+import FeatureEffect from "@arcgis/core/layers/support/FeatureEffect.js";
+import FeatureFilter from "@arcgis/core/layers/support/FeatureFilter.js";
+
+
 import Field from "@arcgis/core/layers/support/Field";
 import Collection from "@arcgis/core/core/Collection";
 import * as intersectsOperator from "@arcgis/core/geometry/operators/intersectsOperator.js";
@@ -60,8 +63,8 @@ const highlights = [
 
 const typeColors = {
   "Source Parcel": "#0D4D96",
-  "Comparable Parcels": "#FFA500",
-  "Nearby Parcels": "#90EE90"
+  "Comparable Parcel": "#FFA500",
+  "Nearby Parcel": "#90EE90"
 };
 
 
@@ -187,21 +190,14 @@ const Map = () => {
         }
 
     }
-
-    const getParcelSelectionType = (name) => {
-        switch (name) {
-          case "default": return "Source Parcel";
-          case "compare": return "Comparable Parcels";
-          case "nearby": return "Nearby Parcels";
-          default: return null;
-        }
-      };
-    
       const getGraphicsFromFeatureOrEvent = async (featureOrEvent, view, map) => {
+
         if (featureOrEvent?.detail?.screenPoint) {
           const hit = await view.hitTest(featureOrEvent.detail.screenPoint);
+
           const selectedLayer = map.allLayers.find((l) => l.title === SELECTED_PARCEL);
           if (!selectedLayer) return [];
+
           return hit.results.filter(r => r.graphic.layer === selectedLayer).map(r => r.graphic);
         }
         return Array.isArray(featureOrEvent) ? featureOrEvent : [featureOrEvent];
@@ -225,6 +221,7 @@ const Map = () => {
           objectIdField: "OBJECTID",
           fields: [
             new Field({ name: "OBJECTID", type: "oid" }),
+            new Field({ name: config.target_layer_id_field, type: "string" }),
             new Field({ name: "parcelSelectionType", type: "string" })
           ],
           renderer: {
@@ -250,14 +247,23 @@ const Map = () => {
       };
     
       const updateSelectedParcelsLayer = async (map, existing, graphics, type) => {
+        
+        console.log("updating selected parcels: ",  graphics)
+        if(!arcgisMapRef.current){
+          return
+        }
 
         const layer = map.allLayers.find(layer => layer.title === SELECTED_PARCEL);
-        if (!layer) return [];
+        console.log("found selected parcel layer ",  layer)
+        if (!layer) return;
 
         // const existing = layer.source.toArray();
         console.log("existing features on selected parcels layer: ", existing)
 
-        const incomingIds = new Set(graphics.map(g => g.attributes.OBJECTID));
+        const incomingIds = new Set(graphics.map(g => {
+          g.attributes.OBJECTID
+          g.attributes[config.target_layer_id_field]
+        }));
 
         const toRemove = existing?.filter(g => {
           const isSameType = g.attributes.parcelSelectionType === type;
@@ -277,8 +283,49 @@ const Map = () => {
         await layer.applyEdits({ deleteFeatures: toRemove, addFeatures: graphics });
         return existing;
       };
+
+      const hideOtherSearchFeatures = async (hide, features) => {
+
+        if(!arcgisMapRef.current) return;
+        const map = arcgisMapRef.current.map
+        if(!map) return;
+
+        const layer = map.allLayers.find((layer) => layer.title === SELECTED_PARCEL)
+        if(!layer) return;
+        
+
+        if(hide){
+          //get PIN10 from target layer to filter out other search features
+          let sourceParcelPin = primaryResultFeature.map((feature) => feature.attributes[config.target_layer_id_field])
+
+          if(features){
+            const featurePins = features.map((feature) => feature.attributes[config.target_layer_id_field])
+            sourceParcelPin = [...sourceParcelPin, ...featurePins]
+          }
+
+          
+          const effectQuery = `${config.target_layer_id_field} IN ('${sourceParcelPin.join("','")}')`
+          
+          console.log("effect query: ", effectQuery)
+
+          
+          layer.featureEffect = new FeatureEffect({
+            filter: new FeatureFilter({
+              where: effectQuery
+            }),
+            excludedEffect: "opacity(40%)"
+          })
+        }
+        else{
+          layer.featureEffect = null
+        }
+
+
+      }
     
       const highlightReselectedParcels = async (view, features) => {
+
+        if(!features) return;
 
           const map = arcgisMapRef.current.map
           if(!view && !map) return;
@@ -290,7 +337,10 @@ const Map = () => {
           const type = parcelSelectionType[0] ? parcelSelectionType[0] : SOURCE_PARCEL
   
           console.log("remove existing highlightHandlesRef.current: ", highlightHandlesRef.current)
-          highlightHandlesRef.current[type]?.remove()
+          if(highlightHandlesRef.current[type]){
+            highlightHandlesRef.current[type]?.remove()
+          }
+          
 
           console.log("highlighting: ", type)
           const layerView = await view.whenLayerView(layer);
@@ -308,26 +358,41 @@ const Map = () => {
       };
     
       const handleParcelSelection = async (featureOrEvent, name) => {
+
+        console.log("handling new parcel selection: ", name, featureOrEvent)
         if (!arcgisMapRef.current || !featureOrEvent) return;
 
         const view = arcgisMapRef.current.view;
         const map = arcgisMapRef.current.map;
         if (!view || !map) return;
     
-        const parcelSelectionType = getParcelSelectionType(name);
+        // const parcelSelectionType = getParcelSelectionType(name);
+        const parcelSelectionType = name;
         if (!parcelSelectionType) return;
-    
-        const rawGraphics = await getGraphicsFromFeatureOrEvent(featureOrEvent, view, map);
+        
+
+        //if feature event is point
+        let rawGraphics
+        console.log("featureOrEvent: ", featureOrEvent)
+        if(featureOrEvent[0]?.geometry.type === "point"){
+          rawGraphics = await getGraphicsFromFeatureOrEvent(featureOrEvent, view, map);
+        }
+        else{
+          rawGraphics = featureOrEvent
+        }
+        
         if (!rawGraphics.length || !rawGraphics[0]?.geometry) return;
     
         const newGraphics = createGraphics(rawGraphics, parcelSelectionType);
         let layer = map.allLayers.find(layer => layer.title === SELECTED_PARCEL);
     
         if (!layer) {
+          console.log("Source parcel layer not found")
           const newLayer = createSelectedParcelsLayer(view, newGraphics);
           map.add(newLayer);
         } else {
 
+          console.log("Source parcel layer found")
           const { features } = await layer.queryFeatures()
 
           const existing = await updateSelectedParcelsLayer(map, features, newGraphics, parcelSelectionType);
@@ -413,7 +478,7 @@ const Map = () => {
     
             if(parcelLayer && (searchFeatures)){
                 console.log("primary feature selection updated: ", searchFeatures)
-                await handleParcelSelection(searchFeatures, 'default')
+                await handleParcelSelection(searchFeatures, SOURCE_PARCEL)
 
                 if( searchFeatures?.length === 1){
                     togglePanel('property')
@@ -430,13 +495,29 @@ const Map = () => {
 
     useEffect(() => {
 
-      const highlightSelected = () => {
+      const highlightSelected = async () => {
 
-        if(!primaryResultFeature || !arcgisMapRef.current) return; 
+        if(!primaryResultFeature || primaryResultFeature?.length === 0 && !arcgisMapRef.current) return; 
 
         const view = arcgisMapRef.current.view
 
-        highlightReselectedParcels(view, primaryResultFeature)
+        const map = arcgisMapRef.current.map;
+        if(!map && !view) return;
+
+        const layer = map.allLayers.find((layer) => layer.title === SELECTED_PARCEL);
+        if(!layer){
+          await handleParcelSelection(primaryResultFeature, SOURCE_PARCEL)
+          
+        }
+        
+        else{
+          let query = layer.createQuery();
+          const pins = primaryResultFeature.map((feature) => feature.attributes[config.target_layer_id_field])
+          query.where = `${config.target_layer_id_field} IN ('${pins.join(',')}')`
+          const { features } = await layer.queryFeatures(query)
+          await highlightReselectedParcels(view, features)
+        }
+
 
       }
 
@@ -447,19 +528,19 @@ const Map = () => {
 
     useEffect(() => {
 
-        const highlightComparables = async () => {
-            highlightComparable?.remove()
-
-            if(!comparableParcels || comparableParcels.length === 0){
-                highlightComparable?.remove()
-                clearSelectedParcelsByType('compare')
-            }
+        const showComparables = async () => {
             
-            let highlight = await handleParcelSelection(comparableParcels, 'compare')
-            setHighlightComparable(highlight)
+          if(comparableParcels && comparableParcels.length > 0){
+            hideOtherSearchFeatures(true, comparableParcels)
+            handleParcelSelection(comparableParcels, COMPARABLE_PARCEL)
+          }
+           else{
+            hideOtherSearchFeatures(false)
+            clearSelectedParcelsByType(COMPARABLE_PARCEL)
+           }
         } 
 
-        highlightComparables()
+        showComparables()
 
 
     }, [comparableParcels])
