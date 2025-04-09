@@ -12,6 +12,7 @@ import SimpleRenderer from "@arcgis/core/renderers/SimpleRenderer";
 import SimpleFillSymbol from "@arcgis/core/symbols/SimpleFillSymbol";
 import Field from "@arcgis/core/layers/support/Field";
 import Collection from "@arcgis/core/core/Collection";
+import * as intersectsOperator from "@arcgis/core/geometry/operators/intersectsOperator.js";
 
 import { config } from "../../data/config";
 import { useEffect, useRef, useState } from "react";
@@ -115,6 +116,17 @@ const Map = () => {
         
     }
 
+    const isSelected = (existing, mapPoint) => {
+      
+      const existingFeatures = Array.isArray(existing) ? existing : [existing];
+
+      const selected = existingFeatures
+      .filter((feature) => intersectsOperator.execute(mapPoint, feature.geometry))
+      .map((feature) => feature)
+
+      return selected.length > 0
+    }
+
     const handleViewClick = async (event) => {
 
         console.log("Map Clicked")
@@ -123,7 +135,9 @@ const Map = () => {
             return
         }
 
-        const view = arcgisMapRef.current.view
+        const map = arcgisMapRef.current.map
+
+        if(!map) return;
 
         //prevent selection using right mouse click
         if(event.detail.native.button === 2){
@@ -132,14 +146,27 @@ const Map = () => {
         //select parcel using screen point
         let mapPoint = event.detail.mapPoint;
 
-        const features = await queryPolygon(mapPoint, true) 
+        //check if reselecting polygon
+        let reselected;
+        const layer = map.allLayers.find((layer) => layer.title === SELECTED_PARCEL)
+        if(layer){
+          const { features } = await layer.queryFeatures()
+          reselected = isSelected(features, mapPoint)
+        }
+        
+        if(reselected){
+          console.log("Clicked feature that is already selected")
+        }
+        else{
+          //if selecting new polygon
+          const features = await queryPolygon(mapPoint, true) 
+          console.log("Clicked Features: ", features)
+          setClickedFeature(features) 
+        }
+        
 
-        console.log("Clicked Features: ", features)
-        setClickedFeature(features)
-          
+        
 
-
-            
     }
 
 
@@ -218,17 +245,20 @@ const Map = () => {
           renderer: {
             type: "unique-value",
             field: "parcelSelectionType",
-            defaultSymbol: { type: "simple-line"},
             uniqueValueInfos: Object.entries(typeColors).map(([value, color]) => {
               return {
+                label: value,
                 value: value,
                 symbol: {
-                  type: "simple-line",
-                  color: color,
-                  width: 2
+                  type: "simple-fill",
+                  color: [51, 204, 51, 0],
+                  outline:{
+                    color: color,
+                    width: 2
+                  }
                 }
               }
-            })
+            }),
           },
           spatialReference: view.spatialReference
         });
@@ -257,29 +287,37 @@ const Map = () => {
 
 
         console.log("removing: ", toRemove)
-
         console.log("adding: ", graphics)
+
         await layer.applyEdits({ deleteFeatures: toRemove, addFeatures: graphics });
-        // Force wait for the layer view to reflect the update
-        const layerView = await view.whenLayerView(layer);
+        // // Force wait for the layer view to reflect the update
+        // const layerView = await view.whenLayerView(layer);
       
-        // Now `layer.source.toArray()` will reflect changes
-        const updated = layer.source.toArray();
-        console.log("Updated features on selected parcels layer: ", updated);
+        // // Now `layer.source.toArray()` will reflect changes
+        // const updated = layer.source.toArray();
+        // console.log("Updated features on selected parcels layer: ", updated);
 
         return existing;
       };
     
       const highlightReselectedParcels = async (map, view, graphics, existing, type) => {
+
         const layer = map.allLayers.find(layer => layer.title === SELECTED_PARCEL);
+
         const existingIds = new Set(existing.map(g => g.attributes.OBJECTID));
+
         const highlightCandidates = graphics.filter(g => existingIds.has(g.attributes.OBJECTID));
+
         if (highlightHandlesRef.current[type]) {
+
           highlightHandlesRef.current[type].remove();
           delete highlightHandlesRef.current[type];
+
         }
         if (highlightCandidates.length > 0) {
+
           const layerView = await view.whenLayerView(layer);
+
           highlightHandlesRef.current[type] = layerView.highlight(
             highlightCandidates.map(g => g.attributes.OBJECTID),
             "default"
@@ -309,15 +347,15 @@ const Map = () => {
         } else {
 
           const { features } = await layer.queryFeatures()
+
+
           const existing = await updateSelectedParcelsLayer(map, view, features, newGraphics, parcelSelectionType);
-          await highlightReselectedParcels(map, view, newGraphics, existing, parcelSelectionType);
+          await highlightReselectedParcels(map, view, newGraphics, features, parcelSelectionType);
         }
         zoomToExtent(rawGraphics);
       };
     
       const clearSelectedParcelsByType = async (parcelSelectionType) => {
-
-        
 
         if (!arcgisMapRef.current) return;
         const map = arcgisMapRef.current.map;
@@ -339,10 +377,10 @@ const Map = () => {
         if (!toDelete.length) return;
         await layer.applyEdits({ deleteFeatures: toDelete });
 
-        if (highlightHandlesRef.current?.[parcelSelectionType]) {
-          highlightHandlesRef.current[parcelSelectionType].remove();
-          delete highlightHandlesRef.current[parcelSelectionType];
-        }
+        // if (highlightHandlesRef.current?.[parcelSelectionType]) {
+        //   highlightHandlesRef.current[parcelSelectionType].remove();
+        //   delete highlightHandlesRef.current[parcelSelectionType];
+        // }
       };
     
 
@@ -360,7 +398,7 @@ const Map = () => {
             rotationEnabled: false
         }
 
-        view.highlights = highlights
+        //view.highlights = highlights
 
         setMapView(view)
 
@@ -392,12 +430,12 @@ const Map = () => {
                 targetLayer.parent.visible = true
             }
 
-            highlightSelect?.remove()
+            //highlightSelect?.remove()
             
             
     
             if(!searchFeatures || !searchFeatures[0]){
-                highlightSelect?.remove()
+                //highlightSelect?.remove()
                 clearSelectedParcelsByType('Source Parcel')
             }
     
@@ -405,7 +443,7 @@ const Map = () => {
                 console.log("primary feature selection updated: ", primaryResultFeature)
                 let highlight = await handleParcelSelection(primaryResultFeature, 'default')
                 //highlight selection
-                setHighlightSelect(highlight)
+                //setHighlightSelect(highlight)
                 if( primaryResultFeature?.length === 1){
                     togglePanel('property')
                 }
@@ -498,7 +536,7 @@ const Map = () => {
             }}
         >
             <arcgis-zoom position="top-right" />
-            {/* <arcgis-legend position="bottom-right" legend-style="classic"></arcgis-legend> */}
+            <arcgis-legend position="bottom-right" legend-style="card"></arcgis-legend>
         </arcgis-map>
     </>
     )
