@@ -227,7 +227,7 @@ const ComparisonPropertyDetail = () => {
         
         if(secondaryResultFeature){
             console.log("secondary feature selected: ", secondaryResultFeature)
-            calculateFieldValues(secondaryResultFeature);
+            calculateFieldValues(secondaryResultFeature[0]);
         }
         
 
@@ -286,6 +286,8 @@ const ComparisonPropertyDetail = () => {
                     >
                         {
                             comparableParcels && secondaryResultFeature && categories?.map( category => {
+
+                                let feature = secondaryResultFeature[0]
                                 return(
                                     <CalciteListItemGroup heading={translateText(category)}>
                                         {
@@ -295,11 +297,11 @@ const ComparisonPropertyDetail = () => {
 
                                                 //check if data type is text and check if value is not null for selected parcel
                                                 if(['text' , 'text or int'].includes(data?.attributes['type'])){
-                                                    if(secondaryResultFeature?.attributes[data?.attributes['field']]){
+                                                    if(feature?.attributes[data?.attributes['field']]){
                                                         return(
                                                             <CalciteListItem
                                                                 key={data?.attributes['field']}
-                                                                label={secondaryResultFeature?.attributes[data?.attributes['field']]}
+                                                                label={feature?.attributes[data?.attributes['field']]}
                                                                 description={data?.attributes['label']}
                                                                 >
                                                             </CalciteListItem>
@@ -335,11 +337,11 @@ const ComparisonPropertyDetail = () => {
                                                 }
 
                                                 //check if data type is int or double and check if value is not null for selected parcel
-                                                if(data?.attributes['type'] === 'int or double' && secondaryResultFeature?.attributes[data?.attributes['field']]){
+                                                if(data?.attributes['type'] === 'int or double' && feature?.attributes[data?.attributes['field']]){
                                                     return(
                                                         <CalciteListItem
                                                         key={data?.attributes['field']}
-                                                        label={addCommaSeparator(secondaryResultFeature?.attributes[data?.attributes['field']], data?.attributes['type'])}
+                                                        label={addCommaSeparator(feature?.attributes[data?.attributes['field']], data?.attributes['type'])}
                                                         description={data?.attributes['label']}
                                                         >
                                                         </CalciteListItem>
@@ -347,11 +349,11 @@ const ComparisonPropertyDetail = () => {
                                                 }
 
                                                 //check if data type is money if value is not null for selected parcel
-                                                if(data?.attributes['type'] === 'money' && secondaryResultFeature?.attributes[data?.attributes['field']]){
+                                                if(data?.attributes['type'] === 'money' && feature?.attributes[data?.attributes['field']]){
                                                     return(
                                                         <CalciteListItem
                                                         key={data?.attributes['field']}
-                                                        label={`$${addCommaSeparator(secondaryResultFeature?.attributes[data?.attributes['field']], data?.attributes['type'])}`}
+                                                        label={`$${addCommaSeparator(feature?.attributes[data?.attributes['field']], data?.attributes['type'])}`}
                                                         description={data?.attributes['label']}
                                                         >
                                                         </CalciteListItem>
@@ -364,13 +366,13 @@ const ComparisonPropertyDetail = () => {
                                                     if(calculatedValues[data?.attributes['field']]){
                                                         if(calculatedValues[data?.attributes['field']]['type']  === 'link'){
                                                             
-                                                            if(Object.keys(conditional_links).includes(data?.attributes['field']) && !conditional_links[data?.attributes['field']].includes(parseInt(secondaryResultFeature.attributes['BCLASS']))){
+                                                            if(Object.keys(conditional_links).includes(data?.attributes['field']) && !conditional_links[data?.attributes['field']].includes(parseInt(feature.attributes['BCLASS']))){
                                                                 //console.log("Open data link to res data: ", data?.attributes['field'])
                                                                 return null
                                                             }
                                                             
                                                             else{
-                                                                const hyperlink = returnHyperlink(data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], secondaryResultFeature?.attributes)
+                                                                const hyperlink = returnHyperlink(data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], feature?.attributes)
                                                                 return(
                                                                     <CalciteListItem
                                                                     key={data?.attributes['field']}

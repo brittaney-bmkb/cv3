@@ -64,7 +64,7 @@ const Export = () => {
                 break;
                 case 'comparable-property':
                 setParcelSource(secondaryResultFeature)
-                setDataTitle(translateText(`Parcel PIN ${secondaryResultFeature.attributes[config.target_layer_display_field]}`));
+                setDataTitle(translateText(`Parcel PIN ${secondaryResultFeature[0].attributes[config.target_layer_display_field]}`));
                 break;
                 case 'comparable-search':
                 setParcelSource(comparableParcels)

@@ -839,12 +839,10 @@ export const AppProvider = ({children}) => {
              //update url parameters
              const param = await returnSearchParam(allFeatures)
              setSearchParams(param)
-
-            
         }
 
         else if(matchingFeatures.length === 1 && features.length === 1){
-            setSecondaryResultFeature(features[0])
+            setSecondaryResultFeature(features)
         }
 
         return allFeatures

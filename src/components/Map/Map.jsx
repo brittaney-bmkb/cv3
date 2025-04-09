@@ -514,6 +514,7 @@ const Map = () => {
           let query = layer.createQuery();
           const pins = primaryResultFeature.map((feature) => feature.attributes[config.target_layer_id_field])
           query.where = `${config.target_layer_id_field} IN ('${pins.join(',')}')`
+          query.outFields = "*"
           const { features } = await layer.queryFeatures(query)
           await highlightReselectedParcels(view, features)
         }
@@ -545,23 +546,23 @@ const Map = () => {
 
     }, [comparableParcels])
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        const highlightSelectedComparable = async () => {
-            highlightSelectComparable?.remove()
+    //     const highlightSelectedComparable = async () => {
+    //         highlightSelectComparable?.remove()
         
-            if(!secondaryResultFeature){
-                highlightSelectComparable?.remove()
-            }
+    //         if(!secondaryResultFeature){
+    //             highlightSelectComparable?.remove()
+    //         }
     
-            let highlight = await handleParcelSelection(secondaryResultFeature, 'compare-select')
-            setHighlightSelectComparable(highlight)
-        }
+    //         let highlight = await handleParcelSelection(secondaryResultFeature, 'compare-select')
+    //         setHighlightSelectComparable(highlight)
+    //     }
 
-        highlightSelectedComparable()
+    //     highlightSelectedComparable()
 
         
-    }, [secondaryResultFeature])
+    // }, [secondaryResultFeature])
 
     useEffect(() => {
 
