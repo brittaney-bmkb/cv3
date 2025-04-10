@@ -835,13 +835,14 @@ export const AppProvider = ({children}) => {
                 if(selectPanelClosed){
                     console.log("Select panel is closed")
                     setPrimaryResultFeature(features, newSelection)
+                    togglePanel("property")
                 }
                 else{
                     console.log("Select panel is open")
                     setSearchResults(null, allFeatures, searchTerm, allFeatures)
                 }
                 
-                togglePanel("property")
+                
             }
             else{
                 allFeatures = [...features]
