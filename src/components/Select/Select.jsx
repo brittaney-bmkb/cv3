@@ -23,11 +23,13 @@ const Select = () => {
         propertyDetailPanelClosed,
         searchFeatures,
         togglePanel, 
-        setPrimaryResultFeature
+        setSearchResults,
+        searchTerm
      } = UseAppContext()
     
     const sketchRef = useRef(null)
     const graphicsLayer = useRef(null)
+    const selectedFeatures = useRef([])
 
     const [activeTool, setActiveTool] = useState("cursor")
     const [ mapClicks, setMapClicks ] = useState(null)
@@ -45,6 +47,7 @@ const Select = () => {
 
         if(selectPanelClosed && sketchRef.current){
             sketchRef.current.cancel()
+            selectedFeatures.current = []
         }
 
     }, [selectPanelClosed])
@@ -66,55 +69,65 @@ const Select = () => {
         }
     
         if (deselectPins.length === 0) {
-            const shouldReplaceSelection = !primaryResultFeatureRef.current || primaryResultFeatureRef.current.length === 0;
-    
-            console.log("Should replace selection? ", shouldReplaceSelection);
-    
-            const features = await queryPolygon(mapPoint, shouldReplaceSelection);
-            console.log("New parcel(s) from click: ", features);
-    
-            const updatedFeatures = shouldReplaceSelection
-                ? features
-                : [...primaryResultFeatureRef.current, ...features];
-    
-            setPrimaryResultFeature(updatedFeatures);
-            setSelectedParcels(updatedFeatures);
+            console.log("queryPolygon Search Features: ", searchFeatures)
+            console.log("queryPolygon local state: ", selectedFeatures.current)
+            const features = await queryPolygon(mapPoint, false);
+
+            //update selectedFeatures
+
+            if(selectedFeatures.current){
+                selectedFeatures.current = searchFeatures ? searchFeatures : []
+                selectedFeatures.current.push(features)
+            }
+           
+
+
+
+            console.log("queryPolygon local state Updated: ", selectedFeatures.current)
+
+            //setSearchResults(null, selectedFeatures.current, searchTerm, selectedFeatures.current)
+        //     selectedFeatures.current = [
+        //         ...searchFeatures,
+        //         ...features]
+        //     //setSearchResults(null, features, searchTerm, features)
+        //     setSearchResults(selectedFeatures.current);
+        //     console.log("queryPolygon selectedFeatures.current ", selectedFeatures.current);
         }
     
         console.log("Pins to deselect: ", deselectPins);
     };
     
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        const handleDeselectParcels = async () => {
-            if(deselectPins && deselectPins.length > 0){
-                const features = await deselectParcel(deselectPins); 
-                setSelectedParcels(features)
-            }
-        }
+    //     const handleDeselectParcels = async () => {
+    //         if(deselectPins && deselectPins.length > 0){
+    //             const features = await deselectParcel(deselectPins); 
+    //             setSelectedParcels(features)
+    //         }
+    //     }
 
-        handleDeselectParcels()
+    //     handleDeselectParcels()
 
-    }, [deselectPins])
+    // }, [deselectPins])
 
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        console.log("watching for map clicks")
-        const mapElement = arcgisMapRef.current;
-        if (!mapElement) return;
+    //     console.log("watching for map clicks")
+    //     const mapElement = arcgisMapRef.current;
+    //     if (!mapElement) return;
 
-        if(selectPanelClosed) return;
+    //     if(selectPanelClosed) return;
 
-        // Attach event listener for clicking on parcels
-        mapElement.addEventListener("arcgisViewClick", handleClickSelection);
+    //     // Attach event listener for clicking on parcels
+    //     mapElement.addEventListener("arcgisViewClick", handleClickSelection);
 
-        return () => {
-            // Cleanup event listener when component unmounts or tool changes
-            mapElement.removeEventListener("arcgisViewClick", handleClickSelection);
-        };
-    }, [activeTool, arcgisMapRef, selectPanelClosed]);
+    //     return () => {
+    //         // Cleanup event listener when component unmounts or tool changes
+    //         mapElement.removeEventListener("arcgisViewClick", handleClickSelection);
+    //     };
+    // }, [activeTool, arcgisMapRef, selectPanelClosed]);
 
     const handleSelection = async (e) => {
 

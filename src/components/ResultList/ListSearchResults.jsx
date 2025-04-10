@@ -30,39 +30,43 @@ const ListSearchResults = () => {
         >
         {
             searchFeatures?.map(feature => {
-                return(
-                    <CalciteListItem 
-                        key={feature.attributes['PIN14_dash']} 
-                        label={feature.attributes['PIN14_dash']}
-                        selectionAppearance="border"
-                        selectionMode="single"
-                        iconEnd="pin"
-                        selected={feature.attributes['PIN14_dash'] === selectedPIN14}
-                        onCalciteListItemSelect={() => {
-                            selectResultFromList(feature.attributes['PIN14_dash'])
-                            setSearchBufferGeometry(null, null)
-                            togglePanel('property')
 
-                        }}
-                    >
-                    <div slot="content" className="description" style={{marginLeft:'10px'}}>
-                        <CalciteLabel scale="m" >
-                            <span>
-                            {`PIN: ${feature.attributes['PIN14_dash']}`}
-                            </span>
-                        </CalciteLabel>
-                        <CalciteLabel scale="s" >
-                            <span>
-                            {feature.attributes['street_address']}<br/>{feature.attributes['city_state_zip']}
-                            </span>
-                        </CalciteLabel>
-
-                        
-                    </div>
-                        
-                        
-                    </CalciteListItem>
-                )
+                if(feature.attributes){
+                    return(
+                        <CalciteListItem 
+                            key={feature.attributes['PIN14_dash']} 
+                            label={feature.attributes['PIN14_dash']}
+                            selectionAppearance="border"
+                            selectionMode="single"
+                            iconEnd="pin"
+                            selected={feature.attributes['PIN14_dash'] === selectedPIN14}
+                            onCalciteListItemSelect={() => {
+                                selectResultFromList(feature.attributes['PIN14_dash'])
+                                setSearchBufferGeometry(null, null)
+                                togglePanel('property')
+    
+                            }}
+                        >
+                        <div slot="content" className="description" style={{marginLeft:'10px'}}>
+                            <CalciteLabel scale="m" >
+                                <span>
+                                {`PIN: ${feature.attributes['PIN14_dash']}`}
+                                </span>
+                            </CalciteLabel>
+                            <CalciteLabel scale="s" >
+                                <span>
+                                {feature.attributes['street_address']}<br/>{feature.attributes['city_state_zip']}
+                                </span>
+                            </CalciteLabel>
+    
+                            
+                        </div>
+                            
+                            
+                        </CalciteListItem>
+                    )
+                }
+                
             })
         }
         </CalciteList>

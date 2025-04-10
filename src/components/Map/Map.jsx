@@ -108,6 +108,12 @@ const Map = () => {
 
         console.log("features selected: ", features)
 
+        if(!arcgisMapRef.current) return;
+
+        const view = arcgisMapRef.current.view
+
+        if(!view) return;
+
         if(!features) return;
 
         let extent
@@ -118,15 +124,14 @@ const Map = () => {
             if(geometries?.length > 0){
                 extent = unionOperator.executeMany(geometries);
             }
-            
         }
-
         else{
-               extent = features.geometry
+               extent = features?.geometry
         }
         
         if(extent){
-            arcgisMapRef.current.goTo(extent)
+          await view.when()
+          view.goTo(extent)
         }
         
     }
@@ -185,7 +190,7 @@ const Map = () => {
         }
         else{
           //if selecting new polygon
-          const features = await queryPolygon(mapPoint, true) 
+          const features = await queryPolygon(mapPoint, selectPanelClosed) 
           console.log("Clicked Features: ", features)
         }
 
@@ -264,8 +269,11 @@ const Map = () => {
           g.attributes.OBJECTID
           g.attributes[config.target_layer_id_field]
         }));
-
+        
         const toRemove = existing?.filter(g => {
+
+          if(!selectPanelClosed) return false;
+
           const isSameType = g.attributes.parcelSelectionType === type;
           const isOverlapping = incomingIds.has(g.attributes.OBJECTID);
           if (type === SOURCE_PARCEL) return true;
@@ -390,6 +398,7 @@ const Map = () => {
           console.log("Source parcel layer not found")
           const newLayer = createSelectedParcelsLayer(view, newGraphics);
           map.add(newLayer);
+          map.reorder(layer, map.allLayers.length -1)
         } else {
 
           console.log("Source parcel layer found")
@@ -477,6 +486,7 @@ const Map = () => {
             }
     
             if(parcelLayer && (searchFeatures)){
+               await parcelLayer.load()
                 console.log("primary feature selection updated: ", searchFeatures)
                 await handleParcelSelection(searchFeatures, SOURCE_PARCEL)
 
@@ -599,9 +609,9 @@ const Map = () => {
             zoom={8}
             onarcgisViewReadyChange={handleViewReady}
             onarcgisViewClick={(event) => {
-                if (selectPanelClosed) {
+                // if (selectPanelClosed) {
                     handleViewClick(event);
-                }
+                //}
             }}
         >
             <arcgis-zoom position="top-right" />
