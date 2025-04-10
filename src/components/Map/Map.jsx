@@ -81,7 +81,7 @@ const Map = () => {
         searchFeatures,
         isMobile,
         comparableParcels,
-        setPrimaryResultFeature
+        newSearch
         } = UseAppContext()
     
     const actionRef = useRef(null)
@@ -272,7 +272,7 @@ const Map = () => {
         
         const toRemove = existing?.filter(g => {
 
-          if(!selectPanelClosed) return false;
+          if(!selectPanelClosed && !newSearch) return false;
 
           const isSameType = g.attributes.parcelSelectionType === type;
           const isOverlapping = incomingIds.has(g.attributes.OBJECTID);

@@ -18,8 +18,13 @@ const ListSearchResults = () => {
 
     useEffect(() => {
 
+        if(!primaryResultFeature) return;
+
+
         const pin14 = primaryResultFeature[0].attributes[config.target_layer_display_field]
         setSelectedPIN14(pin14)
+        
+        
 
     }, [primaryResultFeature])
 
