@@ -314,6 +314,7 @@ const Map = () => {
         }
         else{
           toRemove = removeParcel
+          setRemoveParcel([])
         }
 
 
