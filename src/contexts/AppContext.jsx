@@ -807,7 +807,7 @@ export const AppProvider = ({children}) => {
      */
     const queryPolygon = async (polygon, newSelection) => {
 
-        const { selectPanelClosed, searchTerm, searchFeatures, comparableParcels } = state
+        const { primaryResultFeature, selectPanelClosed, searchTerm, searchFeatures, comparableParcels } = state
         const { queryTargetLayerByPolygon } = await import('../arcgis/search/queryTargetLayer')
         const features = await queryTargetLayerByPolygon(polygon)
         
@@ -840,6 +840,10 @@ export const AppProvider = ({children}) => {
                 else{
                     console.log("Select panel is open")
                     setSearchResults(null, allFeatures, searchTerm, allFeatures)
+
+                    if(!primaryResultFeature){
+                        setPrimaryResultFeature(features, true)
+                    }
                 }
                 
                 
