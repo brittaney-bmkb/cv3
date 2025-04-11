@@ -42,7 +42,7 @@ const PropertyComparison = () => {
         
         const selectedStepIndex = event.target.selectedItem.itemPosition
 
-        console.log("Selected Step Index: ", selectedStepIndex)
+        //console.log("Selected Step Index: ", selectedStepIndex)
 
         setCurrentStep(selectedStepIndex)
     }
