@@ -64,7 +64,7 @@ const highlights = [
 const typeColors = {
   "Source Parcel": "#0D4D96",
   "Comparable Parcel": "#FFA500",
-  "Nearby Parcel": "#90EE90"
+  "Nearby Parcel": "#FFA500"
 };
 
 
@@ -362,7 +362,7 @@ const Map = () => {
 
       }
     
-      const highlightReselectedParcels = async (view, features) => {
+      const highlightReselectedParcels = async (view, features, parcelType) => {
 
         if(!features) return;
 
@@ -373,10 +373,11 @@ const Map = () => {
 
           if(!layer) return;
           const parcelSelectionType = features.map((feature) => feature.attributes["parcelSelectionType"])
-          const type = parcelSelectionType[0] ? parcelSelectionType[0] : SOURCE_PARCEL
+          const type =  parcelType ? parcelType : SOURCE_PARCEL
   
-          console.log("remove existing highlightHandlesRef.current: ", highlightHandlesRef.current)
+          
           if(highlightHandlesRef.current[type]){
+            console.log("remove existing highlightHandlesRef.current: ", highlightHandlesRef.current)
             highlightHandlesRef.current[type]?.remove()
           }
           
@@ -386,7 +387,7 @@ const Map = () => {
 
           const highlight = layerView.highlight(
             features.map(g => g.attributes.OBJECTID),
-            type
+            {name: type}
           );
 
           if(highlight){
@@ -480,6 +481,8 @@ const Map = () => {
         }
 
         view.highlights = highlights
+
+        console.log("view highlights: ", view.highlights)
 
         setMapView(view)
 
@@ -587,23 +590,34 @@ const Map = () => {
 
     }, [comparableParcels])
 
-    // useEffect(() => {
+    useEffect(() => {
 
-    //     const highlightSelectedComparable = async () => {
-    //         highlightSelectComparable?.remove()
+        const highlightSelectedComparable = async () => {
+          if(!secondaryResultFeature || secondaryResultFeature?.length === 0 && !arcgisMapRef.current) return; 
+
+          const view = arcgisMapRef.current.view
+  
+          const map = arcgisMapRef.current.map;
+          if(!map && !view) return;
+  
+          const layer = map.allLayers.find((layer) => layer.title === SELECTED_PARCEL);
+          if(!layer) return;
+          
+          
+          let query = layer.createQuery();
+          const pins = secondaryResultFeature.map((feature) => feature.attributes[config.target_layer_id_field])
+          query.where = `${config.target_layer_id_field} IN ('${pins.join(',')}')`
+          query.outFields = "*"
+          const { features } = await layer.queryFeatures(query)
+          console.log("secondaryResultFeature: ", secondaryResultFeature)
+          await highlightReselectedParcels(view, features, COMPARABLE_PARCEL)
         
-    //         if(!secondaryResultFeature){
-    //             highlightSelectComparable?.remove()
-    //         }
-    
-    //         let highlight = await handleParcelSelection(secondaryResultFeature, 'compare-select')
-    //         setHighlightSelectComparable(highlight)
-    //     }
+        }
 
-    //     highlightSelectedComparable()
+        highlightSelectedComparable()
 
         
-    // }, [secondaryResultFeature])
+    }, [secondaryResultFeature])
 
     useEffect(() => {
 
