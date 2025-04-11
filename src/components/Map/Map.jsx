@@ -81,11 +81,13 @@ const Map = () => {
         searchFeatures,
         isMobile,
         comparableParcels,
-        setPrimaryResultFeature
+        setSearchResults,
+        searchTerm
         } = UseAppContext()
     
     const actionRef = useRef(null)
     const [parcelLayer, setParcelLayer] = useState(null)
+    const [ removeParcel, setRemoveParcel] = useState([])
     const [highlightSelect, setHighlightSelect] = useState(null)
     const [highlightSelectComparable, setHighlightSelectComparable] = useState(null)
     const [highlightComparable, setHighlightComparable] = useState(null)
@@ -159,6 +161,21 @@ const Map = () => {
       return selected
     }
 
+    const deselectParcel = async (feature) => {
+
+      console.log("Deselecting Parcel", feature)
+
+      const deselectPins = feature.map((f) => f.attributes[config.target_layer_id_field])
+
+      console.log("existing search features: ", searchFeatures)
+      const filterSearchFeatures = searchFeatures.filter((searchFeature) => {
+        return !deselectPins.includes(searchFeature.attributes[config.target_layer_id_field])
+      })
+
+      console.log("New search features: ", filterSearchFeatures)
+      setSearchResults(null, filterSearchFeatures, searchTerm, filterSearchFeatures)
+    }
+
     const handleViewClick = async (event) => {
 
         console.log("Map Clicked")
@@ -184,9 +201,17 @@ const Map = () => {
           console.log("Clicked feature that is already selected")
           //highlightReselectedParcels(view, reselected)
           //update primary result feature with selected parcel
-          const features = await queryPolygon(mapPoint, false) 
-         
 
+          if(selectPanelClosed){
+            const features = await queryPolygon(mapPoint, false) 
+          }
+          
+          //if select multiple panel is open and a parcel is reselected
+          //remove the parcel from search results and the map
+          else{
+            setRemoveParcel(reselected)
+            await deselectParcel(reselected)
+          }
         }
         else{
           //if selecting new polygon
@@ -270,19 +295,25 @@ const Map = () => {
           g.attributes[config.target_layer_id_field]
         }));
         
-        const toRemove = existing?.filter(g => {
+        let toRemove =[]
+ 
 
-          if(!selectPanelClosed) return false;
-
-          const isSameType = g.attributes.parcelSelectionType === type;
-          const isOverlapping = incomingIds.has(g.attributes.OBJECTID);
-          if (type === SOURCE_PARCEL) return true;
-          if (
-            (type === NEARBY_PARCEL && g.attributes.parcelSelectionType === COMPARABLE_PARCEL) ||
-            (type === COMPARABLE_PARCEL && g.attributes.parcelSelectionType === NEARBY_PARCEL)
-          ) return true;
-          return isOverlapping || isSameType;
-        });
+        if(selectPanelClosed){
+          toRemove = existing?.filter(g => {
+  
+            const isSameType = g.attributes.parcelSelectionType === type;
+            const isOverlapping = incomingIds.has(g.attributes.OBJECTID);
+            if (type === SOURCE_PARCEL) return true;
+            if (
+              (type === NEARBY_PARCEL && g.attributes.parcelSelectionType === COMPARABLE_PARCEL) ||
+              (type === COMPARABLE_PARCEL && g.attributes.parcelSelectionType === NEARBY_PARCEL)
+            ) return true;
+            return isOverlapping || isSameType;
+          })
+        }
+        else{
+          toRemove = removeParcel
+        }
 
 
         console.log("removing: ", toRemove)
