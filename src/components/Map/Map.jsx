@@ -82,7 +82,8 @@ const Map = () => {
         isMobile,
         comparableParcels,
         setSearchResults,
-        searchTerm
+        searchTerm,
+        newSearch
         } = UseAppContext()
     
     const actionRef = useRef(null)
@@ -298,7 +299,7 @@ const Map = () => {
         let toRemove =[]
  
 
-        if(selectPanelClosed){
+        if(selectPanelClosed || newSearch){
           toRemove = existing?.filter(g => {
   
             const isSameType = g.attributes.parcelSelectionType === type;
