@@ -130,6 +130,9 @@ const ComparisonPropertyDetail = () => {
 
     useEffect(() => {
         const calculateFieldValues = async (feature) => {
+
+            if(!feature) return;
+
             if (dataDictionary) {
 
                 const promises = dataDictionary.map(async (data) => {
@@ -146,7 +149,7 @@ const ComparisonPropertyDetail = () => {
                             if (!updatedState[field]) {
                                 updatedState[field] = '';
                             }
-                            updatedState[field] = feature.attributes[field]
+                            updatedState[field] = feature?.attributes[field]
                             return updatedState;
                         })
 
@@ -366,7 +369,7 @@ const ComparisonPropertyDetail = () => {
                                                     if(calculatedValues[data?.attributes['field']]){
                                                         if(calculatedValues[data?.attributes['field']]['type']  === 'link'){
                                                             
-                                                            if(Object.keys(conditional_links).includes(data?.attributes['field']) && !conditional_links[data?.attributes['field']].includes(parseInt(feature.attributes['BCLASS']))){
+                                                            if(Object.keys(conditional_links).includes(data?.attributes['field']) && !conditional_links[data?.attributes['field']].includes(parseInt(data?.attributes['BCLASS']))){
                                                                 ////console.log("Open data link to res data: ", data?.attributes['field'])
                                                                 return null
                                                             }

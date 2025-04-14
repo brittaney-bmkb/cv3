@@ -83,7 +83,8 @@ const Map = () => {
         comparableParcels,
         setSearchResults,
         searchTerm,
-        newSearch
+        newSearch,
+        clearResultsComparables
         } = UseAppContext()
     
     const actionRef = useRef(null)
@@ -267,7 +268,8 @@ const Map = () => {
                   color: [51, 204, 51, 0],
                   outline:{
                     color: color,
-                    width: 2
+                    width: 2,
+                    style: value === SOURCE_PARCEL ? "solid": "dash"
                   }
                 }
               }
@@ -461,7 +463,7 @@ const Map = () => {
           (f) => f.attributes.parcelSelectionType === parcelSelectionType
         );
 
-        console.log("clearSelectedParcelsByTypee removing: ", toDelete)
+        console.log("clearSelectedParcelsByType removing: ", toDelete)
 
         if (!toDelete.length) return;
         await layer.applyEdits({ deleteFeatures: toDelete });
@@ -543,6 +545,12 @@ const Map = () => {
 
       const highlightSelected = async () => {
 
+        if(comparableParcels && comparableParcels.length > 0){
+          hideOtherSearchFeatures(false)
+          clearSelectedParcelsByType(COMPARABLE_PARCEL) 
+          clearResultsComparables()
+        }
+
         if(!primaryResultFeature || primaryResultFeature?.length === 0 && !arcgisMapRef.current) return; 
 
         const view = arcgisMapRef.current.view
@@ -577,14 +585,14 @@ const Map = () => {
 
         const showComparables = async () => {
             
+
           if(comparableParcels && comparableParcels.length > 0){
+            hideOtherSearchFeatures(false)
+            clearSelectedParcelsByType(COMPARABLE_PARCEL)
             hideOtherSearchFeatures(true, comparableParcels)
             handleParcelSelection(comparableParcels, COMPARABLE_PARCEL)
           }
-           else{
-            hideOtherSearchFeatures(false)
-            clearSelectedParcelsByType(COMPARABLE_PARCEL)
-           }
+
         } 
 
         showComparables()

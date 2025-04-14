@@ -13,7 +13,7 @@ const ListComparisonResults = ({refElement, setCurrentStep}) => {
     const handleSelect = async (feature) => {
 
         console.log("selecting feature: ", feature)
-        setSecondaryResultFeature(feature)
+        setSecondaryResultFeature([feature])
         //togglePanel('compareDetail')
         if(!refElement) return;
         setCurrentStep(2)

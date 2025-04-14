@@ -1,6 +1,8 @@
 import { 
     CalciteAction,
     CalciteActionBar,
+    CalciteBlock,
+    CalciteFab,
     CalcitePanel, 
     CalciteStepper,
     CalciteStepperItem
@@ -48,6 +50,10 @@ const PropertyComparison = () => {
     }
 
     useEffect(() => {
+
+        // if(!comparableParcels || comparableParcels.length === 0){
+        //     setCurrentStep(0)
+        // }
 
         if(currentStep===0){
             setTitle('Comparable Property Search')
@@ -133,8 +139,7 @@ const PropertyComparison = () => {
                     />
                 </CalciteActionBar> : null
             }
-             <Inactive/>
-            
+
             <CalciteStepper 
             ref={stepperRef}
             title={translateText('Property Comparison')} 
@@ -148,6 +153,7 @@ const PropertyComparison = () => {
                 <CalciteStepperItem
                 selected={currentStep===0}
                 heading={translateText("Search")}
+                complete={currentStep > 0}
                 >
                     <ComparisonForm refElement={stepperRef.current} setCurrentStep={setCurrentStep}/>
                 </CalciteStepperItem>
@@ -156,17 +162,34 @@ const PropertyComparison = () => {
                 disabled={comparableParcels?false:true}
                 selected={currentStep===1}
                 heading={translateText("Results")}
+                complete={currentStep > 1 && comparableParcels?.length > 0}
                 >
-                    {comparableParcels ? <ListComparisonResults refElement={stepperRef.current} setCurrentStep={setCurrentStep}/> : <Inactive/>}
+                    {comparableParcels && comparableParcels.length > 0 ? <ListComparisonResults refElement={stepperRef.current} setCurrentStep={setCurrentStep}/> : 
+                    
+                         currentStep > 0 &&    
+                         (
+                           <Inactive/>
+                        )
+                            
+                            
+                            
+             
+                    }
                 </CalciteStepperItem>
 
                 <CalciteStepperItem
                 disabled={secondaryResultFeature?false:true}
                 selected={currentStep===2}
                 heading={translateText("Property")}
+                
                 >
                     
-                    {secondaryResultFeature ? <ComparisonPropertyDetail/> : <Inactive/>}
+                    {secondaryResultFeature ? <ComparisonPropertyDetail/> : 
+                    
+                    currentStep > 0 &&    
+                         (<Inactive/>)
+                         
+                    }
                 </CalciteStepperItem>
 
             </CalciteStepper>
