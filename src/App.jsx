@@ -19,6 +19,7 @@ import HelpDialog from './components/HelpDialog/HelpDialog'
 import WebMapComponentBeta from './components/WebMapView/WebMapComponentBeta'
 
 //Calcite Components
+import "@esri/calcite-components/dist/components/calcite-tooltip";
 import "@esri/calcite-components/dist/components/calcite-shell";
 import "@esri/calcite-components/dist/components/calcite-shell-panel";
 import "@esri/calcite-components/dist/components/calcite-panel";
