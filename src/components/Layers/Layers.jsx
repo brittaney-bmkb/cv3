@@ -36,8 +36,8 @@ const Layers = () => {
 
     const handleLayerChanges = () => {
 
-        let yOffset = -20
-        let xOffset = -125
+        let yOffset = 0
+        let yOffsetNeg = -50
         if (!arcgisMapRef.current) return;
 
         const map = arcgisMapRef.current.map;
@@ -92,8 +92,8 @@ const Layers = () => {
                     font: { family: "Arial Unicode MS", size: 11, weight: "bold" },
                     haloColor: [0, 0, 0, 255],  // black
                     haloSize: 1.5,
-                    yoffset: i > 1 || visibleParcelYears.length === 1? 0 : yOffset,
-                    xoffset: i > 1 ? xOffset : 0 
+                    yoffset: i <= 3 ? yOffset : yOffsetNeg,
+                    // xoffset: i > 1 ? xOffset : 0 
                 }
                 const labelClass = new LabelClass({  // autocasts as new LabelClass()
                     symbol: symbol,
@@ -121,8 +121,10 @@ const Layers = () => {
                 }
                   
 
-                yOffset = yOffset + 40
-                xOffset = i === 2 ? xOffset + 130 : xOffset + 30
+                yOffset = yOffset + 45
+                if(i >3){
+                    yOffsetNeg = yOffsetNeg -45
+                }
             //}
         })                                 
  }
