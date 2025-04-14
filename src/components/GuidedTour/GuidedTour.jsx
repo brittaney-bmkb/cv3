@@ -3,11 +3,8 @@ import "@esri/calcite-components/dist/components/calcite-popover";
 import { CalciteButton, CalcitePopover, CalciteTooltip } from "@esri/calcite-components-react"
 import { useContext, useEffect, useRef, useState } from "react"
 import UseAppContext from "../../contexts/AppContext"
-import { useSearchParams } from "react-router-dom";
-
 
 const GuidedTour = () => {
-
 
     const { 
         refSearch,
@@ -87,12 +84,18 @@ const GuidedTour = () => {
             togglePanel("imagery")
         }
     }
+    
+    const stopGuidedTour = () => {
+
+        setEndTour(true)
+        refPopover.current.open = false
+    }
 
 
     useEffect(() => {
 
-        if(!refPopover.current || endTour) return; 
-
+        if(!refPopover.current || endTour) return;
+        
         if(currentStop === 4 || !propertyDetailPanelClosed){
             console.log("opening popover for current stop:", currentStop)
             setCurrentStop(4)
@@ -120,9 +123,14 @@ const GuidedTour = () => {
                 <p>{tourRoute[currentStop].description}</p>
                 <div style={{textAlign:'end', width: '100%'}}>
                     <CalciteButton
-                    appearance="outline"
-                    iconEnd="arrow-right"
-                    onClick={nextTourStop}
+                        appearance="transparent"
+                        iconEnd="arrow-right"
+                        onClick={stopGuidedTour}
+                    >End Tour</CalciteButton>
+                    <CalciteButton
+                        appearance="outline-fill"
+                        iconEnd="arrow-right"
+                        onClick={nextTourStop}
                     >Next</CalciteButton>
                 </div>
             </div>
