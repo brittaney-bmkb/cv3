@@ -36,12 +36,14 @@ import "@esri/calcite-components/dist/components/calcite-input-text"
 import "@esri/calcite-components/dist/components/calcite-input-number"
 import "@esri/calcite-components/dist/components/calcite-dropdown"
 import Layout from './Layout'
+import GuidedTour from './components/GuidedTour/GuidedTour'
 
 function App() {
 
   return (
     <AppProvider>
-     <Layout.jsx/>
+      
+      <Layout.jsx/>
     </AppProvider>
   )
 }

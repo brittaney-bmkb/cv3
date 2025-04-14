@@ -12,6 +12,8 @@ export const AppProvider = ({children}) => {
     const [state, dispatch] = useReducer(AppReducer, initialState)
 
     const arcgisMapRef = useRef(null)
+    //create a reference to the search widget DOM element
+    const refSearch = useRef(null)
 
     const setInfoPanel = (open) => {
         dispatch({
@@ -1503,7 +1505,9 @@ export const AppProvider = ({children}) => {
         feedbackSource: state.feedbackSource,
         //DEVICE STATE
         setIsMobile,
-        isMobile: state.isMobile
+        isMobile: state.isMobile,
+        //GUIDED TOUR STATE
+        refSearch
 
     }
 

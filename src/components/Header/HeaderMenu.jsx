@@ -20,23 +20,7 @@ function titleCase(s) {
 }
 
 
-const menuItems = {
-    Help: {
-        icon: "question",
-        subMenuItems: null,
-        id:"help"
-    },
-    Feedback:{
-        icon:"speech-bubble-exclamation",
-        subMenuItems: null,
-        id:"feedback-expanded"
-    },
-    Translate: {
-        icon: "language-translate",
-        subMenuItems: config.language_codes,
-        id: "translate"
-    }
-}
+
 
 const HeaderMenu = () => {
 
@@ -44,9 +28,31 @@ const HeaderMenu = () => {
         translateText,
         setLanguage,
         setFeedbackDialog,
+        refTranslate
     } = UseAppContext()
 
     const [routeParams , setSearchParams] = useSearchParams()
+
+    const menuItems = {
+        Help: {
+            icon: "question",
+            subMenuItems: null,
+            id:"help",
+            ref: null
+        },
+        Feedback:{
+            icon:"speech-bubble-exclamation",
+            subMenuItems: null,
+            id:"feedback-expanded",
+            ref: null
+        },
+        Translate: {
+            icon: "language-translate",
+            subMenuItems: config.language_codes,
+            id: "translate",
+            ref: refTranslate
+        }
+    }
 
     const handleClick = (language) => {
         //reference: https://developers.arcgis.com/javascript/latest/localization/
@@ -77,6 +83,7 @@ const HeaderMenu = () => {
                     return(
                         <CalciteMenuItem
                             id={menuItems[menuItem].id}
+                            ref={menuItems[menuItem].ref}
                             key={menuItem}
                             text={translateText(menuItem)} 
                             iconStart={menuItems[menuItem].icon}
