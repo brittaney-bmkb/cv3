@@ -64,7 +64,12 @@ const ComparisonResults = () => {
         
                     <CalciteBlock open collapsible={false}>
                         {/* SEARCH RESULTS LABEL*/}
-                        {comparableParcels ? <ListComparisonResults/> : translateText(`Search for new property`)} 
+                        {comparableParcels && comparableParcels.length > 0 ? <ListComparisonResults/> : 
+                        <div slot="content">
+                            {translateText(`Search for new property`)}
+                        </div>
+                        
+                        } 
                     </CalciteBlock>
             </CalcitePanel>
     )

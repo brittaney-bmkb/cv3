@@ -18,7 +18,7 @@ const ListSearchResults = () => {
 
     useEffect(() => {
 
-        if(!primaryResultFeature) return;
+        if(!primaryResultFeature || !primaryResultFeature[0]) return;
 
 
         const pin14 = primaryResultFeature[0].attributes[config.target_layer_display_field]
@@ -35,6 +35,8 @@ const ListSearchResults = () => {
         >
         {
             searchFeatures?.map(feature => {
+
+                if(!feature) return; 
 
                 if(feature.attributes){
                     return(

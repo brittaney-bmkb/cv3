@@ -35,8 +35,8 @@ const PanelSearchResults = () => {
                 closed={searchResultsPanelClosed} 
                 closable 
                 className='panel-start' 
-                heading={`${translateText('Search Results')} (${searchFeatures?.length})`} 
-                description= {searchBufferGeometry ? `${translateText("Property results include parcels within")} ${config.buffer_distance} ${translateText(config.buffer_unit)} ${translateText("of")} ${searchTerm}`: null}
+                heading={`${translateText('Search Results')} (${searchFeatures ? searchFeatures?.length : 0})`} 
+                description= {searchFeatures?.length > 0 && searchBufferGeometry ? `${translateText("Property results include parcels within")} ${config.buffer_distance} ${translateText(config.buffer_unit)} ${translateText("of")} ${searchTerm}`: null}
                 overlayPositioning="fixed"
                 onCalcitePanelClose={() => {
                     setSearchResultsPanel(true)
