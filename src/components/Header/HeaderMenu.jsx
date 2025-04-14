@@ -24,14 +24,17 @@ const menuItems = {
     Help: {
         icon: "question",
         subMenuItems: null,
+        id:"help"
     },
     Feedback:{
         icon:"speech-bubble-exclamation",
         subMenuItems: null,
+        id:"feedback-expanded"
     },
     Translate: {
         icon: "language-translate",
         subMenuItems: config.language_codes,
+        id: "translate"
     }
 }
 
@@ -73,6 +76,7 @@ const HeaderMenu = () => {
                 Object.keys(menuItems).map(menuItem => {
                     return(
                         <CalciteMenuItem
+                            id={menuItems[menuItem].id}
                             key={menuItem}
                             text={translateText(menuItem)} 
                             iconStart={menuItems[menuItem].icon}
