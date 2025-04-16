@@ -33,38 +33,38 @@ const NEARBY_PARCEL = "Nearby Parcel"
 const highlights = [
     {
     name: "default", //this is the highlight config for the primary selected parcel
-    color:  "#0D4D96",
+    color:  "#FFD700",
     haloOpacity: 1,
-    haloColor: "#0D4D96",
+    haloColor: "#FFD700",
     fillOpacity: .1,
     },
     {
       name: SOURCE_PARCEL, //this is the highlight config for the primary selected parcel
-      color:  "#0D4D96",
+      color:  "#FFD700",
       haloOpacity: 1,
-      haloColor: "#0D4D96",
+      haloColor: "#FFD700",
       fillOpacity: .1,
       },
     {
     name: COMPARABLE_PARCEL, //this is the highlight for comparable parcel that is selected
-    color:  "#FFA500",
+    color:  "#FF00FF",
     haloOpacity: 1,
-    haloColor: "#FFA500",
+    haloColor: "#FF00FF",
     fillOpacity: .1,
     },
     {
     name: NEARBY_PARCEL, //this is the highlight for nearby parcel that is selected
-    color:  "#FFA500",
+    color:  "#FF00FF",
     haloOpacity: 1,
-    haloColor: "#FFA500",
+    haloColor: "#FF00FF",
     fillOpacity: .1,
     }
 ]
 
 const typeColors = {
-  "Source Parcel": "#0D4D96",
-  "Comparable Parcel": "#FFA500",
-  "Nearby Parcel": "#FFA500"
+  "Source Parcel": "#FFD700",
+  "Comparable Parcel": "#FF00FF",
+  "Nearby Parcel": "#FF00FF"
 };
 
 
