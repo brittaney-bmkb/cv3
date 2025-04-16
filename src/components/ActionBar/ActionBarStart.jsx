@@ -27,6 +27,10 @@ const ActionBarStart = () => {
                 onClick={() => {
                     togglePanel('info')
                     }}></CalciteAction>
+                <CalciteAction text={translateText("Tour")} icon="play" textEnabled={isMobile ? false : true} active={!infoPanelClosed}
+                onClick={() => {
+                    togglePanel('tour')
+                    }}></CalciteAction>
             </CalciteActionGroup>
             <CalciteActionGroup
             className="start-actions"

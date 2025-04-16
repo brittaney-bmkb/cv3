@@ -1,6 +1,7 @@
 import "@esri/calcite-components/dist/components/calcite-popover";
+import "@esri/calcite-components/dist/components/calcite-checkbox";
 
-import { CalciteButton, CalcitePopover, CalciteTooltip } from "@esri/calcite-components-react"
+import { CalciteButton, CalciteCheckbox, CalciteDialog, CalciteLabel, CalcitePopover, CalciteTooltip } from "@esri/calcite-components-react"
 import { useContext, useEffect, useRef, useState } from "react"
 import UseAppContext from "../../contexts/AppContext"
 
@@ -11,10 +12,12 @@ const GuidedTour = () => {
         searchFeatures,
         setPrimaryResultFeature,
         togglePanel,
-        propertyDetailPanelClosed
+        propertyDetailPanelClosed,
+        translateText
      } = UseAppContext()
 
-    const [endTour, setEndTour] = useState(false);
+    const [openTour, setOpenTour] = useState(false);
+    const [dialogOpen, setDialogOpen] = useState(true);
     const refPopover = useRef(null)
 
     const tourRoute = {
@@ -87,14 +90,14 @@ const GuidedTour = () => {
     
     const stopGuidedTour = () => {
 
-        setEndTour(true)
+        setOpenTour(true)
         refPopover.current.open = false
     }
 
 
     useEffect(() => {
 
-        if(!refPopover.current || endTour) return;
+        if(!refPopover.current || openTour) return;
         
         if(currentStop === 4 || !propertyDetailPanelClosed){
             console.log("opening popover for current stop:", currentStop)
@@ -103,10 +106,54 @@ const GuidedTour = () => {
             togglePanel("property")
         }
 
-    }, [currentStop, endTour, refPopover, propertyDetailPanelClosed])
+    }, [currentStop, openTour, refPopover, propertyDetailPanelClosed])
 
     return(
         <>
+        <CalciteDialog
+        heading="Welcome to CookViewer 3.1"
+        description="some text"
+        open={dialogOpen}
+        >
+
+            <div>
+                <p>{translateText("CookViewer has been updated with a redesigned layout and new features to improve usability. The interface now includes flexible panels that allow you to view and switch between search results and property details. These panels can be expanded, collapsed, or closed to give you more control over how much space is available for the map.")}</p>
+                <p>{translateText("To help you get started, you can take a brief guided tour that introduces the new layout and tools.")}</p>
+                <p>{translateText("Your feedback is appreciated and helps us continue to improve the application.")}</p>
+                <p><b>{translateText("Would you like to start the tour now?")}</b></p>
+                
+            </div>
+      
+            <CalciteLabel layout="inline" slot="footer-start">
+                <CalciteCheckbox label={translateText("Do not show this again")}></CalciteCheckbox>
+                {translateText("Do not show this again")}
+            </CalciteLabel>
+
+            
+            <CalciteButton 
+                slot="footer-end"
+                label="start-tour"
+                onClick={()=>{
+                    setOpenTour(true)
+                    setDialogOpen(false)
+                }
+                }
+                >Start tour 
+            </CalciteButton>
+            <CalciteButton 
+                slot="footer-end"
+                appearance="outline"
+                label="skip-tour"
+                onClick={()=>{
+                    setOpenTour(false)
+                    setDialogOpen(false)
+                }
+                }
+                >Skip
+            </CalciteButton>
+
+
+        </CalciteDialog>
         
             <CalcitePopover 
             ref={refPopover}
@@ -114,7 +161,7 @@ const GuidedTour = () => {
             overlayPositioning="fixed"
             id={"translate-tooltip"} 
             referenceElement={tourRoute[currentStop].id} 
-            open
+            open={openTour}
             // closable
             label={tourRoute[currentStop].accessibleLabel}
             heading={tourRoute[currentStop].heading}
