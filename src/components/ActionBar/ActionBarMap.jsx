@@ -65,7 +65,7 @@ const ActionBarMap = () => {
             </CalciteAction>
 
             <CalciteAction 
-                active={!selectPanelClosed}
+                active={!measurePanelClosed}
                 text={translateText("Measure")} 
                 icon="measure" 
                 textEnabled 
