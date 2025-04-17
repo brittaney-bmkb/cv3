@@ -207,7 +207,7 @@ const SearchBarComponent = () => {
         <>
         { searchSources ?
             <arcgis-search
-                id={"search"}
+                id={"search-bar"}
                 ref={refSearch}
                 sources={searchSources}
                 includeDefaultSourcesDisabled

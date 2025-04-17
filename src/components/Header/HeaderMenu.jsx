@@ -76,6 +76,7 @@ const HeaderMenu = () => {
 
     return(
         <CalciteMenu
+        id="header-menu"
         slot="content-end"
         className="org-brand">
             {

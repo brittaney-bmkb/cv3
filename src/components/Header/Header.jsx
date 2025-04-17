@@ -25,7 +25,7 @@ const Header = () => {
                 className="org-brand">
 
                 </CalciteNavigationLogo >
-                <div slot={isMobile ? "navigation-secondary" :"content-start"} className='cook-search'>
+                <div id="search-slot" slot={isMobile ? "navigation-secondary" :"content-start"} className='cook-search'>
                     {/* SEARCH BAR */}
                     <SearchBarComponent/>
                 </div>
