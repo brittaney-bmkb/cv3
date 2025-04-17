@@ -59,6 +59,7 @@ export const initialState = {
     exportDataSource: null,
     feedbackOpen: false,
     feedbackSource:null,
+    tourDialogOpen: true,
     //DEVICE STATE
     isMobile: null,
     //HISTORICAL PARCELS
@@ -151,6 +152,12 @@ const AppReducer = (state, action) => {
             ...state, 
             feedbackOpen: payload.feedbackOpen,
             feedbackSource: payload.feedbackSource
+        }
+
+        case "SET_TOUR_OPEN":
+        return {
+            ...state, 
+            tourDialogOpen: payload.tourDialogOpen,
         }
 
         case "SET_MOBILE":

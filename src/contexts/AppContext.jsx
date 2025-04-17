@@ -134,6 +134,15 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setTourDialogOpen = (open) => {
+        dispatch({
+            type: "SET_TOUR_OPEN",
+            payload: {
+                tourDialogOpen: open,
+            }
+        })
+    }
+
     const setIsMobile = (sm) => {
         dispatch({
             type: "SET_MOBILE",
@@ -295,6 +304,10 @@ export const AppProvider = ({children}) => {
             setComparisonResultsPanel(true)
             setComparisonDetailPanel(true)
             break; 
+
+        case 'tour':
+            setTourDialogOpen(true)
+
           default:
             break;
         }
@@ -1507,7 +1520,9 @@ export const AppProvider = ({children}) => {
         setIsMobile,
         isMobile: state.isMobile,
         //GUIDED TOUR STATE
-        refSearch
+        refSearch,
+        tourDialogOpen: state.tourDialogOpen,
+        setTourDialogOpen
 
     }
 
