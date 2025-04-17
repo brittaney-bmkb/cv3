@@ -175,6 +175,20 @@ export const AppProvider = ({children}) => {
         const { prevSearchFeatures, searchFeatures, primaryResultFeature, searchTerm, newSearch, isMobile } = state
 
         switch (panelName) {
+            case 'all':
+                setLayersPanel(true);
+                setComparablePanel(true);
+                setNearbyPanel(true);
+                setImageryPanel(true)
+                setPrintPanel(true)
+                setSelectPanel(true)
+                setComparisonResultsPanel(true)
+                setComparisonDetailPanel(true)
+                setInfoPanel(true);
+                setPropertyDetailPanel(true);
+                setSearchResultsPanel(true);
+
+                break;
           case 'info':
             setInfoPanel(false);
             setPropertyDetailPanel(true);
@@ -1537,21 +1551,6 @@ export const AppProvider = ({children}) => {
 
     }
 
-    // useEffect( () => {
-
-    //     const initalizeSearchSources = async () => {
-            
-    //         const { initializeLayersAndSearchSources} = await import('../arcgis/webmap/webmap')
-    //         let searchSources = await initializeLayersAndSearchSources()
-
-    //         await setSearchSources(searchSources)
-    //     }
-        
-    //     initalizeSearchSources()
-
-    // }, [])
-
-
     useEffect(() => {
         const handleResize = () => {
             //////console.log("Resize event triggered");
@@ -1568,23 +1567,6 @@ export const AppProvider = ({children}) => {
           window.removeEventListener('resize', handleResize);
         };
       }, [window.innerWidth]);
-
-
-    // useEffect(() => {
-
-    //     const width = window.innerWidth
-    //     setIsMobile(width < 768); // Check on initial load
-
-    //     const mediaQuery = window.matchMedia("(max-width: 768px)");
-
-    //     const handleResize = (event) => {
-    //     setIsMobile(event.matches);
-    //     };
-
-
-    //     mediaQuery.addEventListener("change", handleResize); // Listen for changes
-    //     return () => mediaQuery.removeEventListener("change", handleResize); // Cleanup
-    // }, []);
 
     useEffect(() => {
         //on initial load display info panel

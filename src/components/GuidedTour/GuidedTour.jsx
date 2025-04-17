@@ -17,7 +17,9 @@ const GuidedTour = () => {
         setTourDialogOpen,
         tourDialogOpen,
         suppressTourDialog,
-        setSuppressTourDialog
+        setSuppressTourDialog,
+        clearResultsComparables,
+        clearResults
      } = UseAppContext()
 
     const [openTour, setOpenTour] = useState(false);
@@ -36,9 +38,17 @@ const GuidedTour = () => {
             setSuppressTourDialog(true)
           }
         
-          setTourDialogOpen(true)
+          setTourDialogOpen(false)
           setCurrentStop(0);
           setOpenTour(true);
+
+
+          togglePanel('all')
+
+          if(searchFeatures){
+            clearResults()
+            clearResultsComparables()
+          }
 
     }
 
@@ -92,9 +102,12 @@ const GuidedTour = () => {
     const stopGuidedTour = () => {
 
         setOpenTour(false)
-        popoverRefs.map((popover) => 
-        popover.current.open = false
-    )
+
+        setDialogEndOpen(false)
+
+        togglePanel("all")
+        clearResults()
+        clearResultsComparables()
         //refPopover.current.open = false
     }
 
@@ -270,6 +283,10 @@ const GuidedTour = () => {
             setCurrentStop(3)
         }
 
+        if(currentStop === 4 && !searchResultsPanelClosed){
+            setCurrentStop(2)
+        }
+
     }, [currentStop, searchFeatures, propertyDetailPanelClosed])
 
 
@@ -441,11 +458,7 @@ const GuidedTour = () => {
                 slot="footer-end"
                 appearance="outline"
                 label="end-tour"
-                onClick={()=>{
-                    setOpenTour(false)
-                    setDialogEndOpen(false)
-                }
-                }
+                onClick={stopGuidedTour}
                 >{translateText("Finish")}
             </CalciteButton>
 
