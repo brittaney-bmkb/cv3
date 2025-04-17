@@ -11,7 +11,8 @@ const ActionBarStart = () => {
         propertyDetailPanelClosed, 
         isMobile,
         comparablePanelClosed,
-        nearbyPanelClosed
+        nearbyPanelClosed,
+        helpPanelClosed
     } = UseAppContext()
 
     return(

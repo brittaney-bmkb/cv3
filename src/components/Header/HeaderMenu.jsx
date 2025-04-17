@@ -28,7 +28,8 @@ const HeaderMenu = () => {
         translateText,
         setLanguage,
         setFeedbackDialog,
-        refTranslate
+        refTranslate,
+        setHelpPanel
     } = UseAppContext()
 
     const [routeParams , setSearchParams] = useSearchParams()
@@ -93,6 +94,9 @@ const HeaderMenu = () => {
                             onCalciteMenuItemSelect={() => {
                                 if(menuItem === 'Feedback'){
                                     setFeedbackDialog(true, 'extended')
+                                }
+                                if(menuItem === 'Help'){
+                                    setHelpPanel(false)
                                 }
                             }}
                         >

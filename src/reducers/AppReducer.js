@@ -56,7 +56,7 @@ export const initialState = {
     imageryPanelClosed: true,
     printPanelClosed:true,
     selectPanelClosed:true,
-    
+    helpPanelClosed:true,
     //DIALOG STATES
     exportOpen: false,
     exportDataSource: null,
@@ -95,6 +95,12 @@ const AppReducer = (state, action) => {
             ...state, 
             propertyDetailPanelClosed: payload.propertyDetailPanelClosed
         } 
+
+        case "SET_HELP_PANEL":
+        return {
+            ...state, 
+            helpPanelClosed: payload.helpPanelClosed
+        }
 
         case "SET_COMPARABLE_PANEL":
         return {

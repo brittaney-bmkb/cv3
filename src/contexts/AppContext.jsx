@@ -152,6 +152,15 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setHelpPanel = (open) => {
+        dispatch({
+            type: "SET_HELP_PANEL",
+            payload: {
+                helpPanelClosed: open,
+            }
+        })
+    }
+
     const setIsMobile = (sm) => {
         dispatch({
             type: "SET_MOBILE",
@@ -331,6 +340,8 @@ export const AppProvider = ({children}) => {
         case 'tour':
             setTourDialogOpen(true)
 
+        case 'help':
+            setHelpPanel(false)
           default:
             break;
         }
@@ -1530,6 +1541,8 @@ export const AppProvider = ({children}) => {
         printPanelClosed: state.printPanelClosed,
         setSelectPanel,
         selectPanelClosed: state.selectPanelClosed,
+        helpPanelClosed: state.helpPanelClosed,
+        setHelpPanel,
         arcgisMapRef,
         deselectParcel,
         //EXPORT DIALOG

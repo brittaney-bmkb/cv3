@@ -19,7 +19,7 @@ const GuidedTour = () => {
         suppressTourDialog,
         setSuppressTourDialog,
         clearResultsComparables,
-        clearResults
+        clearResults,
      } = UseAppContext()
 
     const [openTour, setOpenTour] = useState(false);
