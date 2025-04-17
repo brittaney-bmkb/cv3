@@ -15,7 +15,9 @@ const GuidedTour = () => {
         propertyDetailPanelClosed,
         translateText,
         setTourDialogOpen,
-        tourDialogOpen
+        tourDialogOpen,
+        suppressTourDialog,
+        setSuppressTourDialog
      } = UseAppContext()
 
     const [openTour, setOpenTour] = useState(false);
@@ -23,8 +25,33 @@ const GuidedTour = () => {
     const [dialogEndOpen, setDialogEndOpen] = useState(false);
     const [currentStop, setCurrentStop] = useState(null)
     const [disableNextStop, setDisableNextStop] = useState(false)
+    const [suppressWelcome, setSuppressWelcome] = useState(false)
 
     const popoverRefs = useRef([]); // array of refs for each popover
+
+    const handleStartTour = () => {
+
+        if (suppressWelcome) {
+            localStorage.setItem("hideWelcomeDialog", "true")
+            setSuppressTourDialog(true)
+          }
+        
+          setTourDialogOpen(true)
+          setCurrentStop(0);
+          setOpenTour(true);
+
+    }
+
+    const handleSkipTour = () => {
+        if (suppressWelcome) {
+          localStorage.setItem("hideWelcomeDialog", "true");
+          setSuppressTourDialog(true)
+        }
+      
+        setTourDialogOpen(false)
+        setOpenTour(false);
+      };
+
 
     const nextTourStop = (index) => {
         if (index < Object.keys(tourRoute).length - 1) {
@@ -102,7 +129,6 @@ const GuidedTour = () => {
         });
       };
       
-
       useEffect(() => {
         const refEl = document.getElementById(tourRoute[currentStop]?.id);
         const popoverEl = popoverRefs.current[currentStop];
@@ -115,18 +141,12 @@ const GuidedTour = () => {
       }, [currentStop, openTour]);
       
       
-      
-      
     const clearInteractionIsolation = () => {
         document.querySelectorAll("[inert]").forEach((el) => {
           el.removeAttribute("inert");
         });
       };
-      
-      
-      
-      
-
+    
 
     const tourRoute = {
        0: {
@@ -363,34 +383,27 @@ const GuidedTour = () => {
                 <p><b>{translateText("Would you like to start the tour now?")}</b></p>
             </div>
             <CalciteLabel layout="inline" slot="footer-start">
-                <CalciteCheckbox label={translateText("Do not show this again")}></CalciteCheckbox>
+                <CalciteCheckbox 
+                label={translateText("Do not show this again")}
+                onCalciteCheckboxChange={(e) => setSuppressWelcome(e.target.checked)}
+                ></CalciteCheckbox>
                 {translateText("Do not show this again")}
             </CalciteLabel>
-            <CalciteButton 
-                slot="footer-end"
-                label="start-tour"
-                onClick={()=>{
-                    setCurrentStop(0)
-                    setOpenTour(true)
-                    setTourDialogOpen(false)
-                    //updateExtraContainers()
-                }
-                }
-                >{translateText("Start tour")} 
-            </CalciteButton>
+
             <CalciteButton 
                 slot="footer-end"
                 appearance="outline"
                 label="skip-tour"
-                onClick={()=>{
-                    setOpenTour(false)
-                    setTourDialogOpen(false)
-                }
-                }
+                onClick={handleSkipTour}
                 >{translateText("Skip")}
             </CalciteButton>
 
-
+            <CalciteButton 
+                slot="footer-end"
+                label="start-tour"
+                onClick={handleStartTour}
+                >{translateText("Start tour")} 
+            </CalciteButton>
         </CalciteDialog>
 
         <CalciteDialog

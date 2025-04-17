@@ -143,6 +143,15 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setSuppressTourDialog = (suppress) => {
+        dispatch({
+            type: "SET_SUPPRESS_TOUR_DIALOG",
+            payload: {
+                suppressTourDialog: suppress,
+            }
+        })
+    }
+
     const setIsMobile = (sm) => {
         dispatch({
             type: "SET_MOBILE",
@@ -1522,7 +1531,9 @@ export const AppProvider = ({children}) => {
         //GUIDED TOUR STATE
         refSearch,
         tourDialogOpen: state.tourDialogOpen,
-        setTourDialogOpen
+        setTourDialogOpen,
+        setSuppressTourDialog,
+        suppressTourDialog: state.suppressTourDialog
 
     }
 

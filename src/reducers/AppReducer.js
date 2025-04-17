@@ -1,5 +1,7 @@
 import { config } from "../data/config"
 
+const hideWelcome = localStorage.getItem("hideWelcomeDialog") === "true";
+
 export const initialState = {
 
     //MAP
@@ -54,12 +56,14 @@ export const initialState = {
     imageryPanelClosed: true,
     printPanelClosed:true,
     selectPanelClosed:true,
+    
     //DIALOG STATES
     exportOpen: false,
     exportDataSource: null,
     feedbackOpen: false,
     feedbackSource:null,
-    tourDialogOpen: true,
+    tourDialogOpen: !hideWelcome,
+    suppressTourDialog:hideWelcome,
     //DEVICE STATE
     isMobile: null,
     //HISTORICAL PARCELS
@@ -159,6 +163,12 @@ const AppReducer = (state, action) => {
             ...state, 
             tourDialogOpen: payload.tourDialogOpen,
         }
+
+        case "SET_SUPPRESS_TOUR_DIALOG":
+        return {
+            ...state,
+            suppressTourDialog: action.payload,
+        };
 
         case "SET_MOBILE":
         return {
