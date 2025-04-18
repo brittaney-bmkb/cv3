@@ -216,12 +216,12 @@ const Map = () => {
           }
 
         } 
-        else if (!measurePanelClosed){
-          // console.log("ELSE IF measurePanelClosed: ", measurePanelClosed)
-          // if(reselected?.length > 0){
+        // else if (!measurePanelClosed){
+        //   // console.log("ELSE IF measurePanelClosed: ", measurePanelClosed)
+        //   // if(reselected?.length > 0){
 
-          // }
-        }
+        //   // }
+        // }
         else{
           //if selecting new polygon
           const features = await queryPolygon(mapPoint, selectPanelClosed) 
@@ -674,6 +674,7 @@ const Map = () => {
             zoom={8}
             onarcgisViewReadyChange={handleViewReady}
             onarcgisViewClick={(event) => {
+              if(!measurePanelClosed) return;
                 // if (selectPanelClosed) {
                     handleViewClick(event);
                 //}
