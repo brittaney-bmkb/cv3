@@ -29,6 +29,8 @@ import "@esri/calcite-components/dist/components/calcite-dropdown"
 import "@esri/calcite-components/dist/components/calcite-dropdown-group"
 import "@esri/calcite-components/dist/components/calcite-dropdown-item"
 import { Feedback } from "./components/Feedback/Feedback";
+import GuidedTour from "./components/GuidedTour/GuidedTour";
+import Help from "./components/Help/Help";
 
 
 
@@ -78,6 +80,9 @@ const Layout = () => {
 
     return(
         <CalciteShell contentBehind ={isMobile}>
+
+            {!isMobile && (<GuidedTour/>)}
+            
             {/* HEADER */}
             <Header/>
             {/* <CalcitePanel  className='header'> */}
@@ -105,6 +110,7 @@ const Layout = () => {
                         <PanelInfo/>
                         <PanelSearchResults/>
                         <PanelPropertyDetail/>
+                        
                         {
                             isMobile ?
                         <>
@@ -115,6 +121,7 @@ const Layout = () => {
 
                     </CalciteShellPanel>
                     
+                    <Help/>
                     {/* WEBMAP */}
                     <Map/>
                     {/* <WebMapComponentBeta/> */}

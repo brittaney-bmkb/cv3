@@ -69,6 +69,7 @@ const ActionBarEnd = () => {
                     </CalciteAction>
 
                     <CalciteAction 
+                        id="imagery"
                         active={!imageryPanelClosed}
                         text={translateText("Imagery")} 
                         icon="basemap" 

@@ -12,6 +12,8 @@ export const AppProvider = ({children}) => {
     const [state, dispatch] = useReducer(AppReducer, initialState)
 
     const arcgisMapRef = useRef(null)
+    //create a reference to the search widget DOM element
+    const refSearch = useRef(null)
 
     const setInfoPanel = (open) => {
         dispatch({
@@ -141,6 +143,33 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setTourDialogOpen = (open) => {
+        dispatch({
+            type: "SET_TOUR_OPEN",
+            payload: {
+                tourDialogOpen: open,
+            }
+        })
+    }
+
+    const setSuppressTourDialog = (suppress) => {
+        dispatch({
+            type: "SET_SUPPRESS_TOUR_DIALOG",
+            payload: {
+                suppressTourDialog: suppress,
+            }
+        })
+    }
+
+    const setHelpPanel = (open) => {
+        dispatch({
+            type: "SET_HELP_PANEL",
+            payload: {
+                helpPanelClosed: open,
+            }
+        })
+    }
+
     const setIsMobile = (sm) => {
         dispatch({
             type: "SET_MOBILE",
@@ -164,6 +193,20 @@ export const AppProvider = ({children}) => {
         const { prevSearchFeatures, searchFeatures, primaryResultFeature, searchTerm, newSearch, isMobile } = state
 
         switch (panelName) {
+            case 'all':
+                setLayersPanel(true);
+                setComparablePanel(true);
+                setNearbyPanel(true);
+                setImageryPanel(true)
+                setPrintPanel(true)
+                setSelectPanel(true)
+                setComparisonResultsPanel(true)
+                setComparisonDetailPanel(true)
+                setInfoPanel(true);
+                setPropertyDetailPanel(true);
+                setSearchResultsPanel(true);
+
+                break;
           case 'info':
             setInfoPanel(false);
             setPropertyDetailPanel(true);
@@ -309,6 +352,15 @@ export const AppProvider = ({children}) => {
             setSelectPanel(false)
             setComparisonResultsPanel(true)
             setComparisonDetailPanel(true)
+            break; 
+
+
+        case 'tour':
+            setTourDialogOpen(true)
+            break; 
+
+        case 'help':
+            setHelpPanel(false)
             break; 
 
         case 'measure':
@@ -1524,6 +1576,8 @@ export const AppProvider = ({children}) => {
         measurePanelClosed: state.measurePanelClosed, 
         setSelectPanel,
         selectPanelClosed: state.selectPanelClosed,
+        helpPanelClosed: state.helpPanelClosed,
+        setHelpPanel,
         arcgisMapRef,
         deselectParcel,
         //EXPORT DIALOG
@@ -1535,24 +1589,15 @@ export const AppProvider = ({children}) => {
         feedbackSource: state.feedbackSource,
         //DEVICE STATE
         setIsMobile,
-        isMobile: state.isMobile
+        isMobile: state.isMobile,
+        //GUIDED TOUR STATE
+        refSearch,
+        tourDialogOpen: state.tourDialogOpen,
+        setTourDialogOpen,
+        setSuppressTourDialog,
+        suppressTourDialog: state.suppressTourDialog
 
     }
-
-    // useEffect( () => {
-
-    //     const initalizeSearchSources = async () => {
-            
-    //         const { initializeLayersAndSearchSources} = await import('../arcgis/webmap/webmap')
-    //         let searchSources = await initializeLayersAndSearchSources()
-
-    //         await setSearchSources(searchSources)
-    //     }
-        
-    //     initalizeSearchSources()
-
-    // }, [])
-
 
     useEffect(() => {
         const handleResize = () => {
@@ -1570,23 +1615,6 @@ export const AppProvider = ({children}) => {
           window.removeEventListener('resize', handleResize);
         };
       }, [window.innerWidth]);
-
-
-    // useEffect(() => {
-
-    //     const width = window.innerWidth
-    //     setIsMobile(width < 768); // Check on initial load
-
-    //     const mediaQuery = window.matchMedia("(max-width: 768px)");
-
-    //     const handleResize = (event) => {
-    //     setIsMobile(event.matches);
-    //     };
-
-
-    //     mediaQuery.addEventListener("change", handleResize); // Listen for changes
-    //     return () => mediaQuery.removeEventListener("change", handleResize); // Cleanup
-    // }, []);
 
     useEffect(() => {
         //on initial load display info panel

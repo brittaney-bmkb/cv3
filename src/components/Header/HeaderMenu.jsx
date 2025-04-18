@@ -20,20 +20,7 @@ function titleCase(s) {
 }
 
 
-const menuItems = {
-    Help: {
-        icon: "question",
-        subMenuItems: null,
-    },
-    Feedback:{
-        icon:"speech-bubble-exclamation",
-        subMenuItems: null,
-    },
-    Translate: {
-        icon: "language-translate",
-        subMenuItems: config.language_codes,
-    }
-}
+
 
 const HeaderMenu = () => {
 
@@ -41,9 +28,32 @@ const HeaderMenu = () => {
         translateText,
         setLanguage,
         setFeedbackDialog,
+        refTranslate,
+        setHelpPanel
     } = UseAppContext()
 
     const [routeParams , setSearchParams] = useSearchParams()
+
+    const menuItems = {
+        Help: {
+            icon: "question",
+            subMenuItems: null,
+            id:"help",
+            ref: null
+        },
+        Feedback:{
+            icon:"speech-bubble-exclamation",
+            subMenuItems: null,
+            id:"feedback-expanded",
+            ref: null
+        },
+        Translate: {
+            icon: "language-translate",
+            subMenuItems: config.language_codes,
+            id: "translate",
+            ref: refTranslate
+        }
+    }
 
     const handleClick = (language) => {
         //reference: https://developers.arcgis.com/javascript/latest/localization/
@@ -67,12 +77,15 @@ const HeaderMenu = () => {
 
     return(
         <CalciteMenu
+        id="header-menu"
         slot="content-end"
         className="org-brand">
             {
                 Object.keys(menuItems).map(menuItem => {
                     return(
                         <CalciteMenuItem
+                            id={menuItems[menuItem].id}
+                            ref={menuItems[menuItem].ref}
                             key={menuItem}
                             text={translateText(menuItem)} 
                             iconStart={menuItems[menuItem].icon}
@@ -81,6 +94,9 @@ const HeaderMenu = () => {
                             onCalciteMenuItemSelect={() => {
                                 if(menuItem === 'Feedback'){
                                     setFeedbackDialog(true, 'extended')
+                                }
+                                if(menuItem === 'Help'){
+                                    setHelpPanel(false)
                                 }
                             }}
                         >

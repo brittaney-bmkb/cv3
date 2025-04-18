@@ -11,11 +11,13 @@ const ActionBarStart = () => {
         propertyDetailPanelClosed, 
         isMobile,
         comparablePanelClosed,
-        nearbyPanelClosed
+        nearbyPanelClosed,
+        helpPanelClosed
     } = UseAppContext()
 
     return(
         <CalciteActionBar 
+        id="start-action-bar"
         slot="action-bar" 
         layout={isMobile ? 'horizontal' : 'vertical'}
         expandDisabled = {isMobile}
@@ -26,6 +28,11 @@ const ActionBarStart = () => {
                 <CalciteAction text={translateText("Info")} icon="information" textEnabled={isMobile ? false : true} active={!infoPanelClosed}
                 onClick={() => {
                     togglePanel('info')
+                    }}></CalciteAction>
+                <CalciteAction text={translateText("Tour")} icon="play" textEnabled={isMobile ? false : true} 
+                //active={!infoPanelClosed}
+                onClick={() => {
+                    togglePanel('tour')
                     }}></CalciteAction>
             </CalciteActionGroup>
             <CalciteActionGroup

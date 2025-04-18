@@ -46,6 +46,7 @@ const PanelSearchResults = () => {
                     {/* SEARCH RESULT ACTIONS */}
                     <CalciteActionBar slot="action-bar" layout="horizontal" expandDisabled> 
                         <CalciteAction 
+                            id="clear-search-results"
                             text="clear" 
                             icon="reset" 
                             disabled={searchFeatures ? false : true} 
@@ -54,6 +55,7 @@ const PanelSearchResults = () => {
                             onClick={clearResults}
                         ></CalciteAction>
                         <CalciteAction 
+                            id="export-search-results"
                             text="export" 
                             icon="export" 
                             disabled={searchFeatures ? false : true} 
@@ -67,6 +69,7 @@ const PanelSearchResults = () => {
                             }}
                         ></CalciteAction>
                         <CalciteAction 
+                            id="submit-search-feedback"
                             text="feedback" 
                             icon="speech-bubble-exclamation" 
                             disabled={searchFeatures ? false : true} 

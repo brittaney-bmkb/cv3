@@ -19,6 +19,7 @@ import HelpDialog from './components/HelpDialog/HelpDialog'
 import WebMapComponentBeta from './components/WebMapView/WebMapComponentBeta'
 
 //Calcite Components
+import "@esri/calcite-components/dist/components/calcite-tooltip";
 import "@esri/calcite-components/dist/components/calcite-shell";
 import "@esri/calcite-components/dist/components/calcite-shell-panel";
 import "@esri/calcite-components/dist/components/calcite-panel";
@@ -35,12 +36,14 @@ import "@esri/calcite-components/dist/components/calcite-input-text"
 import "@esri/calcite-components/dist/components/calcite-input-number"
 import "@esri/calcite-components/dist/components/calcite-dropdown"
 import Layout from './Layout'
+import GuidedTour from './components/GuidedTour/GuidedTour'
 
 function App() {
 
   return (
     <AppProvider>
-     <Layout.jsx/>
+      
+      <Layout.jsx/>
     </AppProvider>
   )
 }
