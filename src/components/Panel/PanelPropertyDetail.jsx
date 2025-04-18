@@ -77,6 +77,7 @@ const PanelPropertyDetail = () => {
         propertyDetailPanelClosed, 
         setPropertyDetailPanel, 
         clearResults,
+        clearResultsComparables,
         dataDictionary,
         primaryResultFeature,
         setExportOpen,
@@ -89,6 +90,12 @@ const PanelPropertyDetail = () => {
 
     const [ categories, setCategories ] = useState(null)
     const [ headerData, setHeaderData] = useState(null)
+
+    const handleClearResults = () => {
+
+        clearResults()
+        clearResultsComparables()
+    }
 
     const handleClick = (prop) => {
 
@@ -312,7 +319,7 @@ const PanelPropertyDetail = () => {
                             disabled={searchFeatures ? false : true} 
                             textEnabled
                             scale="s"
-                            onClick={clearResults}
+                            onClick={handleClearResults}
                         ></CalciteAction>
                         <CalciteAction 
                             text="export" 

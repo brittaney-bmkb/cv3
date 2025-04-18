@@ -602,6 +602,10 @@ const Map = () => {
             hideOtherSearchFeatures(true, comparableParcels)
             handleParcelSelection(comparableParcels, COMPARABLE_PARCEL)
           }
+          else{
+            hideOtherSearchFeatures(false)
+            clearSelectedParcelsByType(COMPARABLE_PARCEL)
+          }
 
         } 
 
