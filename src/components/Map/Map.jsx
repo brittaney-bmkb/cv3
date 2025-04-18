@@ -77,6 +77,7 @@ const Map = () => {
         secondaryResultFeature,
         queryPolygon,
         selectPanelClosed,
+        measurePanelClosed,
         togglePanel,
         searchFeatures,
         isMobile,
@@ -207,19 +208,28 @@ const Map = () => {
           if(selectPanelClosed){
             const features = await queryPolygon(mapPoint, false) 
           }
-          
           //if select multiple panel is open and a parcel is reselected
           //remove the parcel from search results and the map
           else{
             setRemoveParcel(reselected)
             await deselectParcel(reselected)
           }
-        }
+
+        } 
+        // else if (!measurePanelClosed){
+        //   // console.log("ELSE IF measurePanelClosed: ", measurePanelClosed)
+        //   // if(reselected?.length > 0){
+
+        //   // }
+        // }
         else{
           //if selecting new polygon
           const features = await queryPolygon(mapPoint, selectPanelClosed) 
           console.log("Clicked Features: ", features)
         }
+
+        
+        
 
     }
       const getGraphicsFromFeatureOrEvent = async (featureOrEvent, view, map) => {
@@ -301,7 +311,7 @@ const Map = () => {
         let toRemove =[]
  
 
-        if(selectPanelClosed || newSearch){
+        if(selectPanelClosed || newSearch ){
           toRemove = existing?.filter(g => {
   
             const isSameType = g.attributes.parcelSelectionType === type;
@@ -664,6 +674,7 @@ const Map = () => {
             zoom={8}
             onarcgisViewReadyChange={handleViewReady}
             onarcgisViewClick={(event) => {
+              if(!measurePanelClosed) return;
                 // if (selectPanelClosed) {
                     handleViewClick(event);
                 //}

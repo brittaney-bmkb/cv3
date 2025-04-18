@@ -57,6 +57,7 @@ export const initialState = {
     printPanelClosed:true,
     selectPanelClosed:true,
     helpPanelClosed:true,
+    measurePanelClosed:true,
     //DIALOG STATES
     exportOpen: false,
     exportDataSource: null,
@@ -143,6 +144,12 @@ const AppReducer = (state, action) => {
             ...state, 
             printPanelClosed: payload.printPanelClosed
         }
+
+        case "SET_MEASURE_PANEL":
+        return {
+            ...state, 
+            measurePanelClosed: payload.measurePanelClosed
+        }        
 
         case "SET_SELECT_PANEL":
         return {

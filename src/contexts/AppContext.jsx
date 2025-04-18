@@ -105,6 +105,15 @@ export const AppProvider = ({children}) => {
         })
     }
 
+    const setMeasurePanel = (open) => {
+        dispatch({
+            type: "SET_MEASURE_PANEL",
+            payload: {
+                measurePanelClosed: open
+            }
+        })
+    }
+
     const setSelectPanel = (open) => {
         dispatch({
             type: "SET_SELECT_PANEL",
@@ -244,6 +253,7 @@ export const AppProvider = ({children}) => {
             setNearbyPanel(false);
             setImageryPanel(true)
             setPrintPanel(true)
+            setMeasurePanel(true)
             setSelectPanel(true)
             setComparisonResultsPanel(true)
             setComparisonDetailPanel(true)
@@ -261,6 +271,7 @@ export const AppProvider = ({children}) => {
             setNearbyPanel(true);
             setImageryPanel(true)
             setPrintPanel(true)
+            setMeasurePanel(true)
             setSelectPanel(true)
             setComparisonResultsPanel(true)
             setComparisonDetailPanel(true)
@@ -277,6 +288,7 @@ export const AppProvider = ({children}) => {
             setNearbyPanel(true);
             setImageryPanel(true)
             setPrintPanel(true)
+            setMeasurePanel(true)
             setSelectPanel(true)
             setComparisonResultsPanel(false)
             setComparisonDetailPanel(true)
@@ -288,6 +300,7 @@ export const AppProvider = ({children}) => {
             setNearbyPanel(true);
             setImageryPanel(true)
             setPrintPanel(true)
+            setMeasurePanel(true)
             setSelectPanel(true)
             setComparisonResultsPanel(true)
             setComparisonDetailPanel(false)
@@ -299,6 +312,7 @@ export const AppProvider = ({children}) => {
             setNearbyPanel(true);
             setImageryPanel(true)
             setPrintPanel(true)
+            setMeasurePanel(true)
             setSelectPanel(true)
             setComparisonResultsPanel(true)
             setComparisonDetailPanel(true)
@@ -310,6 +324,7 @@ export const AppProvider = ({children}) => {
             setNearbyPanel(true);
             setImageryPanel(false)
             setPrintPanel(true)
+            setMeasurePanel(true)
             setSelectPanel(true)
             setComparisonResultsPanel(true)
             setComparisonDetailPanel(true)
@@ -321,6 +336,7 @@ export const AppProvider = ({children}) => {
             setNearbyPanel(true);
             setImageryPanel(true)
             setPrintPanel(false)
+            setMeasurePanel(true)
             setSelectPanel(true)
             setComparisonResultsPanel(true)
             setComparisonDetailPanel(true)
@@ -332,16 +348,33 @@ export const AppProvider = ({children}) => {
             setNearbyPanel(true);
             setImageryPanel(true)
             setPrintPanel(true)
+            setMeasurePanel(true)
             setSelectPanel(false)
             setComparisonResultsPanel(true)
             setComparisonDetailPanel(true)
             break; 
 
+
         case 'tour':
             setTourDialogOpen(true)
+            break; 
 
         case 'help':
             setHelpPanel(false)
+            break; 
+
+        case 'measure':
+            setLayersPanel(true);
+            setComparablePanel(true);
+            setNearbyPanel(true);
+            setImageryPanel(true)
+            setPrintPanel(true)
+            setMeasurePanel(false)
+            setSelectPanel(true)
+            setComparisonResultsPanel(true)
+            setComparisonDetailPanel(true)
+            break; 
+
           default:
             break;
         }
@@ -1539,6 +1572,8 @@ export const AppProvider = ({children}) => {
         imageryPanelClosed: state.imageryPanelClosed,
         setPrintPanel,
         printPanelClosed: state.printPanelClosed,
+        setMeasurePanel,
+        measurePanelClosed: state.measurePanelClosed, 
         setSelectPanel,
         selectPanelClosed: state.selectPanelClosed,
         helpPanelClosed: state.helpPanelClosed,
