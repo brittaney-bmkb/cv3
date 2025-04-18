@@ -15,6 +15,7 @@ import NearbyPanel from "./components/PropertyNearby/NearbyPanel";
 import Layers from "./components/Layers/Layers";
 import Imagery from "./components/Imagery/Imagery";
 import Print from "./components/Print/Print";
+import Measure from "./components/Measurement/measurement";
 import Select from "./components/Select/Select";
 import Map from "./components/Map/Map";
 import ActionBarStart from "./components/ActionBar/ActionBarStart";
@@ -45,6 +46,7 @@ const Layout = () => {
         layersPanelClosed,
         printPanelClosed,
         imageryPanelClosed,
+        measurePanelClosed,
         selectPanelClosed,
         isMobile
     } = UseAppContext()
@@ -69,10 +71,10 @@ const Layout = () => {
 
     useEffect(() => {
 
-        const allPanelsClosed =   [selectPanelClosed, printPanelClosed, imageryPanelClosed, layersPanelClosed, comparisonDetailPanelClosed, nearbyPanelClosed, comparablePanelClosed, comparisonResultsClosed].every(panel => panel === true); 
+        const allPanelsClosed =   [selectPanelClosed, printPanelClosed, imageryPanelClosed, layersPanelClosed, comparisonDetailPanelClosed, nearbyPanelClosed, comparablePanelClosed, measurePanelClosed, comparisonResultsClosed].every(panel => panel === true); 
         setRightPanelCollapsed(allPanelsClosed)
 
-    }, [selectPanelClosed, printPanelClosed, imageryPanelClosed, layersPanelClosed, nearbyPanelClosed, comparablePanelClosed, comparisonResultsClosed, comparisonDetailPanelClosed])
+    }, [selectPanelClosed, printPanelClosed, imageryPanelClosed, layersPanelClosed, nearbyPanelClosed, comparablePanelClosed, comparisonResultsClosed, measurePanelClosed, comparisonDetailPanelClosed])
 
     return(
         <CalciteShell contentBehind ={isMobile}>
@@ -142,6 +144,7 @@ const Layout = () => {
                         <ComparisonPropertyDetail/> */}
                         <Layers/>
                         <Imagery/>
+                        <Measure/>
                         <Print/>
                         <Select/>
 
