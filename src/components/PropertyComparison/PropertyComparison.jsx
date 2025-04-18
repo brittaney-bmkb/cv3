@@ -32,7 +32,8 @@ const PropertyComparison = () => {
         setExportOpen,
         exportOpen,
         feedbackOpen,
-        isMobile
+        isMobile,
+        primaryResultFeature
         } = UseAppContext()
 
     const stepperRef = useRef(null)
@@ -48,6 +49,12 @@ const PropertyComparison = () => {
 
         setCurrentStep(selectedStepIndex)
     }
+
+
+    useEffect(() => {
+        //reset the steps to 0
+        setCurrentStep(0)
+    }, [primaryResultFeature])
 
     useEffect(() => {
 
@@ -155,7 +162,14 @@ const PropertyComparison = () => {
                 heading={translateText("Search")}
                 complete={currentStep > 0}
                 >
-                    <ComparisonForm refElement={stepperRef.current} setCurrentStep={setCurrentStep}/>
+                    {primaryResultFeature && primaryResultFeature?.length > 0 ?
+                        <ComparisonForm refElement={stepperRef.current} setCurrentStep={setCurrentStep}/>
+                        : 
+                        <Inactive
+                        title={translateText("Select a Property to Compare")}
+                        message={translateText( "To use the Compare Properties tool, first select a property on the map or from your search results. The selected property will be used as the basis for finding comparable properties.")}
+                        />
+                    }
                 </CalciteStepperItem>
 
                 <CalciteStepperItem
@@ -167,9 +181,10 @@ const PropertyComparison = () => {
                     {comparableParcels && comparableParcels.length > 0 ? <ListComparisonResults refElement={stepperRef.current} setCurrentStep={setCurrentStep}/> : 
                     
                          currentStep > 0 &&    
-                         (
-                           <Inactive/>
-                        )
+                         (<Inactive
+                            title={translateText("No Comparable Properties Found")}
+                            message={translateText("No comparable properties were found based on the selected criteria. Try increasing the search radius or adjusting the property size and characteristics to broaden your results.")}
+                            />)
                             
                             
                             
@@ -187,7 +202,10 @@ const PropertyComparison = () => {
                     {secondaryResultFeature ? <ComparisonPropertyDetail/> : 
                     
                     currentStep > 0 &&    
-                         (<Inactive/>)
+                         (<Inactive
+                         title={translateText("No Comparable Properties Found")}
+                         message={translateText("No comparable properties were found based on the selected criteria. Try increasing the search radius or adjusting the property size and characteristics to broaden your results.")}
+                         />)
                          
                     }
                 </CalciteStepperItem>
