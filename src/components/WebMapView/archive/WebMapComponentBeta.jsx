@@ -382,6 +382,7 @@ const WebMapComponentBeta = () => {
                     
                 }
             } else if (measureWidgetState){
+                console.log("measureWidgetState: ", measureWidgetState)
                 // FOR MEASURE widget only
                 // need to make sure if a parcel is selected it doesn't remove it while measuring. 
                 // One selected parcel is OK. 
