@@ -25,7 +25,8 @@ const SearchBarComponent = () => {
         initalizeSearchSources,
         returnSearchResultFeatures,
         setLanguage,
-        togglePanel
+        togglePanel,
+        refSearch
      } = UseAppContext()
 
     //get url parameters
@@ -38,8 +39,7 @@ const SearchBarComponent = () => {
 
     //create a reference to the search  DOM  element
     const searchDiv = useRef(null)
-    //create a reference to the search widget DOM element
-    const searchComponent = useRef(null)
+
 
 
     const updateAppWithSearchResult = () => {
@@ -56,7 +56,7 @@ const SearchBarComponent = () => {
         let lang = routeParams.get('lang')
 
         setSearchParams({
-            'search': searchComponent.current.searchTerm,
+            'search': refSearch.current.searchTerm,
             'lang': lang ? lang : config.defaultLanguage
         })
     }
@@ -71,12 +71,12 @@ const SearchBarComponent = () => {
             if(searchSources){
 
                 // && mapView
-                if(searchComponent.current){
+                if(refSearch.current){
                     if(newSearch === true){
                         if(genericSearch){
                             console.log("DETECTED GENERIC SEARCH PARAM: ", genericSearch)
-                            searchComponent.current.search(genericSearch)
-                            searchComponent.current.searchTerm = genericSearch
+                            refSearch.current.search(genericSearch)
+                            refSearch.current.searchTerm = genericSearch
                         }
     
                         if(pin10Search || pin14Search){
@@ -140,8 +140,8 @@ const SearchBarComponent = () => {
     //Clear url search term and update url parameters
     useEffect(() => {
 
-        if(!primaryResultFeature && searchComponent.current){
-            searchComponent.current.searchTerm = null
+        if(!primaryResultFeature && refSearch.current){
+            refSearch.current.searchTerm = null
         }
         
         if(primaryResultFeature){
@@ -150,7 +150,7 @@ const SearchBarComponent = () => {
             let pin14ParamValue = routeParams.get("pin14")
 
             if(!searchParamValue && (pin10ParamValue || pin14ParamValue)){
-                searchComponent.current.searchTerm = null
+                refSearch.current.searchTerm = null
             }
 
             
@@ -189,10 +189,10 @@ const SearchBarComponent = () => {
     useEffect(() => {
         
         const updateSearchText = async () => {
-        if(searchComponent.current){
-            searchComponent.current.allPlaceholder = translateText('Search by address, pin, or intersection')
+        if(refSearch.current){
+            refSearch.current.allPlaceholder = translateText('Search by address, pin, or intersection')
             let updatedSearchSources = await initalizeSearchSources()
-            searchComponent.current.sources = updatedSearchSources
+            refSearch.current.sources = updatedSearchSources
             
         }
     }
@@ -201,14 +201,14 @@ const SearchBarComponent = () => {
         updateSearchText()
         
 
-    },[searchComponent, language])
+    },[refSearch, language])
 
     return(
         <>
         { searchSources ?
             <arcgis-search
-                
-                ref={searchComponent}
+                id={"search-bar"}
+                ref={refSearch}
                 sources={searchSources}
                 includeDefaultSourcesDisabled
                 locationDisabled

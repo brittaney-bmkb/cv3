@@ -55,11 +55,11 @@ function addCommaSeparator(value, type) {
 
     if(attributes){
         paramsValues.map((param) => {
-            ////console.log("Replacing: ", `{${param}}`)
+            //////console.log("Replacing: ", `{${param}}`)
             urlFormatted = urlFormatted.replace(`{${param}}`, attributes[param])
         })
 
-        ////console.log("url text: ", text, urlFormatted)
+        //////console.log("url text: ", text, urlFormatted)
     }
     return urlFormatted
 }
@@ -85,9 +85,9 @@ const ComparisonPropertyDetail = () => {
 
     const handleClick = (prop) => {
 
-        console.log("Handle click triggered for: ", prop)
+        //console.log("Handle click triggered for: ", prop)
         if(calculatedValues[prop] && calculatedValues[prop].onClick){
-            console.log("Executing triggered for: ", prop)
+            //console.log("Executing triggered for: ", prop)
             calculatedValues[prop].onClick()
         }
     }
@@ -130,6 +130,9 @@ const ComparisonPropertyDetail = () => {
 
     useEffect(() => {
         const calculateFieldValues = async (feature) => {
+
+            if(!feature) return;
+
             if (dataDictionary) {
 
                 const promises = dataDictionary.map(async (data) => {
@@ -146,11 +149,11 @@ const ComparisonPropertyDetail = () => {
                             if (!updatedState[field]) {
                                 updatedState[field] = '';
                             }
-                            updatedState[field] = feature.attributes[field]
+                            updatedState[field] = feature?.attributes[field]
                             return updatedState;
                         })
 
-                        console.log("header data: ", headerData)
+                        //console.log("header data: ", headerData)
                     }
                     
 
@@ -191,7 +194,7 @@ const ComparisonPropertyDetail = () => {
                         //property classification
                         if(field.endsWith('_link')){
 
-                            console.log("Link field: ", field)
+                            //console.log("Link field: ", field)
                             setCalculatedValues(prevState => {
                                 const updatedState = { ...prevState };
                         
@@ -221,13 +224,13 @@ const ComparisonPropertyDetail = () => {
                 // Wait for all async operations to complete
                 await Promise.all(promises);
 
-                console.log("calculated values use effect: ", calculatedValues)
+                //console.log("calculated values use effect: ", calculatedValues)
             }
         };
         
         if(secondaryResultFeature){
-            console.log("secondary feature selected: ", secondaryResultFeature)
-            calculateFieldValues(secondaryResultFeature);
+            //console.log("secondary feature selected: ", secondaryResultFeature)
+            calculateFieldValues(secondaryResultFeature[0]);
         }
         
 
@@ -286,6 +289,8 @@ const ComparisonPropertyDetail = () => {
                     >
                         {
                             comparableParcels && secondaryResultFeature && categories?.map( category => {
+
+                                let feature = secondaryResultFeature[0]
                                 return(
                                     <CalciteListItemGroup heading={translateText(category)}>
                                         {
@@ -295,11 +300,11 @@ const ComparisonPropertyDetail = () => {
 
                                                 //check if data type is text and check if value is not null for selected parcel
                                                 if(['text' , 'text or int'].includes(data?.attributes['type'])){
-                                                    if(secondaryResultFeature?.attributes[data?.attributes['field']]){
+                                                    if(feature?.attributes[data?.attributes['field']]){
                                                         return(
                                                             <CalciteListItem
                                                                 key={data?.attributes['field']}
-                                                                label={secondaryResultFeature?.attributes[data?.attributes['field']]}
+                                                                label={feature?.attributes[data?.attributes['field']]}
                                                                 description={data?.attributes['label']}
                                                                 >
                                                             </CalciteListItem>
@@ -335,11 +340,11 @@ const ComparisonPropertyDetail = () => {
                                                 }
 
                                                 //check if data type is int or double and check if value is not null for selected parcel
-                                                if(data?.attributes['type'] === 'int or double' && secondaryResultFeature?.attributes[data?.attributes['field']]){
+                                                if(data?.attributes['type'] === 'int or double' && feature?.attributes[data?.attributes['field']]){
                                                     return(
                                                         <CalciteListItem
                                                         key={data?.attributes['field']}
-                                                        label={addCommaSeparator(secondaryResultFeature?.attributes[data?.attributes['field']], data?.attributes['type'])}
+                                                        label={addCommaSeparator(feature?.attributes[data?.attributes['field']], data?.attributes['type'])}
                                                         description={data?.attributes['label']}
                                                         >
                                                         </CalciteListItem>
@@ -347,11 +352,11 @@ const ComparisonPropertyDetail = () => {
                                                 }
 
                                                 //check if data type is money if value is not null for selected parcel
-                                                if(data?.attributes['type'] === 'money' && secondaryResultFeature?.attributes[data?.attributes['field']]){
+                                                if(data?.attributes['type'] === 'money' && feature?.attributes[data?.attributes['field']]){
                                                     return(
                                                         <CalciteListItem
                                                         key={data?.attributes['field']}
-                                                        label={`$${addCommaSeparator(secondaryResultFeature?.attributes[data?.attributes['field']], data?.attributes['type'])}`}
+                                                        label={`$${addCommaSeparator(feature?.attributes[data?.attributes['field']], data?.attributes['type'])}`}
                                                         description={data?.attributes['label']}
                                                         >
                                                         </CalciteListItem>
@@ -364,13 +369,13 @@ const ComparisonPropertyDetail = () => {
                                                     if(calculatedValues[data?.attributes['field']]){
                                                         if(calculatedValues[data?.attributes['field']]['type']  === 'link'){
                                                             
-                                                            if(Object.keys(conditional_links).includes(data?.attributes['field']) && !conditional_links[data?.attributes['field']].includes(parseInt(secondaryResultFeature.attributes['BCLASS']))){
-                                                                //console.log("Open data link to res data: ", data?.attributes['field'])
+                                                            if(Object.keys(conditional_links).includes(data?.attributes['field']) && !conditional_links[data?.attributes['field']].includes(parseInt(data?.attributes['BCLASS']))){
+                                                                ////console.log("Open data link to res data: ", data?.attributes['field'])
                                                                 return null
                                                             }
                                                             
                                                             else{
-                                                                const hyperlink = returnHyperlink(data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], secondaryResultFeature?.attributes)
+                                                                const hyperlink = returnHyperlink(data.attributes['hyperlink_params'], data.attributes['hyperlink_url'], feature?.attributes)
                                                                 return(
                                                                     <CalciteListItem
                                                                     key={data?.attributes['field']}

@@ -22,112 +22,30 @@ const Select = () => {
         primaryResultFeature,
         propertyDetailPanelClosed,
         searchFeatures,
-        togglePanel } = UseAppContext()
+        togglePanel, 
+        setSearchResults,
+        searchTerm
+     } = UseAppContext()
     
     const sketchRef = useRef(null)
     const graphicsLayer = useRef(null)
+    const selectedFeatures = useRef([])
 
     const [activeTool, setActiveTool] = useState(null)
-    const [ mapClicks, setMapClicks ] = useState(null)
-    const [ selectedParcels, setSelectedParcels ] = useState(primaryResultFeature)
-    const [ deselectPins, setDeselectPins ] = useState(null)
+    const [activeIcon, setActiveIcon] = useState(null)
+    const [ title, setTitle ] = useState("")
+    const [ message, setMessage ] = useState("")
 
     useEffect(() => {
 
         if(selectPanelClosed && sketchRef.current){
             sketchRef.current.cancel()
+            selectedFeatures.current = []
         }
 
     }, [selectPanelClosed])
 
  
-    const handleClickSelection = async (event) => {
-        console.log("click selection");
-        if (activeTool !== "cursor") return; // Ensure we're using the cursor tool
-    
-        let mapPoint = event.detail.mapPoint;  
-        setMapClicks(mapPoint) 
-
-        // Find features that intersect with the clicked point
-        let deselectPins = [] 
-        if(searchFeatures && searchFeatures?.length > 0){
-            deselectPins = searchFeatures
-            .filter(feature => intersectsOperator.execute(mapPoint, feature.geometry))
-            .map(feature => feature.attributes[config.target_layer_id_field]);
-        }
-
-        if(deselectPins.length === 0){
-            let features = await queryPolygon(mapPoint, false);
-        }    
-            
-        
-
-        console.log("Pins to deselect: ", deselectPins)
-    };
-
-    // useEffect(() => {
-
-    //     const handleSelectParcels = async () => {
-    //         if(mapClicks){
-    //             // Find features that intersect with the clicked point
-    //             let deselectPins = [] 
-    //             if(selectedParcels){
-    //                 deselectPins = selectedParcels
-    //                 .filter(feature => intersectsOperator.execute(mapClicks, feature.geometry))
-    //                 .map(feature => feature.attributes[config.target_layer_id_field]);
-    //             }
-               
-    //             console.log("Pins to deselect: ", deselectPins)
-
-    //             if(deselectPins.length === 0){
-    //                 const features = await queryPolygon(mapClicks)  
-    //                 if(selectedParcels && selectedParcels.length > 0){
-    //                     setSelectedParcels([...selectedParcels, ...features])
-    //                 }
-    //                 else{
-    //                     setSelectedParcels(features)
-    //                 }
-    //             }
-    //             else{
-    //                 setDeselectPins(deselectPins)
-    //             }
-    //         }
-    //     }
-
-    //     handleSelectParcels()
-
-    // }, [mapClicks])
-
-
-    useEffect(() => {
-
-        const handleDeselectParcels = async () => {
-            if(deselectPins && deselectPins.length > 0){
-                const features = await deselectParcel(deselectPins); 
-                setSelectedParcels(features)
-            }
-        }
-
-        handleDeselectParcels()
-
-    }, [deselectPins])
-
-
-    useEffect(() => {
-        const mapElement = arcgisMapRef.current;
-        if (!mapElement) return;
-
-        if(selectPanelClosed) return;
-
-        // Attach event listener for clicking on parcels
-        mapElement.addEventListener("arcgisViewClick", handleClickSelection);
-
-        return () => {
-            // Cleanup event listener when component unmounts or tool changes
-            mapElement.removeEventListener("arcgisViewClick", handleClickSelection);
-        };
-    }, [activeTool]);
-
     const handleSelection = async (e) => {
 
         if (!graphicsLayer.current) {
@@ -181,7 +99,10 @@ const Select = () => {
         }
     }, [arcgisMapRef]);
 
-    const getSelectionTip = (tool) => {
+    const getSelectionTip = async (tool) => {
+
+        console.log("setting active tool: ", tool)
+
         if (tool === "polygon") {
             return {
                 title: translateText("Selecting Parcels with the Polygon Tool"),
@@ -195,13 +116,26 @@ const Select = () => {
         }else if (tool === "cursor") {
             return {
                 title: translateText("Selecting a Parcel with a Click"),
-                message: translateText("Click on an individual parcel to select it. You can click multiple parcels to add to your selection."),
+                message: translateText("Click on an individual parcel to select it. You can click multiple parcels to add to your selection. Deselect by clicking on a selected parcel"),
             };
         }
         return { title: "", message: "" }; // Default empty state
     };
     
-    const { title, message } = getSelectionTip(activeTool);
+
+    useEffect(() => {
+
+        const updateHelp = async () => {
+
+            const { title, message } = await getSelectionTip(activeTool);
+
+            setTitle(title)
+            setMessage(message)
+        }
+        
+        updateHelp();
+
+    }, [activeTool])
 
 
     return(
@@ -225,15 +159,29 @@ const Select = () => {
                     <arcgis-sketch
                     ref={sketchRef}
                     layer={graphicsLayer.current}
-
-                    onClick = {(e) => {
-                        console.log("icon: ", e.target.icon)
-                        setActiveTool(e.target.icon)
+                    onarcgisReady = {(e) => {
+                        console.log("ready event", e )
                     }}
+                    onarcgisPropertyChange = {(e) => {
+                        console.log("property change: ", e)
+                        if(e.target.state=== "active"){
+                            setActiveTool(e.target.activeTool)
+                        }
+                        if(e.target.state=== "ready" && !e.target.activeTool){
+                            setActiveTool("cursor")
+                        }
+                    }
+                    }
+                    // onarcgisUpdate = {(e) => {
+                    //     console.log("update event: ", e)
+                    // }}
 
                     onarcgisCreate = { (e) => {
+                        //console.log("create event", e )
+                        if(e.detail.state === "complete"){
+                            handleSelection(e)
+                        }
                         
-                        handleSelection(e)
                     }}
                     referenceElement={arcgisMapRef.current}
                     hideCreateToolsPoint
@@ -241,6 +189,7 @@ const Select = () => {
                     hideCreateToolsPolyline
                     hideDuplicateButton
                     hideLabelsToggle
+                    hideCustomSelectionTool
                     hideSettingsMenu
                     hideUndoRedoMenu
                     hideSnappingControls

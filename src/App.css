@@ -20,7 +20,15 @@ body{
   font-family:  "Avenir Next", Avenir, "Helvetica Neue", sans-serif; */
 }
 
-/* CALCITE CUSTOM STYLES */
+.tour-highlight {
+  outline: 3px solid #ffa500; /* Bright orange border */
+  border-radius: 4px;
+  transition: outline 0.3s ease;
+  z-index: 99999;
+}
+
+
+
 
 .form-section{
   border-bottom:1px solid var(--calcite-color-border-1);
@@ -41,6 +49,8 @@ body{
   color:var(--calcite-color-text-2)
 }
 
+
+/* CALCITE CUSTOM STYLES */
 calcite-stepper{
   background-color: var(--calcite-color-foreground-1);
   padding: var(--calcite-spacing-lg);
@@ -57,6 +67,9 @@ calcite-stepper{
   width: inherit;
 }
 
+.tour-text{
+  font-size: var(--calcite-font-size--1);;
+}
 
 calcite-navigation.cook-search {
   --calcite-navigation-width: 100%
@@ -84,6 +97,11 @@ calcite-navigation-logo.org-brand{
 calcite-menu.org-brand{
   --calcite-menu-background-color: #0D4D96;
   --calcite-menu-text-color: #ffffff
+}
+
+calcite-button.outline-button{
+  --calcite-button-border-color: #0D4D96;
+  --calcite-button-text-color: #0D4D96;
 }
 
 calcite-button.hyperlink-button{

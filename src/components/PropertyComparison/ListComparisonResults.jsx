@@ -13,7 +13,7 @@ const ListComparisonResults = ({refElement, setCurrentStep}) => {
     const handleSelect = async (feature) => {
 
         console.log("selecting feature: ", feature)
-        setSecondaryResultFeature(feature)
+        setSecondaryResultFeature([feature])
         //togglePanel('compareDetail')
         if(!refElement) return;
         setCurrentStep(2)
@@ -36,7 +36,7 @@ const ListComparisonResults = ({refElement, setCurrentStep}) => {
                         selectionMode="single"
                         iconEnd="pin"
                         onCalciteListItemSelect={() => {handleSelect(feature)}}
-                        selected={secondaryResultFeature?.attributes['PIN14_dash'] === feature.attributes['PIN14_dash'] }
+                        selected={secondaryResultFeature && secondaryResultFeature[0] ? secondaryResultFeature[0].attributes['PIN14_dash'] === feature.attributes['PIN14_dash'] : null }
                     >
                     <div slot="content" className="description" style={{marginLeft:'10px'}}>
                         <CalciteLabel scale="m" >

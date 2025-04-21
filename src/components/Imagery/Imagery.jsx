@@ -17,6 +17,7 @@ const Imagery = () => {
 
     return(
         <CalcitePanel
+        id="imagery-panel"
         closed={imageryPanelClosed}
         closable
         heading={translateText("Imagery")}

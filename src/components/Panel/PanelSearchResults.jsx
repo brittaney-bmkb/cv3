@@ -26,8 +26,15 @@ const PanelSearchResults = () => {
         setExportOpen,
         setFeedbackDialog,
         exportOpen,
-        feedbackOpen
+        feedbackOpen,
+        clearResultsComparables
     } = UseAppContext()
+
+    const handleClearResults = () => {
+
+        clearResults()
+        clearResultsComparables()
+    }
 
     return (
             <CalcitePanel 
@@ -35,8 +42,8 @@ const PanelSearchResults = () => {
                 closed={searchResultsPanelClosed} 
                 closable 
                 className='panel-start' 
-                heading={translateText('Search Results')} 
-                description= {searchBufferGeometry ? `${translateText("Property results include parcels within")} ${config.buffer_distance} ${translateText(config.buffer_unit)} ${translateText("of")} ${searchTerm}`: null}
+                heading={`${translateText('Search Results')} (${searchFeatures ? searchFeatures?.length : 0})`} 
+                description= {searchFeatures?.length > 0 && searchBufferGeometry ? `${translateText("Property results include parcels within")} ${config.buffer_distance} ${translateText(config.buffer_unit)} ${translateText("of")} ${searchTerm}`: null}
                 overlayPositioning="fixed"
                 onCalcitePanelClose={() => {
                     setSearchResultsPanel(true)
@@ -46,14 +53,16 @@ const PanelSearchResults = () => {
                     {/* SEARCH RESULT ACTIONS */}
                     <CalciteActionBar slot="action-bar" layout="horizontal" expandDisabled> 
                         <CalciteAction 
+                            id="clear-search-results"
                             text="clear" 
                             icon="reset" 
                             disabled={searchFeatures ? false : true} 
                             textEnabled 
                             scale="s"
-                            onClick={clearResults}
+                            onClick={handleClearResults}
                         ></CalciteAction>
                         <CalciteAction 
+                            id="export-search-results"
                             text="export" 
                             icon="export" 
                             disabled={searchFeatures ? false : true} 
@@ -67,6 +76,7 @@ const PanelSearchResults = () => {
                             }}
                         ></CalciteAction>
                         <CalciteAction 
+                            id="submit-search-feedback"
                             text="feedback" 
                             icon="speech-bubble-exclamation" 
                             disabled={searchFeatures ? false : true} 

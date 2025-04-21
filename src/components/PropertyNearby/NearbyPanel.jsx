@@ -159,7 +159,7 @@ const NearbyPanel = () => {
                 />
             </CalciteActionBar> : null
         }
-            <Inactive/>
+            {/* <Inactive/> */}
 
             <CalciteStepper
             ref={stepperRef}
@@ -171,6 +171,8 @@ const NearbyPanel = () => {
                 handleStepChange(event)
             }}
             >
+                
+                
                 <CalciteStepperItem
                     selected={currentStep===0}
                     heading={translateText("Search")}
@@ -180,6 +182,9 @@ const NearbyPanel = () => {
                     heading={translateText("Find nearby parcels within a custom distance")}
                     description={translateText("Set the radius to search for parcels around your selected location (maximum of 1 mile).")}
                     >*/}
+
+                    {
+                    primaryResultFeature && primaryResultFeature?.length > 0 ? 
                         <form id="nearby-search" style={{display:'flex', flexDirection: 'column', gap: '20px'}}> 
                             <div>
                                 {translateText("Set the radius to search for parcels around your selected location (maximum of 1 mile).")}
@@ -222,9 +227,17 @@ const NearbyPanel = () => {
                                                             
                             </div>
                         </form>
+
+                        :
+                 <Inactive 
+                 title={translateText("Select a Parcel to Begin Nearby Search")}
+                 message={translateText("Please select a source parcel on the map before using the Nearby Search tool.")}
+                 />
+                }
                         
                     {/* </CalciteBlock>  */}
                 </CalciteStepperItem>
+               
                 <CalciteStepperItem
                 selected={currentStep===1}
                 disabled={comparableParcels?false:true}
@@ -239,7 +252,12 @@ const NearbyPanel = () => {
                 heading={translateText("Property")}
                 >
                     
-                    {secondaryResultFeature ? <ComparisonPropertyDetail/> : <Inactive/>}
+                    {secondaryResultFeature ? <ComparisonPropertyDetail/> : 
+                    <Inactive
+                    title={translateText("No Nearby Parcels Found")}
+                    message={translateText("We couldn’t find any nearby parcels within the selected distance. Try increasing the radius or choosing a different parcel to search from.")}
+                 
+                    />}
                 </CalciteStepperItem>
             </CalciteStepper>
 

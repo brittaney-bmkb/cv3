@@ -1,5 +1,7 @@
 import { config } from "../data/config"
 
+const hideWelcome = localStorage.getItem("hideWelcomeDialog") === "true";
+
 export const initialState = {
 
     //MAP
@@ -54,11 +56,15 @@ export const initialState = {
     imageryPanelClosed: true,
     printPanelClosed:true,
     selectPanelClosed:true,
+    helpPanelClosed:true,
+    measurePanelClosed:true,
     //DIALOG STATES
     exportOpen: false,
     exportDataSource: null,
     feedbackOpen: false,
     feedbackSource:null,
+    tourDialogOpen: !hideWelcome,
+    suppressTourDialog:hideWelcome,
     //DEVICE STATE
     isMobile: null,
     //HISTORICAL PARCELS
@@ -90,6 +96,12 @@ const AppReducer = (state, action) => {
             ...state, 
             propertyDetailPanelClosed: payload.propertyDetailPanelClosed
         } 
+
+        case "SET_HELP_PANEL":
+        return {
+            ...state, 
+            helpPanelClosed: payload.helpPanelClosed
+        }
 
         case "SET_COMPARABLE_PANEL":
         return {
@@ -133,6 +145,12 @@ const AppReducer = (state, action) => {
             printPanelClosed: payload.printPanelClosed
         }
 
+        case "SET_MEASURE_PANEL":
+        return {
+            ...state, 
+            measurePanelClosed: payload.measurePanelClosed
+        }        
+
         case "SET_SELECT_PANEL":
         return {
             ...state, 
@@ -152,6 +170,18 @@ const AppReducer = (state, action) => {
             feedbackOpen: payload.feedbackOpen,
             feedbackSource: payload.feedbackSource
         }
+
+        case "SET_TOUR_OPEN":
+        return {
+            ...state, 
+            tourDialogOpen: payload.tourDialogOpen,
+        }
+
+        case "SET_SUPPRESS_TOUR_DIALOG":
+        return {
+            ...state,
+            suppressTourDialog: action.payload,
+        };
 
         case "SET_MOBILE":
         return {

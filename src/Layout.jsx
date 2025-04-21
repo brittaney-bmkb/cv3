@@ -15,6 +15,7 @@ import NearbyPanel from "./components/PropertyNearby/NearbyPanel";
 import Layers from "./components/Layers/Layers";
 import Imagery from "./components/Imagery/Imagery";
 import Print from "./components/Print/Print";
+import Measure from "./components/Measurement/measurement";
 import Select from "./components/Select/Select";
 import Map from "./components/Map/Map";
 import ActionBarStart from "./components/ActionBar/ActionBarStart";
@@ -28,6 +29,8 @@ import "@esri/calcite-components/dist/components/calcite-dropdown"
 import "@esri/calcite-components/dist/components/calcite-dropdown-group"
 import "@esri/calcite-components/dist/components/calcite-dropdown-item"
 import { Feedback } from "./components/Feedback/Feedback";
+import GuidedTour from "./components/GuidedTour/GuidedTour";
+import Help from "./components/Help/Help";
 
 
 
@@ -45,6 +48,7 @@ const Layout = () => {
         layersPanelClosed,
         printPanelClosed,
         imageryPanelClosed,
+        measurePanelClosed,
         selectPanelClosed,
         isMobile
     } = UseAppContext()
@@ -69,13 +73,16 @@ const Layout = () => {
 
     useEffect(() => {
 
-        const allPanelsClosed =   [selectPanelClosed, printPanelClosed, imageryPanelClosed, layersPanelClosed, comparisonDetailPanelClosed, nearbyPanelClosed, comparablePanelClosed, comparisonResultsClosed].every(panel => panel === true); 
+        const allPanelsClosed =   [selectPanelClosed, printPanelClosed, imageryPanelClosed, layersPanelClosed, comparisonDetailPanelClosed, nearbyPanelClosed, comparablePanelClosed, measurePanelClosed, comparisonResultsClosed].every(panel => panel === true); 
         setRightPanelCollapsed(allPanelsClosed)
 
-    }, [selectPanelClosed, printPanelClosed, imageryPanelClosed, layersPanelClosed, nearbyPanelClosed, comparablePanelClosed, comparisonResultsClosed, comparisonDetailPanelClosed])
+    }, [selectPanelClosed, printPanelClosed, imageryPanelClosed, layersPanelClosed, nearbyPanelClosed, comparablePanelClosed, comparisonResultsClosed, measurePanelClosed, comparisonDetailPanelClosed])
 
     return(
         <CalciteShell contentBehind ={isMobile}>
+
+            {!isMobile && (<GuidedTour/>)}
+            
             {/* HEADER */}
             <Header/>
             {/* <CalcitePanel  className='header'> */}
@@ -103,6 +110,7 @@ const Layout = () => {
                         <PanelInfo/>
                         <PanelSearchResults/>
                         <PanelPropertyDetail/>
+                        
                         {
                             isMobile ?
                         <>
@@ -113,6 +121,7 @@ const Layout = () => {
 
                     </CalciteShellPanel>
                     
+                    <Help/>
                     {/* WEBMAP */}
                     <Map/>
                     {/* <WebMapComponentBeta/> */}
@@ -142,6 +151,7 @@ const Layout = () => {
                         <ComparisonPropertyDetail/> */}
                         <Layers/>
                         <Imagery/>
+                        <Measure/>
                         <Print/>
                         <Select/>
 

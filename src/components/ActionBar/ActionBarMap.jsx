@@ -9,6 +9,7 @@ const ActionBarMap = () => {
         togglePanel, 
         layersPanelClosed,
         imageryPanelClosed,
+        measurePanelClosed,
         printPanelClosed,
         selectPanelClosed
      } = UseAppContext()
@@ -64,14 +65,14 @@ const ActionBarMap = () => {
             </CalciteAction>
 
             <CalciteAction 
-                //active={!selectPanelClosed}
+                active={!measurePanelClosed}
                 text={translateText("Measure")} 
                 icon="measure" 
                 textEnabled 
                 scale="s"
-                // onClick={() => {
-                //     togglePanel('select')
-                // }}
+                onClick={() => {
+                    togglePanel('measure')
+                }}
                 >
             </CalciteAction>
         </CalciteActionPad>

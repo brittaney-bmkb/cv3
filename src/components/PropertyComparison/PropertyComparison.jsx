@@ -1,6 +1,8 @@
 import { 
     CalciteAction,
     CalciteActionBar,
+    CalciteBlock,
+    CalciteFab,
     CalcitePanel, 
     CalciteStepper,
     CalciteStepperItem
@@ -30,7 +32,8 @@ const PropertyComparison = () => {
         setExportOpen,
         exportOpen,
         feedbackOpen,
-        isMobile
+        isMobile,
+        primaryResultFeature
         } = UseAppContext()
 
     const stepperRef = useRef(null)
@@ -42,12 +45,22 @@ const PropertyComparison = () => {
         
         const selectedStepIndex = event.target.selectedItem.itemPosition
 
-        console.log("Selected Step Index: ", selectedStepIndex)
+        //console.log("Selected Step Index: ", selectedStepIndex)
 
         setCurrentStep(selectedStepIndex)
     }
 
+
     useEffect(() => {
+        //reset the steps to 0
+        setCurrentStep(0)
+    }, [primaryResultFeature])
+
+    useEffect(() => {
+
+        // if(!comparableParcels || comparableParcels.length === 0){
+        //     setCurrentStep(0)
+        // }
 
         if(currentStep===0){
             setTitle('Comparable Property Search')
@@ -133,8 +146,7 @@ const PropertyComparison = () => {
                     />
                 </CalciteActionBar> : null
             }
-             <Inactive/>
-            
+
             <CalciteStepper 
             ref={stepperRef}
             title={translateText('Property Comparison')} 
@@ -148,25 +160,54 @@ const PropertyComparison = () => {
                 <CalciteStepperItem
                 selected={currentStep===0}
                 heading={translateText("Search")}
+                complete={currentStep > 0}
                 >
-                    <ComparisonForm refElement={stepperRef.current} setCurrentStep={setCurrentStep}/>
+                    {primaryResultFeature && primaryResultFeature?.length > 0 ?
+                        <ComparisonForm refElement={stepperRef.current} setCurrentStep={setCurrentStep}/>
+                        : 
+                        <Inactive
+                        title={translateText("Select a Property to Compare")}
+                        message={translateText( "To use the Compare Properties tool, first select a property on the map or from your search results. The selected property will be used as the basis for finding comparable properties.")}
+                        />
+                    }
                 </CalciteStepperItem>
 
                 <CalciteStepperItem
                 disabled={comparableParcels?false:true}
                 selected={currentStep===1}
                 heading={translateText("Results")}
+                complete={currentStep > 1 && comparableParcels?.length > 0}
                 >
-                    {comparableParcels ? <ListComparisonResults refElement={stepperRef.current} setCurrentStep={setCurrentStep}/> : <Inactive/>}
+                    {comparableParcels && comparableParcels.length > 0 ? <ListComparisonResults refElement={stepperRef.current} setCurrentStep={setCurrentStep}/> : 
+                    
+                         currentStep > 0 &&    
+                         (<Inactive
+                            title={translateText("No Comparable Properties Found")}
+                            message={translateText("No comparable properties were found based on the selected criteria. Try increasing the search radius or adjusting the property size and characteristics to broaden your results.")}
+                            />)
+                            
+                            
+                            
+             
+                    }
                 </CalciteStepperItem>
 
                 <CalciteStepperItem
                 disabled={secondaryResultFeature?false:true}
                 selected={currentStep===2}
                 heading={translateText("Property")}
+                
                 >
                     
-                    {secondaryResultFeature ? <ComparisonPropertyDetail/> : <Inactive/>}
+                    {secondaryResultFeature ? <ComparisonPropertyDetail/> : 
+                    
+                    currentStep > 0 &&    
+                         (<Inactive
+                         title={translateText("No Comparable Properties Found")}
+                         message={translateText("No comparable properties were found based on the selected criteria. Try increasing the search radius or adjusting the property size and characteristics to broaden your results.")}
+                         />)
+                         
+                    }
                 </CalciteStepperItem>
 
             </CalciteStepper>

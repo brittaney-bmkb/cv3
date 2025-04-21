@@ -11,6 +11,7 @@ const ActionBarEnd = () => {
         imageryPanelClosed, 
         printPanelClosed, 
         selectPanelClosed,
+        measurePanelClosed,
         comparablePanelClosed,
         comparableParcels,
         isMobile
@@ -68,6 +69,7 @@ const ActionBarEnd = () => {
                     </CalciteAction>
 
                     <CalciteAction 
+                        id="imagery"
                         active={!imageryPanelClosed}
                         text={translateText("Imagery")} 
                         icon="basemap" 
@@ -98,13 +100,13 @@ const ActionBarEnd = () => {
                     </CalciteAction>
 
                     <CalciteAction 
-                        //active={!selectPanelClosed}
+                        active={!measurePanelClosed}
                         text={translateText("Measure")} 
                         icon="measure" 
                         textEnabled 
-                        // onClick={() => {
-                        //     togglePanel('select')
-                        // }}
+                        onClick={() => {
+                            togglePanel('measure')
+                        }}
                         >
                     </CalciteAction>
 

@@ -36,8 +36,8 @@ const Layers = () => {
 
     const handleLayerChanges = () => {
 
-        let yOffset = -20
-        let xOffset = -125
+        let yOffset = 0
+        let yOffsetNeg = -50
         if (!arcgisMapRef.current) return;
 
         const map = arcgisMapRef.current.map;
@@ -70,12 +70,12 @@ const Layers = () => {
                 let expression = `
                 var label = ""
 
-                //if($feature["Shape.STArea()"] > 2000){
-                    //label = label + Mid($feature.PIN10, 0, 2) + "-" + Mid($feature.PIN10, 2, 2) + "-" + Mid($feature.PIN10, 4, 3) + "-" + Mid($feature.PIN10, 7, 3)
-                //}
-                //else{
-                    label = label + Mid($feature.PIN10, 0, 2) + "-" + Mid($feature.PIN10, 2, 2) + TextFormatting.NewLine + Mid($feature.PIN10, 4, 3) + "-"  + Mid($feature.PIN10, 7, 3)
-                //}
+                if($feature.YMax-$feature.YMin < $feature.XMax-$feature.XMin-20){
+                    label = Mid($feature.PIN10, 0, 2) + "-" + Mid($feature.PIN10, 2, 2) + "-" + Mid($feature.PIN10, 4, 3) + "-" + Mid($feature.PIN10, 7, 3)
+                }
+                else{
+                    label= Mid($feature.PIN10, 0, 2) + "-" + Mid($feature.PIN10, 2, 2) + TextFormatting.NewLine + Mid($feature.PIN10, 4, 3) + "-"  + Mid($feature.PIN10, 7, 3)
+                }
                 return ${title}
                 
                 `
@@ -89,11 +89,11 @@ const Layers = () => {
                 let symbol = {
                     type: "text",
                     color:  color ? color : [255, 255, 255, 255], // white
-                    font: { family: "Arial Unicode MS", size: 9, weight: "bold" },
+                    font: { family: "Arial Unicode MS", size: 11, weight: "bold" },
                     haloColor: [0, 0, 0, 255],  // black
                     haloSize: 1.5,
-                    yoffset: i > 1 || visibleParcelYears.length === 1? 0 : yOffset,
-                    xoffset: i > 1 ? xOffset : 0 
+                    yoffset: i <= 3 ? yOffset : yOffsetNeg,
+                    // xoffset: i > 1 ? xOffset : 0 
                 }
                 const labelClass = new LabelClass({  // autocasts as new LabelClass()
                     symbol: symbol,
@@ -121,8 +121,10 @@ const Layers = () => {
                 }
                   
 
-                yOffset = yOffset + 30
-                xOffset = i === 2 ? xOffset + 100 : xOffset + 40
+                yOffset = yOffset + 45
+                if(i >3){
+                    yOffsetNeg = yOffsetNeg -45
+                }
             //}
         })                                 
  }
