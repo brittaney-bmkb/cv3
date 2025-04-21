@@ -111,9 +111,12 @@ const GuidedTour = () => {
         //refPopover.current.open = false
 
         if(!popoverRefs.current) return;
+
         popoverRefs.current.map((popoverRef) => {
+
           if(!popoverRef.current) return;
 
+          
           updateStyle(popoverRef.current.id)
 
           }     
@@ -147,7 +150,7 @@ const GuidedTour = () => {
           if (!allowed.has(el) && !referenceElement.contains(el) && !popover.contains(el)) {
             el.setAttribute("inert", "");
           } else {
-            console.log("Allowed:", el);
+            //console.log("Allowed:", el);
           }
         });
       };
@@ -301,7 +304,7 @@ const GuidedTour = () => {
 
 
     const updateStyle = (id, index) => {
-      console.log("updating style")
+      //console.log("updating style")
       //get reference element
 
       //console.log("ref element id: ", id)
@@ -346,6 +349,9 @@ const GuidedTour = () => {
 
     //create tour steps
     const tourSteps = Object.entries(tourRoute).map(([key, step], index) => {
+
+        if(popoverRefs.current[index]) return;
+
         updateStyle(step.id, index)
         // //get reference element
         const referenceElement = document.getElementById(step.id);
