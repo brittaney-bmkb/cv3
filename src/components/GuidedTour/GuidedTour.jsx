@@ -109,6 +109,16 @@ const GuidedTour = () => {
         clearResults()
         clearResultsComparables()
         //refPopover.current.open = false
+
+        if(!popoverRefs.current) return;
+        popoverRefs.current.map((popoverRef) => {
+          if(!popoverRef.current) return;
+
+          updateStyle(popoverRef.current.id)
+
+          }     
+        )
+        
     }
 
     const getAncestors = (element) => {
@@ -290,33 +300,39 @@ const GuidedTour = () => {
     }, [currentStop, searchFeatures, propertyDetailPanelClosed])
 
 
-    //create tour steps
-    const tourSteps = Object.entries(tourRoute).map(([key, step], index) => {
+    const updateStyle = (id, index) => {
+      console.log("updating style")
+      //get reference element
 
-        //get reference element
-        const referenceElement = document.getElementById(step.id);
-        if (!referenceElement) return null;
+      //console.log("ref element id: ", id)
 
-        // Find child or children by selector
-        const query = index === 3 ? "calcite-input" : index === 4 ? "calcite-action" : null
-        const targetChildrenElements = query ? referenceElement.querySelectorAll(query) : []
+      const referenceElement = document.getElementById(id);
+        
+      if (!referenceElement) return null;
 
-        const targetChildrenbyStyles = referenceElement.querySelectorAll(".stepper-item-header");
+      // Find child or children by selector
+      const query = index === 3 ? "calcite-input" : index === 4 ? "calcite-action" : null
+      const targetChildrenElements = query ? referenceElement.querySelectorAll(query) : []
 
-        const targetChildren = [...targetChildrenbyStyles, ...targetChildrenElements]
+      const targetChildrenbyStyles = referenceElement.querySelectorAll(".stepper-item-header");
 
-        if (currentStop === index) {
+      const targetChildren = [...targetChildrenbyStyles, ...targetChildrenElements]
+
+      if (currentStop === index && openTour) {
         if (targetChildren && targetChildren.length > 0) {
             // Apply highlight to all matching children
+            //console.log("Apply highlight to all matching children")
             targetChildren.forEach((child) => {
-                console.log("child: ", child)
+                //console.log("child: ", child)
                 child.style.setProperty("border", "2px solid #FFA500");
 
             });
         } else {
             referenceElement.classList.add("tour-highlight");
         }
-        } else {
+      } 
+      else {
+        //console.log("Removing highlight to all matching children")
         if (targetChildren && targetChildren.length > 0) {
             // Remove highlight from all matching children
             targetChildren.forEach((child) => {
@@ -325,7 +341,46 @@ const GuidedTour = () => {
         } else {
             referenceElement.classList.remove("tour-highlight");
         }
-        }
+    }
+  }
+
+    //create tour steps
+    const tourSteps = Object.entries(tourRoute).map(([key, step], index) => {
+        updateStyle(step.id, index)
+        // //get reference element
+        const referenceElement = document.getElementById(step.id);
+        
+        if (!referenceElement) return null;
+
+        // // Find child or children by selector
+        // const query = index === 3 ? "calcite-input" : index === 4 ? "calcite-action" : null
+        // const targetChildrenElements = query ? referenceElement.querySelectorAll(query) : []
+
+        // const targetChildrenbyStyles = referenceElement.querySelectorAll(".stepper-item-header");
+
+        // const targetChildren = [...targetChildrenbyStyles, ...targetChildrenElements]
+
+        // if (currentStop === index) {
+        // if (targetChildren && targetChildren.length > 0) {
+        //     // Apply highlight to all matching children
+        //     targetChildren.forEach((child) => {
+        //         console.log("child: ", child)
+        //         child.style.setProperty("border", "2px solid #FFA500");
+
+        //     });
+        // } else {
+        //     referenceElement.classList.add("tour-highlight");
+        // }
+        // } else {
+        // if (targetChildren && targetChildren.length > 0) {
+        //     // Remove highlight from all matching children
+        //     targetChildren.forEach((child) => {
+        //         child.style.setProperty("border", "none");
+        //     });
+        // } else {
+        //     referenceElement.classList.remove("tour-highlight");
+        // }
+        //}
  
       
         return (
