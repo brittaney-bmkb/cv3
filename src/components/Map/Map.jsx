@@ -68,6 +68,16 @@ const typeColors = {
 };
 
 
+export const findTargetLayer = (map) => {
+
+  let layer = map.allLayers.find((layer) => {
+      ////////console.log("Layer details: ", layer)
+      return `${layer.url}/${layer.layerId}` === config.target_layer_url
+  })
+
+  return layer
+}
+
 const Map = () => {
 
     const { 
@@ -99,15 +109,7 @@ const Map = () => {
     const selectedParcelsLayerRef = useRef(null);
     const highlightHandlesRef = useRef({});
     
-    const findTargetLayer = (map) => {
 
-        let layer = map.allLayers.find((layer) => {
-            ////////console.log("Layer details: ", layer)
-            return `${layer.url}/${layer.layerId}` === config.target_layer_url
-        })
-
-        return layer
-    }
 
     const zoomToExtent = async (features) => {
 
