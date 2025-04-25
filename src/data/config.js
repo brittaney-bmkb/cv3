@@ -19,7 +19,21 @@ export const config = {
     //App Logo
     logo:"https://maps.cookcountyil.gov/cdn/cook/cook_logo.png",
     //PRINTS
-    reportItem:"dd95ca676ac2438c9701c4fafc71e12b",
+    reportTemplates: {
+        "letter-ansi-a-portrait": {
+            label: "letter-portrait",
+            reportItem: "dd95ca676ac2438c9701c4fafc71e12b",
+            layoutItem: "2450127b1fe448c7b72b87a2797bc301",
+            fileFormat: "pdf"
+        }
+    },
+    layoutTemplates: {
+        "letter-ansi-a-portrait": {
+            label: "letter-portrait",
+            layoutItem: "2450127b1fe448c7b72b87a2797bc301",
+            fileFormat: "*"
+        }
+    },
     //App Pages
     // pages: ['Home','Data','Help'], // removed for now. 
     // PORTAL URL: Provide the URL to your ArcGIS Online organization or Portal for ArcGIS.
