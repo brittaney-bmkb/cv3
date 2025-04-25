@@ -60,7 +60,7 @@ const Print = () => {
     const [ layoutItemId, setLayoutItemId ] = useState(config.reportTemplates[Object.keys(config.reportTemplates)[0]].layoutItem)
 
     const [ tabSelected, setTabSelected ] = useState('map')
-    const [ allowedLayouts, setAllowedLayouts ] = useState(Object.keys(config.layoutTemplates))
+    const [ allowedLayouts, setAllowedLayouts ] = useState(config.layoutTemplates)
     const [ showPrintArea, setShowPrintArea ] = useState(true)
     const [ printLoading, setPrintLoading ] = useState(false)
 
@@ -75,12 +75,11 @@ const Print = () => {
         }
     }
 
-    const handleReportSelection = (layout, report) => {
+    const handleSelection = (layout, report) => {
 
         setLayoutItemId(layout)
         setReportItemId(report)
     }
-
 
     useEffect(() => {
 
@@ -99,7 +98,7 @@ const Print = () => {
                 //console.log("setting up print view model. showarea: ", showPrintArea)
                 printViewModel.current = new PrintVM({
                     view: view,
-                    allowedLayouts: allowedLayouts
+                    allowedLayouts: Object.keys(allowedLayouts)
                     //showPrintAreaEnabled: showPrintArea,
                     //printServiceUrl: config.print_service_url
                 })
@@ -131,6 +130,22 @@ const Print = () => {
         getDefitionQuery()
         
     },  [searchFeatures])
+
+    useEffect(() => {
+        
+        const updateLayoutOptions = () => {
+            
+            if(tabSelected === 'map'){
+                setAllowedLayouts(config.layoutTemplates)
+            }
+            else if(tabSelected === 'report'){
+                setAllowedLayouts(config.reportTemplates)
+            }
+        }
+
+        updateLayoutOptions()
+
+    }, [tabSelected])
 
     const createParcelDefinitionExpression = async (feature) => {
 
@@ -257,6 +272,55 @@ const Print = () => {
         }
     }
 
+    const layoutDiv = () => ((
+
+        <div style={{display: 'flex', flexDirection: 'column'}}>
+            <CalciteLabel
+                scale="l"
+            >
+                {translateText("Layout")}
+                <CalciteSelect scale="l">
+                    
+                {
+                Object.entries(allowedLayouts).map(([key, value], i ) => {
+                    return(
+                        <CalciteOption 
+                        key={i}
+                        value={key}
+                        onClick={() => {handleSelection(value.layoutItem)}}
+                        >
+                            {value.label}
+                        </CalciteOption>
+                    )
+                })
+                }
+
+                </CalciteSelect>
+            </CalciteLabel>
+            
+            <CalciteLabel
+                layout="inline"
+                scale="l"
+            >
+                <CalciteSwitch
+                    checked={showPrintArea}
+                    onCalciteSwitchChange={(e) => {
+                        console.log("calcite switch changed", e)
+                        setShowPrintArea(!showPrintArea)
+                    }}
+                />
+                {translateText("Show print area")}
+            </CalciteLabel>
+            
+            
+            <CalciteButton
+                disabled={!arcgisMapRef.current || !primaryResultFeature}
+                onClick={modifyPrintRequest}
+            >(Print)
+            </CalciteButton>
+        </div>
+    ))
+
     return(
         <CalcitePanel
             closed={printPanelClosed}
@@ -308,57 +372,14 @@ const Print = () => {
                     tab="map"
                     selected={tabSelected === "map"}
                     >
+                    {layoutDiv}
                 </CalciteTab>
                 <CalciteTab 
                     tab="report"
                     selected={tabSelected === "report"}
                     style={{padding: '15px'}}
                 >
-                    <div style={{display: 'flex', flexDirection: 'column'}}>
-                        <CalciteLabel
-                            scale="l"
-                        >
-                            Layout
-                            <CalciteSelect scale="l">
-                                {
-                                    Object.entries(config.reportTemplates).map(([key, value], i ) => {
-
-                                        return(
-                                            <CalciteOption 
-                                            key={i}
-                                            value={key}
-                                            onClick={() => {handleReportSelection(value.layoutItem, value.reportItem)}}
-                                            >
-                                                {value.label}
-                                            </CalciteOption>
-                                        )
-                                    })
-                                }
-
-                            </CalciteSelect>
-                        </CalciteLabel>
-                        
-                        <CalciteLabel
-                            layout="inline"
-                            scale="l"
-                        >
-                            <CalciteSwitch
-                                checked={showPrintArea}
-                                onCalciteSwitchChange={(e) => {
-                                    console.log("calcite switch changed", e)
-                                    setShowPrintArea(!showPrintArea)
-                                }}
-                            />
-                            {translateText("Show print area")}
-                        </CalciteLabel>
-                        
-                        
-                        <CalciteButton
-                            disabled={!arcgisMapRef.current || !primaryResultFeature}
-                            onClick={modifyPrintRequest}
-                        >Print
-                        </CalciteButton>
-                    </div>
+                    {layoutDiv}
                 </CalciteTab>
                 <CalciteTab 
                     tab="prints"
