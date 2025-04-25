@@ -60,7 +60,7 @@ const Print = () => {
     const [ layoutItemId, setLayoutItemId ] = useState(config.reportTemplates[Object.keys(config.reportTemplates)[0]].layoutItem)
 
     const [ tabSelected, setTabSelected ] = useState('map')
-    const [ allowedLayouts, setAllowedLayouts ] = useState([])
+    const [ allowedLayouts, setAllowedLayouts ] = useState(Object.keys(config.layoutTemplates))
     const [ showPrintArea, setShowPrintArea ] = useState(true)
     const [ printLoading, setPrintLoading ] = useState(false)
 
@@ -99,7 +99,7 @@ const Print = () => {
                 //console.log("setting up print view model. showarea: ", showPrintArea)
                 printViewModel.current = new PrintVM({
                     view: view,
-                    allowedLayouts: config.layoutTemplates
+                    allowedLayouts: allowedLayouts
                     //showPrintAreaEnabled: showPrintArea,
                     //printServiceUrl: config.print_service_url
                 })
@@ -277,7 +277,15 @@ const Print = () => {
             }
             <CalciteTabs bordered scale="l">
                 <CalciteTabNav 
-                slot="title-group">
+                slot="title-group"
+                onCalciteTabChange={(e) => 
+                    
+                    {
+                        console.log("selected tab: ", e.target.selectedTabId)
+                        setTabSelected(e.target.selectedTabId)
+                    }
+                }
+                >
                     <CalciteTabTitle 
                         tab="map"
                         selected={tabSelected === "map"}
