@@ -5,13 +5,12 @@ import "@arcgis/map-components/components/arcgis-print";
 import { config } from "../../data/config";
 import { useEffect, useRef } from "react";
 
+import PortalItem from "@arcgis/core/portal/PortalItem.js";
 import PrintTemplate from "@arcgis/core/rest/support/PrintTemplate.js";
 import PrintParameters from "@arcgis/core/rest/support/PrintParameters.js";
 import esriConfig from "@arcgis/core/config";
 import * as print from "@arcgis/core/rest/print.js";
 import { findTargetLayer } from "../Map/Map";
-
-
 
 
 //TODO ADD PRINT TEMPLATES
@@ -23,10 +22,11 @@ const Print = () => {
         translateText, 
         arcgisMapRef,
         mapView,
-        primaryResultFeature
+        primaryResultFeature,
+        searchFeatures
     } = UseAppContext()
     
-    const printRef = useRef(null)
+    const definitionQuery = useRef(null)
     const printTemplate = useRef(null)
     const printParams = useRef(null)
 
@@ -42,21 +42,15 @@ const Print = () => {
 
     useEffect(() => {
 
-        if(printRef.current && printPanelClosed){
-            if(printRef.current.showPrintAreaEnabled){
-                printRef.current.showPrintAreaEnabled = false
+        const getDefitionQuery = async () => {
+            if(searchFeatures && searchFeatures.length > 0){
+                definitionQuery.current = await createParcelDefinitionExpression(searchFeatures)
             }
         }
-    },  [arcgisMapRef, printRef, printPanelClosed])
-
-
-    useEffect(() => {
-
+        getDefitionQuery()
         
+    },  [searchFeatures])
 
-
-
-    },  [arcgisMapRef.current, mapView, printParams.current])
 
 
     const createParcelDefinitionExpression = async (feature) => {
@@ -83,14 +77,29 @@ const Print = () => {
         if(!targetLayer) return;
         const sourceId = targetLayer.id
 
+        let reportItem = new PortalItem({
+            id: config.reportItem,
+            portal: config.portal_gis
+          });
+          await reportItem.load();
+
+        let layoutItem = new PortalItem({
+            id: "2450127b1fe448c7b72b87a2797bc301",
+            portal: config.portal_gis
+        })
+
+        await layoutItem.load()
+
         let template = new PrintTemplate({
-            layout: "MAP_ONLY",
-            report: "CookViewer Report",
-            format: "PDF",
+            //layout: "Layout_8x11",
+            report: "Report_8x11",
+            layoutItem: layoutItem,
+            reportItem: reportItem,
+            format: "pdf",
             reportOptions: {
                 "reportSectionOverrides": {
                     "Parcels Current": {
-                        "name": "Parcels",
+                        "name": "Parcels Current",
                         "sourceId": sourceId
                     }}}
         })
@@ -114,7 +123,7 @@ const Print = () => {
         const  [ param, sourceId ] = await preparePrintParams()
 
         console.log("print clicked")
-        const expression = await createParcelDefinitionExpression(primaryResultFeature)
+        
 
         esriConfig.request.interceptors.push({
 
@@ -136,13 +145,16 @@ const Print = () => {
                     const operationalLayers = webMap.operationalLayers
                     webMap.operationalLayers = operationalLayers.map((layer) => {
 
-                        if(layer.id === sourceId){
-                            console.log("applying defintion expression to: ", layer.id, expression)
-                            layer.layerDefinition.definitionExpression = expression
+                        if(layer.id === sourceId && definitionQuery.current){
+                            console.log("applying defintion expression to: ", layer.id, definitionQuery.current)
+                            layer.layerDefinition.definitionExpression = definitionQuery.current
                         }
 
                         return layer
                     })
+
+                    //add selected parcel layers to map
+                    //find selected parcel layer and push to operational layers
             
                     // Re-encode the modified JSON back into the body
                     params.requestOptions.query.Web_Map_as_JSON = JSON.stringify(webMap);
@@ -183,7 +195,7 @@ const Print = () => {
         >
 
             <CalciteButton
-            disabled={!arcgisMapRef.current}
+            disabled={!arcgisMapRef.current || !primaryResultFeature}
             onClick={modifyPrintRequest}
             >Print</CalciteButton>
 

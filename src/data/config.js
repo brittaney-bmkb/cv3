@@ -18,13 +18,16 @@ export const config = {
     description: "Cook County Parcel Viewer",
     //App Logo
     logo:"https://maps.cookcountyil.gov/cdn/cook/cook_logo.png",
+    //PRINTS
+    reportItem:"dd95ca676ac2438c9701c4fafc71e12b",
     //App Pages
     // pages: ['Home','Data','Help'], // removed for now. 
     // PORTAL URL: Provide the URL to your ArcGIS Online organization or Portal for ArcGIS.
     portal:"https://cookcountyil.maps.arcgis.com/",
     portal_gis: "https://gis.cookcountyil.gov/gisportal",
     //PRINT URL
-    print_service_url: "https://gis.cookcountyil.gov/hosting/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task",
+    //print_service_url: "https://gis.cookcountyil.gov/hosting/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task",
+    print_service_url:"https://gis.cookcountyil.gov/traditional/rest/services/Parcel_Report_8x11/GPServer/Export%20Web%20Map",
     // BASEMAP ID: Provide the ID of the basemap you want to use in the application.
     basemap_item_id:"7d31919b0623451ea7e576c85c48f52a",
     // BASEMAP GROUP ID: Provide the ID of the group you want to use for basemaps

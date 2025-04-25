@@ -1,0 +1,463 @@
+{
+    "operationalLayers": [
+        {
+            "type": "VectorTileLayer",
+            "styleUrl": "https://gis.cookcountyil.gov/hosting/rest/services/Hosted/cookBaseVectorGreyStatePlane/VectorTileServer/resources/styles/root.json",
+            "id": "VectorTile_4560",
+            "title": "State Plane Street and Municipal Basemap - Light Grey",
+            "opacity": 1,
+            "minScale": 0,
+            "maxScale": 0
+        },
+        {
+            "featureCollection": {
+                "layers": [
+                    {
+                        "layerDefinition": {
+                            "name": "Selected Parcels",
+                            "geometryType": "esriGeometryPolygon",
+                            "drawingInfo": {
+                                "renderer": {
+                                    "type": "uniqueValue",
+                                    "field1": "parcelSelectionType",
+                                    "uniqueValueGroups": [
+                                        {
+                                            "classes": [
+                                                {
+                                                    "label": "Source Parcel",
+                                                    "symbol": {
+                                                        "type": "esriSFS",
+                                                        "color": [
+                                                            51,
+                                                            204,
+                                                            51,
+                                                            0
+                                                        ],
+                                                        "outline": {
+                                                            "type": "esriSLS",
+                                                            "color": [
+                                                                255,
+                                                                215,
+                                                                0,
+                                                                255
+                                                            ],
+                                                            "width": 2,
+                                                            "style": "esriSLSSolid"
+                                                        },
+                                                        "style": "esriSFSSolid"
+                                                    },
+                                                    "values": [
+                                                        [
+                                                            "Source Parcel"
+                                                        ]
+                                                    ]
+                                                },
+                                                {
+                                                    "label": "Comparable Parcel",
+                                                    "symbol": {
+                                                        "type": "esriSFS",
+                                                        "color": [
+                                                            51,
+                                                            204,
+                                                            51,
+                                                            0
+                                                        ],
+                                                        "outline": {
+                                                            "type": "esriSLS",
+                                                            "color": [
+                                                                255,
+                                                                0,
+                                                                255,
+                                                                255
+                                                            ],
+                                                            "width": 2,
+                                                            "style": "esriSLSDash"
+                                                        },
+                                                        "style": "esriSFSSolid"
+                                                    },
+                                                    "values": [
+                                                        [
+                                                            "Comparable Parcel"
+                                                        ]
+                                                    ]
+                                                },
+                                                {
+                                                    "label": "Nearby Parcel",
+                                                    "symbol": {
+                                                        "type": "esriSFS",
+                                                        "color": [
+                                                            51,
+                                                            204,
+                                                            51,
+                                                            0
+                                                        ],
+                                                        "outline": {
+                                                            "type": "esriSLS",
+                                                            "color": [
+                                                                255,
+                                                                0,
+                                                                255,
+                                                                255
+                                                            ],
+                                                            "width": 2,
+                                                            "style": "esriSLSDash"
+                                                        },
+                                                        "style": "esriSFSSolid"
+                                                    },
+                                                    "values": [
+                                                        [
+                                                            "Nearby Parcel"
+                                                        ]
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "uniqueValueInfos": [
+                                        {
+                                            "label": "Source Parcel",
+                                            "symbol": {
+                                                "type": "esriSFS",
+                                                "color": [
+                                                    51,
+                                                    204,
+                                                    51,
+                                                    0
+                                                ],
+                                                "outline": {
+                                                    "type": "esriSLS",
+                                                    "color": [
+                                                        255,
+                                                        215,
+                                                        0,
+                                                        255
+                                                    ],
+                                                    "width": 2,
+                                                    "style": "esriSLSSolid"
+                                                },
+                                                "style": "esriSFSSolid"
+                                            },
+                                            "value": "Source Parcel"
+                                        },
+                                        {
+                                            "label": "Comparable Parcel",
+                                            "symbol": {
+                                                "type": "esriSFS",
+                                                "color": [
+                                                    51,
+                                                    204,
+                                                    51,
+                                                    0
+                                                ],
+                                                "outline": {
+                                                    "type": "esriSLS",
+                                                    "color": [
+                                                        255,
+                                                        0,
+                                                        255,
+                                                        255
+                                                    ],
+                                                    "width": 2,
+                                                    "style": "esriSLSDash"
+                                                },
+                                                "style": "esriSFSSolid"
+                                            },
+                                            "value": "Comparable Parcel"
+                                        },
+                                        {
+                                            "label": "Nearby Parcel",
+                                            "symbol": {
+                                                "type": "esriSFS",
+                                                "color": [
+                                                    51,
+                                                    204,
+                                                    51,
+                                                    0
+                                                ],
+                                                "outline": {
+                                                    "type": "esriSLS",
+                                                    "color": [
+                                                        255,
+                                                        0,
+                                                        255,
+                                                        255
+                                                    ],
+                                                    "width": 2,
+                                                    "style": "esriSLSDash"
+                                                },
+                                                "style": "esriSFSSolid"
+                                            },
+                                            "value": "Nearby Parcel"
+                                        }
+                                    ]
+                                }
+                            },
+                            "fields": [
+                                {
+                                    "alias": "OBJECTID",
+                                    "editable": true,
+                                    "name": "OBJECTID",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeOID"
+                                },
+                                {
+                                    "alias": "PIN10",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "PIN10",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "parcelSelectionType",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "parcelSelectionType",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                }
+                            ]
+                        },
+                        "featureSet": {
+                            "geometryType": "esriGeometryPolygon",
+                            "features": [
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1124605.9672228098,
+                                                    1880487.971952501
+                                                ],
+                                                [
+                                                    1124557.9669088854,
+                                                    1880473.2779788508
+                                                ],
+                                                [
+                                                    1124520.9870751987,
+                                                    1880594.7481610267
+                                                ],
+                                                [
+                                                    1124539.8443413833,
+                                                    1880626.0953048142
+                                                ],
+                                                [
+                                                    1124554.7832145945,
+                                                    1880651.0750600197
+                                                ],
+                                                [
+                                                    1124605.9672228098,
+                                                    1880487.9719525012
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Source Parcel"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "id": "196643517b3-layer-13",
+            "title": "Selected Parcels",
+            "opacity": 1,
+            "minScale": 0,
+            "maxScale": 0
+        },
+        {
+            "id": "1922088cfbf-layer-6",
+            "title": "Parcels Current",
+            "url": "https://test-gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/0",
+            "layerType": "ArcGISFeatureLayer",
+            "layerDefinition": {
+                "disableDisplayFilter": false,
+                "displayFilterInfo": null,
+                "definitionExpression": "PIN14 IN ('15361090280000')",
+                "drawingInfo": {
+                    "labelingInfo": [
+                        {
+                            "name": "Class 1",
+                            "allowOverrun": true,
+                            "labelExpressionInfo": {
+                                "expression": "n                var label = ""nn                if($feature.YMax-$feature.YMin < $feature.XMax-$feature.XMin-20){n                    label = Mid($feature.PIN10, 0, 2) + "-" + Mid($feature.PIN10, 2, 2) + "-" + Mid($feature.PIN10, 4, 3) + "-" + Mid($feature.PIN10, 7, 3)n                }n                else{n                    label= Mid($feature.PIN10, 0, 2) + "-" + Mid($feature.PIN10, 2, 2) + TextFormatting.NewLine + Mid($feature.PIN10, 4, 3) + "-"  + Mid($feature.PIN10, 7, 3)n                }n                return labeln                n                ",
+                                "title": "Custom"
+                            },
+                            "labelPlacement": "esriServerPolygonPlacementAlwaysHorizontal",
+                            "labelPosition": "curved",
+                            "maxScale": 0,
+                            "minScale": 8978.252315,
+                            "repeatLabel": false,
+                            "symbol": {
+                                "type": "esriTS",
+                                "color": [
+                                    255,
+                                    255,
+                                    255,
+                                    255
+                                ],
+                                "font": {
+                                    "family": "Arial Unicode MS",
+                                    "size": 11,
+                                    "weight": "bold"
+                                },
+                                "horizontalAlignment": "center",
+                                "kerning": true,
+                                "haloColor": [
+                                    0,
+                                    0,
+                                    0,
+                                    255
+                                ],
+                                "haloSize": 1.5,
+                                "rotated": false,
+                                "text": "",
+                                "verticalAlignment": "baseline",
+                                "xoffset": 0,
+                                "yoffset": 0,
+                                "angle": 0
+                            },
+                            "useCodedValues": true
+                        }
+                    ],
+                    "renderer": {
+                        "type": "simple",
+                        "visualVariables": [
+                            {
+                                "type": "sizeInfo",
+                                "valueExpression": "$view.scale",
+                                "valueExpressionTitle": "Custom",
+                                "stops": [
+                                    {
+                                        "size": 2,
+                                        "value": 820
+                                    },
+                                    {
+                                        "size": 1,
+                                        "value": 2563
+                                    },
+                                    {
+                                        "size": 0.5,
+                                        "value": 10253
+                                    },
+                                    {
+                                        "size": 0,
+                                        "value": 20506
+                                    }
+                                ],
+                                "target": "outline"
+                            }
+                        ],
+                        "symbol": {
+                            "type": "CIMSymbolReference",
+                            "symbol": {
+                                "type": "CIMPolygonSymbol",
+                                "symbolLayers": [
+                                    {
+                                        "type": "CIMSolidStroke",
+                                        "effects": [
+                                            {
+                                                "type": "CIMGeometricEffectDashes",
+                                                "dashTemplate": [
+                                                    6.75,
+                                                    4.5
+                                                ],
+                                                "lineDashEnding": "NoConstraint",
+                                                "controlPointEnding": "NoConstraint"
+                                            }
+                                        ],
+                                        "enable": true,
+                                        "colorLocked": true,
+                                        "capStyle": "Butt",
+                                        "joinStyle": "Round",
+                                        "lineStyle3D": "Strip",
+                                        "miterLimit": 10,
+                                        "width": 2.25,
+                                        "height3D": 1,
+                                        "anchor3D": "Center",
+                                        "color": [
+                                            0,
+                                            206,
+                                            209,
+                                            255
+                                        ]
+                                    },
+                                    {
+                                        "type": "CIMSolidFill",
+                                        "enable": true,
+                                        "color": [
+                                            0,
+                                            0,
+                                            0,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "angleAlignment": "Map"
+                            }
+                        }
+                    }
+                }
+            },
+            "credits": "",
+            "showLabels": true,
+            "opacity": 1,
+            "minScale": 0,
+            "maxScale": 0
+        }
+    ],
+    "mapOptions": {
+        "extent": {
+            "spatialReference": {
+                "latestWkid": 3435,
+                "wkid": 102671
+            },
+            "xmin": 1124481.009019354,
+            "ymin": 1880453.6393296518,
+            "xmax": 1124645.790921642,
+            "ymax": 1880670.740708334
+        },
+        "spatialReference": {
+            "latestWkid": 3435,
+            "wkid": 102671
+        },
+        "showAttribution": true,
+        "rotation": -0.06,
+        "scale": 281.6450318037469
+    },
+    "reportOptions": {
+        "reportSectionOverrides": {
+            "Parcels Current": {
+                "name": "Parcels Current",
+                "sourceId": "1922088cfbf-layer-6"
+            }
+        }
+    },
+    "exportOptions": {
+        "dpi": 96,
+        "outputSize": [
+            800,
+            1100
+        ]
+    },
+    "layoutOptions": {
+        "legendOptions": {
+            "operationalLayers": [
+                {
+                    "id": "196643517b3-layer-13"
+                },
+                {
+                    "id": "1922088cfbf-layer-6"
+                }
+            ]
+        }
+    }
+}
