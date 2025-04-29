@@ -22,7 +22,9 @@ export const config = {
     reportTemplates: {
         "letter-ansi-a-portrait": {
             label: "letter-portrait",
+            reportName: "Report_8x11",
             reportItem: "dd95ca676ac2438c9701c4fafc71e12b",
+            layoutName: "Layout_8x11",
             layoutItem: "2450127b1fe448c7b72b87a2797bc301",
             fileFormat: "pdf"
         }
@@ -30,7 +32,14 @@ export const config = {
     layoutTemplates: {
         "letter-ansi-a-portrait": {
             label: "letter-portrait",
-            layoutItem: "2450127b1fe448c7b72b87a2797bc301",
+            name: "Layout_8x11",
+            item: "2450127b1fe448c7b72b87a2797bc301",
+            fileFormat: "*"
+        },
+        "letter-ansi-a-landscape": {
+            label: "letter-landscape",
+            name: "Layout_8x11",
+            item: "2450127b1fe448c7b72b87a2797bc301",
             fileFormat: "*"
         }
     },
