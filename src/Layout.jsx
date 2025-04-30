@@ -14,7 +14,7 @@ import PropertyComparison from "./components/PropertyComparison/PropertyComparis
 import NearbyPanel from "./components/PropertyNearby/NearbyPanel";
 import Layers from "./components/Layers/Layers";
 import Imagery from "./components/Imagery/Imagery";
-import Printer from "./components/Print/Print";
+import Print from "./components/Print/Print_working";
 import Measure from "./components/Measurement/measurement";
 import Select from "./components/Select/Select";
 import Map from "./components/Map/Map";
@@ -152,7 +152,7 @@ const Layout = () => {
                         <Layers/>
                         <Imagery/>
                         <Measure/>
-                        <Printer/>
+                        <Print/>
                         <Select/>
 
                     </CalciteShellPanel>
