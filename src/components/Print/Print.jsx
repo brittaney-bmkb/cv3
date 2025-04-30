@@ -42,7 +42,6 @@ import { findTargetLayer } from "../Map/Map";
 import PrintAreaBox from "./PrintAreaBox";
 
 
-const PrintFormats = ["jpg", "png8", "png32"]
 
 //TODO ADD PRINT TEMPLATES
 const Print = () => {
@@ -64,18 +63,18 @@ const Print = () => {
    
        const [ tabSelected, setTabSelected ] = useState('map')
    
-       const [ allowedLayouts, setAllowedLayouts ] = useState(config.layoutTemplates)
-       const [ allowedFormats, setAllowedFormats ] = useState(PrintFormats)
+       const [ allowedLayouts, setAllowedLayouts ] = useState([])
+       const [ allowedFormats, setAllowedFormats ] = useState([])
    
-       const [ layout, setLayout ] = useState(Object.keys(allowedLayouts)[0])
+       const [ layout, setLayout ] = useState(null)
        const [ format, setFormat ] = useState([])
 
 
-       const [ boxExtent, setBoxExtent ]  = useState(null)
+       //const [ boxExtent, setBoxExtent ]  = useState(null)
        const [ showPrintArea, setShowPrintArea ] = useState(false)
        const [ printLoading, setPrintLoading ] = useState(false)
    
-       const printRef = useRef(null)
+       const boxExtent = useRef(null)
    
        const handleClosePrintPanel = () => {
    
@@ -87,6 +86,11 @@ const Print = () => {
    
            }
        }
+
+       useEffect(() => {
+
+        console.log("extent updated: ", boxExtent.current)
+       }, [boxExtent.current  ])
    
        useEffect(() => {
    
@@ -94,10 +98,10 @@ const Print = () => {
    
                console.log("updating print view model")
 
-               if(!arcgisMapRef.current) return;
-               const view = arcgisMapRef.current.view
+            //    if(!arcgisMapRef.current) return;
+            //    const view = arcgisMapRef.current.view
 
-               if(!view.ready) return;
+               if(!mapView?.ready) return;
                // if(printRef.current){
                    
                //     const portal = new Portal({
@@ -110,10 +114,9 @@ const Print = () => {
    
                if(!printViewModel.current && !printPanelClosed){
                    
-   
-                   //console.log("setting up print view model. showarea: ", showPrintArea)
+                   console.log("setting up print view model. showarea: ", )
                    printViewModel.current = new PrintVM({
-                       view: view,
+                       view: mapView,
                        //container:printRef.current,
                        printServiceUrl : config.print_service_url
                        //allowedFormats: ["jpg", "png8", "png32"]
@@ -125,15 +128,36 @@ const Print = () => {
                    await printViewModel.current.load()
                    //printViewModel.current.printServiceUrl =  config.print_service_url
                    console.log("printViewModel.current: ", printViewModel.current)
+
+                   const printServiceTemplates = await getPrintLayouts()
+                   console.log("print service templates: ", printServiceTemplates)
+                   setAllowedLayouts(printServiceTemplates)
+                   setLayout(printServiceTemplates[0])
+
+                   const formats = await getPrintFormats()
+                   setAllowedFormats(formats)
+                   setFormat(formats[0])
+
                    setPrintLoading(false)
+
+                   
                }
                
            }
    
            setupPrintVM();
    
-       }, [arcgisMapRef.current?.view, printViewModel, printPanelClosed])
+       }, [mapView, printViewModel.current, printPanelClosed])
        
+
+       const getPrintLayouts = async () => {
+        return printViewModel.current.printServiceTemplates.items.map((item) => item.layout)
+
+       }
+       const getPrintFormats = async () => {
+        return printViewModel.current.templatesInfo.format.choiceList.map((format) => format)
+
+       }
    
        useEffect(() => {
    
@@ -148,15 +172,17 @@ const Print = () => {
    
        useEffect(() => {
            
-           const updateLayoutOptions = () => {
+           const updateLayoutOptions = async () => {
    
                if(!printViewModel.current) return;
                
                if(tabSelected === 'map'){
-   
-                   setAllowedLayouts(config.layoutTemplates)
-   
-                   setAllowedFormats(PrintFormats)
+
+                    const printServiceTemplates = await getPrintLayouts()
+                    setAllowedLayouts(printServiceTemplates)
+
+                    const printFormats = await getPrintFormats()
+                    setAllowedFormats(printFormats)
                }
                else if(tabSelected === 'report'){
                    setAllowedLayouts(config.reportTemplates)
@@ -184,20 +210,22 @@ const Print = () => {
    
            let sourceId = '' 
    
-           const layoutItem = new PortalItem({
-               id: config.layoutTemplates[layout].item,
-               portal: config.portal_gis
-           })
+        //    const layoutItem = new PortalItem({
+        //        id: config.layoutTemplates[layout].item,
+        //        portal: config.portal_gis
+        //    })
    
-           await layoutItem.load()
+        //    await layoutItem.load()
    
            const template = new PrintTemplate({
-               layoutItem: layoutItem,
-               layout: config.layoutTemplates[layout].name,
-               format: 'jpg',
+               //layoutItem: layoutItem,
+               layout: layout,
+               format: format,
                report: null,
                reportItem: null
            })
+
+           console.log("Print template: ", template)
    
            if(tabSelected === 'report'){
    
@@ -247,27 +275,33 @@ const Print = () => {
        
                        const query = params.requestOptions?.query;
                        
-                       if (query && tabSelected === 'report') {
+                       if (query) {
                            
                            // body is a URL-encoded string; parse it
                            const webMapParam = query.Web_Map_as_JSON
                    
                            if (webMapParam) {
                            const webMap = JSON.parse(webMapParam);
-                   
-                           // Modify the operational layers by adding a 
-                           //definiton query to the parcel layer
-                           const operationalLayers = webMap.operationalLayers
-                           webMap.operationalLayers = operationalLayers.map((layer) => {
-       
-                               if(layer.id === sourceId && definitionQuery.current){
-                                   console.log("applying defintion expression to: ", layer.id, definitionQuery.current)
-                                   layer.layerDefinition.definitionExpression = definitionQuery.current
-                               }
-       
-                               return layer
-                           })
-       
+
+                           //set map extent
+                           console.log("setting map extent: ", boxExtent.current)
+                           //webMap.mapOptions['extent'] = boxExtent.current
+                            
+                           if(tabSelected === 'report'){
+                            // Modify the operational layers by adding a 
+                            //definiton query to the parcel layer
+                            const operationalLayers = webMap.operationalLayers
+                            webMap.operationalLayers = operationalLayers.map((layer) => {
+        
+                                if(layer.id === sourceId && definitionQuery.current){
+                                    console.log("applying defintion expression to: ", layer.id, definitionQuery.current)
+                                    layer.layerDefinition.definitionExpression = definitionQuery.current
+                                }
+        
+                                return layer
+                            })
+                           }
+                           
                            //add selected parcel layers to map
                            //find selected parcel layer and push to operational layers
                    
@@ -313,7 +347,7 @@ const Print = () => {
                        
                    {
                    //Object.entries(allowedLayouts).map(([key, value], i ) => {
-                       Object.keys(config.layoutTemplates).map((value) => {
+                    allowedLayouts?.length > 0 && allowedLayouts.map((value) => {
                        return(
                            <CalciteOption 
                            key={value}
@@ -353,7 +387,7 @@ const Print = () => {
                            }}      
                            >
                            {
-                               allowedFormats?.map((format, i ) => {
+                               allowedFormats?.length > 0 && allowedFormats.map((format, i ) => {
                                    return(
                                        <CalciteOption 
                                        key={i}
@@ -403,7 +437,7 @@ const Print = () => {
                     mapView={mapView} 
                     selectedLayout={layout} 
                     active={showPrintArea} 
-                    setBoxExtent={setBoxExtent}
+                    setBoxExtent={boxExtent.current}
                     vm={printViewModel.current}
                     />
                     )

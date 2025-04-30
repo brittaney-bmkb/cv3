@@ -23,7 +23,7 @@ export const config = {
         "letter-ansi-a-portrait": {
             label: "letter-portrait",
             reportName: "Report_8x11",
-            reportItem: "f78d162db0f3458d8e98fdf0294a2f27",
+            reportItem: "dd95ca676ac2438c9701c4fafc71e12b",
             layoutName: "Layout_8x11",
             layoutItem: "f78d162db0f3458d8e98fdf0294a2f27",
             fileFormat: "pdf"
@@ -33,7 +33,7 @@ export const config = {
         "Layout": {
             label: "letter-portrait",
             name: "Layout_8x11",
-            item: "f363a3d8a4f4426fb0d4ae6d5e88865b",
+            item: "2450127b1fe448c7b72b87a2797bc301",
             fileFormat: "*"
         },
         "a3-portrait": {
@@ -50,7 +50,7 @@ export const config = {
     portal_gis: "https://gis.cookcountyil.gov/gisportal",
     //PRINT URL
     //print_service_url: "https://gis.cookcountyil.gov/hosting/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task",
-    print_service_url:"https://gis.cookcountyil.gov/traditional/rest/services/Parcel_Report_8x11/GPServer/Export%20Web%20Map",
+    print_service_url:"https://test-gis.cookcountyil.gov/traditional/rest/services/tools/CookViewer_Print_Service/GPServer/Export%20Web%20Map",
     // BASEMAP ID: Provide the ID of the basemap you want to use in the application.
     basemap_item_id:"7d31919b0623451ea7e576c85c48f52a",
     // BASEMAP GROUP ID: Provide the ID of the group you want to use for basemaps

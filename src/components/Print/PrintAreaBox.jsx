@@ -105,7 +105,7 @@ const PrintAreaBox = ({ mapView, selectedLayout, active, setBoxExtent, vm }) => 
     const heightPts = heightInches * 72;
 
     const adjustWidth = 0;
-    const adjustHeight = -10;
+    const adjustHeight = 0;
     const divisor = 2.75; // taken from 3.x code — preserves scaling
     
     const screenUL = {
@@ -144,7 +144,8 @@ const PrintAreaBox = ({ mapView, selectedLayout, active, setBoxExtent, vm }) => 
     boxGraphic.current = box;
   
     if (setBoxExtent) {
-      setBoxExtent(extent);
+      console.log("Setting box extent: ", extent)
+      setBoxExtent=extent;
     }
   
     setupMoveHandler();
@@ -178,7 +179,7 @@ const PrintAreaBox = ({ mapView, selectedLayout, active, setBoxExtent, vm }) => 
       boxGraphic.current.geometry = movedExtent;
 
       if (setBoxExtent) {
-        setBoxExtent(movedExtent);
+        setBoxExtent=movedExtent;
       }
     });
 
