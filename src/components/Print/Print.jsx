@@ -74,7 +74,7 @@ const Print = () => {
        const [ showPrintArea, setShowPrintArea ] = useState(false)
        const [ printLoading, setPrintLoading ] = useState(false)
    
-       const boxExtent = useRef(null)
+        const boxExtent = useRef(null)
    
        const handleClosePrintPanel = () => {
    
@@ -89,14 +89,14 @@ const Print = () => {
 
        useEffect(() => {
 
-        console.log("extent updated: ", boxExtent.current)
+        //console.log("extent updated: ", boxExtent.current)
        }, [boxExtent.current  ])
    
        useEffect(() => {
    
            const setupPrintVM = async () => {
    
-               console.log("updating print view model")
+               //console.log("updating print view model")
 
             //    if(!arcgisMapRef.current) return;
             //    const view = arcgisMapRef.current.view
@@ -114,7 +114,7 @@ const Print = () => {
    
                if(!printViewModel.current && !printPanelClosed){
                    
-                   console.log("setting up print view model. showarea: ", )
+                   //console.log("setting up print view model. showarea: ", )
                    printViewModel.current = new PrintVM({
                        view: mapView,
                        //container:printRef.current,
@@ -127,10 +127,10 @@ const Print = () => {
                    setPrintLoading(true)
                    await printViewModel.current.load()
                    //printViewModel.current.printServiceUrl =  config.print_service_url
-                   console.log("printViewModel.current: ", printViewModel.current)
+                   //console.log("printViewModel.current: ", printViewModel.current)
 
                    const printServiceTemplates = await getPrintLayouts()
-                   console.log("print service templates: ", printServiceTemplates)
+                   //console.log("print service templates: ", printServiceTemplates)
                    setAllowedLayouts(printServiceTemplates)
                    setLayout(printServiceTemplates[0])
 
@@ -225,7 +225,7 @@ const Print = () => {
                reportItem: null
            })
 
-           console.log("Print template: ", template)
+           //console.log("Print template: ", template)
    
            if(tabSelected === 'report'){
    
@@ -271,7 +271,7 @@ const Print = () => {
                  
                    before: (params) => {
        
-                       console.log("request query: ", tabSelected, params)
+                       //console.log("request query: ", tabSelected, params)
        
                        const query = params.requestOptions?.query;
                        
@@ -284,8 +284,9 @@ const Print = () => {
                            const webMap = JSON.parse(webMapParam);
 
                            //set map extent
-                           console.log("setting map extent: ", boxExtent.current)
-                           //webMap.mapOptions['extent'] = boxExtent.current
+                           console.log("Setting new box extent: ", boxExtent.current.ymax, boxExtent.current.ymin, boxExtent.current.xmax, boxExtent.current.xmin)
+                           console.log("existing map extent: ", webMap.mapOptions['extent'].ymin, webMap.mapOptions['extent'].ymax)
+                           webMap.mapOptions['extent'] = boxExtent.current
                             
                            if(tabSelected === 'report'){
                             // Modify the operational layers by adding a 
@@ -437,7 +438,7 @@ const Print = () => {
                     mapView={mapView} 
                     selectedLayout={layout} 
                     active={showPrintArea} 
-                    setBoxExtent={boxExtent.current}
+                    boxExtent={boxExtent}
                     vm={printViewModel.current}
                     />
                     )

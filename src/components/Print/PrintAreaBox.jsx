@@ -11,7 +11,7 @@ import UseAppContext from "../../contexts/AppContext";
 
 const DEFAULT_DPI = 96;
 
-const PrintAreaBox = ({ mapView, selectedLayout, active, setBoxExtent, vm }) => {
+const PrintAreaBox = ({ mapView, selectedLayout, active, boxExtent, vm }) => {
   const printGraphicsLayer = useRef(null);
   const boxGraphic = useRef(null);
   const moving = useRef(false);
@@ -33,6 +33,7 @@ const PrintAreaBox = ({ mapView, selectedLayout, active, setBoxExtent, vm }) => 
       drawPrintAreaBox(selectedLayout);
 
       const listener = (event) => {
+        console.log("view has changed")
         drawPrintAreaBox(selectedLayout);
       };
 
@@ -54,12 +55,15 @@ const PrintAreaBox = ({ mapView, selectedLayout, active, setBoxExtent, vm }) => 
   }
 
   const drawPrintAreaBox = async (layoutName) => {
+    console.log("draing new box")
     if (!mapView || !printGraphicsLayer.current) return;
   
     printGraphicsLayer.current.removeAll();
   
     const center = mapView.extent.center;
     const screenCenter = mapView.toScreen(center);
+
+    console.log("new print center: ", center)
   
     // // Get layout template size in points (1 inch = 72 points)
     // let widthPts = 612; // 8.5in * 72
@@ -87,7 +91,7 @@ const PrintAreaBox = ({ mapView, selectedLayout, active, setBoxExtent, vm }) => 
     }
 
     // Convert to screen units (assuming 96 DPI)
-    const dpi = 96;
+    const dpi = 80;
     const convertToInches = (value, unit) => {
       switch (unit.toUpperCase()) {
         case "CENTIMETER": return value / 2.54;
@@ -101,8 +105,10 @@ const PrintAreaBox = ({ mapView, selectedLayout, active, setBoxExtent, vm }) => 
     const widthInches = convertToInches(width, units);
     const heightInches = convertToInches(height, units);
 
-    const widthPts = widthInches * 72;
-    const heightPts = heightInches * 72;
+
+    //incles to pixels
+    const widthPts = widthInches * dpi;
+    const heightPts = heightInches * dpi;
 
     const adjustWidth = 0;
     const adjustHeight = 0;
@@ -143,10 +149,10 @@ const PrintAreaBox = ({ mapView, selectedLayout, active, setBoxExtent, vm }) => 
     printGraphicsLayer.current.add(box);
     boxGraphic.current = box;
   
-    if (setBoxExtent) {
-      console.log("Setting box extent: ", extent)
-      setBoxExtent=extent;
-    }
+    //if (boxExtent.current) {
+      console.log("Setting box extent: ", extent.ymax, extent.ymin, extent.xmax, extent.xmin)
+      boxExtent.current = extent;
+    //}
   
     setupMoveHandler();
   };
@@ -178,9 +184,9 @@ const PrintAreaBox = ({ mapView, selectedLayout, active, setBoxExtent, vm }) => 
 
       boxGraphic.current.geometry = movedExtent;
 
-      if (setBoxExtent) {
-        setBoxExtent=movedExtent;
-      }
+      //if (boxExtent.current) {
+        boxExtent.current = movedExtent;
+      //}
     });
 
     mapView.on("drag-start", (event) => {
