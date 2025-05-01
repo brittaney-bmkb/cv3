@@ -138,14 +138,16 @@ const PrintAreaBox = ({ mapView, selectedLayout, active, boxExtent, vm }) => {
     const box = new Graphic({
       geometry: extent,
       symbol: new SimpleFillSymbol({
-        color: [255, 0, 128, 0.1],
+        color: [255, 255, 255, 0.1],
         outline: new SimpleLineSymbol({
-          color: [255, 0, 128, 0.7],
-          width: 2
+          color: [0, 0, 0, 0.7],
+          width: 2,
+          style: 'long-dash'
         })
       })
     });
-  
+
+    
     printGraphicsLayer.current.add(box);
     boxGraphic.current = box;
   

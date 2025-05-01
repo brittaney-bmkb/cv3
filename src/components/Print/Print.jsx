@@ -40,8 +40,9 @@ import * as print from "@arcgis/core/rest/print.js";
 import "@arcgis/map-components/components/arcgis-print";
 import { findTargetLayer } from "../Map/Map";
 import PrintAreaBox from "./PrintAreaBox";
+import CustomMaskLayer from "./CustomMaskLayer";
 
-
+import Polygon from "@arcgis/core/geometry/Polygon.js";
 
 //TODO ADD PRINT TEMPLATES
 const Print = () => {
@@ -75,6 +76,7 @@ const Print = () => {
        const [ printLoading, setPrintLoading ] = useState(false)
    
         const boxExtent = useRef(null)
+        const maskLayer = useRef(null);
    
        const handleClosePrintPanel = () => {
    
@@ -87,10 +89,45 @@ const Print = () => {
            }
        }
 
-       useEffect(() => {
+       
+       //revisit custom mask layer
+        // useEffect(() => {
+        // if (!arcgisMapRef.current || !showPrintArea || !boxExtent.current) return;
+        // const map  = arcgisMapRef.current.map
+        // const view = arcgisMapRef.current.view
+        
+        // if(!map || !view) return;
 
-        //console.log("extent updated: ", boxExtent.current)
-       }, [boxExtent.current  ])
+        // if (!maskLayer.current) {
+        //     console.log("Createing custom mask layer")
+        //     try {
+        //         maskLayer.current = new CustomMaskLayer({
+        //           geometry: Polygon.fromExtent(boxExtent.current),
+        //           spatialReference: view.spatialReference,
+        //           distance: 25,
+        //           color: [0, 0, 0, 0.6]
+        //         });
+              
+        //         map.add(maskLayer.current);
+        //       } catch (e) {
+        //         console.error("Failed to add CustomMaskLayer:", e);
+        //       }
+            
+         
+
+        //     console.log("custom mask layer: ", maskLayer.current)
+        // }
+
+        // //maskLayer.current.geometry = Polygon.fromExtent(boxExtent.current);
+
+        // return () => {
+        //     if (maskLayer.current) {
+        //     map.remove(maskLayer.current);
+        //     maskLayer.current = null;
+        //     }
+        // };
+        // }, [arcgisMapRef.current, mapView, showPrintArea, boxExtent]);
+
    
        useEffect(() => {
    
