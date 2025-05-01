@@ -43,6 +43,8 @@ import PrintAreaBox from "./PrintAreaBox";
 import CustomMaskLayer from "./CustomMaskLayer";
 
 import Polygon from "@arcgis/core/geometry/Polygon.js";
+import Inactive from "../Inactive/Inactive";
+import useEsriInterceptor from "./UseInterceptor";
 
 //TODO ADD PRINT TEMPLATES
 const Print = () => {
@@ -59,9 +61,7 @@ const Print = () => {
        
        const printViewModel = useRef(null)
        const definitionQuery = useRef(null)
-       const [ reportItemId, setReportItemId ] = useState(config.reportTemplates[Object.keys(config.reportTemplates)[0]].reportItem)
-       const [ layoutItemId, setLayoutItemId ] = useState(config.reportTemplates[Object.keys(config.reportTemplates)[0]].layoutItem)
-   
+
        const [ tabSelected, setTabSelected ] = useState('map')
    
        const [ allowedLayouts, setAllowedLayouts ] = useState([])
@@ -70,10 +70,11 @@ const Print = () => {
        const [ layout, setLayout ] = useState(null)
        const [ format, setFormat ] = useState([])
 
-
        //const [ boxExtent, setBoxExtent ]  = useState(null)
        const [ showPrintArea, setShowPrintArea ] = useState(false)
        const [ printLoading, setPrintLoading ] = useState(false)
+
+       const [ sourceId, setSourceId ] = useState(null)
    
         const boxExtent = useRef(null)
         const maskLayer = useRef(null);
@@ -84,7 +85,7 @@ const Print = () => {
            if(printViewModel.current){
    
                setShowPrintArea(false)
-               printViewModel.current.showPrintAreaEnabled = false
+               //printViewModel.current.showPrintAreaEnabled = false
    
            }
        }
@@ -207,30 +208,30 @@ const Print = () => {
            
        },  [searchFeatures])
    
-       useEffect(() => {
+    //    useEffect(() => {
            
-           const updateLayoutOptions = async () => {
+    //        const updateLayoutOptions = async () => {
    
-               if(!printViewModel.current) return;
+    //            if(!printViewModel.current) return;
                
-               if(tabSelected === 'map'){
+    //            if(tabSelected === 'map'){
 
-                    const printServiceTemplates = await getPrintLayouts()
-                    setAllowedLayouts(printServiceTemplates)
+    //                 const printServiceTemplates = await getPrintLayouts()
+    //                 setAllowedLayouts(printServiceTemplates)
 
-                    const printFormats = await getPrintFormats()
-                    setAllowedFormats(printFormats)
-               }
-               else if(tabSelected === 'report'){
-                   setAllowedLayouts(config.reportTemplates)
+    //                 const printFormats = await getPrintFormats()
+    //                 setAllowedFormats(printFormats)
+    //            }
+    //            else if(tabSelected === 'report'){
+    //                setAllowedLayouts(config.reportTemplates)
    
-                   setAllowedFormats(['pdf'])
-               }
-           }
+    //                setAllowedFormats(['pdf'])
+    //            }
+    //        }
    
-           updateLayoutOptions()
+    //        updateLayoutOptions()
    
-       }, [tabSelected, printViewModel.current?.templatesInfo])
+    //    }, [tabSelected, printViewModel.current?.templatesInfo])
    
        const createParcelDefinitionExpression = async (feature) => {
    
@@ -245,14 +246,7 @@ const Print = () => {
    
            if(!arcgisMapRef.current) return;
    
-           let sourceId = '' 
-   
-        //    const layoutItem = new PortalItem({
-        //        id: config.layoutTemplates[layout].item,
-        //        portal: config.portal_gis
-        //    })
-   
-        //    await layoutItem.load()
+           //let sourceId = '' 
    
            const template = new PrintTemplate({
                //layoutItem: layoutItem,
@@ -275,16 +269,11 @@ const Print = () => {
                const targetLayer = findTargetLayer(map)
    
                if(!targetLayer) return;
-               sourceId = targetLayer.id
+               const sourceId = targetLayer.id
+
+               setSourceId(sourceId)
    
-               const reportItem = new PortalItem({
-                   id: reportItemId,
-                   portal: config.portal_gis
-                 });
-                 
-               await reportItem.load();
-   
-               template.reportItem = reportItem
+               template.report = config.reportTemplate
                template.reportOptions = {
                    "reportSectionOverrides": {
                        "Parcels Current": {
@@ -296,65 +285,118 @@ const Print = () => {
            
            return [ template, sourceId ]
        }
+
+       useEsriInterceptor("printInterceptor", {
+        urls: config.print_service_url,
+        before: (params) => {
+          const query = params.requestOptions?.query;
+          if (query?.Web_Map_as_JSON) {
+            const webMap = JSON.parse(query.Web_Map_as_JSON);
+      
+            // Set extent
+            if (boxExtent.current) {
+              webMap.mapOptions.extent = boxExtent.current;
+            }
+      
+            const operationalLayers = webMap.operationalLayers;
+      
+            if (tabSelected === "report") {
+              webMap.operationalLayers = operationalLayers.map((layer) => {
+                if (layer.id === sourceId && definitionQuery.current) {
+                  layer.layerDefinition.definitionExpression = definitionQuery.current;
+                }
+                return layer;
+              });
+            } else {
+              webMap.operationalLayers = operationalLayers.filter(
+                (layer) => layer.id !== "printGraphicsLayer"
+              );
+            }
+      
+            query.Web_Map_as_JSON = JSON.stringify(webMap);
+          }
+        },
+        after: (response) => response
+      }, !!printViewModel.current);
    
        const modifyPrintRequest = async () => {
            
            const [ template, sourceId ] = await preparePrintParams()
-   
-   
-               esriConfig.request.interceptors.push({
-   
-                   urls: config.print_service_url,
-                 
-                   before: (params) => {
-       
-                       //console.log("request query: ", tabSelected, params)
-       
-                       const query = params.requestOptions?.query;
-                       
-                       if (query) {
-                           
-                           // body is a URL-encoded string; parse it
-                           const webMapParam = query.Web_Map_as_JSON
-                   
-                           if (webMapParam) {
-                           const webMap = JSON.parse(webMapParam);
 
-                           //set map extent
-                           console.log("Setting new box extent: ", boxExtent.current.ymax, boxExtent.current.ymin, boxExtent.current.xmax, boxExtent.current.xmin)
-                           console.log("existing map extent: ", webMap.mapOptions['extent'].ymin, webMap.mapOptions['extent'].ymax)
-                           webMap.mapOptions['extent'] = boxExtent.current
+           console.log("print template: ", template)
+   
+            // esriConfig.request.interceptors.push({
+
+            //     urls: config.print_service_url,
+                
+            //     before: (params) => {
+    
+            //         //console.log("request query: ", tabSelected, params)
+    
+            //         const query = params.requestOptions?.query;
+                    
+            //         if (query) {
+                        
+            //             // body is a URL-encoded string; parse it
+            //             const webMapParam = query.Web_Map_as_JSON
+                
+            //             if (webMapParam) {
+            //             const webMap = JSON.parse(webMapParam);
+
+            //             //set map extent
+            //             console.log("Setting new box extent: ", boxExtent.current.ymax, boxExtent.current.ymin, boxExtent.current.xmax, boxExtent.current.xmin)
+            //             console.log("existing map extent: ", webMap.mapOptions['extent'].ymin, webMap.mapOptions['extent'].ymax)
+            //             webMap.mapOptions['extent'] = boxExtent.current
+                        
+            //             const operationalLayers = webMap.operationalLayers
+
+            //             if(tabSelected === 'report'){
+            //             // Modify the operational layers by adding a 
+            //             //definiton query to the parcel layer
+                        
+            //             webMap.operationalLayers = operationalLayers.map((layer) => {
                             
-                           if(tabSelected === 'report'){
-                            // Modify the operational layers by adding a 
-                            //definiton query to the parcel layer
-                            const operationalLayers = webMap.operationalLayers
-                            webMap.operationalLayers = operationalLayers.map((layer) => {
+            //                 console.log("layer type: ", layer)
+    
+            //                 if(layer.id === sourceId && definitionQuery.current){
+            //                     console.log("applying defintion expression to: ", layer.id, definitionQuery.current)
+            //                     layer.layerDefinition.definitionExpression = definitionQuery.current
+            //                 }
+                            
+            //                 if(layer.id !== "printGraphicsLayer"){
+            //                     return layer
+            //                 }
+                            
+            //             })
+            //             }
+
+            //             else{
+
+            //             webMap.operationalLayers = operationalLayers.map((layer) => {
+                                                        
+            //                 if(layer.id !== "printGraphicsLayer"){
+            //                     return layer
+            //                 }
+                            
+            //             })
+
+            //             }
+                        
+            //             //add selected parcel layers to map
+            //             //find selected parcel layer and push to operational layers
+                
+            //             // Re-encode the modified JSON back into the body
+            //             params.requestOptions.query.Web_Map_as_JSON = JSON.stringify(webMap);
+            //             }
+            //         }
+            //     },
+                
+            //     after: (response) => {
+            //         console.log("Modified print response", response);
+            //         return response;
+            //     }
+            // });
         
-                                if(layer.id === sourceId && definitionQuery.current){
-                                    console.log("applying defintion expression to: ", layer.id, definitionQuery.current)
-                                    layer.layerDefinition.definitionExpression = definitionQuery.current
-                                }
-        
-                                return layer
-                            })
-                           }
-                           
-                           //add selected parcel layers to map
-                           //find selected parcel layer and push to operational layers
-                   
-                           // Re-encode the modified JSON back into the body
-                           params.requestOptions.query.Web_Map_as_JSON = JSON.stringify(webMap);
-                           }
-                     }
-                   },
-                 
-                   after: (response) => {
-                     console.log("Modified print response", response);
-                     return response;
-                   }
-               });
-           
            
    
    
@@ -445,7 +487,7 @@ const Print = () => {
                <CalciteButton
                    disabled={!arcgisMapRef.current ||(tabSelected === 'report' && !primaryResultFeature)}
                    onClick={modifyPrintRequest}
-               >(Print)
+               >{translateText("Print")}
                </CalciteButton>
            </div>
        ))
@@ -521,8 +563,8 @@ const Print = () => {
                        tab="report"
                        selected={tabSelected === "report"}
                        style={{padding: '15px'}}
-                   >
-                       {layoutDiv()}
+                   >    
+                       {searchFeatures && searchFeatures?.length > 0 ? layoutDiv() : <Inactive title={translateText("Select one or more parcels")}/> }
                    </CalciteTab>
                    <CalciteTab 
                        tab="prints"
