@@ -252,8 +252,8 @@ const Print = () => {
                //layoutItem: layoutItem,
                layout: layout,
                format: format,
-               report: null,
-               reportItem: null
+               //report: null,
+               //reportItem: null
            })
 
            //console.log("Print template: ", template)
@@ -272,8 +272,16 @@ const Print = () => {
                const sourceId = targetLayer.id
 
                setSourceId(sourceId)
+
+               const portalItem = new PortalItem({
+                portal: config.portal_gis,
+                id: config.report_id
+               })
+
+               await portalItem.load()
    
-               template.report = config.reportTemplate
+               //template.report = config.reportTemplate
+               template.reportItem = portalItem
                template.reportOptions = {
                    "reportSectionOverrides": {
                        "Parcels Current": {
@@ -298,7 +306,7 @@ const Print = () => {
               webMap.mapOptions.extent = boxExtent.current;
             }
       
-            const operationalLayers = webMap.operationalLayers;
+            let operationalLayers = webMap.operationalLayers;
       
             if (tabSelected === "report") {
               webMap.operationalLayers = operationalLayers.map((layer) => {
@@ -307,16 +315,23 @@ const Print = () => {
                 }
                 return layer;
               });
-            } else {
-              webMap.operationalLayers = operationalLayers.filter(
+
+              operationalLayers = webMap.operationalLayers;
+              
+            }
+
+
+            webMap.operationalLayers = operationalLayers.filter(
                 (layer) => layer.id !== "printGraphicsLayer"
               );
-            }
       
             query.Web_Map_as_JSON = JSON.stringify(webMap);
           }
         },
-        after: (response) => response
+        after: (response) => {
+            console.log("Modified print response", response);
+            response
+        }
       }, !!printViewModel.current);
    
        const modifyPrintRequest = async () => {
@@ -325,81 +340,6 @@ const Print = () => {
 
            console.log("print template: ", template)
    
-            // esriConfig.request.interceptors.push({
-
-            //     urls: config.print_service_url,
-                
-            //     before: (params) => {
-    
-            //         //console.log("request query: ", tabSelected, params)
-    
-            //         const query = params.requestOptions?.query;
-                    
-            //         if (query) {
-                        
-            //             // body is a URL-encoded string; parse it
-            //             const webMapParam = query.Web_Map_as_JSON
-                
-            //             if (webMapParam) {
-            //             const webMap = JSON.parse(webMapParam);
-
-            //             //set map extent
-            //             console.log("Setting new box extent: ", boxExtent.current.ymax, boxExtent.current.ymin, boxExtent.current.xmax, boxExtent.current.xmin)
-            //             console.log("existing map extent: ", webMap.mapOptions['extent'].ymin, webMap.mapOptions['extent'].ymax)
-            //             webMap.mapOptions['extent'] = boxExtent.current
-                        
-            //             const operationalLayers = webMap.operationalLayers
-
-            //             if(tabSelected === 'report'){
-            //             // Modify the operational layers by adding a 
-            //             //definiton query to the parcel layer
-                        
-            //             webMap.operationalLayers = operationalLayers.map((layer) => {
-                            
-            //                 console.log("layer type: ", layer)
-    
-            //                 if(layer.id === sourceId && definitionQuery.current){
-            //                     console.log("applying defintion expression to: ", layer.id, definitionQuery.current)
-            //                     layer.layerDefinition.definitionExpression = definitionQuery.current
-            //                 }
-                            
-            //                 if(layer.id !== "printGraphicsLayer"){
-            //                     return layer
-            //                 }
-                            
-            //             })
-            //             }
-
-            //             else{
-
-            //             webMap.operationalLayers = operationalLayers.map((layer) => {
-                                                        
-            //                 if(layer.id !== "printGraphicsLayer"){
-            //                     return layer
-            //                 }
-                            
-            //             })
-
-            //             }
-                        
-            //             //add selected parcel layers to map
-            //             //find selected parcel layer and push to operational layers
-                
-            //             // Re-encode the modified JSON back into the body
-            //             params.requestOptions.query.Web_Map_as_JSON = JSON.stringify(webMap);
-            //             }
-            //         }
-            //     },
-                
-            //     after: (response) => {
-            //         console.log("Modified print response", response);
-            //         return response;
-            //     }
-            // });
-        
-           
-   
-   
            console.log("print template: ", template)
            const result = await printViewModel.current.print(template)
    
@@ -407,7 +347,7 @@ const Print = () => {
            // const result = await executePrint(config.print_service_url, param);
    
            if(result?.url){
-               console.log("print result: ", result.url)
+               console.log("print result: ", result)
                window.open(result.url)
            }
        }

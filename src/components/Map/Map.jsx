@@ -22,7 +22,7 @@ import { useEffect, useRef, useState } from "react";
 import ActionBarMap from "../ActionBar/ActionBarMap";
 
 
-const SELECTED_PARCEL = "Selected Parcels"
+export const SELECTED_PARCEL = "Selected Parcels"
 //Names of selected parcel types
 const SOURCE_PARCEL = "Source Parcel"
 const COMPARABLE_PARCEL = "Comparable Parcel"
@@ -234,7 +234,8 @@ const Map = () => {
         
 
     }
-      const getGraphicsFromFeatureOrEvent = async (featureOrEvent, view, map) => {
+    
+    const getGraphicsFromFeatureOrEvent = async (featureOrEvent, view, map) => {
 
         if (featureOrEvent?.detail?.screenPoint) {
           const hit = await view.hitTest(featureOrEvent.detail.screenPoint);
@@ -246,28 +247,52 @@ const Map = () => {
         }
         return Array.isArray(featureOrEvent) ? featureOrEvent : [featureOrEvent];
       };
-    
+
       const createGraphics = (graphics, type) =>
-        graphics.map((g, i) => new Graphic({
-          geometry: g.geometry,
-          attributes: {
-            OBJECTID: g.attributes.OBJECTID || crypto.randomUUID?.() || `${Date.now()}${i}`,
+        graphics.map((g, i) => {
+          const newAttrs = {
             ...g.attributes,
+            OBJECTID: g.attributes.OBJECTID || crypto.randomUUID?.() || `${Date.now()}${i}`,
             parcelSelectionType: type
-          }
-        }));
+          };
+      
+          console.log("Creating graphic with attributes:", newAttrs);
+      
+          return new Graphic({
+            geometry: g.geometry,
+            attributes: newAttrs
+          });
+        });
+      
     
       const createSelectedParcelsLayer = (view, graphics) => {
-      
+
+        const fields = Object.entries(graphics[0].attributes).map(([field, attribute]) =>
+          new Field({
+            name: field,
+            type: attribute
+              ? typeof attribute === "string"
+                ? "string"
+                : "double"
+              : "string"
+          })
+        );
+        
+        fields.push(new Field({ name: "parcelSelectionType", type: "string" }));
+        
+
+        console.log("create selected parcel graphics: ", graphics)
         return new FeatureLayer({
           title: SELECTED_PARCEL,
-          source: new Collection(graphics),
+          source: graphics,
           objectIdField: "OBJECTID",
-          fields: [
-            new Field({ name: "OBJECTID", type: "oid" }),
-            new Field({ name: config.target_layer_id_field, type: "string" }),
-            new Field({ name: "parcelSelectionType", type: "string" })
-          ],
+          // fields: [
+          //   new Field({ name: "OBJECTID", type: "oid" }),
+          //   new Field({ name: config.target_layer_id_field, type: "string" }),
+          //   new Field({ name: "parcelSelectionType", type: "string" })
+          // ],
+          fields: fields,
+          
           renderer: {
             type: "unique-value",
             field: "parcelSelectionType",
@@ -440,20 +465,21 @@ const Map = () => {
         if (!rawGraphics.length || !rawGraphics[0]?.geometry) return;
     
         const newGraphics = createGraphics(rawGraphics, parcelSelectionType);
+        
         let layer = map.allLayers.find(layer => layer.title === SELECTED_PARCEL);
     
         if (!layer) {
           console.log("Source parcel layer not found")
           const newLayer = createSelectedParcelsLayer(view, newGraphics);
           map.add(newLayer);
-          map.reorder(layer, map.allLayers.length -1)
+          map.reorder(newLayer, map.allLayers.length -1)
         } else {
 
           console.log("Source parcel layer found")
           const { features } = await layer.queryFeatures()
 
           const existing = await updateSelectedParcelsLayer(map, features, newGraphics, parcelSelectionType);
-          
+          map.reorder(layer, map.allLayers.length -1)
         }
         zoomToExtent(rawGraphics);
       };
@@ -571,6 +597,8 @@ const Map = () => {
         if(!map && !view) return;
 
         const layer = map.allLayers.find((layer) => layer.title === SELECTED_PARCEL);
+
+        console.log("found selected parcel layer: ", layer)
         if(!layer){
           await handleParcelSelection(primaryResultFeature, SOURCE_PARCEL)
           
