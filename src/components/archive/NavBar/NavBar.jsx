@@ -16,9 +16,6 @@ import TranslateMenu from "./TranslateMenu";
 import { FeedbackExtended, FeedbackGeneral } from "../Feedback/Feedback";
 
 
-
-import HelpDialog from "../HelpDialog/HelpDialog";
-import ExportDialog from "../ExportDialog/ExportDialog";
 import { Info, InfoOutlined } from "@mui/icons-material";
 
 
@@ -48,14 +45,10 @@ const NavBar = () => {
     }
 
     const handleHelp = () => {
-        //console.log("Setting Open Help Dialog True");
-        //console.log(openHelpDialog)
         setOpenHelpDialog(true)
-        //console.log(openHelpDialog)
     }
 
     const handleTranslateButton = () => {
-        //console.log("OPENING TRANSLATE BUTTON")
         setTranslateDialogOpen(true)
     }
 

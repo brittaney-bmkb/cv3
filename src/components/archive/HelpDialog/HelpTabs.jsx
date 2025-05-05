@@ -1,10 +1,10 @@
 import { Box, Tabs, Tab,  Typography, Dialog, DialogContent, DialogTitle, } from "@mui/material"
-import { theme } from "../../theme"
+import { theme } from "../../../theme"
 
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import HelpContent from "./HelpContext";
-import UseAppContext from "../../contexts/AppContext";
+import UseAppContext from "../../../contexts/AppContext";
 
 
 function TabPanel(props) {

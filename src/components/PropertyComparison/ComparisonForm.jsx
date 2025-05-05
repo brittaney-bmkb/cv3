@@ -166,12 +166,14 @@ const ComparisonForm = ({refElement, setCurrentStep}) => {
                 <div className="form-section">
 
                     <div className="form-header" 
-                    >
+                    ><h3>
                         {translateText("Source Property")}
+                    </h3>
+                        
                     </div>
                     <div className="form-description" 
                     >
-                        {translateText("Some text")}
+                        {translateText("The source property you are using as the basis for your search. The property’s details-such as its location, characteristics, and property size information are displayed and used as the reference point for finding comparable properties.")}
                     </div>
                 
                     <CalciteLabel>
@@ -222,12 +224,14 @@ const ComparisonForm = ({refElement, setCurrentStep}) => {
 
                 <div className="form-section">
                     <div className="form-header" 
-                    >
+                    > <h3>
                         {translateText("Property Size")}
+                    </h3>
+                        
                     </div>
                     <div className="form-description" 
                     >
-                        {translateText("Some text")}
+                        {translateText("Property size refers to the measurable dimensions of the property, usually including building and parcel size.")}
                     </div>
                         <CalciteLabel>
                         {translateText('Building Square Feet')}
@@ -302,13 +306,13 @@ const ComparisonForm = ({refElement, setCurrentStep}) => {
                     </div>
 
                 <div className="form-section">
-                    <div className="form-header" 
-                    >
-                        {translateText("Characteristics")}
+                    <div className="form-header"> 
+                        <h3>
+                            {translateText("Characteristics")}
+                        </h3>
                     </div>
-                    <div className="form-description" 
-                    >
-                        {translateText("Some text")}
+                    <div className="form-description">
+                        {translateText("Characteristics are the key features used to determine if other properties are comparable to the source property.")}
                     </div>
                     <CalciteLabel layout="inline">
                         {translateText("Construction Type")}
