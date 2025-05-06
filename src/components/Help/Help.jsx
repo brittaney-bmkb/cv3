@@ -16,7 +16,7 @@ const Help = () => {
     const helpSections = [
         {
           id: "search",
-          heading: "Search for Properties",
+          heading: translateText("Search for Properties"),
           icon: "search",
           content: (
             <div>
@@ -35,7 +35,7 @@ const Help = () => {
         },
         {
           id: "map",
-          heading: "Selecting properties in the map",
+          heading: translateText("Selecting properties in the map"),
           icon: "map",
           content: (
             <div>
@@ -65,9 +65,9 @@ const Help = () => {
           
               <p>{translateText("With the Select Tool, you can:")}</p>
               <ul>
-                <li>{translateText("Click to select one or more parcels manually")}</li>
-                <li>{translateText("Click again on a selected parcel to unselect it")}</li>
-                <li>{translateText("Draw a rectangle or polygon over an area to select multiple parcels at once")}</li>
+                <li>{translateText("Click to select one or more parcels manually.")}</li>
+                <li>{translateText("Click again on a selected parcel to unselect it.")}</li>
+                <li>{translateText("Draw a rectangle or polygon over an area to select multiple parcels at once.")}</li>
               </ul>
           
               <p>
@@ -81,7 +81,7 @@ const Help = () => {
         },
         {
           id: "search-results",
-          heading: "View Search Results",
+          heading: translateText("View Search Results"),
           icon: "list",
           content: (
             <div>
@@ -127,7 +127,7 @@ const Help = () => {
         },
         {
           id: "property-details",
-          heading: "Viewing Property Details",
+          heading: translateText("Viewing Property Details"),
           icon: "pin",
           content: (
             <div>
@@ -244,7 +244,7 @@ const Help = () => {
         },
         {
           id: "compare",
-          heading: "Search for Comparable Properties",
+          heading: translateText("Search for Comparable Properties"),
           icon: "compare",
           content: (
             <div>
@@ -289,7 +289,7 @@ const Help = () => {
         },
         {
           id: "history",
-          heading: "Comparing Historical Parcels",
+          heading: translateText("Comparing Historical Parcels"),
           icon: "parcel",
           content: (
             <div>
@@ -330,7 +330,7 @@ const Help = () => {
         },
         {
           id: "imagery",
-          heading: "Viewing Parcels with Aerial Imagery",
+          heading: translateText("Viewing Parcels with Aerial Imagery"),
           icon: "basemap",
           content: (
             <div>
@@ -378,7 +378,7 @@ const Help = () => {
         },
         {
           id: "layers",
-          heading: "Layers",
+          heading: translateText("Layers"),
           icon: "layers",
           content: (
             <div>
@@ -423,7 +423,7 @@ const Help = () => {
         },
         {
           id: "print",
-          heading: "Print",
+          heading: translateText("Print"),
           icon: "print",
           content: (
             <div>
@@ -437,11 +437,11 @@ const Help = () => {
               <p>{translateText("How to use the Print tool:")}</p>
               <ul>
                 <li>{translateText("Click on the Print button on the right hand side of the application.")}</li>
-                <li>{translateText("Give the export a title")}</li>
-                <li>{translateText("Select the template size, default is 11 x 8.5 in")}</li>
+                <li>{translateText("Give the export a title.")}</li>
+                <li>{translateText("Select the template size, default is 11 x 8.5 in.")}</li>
                 <li>{translateText("Select the export file format, default PDF.")}</li>
-                <li>{translateText("OPTIONAL: Fill out advanced options")}</li>
-                <li>{translateText("Click Export when ready")}</li>
+                <li>{translateText("OPTIONAL: Fill out advanced options.")}</li>
+                <li>{translateText("Click Export when ready.")}</li>
               </ul>
           
             </div>
