@@ -90,44 +90,49 @@ const Print = () => {
            }
        }
 
-       
        //revisit custom mask layer
-        // useEffect(() => {
-        // if (!arcgisMapRef.current || !showPrintArea || !boxExtent.current) return;
-        // const map  = arcgisMapRef.current.map
-        // const view = arcgisMapRef.current.view
+        useEffect(() => {
+        if (!arcgisMapRef.current || !showPrintArea || !boxExtent.current) return;
+        const map  = arcgisMapRef.current.map
+        const view = arcgisMapRef.current.view
         
-        // if(!map || !view) return;
+        if(!map || !view) return;
 
-        // if (!maskLayer.current) {
-        //     console.log("Createing custom mask layer")
-        //     try {
-        //         maskLayer.current = new CustomMaskLayer({
-        //           geometry: Polygon.fromExtent(boxExtent.current),
-        //           spatialReference: view.spatialReference,
-        //           distance: 25,
-        //           color: [0, 0, 0, 0.6]
-        //         });
+        if(maskLayer.current){
+            console.log("mask exists: ", maskLayer.current)
+        }
+
+        if (!maskLayer.current) {
+            console.log("Creating custom mask layer")
+            try {
+
+                const printArea = Polygon.fromExtent(boxExtent.current)
+                maskLayer.current = new CustomMaskLayer({
+                  geometry: printArea,
+                  spatialReference: view.spatialReference,
+                  distance: 10,
+                  color: [0, 0, 0, 0.4]
+                });
               
-        //         map.add(maskLayer.current);
-        //       } catch (e) {
-        //         console.error("Failed to add CustomMaskLayer:", e);
-        //       }
+                map.add(maskLayer.current);
+              } catch (e) {
+                console.error("Failed to add CustomMaskLayer:", e);
+              }
             
          
 
-        //     console.log("custom mask layer: ", maskLayer.current)
-        // }
+            console.log("custom mask layer: ", maskLayer.current)
+        }
 
-        // //maskLayer.current.geometry = Polygon.fromExtent(boxExtent.current);
+        //maskLayer.current.geometry = Polygon.fromExtent(boxExtent.current);
 
-        // return () => {
-        //     if (maskLayer.current) {
-        //     map.remove(maskLayer.current);
-        //     maskLayer.current = null;
-        //     }
-        // };
-        // }, [arcgisMapRef.current, mapView, showPrintArea, boxExtent]);
+        return () => {
+            if (maskLayer.current) {
+            map.remove(maskLayer.current);
+            maskLayer.current = null;
+            }
+        };
+        }, [arcgisMapRef.current, mapView, showPrintArea, boxExtent.current]);
 
    
        useEffect(() => {
@@ -186,31 +191,6 @@ const Print = () => {
            getDefitionQuery()
            
        },  [searchFeatures])
-   
-    //    useEffect(() => {
-           
-    //        const updateLayoutOptions = async () => {
-   
-    //            if(!printViewModel.current) return;
-               
-    //            if(tabSelected === 'map'){
-
-    //                 const printServiceTemplates = await getPrintLayouts()
-    //                 setAllowedLayouts(printServiceTemplates)
-
-    //                 const printFormats = await getPrintFormats()
-    //                 setAllowedFormats(printFormats)
-    //            }
-    //            else if(tabSelected === 'report'){
-    //                setAllowedLayouts(config.reportTemplates)
-   
-    //                setAllowedFormats(['pdf'])
-    //            }
-    //        }
-   
-    //        updateLayoutOptions()
-   
-    //    }, [tabSelected, printViewModel.current?.templatesInfo])
    
        const createParcelDefinitionExpression = async (feature) => {
    
@@ -276,19 +256,25 @@ const Print = () => {
             }
       
             let operationalLayers = webMap.operationalLayers;
+            let legendLayers = webMap.layoutOptions.legendOptions.operationalLayers
       
             if (tabSelected === "report") {
               webMap.operationalLayers = operationalLayers.map((layer) => {
                 if (layer.id === sourceId && definitionQuery.current) {
                     console.log("setting definition query for ", sourceId, definitionQuery.current)
                     layer.layerDefinition.definitionExpression = definitionQuery.current;
-                  //layer.legendEnabled = false
                 }
                 return layer;
               });
 
               operationalLayers = webMap.operationalLayers;
               
+              webMap.layoutOptions.legendOptions.operationalLayers = legendLayers.map((layer) => {
+                if(layer.id !== sourceId){
+                    return layer
+                }
+              })
+
             }
 
 
