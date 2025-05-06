@@ -73,8 +73,8 @@ const Print = () => {
        //const [ boxExtent, setBoxExtent ]  = useState(null)
        const [ showPrintArea, setShowPrintArea ] = useState(false)
        const [ printLoading, setPrintLoading ] = useState(false)
-
        const [ sourceId, setSourceId ] = useState(null)
+       const [ printExecuting, setPrintExecuting ] = useState(false)
    
         const boxExtent = useRef(null)
         const maskLayer = useRef(null);
@@ -133,39 +133,20 @@ const Print = () => {
        useEffect(() => {
    
            const setupPrintVM = async () => {
-   
-               //console.log("updating print view model")
-
-            //    if(!arcgisMapRef.current) return;
-            //    const view = arcgisMapRef.current.view
 
                if(!mapView?.ready) return;
-               // if(printRef.current){
-                   
-               //     const portal = new Portal({
-               //         url:"https://test-gis.cookcountyil.gov/gisportal"
-               //     })
-   
-               //     printRef.current.referenceElement = arcgisMapRef.current
-               //     printRef.current.portal = portal
-               // }
+
    
                if(!printViewModel.current && !printPanelClosed){
                    
                    //console.log("setting up print view model. showarea: ", )
                    printViewModel.current = new PrintVM({
                        view: mapView,
-                       //container:printRef.current,
                        printServiceUrl : config.print_service_url
-                       //allowedFormats: ["jpg", "png8", "png32"]
-                       //showPrintAreaEnabled: showPrintArea,
-                       //
                    })
 
                    setPrintLoading(true)
                    await printViewModel.current.load()
-                   //printViewModel.current.printServiceUrl =  config.print_service_url
-                   //console.log("printViewModel.current: ", printViewModel.current)
 
                    const printServiceTemplates = await getPrintLayouts()
                    //console.log("print service templates: ", printServiceTemplates)
@@ -177,8 +158,6 @@ const Print = () => {
                    setFormat(formats[0])
 
                    setPrintLoading(false)
-
-                   
                }
                
            }
@@ -246,18 +225,11 @@ const Print = () => {
    
            if(!arcgisMapRef.current) return;
    
-           //let sourceId = '' 
-   
            const template = new PrintTemplate({
-               //layoutItem: layoutItem,
                layout: layout,
                format: format,
-               //report: null,
-               //reportItem: null
            })
 
-           //console.log("Print template: ", template)
-   
            if(tabSelected === 'report'){
    
                const map = arcgisMapRef.current.map
@@ -277,10 +249,8 @@ const Print = () => {
                 portal: config.portal_gis,
                 id: config.report_id
                })
-
-               await portalItem.load()
    
-               //template.report = config.reportTemplate
+            //    /template.report = config.reportTemplate
                template.reportItem = portalItem
                template.reportOptions = {
                    "reportSectionOverrides": {
@@ -288,10 +258,9 @@ const Print = () => {
                            "name": "Parcels Current",
                            "sourceId": sourceId
                        }}}
-   
            }
            
-           return [ template, sourceId ]
+           return template
        }
 
        useEsriInterceptor("printInterceptor", {
@@ -311,7 +280,9 @@ const Print = () => {
             if (tabSelected === "report") {
               webMap.operationalLayers = operationalLayers.map((layer) => {
                 if (layer.id === sourceId && definitionQuery.current) {
-                  layer.layerDefinition.definitionExpression = definitionQuery.current;
+                    console.log("setting definition query for ", sourceId, definitionQuery.current)
+                    layer.layerDefinition.definitionExpression = definitionQuery.current;
+                  //layer.legendEnabled = false
                 }
                 return layer;
               });
@@ -336,20 +307,22 @@ const Print = () => {
    
        const modifyPrintRequest = async () => {
            
-           const [ template, sourceId ] = await preparePrintParams()
+           setPrintExecuting(true)
 
-           console.log("print template: ", template)
-   
-           console.log("print template: ", template)
-           const result = await printViewModel.current.print(template)
-   
-           // console.log("print param: ", param)
-           // const result = await executePrint(config.print_service_url, param);
-   
-           if(result?.url){
-               console.log("print result: ", result)
-               window.open(result.url)
-           }
+           const template  = await preparePrintParams()
+
+           //try {
+                const result = await printViewModel.current.print(template)
+
+                if(result?.url){
+                    console.log("print result: ", result)
+                    window.open(result.url)
+                }
+        //    } catch (error) {
+        //         console.error("Printing failed")
+        //    }
+           
+           setPrintExecuting(false)
        }
    
        const layoutDiv = () => ((
@@ -422,10 +395,10 @@ const Print = () => {
                        </CalciteLabel>
                    )
                }
-               
-               
+
                <CalciteButton
                    disabled={!arcgisMapRef.current ||(tabSelected === 'report' && !primaryResultFeature)}
+                   ///loading={printExecuting}
                    onClick={modifyPrintRequest}
                >{translateText("Print")}
                </CalciteButton>

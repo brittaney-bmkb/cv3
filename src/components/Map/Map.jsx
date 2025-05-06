@@ -267,18 +267,18 @@ const Map = () => {
     
       const createSelectedParcelsLayer = (view, graphics) => {
 
-        const fields = Object.entries(graphics[0].attributes).map(([field, attribute]) =>
-          new Field({
-            name: field,
-            type: attribute
-              ? typeof attribute === "string"
-                ? "string"
-                : "double"
-              : "string"
-          })
-        );
+        // const fields = Object.entries(graphics[0].attributes).map(([field, attribute]) =>
+        //   new Field({
+        //     name: field,
+        //     type: attribute
+        //       ? typeof attribute === "string"
+        //         ? "string"
+        //         : "double"
+        //       : "string"
+        //   })
+        // );
         
-        fields.push(new Field({ name: "parcelSelectionType", type: "string" }));
+        // fields.push(new Field({ name: "parcelSelectionType", type: "string" }));
         
 
         console.log("create selected parcel graphics: ", graphics)
@@ -286,12 +286,12 @@ const Map = () => {
           title: SELECTED_PARCEL,
           source: graphics,
           objectIdField: "OBJECTID",
-          // fields: [
-          //   new Field({ name: "OBJECTID", type: "oid" }),
-          //   new Field({ name: config.target_layer_id_field, type: "string" }),
-          //   new Field({ name: "parcelSelectionType", type: "string" })
-          // ],
-          fields: fields,
+          fields: [
+            new Field({ name: "OBJECTID", type: "oid" }),
+            new Field({ name: config.target_layer_id_field, type: "string" }),
+            new Field({ name: "parcelSelectionType", type: "string" })
+          ],
+          // fields: fields,
           
           renderer: {
             type: "unique-value",

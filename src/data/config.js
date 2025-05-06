@@ -19,16 +19,16 @@ export const config = {
     //App Logo
     logo:"https://maps.cookcountyil.gov/cdn/cook/cook_logo.png",
     //PRINTS
-    reportTemplate: "CookViewer_Property_Details",
-    report_id: "d400b66a43f74e72855e6ba6ef92bae8",
+    reportTemplate: "CookViewerPropertyDetails",
+    report_id: "f730c860a5004dd084845988f7e6fb71",
     //App Pages
     // pages: ['Home','Data','Help'], // removed for now. 
     // PORTAL URL: Provide the URL to your ArcGIS Online organization or Portal for ArcGIS.
     portal:"https://cookcountyil.maps.arcgis.com/",
-    portal_gis: "https://test-gis.cookcountyil.gov/gisportal",
+    portal_gis: "https://gis.cookcountyil.gov/gisportal",
     //PRINT URL
     //print_service_url: "https://gis.cookcountyil.gov/hosting/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task",
-    print_service_url:"https://test-gis.cookcountyil.gov/traditional/rest/services/tools/CookViewer_Print_Service/GPServer/Export%20Web%20Map",
+    print_service_url:"https://gis.cookcountyil.gov/hosting/rest/services/CookViewerPropertyDetails/GPServer/Export%20Web%20Map",
     // BASEMAP ID: Provide the ID of the basemap you want to use in the application.
     basemap_item_id:"7d31919b0623451ea7e576c85c48f52a",
     // BASEMAP GROUP ID: Provide the ID of the group you want to use for basemaps
