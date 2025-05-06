@@ -95,38 +95,62 @@ const Print = () => {
         if (!arcgisMapRef.current || !showPrintArea || !boxExtent.current) return;
         const map  = arcgisMapRef.current.map
         const view = arcgisMapRef.current.view
+        const mapElement = arcgisMapRef?.current;
         
         if(!map || !view) return;
 
-        if(maskLayer.current){
-            console.log("mask exists: ", maskLayer.current)
+        const removeMaskLayer = () => {
+            map.remove(maskLayer.current);
+            maskLayer.current = null;
+        }
+
+        const createCustomMaskLayer = () => {
+            
+        console.log("Creating custom mask layer")
+        try {
+
+            const printArea = Polygon.fromExtent(boxExtent.current)
+            maskLayer.current = new CustomMaskLayer({
+                geometry: printArea,
+                spatialReference: view.spatialReference,
+                distance: 10,
+                color: [0, 0, 0, 0.4]
+            });
+            
+            map.add(maskLayer.current);
+            } catch (e) {
+            console.error("Failed to add CustomMaskLayer:", e);
+            }
+        
+        console.log("custom mask layer: ", maskLayer.current)
+        
         }
 
         if (!maskLayer.current) {
-            console.log("Creating custom mask layer")
-            try {
-
-                const printArea = Polygon.fromExtent(boxExtent.current)
-                maskLayer.current = new CustomMaskLayer({
-                  geometry: printArea,
-                  spatialReference: view.spatialReference,
-                  distance: 10,
-                  color: [0, 0, 0, 0.4]
-                });
-              
-                map.add(maskLayer.current);
-              } catch (e) {
-                console.error("Failed to add CustomMaskLayer:", e);
-              }
-            
-         
-
-            console.log("custom mask layer: ", maskLayer.current)
+            createCustomMaskLayer()
         }
+        const listener = () => {
+            if (maskLayer.current) {
+                removeMaskLayer()
+            }
+            createCustomMaskLayer()
+    
+        }
+        mapElement.addEventListener("arcgisViewChange", listener);
 
+        return () => {
+            mapElement.removeEventListener("arcgisViewChange", listener);
+            if (maskLayer.current) {
+                removeMaskLayer()
+            }
+        }
+    
+        
+        
         //maskLayer.current.geometry = Polygon.fromExtent(boxExtent.current);
 
         return () => {
+            
             if (maskLayer.current) {
             map.remove(maskLayer.current);
             maskLayer.current = null;
