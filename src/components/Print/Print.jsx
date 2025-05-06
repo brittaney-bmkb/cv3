@@ -4,6 +4,9 @@ import {
     CalciteButton, 
     CalciteDropdown, 
     CalciteLabel, 
+    CalciteLink, 
+    CalciteList, 
+    CalciteListItem, 
     CalciteLoader, 
     CalciteOption, 
     CalcitePanel, 
@@ -34,9 +37,6 @@ import PortalItem from "@arcgis/core/portal/PortalItem.js";
 //print modules & dependencies 
 import PrintVM from "@arcgis/core/widgets/Print/PrintViewModel.js";
 import PrintTemplate from "@arcgis/core/rest/support/PrintTemplate.js";
-import PrintParameters from "@arcgis/core/rest/support/PrintParameters.js";
-import esriConfig from "@arcgis/core/config";
-import * as print from "@arcgis/core/rest/print.js";
 import "@arcgis/map-components/components/arcgis-print";
 import { findTargetLayer } from "../Map/Map";
 import PrintAreaBox from "./PrintAreaBox";
@@ -75,6 +75,7 @@ const Print = () => {
        const [ printLoading, setPrintLoading ] = useState(false)
        const [ sourceId, setSourceId ] = useState(null)
        const [ printExecuting, setPrintExecuting ] = useState(false)
+       const [ printJobs, setPrintJobs ] = useState({})
    
         const boxExtent = useRef(null)
         const maskLayer = useRef(null);
@@ -86,7 +87,6 @@ const Print = () => {
    
                setShowPrintArea(false)
                //printViewModel.current.showPrintAreaEnabled = false
-   
            }
        }
 
@@ -145,17 +145,6 @@ const Print = () => {
             }
         }
     
-        
-        
-        //maskLayer.current.geometry = Polygon.fromExtent(boxExtent.current);
-
-        return () => {
-            
-            if (maskLayer.current) {
-            map.remove(maskLayer.current);
-            maskLayer.current = null;
-            }
-        };
         }, [arcgisMapRef.current, mapView, showPrintArea, boxExtent.current]);
 
    
@@ -315,22 +304,51 @@ const Print = () => {
         }
       }, !!printViewModel.current);
    
-       const modifyPrintRequest = async () => {
+       const submitPrintRequest = async () => {
            
+           const jobKey = Object.keys(printJobs).length 
+           let jobDetails = {
+            "title": "test",
+            "description": translateText("Open in new window"),
+            "link": "",
+           }
+
+           let job = {}
+           job[jobKey] = jobDetails
+
            setPrintExecuting(true)
+
+           setTabSelected('prints')
+
+           if(Object.keys(printJobs).length  > 0){
+             setPrintJobs({...printJobs, ...job})
+           }
+           else{
+             setPrintJobs(job)
+           }
+           
 
            const template  = await preparePrintParams()
 
-           //try {
+           try {
+
                 const result = await printViewModel.current.print(template)
 
                 if(result?.url){
                     console.log("print result: ", result)
-                    window.open(result.url)
+                    //window.open(result.url)
+                    setPrintJobs( (prev) => ({
+                        ...prev,
+                        [jobKey]: {
+                            ...job[jobKey],
+                            link: result.url
+                        }
+                    })
+                    )
                 }
-        //    } catch (error) {
-        //         console.error("Printing failed")
-        //    }
+           } catch (error) {
+                console.error("Printing failed")
+           }
            
            setPrintExecuting(false)
        }
@@ -409,7 +427,7 @@ const Print = () => {
                <CalciteButton
                    disabled={!arcgisMapRef.current ||(tabSelected === 'report' && !primaryResultFeature)}
                    ///loading={printExecuting}
-                   onClick={modifyPrintRequest}
+                   onClick={submitPrintRequest}
                >{translateText("Print")}
                </CalciteButton>
            </div>
@@ -493,6 +511,57 @@ const Print = () => {
                        tab="prints"
                        selected={tabSelected === "prints"}
                        >
+                        <CalciteBlock
+                            open
+                            collapsible
+                            heading="Maps"
+                        >
+                            <CalciteList>
+
+                            {Object.entries(printJobs)?.map(([key, values],i) => {
+
+                                console.log(printJobs)
+
+                                return(
+                                    <CalciteListItem
+                                    key={`${key}`}
+                                    label={printJobs[key]?.title}
+                                    description={printJobs[key]?.description}
+                                    value={printJobs[key]?.title}
+                                    iconStart={printExecuting ? null : "image"}
+                                    iconEnd="launch"
+                                    onCalciteListItemSelect={() => {
+                                        window.open(printJobs[key].link, '_blank',  'rel=noopener noreferrer')
+                                    }}
+                                    >   
+                                    {
+                                        printExecuting  && (
+                                            <CalciteLoader 
+                                            scale="s"
+                                            slot="content-start"
+                                            />  
+                                        )
+                                    } 
+
+
+                                    
+                                                           
+                                    </CalciteListItem>
+                                )
+
+                                })}
+                                
+                            </CalciteList>
+
+                        </CalciteBlock>
+                       <CalciteList>
+                        {/* {printJobs?.map((job) => {
+                            <CalciteListItem>
+                                
+                            </CalciteListItem>
+                        })} */}
+                        
+                       </CalciteList>
                    </CalciteTab>
                </CalciteTabs>
            
