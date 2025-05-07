@@ -23,7 +23,10 @@ const GuidedTour = () => {
         exportOpen,
         setExportOpen,
         feedbackOpen,
-        setFeedbackDialog
+        setFeedbackDialog,
+        comparisonResultsClosed,
+        comparableParcels,
+        comparablePanelClosed
      } = UseAppContext()
 
     const [openTour, setOpenTour] = useState(false);
@@ -155,10 +158,10 @@ const GuidedTour = () => {
         
         let stop = currentStop
         if(exportOpen){
-          stop = 7
+          stop = 8
         }
         if(feedbackOpen){
-          stop = 8
+          stop = 9
         }
         const refEl = document.getElementById(tourRoute[stop]?.id);
         const popoverEl = document.getElementById('popover');
@@ -243,26 +246,19 @@ const GuidedTour = () => {
         accessibleLabel: "some text"
        },
        4: {
-
+        id: "comparable_properties-button",
+        heading: "Compare Properties",
+        description: <div>
+          <p>{translateText("Use the Comparable Properties and Nearby Parcels tools to find properties with similar characteristics or nearby locations.")}</p>
+          <ul>
+            <li>{translateText("Click the 'Compare Properties' button to get started.")}</li>
+            <li>{translateText("The Comparable Properties panel will open on the right side of the screen.")}</li>
+            <li>{translateText("Click 'Next' to begin your comparable property search.")}</li>
+          </ul>
+        </div>,
+        accessibleLabel: "some text"        
        },
        5: {
-        id: "start-action-bar",
-        heading: "Panel Selector",
-        description: <div>
-            <p>{translateText("The Panel Selector on the left side of the screen provides a consistent way to navigate between key panels in CookViewer, including:")}</p>
-            <ul>
-                <li>{translateText("Search Results")}</li>
-                <li>{translateText("Property Details")}</li>
-                <li>{translateText("Info Panel")}</li>
-                <li>{translateText("Tour Launcher")}</li>
-            </ul>
-            <p>{translateText("You can use the buttons in the Panel Selector to reopen panels you’ve closed, keeping navigation simple and accessible throughout your session.")}</p>
-            <p>{translateText("The Panel Selector can also be collapsed or expanded by clicking the toggle button at the bottom. This gives you more space for the map while still keeping important tools within reach.")}</p>
-            <p>{translateText("Try clicking a button in the Panel Selector to view a panel.")}</p>
-        </div>,
-        accessibleLabel: "some text"
-       },
-       6: {
         id: "comparable-panel",
         heading: "Compare This Property",
         description: <div>
@@ -285,7 +281,42 @@ const GuidedTour = () => {
         </div>,
         accessibleLabel: "some text"
        },
+       6: {
+        id: "comparable-panel" ,
+        heading: "Comparable Results",
+        description: <div>
+          <p>{translateText("This panel displays a list of comparable properties based on your selected property.")}</p>
+          <p>{translateText("Just like the main search results, you can:")}</p>
+          <ul>
+            <li>{translateText("Clear your search to start over")}</li>
+            <li>{translateText("Export the results to CSV or Excel")}</li>
+            <li>{translateText("Submit feedback using the toolbar at the top")}</li>
+            <li>{translateText("Click a property to view its detailed information")}</li>
+          </ul>
+          <p>{translateText("New in CookViewer 3.1: Easily switch between Comparable Search, Results, and Property Detail views using the tabs at the top of the panel.")}</p>
+          <p>{translateText("Try selecting a property or using the toolbar to explore the available tools.")}</p>
+        </div>,
+        accessibleLabel: "some text",
+        div: document.getElementById("comparable-panel" )
+      },
        7: {
+        id: "start-action-bar",
+        heading: "Panel Selector",
+        description: <div>
+            <p>{translateText("The Panel Selector on the left side of the screen provides a consistent way to navigate between key panels in CookViewer, including:")}</p>
+            <ul>
+                <li>{translateText("Search Results")}</li>
+                <li>{translateText("Property Details")}</li>
+                <li>{translateText("Info Panel")}</li>
+                <li>{translateText("Tour Launcher")}</li>
+            </ul>
+            <p>{translateText("You can use the buttons in the Panel Selector to reopen panels you’ve closed, keeping navigation simple and accessible throughout your session.")}</p>
+            <p>{translateText("The Panel Selector can also be collapsed or expanded by clicking the toggle button at the bottom. This gives you more space for the map while still keeping important tools within reach.")}</p>
+            <p>{translateText("Try clicking a button in the Panel Selector to view a panel.")}</p>
+        </div>,
+        accessibleLabel: "some text"
+       },
+       8: {
         id: "export-dialog",
         heading: "Export search results",
         description: <div>
@@ -300,7 +331,7 @@ const GuidedTour = () => {
         accessibleLabel: "some text",
         div: document.getElementById("export-dialog")
        },
-       8: {
+       9: {
         id: "feedback-dialog",
         heading: "Submit Feedback",
         description: <div>
@@ -314,47 +345,64 @@ const GuidedTour = () => {
       
         accessibleLabel: "some text",
         div: document.getElementById("feedback-dialog")
-       }
+       },
     }
 
 
     useEffect(() => {
-
-
         console.log("Current stop: ", currentStop)
 
         if(currentStop === 2 && (!searchFeatures || searchFeatures.length === 0)){
           setCurrentStop(1)
         }
-      
-
         //if user closes to search panel while on the second stop
-        //go to stop 4 with info on the panel selector
+        //go to stop 7 with info on the panel selector
         if(searchResultsPanelClosed && currentStop === 2){
-          setCurrentStop(4)
+          console.log("updating stop to: ", 7)
+          setCurrentStop(7)
         }
 
+       
         //if the property detail panel is open
         //go to stop 3 with property detail info
         if(!propertyDetailPanelClosed){
+          if(currentStop === 4) return;
+          if(currentStop === 5) return;
+          if(currentStop === 6) return;
+          if(currentStop === 9) return;
+          if(currentStop === 8) return;
+          console.log("updating stop to: ", 3)
           setCurrentStop(3)
         }
 
-        //if the current stop is updated to 3 open the 
-        // property detail panel
-        if(currentStop === 3){
-          togglePanel('property')
+        if(propertyDetailPanelClosed && searchResultsPanelClosed && ( currentStop > 1 && currentStop < 5)){
+          console.log("updating stop to: ", 7)
+          setCurrentStop(7)
         }
 
 
-        //if the current stop is 4 to highlight the panel selector
+
+        if(currentStop === 5 && !comparisonResultsClosed){
+          console.log("updating stop to: ", 6)
+          currentStop === 6
+        }
+
+        if(currentStop === 7){
+          if(!propertyDetailPanelClosed){
+            console.log("updating stop to: ", 3)
+            setCurrentStop(3)
+          }
+          
+        }
+        //if the current stop is 7 to highlight the panel selector
         //and the search results panel is open  then set the stop to stop 2
         //to show details about the search results
-        if(currentStop === 4 && !searchResultsPanelClosed){
+        if(currentStop === 7 && !searchResultsPanelClosed){
+          console.log("updating stop to: ", 4)
             setCurrentStop(2)
         }
 
-    }, [currentStop, searchFeatures, propertyDetailPanelClosed, exportOpen, feedbackOpen, searchResultsPanelClosed])
+    }, [currentStop, searchFeatures, propertyDetailPanelClosed, exportOpen, feedbackOpen, searchResultsPanelClosed, comparisonResultsClosed])
 
 
     const updateStyle = (id, index) => {
@@ -362,14 +410,15 @@ const GuidedTour = () => {
       //get reference element
 
       ////console.log("ref element id: ", id)
-      if(currentStop === 6 ) return;
-      if(currentStop === 7 ) return;
+      // if(currentStop === 7 ) return;
+      // if(currentStop === 8 ) return;
+
       const referenceElement = document.getElementById(id);
         
       if (!referenceElement) return null;
 
       // Find child or children by selector
-      const query = index === 3 ? "calcite-input" : index === 4 ? "calcite-action" : null
+      const query = index === 3 ? "calcite-input" : index === 7 ? "calcite-action" : null
       const targetChildrenElements = query ? referenceElement.querySelectorAll(query) : []
 
       const targetChildrenbyStyles = referenceElement.querySelectorAll(".stepper-item-header");
@@ -411,8 +460,8 @@ const GuidedTour = () => {
             overlayPositioning="fixed"
             referenceElement={tourRoute[currentStop]?.id}
             open={openTour}
-            label={exportOpen ? tourRoute[7]?.accessibleLabel : feedbackOpen ? tourRoute[8]?.accessibleLabel  : tourRoute[currentStop]?.accessibleLabel}
-            heading={exportOpen ? tourRoute[7]?.heading : feedbackOpen ? tourRoute[8]?.heading  : tourRoute[currentStop]?.heading}
+            label={exportOpen ? tourRoute[8]?.accessibleLabel : feedbackOpen ? tourRoute[9]?.accessibleLabel  : tourRoute[currentStop]?.accessibleLabel}
+            heading={exportOpen ? tourRoute[8]?.heading : feedbackOpen ? tourRoute[9]?.heading  : tourRoute[currentStop]?.heading}
             // focusTrapOptions={{
             //    "allowOutsideClick": false,
             //    "returnFocusOnDeactivate": true,
@@ -430,7 +479,7 @@ const GuidedTour = () => {
             offsetDistance={exportOpen || feedbackOpen ? -300 : 0}
           >
             <div className="tour-text" style={{ padding: 15, width: 300 }}>
-              {exportOpen ? tourRoute[7]?.description : feedbackOpen ? tourRoute[8]?.description  : tourRoute[currentStop]?.description}
+              {exportOpen ? tourRoute[8]?.description : feedbackOpen ? tourRoute[9]?.description  : tourRoute[currentStop]?.description}
               <div
                 style={{
                   justifyContent: "end",
@@ -447,6 +496,22 @@ const GuidedTour = () => {
                     iconEnd="arrow-right" 
                     onClick={() => {
                         setCurrentStop(currentStop+1)
+
+                        
+                        //if the current stop is updated to 3 open the 
+                        // property detail panel
+                        if(currentStop+1 === 3 || currentStop+1 === 8){
+                          console.log("updating stop to: ", 3)
+                          setCurrentStop(3)
+                          togglePanel('property')
+                        }
+                        if(currentStop + 1 === 5){
+                          togglePanel('compare')
+                        }
+
+                        if(currentStop + 1 === 6){
+                          togglePanel('compare')
+                        }
                         clearInteractionIsolation();
 
                         if(exportOpen){
@@ -457,7 +522,7 @@ const GuidedTour = () => {
                           setFeedbackDialog(false)
                         }
                     }}
-                    disabled={(!searchFeatures || searchFeatures.length === 0) && currentStop === 1}
+                    disabled={((!searchFeatures || searchFeatures.length === 0) && currentStop === 1) || (!comparableParcels && !comparablePanelClosed)}
                     >
                   {translateText("Next")}
                 </CalciteButton>
