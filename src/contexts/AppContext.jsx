@@ -1095,7 +1095,7 @@ export const AppProvider = ({children}) => {
 
         let features = await queryTargeLayerWithPin10Pin14(pin10, pin14)
 
-        setPrimaryResultFeature(features, true)
+        setPrimaryResultFeature([features[0]], true)
         setSearchResults(null, features, null)
 
         if(!panelDisplay || panelDisplay !== "resultsList"){

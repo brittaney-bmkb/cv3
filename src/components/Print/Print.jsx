@@ -3,6 +3,7 @@ import {
     CalciteBlock, 
     CalciteButton, 
     CalciteDropdown, 
+    CalciteIcon, 
     CalciteInput, 
     CalciteLabel, 
     CalciteLink, 
@@ -17,7 +18,8 @@ import {
     CalciteTab, 
     CalciteTabNav, 
     CalciteTabs, 
-    CalciteTabTitle 
+    CalciteTabTitle, 
+    CalciteTooltip
 } from "@esri/calcite-components-react"
 
 import "@esri/calcite-components/dist/components/calcite-tabs";
@@ -27,6 +29,7 @@ import "@esri/calcite-components/dist/components/calcite-tab-title";
 import "@esri/calcite-components/dist/components/calcite-select";
 import "@esri/calcite-components/dist/components/calcite-option";
 import "@esri/calcite-components/dist/components/calcite-switch";
+import "@esri/calcite-components/dist/components/calcite-tooltip";
 
 import UseAppContext from "../../contexts/AppContext"
 import { config } from "../../data/config";
@@ -75,6 +78,7 @@ const Print = () => {
        //const [ boxExtent, setBoxExtent ]  = useState(null)
        const [ showPrintArea, setShowPrintArea ] = useState(false)
        const [ printLoading, setPrintLoading ] = useState(false)
+       const [ includeAllSearchFeatures, setIncludeAllSearchFeatures ] = useState(null)
        const [ sourceId, setSourceId ] = useState(null)
 
        const [ printTitle, setPrintTitle ] = useState('untitled')
@@ -85,6 +89,8 @@ const Print = () => {
 
        const boxExtent = useRef(null)
        const maskLayer = useRef(null);
+       const includeSearchFeatures = useRef(null)
+       const includeSearchFeaturesRef = useRef(null)
 
        useEffect(() => {
 
@@ -223,15 +229,27 @@ const Print = () => {
        }
    
        useEffect(() => {
-   
+           console.log("includeSearchFeatures: ", includeAllSearchFeatures)
            const getDefitionQuery = async () => {
-               if(searchFeatures && searchFeatures.length > 0){
-                   definitionQuery.current = await createParcelDefinitionExpression(searchFeatures)
-               }
+            
+            if(includeAllSearchFeatures === true){
+                if(searchFeatures && searchFeatures.length > 0){
+                    definitionQuery.current = await createParcelDefinitionExpression(searchFeatures)
+                }
+            }
+
+            else{
+                if(primaryResultFeature && primaryResultFeature.length > 0){
+                    definitionQuery.current = await createParcelDefinitionExpression(primaryResultFeature)
+                }
+            }
+
+            console.log("definition query set: ", includeAllSearchFeatures, definitionQuery.current)
+               
            }
            getDefitionQuery()
            
-       },  [searchFeatures])
+       },  [searchFeatures, primaryResultFeature, includeAllSearchFeatures])
    
        const createParcelDefinitionExpression = async (feature) => {
    
@@ -466,6 +484,28 @@ const Print = () => {
                            </CalciteSelect>
                        </CalciteLabel>
                    )
+               }
+               {
+                tabSelected === 'report' && (
+                    <CalciteLabel
+                    layout="inline"
+                    >
+                    <CalciteSwitch
+                        checked={includeSearchFeatures.current }
+                        onCalciteSwitchChange={(e) => {
+                            includeSearchFeatures.current = e.target.checked
+                            setIncludeAllSearchFeatures(e.target.checked)
+                            
+                        }}
+                    />
+                    {translateText("Include all search results")}
+                    <CalciteIcon ref={includeSearchFeaturesRef} id="include-results-help" icon='information' scale='s'/>
+                    <CalciteTooltip referenceElement={includeSearchFeaturesRef.current}>
+                        <span className="form-description">{translateText("Generate reports for all search results")}</span>
+                    </CalciteTooltip>
+                        
+                    </CalciteLabel>
+                )
                }
 
                <CalciteButton
