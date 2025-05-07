@@ -20,6 +20,10 @@ const GuidedTour = () => {
         setSuppressTourDialog,
         clearResultsComparables,
         clearResults,
+        exportOpen,
+        setExportOpen,
+        feedbackOpen,
+        setFeedbackDialog
      } = UseAppContext()
 
     const [openTour, setOpenTour] = useState(false);
@@ -70,16 +74,6 @@ const GuidedTour = () => {
 
                 setCurrentStop(index + 2)
             }
-
-            // else if(index === 1 & searchFeatures?.length === 1 && !searchResultsPanelClosed){
-            //     setCurrentStop(2)
-            // }  
-            
-            // else if(index === 1 & searchFeatures?.length > 1){
-            //     setCurrentStop(2)
-            //     //togglePanel("search")
-            // } 
-
             else{
 
                 if(index === 2){
@@ -135,6 +129,8 @@ const GuidedTour = () => {
       };
       
       const setInteractionIsolation = (referenceElement, popover) => {
+
+        //console.log("element to isolate: ", referenceElement, popover)
         if (!referenceElement || !popover) return;
       
         const allElements = document.querySelectorAll("body *");
@@ -150,21 +146,31 @@ const GuidedTour = () => {
           if (!allowed.has(el) && !referenceElement.contains(el) && !popover.contains(el)) {
             el.setAttribute("inert", "");
           } else {
-            //console.log("Allowed:", el);
+            ////console.log("Allowed:", el);
           }
         });
       };
       
       useEffect(() => {
-        const refEl = document.getElementById(tourRoute[currentStop]?.id);
-        const popoverEl = popoverRefs.current[currentStop];
         
+        let stop = currentStop
+        if(exportOpen){
+          stop = 7
+        }
+        if(feedbackOpen){
+          stop = 8
+        }
+        const refEl = document.getElementById(tourRoute[stop]?.id);
+        const popoverEl = document.getElementById('popover');
+        
+        //console.log("isolation setting up for tour stop: ", currentStop, refEl, popoverEl)
+
         if (refEl && popoverEl && openTour) {
           setTimeout(() => setInteractionIsolation(refEl, popoverEl), 0);
         }
       
         return () => clearInteractionIsolation();
-      }, [currentStop, openTour]);
+      }, [currentStop, openTour, exportOpen, feedbackOpen]);
       
       
     const clearInteractionIsolation = () => {
@@ -231,12 +237,15 @@ const GuidedTour = () => {
                 <li>{translateText("Tools for comparing properties for appeals")}</li>
             </ul>
             <p>{translateText("The top toolbar also lets you clear, export, or submit feedback.")}</p>
-            <p>{translateText('New in CookViewer 3.1: Use the built-in search bar to quickly find key information. Type in terms like "total assessed value" or "district" to filter the panel and highlight relevant data.')}</p>
+            <p>{translateText('New in CookViewer 3.1: Use the built-in search bar to quickly find key information. Type in terms like "assessed value" or "district" to filter the panel and highlight relevant data.')}</p>
             <p>{translateText("Try using the search bar now to explore the available property details.")}</p>
         </div>,
         accessibleLabel: "some text"
        },
        4: {
+
+       },
+       5: {
         id: "start-action-bar",
         heading: "Panel Selector",
         description: <div>
@@ -253,7 +262,7 @@ const GuidedTour = () => {
         </div>,
         accessibleLabel: "some text"
        },
-       5: {
+       6: {
         id: "comparable-panel",
         heading: "Compare This Property",
         description: <div>
@@ -276,39 +285,85 @@ const GuidedTour = () => {
         </div>,
         accessibleLabel: "some text"
        },
+       7: {
+        id: "export-dialog",
+        heading: "Export search results",
+        description: <div>
+        <p>{translateText("You can export property details from your search results to a CSV or Excel file for further use or sharing.")}</p>
+        <ul>
+          <li>{translateText("Click the filename box and type in a name for your file.")}</li>
+          <li>{translateText("Click the file type button to choose between CSV or Excel format.")}</li>
+          <li>{translateText("Click Export to download your file. It will appear in your Downloads folder.")}</li>
+        </ul>
+       </div>,
+        
+        accessibleLabel: "some text",
+        div: document.getElementById("export-dialog")
+       },
+       8: {
+        id: "feedback-dialog",
+        heading: "Submit Feedback",
+        description: <div>
+          <p>{translateText("Help us improve CookViewer by sharing your thoughts about the search results.")}</p>
+          <ul>
+            <li>{translateText("Were the results what you expected?")}</li>
+            <li>{translateText("Did you notice any errors or missing information?")}</li>
+          </ul>
+          <p>{translateText("Your feedback goes directly to our team and helps us make CookViewer better for everyone.")}</p>
+        </div>,
+      
+        accessibleLabel: "some text",
+        div: document.getElementById("feedback-dialog")
+       }
     }
 
 
     useEffect(() => {
 
-        if(currentStop===1){
-            //check if search result is found
-            if(!searchFeatures || searchFeatures?.length === 0){
-                setDisableNextStop(true)
-            }
-            else{
-                setDisableNextStop(false)
-            }
+
+        console.log("Current stop: ", currentStop)
+
+        if(currentStop === 2 && (!searchFeatures || searchFeatures.length === 0)){
+          setCurrentStop(1)
+        }
+      
+
+        //if user closes to search panel while on the second stop
+        //go to stop 4 with info on the panel selector
+        if(searchResultsPanelClosed && currentStop === 2){
+          setCurrentStop(4)
         }
 
-        if(currentStop===2 && !propertyDetailPanelClosed){
-            //check if search result is found
-            setCurrentStop(3)
+        //if the property detail panel is open
+        //go to stop 3 with property detail info
+        if(!propertyDetailPanelClosed){
+          setCurrentStop(3)
         }
 
+        //if the current stop is updated to 3 open the 
+        // property detail panel
+        if(currentStop === 3){
+          togglePanel('property')
+        }
+
+
+        //if the current stop is 4 to highlight the panel selector
+        //and the search results panel is open  then set the stop to stop 2
+        //to show details about the search results
         if(currentStop === 4 && !searchResultsPanelClosed){
             setCurrentStop(2)
         }
 
-    }, [currentStop, searchFeatures, propertyDetailPanelClosed])
+    }, [currentStop, searchFeatures, propertyDetailPanelClosed, exportOpen, feedbackOpen, searchResultsPanelClosed])
 
 
     const updateStyle = (id, index) => {
-      //console.log("updating style")
+      ////console.log("updating style")
       //get reference element
 
-      //console.log("ref element id: ", id)
-
+      ////console.log("ref element id: ", id)
+      if(currentStop === 6 ) return;
+      if(currentStop === 7 ) return;
       const referenceElement = document.getElementById(id);
         
       if (!referenceElement) return null;
@@ -324,9 +379,9 @@ const GuidedTour = () => {
       if (currentStop === index && openTour) {
         if (targetChildren && targetChildren.length > 0) {
             // Apply highlight to all matching children
-            //console.log("Apply highlight to all matching children")
+            ////console.log("Apply highlight to all matching children")
             targetChildren.forEach((child) => {
-                //console.log("child: ", child)
+                ////console.log("child: ", child)
                 child.style.setProperty("border", "2px solid #FFA500");
 
             });
@@ -335,7 +390,7 @@ const GuidedTour = () => {
         }
       } 
       else {
-        //console.log("Removing highlight to all matching children")
+        ////console.log("Removing highlight to all matching children")
         if (targetChildren && targetChildren.length > 0) {
             // Remove highlight from all matching children
             targetChildren.forEach((child) => {
@@ -346,76 +401,36 @@ const GuidedTour = () => {
         }
     }
   }
+    return(
+        <>
 
-    //create tour steps
-    const tourSteps = Object.entries(tourRoute).map(([key, step], index) => {
-
-        if(popoverRefs.current[index]) return;
-
-        updateStyle(step.id, index)
-        // //get reference element
-        const referenceElement = document.getElementById(step.id);
-        
-        if (!referenceElement) return null;
-
-        // // Find child or children by selector
-        // const query = index === 3 ? "calcite-input" : index === 4 ? "calcite-action" : null
-        // const targetChildrenElements = query ? referenceElement.querySelectorAll(query) : []
-
-        // const targetChildrenbyStyles = referenceElement.querySelectorAll(".stepper-item-header");
-
-        // const targetChildren = [...targetChildrenbyStyles, ...targetChildrenElements]
-
-        // if (currentStop === index) {
-        // if (targetChildren && targetChildren.length > 0) {
-        //     // Apply highlight to all matching children
-        //     targetChildren.forEach((child) => {
-        //         console.log("child: ", child)
-        //         child.style.setProperty("border", "2px solid #FFA500");
-
-        //     });
-        // } else {
-        //     referenceElement.classList.add("tour-highlight");
-        // }
-        // } else {
-        // if (targetChildren && targetChildren.length > 0) {
-        //     // Remove highlight from all matching children
-        //     targetChildren.forEach((child) => {
-        //         child.style.setProperty("border", "none");
-        //     });
-        // } else {
-        //     referenceElement.classList.remove("tour-highlight");
-        // }
-        //}
- 
-      
-        return (
-          <CalcitePopover
-            key={`${index}-${step.id}`}
-            ref={(el) => (popoverRefs.current[index] = el)}
-            placement="leading"
+        <CalcitePopover
+            id='popover'
+            ref={popoverRefs.current[currentStop]}
+            //placement="leading"
             overlayPositioning="fixed"
-            referenceElement={referenceElement}
-            open={openTour && currentStop === index}
-            label={step.accessibleLabel}
-            heading={step.heading}
-            focusTrapOptions={{
-              "allowOutsideClick": false,
-              "returnFocusOnDeactivate": true,
-              "extraContainers": [referenceElement],
-              "clickOutsideDeactivates": false
+            referenceElement={tourRoute[currentStop]?.id}
+            open={openTour}
+            label={exportOpen ? tourRoute[7]?.accessibleLabel : feedbackOpen ? tourRoute[8]?.accessibleLabel  : tourRoute[currentStop]?.accessibleLabel}
+            heading={exportOpen ? tourRoute[7]?.heading : feedbackOpen ? tourRoute[8]?.heading  : tourRoute[currentStop]?.heading}
+            // focusTrapOptions={{
+            //    "allowOutsideClick": false,
+            //    "returnFocusOnDeactivate": true,
+            //    "extraContainers": [tourRoute[currentStop]?.div],
+            //    "clickOutsideDeactivates": false
               
-            }}
-            //pointerDisabled={false}
+            // }}
+            pointerDisabled={exportOpen || feedbackOpen ? true: false}
             triggerDisabled
             scale="s"
-            onCalcitePopoverOpen={() => {
-                //setInteractionIsolation(referenceElement, popoverRefs.current[index]);
-              }}
-            offsetDistance={index === 4 ? 300 : 10}
+            // onCalcitePopoverOpen={() => {
+            //     setInteractionIsolation(tourRoute[currentStop]?.id, popoverRefs.current[currentStop]);
+            //   }}
+            placement={exportOpen || feedbackOpen ?  "auto" : "leading"}
+            offsetDistance={exportOpen || feedbackOpen ? -300 : 0}
           >
             <div className="tour-text" style={{ padding: 15, width: 300 }}>
-              {step.description}
+              {exportOpen ? tourRoute[7]?.description : feedbackOpen ? tourRoute[8]?.description  : tourRoute[currentStop]?.description}
               <div
                 style={{
                   justifyContent: "end",
@@ -431,22 +446,25 @@ const GuidedTour = () => {
                 <CalciteButton 
                     iconEnd="arrow-right" 
                     onClick={() => {
-                        nextTourStop(index)
+                        setCurrentStop(currentStop+1)
                         clearInteractionIsolation();
+
+                        if(exportOpen){
+                          setExportOpen(false)
+                        }
+              
+                        if(feedbackOpen){
+                          setFeedbackDialog(false)
+                        }
                     }}
-                    disabled={disableNextStop && currentStop === index}
+                    disabled={(!searchFeatures || searchFeatures.length === 0) && currentStop === 1}
                     >
                   {translateText("Next")}
                 </CalciteButton>
               </div>
             </div>
           </CalcitePopover>
-        );
-      });
 
-
-    return(
-        <>
         <CalciteDialog
         id="welcome-dialog"
         heading="Welcome to CookViewer 3.1"
@@ -526,7 +544,7 @@ const GuidedTour = () => {
 
         </CalciteDialog>
 
-        {openTour && tourSteps}
+        {/* {openTour && tourSteps} */}
 
 
         </>

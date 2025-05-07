@@ -11,7 +11,7 @@ import { exportToCsv, exportToExcel } from "../../export/export"
 import { config } from "../../data/config"
 
 const exportFileTypes = ['.csv', '.xlsx']
-
+const fileTypePlaceHolder = 'Select a file type'
 const Export = () => {
 
     const { 
@@ -24,7 +24,7 @@ const Export = () => {
         exportDataSource,
         setExportOpen,
         dataDictionary} = UseAppContext()
-    const [fileType, setFiletype] = useState(exportFileTypes[0])
+    const [fileType, setFiletype] = useState(fileTypePlaceHolder)
     const [fileName, setFileName] = useState(null)
     const [inputStatus, setInputStatus] = useState(null)
     const [isExporting, setIsExporting] = useState(false)
@@ -82,6 +82,11 @@ const Export = () => {
             return
         }
 
+        if(fileType == fileTypePlaceHolder){
+            setInputStatus('invalid')
+            return
+        }
+
         else{
             setIsExporting(true)
             if(fileType === '.csv'){
@@ -117,12 +122,14 @@ const Export = () => {
 
     return(
         <CalciteDialog
+        id="export-dialog"
         scale="s"
         width="s"
         drag-enabled
         outsideCloseDisabled={false}
         open={exportOpen}
         placement="center"
+        focusTrapDisabled
         heading={translateText('Export')}
         description={translateText('Export data to CSV or Excel')}
         onCalciteDialogClose={() => {handleClose()}}
@@ -143,7 +150,11 @@ const Export = () => {
                 <CalciteDropdown  slot="action" onCalciteDropdownSelect={(e) => {
                     setFiletype(e.target.selectedItems[0].textContent)
                 }}>
-                    <CalciteButton slot="trigger" className='hyperlink-button'>{fileType}</CalciteButton>
+                    <CalciteButton 
+                    slot="trigger" 
+                    className='hyperlink-button'
+                    iconEnd="chevron-down"
+                    >{fileType}</CalciteButton>
                     <CalciteDropdownGroup selection-mode="single">
                     {
                         exportFileTypes.map((fileType, i) => {
