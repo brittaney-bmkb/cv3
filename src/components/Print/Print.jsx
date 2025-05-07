@@ -567,25 +567,35 @@ const Print = () => {
                    <CalciteTab 
                        tab="map"
                        selected={tabSelected === "map"}
-                       style={{padding: '15px'}}
+                       style={{ backgroundColor: "white"}}
                        >
-                       {layoutDiv()}
+
+                        <div style={{paddingLeft: '15px', paddingRight: '15px', backgroundColor: "white"}}>
+                            <p className="tour-text">
+                                {translateText("Print a map of your selected parcel, aerial imagery, and any selected map layer. A parcel does not need be selected - use this option to capture your current map view. ")}</p>
+                            {layoutDiv()}
+                        </div>
+                       
                    </CalciteTab>
                    <CalciteTab 
                        tab="report"
                        selected={tabSelected === "report"}
-                       style={{padding: '15px'}}
+                       style={{backgroundColor: "white"}}
                    >    
-                       {searchFeatures && searchFeatures?.length > 0 ? layoutDiv() : <Inactive title={translateText("Select one or more parcels")}/> }
+                       {searchFeatures && searchFeatures?.length > 0 ? 
+                       
+                       <div style={{paddingLeft: '15px', paddingRight: '15px', backgroundColor: "white"}}>
+                            <p className="tour-text">
+                                {translateText("Generate a detailed property summary. This option includes assessor information, tax details, building data, and district assignments.")}</p>
+                            {layoutDiv()}
+                        </div>
+                       
+                       : <Inactive title={translateText("Select one or more parcels")}/> }
                    </CalciteTab>
                    <CalciteTab 
                        tab="prints"
                        selected={tabSelected === "prints"}
                     >
-
-                       
-
-                        
                         <CalciteBlock
                             open
                             collapsible
