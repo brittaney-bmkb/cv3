@@ -14,9 +14,7 @@ const Measure = () => {
         measurePanelClosed, 
         setMeasurePanel, 
         translateText, 
-        arcgisMapRef, 
-        setMeasureWidgetState, 
-        measureWidgetState 
+        arcgisMapRef
     } = UseAppContext()
     
     const measureAreaRef = useRef(null)
@@ -49,7 +47,7 @@ const Measure = () => {
             <CalciteBlock
                 open
                 heading={translateText("Area")}
-                description={translateText("Calculate and display the area and perimeter of a polygon. Start a new measurement in order to clear.")}
+                description={translateText("To calculate the area and perimeter of a polygon, start a new measurement. A new measurement clears the previous result. Double-click to finish the current measurement and display the results.")}
                 collapsible = "true"
                 iconStart = "measure-area"
                 label = "Measure Area in order to calculate and display the area and perimeter of a polygon. "
@@ -64,7 +62,7 @@ const Measure = () => {
             <CalciteBlock
                 open
                 heading={translateText("Distance")}
-                description={translateText("Calculate the distance between two or more points. Start a new measurement in order to clear.")}
+                description={translateText("To calculate the distance, start a new measurement. A new measurement clears the previous result. Double-click to finish the current measurement and display the results.")}
                 collapsible ="true"
                 iconStart = "measure-line"
                 label = "Measure distance in order to calculate and display the area and perimeter of a polygon. "
