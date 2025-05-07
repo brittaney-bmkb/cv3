@@ -16,7 +16,7 @@ const Help = () => {
     const helpSections = [
         {
           id: "search",
-          heading: "Search for Properties",
+          heading: translateText("Search for Properties"),
           icon: "search",
           content: (
             <div>
@@ -31,11 +31,11 @@ const Help = () => {
               <p>{translateText("Once you enter your search, matching properties will appear in the Property Results panel. Click on a result to view its details — the map will automatically zoom to that location.")}</p>
             </div>
           ),
-          link: "/help#search"
+          // link: "/help#search"
         },
         {
           id: "map",
-          heading: "Selecting properties in the map",
+          heading: translateText("Selecting properties in the map"),
           icon: "map",
           content: (
             <div>
@@ -65,9 +65,9 @@ const Help = () => {
           
               <p>{translateText("With the Select Tool, you can:")}</p>
               <ul>
-                <li>{translateText("Click to select one or more parcels manually")}</li>
-                <li>{translateText("Click again on a selected parcel to unselect it")}</li>
-                <li>{translateText("Draw a rectangle or polygon over an area to select multiple parcels at once")}</li>
+                <li>{translateText("Click to select one or more parcels manually.")}</li>
+                <li>{translateText("Click again on a selected parcel to unselect it.")}</li>
+                <li>{translateText("Draw a rectangle or polygon over an area to select multiple parcels at once.")}</li>
               </ul>
           
               <p>
@@ -77,11 +77,11 @@ const Help = () => {
               </p>
             </div>
           ),
-          link: "/help#search"
+          // link: "/help#search"
         },
         {
           id: "search-results",
-          heading: "View Search Results",
+          heading: translateText("View Search Results"),
           icon: "list",
           content: (
             <div>
@@ -123,11 +123,11 @@ const Help = () => {
               </p>
             </div>
           ),
-          link: "/help#search-results"
+          // link: "/help#search-results"
         },
         {
           id: "property-details",
-          heading: "Viewing Property Details",
+          heading: translateText("Viewing Property Details"),
           icon: "pin",
           content: (
             <div>
@@ -240,11 +240,11 @@ const Help = () => {
             </ul>
           </div>
           ),
-          link: "/help#property-details"
+          // link: "/help#property-details"
         },
         {
           id: "compare",
-          heading: "Search for Comparable Properties",
+          heading: translateText("Search for Comparable Properties"),
           icon: "compare",
           content: (
             <div>
@@ -285,11 +285,11 @@ const Help = () => {
 
             </div>
           ),
-          link: "/help#compare"
+          // link: "/help#compare"
         },
         {
           id: "history",
-          heading: "Comparing Historical Parcels",
+          heading: translateText("Comparing Historical Parcels"),
           icon: "parcel",
           content: (
             <div>
@@ -326,11 +326,11 @@ const Help = () => {
             </div>
           )
           ,
-          link: "/help#historical-parcels"
+          // link: "/help#historical-parcels"
         },
         {
           id: "imagery",
-          heading: "Viewing Parcels with Aerial Imagery",
+          heading: translateText("Viewing Parcels with Aerial Imagery"),
           icon: "basemap",
           content: (
             <div>
@@ -374,11 +374,11 @@ const Help = () => {
             </div>
           )
           ,
-          link: "/help#layers"
+          // link: "/help#layers"
         },
         {
           id: "layers",
-          heading: "Layers",
+          heading: translateText("Layers"),
           icon: "layers",
           content: (
             <div>
@@ -419,18 +419,36 @@ const Help = () => {
               </p>
             </div>
           ),
-          link: "/help#layers"
+          // link: "/help#layers"
         },
         {
           id: "print",
-          heading: "Print",
+          heading: translateText("Print"),
           icon: "print",
-          content:(<div></div>),
-          link: "/help#print"
+          content: (
+            <div>
+              <p>
+                {translateText(
+                  "The print functionality allows users to generate and save a PDF report of a selected property or comparable property, including its key characteristics and details, for various uses."
+                )}
+
+              </p>
+          
+              <p>{translateText("How to use the Print tool:")}</p>
+              <ul>
+                <li>{translateText("Click on the Print button on the right hand side of the application.")}</li>
+                <li>{translateText("Give the export a title.")}</li>
+                <li>{translateText("Select the template size, default is 11 x 8.5 in.")}</li>
+                <li>{translateText("Select the export file format, default PDF.")}</li>
+                <li>{translateText("OPTIONAL: Fill out advanced options.")}</li>
+                <li>{translateText("Click Export when ready.")}</li>
+              </ul>
+          
+            </div>
+          ),
+          // link: "/help#print"
         }
       ];
-     
-    
       const buildFilteredHelpSuggestions = (helpSections, input) => {
         const normalizedInput = input.trim().toLowerCase();
       
@@ -466,12 +484,10 @@ const Help = () => {
       
         return suggestions;
       };
-      
       useEffect(() => {
         const items = buildFilteredHelpSuggestions(helpSections, filterText);
         setFilteredSuggestions(items);
       }, [filterText]);
-  
     return(
         <CalcitePanel
         id="help-panel" 
@@ -519,7 +535,6 @@ const Help = () => {
           ))}
         </CalciteAutocomplete>
 
-       
        {helpSections
           .filter(
             (section) =>
@@ -531,8 +546,6 @@ const Help = () => {
                     : child.props?.children?.toString().toLowerCase().includes(filterText)
                 )
                 .some(Boolean)
-            
-              
           )
           .map((section) => (
             <CalciteBlock
@@ -542,18 +555,14 @@ const Help = () => {
               iconStart={section.icon}
             >
               {section.content}
-              <p>
+              {/* Enable links here. */}
+              {/* <p>
                 <a href={section.link} target="_blank" rel="noopener noreferrer">
                   View full {section.heading} Help
                 </a>
-              </p>
+              </p> */}
             </CalciteBlock>
           ))}
-
-
-
-
-            
         </CalcitePanel>
     )
 }

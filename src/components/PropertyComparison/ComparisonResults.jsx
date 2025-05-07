@@ -28,7 +28,7 @@ const ComparisonResults = () => {
                 closable 
                 className='panel-start' 
                 heading={translateText('Search Results')} 
-                description= {'some text'}
+                description= {translateText('The comparable property search in CookViewer allows you to find properties similar to yours by automatically filtering for key factors like neighborhood, property class, building size, and age.')}
                 overlayPositioning="fixed"
                 onCalcitePanelClose={() => {
                     setComparisonResultsPanel(true)

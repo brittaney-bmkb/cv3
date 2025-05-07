@@ -1,11 +1,11 @@
 import { Box, Dialog, DialogContent, DialogTitle,  Typography, Button, DialogActions } from "@mui/material"
-import { theme } from "../../theme"
-import { config } from "../../data/config"
-import AppImages from "../AppImages/AppImages.js";
+import { theme } from "../../../theme.js"
+import { config } from "../../../data/config.js"
+import AppImages from "../../AppImages/AppImages.js";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import React, { useEffect, useState } from 'react';
 // Inside your component
-import UseAppContext from "../../contexts/AppContext"
+import UseAppContext from "../../../contexts/AppContext.jsx"
 
 
 const Modal = ({ open, imageUrl, onClose }) => {
