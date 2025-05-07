@@ -1,0 +1,1074 @@
+{
+    "operationalLayers": [
+        {
+            "type": "VectorTileLayer",
+            "styleUrl": "https://gis.cookcountyil.gov/hosting/rest/services/Hosted/cookBaseVectorGreyStatePlane/VectorTileServer/resources/styles/root.json",
+            "id": "VectorTile_4560",
+            "title": "State Plane Street and Municipal Basemap - Light Grey",
+            "opacity": 1,
+            "minScale": 0,
+            "maxScale": 0
+        },
+        {
+            "id": "1922088cfbf-layer-6",
+            "title": "Parcels Current",
+            "url": "https://test-gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/0",
+            "layerType": "ArcGISFeatureLayer",
+            "layerDefinition": {
+                "disableDisplayFilter": false,
+                "displayFilterInfo": null,
+                "definitionExpression": "PIN14 IN ('17204020360000')",
+                "drawingInfo": {
+                    "labelingInfo": [
+                        {
+                            "name": "Class 1",
+                            "allowOverrun": true,
+                            "labelExpressionInfo": {
+                                "expression": "n                var label = ""nn                if($feature.YMax-$feature.YMin < $feature.XMax-$feature.XMin-20){n                    label = Mid($feature.PIN10, 0, 2) + "-" + Mid($feature.PIN10, 2, 2) + "-" + Mid($feature.PIN10, 4, 3) + "-" + Mid($feature.PIN10, 7, 3)n                }n                else{n                    label= Mid($feature.PIN10, 0, 2) + "-" + Mid($feature.PIN10, 2, 2) + TextFormatting.NewLine + Mid($feature.PIN10, 4, 3) + "-"  + Mid($feature.PIN10, 7, 3)n                }n                return labeln                n                ",
+                                "title": "Custom"
+                            },
+                            "labelPlacement": "esriServerPolygonPlacementAlwaysHorizontal",
+                            "labelPosition": "curved",
+                            "maxScale": 0,
+                            "minScale": 8978.252315,
+                            "repeatLabel": false,
+                            "symbol": {
+                                "type": "esriTS",
+                                "color": [
+                                    255,
+                                    255,
+                                    255,
+                                    255
+                                ],
+                                "font": {
+                                    "family": "Arial Unicode MS",
+                                    "size": 11,
+                                    "weight": "bold"
+                                },
+                                "horizontalAlignment": "center",
+                                "kerning": true,
+                                "haloColor": [
+                                    0,
+                                    0,
+                                    0,
+                                    255
+                                ],
+                                "haloSize": 1.5,
+                                "rotated": false,
+                                "text": "",
+                                "verticalAlignment": "baseline",
+                                "xoffset": 0,
+                                "yoffset": 0,
+                                "angle": 0
+                            },
+                            "useCodedValues": true
+                        }
+                    ],
+                    "renderer": {
+                        "type": "simple",
+                        "visualVariables": [
+                            {
+                                "type": "sizeInfo",
+                                "valueExpression": "$view.scale",
+                                "valueExpressionTitle": "Custom",
+                                "stops": [
+                                    {
+                                        "size": 2,
+                                        "value": 820
+                                    },
+                                    {
+                                        "size": 1,
+                                        "value": 2563
+                                    },
+                                    {
+                                        "size": 0.5,
+                                        "value": 10253
+                                    },
+                                    {
+                                        "size": 0,
+                                        "value": 20506
+                                    }
+                                ],
+                                "target": "outline"
+                            }
+                        ],
+                        "symbol": {
+                            "type": "CIMSymbolReference",
+                            "symbol": {
+                                "type": "CIMPolygonSymbol",
+                                "symbolLayers": [
+                                    {
+                                        "type": "CIMSolidStroke",
+                                        "effects": [
+                                            {
+                                                "type": "CIMGeometricEffectDashes",
+                                                "dashTemplate": [
+                                                    6.75,
+                                                    4.5
+                                                ],
+                                                "lineDashEnding": "NoConstraint",
+                                                "controlPointEnding": "NoConstraint"
+                                            }
+                                        ],
+                                        "enable": true,
+                                        "colorLocked": true,
+                                        "capStyle": "Butt",
+                                        "joinStyle": "Round",
+                                        "lineStyle3D": "Strip",
+                                        "miterLimit": 10,
+                                        "width": 2.25,
+                                        "height3D": 1,
+                                        "anchor3D": "Center",
+                                        "color": [
+                                            0,
+                                            206,
+                                            209,
+                                            255
+                                        ]
+                                    },
+                                    {
+                                        "type": "CIMSolidFill",
+                                        "enable": true,
+                                        "color": [
+                                            0,
+                                            0,
+                                            0,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "angleAlignment": "Map"
+                            }
+                        }
+                    }
+                }
+            },
+            "credits": "",
+            "showLabels": true,
+            "opacity": 1,
+            "minScale": 0,
+            "maxScale": 0
+        },
+        {
+            "featureCollection": {
+                "layers": [
+                    {
+                        "layerDefinition": {
+                            "name": "Selected Parcels",
+                            "geometryType": "esriGeometryPolygon",
+                            "drawingInfo": {
+                                "renderer": {
+                                    "type": "uniqueValue",
+                                    "field1": "parcelSelectionType",
+                                    "uniqueValueGroups": [
+                                        {
+                                            "classes": [
+                                                {
+                                                    "label": "Source Parcel",
+                                                    "symbol": {
+                                                        "type": "esriSFS",
+                                                        "color": [
+                                                            51,
+                                                            204,
+                                                            51,
+                                                            0
+                                                        ],
+                                                        "outline": {
+                                                            "type": "esriSLS",
+                                                            "color": [
+                                                                255,
+                                                                215,
+                                                                0,
+                                                                255
+                                                            ],
+                                                            "width": 2,
+                                                            "style": "esriSLSSolid"
+                                                        },
+                                                        "style": "esriSFSSolid"
+                                                    },
+                                                    "values": [
+                                                        [
+                                                            "Source Parcel"
+                                                        ]
+                                                    ]
+                                                },
+                                                {
+                                                    "label": "Comparable Parcel",
+                                                    "symbol": {
+                                                        "type": "esriSFS",
+                                                        "color": [
+                                                            51,
+                                                            204,
+                                                            51,
+                                                            0
+                                                        ],
+                                                        "outline": {
+                                                            "type": "esriSLS",
+                                                            "color": [
+                                                                255,
+                                                                0,
+                                                                255,
+                                                                255
+                                                            ],
+                                                            "width": 2,
+                                                            "style": "esriSLSDash"
+                                                        },
+                                                        "style": "esriSFSSolid"
+                                                    },
+                                                    "values": [
+                                                        [
+                                                            "Comparable Parcel"
+                                                        ]
+                                                    ]
+                                                },
+                                                {
+                                                    "label": "Nearby Parcel",
+                                                    "symbol": {
+                                                        "type": "esriSFS",
+                                                        "color": [
+                                                            51,
+                                                            204,
+                                                            51,
+                                                            0
+                                                        ],
+                                                        "outline": {
+                                                            "type": "esriSLS",
+                                                            "color": [
+                                                                255,
+                                                                0,
+                                                                255,
+                                                                255
+                                                            ],
+                                                            "width": 2,
+                                                            "style": "esriSLSDash"
+                                                        },
+                                                        "style": "esriSFSSolid"
+                                                    },
+                                                    "values": [
+                                                        [
+                                                            "Nearby Parcel"
+                                                        ]
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "uniqueValueInfos": [
+                                        {
+                                            "label": "Source Parcel",
+                                            "symbol": {
+                                                "type": "esriSFS",
+                                                "color": [
+                                                    51,
+                                                    204,
+                                                    51,
+                                                    0
+                                                ],
+                                                "outline": {
+                                                    "type": "esriSLS",
+                                                    "color": [
+                                                        255,
+                                                        215,
+                                                        0,
+                                                        255
+                                                    ],
+                                                    "width": 2,
+                                                    "style": "esriSLSSolid"
+                                                },
+                                                "style": "esriSFSSolid"
+                                            },
+                                            "value": "Source Parcel"
+                                        },
+                                        {
+                                            "label": "Comparable Parcel",
+                                            "symbol": {
+                                                "type": "esriSFS",
+                                                "color": [
+                                                    51,
+                                                    204,
+                                                    51,
+                                                    0
+                                                ],
+                                                "outline": {
+                                                    "type": "esriSLS",
+                                                    "color": [
+                                                        255,
+                                                        0,
+                                                        255,
+                                                        255
+                                                    ],
+                                                    "width": 2,
+                                                    "style": "esriSLSDash"
+                                                },
+                                                "style": "esriSFSSolid"
+                                            },
+                                            "value": "Comparable Parcel"
+                                        },
+                                        {
+                                            "label": "Nearby Parcel",
+                                            "symbol": {
+                                                "type": "esriSFS",
+                                                "color": [
+                                                    51,
+                                                    204,
+                                                    51,
+                                                    0
+                                                ],
+                                                "outline": {
+                                                    "type": "esriSLS",
+                                                    "color": [
+                                                        255,
+                                                        0,
+                                                        255,
+                                                        255
+                                                    ],
+                                                    "width": 2,
+                                                    "style": "esriSLSDash"
+                                                },
+                                                "style": "esriSFSSolid"
+                                            },
+                                            "value": "Nearby Parcel"
+                                        }
+                                    ]
+                                }
+                            },
+                            "fields": [
+                                {
+                                    "alias": "OBJECTID",
+                                    "editable": false,
+                                    "name": "OBJECTID",
+                                    "nullable": false,
+                                    "type": "esriFieldTypeOID"
+                                },
+                                {
+                                    "alias": "GlobalID",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "GlobalID",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "PARID",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "PARID",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "TAXYR",
+                                    "editable": true,
+                                    "name": "TAXYR",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeDouble"
+                                },
+                                {
+                                    "alias": "CUR",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "CUR",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "STATUS",
+                                    "editable": true,
+                                    "name": "STATUS",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeDouble"
+                                },
+                                {
+                                    "alias": "CITYNAME",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "CITYNAME",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "STATECODE",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "STATECODE",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "UNITDESC",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "UNITDESC",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "UNITNO",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "UNITNO",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "LOC2",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "LOC2",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "ZIP1",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "ZIP1",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "ZIP2",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "ZIP2",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "TAXDIST",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "TAXDIST",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "XCOORD",
+                                    "editable": true,
+                                    "name": "XCOORD",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeDouble"
+                                },
+                                {
+                                    "alias": "YCOORD",
+                                    "editable": true,
+                                    "name": "YCOORD",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeDouble"
+                                },
+                                {
+                                    "alias": "USER1",
+                                    "editable": true,
+                                    "name": "USER1",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeDouble"
+                                },
+                                {
+                                    "alias": "DEACTIVAT",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "DEACTIVAT",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "PIN10",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "PIN10",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "street_address",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "street_address",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "township_number",
+                                    "editable": true,
+                                    "name": "township_number",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeDouble"
+                                },
+                                {
+                                    "alias": "township_name",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "township_name",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "latitude",
+                                    "editable": true,
+                                    "name": "latitude",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeDouble"
+                                },
+                                {
+                                    "alias": "longitude",
+                                    "editable": true,
+                                    "name": "longitude",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeDouble"
+                                },
+                                {
+                                    "alias": "PIN14_dash",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "PIN14_dash",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "Shape.STArea()",
+                                    "editable": true,
+                                    "name": "Shape.STArea()",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeDouble"
+                                },
+                                {
+                                    "alias": "Shape.STLength()",
+                                    "editable": true,
+                                    "name": "Shape.STLength()",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeDouble"
+                                },
+                                {
+                                    "alias": "city_state_zip",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "city_state_zip",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "PIN14",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "PIN14",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "find_my_dist_link",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "find_my_dist_link",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "class_info_display",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "class_info_display",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "assessor_link",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "assessor_link",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "current_procname",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "current_procname",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "current_value_desc",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "current_value_desc",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "LANDSF",
+                                    "editable": true,
+                                    "name": "LANDSF",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeDouble"
+                                },
+                                {
+                                    "alias": "CURRENTVALUE_TOTAL",
+                                    "editable": true,
+                                    "name": "CURRENTVALUE_TOTAL",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeDouble"
+                                },
+                                {
+                                    "alias": "CURRENTVALUE_LAND",
+                                    "editable": true,
+                                    "name": "CURRENTVALUE_LAND",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeDouble"
+                                },
+                                {
+                                    "alias": "CURRENTVALUE_BLDG",
+                                    "editable": true,
+                                    "name": "CURRENTVALUE_BLDG",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeDouble"
+                                },
+                                {
+                                    "alias": "CURRENTVALUE_HIE_TOT",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "CURRENTVALUE_HIE_TOT",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "hist_assessval_link",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "hist_assessval_link",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "BLDGSQFT",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "BLDGSQFT",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "bldg_const_desc",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "bldg_const_desc",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "oblique_link",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "oblique_link",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "historical_photo_link",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "historical_photo_link",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "clerk_prop_records_link",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "clerk_prop_records_link",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "property_portal_link",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "property_portal_link",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "hist_sf_mf_imp_chars_link",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "hist_sf_mf_imp_chars_link",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "BCLASS",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "BCLASS",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "major_class_description",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "major_class_description",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "class_description",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "class_description",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "BCONST",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "BCONST",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "NBHD",
+                                    "editable": true,
+                                    "name": "NBHD",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeDouble"
+                                },
+                                {
+                                    "alias": "BLDGAGE",
+                                    "editable": true,
+                                    "name": "BLDGAGE",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeDouble"
+                                },
+                                {
+                                    "alias": "created_date",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "created_date",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "last_edited_date",
+                                    "editable": true,
+                                    "name": "last_edited_date",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeDouble"
+                                },
+                                {
+                                    "alias": "XMin",
+                                    "editable": true,
+                                    "name": "XMin",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeDouble"
+                                },
+                                {
+                                    "alias": "XMax",
+                                    "editable": true,
+                                    "name": "XMax",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeDouble"
+                                },
+                                {
+                                    "alias": "YMin",
+                                    "editable": true,
+                                    "name": "YMin",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeDouble"
+                                },
+                                {
+                                    "alias": "YMax",
+                                    "editable": true,
+                                    "name": "YMax",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeDouble"
+                                },
+                                {
+                                    "alias": "pin",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "pin",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "neighborhood_code",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "neighborhood_code",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "board_of_review_district_num",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "board_of_review_district_num",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "commissioner_district_num",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "commissioner_district_num",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "tax_municipality_name",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "tax_municipality_name",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "tax_school_elem_dist_name",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "tax_school_elem_dist_name",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "tax_school_sec_dist_name",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "tax_school_sec_dist_name",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "tax_school_unified_dist_name",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "tax_school_unified_dist_name",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "tax_comm_college_dist_name",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "tax_comm_college_dist_name",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "tax_library_district_name",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "tax_library_district_name",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "tax_park_district_name",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "tax_park_district_name",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "GlobalID_1",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "GlobalID_1",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "parcelSelectionType",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "parcelSelectionType",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                },
+                                {
+                                    "alias": "parcelSelectionType",
+                                    "editable": true,
+                                    "length": 255,
+                                    "name": "parcelSelectionType",
+                                    "nullable": true,
+                                    "type": "esriFieldTypeString"
+                                }
+                            ]
+                        },
+                        "featureSet": {
+                            "geometryType": "esriGeometryPolygon",
+                            "features": [
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1169542.3427415518,
+                                                    1891612.0447044796
+                                                ],
+                                                [
+                                                    1169507.0772047911,
+                                                    1891611.0651062364
+                                                ],
+                                                [
+                                                    1169503.6486109393,
+                                                    1891735.4740831424
+                                                ],
+                                                [
+                                                    1169538.4243485783,
+                                                    1891736.4536813856
+                                                ],
+                                                [
+                                                    1169542.3427415518,
+                                                    1891612.0447044796
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Source Parcel"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "id": "196913a6ed4-layer-561",
+            "title": "Selected Parcels",
+            "opacity": 1,
+            "minScale": 0,
+            "maxScale": 0
+        },
+        {
+            "featureCollection": {
+                "layers": [
+                    {
+                        "layerDefinition": {
+                            "name": "polygonLayer",
+                            "geometryType": "esriGeometryPolygon"
+                        },
+                        "featureSet": {
+                            "geometryType": "esriGeometryPolygon",
+                            "features": [
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1169399.761002108,
+                                                    1891518.6040587623
+                                                ],
+                                                [
+                                                    1169399.761002108,
+                                                    1891760.4205002098
+                                                ],
+                                                [
+                                                    1169712.6999263342,
+                                                    1891760.4205002098
+                                                ],
+                                                [
+                                                    1169712.6999263342,
+                                                    1891518.6040587623
+                                                ],
+                                                [
+                                                    1169399.761002108,
+                                                    1891518.6040587623
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": {
+                                        "type": "esriSFS",
+                                        "color": [
+                                            255,
+                                            255,
+                                            255,
+                                            26
+                                        ],
+                                        "outline": {
+                                            "type": "esriSLS",
+                                            "color": [
+                                                0,
+                                                0,
+                                                0,
+                                                179
+                                            ],
+                                            "width": 2,
+                                            "style": "esriSLSLongDash"
+                                        },
+                                        "style": "esriSFSSolid"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "id": "printGraphicsLayer",
+            "title": null,
+            "opacity": 1,
+            "minScale": 0,
+            "maxScale": 0
+        }
+    ],
+    "mapOptions": {
+        "extent": {
+            "spatialReference": {
+                "latestWkid": 3435,
+                "wkid": 102671
+            },
+            "xmin": 1169399.761002108,
+            "ymin": 1891518.6040587623,
+            "xmax": 1169712.6999263342,
+            "ymax": 1891760.4205002098
+        },
+        "spatialReference": {
+            "latestWkid": 3435,
+            "wkid": 102671
+        },
+        "showAttribution": true,
+        "scale": 563.2900636074938
+    },
+    "reportOptions": {
+        "reportSectionOverrides": {
+            "Parcels Current": {
+                "name": "Parcels Current",
+                "sourceId": "1922088cfbf-layer-6"
+            }
+        }
+    },
+    "exportOptions": {
+        "dpi": 96
+    },
+    "layoutOptions": {
+        "customTextElements": [
+            {
+                "date": "5/2/2025"
+            }
+        ],
+        "legendOptions": {
+            "operationalLayers": [
+                {
+                    "id": "1922088cfbf-layer-6"
+                },
+                {
+                    "id": "196913a6ed4-layer-561"
+                }
+            ]
+        }
+    }
+}
