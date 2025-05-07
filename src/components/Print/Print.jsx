@@ -3,6 +3,7 @@ import {
     CalciteBlock, 
     CalciteButton, 
     CalciteDropdown, 
+    CalciteInput, 
     CalciteLabel, 
     CalciteLink, 
     CalciteList, 
@@ -74,11 +75,14 @@ const Print = () => {
        const [ showPrintArea, setShowPrintArea ] = useState(false)
        const [ printLoading, setPrintLoading ] = useState(false)
        const [ sourceId, setSourceId ] = useState(null)
+
+       const [ printTitle, setPrintTitle ] = useState('untitled')
        const [ printExecuting, setPrintExecuting ] = useState(false)
        const [ printJobs, setPrintJobs ] = useState({})
-   
-        const boxExtent = useRef(null)
-        const maskLayer = useRef(null);
+       
+       const currentPrintJobId = useRef(null)
+       const boxExtent = useRef(null)
+       const maskLayer = useRef(null);
    
        const handleClosePrintPanel = () => {
    
@@ -214,16 +218,16 @@ const Print = () => {
            return expression
        }
    
-       const preparePrintParams = async () => {
+       const preparePrintParams = async (jobType) => {
    
            if(!arcgisMapRef.current) return;
    
            const template = new PrintTemplate({
                layout: layout,
-               format: format,
+               format: jobType === 'report' ? 'pdf' : format,
            })
 
-           if(tabSelected === 'report'){
+           if(jobType === 'report'){
    
                const map = arcgisMapRef.current.map
                const view = arcgisMapRef.current.view
@@ -271,7 +275,7 @@ const Print = () => {
             let operationalLayers = webMap.operationalLayers;
             let legendLayers = webMap.layoutOptions.legendOptions.operationalLayers
       
-            if (tabSelected === "report") {
+            if (printJobs[currentPrintJobId.current].type === 'report') {
               webMap.operationalLayers = operationalLayers.map((layer) => {
                 if (layer.id === sourceId && definitionQuery.current) {
                     console.log("setting definition query for ", sourceId, definitionQuery.current)
@@ -303,22 +307,29 @@ const Print = () => {
             response
         }
       }, !!printViewModel.current);
-   
+      
+      function extractTextInParentheses(text) {
+        const regex = /\(([^)]+)\)/;
+        const match = text.match(regex);
+        return match ? match[1] : null;
+      }
+      
        const submitPrintRequest = async () => {
            
            const jobKey = Object.keys(printJobs).length 
+
+           
            let jobDetails = {
-            "title": "test",
-            "description": translateText("Open in new window"),
+            "title": `${printTitle}.${tabSelected === 'report' ? 'pdf' : extractTextInParentheses(format)}`,
+            "description": translateText("Download and open in new window"),
             "link": "",
+            "type": tabSelected
            }
 
            let job = {}
            job[jobKey] = jobDetails
 
-           setPrintExecuting(true)
-
-           setTabSelected('prints')
+           currentPrintJobId.current = jobKey
 
            if(Object.keys(printJobs).length  > 0){
              setPrintJobs({...printJobs, ...job})
@@ -327,11 +338,12 @@ const Print = () => {
              setPrintJobs(job)
            }
            
+           const template  = await preparePrintParams(tabSelected)
 
-           const template  = await preparePrintParams()
-
-           try {
-
+           //try {
+                
+                setTabSelected('prints')
+                setPrintExecuting(true)
                 const result = await printViewModel.current.print(template)
 
                 if(result?.url){
@@ -346,9 +358,9 @@ const Print = () => {
                     })
                     )
                 }
-           } catch (error) {
-                console.error("Printing failed")
-           }
+        //    } catch (error) {
+        //         console.error("Printing failed")
+        //    }
            
            setPrintExecuting(false)
        }
@@ -356,6 +368,14 @@ const Print = () => {
        const layoutDiv = () => ((
    
            <div style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
+                <CalciteLabel>
+                    {translateText("File name")}
+                    <CalciteInput
+                    placeholder="untitled"
+                    value={printTitle}
+                    onCalciteInputChange={(e) => setPrintTitle(e.target.value)}
+                    />
+                </CalciteLabel>
                <CalciteLabel
                >
                    {translateText("Layout")}
@@ -432,6 +452,57 @@ const Print = () => {
                </CalciteButton>
            </div>
        ))
+
+       const downloadFile = async (url, filename) => {
+        try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error('Error downloading file:', error);
+        }
+    };
+
+       const updateJobsList = (type) => {
+
+        return Object.entries(printJobs)?.map(([key, values],i) => {
+
+            if(printJobs[key].type === type){
+                return(
+                    <CalciteListItem
+                    key={`${key}`}
+                    label={printJobs[key]?.title}
+                    description={printJobs[key]?.description}
+                    value={printJobs[key]?.title}
+                    iconStart={printExecuting ? null : "image"}
+                    iconEnd="launch"
+                    disabled={!printJobs[key].link}
+                    onCalciteListItemSelect={() => {
+                        window.open(printJobs[key].link, '_blank')
+                        downloadFile(printJobs[key].link, printJobs[key]?.title)
+                    }}
+                    >   
+                    {
+                        !printJobs[key].link && (
+                            <CalciteLoader 
+                            inline
+                            scale="s"
+                            slot="content-start"
+                            />  
+                        )
+                    }                         
+                    </CalciteListItem>
+                )
+            }
+
+        })
+
+       }
    
        return(
            <CalcitePanel
@@ -510,58 +581,35 @@ const Print = () => {
                    <CalciteTab 
                        tab="prints"
                        selected={tabSelected === "prints"}
-                       >
+                    >
+
+                       
+
+                        
                         <CalciteBlock
                             open
                             collapsible
                             heading="Maps"
                         >
-                            <CalciteList>
-
-                            {Object.entries(printJobs)?.map(([key, values],i) => {
-
-                                console.log(printJobs)
-
-                                return(
-                                    <CalciteListItem
-                                    key={`${key}`}
-                                    label={printJobs[key]?.title}
-                                    description={printJobs[key]?.description}
-                                    value={printJobs[key]?.title}
-                                    iconStart={printExecuting ? null : "image"}
-                                    iconEnd="launch"
-                                    onCalciteListItemSelect={() => {
-                                        window.open(printJobs[key].link, '_blank',  'rel=noopener noreferrer')
-                                    }}
-                                    >   
-                                    {
-                                        printExecuting  && (
-                                            <CalciteLoader 
-                                            scale="s"
-                                            slot="content-start"
-                                            />  
-                                        )
-                                    } 
-
-
-                                    
-                                                           
-                                    </CalciteListItem>
-                                )
-
-                                })}
+                        <CalciteList>
+                            {updateJobsList('map')}
                                 
-                            </CalciteList>
+                        </CalciteList>
+
+                        </CalciteBlock> 
+
+                        <CalciteBlock
+                        open
+                        collapsible
+                        heading="Reports"
+                        >
+                        <CalciteList>
+                            {updateJobsList('report')}
+                        </CalciteList>
 
                         </CalciteBlock>
-                       <CalciteList>
-                        {/* {printJobs?.map((job) => {
-                            <CalciteListItem>
-                                
-                            </CalciteListItem>
-                        })} */}
+                       
                         
-                       </CalciteList>
                    </CalciteTab>
                </CalciteTabs>
            
