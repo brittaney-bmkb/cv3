@@ -57,7 +57,8 @@ const Print = () => {
            arcgisMapRef,
            mapView,
            primaryResultFeature,
-           searchFeatures
+           searchFeatures,
+           selectPanelClosed
        } = UseAppContext()
        
        const printViewModel = useRef(null)
@@ -81,22 +82,45 @@ const Print = () => {
        const [ printJobs, setPrintJobs ] = useState({})
        
        const currentPrintJobId = useRef(null)
+
        const boxExtent = useRef(null)
        const maskLayer = useRef(null);
+
+       useEffect(() => {
+
+        if(printPanelClosed){
+            console.log("removing print area")
+            if(maskLayer.current){
+                maskLayer.current = null
+            }
+
+            if(boxExtent.current){
+                boxExtent.current = null
+            }
+
+            if(showPrintArea){
+                setShowPrintArea(false)
+            }
+        }
+
+       }, [printPanelClosed, showPrintArea])
    
        const handleClosePrintPanel = () => {
    
            setPrintPanel(true)
+
            if(printViewModel.current){
    
                setShowPrintArea(false)
+               maskLayer.current = null
+               boxExtent.current = null
                //printViewModel.current.showPrintAreaEnabled = false
            }
        }
 
        //revisit custom mask layer
         useEffect(() => {
-        if (!arcgisMapRef.current || !showPrintArea || !boxExtent.current) return;
+        if (printPanelClosed || !arcgisMapRef.current || !showPrintArea || !boxExtent.current) return;
         const map  = arcgisMapRef.current.map
         const view = arcgisMapRef.current.view
         const mapElement = arcgisMapRef?.current;
@@ -149,7 +173,7 @@ const Print = () => {
             }
         }
     
-        }, [arcgisMapRef.current, mapView, showPrintArea, boxExtent.current]);
+        }, [arcgisMapRef.current, mapView, showPrintArea, boxExtent.current, printPanelClosed]);
 
    
        useEffect(() => {
@@ -510,9 +534,7 @@ const Print = () => {
                closable
                heading={translateText("Print")}
                style={{display: printPanelClosed ? 'none': 'flex'}}
-               onCalcitePanelClose={() => {
-                   handleClosePrintPanel()
-               }}
+               onCalcitePanelClose={handleClosePrintPanel}
            >
                {
                    printLoading && 
