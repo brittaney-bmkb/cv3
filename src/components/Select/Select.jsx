@@ -116,7 +116,7 @@ const Select = () => {
         }else if (tool === "cursor") {
             return {
                 title: translateText("Selecting a Parcel with a Click"),
-                message: translateText("Click on an individual parcel to select it. You can click multiple parcels to add to your selection. Deselect by clicking on a selected parcel"),
+                message: translateText("Click on an individual parcel to select it. You can click multiple parcels to add to your selection. Deselect by clicking on a selected parcel."),
             };
         }
         return { title: "", message: "" }; // Default empty state
