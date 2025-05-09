@@ -22,6 +22,7 @@ import { useEffect, useRef, useState } from "react";
 import ActionBarMap from "../ActionBar/ActionBarMap";
 import { createGraphic } from "../../arcgis/layers/layers";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
+import { CalciteNotice } from "@esri/calcite-components-react";
 
 
 export const SELECTED_PARCEL = "Selected Parcels"
@@ -100,6 +101,7 @@ const Map = () => {
         clearResultsComparables,
         searchBufferGeometry,
         searchResultPoint,
+        translateText
         } = UseAppContext()
     
     const actionRef = useRef(null)
@@ -835,6 +837,11 @@ const Map = () => {
             {/* <arcgis-legend position="bottom-right" legend-style="card"></arcgis-legend> */}
 
         </arcgis-map>
+
+        <CalciteNotice open={searchBufferGeometry ? true : false} icon='cluster-radius' closable>
+        <div slot="title">{`${translateText("Showing properties near")} ${searchTerm}`}</div>
+        <div slot="message">{translateText("You’re seeing multiple properties because the search used an address to find a nearby location, not a specific property. This means properties within about 60 feet of that address may appear in the results.")}</div>
+        </CalciteNotice>
     </>
     )
 }
