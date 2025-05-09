@@ -12,7 +12,7 @@ import { FlowItem } from "@esri/calcite-components/components/calcite-flow-item"
 import { useRef, useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 
-function titleCase(s) {
+export function titleCase(s) {
     return s.toLowerCase()
             .split(' ')
             .map(word => word.charAt(0).toUpperCase() + word.slice(1))

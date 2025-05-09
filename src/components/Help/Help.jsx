@@ -538,7 +538,7 @@ const Help = () => {
        {helpSections
           .filter(
             (section) =>
-              section.heading.toLowerCase().includes(filterText) ||
+              section.heading?.toLowerCase().includes(filterText) ||
               section.content.props.children
                 ?.map((child) =>
                   typeof child === "string"

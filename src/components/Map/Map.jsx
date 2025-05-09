@@ -566,12 +566,12 @@ const Map = () => {
                 console.log("primary feature selection updated: ", searchFeatures)
                 await handleParcelSelection(searchFeatures, SOURCE_PARCEL)
 
-                if( searchFeatures?.length === 1){
-                    togglePanel('property')
-                }
-                else{
+                //if( searchFeatures?.length === 1){
+                //    togglePanel('property')
+                //}
+                //else{
                     togglePanel('search')
-                }
+                //}
             }
         }
         

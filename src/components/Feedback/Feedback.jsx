@@ -321,6 +321,7 @@ export const Feedback = () => {
 
     return(
         <CalciteDialog
+        id={"feedback-dialog"}
         scale="l"
         open={feedbackOpen}
         placement="center"

@@ -570,6 +570,7 @@ const Print = () => {
    
        return(
            <CalcitePanel
+               id="print-panel"
                closed={printPanelClosed}
                closable
                heading={translateText("Print")}
@@ -597,7 +598,10 @@ const Print = () => {
                     )
                 }
                
-               <CalciteTabs bordered scale="l">
+               <CalciteTabs 
+               id="print-tabs"
+               bordered 
+               scale="l">
                    <CalciteTabNav 
                    slot="title-group"
                    onCalciteTabChange={(e) => 
