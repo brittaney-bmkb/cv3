@@ -739,6 +739,7 @@ const GuidedTour = () => {
                     <li>{translateText("Viewing search results and detailed property information")}</li>
                     <li>{translateText("Navigating panels using the Panel Selector")}</li>
                     <li>{translateText("Using the Property Comparison tool to find similar properties")}</li>
+                    <li>{translateText("Using the Print tools to export a map and/or a report")}</li>
                 </ul>
                 <p>{translateText("To learn more about how to use CookViewer’s features, click the Help icon in the top navigation bar. There, you’ll find step-by-step guidance and additional support resources.")}</p>
                 <p>{translateText("Thank you for using CookViewer. Your feedback helps us continue to improve.")}</p>
