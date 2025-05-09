@@ -587,6 +587,11 @@ const GuidedTour = () => {
                         if(currentStop + 1 === 8){
                           togglePanel('print')
                         }
+
+                        if(currentStop + 1 === 9){
+                          setOpenTour(false);
+                          setDialogEndOpen(false)
+                        }
                         clearInteractionIsolation();
 
                         if(exportOpen){
