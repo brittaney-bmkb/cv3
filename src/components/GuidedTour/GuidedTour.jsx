@@ -49,8 +49,8 @@ const GuidedTour = () => {
           setCurrentStop(0);
           setOpenTour(true);
 
-
-          togglePanel('all')
+          //toggle off all panels
+          //togglePanel('all')
 
           // if(searchFeatures){
           //   clearResults()
@@ -328,9 +328,9 @@ const GuidedTour = () => {
           <ul>
             <li>{translateText("Select the 'Map' tab in the Print panel.")}</li>
             <li>{translateText("Enter a file name for your printout.")}</li>
-            <li>{translateText("Choose a layout type: Letter (8.5\" x 11\") or Tabloid (11\" x 17\"), in either Portrait or Landscape orientation.")}</li>
+            <li>{translateText("Choose a layout type.")}</li>
             <li>{translateText("Toggle on the 'Show Print Area' switch to preview the area of the map that will be included. A rectangle will appear on the map showing the selected area.")}</li>
-            <li>{translateText("Select a file type. Available options include: PDF, PNG32, PNG8, JPG, GIF, EPS, SVG, SVGZ, AIX, and TIFF.")}</li>
+            <li>{translateText("Select a file type.")}</li>
             <li>{translateText("Click the 'Print' button to start your print job.")}</li>
           </ul>
           <p>{translateText("Once the print begins, the Prints tab will open to show the job status. When it’s finished, click the job name to view and download your file in a new window.")}</p>
@@ -344,12 +344,12 @@ const GuidedTour = () => {
         heading: "Print a report",
         description: <div>
         <p>{translateText("In CookViewer 3.1, you can now print a detailed report that includes your map and property information for your selected property, search results, and comparable properties.")}</p>
-        <p>{translateText("Reports are exported in PDF format.")}</p>
+        <p>{translateText("Reports are exported in PDF format in standard letter (8.5\" x 11\") size.")}</p>
         <p>{translateText("To create a report, follow these steps:")}</p>
         <ul>
           <li>{translateText("Click the 'Report' tab in the Print panel.")}</li>
           <li>{translateText("Enter a file name for your report.")}</li>
-          <li>{translateText("Choose a layout type for your map: Letter (8.5\" x 11\") or Tabloid (11\" x 17\"), in either Portrait or Landscape orientation.")}</li>
+          <li>{translateText("Choose a layout type for your map.")}</li>
           <li>{translateText("Toggle on the 'Show Print Area' switch to see which part of the map will be included. A rectangle will appear on the map to highlight this area.")}</li>
           <li>{translateText("Toggle on 'Include all search results' to add property details for all your search results.")}</li>
           <li>{translateText("Toggle on 'Include comparable properties' to include details from your comparable property search.")}</li>
@@ -413,17 +413,19 @@ const GuidedTour = () => {
     useEffect(() => {
         console.log("Current stop: ", currentStop)
 
+        //if the current stop is 2 the search results stop BUT
+        // there are no search results
+        //go back to the stop 1 search
         if(currentStop === 2 && (!searchFeatures || searchFeatures.length === 0)){
           setCurrentStop(1)
         }
-        //if user closes to search panel while on the second stop
+
+        //if user closes to search panel while on the stop 2
         //go to stop 7 with info on the panel selector
         if(searchResultsPanelClosed && currentStop === 2){
           console.log("updating stop to: ", 7)
           setCurrentStop(7)
         }
-
-       
         //if the property detail panel is open
         //go to stop 3 with property detail info
         // if(!propertyDetailPanelClosed){
@@ -564,6 +566,12 @@ const GuidedTour = () => {
                     onClick={() => {
                         setCurrentStop(currentStop+1)
 
+                        //if current stop is search results
+                        //and search results panel is not open
+                        //open it
+                        if(currentStop + 1 === 2){
+                          togglePanel('search')
+                        }
                         
                         //if the current stop is updated to 3 open the 
                         // property detail panel
@@ -588,9 +596,9 @@ const GuidedTour = () => {
                           togglePanel('print')
                         }
 
-                        if(currentStop + 1 === 9){
+                        if(currentStop + 1 === 10){
                           setOpenTour(false);
-                          setDialogEndOpen(false)
+                          setDialogEndOpen(true)
                         }
                         clearInteractionIsolation();
 
