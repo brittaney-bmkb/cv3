@@ -158,10 +158,10 @@ const GuidedTour = () => {
         
         let stop = currentStop
         if(exportOpen){
-          stop = 8
+          stop = 9
         }
         if(feedbackOpen){
-          stop = 9
+          stop = 10
         }
         const refEl = document.getElementById(tourRoute[stop]?.id);
         const popoverEl = document.getElementById('popover');
@@ -277,7 +277,7 @@ const GuidedTour = () => {
                 <li>{translateText("Comparable Property Details")}</li>
             </ul>
             <p>{translateText("The comparable properties will be displayed directly on the map, helping you evaluate them alongside your selected property.")}</p>
-            <p>{translateText("Use this tool to better understand how your property compares for assessment or appeals.")}</p>
+            <p>{translateText("Use this tool to better understand how your property compares for assessment or appeals. Perform a search by scrolling down and clicking Search.")}</p>
         </div>,
         accessibleLabel: "some text"
        },
@@ -299,7 +299,27 @@ const GuidedTour = () => {
         accessibleLabel: "some text",
         div: document.getElementById("comparable-panel" )
       },
-       7: {
+      7: {
+        id: "comparable-panel" ,
+        heading: "Comparable Property",
+        description: <div>
+          <p>{translateText("This panel displays the comparable property details similar to the information in the property details panels in the left panel.")}</p>
+          <p>{translateText("Just like the main property details panel, you can view:")}</p>
+          <ul>
+                <li>{translateText("Location and tax details")}</li>
+                <li>{translateText("Assessed value")}</li>
+                <li>{translateText("Building characteristics and imagery")}</li>
+                <li>{translateText("Data and resources")}</li>
+                <li>{translateText("Political and taxing district information")}</li>
+            </ul>
+            <p>{translateText("The top toolbar also lets you clear your comparable search, export your comparable property details, or submit feedback.")}</p>
+            <p>{translateText('New in CookViewer 3.1: Use the built-in search bar to quickly find key information. Type in terms like "assessed value" or "district" to filter the panel and highlight relevant data.')}</p>
+            <p>{translateText("Try using the search bar now to explore the available comparable property details.")}</p>
+        </div>,
+        accessibleLabel: "some text",
+        div: document.getElementById("comparable-panel" )
+      },
+       8: {
         id: "start-action-bar",
         heading: "Panel Selector",
         description: <div>
@@ -316,7 +336,7 @@ const GuidedTour = () => {
         </div>,
         accessibleLabel: "some text"
        },
-       8: {
+       9: {
         id: "export-dialog",
         heading: "Export search results",
         description: <div>
@@ -331,7 +351,7 @@ const GuidedTour = () => {
         accessibleLabel: "some text",
         div: document.getElementById("export-dialog")
        },
-       9: {
+       10: {
         id: "feedback-dialog",
         heading: "Submit Feedback",
         description: <div>
@@ -369,15 +389,16 @@ const GuidedTour = () => {
           if(currentStop === 4) return;
           if(currentStop === 5) return;
           if(currentStop === 6) return;
+          if(currentStop === 7) return;
+          if(currentStop === 10) return;
           if(currentStop === 9) return;
-          if(currentStop === 8) return;
           console.log("updating stop to: ", 3)
           setCurrentStop(3)
         }
 
         if(propertyDetailPanelClosed && searchResultsPanelClosed && ( currentStop > 1 && currentStop < 5)){
-          console.log("updating stop to: ", 7)
-          setCurrentStop(7)
+          console.log("updating stop to: ", 8)
+          setCurrentStop(8)
         }
 
 
@@ -387,17 +408,17 @@ const GuidedTour = () => {
           currentStop === 6
         }
 
-        if(currentStop === 7){
+        if(currentStop === 8){
           if(!propertyDetailPanelClosed){
             console.log("updating stop to: ", 3)
             setCurrentStop(3)
           }
           
         }
-        //if the current stop is 7 to highlight the panel selector
+        //if the current stop is 8 to highlight the panel selector
         //and the search results panel is open  then set the stop to stop 2
         //to show details about the search results
-        if(currentStop === 7 && !searchResultsPanelClosed){
+        if(currentStop === 8 && !searchResultsPanelClosed){
           console.log("updating stop to: ", 4)
             setCurrentStop(2)
         }
@@ -460,8 +481,8 @@ const GuidedTour = () => {
             overlayPositioning="fixed"
             referenceElement={tourRoute[currentStop]?.id}
             open={openTour}
-            label={exportOpen ? tourRoute[8]?.accessibleLabel : feedbackOpen ? tourRoute[9]?.accessibleLabel  : tourRoute[currentStop]?.accessibleLabel}
-            heading={exportOpen ? tourRoute[8]?.heading : feedbackOpen ? tourRoute[9]?.heading  : tourRoute[currentStop]?.heading}
+            label={exportOpen ? tourRoute[9]?.accessibleLabel : feedbackOpen ? tourRoute[10]?.accessibleLabel  : tourRoute[currentStop]?.accessibleLabel}
+            heading={exportOpen ? tourRoute[9]?.heading : feedbackOpen ? tourRoute[10]?.heading  : tourRoute[currentStop]?.heading}
             // focusTrapOptions={{
             //    "allowOutsideClick": false,
             //    "returnFocusOnDeactivate": true,
@@ -479,7 +500,7 @@ const GuidedTour = () => {
             offsetDistance={exportOpen || feedbackOpen ? -300 : 0}
           >
             <div className="tour-text" style={{ padding: 15, width: 300 }}>
-              {exportOpen ? tourRoute[8]?.description : feedbackOpen ? tourRoute[9]?.description  : tourRoute[currentStop]?.description}
+              {exportOpen ? tourRoute[9]?.description : feedbackOpen ? tourRoute[10]?.description  : tourRoute[currentStop]?.description}
               <div
                 style={{
                   justifyContent: "end",
@@ -500,7 +521,7 @@ const GuidedTour = () => {
                         
                         //if the current stop is updated to 3 open the 
                         // property detail panel
-                        if(currentStop+1 === 3 || currentStop+1 === 8){
+                        if(currentStop+1 === 3 || currentStop+1 === 9){
                           console.log("updating stop to: ", 3)
                           setCurrentStop(3)
                           togglePanel('property')
@@ -510,6 +531,10 @@ const GuidedTour = () => {
                         }
 
                         if(currentStop + 1 === 6){
+                          togglePanel('compare')
+                        }
+
+                        if(currentStop + 1 === 7){
                           togglePanel('compare')
                         }
                         clearInteractionIsolation();
