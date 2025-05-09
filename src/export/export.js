@@ -40,6 +40,8 @@ const getDataFieldsForExport = async (dataDictionary) => {
             let label = data.attributes['label']
             let field = data.attributes['field']
 
+            if(field === null || label === null) return;
+
             let obj = {"label": label, "field":field}
             if(!preparedHeaderFieldsObj.includes(label)){
                 preparedHeaderFieldsObj.push(obj)
