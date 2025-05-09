@@ -12,7 +12,7 @@ function arrayToCsv(data) {
 const getDataFieldsForExport = async (dataDictionary) => {
 
     //excludes these fields from the export
-    let fieldsToExclude = [null, "comparable_properties","nearby_properties","assessor_link", "find_my_district_link", "zoning_info","hist_assessval_link","oblique_link","clerk_prop_records_link","historical_photo_link","property_portal_link","hist_sf_mf_imp_chars_link","res_condo_chars_link"]
+    let fieldsToExclude = [null,"View District Details", "comparable_properties","nearby_properties","assessor_link", "find_my_district_link", "zoning_info","hist_assessval_link","oblique_link","clerk_prop_records_link","historical_photo_link","property_portal_link","hist_sf_mf_imp_chars_link","res_condo_chars_link"]
     //array to hold object containing the field and field alias (label)
     let preparedHeaderFieldsObj = []
     //categories to exclude from data dictionary
@@ -39,6 +39,8 @@ const getDataFieldsForExport = async (dataDictionary) => {
         filteredData.map((data) => {
             let label = data.attributes['label']
             let field = data.attributes['field']
+
+            if(field === null || label === null) return;
 
             let obj = {"label": label, "field":field}
             if(!preparedHeaderFieldsObj.includes(label)){
@@ -70,6 +72,11 @@ export const prepareDataForExport = async (featuresToExport, preparedHeaderField
             }
             else{
                 value = feature.attributes[attribute]
+              
+            }
+
+            if(value === 'null' || !value){
+                value = 'N/A'
             }
 
             obj[alias] = value
