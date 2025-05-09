@@ -340,7 +340,7 @@ const ComparisonPropertyDetail = () => {
                                                 }
 
                                                 //check if data type is int or double and check if value is not null for selected parcel
-                                                if(data?.attributes['type'] === 'int or double' && feature?.attributes[data?.attributes['field']]){
+                                                if((data?.attributes['type'] === 'int or double' || data?.attributes['type'] === 'int') && feature?.attributes[data?.attributes['field']]){
                                                     return(
                                                         <CalciteListItem
                                                         key={data?.attributes['field']}

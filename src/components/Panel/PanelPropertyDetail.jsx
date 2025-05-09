@@ -422,7 +422,9 @@ const PanelPropertyDetail = () => {
                                                 }
 
                                                 //check if data type is int or double and check if value is not null for selected parcel
-                                                if(data?.attributes['type'] === 'int or double' && primaryResultFeature[0]?.attributes[data?.attributes['field']]){
+                                                if((data?.attributes['type'] === 'int or double' || data?.attributes['type'] === 'int') && primaryResultFeature[0]?.attributes[data?.attributes['field']]){
+                                                    
+                                                    console.log("displaying number fields: ", data?.attributes['field'])
                                                     return(
                                                         <CalciteListItem
                                                         key={data?.attributes['field']}
