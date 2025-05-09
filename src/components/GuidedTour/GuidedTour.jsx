@@ -33,7 +33,8 @@ const GuidedTour = () => {
         comparableParcels,
         comparablePanelClosed,
         language,
-        setLanguage
+        setLanguage,
+        exportDataSource
      } = UseAppContext()
 
     const [routeParams , setSearchParams] = useSearchParams()
@@ -142,9 +143,9 @@ const GuidedTour = () => {
         return ancestors;
       };
       
-      const setInteractionIsolation = (referenceElement, popover) => {
+    const setInteractionIsolation = (referenceElement, popover) => {
 
-        //console.log("element to isolate: ", referenceElement, popover)
+        console.log("element to isolate: ", referenceElement, popover)
         if (!referenceElement || !popover) return;
       
         const allElements = document.querySelectorAll("body *");
@@ -160,7 +161,7 @@ const GuidedTour = () => {
           if (!allowed.has(el) && !referenceElement.contains(el) && !popover.contains(el)) {
             el.setAttribute("inert", "");
           } else {
-            ////console.log("Allowed:", el);
+            //////console.log("Allowed:", el);
           }
         });
       };
@@ -169,15 +170,15 @@ const GuidedTour = () => {
         
         let stop = currentStop
         if(exportOpen){
-          stop = 9
+          stop = 11
         }
         if(feedbackOpen){
-          stop = 10
+          stop = 12
         }
         const refEl = document.getElementById(tourRoute[stop]?.id);
         const popoverEl = document.getElementById('popover');
         
-        //console.log("isolation setting up for tour stop: ", currentStop, refEl, popoverEl)
+        ////console.log("isolation setting up for tour stop: ", currentStop, refEl, popoverEl)
 
         if (refEl && popoverEl && openTour) {
           setTimeout(() => setInteractionIsolation(refEl, popoverEl), 0);
@@ -200,7 +201,7 @@ const GuidedTour = () => {
         heading: "Select a Language",
         description: <div ><p>{translateText("CookViewer is now available in multiple languages. Use the Translate button in the top-right corner to switch between English and Spanish.")}</p>
         <p>{translateText("Click the button now to open the language menu and choose your preferred language. Your selection will update the interface text throughout the application.")}</p>
-        <p>{translateText("Click next to learn about searching for a parcel")}</p>
+        <p>{translateText("Click 'Next' to search for a parcel.")}</p>
         </div>,
         accessibleLabel: "some text",
         div: document.getElementById("translate")
@@ -218,6 +219,7 @@ const GuidedTour = () => {
                 </ul>
             
             <p>{translateText("Start typing in the search bar to see suggestions and select a result to zoom directly to that location on the map.")}</p>
+            <p>{translateText("Click 'Next' to explore search results.")}</p>
         </div>,
         accessibleLabel: "some text",
         div: document.getElementById("search-bar")
@@ -235,6 +237,7 @@ const GuidedTour = () => {
             </ul>
             <p>{translateText("New in CookViewer 3.1: You can now collapse or close this panel to give yourself more space to explore the map.")}</p>
             <p>{translateText("Try selecting a result or using the toolbar options to explore these features.")}</p>
+            <p>{translateText("Or click 'Next' to see property details.")}</p>
         </div>,
         accessibleLabel: "some text",
         div: document.getElementById("search-results-panel")
@@ -255,6 +258,7 @@ const GuidedTour = () => {
             <p>{translateText("The top toolbar also lets you clear, export, or submit feedback.")}</p>
             <p>{translateText('New in CookViewer 3.1: Use the built-in search bar to quickly find key information. Type in terms like "assessed value" or "district" to filter the panel and highlight relevant data.')}</p>
             <p>{translateText("Try using the search bar now to explore the available property details.")}</p>
+            <p>{translateText("Click 'Next' to learn about finding comparable properties.")}</p>
         </div>,
         accessibleLabel: "some text"
        },
@@ -291,6 +295,7 @@ const GuidedTour = () => {
             </ul>
             <p>{translateText("The comparable properties will be displayed directly on the map, helping you evaluate them alongside your selected property.")}</p>
             <p>{translateText("Use this tool to better understand how your property compares for assessment or appeals. Perform a search by scrolling down and clicking Search.")}</p>
+            <p>{translateText("Then click 'Next' to explore and learn about search results.")}</p>
         </div>,
         accessibleLabel: "some text"
        },
@@ -308,6 +313,7 @@ const GuidedTour = () => {
           </ul>
           <p>{translateText("New in CookViewer 3.1: Easily switch between Comparable Search, Results, and Property Detail views using the tabs at the top of the panel.")}</p>
           <p>{translateText("Try selecting a property or using the toolbar to explore the available tools.")}</p>
+          <p>{translateText("Then click 'Next' to learn about the comparable property details.")}</p>
         </div>,
         accessibleLabel: "some text",
         div: document.getElementById("comparable-panel" )
@@ -328,6 +334,7 @@ const GuidedTour = () => {
             <p>{translateText("The top toolbar also lets you clear your comparable search, export your comparable property details, or submit feedback.")}</p>
             <p>{translateText('New in CookViewer 3.1: Use the built-in search bar to quickly find key information. Type in terms like "assessed value" or "district" to filter the panel and highlight relevant data.')}</p>
             <p>{translateText("Try using the search bar now to explore the available comparable property details.")}</p>
+            <p>{translateText("Click 'Next' to learn about printing a map and report.")}</p>
         </div>,
         accessibleLabel: "some text",
         div: document.getElementById("comparable-panel" )
@@ -386,7 +393,7 @@ const GuidedTour = () => {
             </ul>
             <p>{translateText("You can use the buttons in the Panel Selector to reopen panels you’ve closed, keeping navigation simple and accessible throughout your session.")}</p>
             <p>{translateText("The Panel Selector can also be collapsed or expanded by clicking the toggle button at the bottom. This gives you more space for the map while still keeping important tools within reach.")}</p>
-            <p>{translateText("Try clicking a button in the Panel Selector to view a panel.")}</p>
+            <p>{translateText("Try clicking a button in the Panel Selector to view a panel or click 'Next' to view to property details.")}</p>
         </div>,
         accessibleLabel: "some text"
        },
@@ -400,8 +407,8 @@ const GuidedTour = () => {
           <li>{translateText("Click the file type button to choose between CSV or Excel format.")}</li>
           <li>{translateText("Click Export to download your file. It will appear in your Downloads folder.")}</li>
         </ul>
+        <p>{translateText("Try clicking a button in the Panel Selector to view a panel or click 'Next' to view to property details.")}</p>
        </div>,
-        
         accessibleLabel: "some text",
         div: document.getElementById("export-dialog")
        },
@@ -424,7 +431,7 @@ const GuidedTour = () => {
 
 
     useEffect(() => {
-        console.log("Current stop: ", currentStop)
+        //console.log("Current stop: ", currentStop)
 
         //if the current stop is 2 the search results stop BUT
         // there are no search results
@@ -436,7 +443,7 @@ const GuidedTour = () => {
         //if user closes to search panel while on the stop 2
         //go to stop 7 with info on the panel selector
         if(searchResultsPanelClosed && currentStop === 2){
-          console.log("updating stop to: ", 7)
+          //console.log("updating stop to: ", 7)
           setCurrentStop(7)
         }
         //if the property detail panel is open
@@ -449,27 +456,35 @@ const GuidedTour = () => {
         //   if(currentStop === 8) return;
         //   if(currentStop === 11) return;
         //   if(currentStop === 10) return;
-        //   console.log("updating stop to: ", 3)
+        //   //console.log("updating stop to: ", 3)
         //   setCurrentStop(3)
         // }
 
+        //if step current step is search results and property details is open
+        // update step to step 3
+        if(!propertyDetailPanelClosed &&  currentStop === 2){
+          //console.log("updating stop to: ", 3)
+          setCurrentStop(3)
+        }
+
+
         //open the selector guide when the property details panel is closed
         if(propertyDetailPanelClosed && searchResultsPanelClosed && ( currentStop > 1 && currentStop < 5)){
-          console.log("updating stop to: ", 10)
+          //console.log("updating stop to: ", 10)
           setCurrentStop(10)
         }
 
 
 
         if(currentStop === 5 && !comparisonResultsClosed){
-          console.log("updating stop to: ", 6)
+          //console.log("updating stop to: ", 6)
           currentStop === 6
         }
 
         //open the selector guide when the property details panel is open
         if(currentStop === 10){
           if(!propertyDetailPanelClosed){
-            console.log("updating stop to: ", 3)
+            //console.log("updating stop to: ", 3)
             setCurrentStop(3)
           }
           
@@ -478,7 +493,7 @@ const GuidedTour = () => {
         //and the search results panel is open  then set the stop to stop 2
         //to show details about the search results
         if(currentStop === 10 && !searchResultsPanelClosed){
-          console.log("updating stop to: ", 4)
+          //console.log("updating stop to: ", 4)
             setCurrentStop(2)
         }
 
@@ -488,10 +503,10 @@ const GuidedTour = () => {
 
 
     const updateStyle = (id, index) => {
-      ////console.log("updating style")
+      //////console.log("updating style")
       //get reference element
 
-      ////console.log("ref element id: ", id)
+      //////console.log("ref element id: ", id)
       // if(currentStop === 7 ) return;
       // if(currentStop === 8 ) return;
 
@@ -510,9 +525,9 @@ const GuidedTour = () => {
       if (currentStop === index && openTour) {
         if (targetChildren && targetChildren.length > 0) {
             // Apply highlight to all matching children
-            ////console.log("Apply highlight to all matching children")
+            //////console.log("Apply highlight to all matching children")
             targetChildren.forEach((child) => {
-                ////console.log("child: ", child)
+                //////console.log("child: ", child)
                 child.style.setProperty("border", "2px solid #FFA500");
 
             });
@@ -521,7 +536,7 @@ const GuidedTour = () => {
         }
       } 
       else {
-        ////console.log("Removing highlight to all matching children")
+        //////console.log("Removing highlight to all matching children")
         if (targetChildren && targetChildren.length > 0) {
             // Remove highlight from all matching children
             targetChildren.forEach((child) => {
@@ -540,7 +555,7 @@ const GuidedTour = () => {
             ref={popoverRefs.current[currentStop]}
             //placement="leading"
             overlayPositioning="fixed"
-            referenceElement={tourRoute[currentStop]?.id}
+            referenceElement={ tourRoute[currentStop]?.id}
             open={openTour}
             label={exportOpen ? tourRoute[11]?.accessibleLabel : feedbackOpen ? tourRoute[12]?.accessibleLabel  : tourRoute[currentStop]?.accessibleLabel}
             heading={exportOpen ? tourRoute[11]?.heading : feedbackOpen ? tourRoute[12]?.heading  : tourRoute[currentStop]?.heading}
@@ -558,7 +573,7 @@ const GuidedTour = () => {
             //     setInteractionIsolation(tourRoute[currentStop]?.id, popoverRefs.current[currentStop]);
             //   }}
             placement={exportOpen || feedbackOpen ?  "auto" : "leading"}
-            offsetDistance={exportOpen || feedbackOpen ? -300 : 0}
+            offsetDistance={exportOpen || feedbackOpen ? -350 : 0}
           >
             <div className="tour-text" style={{ padding: 15, width: 300 }}>
               {exportOpen ? tourRoute[11]?.description : feedbackOpen ? tourRoute[12]?.description  : tourRoute[currentStop]?.description}
@@ -589,7 +604,7 @@ const GuidedTour = () => {
                         //if the current stop is updated to 3 open the 
                         // property detail panel
                         if(currentStop+1 === 3 || currentStop+1 === 11){
-                          console.log("updating stop to: ", 3)
+                          //console.log("updating stop to: ", 3)
                           setCurrentStop(3)
                           togglePanel('property')
                         }
@@ -644,7 +659,7 @@ const GuidedTour = () => {
               onCalciteDropdownSelect={(e) => {
                 let lang = e.target.selectedItems[0].textContent
                 lang = lang?.toLowerCase()
-                console.log("updating language: ", lang)
+                //console.log("updating language: ", lang)
                 setLanguage(lang)
 
                 let locale_code = config.language_codes[lang]
