@@ -1,9 +1,14 @@
 import "@esri/calcite-components/dist/components/calcite-popover";
 import "@esri/calcite-components/dist/components/calcite-checkbox";
 
-import { CalciteButton, CalciteCheckbox, CalciteDialog, CalciteLabel, CalcitePopover, CalciteTooltip } from "@esri/calcite-components-react"
+import { CalciteButton, CalciteCheckbox, CalciteDialog, CalciteDropdown, CalciteDropdownGroup, CalciteDropdownItem, CalciteLabel, CalcitePopover, CalciteTooltip } from "@esri/calcite-components-react"
 import { useContext, useEffect, useRef, useState } from "react"
+import { useSearchParams } from "react-router-dom";
 import UseAppContext from "../../contexts/AppContext"
+import { config } from "../../data/config";
+
+import * as intl from "@arcgis/core/intl.js";
+import { titleCase } from "../Header/HeaderMenu";
 
 const GuidedTour = () => {
 
@@ -26,8 +31,12 @@ const GuidedTour = () => {
         setFeedbackDialog,
         comparisonResultsClosed,
         comparableParcels,
-        comparablePanelClosed
+        comparablePanelClosed,
+        language,
+        setLanguage
      } = UseAppContext()
+
+    const [routeParams , setSearchParams] = useSearchParams()
 
     const [openTour, setOpenTour] = useState(false);
     const [dialogOpen, setDialogOpen] = useState(true);
@@ -37,6 +46,8 @@ const GuidedTour = () => {
     const [suppressWelcome, setSuppressWelcome] = useState(false)
 
     const popoverRefs = useRef([]); // array of refs for each popover
+
+
 
     const handleStartTour = () => {
 
@@ -188,7 +199,9 @@ const GuidedTour = () => {
         id: "translate",
         heading: "Select a Language",
         description: <div ><p>{translateText("CookViewer is now available in multiple languages. Use the Translate button in the top-right corner to switch between English and Spanish.")}</p>
-        <p>{translateText("Click the button now to open the language menu and choose your preferred language. Your selection will update the interface text throughout the application.")}</p></div>,
+        <p>{translateText("Click the button now to open the language menu and choose your preferred language. Your selection will update the interface text throughout the application.")}</p>
+        <p>{translateText("Click next to learn about searching for a parcel")}</p>
+        </div>,
         accessibleLabel: "some text",
         div: document.getElementById("translate")
        },
@@ -617,14 +630,55 @@ const GuidedTour = () => {
               </div>
             </div>
           </CalcitePopover>
+        
 
         <CalciteDialog
         id="welcome-dialog"
         heading="Welcome to CookViewer 3.1"
-        description="some text"
+        //description="some text"
         open={tourDialogOpen}
         onCalciteDialogClose={() => {setTourDialogOpen(false)}}
         >
+          <CalciteDropdown 
+              slot='header-actions-start'
+              onCalciteDropdownSelect={(e) => {
+                let lang = e.target.selectedItems[0].textContent
+                lang = lang?.toLowerCase()
+                console.log("updating language: ", lang)
+                setLanguage(lang)
+
+                let locale_code = config.language_codes[lang]
+                intl.setLocale(locale_code)
+
+                const params = ["search", "pin10", "pin14"]
+                const newParams = {}
+
+                params.forEach((param) => {
+                  let value = routeParams.get(param);
+                  //short-circuit evaluation 
+                  value && (newParams[param] = value);
+                });
+        
+                newParams['lang'] = language
+                setSearchParams(newParams)
+            }}
+            >
+            <CalciteButton
+            
+            slot="trigger"
+            iconStart="language-translate"
+            iconEnd="chevron-down"
+            >{titleCase(language)}</CalciteButton>
+              <CalciteDropdownGroup>
+              {Object.entries(config.language_codes).map(([language, code]) => {
+                return(
+                  <CalciteDropdownItem
+                  key={code}
+                  >{titleCase(language)}</CalciteDropdownItem>
+                )
+              })}
+              </CalciteDropdownGroup>
+            </CalciteDropdown>
             <div>
                 <p>{translateText("CookViewer has been updated with a redesigned layout and new features to improve usability. The interface now includes flexible panels that allow you to view and switch between search results and property details. These panels can be expanded, collapsed, or closed to give you more control over how much space is available for the map.")}</p>
                 <p>{translateText("To help you get started, you can take a brief guided tour that introduces the new layout and tools.")}</p>
