@@ -85,7 +85,7 @@ const PropertyComparison = () => {
     useEffect(() => {
 
         if(comparablePanelClosed){
-            clearResultsComparables()
+            //clearResultsComparables()
             setCurrentStep(0)
         }
 
@@ -101,7 +101,7 @@ const PropertyComparison = () => {
 
             onCalcitePanelClose={() => {
                 setComparablePanel(true)
-                clearResultsComparables()
+                //clearResultsComparables()
                 setCurrentStep(0)
             }}
             style={{display: comparablePanelClosed ? 'none': 'flex'}}

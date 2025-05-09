@@ -52,10 +52,10 @@ const GuidedTour = () => {
 
           togglePanel('all')
 
-          if(searchFeatures){
-            clearResults()
-            clearResultsComparables()
-          }
+          // if(searchFeatures){
+          //   clearResults()
+          //   clearResultsComparables()
+          // }
 
     }
 
@@ -102,9 +102,9 @@ const GuidedTour = () => {
 
         setDialogEndOpen(false)
 
-        togglePanel("all")
-        clearResults()
-        clearResultsComparables()
+        // togglePanel("all")
+        // clearResults()
+        // clearResultsComparables()
         //refPopover.current.open = false
 
         if(!popoverRefs.current) return;
@@ -319,7 +319,48 @@ const GuidedTour = () => {
         accessibleLabel: "some text",
         div: document.getElementById("comparable-panel" )
       },
-       8: {
+      8: {
+        id: "print-tabs" ,
+        heading: "Print a map or report",
+        description: <div>
+          <p>{translateText("You can now print a map or a report using the Print panel.")}</p>
+          <p>{translateText("To print your map, follow these steps:")}</p>
+          <ul>
+            <li>{translateText("Select the 'Map' tab in the Print panel.")}</li>
+            <li>{translateText("Enter a file name for your printout.")}</li>
+            <li>{translateText("Choose a layout type: Letter (8.5\" x 11\") or Tabloid (11\" x 17\"), in either Portrait or Landscape orientation.")}</li>
+            <li>{translateText("Toggle on the 'Show Print Area' switch to preview the area of the map that will be included. A rectangle will appear on the map showing the selected area.")}</li>
+            <li>{translateText("Select a file type. Available options include: PDF, PNG32, PNG8, JPG, GIF, EPS, SVG, SVGZ, AIX, and TIFF.")}</li>
+            <li>{translateText("Click the 'Print' button to start your print job.")}</li>
+          </ul>
+          <p>{translateText("Once the print begins, the Prints tab will open to show the job status. When it’s finished, click the job name to view and download your file in a new window.")}</p>
+          <p>{translateText("Click 'Next' to learn how to create a report.")}</p>
+        </div>,
+        accessibleLabel: "some text",
+        div: document.getElementById("print-tabs" )
+      },
+      9: {
+        id: "print-tabs" ,
+        heading: "Print a report",
+        description: <div>
+        <p>{translateText("In CookViewer 3.1, you can now print a detailed report that includes your map and property information for your selected property, search results, and comparable properties.")}</p>
+        <p>{translateText("Reports are exported in PDF format.")}</p>
+        <p>{translateText("To create a report, follow these steps:")}</p>
+        <ul>
+          <li>{translateText("Click the 'Report' tab in the Print panel.")}</li>
+          <li>{translateText("Enter a file name for your report.")}</li>
+          <li>{translateText("Choose a layout type for your map: Letter (8.5\" x 11\") or Tabloid (11\" x 17\"), in either Portrait or Landscape orientation.")}</li>
+          <li>{translateText("Toggle on the 'Show Print Area' switch to see which part of the map will be included. A rectangle will appear on the map to highlight this area.")}</li>
+          <li>{translateText("Toggle on 'Include all search results' to add property details for all your search results.")}</li>
+          <li>{translateText("Toggle on 'Include comparable properties' to include details from your comparable property search.")}</li>
+          <li>{translateText("Click the 'Print' button to export your report.")}</li>
+        </ul>
+        <p>{translateText("Note: Reports with many properties may take longer to generate.")}</p>
+      </div>,
+        accessibleLabel: "some text",
+        div: document.getElementById("print-tabs" )
+      },
+       10: {
         id: "start-action-bar",
         heading: "Panel Selector",
         description: <div>
@@ -336,7 +377,7 @@ const GuidedTour = () => {
         </div>,
         accessibleLabel: "some text"
        },
-       9: {
+       11: {
         id: "export-dialog",
         heading: "Export search results",
         description: <div>
@@ -351,7 +392,7 @@ const GuidedTour = () => {
         accessibleLabel: "some text",
         div: document.getElementById("export-dialog")
        },
-       10: {
+       12: {
         id: "feedback-dialog",
         heading: "Submit Feedback",
         description: <div>
@@ -385,20 +426,22 @@ const GuidedTour = () => {
        
         //if the property detail panel is open
         //go to stop 3 with property detail info
-        if(!propertyDetailPanelClosed){
-          if(currentStop === 4) return;
-          if(currentStop === 5) return;
-          if(currentStop === 6) return;
-          if(currentStop === 7) return;
-          if(currentStop === 10) return;
-          if(currentStop === 9) return;
-          console.log("updating stop to: ", 3)
-          setCurrentStop(3)
-        }
+        // if(!propertyDetailPanelClosed){
+        //   if(currentStop === 4) return;
+        //   if(currentStop === 5) return;
+        //   if(currentStop === 6) return;
+        //   if(currentStop === 7) return;
+        //   if(currentStop === 8) return;
+        //   if(currentStop === 11) return;
+        //   if(currentStop === 10) return;
+        //   console.log("updating stop to: ", 3)
+        //   setCurrentStop(3)
+        // }
 
+        //open the selector guide when the property details panel is closed
         if(propertyDetailPanelClosed && searchResultsPanelClosed && ( currentStop > 1 && currentStop < 5)){
-          console.log("updating stop to: ", 8)
-          setCurrentStop(8)
+          console.log("updating stop to: ", 10)
+          setCurrentStop(10)
         }
 
 
@@ -408,20 +451,23 @@ const GuidedTour = () => {
           currentStop === 6
         }
 
-        if(currentStop === 8){
+        //open the selector guide when the property details panel is open
+        if(currentStop === 10){
           if(!propertyDetailPanelClosed){
             console.log("updating stop to: ", 3)
             setCurrentStop(3)
           }
           
         }
-        //if the current stop is 8 to highlight the panel selector
+        //if the current stop is 10 to highlight the panel selector
         //and the search results panel is open  then set the stop to stop 2
         //to show details about the search results
-        if(currentStop === 8 && !searchResultsPanelClosed){
+        if(currentStop === 10 && !searchResultsPanelClosed){
           console.log("updating stop to: ", 4)
             setCurrentStop(2)
         }
+
+        //
 
     }, [currentStop, searchFeatures, propertyDetailPanelClosed, exportOpen, feedbackOpen, searchResultsPanelClosed, comparisonResultsClosed])
 
@@ -481,8 +527,8 @@ const GuidedTour = () => {
             overlayPositioning="fixed"
             referenceElement={tourRoute[currentStop]?.id}
             open={openTour}
-            label={exportOpen ? tourRoute[9]?.accessibleLabel : feedbackOpen ? tourRoute[10]?.accessibleLabel  : tourRoute[currentStop]?.accessibleLabel}
-            heading={exportOpen ? tourRoute[9]?.heading : feedbackOpen ? tourRoute[10]?.heading  : tourRoute[currentStop]?.heading}
+            label={exportOpen ? tourRoute[11]?.accessibleLabel : feedbackOpen ? tourRoute[12]?.accessibleLabel  : tourRoute[currentStop]?.accessibleLabel}
+            heading={exportOpen ? tourRoute[11]?.heading : feedbackOpen ? tourRoute[12]?.heading  : tourRoute[currentStop]?.heading}
             // focusTrapOptions={{
             //    "allowOutsideClick": false,
             //    "returnFocusOnDeactivate": true,
@@ -500,7 +546,7 @@ const GuidedTour = () => {
             offsetDistance={exportOpen || feedbackOpen ? -300 : 0}
           >
             <div className="tour-text" style={{ padding: 15, width: 300 }}>
-              {exportOpen ? tourRoute[9]?.description : feedbackOpen ? tourRoute[10]?.description  : tourRoute[currentStop]?.description}
+              {exportOpen ? tourRoute[11]?.description : feedbackOpen ? tourRoute[12]?.description  : tourRoute[currentStop]?.description}
               <div
                 style={{
                   justifyContent: "end",
@@ -521,7 +567,7 @@ const GuidedTour = () => {
                         
                         //if the current stop is updated to 3 open the 
                         // property detail panel
-                        if(currentStop+1 === 3 || currentStop+1 === 9){
+                        if(currentStop+1 === 3 || currentStop+1 === 11){
                           console.log("updating stop to: ", 3)
                           setCurrentStop(3)
                           togglePanel('property')
@@ -536,6 +582,10 @@ const GuidedTour = () => {
 
                         if(currentStop + 1 === 7){
                           togglePanel('compare')
+                        }
+
+                        if(currentStop + 1 === 8){
+                          togglePanel('print')
                         }
                         clearInteractionIsolation();
 
