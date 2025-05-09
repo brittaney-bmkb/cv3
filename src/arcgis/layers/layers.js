@@ -4,6 +4,7 @@ import { config } from "../../data/config";
 import Query from "@arcgis/core/rest/support/Query";
 import MapImageLayer from "@arcgis/core/layers/MapImageLayer";
 import Graphic from "@arcgis/core/Graphic";
+import WebStyleSymbol from "@arcgis/core/symbols/WebStyleSymbol.js";
 
 
 export async function removeLayer(map, name){
@@ -150,25 +151,30 @@ export async function createGraphic(geometry, geometryType){
 
   let symbol;
 
+  const webStyleSymbol = new WebStyleSymbol({
+    name: "Point symbol_9",
+    styleUrl: "https://cdn.arcgis.com/sharing/rest/content/items/70ccf6bcbd304773a164be896e76edd3/data"
+    
+  });
+
   if(geometryType === "point"){
     symbol = {
-      type: "simple-marker",  // autocasts as new SimpleMarkerSymbol()
-      style: "square",
-      color: "blue",
-      size: "8px",  // pixels
-      outline: {  // autocasts as new SimpleLineSymbol()
-        color: [ 255, 255, 0 ],
-        width: 3  // points
+      type: "simple-marker",
+      path: "M16,3.5c-4.142,0-7.5,3.358-7.5,7.5c0,4.143,7.5,18.121,7.5,18.121S23.5,15.143,23.5,11C23.5,6.858,20.143,3.5,16,3.5z M16,14.584c-1.979,0-3.584-1.604-3.584-3.584S14.021,7.416,16,7.416S19.584,9.021,19.584,11S17.979,14.584,16,14.584z",
+      size: "30px",
+      color: "orange",
+      outline: {
+        color: "white"
       }
-    };
+    }
   }
   else{
     symbol = {
       type: "simple-fill",  // autocasts as new SimpleFillSymbol()
-      color: [ 232, 255, 0, 0.5 ],
+      color: [ 232, 255, 0, 0.05 ],
       style: "solid",
       outline: {  // autocasts as new SimpleLineSymbol()
-        color: "blue",
+        color: "orange",
         width: 1,
         style: "short-dash"
       }
