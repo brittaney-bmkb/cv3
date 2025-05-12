@@ -40,7 +40,7 @@ const GuidedTour = () => {
     const [routeParams , setSearchParams] = useSearchParams()
 
     const [openTour, setOpenTour] = useState(false);
-    const [dialogOpen, setDialogOpen] = useState(true);
+    const [tourWelcome, setTourWelcome] = useState(true);
     const [dialogEndOpen, setDialogEndOpen] = useState(false);
     const [currentStop, setCurrentStop] = useState(null)
     const [disableNextStop, setDisableNextStop] = useState(false)
@@ -110,8 +110,8 @@ const GuidedTour = () => {
       
     const stopGuidedTour = () => {
 
+        setTourWelcome(false)
         setOpenTour(false)
-
         setDialogEndOpen(false)
 
         // togglePanel("all")
@@ -546,10 +546,33 @@ const GuidedTour = () => {
             referenceElement.classList.remove("tour-highlight");
         }
     }
-  }
+    }
+
+    const updateLanguage = (lang) => {
+
+      lang = lang?.toLowerCase()
+      console.log("updating language: ", lang)
+      setLanguage(lang)
+
+      let locale_code = config.language_codes[lang]
+      intl.setLocale(locale_code)
+
+      const params = ["search", "pin10", "pin14"]
+      const newParams = {}
+
+      params.forEach((param) => {
+        let value = routeParams.get(param);
+        //short-circuit evaluation 
+        value && (newParams[param] = value);
+      });
+
+      newParams['lang'] = lang
+      setSearchParams(newParams)
+    }
+    
+  
     return(
         <>
-
         <CalcitePopover
             id='popover'
             ref={popoverRefs.current[currentStop]}
@@ -646,59 +669,29 @@ const GuidedTour = () => {
             </div>
           </CalcitePopover>
         
-
         <CalciteDialog
-        id="welcome-dialog"
-        heading="Welcome to CookViewer 3.1"
-        //description="some text"
-        open={tourDialogOpen}
-        onCalciteDialogClose={() => {setTourDialogOpen(false)}}
+          id="welcome-dialog-language"
+          heading="Welcome to CookViewer 3.1"
+          //description="some text"
+          open={tourDialogOpen}
+          onCalciteDialogClose={() => {
+            setTourDialogOpen(false)
+          }}
         >
-          <CalciteDropdown 
-              slot='header-actions-start'
-              onCalciteDropdownSelect={(e) => {
-                let lang = e.target.selectedItems[0].textContent
-                lang = lang?.toLowerCase()
-                //console.log("updating language: ", lang)
-                setLanguage(lang)
-
-                let locale_code = config.language_codes[lang]
-                intl.setLocale(locale_code)
-
-                const params = ["search", "pin10", "pin14"]
-                const newParams = {}
-
-                params.forEach((param) => {
-                  let value = routeParams.get(param);
-                  //short-circuit evaluation 
-                  value && (newParams[param] = value);
-                });
-        
-                newParams['lang'] = language
-                setSearchParams(newParams)
-            }}
-            >
-            <CalciteButton
-            
-            slot="trigger"
-            iconStart="language-translate"
-            iconEnd="chevron-down"
-            >{titleCase(language)}</CalciteButton>
-              <CalciteDropdownGroup>
-              {Object.entries(config.language_codes).map(([language, code]) => {
+            <div style={{display:'flex', flexDirection:'column', }}>
+                <p>{translateText("Take a tour of new features. Start by selecting a language:")}</p>
+                
+                <div style={{display: 'flex', gap: 10}}>
+                {Object.entries(config.language_codes).map(([language, code]) => {
                 return(
-                  <CalciteDropdownItem
-                  key={code}
-                  >{titleCase(language)}</CalciteDropdownItem>
+                  <CalciteButton
+                    key={code}
+                    onClick={() => {updateLanguage(language)}}
+                  >{titleCase(language)}
+                  </CalciteButton>
                 )
               })}
-              </CalciteDropdownGroup>
-            </CalciteDropdown>
-            <div>
-                <p>{translateText("CookViewer has been updated with a redesigned layout and new features to improve usability. The interface now includes flexible panels that allow you to view and switch between search results and property details. These panels can be expanded, collapsed, or closed to give you more control over how much space is available for the map.")}</p>
-                <p>{translateText("To help you get started, you can take a brief guided tour that introduces the new layout and tools.")}</p>
-                <p>{translateText("Your feedback is appreciated and helps us continue to improve the application.")}</p>
-                <p><b>{translateText("Would you like to start the tour now?")}</b></p>
+                </div>
             </div>
             <CalciteLabel layout="inline" slot="footer-start">
                 <CalciteCheckbox 
@@ -719,8 +712,48 @@ const GuidedTour = () => {
             <CalciteButton 
                 slot="footer-end"
                 label="start-tour"
-                onClick={handleStartTour}
+                onClick={() => { 
+                  setTourWelcome(true)
+                  setTourDialogOpen(false) 
+                }}
                 >{translateText("Start tour")} 
+            </CalciteButton>
+        </CalciteDialog>
+
+        <CalciteDialog
+        id="welcome-dialog"
+        heading="CookViewer 3.1 New Features"
+        //description="some text"
+        open={tourWelcome}
+        onCalciteDialogClose={() => {setTourWelcome(false)}}
+        >
+            <div>
+                <p>{translateText("CookViewer has been updated with a redesigned layout and new features to improve usability. The interface now includes flexible panels that allow you to view and switch between search results and property details. These panels can be expanded, collapsed, or closed to give you more control over how much space is available for the map.")}</p>
+                <p>{translateText("To help you get started, you can take a brief guided tour that introduces the new layout and tools.")}</p>
+                <p>{translateText("Your feedback is appreciated and helps us continue to improve the application.")}</p>
+                <p><b>{translateText("Click 'Next' to explore the new layout")}</b></p>
+            </div>
+            <CalciteButton 
+                slot="footer-end"
+                appearance="outline"
+                label="stop-tour"
+                onClick={() => {
+                  setTourWelcome(false) 
+                  stopGuidedTour()
+                }}
+                >{translateText("End tour")}
+            </CalciteButton>
+
+            <CalciteButton 
+                slot="footer-end"
+                label="start-tour"
+                onClick={() => {
+                  setTourWelcome(false)
+                  handleStartTour()
+                }
+                  
+                }
+                >{translateText("Next")} 
             </CalciteButton>
         </CalciteDialog>
 
