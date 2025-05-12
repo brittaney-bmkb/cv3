@@ -597,18 +597,24 @@ const GuidedTour = () => {
             //   }}
             placement={exportOpen || feedbackOpen ?  "auto" : "leading"}
             offsetDistance={exportOpen || feedbackOpen ? -350 : 0}
+
           >
-            <div className="tour-text" style={{ padding: 15, width: 300 }}>
+            <div className="tour-text" style={{ padding: 15, marginBottom: 30, width: 300, maxHeight: '500px', overflow:'auto', display:'flex', flexDirection: 'column' }}>
               {exportOpen ? tourRoute[11]?.description : feedbackOpen ? tourRoute[12]?.description  : tourRoute[currentStop]?.description}
               <div
                 style={{
                   justifyContent: "end",
-                  width: "100%",
+                  width: 300,
                   display: "flex",
                   gap: 10,
-                  paddingTop: 20,
+                  position:'absolute',
+                  bottom:0,
+                  //right:20,
+                  backgroundColor: 'white',
+                  borderTop: '#d4d4d4 solid 1px'
                 }}
               >
+                <div style={{padding: 5, gap: 10, display:'flex'}}>
                 <CalciteButton appearance="outline" onClick={stopGuidedTour}>
                   {translateText("End Tour")}
                 </CalciteButton>
@@ -661,10 +667,12 @@ const GuidedTour = () => {
                           setFeedbackDialog(false)
                         }
                     }}
-                    disabled={((!searchFeatures || searchFeatures.length === 0) && currentStop === 1) || (!comparableParcels && !comparablePanelClosed)}
+                    disabled={((!searchFeatures || searchFeatures.length === 0) && currentStop === 1) || (!comparableParcels && !comparablePanelClosed && currentStop === 5)}
                     >
                   {translateText("Next")}
                 </CalciteButton>
+                </div>
+
               </div>
             </div>
           </CalcitePopover>
