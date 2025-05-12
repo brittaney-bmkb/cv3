@@ -34,7 +34,7 @@ const GuidedTour = () => {
         comparablePanelClosed,
         language,
         setLanguage,
-        exportDataSource
+        printPanelClosed
      } = UseAppContext()
 
     const [routeParams , setSearchParams] = useSearchParams()
@@ -113,7 +113,7 @@ const GuidedTour = () => {
         setTourWelcome(false)
         setOpenTour(false)
         setDialogEndOpen(false)
-
+        setCurrentStop(null)
         // togglePanel("all")
         // clearResults()
         // clearResultsComparables()
@@ -436,8 +436,12 @@ const GuidedTour = () => {
         //if the current stop is 2 the search results stop BUT
         // there are no search results
         //go back to the stop 1 search
-        if(currentStop === 2 && (!searchFeatures || searchFeatures.length === 0)){
+        if(currentStop > 1 && (!searchFeatures || searchFeatures.length === 0)){
           setCurrentStop(1)
+        }
+
+        if(comparablePanelClosed && (currentStop > 4 && currentStop < 8 )){
+          setCurrentStop(4)
         }
 
         //if user closes to search panel while on the stop 2
@@ -474,7 +478,10 @@ const GuidedTour = () => {
           setCurrentStop(10)
         }
 
-
+        if(printPanelClosed && ( currentStop > 7 && currentStop < 10) && stopGuidedTour === false){
+          stopGuidedTour(true)
+          setDialogEndOpen(true)
+        }
 
         if(currentStop === 5 && !comparisonResultsClosed){
           //console.log("updating stop to: ", 6)
@@ -499,7 +506,7 @@ const GuidedTour = () => {
 
         //
 
-    }, [currentStop, searchFeatures, propertyDetailPanelClosed, exportOpen, feedbackOpen, searchResultsPanelClosed, comparisonResultsClosed])
+    }, [currentStop, searchFeatures, propertyDetailPanelClosed, exportOpen, feedbackOpen, searchResultsPanelClosed, comparisonResultsClosed, comparablePanelClosed, printPanelClosed])
 
 
     const updateStyle = (id, index) => {
