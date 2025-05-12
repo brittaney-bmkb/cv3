@@ -40,7 +40,7 @@ const GuidedTour = () => {
     const [routeParams , setSearchParams] = useSearchParams()
 
     const [openTour, setOpenTour] = useState(false);
-    const [tourWelcome, setTourWelcome] = useState(true);
+    const [tourWelcome, setTourWelcome] = useState(false);
     const [dialogEndOpen, setDialogEndOpen] = useState(false);
     const [currentStop, setCurrentStop] = useState(null)
     const [disableNextStop, setDisableNextStop] = useState(false)
