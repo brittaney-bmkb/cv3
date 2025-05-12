@@ -436,7 +436,7 @@ const GuidedTour = () => {
         //if the current stop is 2 the search results stop BUT
         // there are no search results
         //go back to the stop 1 search
-        if(currentStop === 2 && (!searchFeatures || searchFeatures.length === 0)){
+        if(currentStop > 1 && (!searchFeatures || searchFeatures.length === 0)){
           setCurrentStop(1)
         }
 
