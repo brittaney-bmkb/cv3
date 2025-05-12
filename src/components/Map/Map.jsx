@@ -586,7 +586,7 @@ const Map = () => {
       const highlightSelected = async () => {
 
         if(comparableParcels && comparableParcels.length > 0){
-          hideOtherSearchFeatures(false)
+          //hideOtherSearchFeatures(false)
           clearSelectedParcelsByType(COMPARABLE_PARCEL) 
           clearResultsComparables()
         }
@@ -629,13 +629,13 @@ const Map = () => {
             
 
           if(comparableParcels && comparableParcels.length > 0){
-            hideOtherSearchFeatures(false)
+            //hideOtherSearchFeatures(false)
             clearSelectedParcelsByType(COMPARABLE_PARCEL)
-            hideOtherSearchFeatures(true, comparableParcels)
+            //hideOtherSearchFeatures(true, comparableParcels)
             handleParcelSelection(comparableParcels, COMPARABLE_PARCEL)
           }
           else{
-            hideOtherSearchFeatures(false)
+            //hideOtherSearchFeatures(false)
             clearSelectedParcelsByType(COMPARABLE_PARCEL)
           }
 
