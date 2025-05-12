@@ -785,6 +785,13 @@ const GuidedTour = () => {
                 <p>{translateText("To learn more about how to use CookViewer’s features, click the Help icon in the top navigation bar. There, you’ll find step-by-step guidance and additional support resources.")}</p>
                 <p>{translateText("Thank you for using CookViewer. Your feedback helps us continue to improve.")}</p>
             </div>
+            <CalciteLabel layout="inline" slot="footer-start">
+                <CalciteCheckbox 
+                label={translateText("Do not show this again")}
+                onCalciteCheckboxChange={(e) => setSuppressWelcome(e.target.checked)}
+                ></CalciteCheckbox>
+                {translateText("Do not show this again")}
+            </CalciteLabel>
             <CalciteButton 
                 slot="footer-end"
                 label="start-tour"
