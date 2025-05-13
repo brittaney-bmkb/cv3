@@ -61,11 +61,15 @@ const Print = () => {
            mapView,
            primaryResultFeature,
            searchFeatures,
-           selectPanelClosed
+           selectPanelClosed,
+           comparableParcels
        } = UseAppContext()
        
+
+       const compareLayerId = "compare-layer"
        const printViewModel = useRef(null)
        const definitionQuery = useRef(null)
+       const definitionQueryComparable = useRef(null)
 
        const [ tabSelected, setTabSelected ] = useState('map')
    
@@ -79,6 +83,7 @@ const Print = () => {
        const [ showPrintArea, setShowPrintArea ] = useState(false)
        const [ printLoading, setPrintLoading ] = useState(false)
        const [ includeAllSearchFeatures, setIncludeAllSearchFeatures ] = useState(null)
+       const [ includeComparbles, setIncludeComparables] = useState(null)
        const [ sourceId, setSourceId ] = useState(null)
 
        const [ printTitle, setPrintTitle ] = useState('untitled')
@@ -91,6 +96,7 @@ const Print = () => {
        const maskLayer = useRef(null);
        const includeSearchFeatures = useRef(null)
        const includeSearchFeaturesRef = useRef(null)
+       const includeComparablesRef = useRef(null)
 
        useEffect(() => {
 
@@ -250,6 +256,24 @@ const Print = () => {
            getDefitionQuery()
            
        },  [searchFeatures, primaryResultFeature, includeAllSearchFeatures])
+
+
+               useEffect(() => {
+
+           const getDefitionQuery = async () => {
+            
+            console.log("Include comparables: ", includeComparbles)
+            if(includeComparbles === true){
+                if(comparableParcels && comparableParcels.length > 0){
+                    definitionQueryComparable.current = await createParcelDefinitionExpression(comparableParcels)
+                }
+            }
+            console.log("definition query set: ", includeComparbles, definitionQueryComparable?.current)
+               
+           }
+           getDefitionQuery()
+           
+       },  [comparableParcels, includeComparbles])
    
        const createParcelDefinitionExpression = async (feature) => {
    
@@ -286,17 +310,35 @@ const Print = () => {
 
                const portalItem = new PortalItem({
                 portal: config.portal_gis,
-                id: config.report_id
+                id: includeComparbles ? config.report_id_comparable : config.report_id
                })
    
             //    /template.report = config.reportTemplate
                template.reportItem = portalItem
+
+
+               if(includeComparbles){
+                template.reportOptions = {
+                   "reportSectionOverrides": {
+                       "Parcels Current": {
+                           "name": "Parcels Current",
+                           "sourceId": sourceId
+                       },
+                       "Parcels Current 1": {
+                        "name": "Comparable Parcels",
+                        "sourceId": compareLayerId
+                        }
+                    }}
+               }
+               else{
                template.reportOptions = {
                    "reportSectionOverrides": {
                        "Parcels Current": {
                            "name": "Parcels Current",
                            "sourceId": sourceId
                        }}}
+               }
+
            }
            
            return template
@@ -316,12 +358,24 @@ const Print = () => {
       
             let operationalLayers = webMap.operationalLayers;
             let legendLayers = webMap.layoutOptions.legendOptions.operationalLayers
+
+            //add duplicate parcel current layer for comparable
+            if (includeComparbles) {
+                const originalLayer = operationalLayers.find(layer => layer.id === sourceId);
+                const dupLayer = structuredClone(originalLayer); // or JSON.parse(JSON.stringify(originalLayer))
+                dupLayer.id = compareLayerId
+                operationalLayers.push(dupLayer); // if modifying JSON directly
+            }
       
             if (printJobs[currentPrintJobId.current].type === 'report') {
               webMap.operationalLayers = operationalLayers.map((layer) => {
                 if (layer.id === sourceId && definitionQuery.current) {
                     console.log("setting definition query for ", sourceId, definitionQuery.current)
                     layer.layerDefinition.definitionExpression = definitionQuery.current;
+                }
+                if(includeComparbles && layer.id === compareLayerId && definitionQueryComparable.current){
+                    console.log("filtering comparable parcel data: ", definitionQueryComparable.current, layer)
+                    layer.layerDefinition.definitionExpression = definitionQueryComparable.current;
                 }
                 return layer;
               });
@@ -381,11 +435,11 @@ const Print = () => {
            }
            
            const template  = await preparePrintParams(tabSelected)
-
-           //try {
+            setPrintExecuting(true)
+           try {
                 
                 setTabSelected('prints')
-                setPrintExecuting(true)
+                
                 const result = await printViewModel.current.print(template)
 
                 if(result?.url){
@@ -400,9 +454,9 @@ const Print = () => {
                     })
                     )
                 }
-        //    } catch (error) {
-        //         console.error("Printing failed")
-        //    }
+            } catch (error) {
+                 console.error("Printing failed")
+            }
            
            setPrintExecuting(false)
        }
@@ -487,6 +541,7 @@ const Print = () => {
                }
                {
                 tabSelected === 'report' && (
+                    <div>
                     <CalciteLabel
                     layout="inline"
                     >
@@ -505,6 +560,37 @@ const Print = () => {
                     </CalciteTooltip>
                         
                     </CalciteLabel>
+                    <CalciteLabel
+                    layout="inline"
+                    >
+                    <CalciteSwitch
+                        for="include-comparables-help"
+                        disabled={!comparableParcels || comparableParcels.length === 0}
+                        checked={includeComparbles }
+                        onCalciteSwitchChange={(e) => {
+                            setIncludeComparables(e.target.checked)
+                            
+                            
+                        }}
+                    />
+                    
+                    {translateText("Include comparables")}
+
+                    <CalciteIcon 
+                    ref={includeComparablesRef} 
+                    id="include-comparables-help" 
+                    icon='information' scale='s'/>
+
+
+                    <CalciteTooltip referenceElement={includeComparablesRef.current}>
+                        <span className="form-description">{
+                        !comparableParcels || comparableParcels.length === 0 ? 
+                        translateText("Search for comparable parcels to include them in your report")
+                        : translateText("Generate reports for all comparable results")}</span>
+                    </CalciteTooltip>
+                        
+                    </CalciteLabel>
+                    </div>
                 )
                }
 
