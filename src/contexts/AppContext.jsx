@@ -1171,6 +1171,22 @@ export const AppProvider = ({children}) => {
         setPrimaryResultFeature(selectedFeature, false)
         
         setSearchResults(null, searchFeatures, searchTerm, searchFeatures)
+
+        if(!selectedFeature || !selectedFeature[0]) return;
+        
+        let extent = selectedFeature[0].geometry
+        
+        if(!arcgisMapRef.current) return
+
+        const view = arcgisMapRef.current.view
+        if(!view) return
+        
+        if(extent){
+          await view.when()
+          view.goTo(extent)
+        }
+
+
     }
 
 
