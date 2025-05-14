@@ -328,7 +328,10 @@ const Print = () => {
                         "name": "Comparable Parcels",
                         "sourceId": compareLayerId
                         }
-                    }}
+                    },
+                }
+
+
                }
                else{
                template.reportOptions = {
@@ -340,6 +343,8 @@ const Print = () => {
                }
 
            }
+
+           console.log("report options: ", template.reportOptions)
            
            return template
        }
@@ -436,7 +441,7 @@ const Print = () => {
            
            const template  = await preparePrintParams(tabSelected)
             setPrintExecuting(true)
-           try {
+           //try {
                 
                 setTabSelected('prints')
                 
@@ -454,9 +459,11 @@ const Print = () => {
                     })
                     )
                 }
-            } catch (error) {
-                 console.error("Printing failed")
-            }
+            // } catch (error) {
+            //      console.error("Printing failed: ", error)
+            //      setPrintExecuting(false)
+                 
+            // }
            
            setPrintExecuting(false)
        }
