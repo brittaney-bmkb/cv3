@@ -382,7 +382,7 @@ const Print = () => {
               webMap.mapOptions.extent = boxExtent.current;
             }
       
-            let operationalLayers = webMap.operationalLayers;
+            let operationalLayers = webMap.operationalLayers.filter(layer => layer.id !== 'print-area');
             let legendLayers = webMap.layoutOptions.legendOptions.operationalLayers
 
             print("print legend props: ", legendLayers)

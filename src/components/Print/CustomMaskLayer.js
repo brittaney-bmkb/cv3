@@ -37,7 +37,7 @@ const CustomLayerView2D = BaseLayerView2D.createSubclass({
     const layerView = this;
     const layer = layerView.layer;
 
-    const handler = ([geometry, distance, color], [oldGeometry, oldDistance, oldColor]) => {
+    const handler = ([ id, geometry, distance, color], [oldGeometry, oldDistance, oldColor]) => {
       console.log("handler is called")
       if (!layer.geometry) {
         layerView.projectedGeometry = null;
@@ -79,13 +79,13 @@ const CustomLayerView2D = BaseLayerView2D.createSubclass({
 
     // Make sure that the effect is applied automatically at load time.
     console.log("calling handler")
-    handler([this.layer.geometry, this.layer.distance, this.layer.color], [null, null, null]);
+    handler([this.layer.id, this.layer.geometry, this.layer.distance, this.layer.color], [null, null, null]);
 
     // Update and reapply the effect every time that the `geometry`, `distance`
     // or `color` properties on the layer change.
     this.watchHandles.add([
       reactiveUtils.watch(
-        () => [this.layer.geometry, this.layer.distance, this.layer.color],
+        () => [this.layer.id, this.layer.geometry, this.layer.distance, this.layer.color],
         handler
       )
     ])
@@ -308,6 +308,7 @@ const CustomMaskLayer = Layer.createSubclass({
     tileInfo: TileInfo.create({ size: 512, spatialReference: { wkid: 102671 } }),
 
     constructor: function (params) {
+      this.id = params?.id?? 'print-area';
         this.geometry = params?.geometry ?? null;
         this.distance = params?.distance ?? 25;
         this.color = params?.color ?? [0, 0, 0, 0.8];
@@ -333,6 +334,7 @@ const CustomMaskLayer = Layer.createSubclass({
   },
 
   properties: {
+    id:{},
     geometry: {},
     distance: {},
     color: {}
