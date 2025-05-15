@@ -107,7 +107,7 @@ const HeaderMenu = () => {
                                                 slot="submenu-item" 
                                                 key={subMenuItem} 
                                                 label={subMenuItem}
-                                                text={titleCase(translateText(subMenuItem))}
+                                                text={titleCase(translateText(subMenuItem.replace('spanish', 'español')))}
                                                 onCalciteMenuItemSelect={(e) => {
                                                     console.log("menu item: ", e)
                                                     handleClick(subMenuItem)
@@ -173,7 +173,7 @@ export const HeaderMenuMobile = () => {
 
             Object.keys(submenuItems).forEach((submenuItem) => {
                 const menuItem = document.createElement("calcite-menu-item");
-                menuItem.setAttribute("text", titleCase(translateText(submenuItem)));
+                menuItem.setAttribute("text", titleCase(translateText(submenuItem.replace("spanish","español"))));
                 menuItem.addEventListener('click', () => handleClick(submenuItem))
                 menuElement.appendChild(menuItem)
             });
