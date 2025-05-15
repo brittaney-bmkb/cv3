@@ -434,7 +434,7 @@ const Help = () => {
 
               </p>
           
-              <p>{translateText("How to Print a map:")}</p>
+              <p>{translateText("How to Print a Map:")}</p>
               <ul>
                 <li>{translateText("Click on the Print button on the right hand side of the application.")}</li>
                 <li>{translateText("Give the export a title.")}</li>
