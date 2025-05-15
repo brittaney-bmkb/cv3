@@ -775,18 +775,18 @@ const Print = () => {
                            tab="map"
                            selected={tabSelected === "map"}
                            >
-                           Map
+                           {translateText("Map")}
                        </CalciteTabTitle>
                        <CalciteTabTitle 
                            tab="report"
                            selected={tabSelected === "report"}>
-                           Report
+                           {translateText("Report")}
                        </CalciteTabTitle>
                        <CalciteTabTitle 
                            tab="prints"
                            selected={tabSelected === "prints"}
                            >
-                           Prints
+                           {translateText("Print")}
                        </CalciteTabTitle>
                    </CalciteTabNav>
                    <CalciteTab 

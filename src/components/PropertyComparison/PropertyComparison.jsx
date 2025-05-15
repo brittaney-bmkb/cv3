@@ -63,13 +63,13 @@ const PropertyComparison = () => {
         // }
 
         if(currentStep===0){
-            setTitle('Comparable Property Search')
+            setTitle(translateText('Comparable Property Search'))
         }
         else if(currentStep===1 && comparableParcels){
-            setTitle(`Comparable Property Results (${comparableParcels.length})`)
+            setTitle(` ${translateText('Comparable Property Search')} (${comparableParcels.length})`)
         }
         else if(currentStep===2 && secondaryResultFeature){
-            setTitle('Comparable Property Detail')
+            setTitle(translateText('Comparable Property Search'))
         }
 
     }, [currentStep, comparableParcels, secondaryResultFeature])
@@ -111,7 +111,7 @@ const PropertyComparison = () => {
                 currentStep > 0 ?
                 <CalciteActionBar slot="action-bar" layout="horizontal" expandDisabled> 
                     <CalciteAction 
-                        text="clear" 
+                        text={translateText('Clear')} 
                         icon="reset" 
                         disabled={comparableParcels ? false : true} 
                         textEnabled 
@@ -119,7 +119,7 @@ const PropertyComparison = () => {
                         onClick={clearResultsComparables}
                     ></CalciteAction>
                     <CalciteAction 
-                        text="export" 
+                        text={translateText('Export')} 
                         icon="export" 
                         disabled={comparableParcels ? false : true} 
                         textEnabled 
@@ -132,7 +132,7 @@ const PropertyComparison = () => {
                         }}
                     ></CalciteAction>
                     <CalciteAction 
-                        text="feedback" 
+                        text={translateText('Feedback')} 
                         icon="speech-bubble-exclamation" 
                         disabled={comparableParcels ? false : true} 
                         textEnabled 

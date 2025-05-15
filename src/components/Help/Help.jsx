@@ -429,21 +429,36 @@ const Help = () => {
             <div>
               <p>
                 {translateText(
-                  "The print functionality allows users to generate and save a PDF report of a selected property or comparable property, including its key characteristics and details, for various uses."
+                  "Print a map of your selected parcel, aerial imagery, and any selected map layer. A parcel does not need be selected - use this option to capture your current map view."
                 )}
 
               </p>
           
-              <p>{translateText("How to use the Print tool:")}</p>
+              <p>{translateText("How to Print a Map:")}</p>
               <ul>
                 <li>{translateText("Click on the Print button on the right hand side of the application.")}</li>
                 <li>{translateText("Give the export a title.")}</li>
                 <li>{translateText("Select the template size, default is 11 x 8.5 in.")}</li>
+                <li>{translateText("OPTIONAL: Show print area.")}</li>
                 <li>{translateText("Select the export file format, default PDF.")}</li>
                 <li>{translateText("OPTIONAL: Fill out advanced options.")}</li>
                 <li>{translateText("Click Export when ready.")}</li>
+                <li>{translateText("You will be taken to the Print Tab to download...")}</li>
               </ul>
-          
+
+
+              <p>{translateText("How to Print a Report:")}</p>
+              <ul>
+                <li>{translateText("Click on the Print button on the right hand side of the application.")}</li>
+                <li>{translateText("Click on Report Tab.")}</li>
+                <li>{translateText("Give the export a title.")}</li>
+                <li>{translateText("Select the template size, default is 11 x 8.5 in.")}</li>
+                <li>{translateText("OPTIONAL: Show print area.")}</li>
+                <li>{translateText("OPTIONAL: Include all search results.")}</li>
+                <li>{translateText("Click Export when ready.")}</li>
+                <li>{translateText("You will be taken to the Print Tab to download...")}</li>
+              </ul>
+
             </div>
           ),
           // link: "/help#print"

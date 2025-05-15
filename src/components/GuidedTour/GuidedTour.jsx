@@ -56,19 +56,9 @@ const GuidedTour = () => {
             localStorage.setItem("hideWelcomeDialog", "true")
             setSuppressTourDialog(true)
           }
-        
           setTourDialogOpen(false)
           setCurrentStop(0);
           setOpenTour(true);
-
-          //toggle off all panels
-          //togglePanel('all')
-
-          // if(searchFeatures){
-          //   clearResults()
-          //   clearResultsComparables()
-          // }
-
     }
 
     const handleSkipTour = () => {
@@ -76,7 +66,6 @@ const GuidedTour = () => {
           localStorage.setItem("hideWelcomeDialog", "true");
           setSuppressTourDialog(true)
         }
-      
         setTourDialogOpen(false)
         setOpenTour(false);
       };
@@ -86,19 +75,15 @@ const GuidedTour = () => {
         if (index < Object.keys(tourRoute).length - 1) {
 
             if(index === 1 & searchFeatures?.length === 1){
-
                 setCurrentStop(index + 2)
             }
             else{
-
                 if(index === 2){
                     togglePanel("property")
                 }
-
                 if(index === 4){
                     togglePanel("compare")
                 }
-
                 setCurrentStop(index + 1);
             }
           
@@ -114,24 +99,14 @@ const GuidedTour = () => {
         setOpenTour(false)
         setDialogEndOpen(false)
         setCurrentStop(null)
-        // togglePanel("all")
-        // clearResults()
-        // clearResultsComparables()
-        //refPopover.current.open = false
 
         if(!popoverRefs.current) return;
-
-        popoverRefs.current.map((popoverRef) => {
-
-          if(!popoverRef.current) return;
-
-          
-          updateStyle(popoverRef.current.id)
-
+          popoverRefs.current.map((popoverRef) => {
+            if(!popoverRef.current) return;
+            updateStyle(popoverRef.current.id)
           }     
         )
-        
-    }
+      }
 
     const getAncestors = (element) => {
         const ancestors = new Set();
@@ -198,17 +173,18 @@ const GuidedTour = () => {
     const tourRoute = {
        0: {
         id: "translate",
-        heading: "Select a Language",
+        heading: translateText("Select a Language"),
+        
         description: <div ><p>{translateText("CookViewer is now available in multiple languages. Use the Translate button in the top-right corner to switch between English and Spanish.")}</p>
         <p>{translateText("Click the button now to open the language menu and choose your preferred language. Your selection will update the interface text throughout the application.")}</p>
         <p>{translateText("Click 'Next' to search for a parcel.")}</p>
         </div>,
-        accessibleLabel: "some text",
+        accessibleLabel: translateText("Translate. Switch CookViewer between English and Spanish."),
         div: document.getElementById("translate")
        },
        1: {
         id: "search-bar",
-        heading: "Search for a Property",
+        heading: translateText("Search for a Property"),
         description:<div>
             <p>{translateText("Use the Search bar to find properties across Cook County. You can search by:")}
             </p>
@@ -221,12 +197,12 @@ const GuidedTour = () => {
             <p>{translateText("Start typing in the search bar to see suggestions and select a result to zoom directly to that location on the map.")}</p>
             <p>{translateText("Click 'Next' to explore search results.")}</p>
         </div>,
-        accessibleLabel: "some text",
+        accessibleLabel: translateText("Search for a property in Cook County by street address, Property Index Number (PIN), or street intersection."),
         div: document.getElementById("search-bar")
        }, 
        2: {
         id: "search-results-panel",
-        heading: "Search Results Panel",
+        heading: translateText("Search Results Panel"),
         description:<div>
             <p>{translateText("The Search Results Panel displays the number of properties returned by your search. From here, you can:")}</p>
             <ul>
@@ -235,16 +211,16 @@ const GuidedTour = () => {
                 <li>{translateText("Submit feedback using the toolbar at the top of the panel")}</li>
                 <li>{translateText("Select a property from the list to view detailed information")}</li>
             </ul>
-            <p>{translateText("New in CookViewer 3.1: You can now collapse or close this panel to give yourself more space to explore the map.")}</p>
+            <p>{translateText("New in CookViewer 3.1: You can now collapse or close this panel to give yourself more space to explore the map.", true)}</p>
             <p>{translateText("Try selecting a result or using the toolbar options to explore these features.")}</p>
             <p>{translateText("Or click 'Next' to see property details.")}</p>
         </div>,
-        accessibleLabel: "some text",
+        accessibleLabel: translateText("Search Results Panel. View and manage properties found in your search. Clear results, export data, submit feedback, or select a property for details."),
         div: document.getElementById("search-results-panel")
        },
        3: {
         id: "property-detail-panel",
-        heading: "Property Details Panel",
+        heading: translateText("Property Details Panel"),
         description: <div>
             <p>{translateText("The Property Details Panel provides comprehensive information about a selected property. It includes:")}</p>
             <ul>
@@ -256,15 +232,15 @@ const GuidedTour = () => {
                 <li>{translateText("Tools for comparing properties for appeals")}</li>
             </ul>
             <p>{translateText("The top toolbar also lets you clear, export, or submit feedback.")}</p>
-            <p>{translateText('New in CookViewer 3.1: Use the built-in search bar to quickly find key information. Type in terms like "assessed value" or "district" to filter the panel and highlight relevant data.')}</p>
+            <p>{translateText('New in CookViewer 3.1: Use the built-in search bar to quickly find key information. Type in terms like "assessed value" or "district" to filter the panel and highlight relevant data.', true)}</p>
             <p>{translateText("Try using the search bar now to explore the available property details.")}</p>
             <p>{translateText("Click 'Next' to learn about finding comparable properties.")}</p>
         </div>,
-        accessibleLabel: "some text"
+        accessibleLabel: translateText("Property Details Panel. View location, tax, value, building details, and comparison tools for the selected property."),
        },
        4: {
         id: "comparable_properties-button",
-        heading: "Compare Properties",
+        heading: translateText("Compare Properties"),
         description: <div>
           <p>{translateText("Use the Comparable Properties and Nearby Parcels tools to find properties with similar characteristics or nearby locations.")}</p>
           <ul>
@@ -273,11 +249,11 @@ const GuidedTour = () => {
             <li>{translateText("Click 'Next' to begin your comparable property search.")}</li>
           </ul>
         </div>,
-        accessibleLabel: "some text"        
+        accessibleLabel: translateText("Compare Properties. Find and review properties with similar characteristics or nearby locations.")     
        },
        5: {
         id: "comparable-panel",
-        heading: "Compare This Property",
+        heading: translateText("Compare This Property"),
         description: <div>
             <p>{translateText("You can now use CookViewer to find comparable properties—properties with similar characteristics, assessed values, and locations.")}</p>
             <p>{translateText('To begin, locate and select your property on the map, then click "Compare this Property." CookViewer will automatically filter nearby properties based on key factors like:')}</p>
@@ -297,11 +273,11 @@ const GuidedTour = () => {
             <p>{translateText("Use this tool to better understand how your property compares for assessment or appeals. Perform a search by scrolling down and clicking Search.")}</p>
             <p>{translateText("Then click 'Next' to explore and learn about search results.")}</p>
         </div>,
-        accessibleLabel: "some text"
+        accessibleLabel: translateText("Compare This Property panel. Find and review properties with similar characteristics, values, and locations to your selected property.")
        },
        6: {
         id: "comparable-panel" ,
-        heading: "Comparable Results",
+        heading: translateText("Comparable Results"),
         description: <div>
           <p>{translateText("This panel displays a list of comparable properties based on your selected property.")}</p>
           <p>{translateText("Just like the main search results, you can:")}</p>
@@ -311,16 +287,16 @@ const GuidedTour = () => {
             <li>{translateText("Submit feedback using the toolbar at the top")}</li>
             <li>{translateText("Click a property to view its detailed information")}</li>
           </ul>
-          <p>{translateText("New in CookViewer 3.1: Easily switch between Comparable Search, Results, and Property Detail views using the tabs at the top of the panel.")}</p>
+          <p>{translateText("New in CookViewer 3.1: Easily switch between Comparable Search, Results, and Property Detail views using the tabs at the top of the panel.", true)}</p>
           <p>{translateText("Try selecting a property or using the toolbar to explore the available tools.")}</p>
           <p>{translateText("Then click 'Next' to learn about the comparable property details.")}</p>
         </div>,
-        accessibleLabel: "some text",
+        accessibleLabel: translateText("Comparable Results panel. View and manage a list of properties similar to your selected property. Clear results, export data, submit feedback, or select a property for details."),
         div: document.getElementById("comparable-panel" )
       },
       7: {
         id: "comparable-panel" ,
-        heading: "Comparable Property",
+        heading: translateText("Comparable Property"),
         description: <div>
           <p>{translateText("This panel displays the comparable property details similar to the information in the property details panels in the left panel.")}</p>
           <p>{translateText("Just like the main property details panel, you can view:")}</p>
@@ -332,16 +308,16 @@ const GuidedTour = () => {
                 <li>{translateText("Political and taxing district information")}</li>
             </ul>
             <p>{translateText("The top toolbar also lets you clear your comparable search, export your comparable property details, or submit feedback.")}</p>
-            <p>{translateText('New in CookViewer 3.1: Use the built-in search bar to quickly find key information. Type in terms like "assessed value" or "district" to filter the panel and highlight relevant data.')}</p>
+            <p>{translateText('New in CookViewer 3.1: Use the built-in search bar to quickly find key information. Type in terms like "assessed value" or "district" to filter the panel and highlight relevant data.', true)}</p>
             <p>{translateText("Try using the search bar now to explore the available comparable property details.")}</p>
             <p>{translateText("Click 'Next' to learn about printing a map and report.")}</p>
         </div>,
-        accessibleLabel: "some text",
+        accessibleLabel: translateText("Comparable Property panel. View location, tax, value, building details, and resources for the selected comparable property."),
         div: document.getElementById("comparable-panel" )
       },
       8: {
         id: "print-tabs" ,
-        heading: "Print a map or report",
+        heading: translateText("Print a map or report"),
         description: <div>
           <p>{translateText("You can now print a map or a report using the Print panel.")}</p>
           <p>{translateText("To print your map, follow these steps:")}</p>
@@ -353,17 +329,17 @@ const GuidedTour = () => {
             <li>{translateText("Select a file type.")}</li>
             <li>{translateText("Click the 'Print' button to start your print job.")}</li>
           </ul>
-          <p>{translateText("Once the print begins, the Prints tab will open to show the job status. When it’s finished, click the job name to view and download your file in a new window.")}</p>
+          <p>{translateText("Once the print begins, the Prints tab will open to show the job status. When it's finished, click the job name to view and download your file in a new window.")}</p>
           <p>{translateText("Click 'Next' to learn how to create a report.")}</p>
         </div>,
-        accessibleLabel: "some text",
+        accessibleLabel: translateText("Print panel. Create and download a map or report by selecting options and starting a print job."),
         div: document.getElementById("print-tabs" )
       },
       9: {
         id: "print-tabs" ,
-        heading: "Print a report",
+        heading: translateText("Print a report"),
         description: <div>
-        <p>{translateText("In CookViewer 3.1, you can now print a detailed report that includes your map and property information for your selected property, search results, and comparable properties.")}</p>
+        <p>{translateText("In CookViewer 3.1, you can now print a detailed report that includes your map and property information for your selected property, search results, and comparable properties.", true)}</p>
         <p>{translateText("Reports are exported in PDF format in standard letter (8.5\" x 11\") size.")}</p>
         <p>{translateText("To create a report, follow these steps:")}</p>
         <ul>
@@ -377,12 +353,12 @@ const GuidedTour = () => {
         </ul>
         <p>{translateText("Note: Reports with many properties may take longer to generate.")}</p>
       </div>,
-        accessibleLabel: "some text",
+        accessibleLabel: translateText("Print Report panel. Create and export a detailed PDF report with your map, property information, search results, and comparable properties."),
         div: document.getElementById("print-tabs" )
       },
        10: {
         id: "start-action-bar",
-        heading: "Panel Selector",
+        heading: translateText("Panel Selector"),
         description: <div>
             <p>{translateText("The Panel Selector on the left side of the screen provides a consistent way to navigate between key panels in CookViewer, including:")}</p>
             <ul>
@@ -395,11 +371,11 @@ const GuidedTour = () => {
             <p>{translateText("The Panel Selector can also be collapsed or expanded by clicking the toggle button at the bottom. This gives you more space for the map while still keeping important tools within reach.")}</p>
             <p>{translateText("Try clicking a button in the Panel Selector to view a panel or click 'Next' to view to property details.")}</p>
         </div>,
-        accessibleLabel: "some text"
+        accessibleLabel: translateText("Panel Selector. Navigate between key panels such as Search Results, Property Details, Info Panel, and Tour Launcher.")
        },
        11: {
         id: "export-dialog",
-        heading: "Export search results",
+        heading: translateText("Export search results"),
         description: <div>
         <p>{translateText("You can export property details from your search results to a CSV or Excel file for further use or sharing.")}</p>
         <ul>
@@ -409,12 +385,12 @@ const GuidedTour = () => {
         </ul>
         <p>{translateText("Try clicking a button in the Panel Selector to view a panel or click 'Next' to view to property details.")}</p>
        </div>,
-        accessibleLabel: "some text",
+        accessibleLabel: translateText("Export search results dialog. Export property details to a CSV or Excel file for download and sharing."),
         div: document.getElementById("export-dialog")
        },
        12: {
         id: "feedback-dialog",
-        heading: "Submit Feedback",
+        heading: translateText("Submit Feedback"),
         description: <div>
           <p>{translateText("Help us improve CookViewer by sharing your thoughts about the search results.")}</p>
           <ul>
@@ -424,7 +400,7 @@ const GuidedTour = () => {
           <p>{translateText("Your feedback goes directly to our team and helps us make CookViewer better for everyone.")}</p>
         </div>,
       
-        accessibleLabel: "some text",
+        accessibleLabel: translateText("Submit Feedback dialog. Share your thoughts about the search results to help improve CookViewer."),
         div: document.getElementById("feedback-dialog")
        },
     }
@@ -563,6 +539,7 @@ const GuidedTour = () => {
 
       let locale_code = config.language_codes[lang]
       intl.setLocale(locale_code)
+      document.documentElement.lang = locale_code;
 
       const params = ["search", "pin10", "pin14"]
       const newParams = {}
@@ -686,8 +663,7 @@ const GuidedTour = () => {
         
         <CalciteDialog
           id="welcome-dialog-language"
-          heading={translateText("Welcome to CookViewer 3.1")}
-          //description="some text"
+          heading={translateText("Welcome to CookViewer")+ " 3.1"}
           open={tourDialogOpen}
           onCalciteDialogClose={() => {
             setTourDialogOpen(false)
@@ -737,8 +713,7 @@ const GuidedTour = () => {
 
         <CalciteDialog
         id="welcome-dialog"
-        heading="CookViewer 3.1 New Features"
-        //description="some text"
+        heading={translateText("CookViewer - New Features in") + " 3.1"}
         open={tourWelcome}
         onCalciteDialogClose={() => {setTourWelcome(false)}}
         >
@@ -774,13 +749,12 @@ const GuidedTour = () => {
 
         <CalciteDialog
         id="end-dialog"
-        heading="You’ve Reached the End of the Tour"
-        // description="some text"
+        heading={translateText("You've Reached the End of the Tour")}
         open={dialogEndOpen}
         onCalciteDialogClose={() => {setDialogEndOpen(false)}}
         >
             <div>
-                <p>{translateText("You’ve reached the end of the CookViewer tour. Here’s a quick recap of what was covered:")}</p>
+                <p>{translateText("You've reached the end of the CookViewer tour. Here's a quick recap of what was covered:")}</p>
                 <ul>
                     <li>{translateText("Selecting your preferred language")}</li>
                     <li>{translateText("Searching by address, PIN, or intersection")}</li>

@@ -75,13 +75,13 @@ const NearbyPanel = () => {
     useEffect(() => {
 
         if(currentStep===0){
-            setTitle('Nearby Search')
+            setTitle(translateText('Nearby Search'))
         }
         else if(currentStep===1 && comparableParcels){
-            setTitle(`Nearby Property Results (${comparableParcels.length})`)
+            setTitle(` ${translateText('Nearby Search')} (${comparableParcels.length})`)
         }
         else if(currentStep===2 && secondaryResultFeature){
-            setTitle('Nearby Property Detail')
+            setTitle(translateText('Nearby Search'))
         }
 
     }, [currentStep, comparableParcels, secondaryResultFeature])
@@ -124,7 +124,7 @@ const NearbyPanel = () => {
             currentStep > 0 ?
             <CalciteActionBar slot="action-bar" layout="horizontal" expandDisabled> 
                 <CalciteAction 
-                    text="clear" 
+                    text={translateText('Clear')}
                     icon="reset" 
                     disabled={comparableParcels ? false : true} 
                     textEnabled 
@@ -132,7 +132,7 @@ const NearbyPanel = () => {
                     onClick={clearResultsComparables}
                 ></CalciteAction>
                 <CalciteAction 
-                    text="export" 
+                    text={translateText('Export')} 
                     icon="export" 
                     disabled={comparableParcels ? false : true} 
                     textEnabled 
@@ -145,7 +145,7 @@ const NearbyPanel = () => {
                     }}
                 ></CalciteAction>
                 <CalciteAction 
-                    text="feedback" 
+                    text={translateText('Feedback')} 
                     icon="speech-bubble-exclamation" 
                     disabled={comparableParcels ? false : true} 
                     textEnabled 
