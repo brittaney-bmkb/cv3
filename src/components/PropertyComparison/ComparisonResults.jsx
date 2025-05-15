@@ -38,7 +38,7 @@ const ComparisonResults = () => {
                     {/* SEARCH RESULT ACTIONS */}
                     <CalciteActionBar slot="action-bar" layout="horizontal" expandDisabled> 
                         <CalciteAction 
-                            text="clear" 
+                            text={translateText('Clear')} 
                             icon="reset" 
                             disabled={comparableParcels ? false : true} 
                             textEnabled 
@@ -46,7 +46,7 @@ const ComparisonResults = () => {
                             onClick={clearResultsComparables}
                         ></CalciteAction>
                         <CalciteAction 
-                            text="export" 
+                            text={translateText('Export')} 
                             icon="export" 
                             disabled={comparableParcels ? false : true} 
                             textEnabled 
@@ -54,7 +54,7 @@ const ComparisonResults = () => {
                            //onClick={() => {setOpenExportDialog(true)}}
                         ></CalciteAction>
                         <CalciteAction 
-                            text="feedback" 
+                            text={translateText('Feedback')} 
                             icon="speech-bubble-exclamation" 
                             disabled={comparableParcels ? false : true} 
                             textEnabled 

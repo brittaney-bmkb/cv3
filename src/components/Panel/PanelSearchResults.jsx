@@ -54,7 +54,7 @@ const PanelSearchResults = () => {
                     <CalciteActionBar slot="action-bar" layout="horizontal" expandDisabled> 
                         <CalciteAction 
                             id="clear-search-results"
-                            text="clear" 
+                            text={translateText('Clear')} 
                             icon="reset" 
                             disabled={searchFeatures ? false : true} 
                             textEnabled 
@@ -63,7 +63,7 @@ const PanelSearchResults = () => {
                         ></CalciteAction>
                         <CalciteAction 
                             id="export-search-results"
-                            text="export" 
+                            text={translateText('Export')} 
                             icon="export" 
                             disabled={searchFeatures ? false : true} 
                             textEnabled 
@@ -77,7 +77,7 @@ const PanelSearchResults = () => {
                         ></CalciteAction>
                         <CalciteAction 
                             id="submit-search-feedback"
-                            text="feedback" 
+                            text={translateText('Feedback')} 
                             icon="speech-bubble-exclamation" 
                             disabled={searchFeatures ? false : true} 
                             textEnabled 

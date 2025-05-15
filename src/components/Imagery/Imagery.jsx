@@ -31,7 +31,8 @@ const Imagery = () => {
                 <CalciteBlock
                 open
                 heading="Add aerial imagery to the map"
-                description={translateText("Toggle aerial imagery yada yada yada to show/hide them in the map")}
+                description={translateText("Toggle between aerial imagery and basemaps to update the map.")}
+                // "Select a basemap from the options below to update the map"
                 //style={{height: '95%', overflow:'clip'}}
                 >   
                 <arcgis-basemap-gallery

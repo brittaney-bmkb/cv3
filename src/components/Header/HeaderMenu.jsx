@@ -61,6 +61,8 @@ const HeaderMenu = () => {
         setLanguage(language)
         let locale_code = config.language_codes[language]
         intl.setLocale(locale_code)
+        document.documentElement.lang = locale_code;
+        console.log("locale code to: ", intl.getLocale())
 
         const params = ["search", "pin10", "pin14"]
         const newParams = {}

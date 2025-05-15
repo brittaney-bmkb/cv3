@@ -314,7 +314,7 @@ const PanelPropertyDetail = () => {
                     expandDisabled
                     > 
                         <CalciteAction 
-                            text="clear" 
+                            text={translateText('Clear')} 
                             icon="reset" 
                             disabled={searchFeatures ? false : true} 
                             textEnabled
@@ -322,7 +322,7 @@ const PanelPropertyDetail = () => {
                             onClick={handleClearResults}
                         ></CalciteAction>
                         <CalciteAction 
-                            text="export" 
+                            text={translateText('Export')} 
                             icon="export" 
                             disabled={searchFeatures ? false : true} 
                             textEnabled
@@ -335,7 +335,7 @@ const PanelPropertyDetail = () => {
                             }}
                         ></CalciteAction>
                         <CalciteAction 
-                            text="feedback" 
+                            text={translateText('Feedback')} 
                             icon="speech-bubble-exclamation" 
                             disabled={searchFeatures ? false : true} 
                             textEnabled
