@@ -35,7 +35,7 @@ export const radiusTypes = {
 
 const ComparisonForm = ({refElement, setCurrentStep}) => {
 
-    const { setComparableType, searchComparableProperties, translateText, setComparablePanel,  comparablePanelClosed, primaryResultFeature} = UseAppContext()
+    const { clearResultsComparables, setComparableType, searchComparableProperties, translateText, setComparablePanel,  comparablePanelClosed, primaryResultFeature} = UseAppContext()
 
     const [ buildingSqFtMin, setBuildingSqFtMin ] = useState(0)
     const [ buildingSqFtMax, setBuildingSqFtMax ] = useState(0)
@@ -44,7 +44,7 @@ const ComparisonForm = ({refElement, setCurrentStep}) => {
     const [ constructionType, setConstructionType ] = useState(constructionTypes[0])
     const [ ageMax, setAgeMax ] = useState(0)
     const [ ageMin, setAgeMin ] = useState(0)
-    const [ radiusTypeValue, setRadiusTypeValue ] = useState(Object.keys(radiusTypes)[0])
+    const [ radiusTypeValue, setRadiusTypeValue ] = useState(Object.keys(radiusTypes)[2])
     const [ sourceParcel, setSourceParcel ] = useState(null)
 
     useEffect(() => {
@@ -148,8 +148,15 @@ const ComparisonForm = ({refElement, setCurrentStep}) => {
                         setAgeMax(buildingAge+ageRange)
                         setAgeMin(buildingAge-ageRange < 0 ? 0 : buildingAge-ageRange )
                     }
-                    
-    
+
+                    //CONSTRUCTION TYPE
+                    const construction = attributes["bldg_const_desc"]
+                    if(construction){
+                        setConstructionType(construction)
+                    }
+                    else{
+                        setConstructionType(constructionTypes[0])
+                    }
                 }
             }
     
@@ -392,7 +399,13 @@ const ComparisonForm = ({refElement, setCurrentStep}) => {
                 {/* </CalciteBlock> */}
 
                 <div slot="footer-end" style={{display: "flex", gap: '20px', justifyContent:'end'}}>
-                <CalciteButton iconStart="reset" appearance="outline">
+                <CalciteButton 
+                iconStart="reset" 
+                appearance="outline"
+                onClick={() => {
+                    clearResultsComparables()
+                }}
+                >
                     {translateText('Reset')}
                 </CalciteButton>
                 <CalciteButton 
