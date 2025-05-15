@@ -49,6 +49,7 @@ import CustomMaskLayer from "./CustomMaskLayer";
 import Polygon from "@arcgis/core/geometry/Polygon.js";
 import Inactive from "../Inactive/Inactive";
 import useEsriInterceptor from "./UseInterceptor";
+import { parcelCurrent } from "./backupJson";
 
 //TODO ADD PRINT TEMPLATES
 const Print = () => {
@@ -237,18 +238,26 @@ const Print = () => {
        useEffect(() => {
            console.log("includeSearchFeatures: ", includeAllSearchFeatures)
            const getDefitionQuery = async () => {
+
+            if(searchFeatures && searchFeatures.length > 0){
             
             if(includeAllSearchFeatures === true){
-                if(searchFeatures && searchFeatures.length > 0){
+                
                     definitionQuery.current = await createParcelDefinitionExpression(searchFeatures)
+                }
+                else{
+                    if(primaryResultFeature && primaryResultFeature.length > 0){
+                        definitionQuery.current = await createParcelDefinitionExpression(primaryResultFeature)
+                }
                 }
             }
 
             else{
-                if(primaryResultFeature && primaryResultFeature.length > 0){
-                    definitionQuery.current = await createParcelDefinitionExpression(primaryResultFeature)
-                }
+                setIncludeAllSearchFeatures(false)
+                definitionQuery.current = null
             }
+
+
 
             console.log("definition query set: ", includeAllSearchFeatures, definitionQuery.current)
                
@@ -263,10 +272,21 @@ const Print = () => {
            const getDefitionQuery = async () => {
             
             console.log("Include comparables: ", includeComparbles)
-            if(includeComparbles === true){
-                if(comparableParcels && comparableParcels.length > 0){
-                    definitionQueryComparable.current = await createParcelDefinitionExpression(comparableParcels)
-                }
+
+            if(!definitionQueryComparable) return
+
+             if(comparableParcels && comparableParcels.length > 0){                          
+                if(includeComparbles === true){
+                        definitionQueryComparable.current = await createParcelDefinitionExpression(comparableParcels)
+                } 
+                else{
+                        definitionQueryComparable.current = null
+                }    
+                     
+            }
+            else{
+                setIncludeComparables(false)
+                definitionQueryComparable.current = null
             }
             console.log("definition query set: ", includeComparbles, definitionQueryComparable?.current)
                
@@ -277,7 +297,7 @@ const Print = () => {
    
        const createParcelDefinitionExpression = async (feature) => {
    
-           const pins14 = feature.map((feature) => feature.attributes[config.target_layer_unique_id])
+           const pins14 = feature?.map((feature) => feature.attributes[config.target_layer_unique_id])
    
            const expression =`${config.target_layer_unique_id} IN ('${pins14.join("','")}')`
    
@@ -352,6 +372,7 @@ const Print = () => {
        useEsriInterceptor("printInterceptor", {
         urls: config.print_service_url,
         before: (params) => {
+          console.log("print interceptor called: ", params)
           const query = params.requestOptions?.query;
           if (query?.Web_Map_as_JSON) {
             const webMap = JSON.parse(query.Web_Map_as_JSON);
@@ -364,10 +385,24 @@ const Print = () => {
             let operationalLayers = webMap.operationalLayers;
             let legendLayers = webMap.layoutOptions.legendOptions.operationalLayers
 
+            print("print legend props: ", legendLayers)
+
             //add duplicate parcel current layer for comparable
-            if (includeComparbles) {
-                const originalLayer = operationalLayers.find(layer => layer.id === sourceId);
-                const dupLayer = structuredClone(originalLayer); // or JSON.parse(JSON.stringify(originalLayer))
+            if (includeComparbles && sourceId) {
+                console.log("copying source layer: "), sourceId
+                let originalLayer = operationalLayers.find(layer => layer.id === sourceId);
+
+                if(!originalLayer){
+                    console.log("Source layer not visible at map extent referencing a backup and adding to operational layer")
+                    originalLayer = parcelCurrent
+                    originalLayer["id"] = sourceId
+                    originalLayer["url"] = config.target_layer_url
+                    operationalLayers.push(originalLayer)
+                }
+
+                console.log("original source layer: ", originalLayer) 
+                const dupLayer = structuredClone(originalLayer); // or
+                console.log("copied source layer: ", dupLayer) 
                 dupLayer.id = compareLayerId
                 operationalLayers.push(dupLayer); // if modifying JSON directly
             }
@@ -393,7 +428,19 @@ const Print = () => {
                 }
               })
 
+              legendLayers = webMap.layoutOptions.legendOptions.operationalLayers
+
             }
+
+            webMap.layoutOptions.legendOptions.operationalLayers = legendLayers.map((layer) => {
+
+                if(!layer) return;
+
+                let layerId = layer.id
+                if(!layerId.includes('CookImagery')){
+                    return layer
+                }
+              })
 
 
             webMap.operationalLayers = operationalLayers.filter(
@@ -441,7 +488,7 @@ const Print = () => {
            
            const template  = await preparePrintParams(tabSelected)
             setPrintExecuting(true)
-           //try {
+           try {
                 
                 setTabSelected('prints')
                 
@@ -459,13 +506,32 @@ const Print = () => {
                     })
                     )
                 }
-            // } catch (error) {
-            //      console.error("Printing failed: ", error)
-            //      setPrintExecuting(false)
+
+            } catch (error) {
+                 console.error("Printing failed: ", error)
+                
+                const updatedTitle = `${printTitle}.${tabSelected === 'report' ? 'pdf' : extractTextInParentheses(format)}`
+
+                setPrintJobs( (prev) => ({
+                        ...prev,
+                        [jobKey]: {
+                            ...job[jobKey],
+                            title: `${updatedTitle} ${translateText("failed")}`,
+                            link: null,
+                            description: `${translateText("Print failed to complete. try your print again")}`
+                        }
+                    })
+                    )
                  
-            // }
+            }
+            finally {
+
+                setPrintExecuting(false); 
+
+
+            }
            
-           setPrintExecuting(false)
+
        }
    
        const layoutDiv = () => ((
