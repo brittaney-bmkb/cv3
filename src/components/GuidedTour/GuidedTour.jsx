@@ -686,7 +686,7 @@ const GuidedTour = () => {
         
         <CalciteDialog
           id="welcome-dialog-language"
-          heading="Welcome to CookViewer 3.1"
+          heading={translateText("Welcome to CookViewer 3.1")}
           //description="some text"
           open={tourDialogOpen}
           onCalciteDialogClose={() => {
@@ -702,7 +702,7 @@ const GuidedTour = () => {
                   <CalciteButton
                     key={code}
                     onClick={() => {updateLanguage(language)}}
-                  >{titleCase(language)}
+                  >{titleCase(language.replace("spanish","español"))}
                   </CalciteButton>
                 )
               })}
