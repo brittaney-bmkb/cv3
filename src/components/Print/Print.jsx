@@ -352,6 +352,7 @@ const Print = () => {
        useEsriInterceptor("printInterceptor", {
         urls: config.print_service_url,
         before: (params) => {
+          //console.log("print interceptor called: ", params)
           const query = params.requestOptions?.query;
           if (query?.Web_Map_as_JSON) {
             const webMap = JSON.parse(query.Web_Map_as_JSON);
@@ -363,6 +364,8 @@ const Print = () => {
       
             let operationalLayers = webMap.operationalLayers;
             let legendLayers = webMap.layoutOptions.legendOptions.operationalLayers
+
+            print("print legend props: ", legendLayers)
 
             //add duplicate parcel current layer for comparable
             if (includeComparbles) {
@@ -393,7 +396,16 @@ const Print = () => {
                 }
               })
 
+              legendLayers = webMap.layoutOptions.legendOptions.operationalLayers
+
             }
+
+            webMap.layoutOptions.legendOptions.operationalLayers = legendLayers.map((layer) => {
+                let layerId = layer.id
+                if(!layerId.includes('CookImagery')){
+                    return layer
+                }
+              })
 
 
             webMap.operationalLayers = operationalLayers.filter(
