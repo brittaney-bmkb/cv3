@@ -385,7 +385,7 @@ const Print = () => {
             let operationalLayers = webMap.operationalLayers.filter(layer => layer.id !== 'print-area');
             let legendLayers = webMap.layoutOptions.legendOptions.operationalLayers
 
-            print("print legend props: ", legendLayers)
+            //print("print legend props: ", legendLayers)
 
             //add duplicate parcel current layer for comparable
             if (includeComparbles && sourceId) {
