@@ -205,13 +205,13 @@ const PanelPropertyDetail = () => {
                                 ...prevState,
                                 incorp_unincorp_state: {
                                     ...prevState.incorp_unincorp_state,
-                                    label: muniValue,
+                                    label: translateText(muniValue),
                                     description: translateText('Municipality'),
                                     type: null
                                 },
                                 zoning_info: {
                                     ...prevState.zoning_info,
-                                    label: message,
+                                    label: translateText(message),
                                     description: translateText('Zoning Information'),
                                     type: muniValueReturned ? null : 'link'
                                 }
@@ -225,7 +225,7 @@ const PanelPropertyDetail = () => {
                                 comparable_properties: {
                                     ...prevState.comparable_properties,
                                     label: translateText("Comparable Properties"),
-                                    description:data.attributes['label'],
+                                    description: translateText(data.attributes['label']),
                                     type: 'button'
                                 },
                             }));
@@ -237,7 +237,7 @@ const PanelPropertyDetail = () => {
                                 nearby_properties: {
                                     ...prevState.nearby_properties,
                                     label: translateText("Nearby Parcels"),
-                                    description:data.attributes['label'],
+                                    description: translateText(data.attributes['label']),
                                     type: 'button'
                                 }
                             }));
@@ -263,8 +263,8 @@ const PanelPropertyDetail = () => {
                         
                                 updatedState[field] = {
                                     ...updatedState[field],  // Preserve the existing values if the field exists
-                                    label: data.attributes['hyperlink_text'] || updatedState[field].label,
-                                    description: data.attributes['credit'] || updatedState[field].description,
+                                    label: translateText(data.attributes['hyperlink_text']) || translateText(updatedState[field].label),
+                                    description: translateText(data.attributes['credit']) || translateText(updatedState[field].description),
                                     type: 'link'  // Adjust as needed
                                 };
                         
@@ -387,7 +387,7 @@ const PanelPropertyDetail = () => {
                                                             <CalciteListItem
                                                                 key={data?.attributes['field']}
                                                                 label={primaryResultFeature[0]?.attributes[data?.attributes['field']]}
-                                                                description={data?.attributes['label']}
+                                                                description={translateText(data?.attributes['label'])}
                                                                 >
                                                             </CalciteListItem>
                                                         )
@@ -412,7 +412,7 @@ const PanelPropertyDetail = () => {
                                                     //                     {translateText(data?.attributes['field'])}
                                                     //                 </CalciteButton>
                                                     //                 <CalciteLabel scale='s' className='description'>
-                                                    //                     {data?.attributes['label']}
+                                                    //                     {translateText(data?.attributes['label'])}
                                                     //                 </CalciteLabel>
                                                     //             </div>
                                                     //         </CalciteListItem>
@@ -429,7 +429,7 @@ const PanelPropertyDetail = () => {
                                                         <CalciteListItem
                                                         key={data?.attributes['field']}
                                                         label={addCommaSeparator(primaryResultFeature[0]?.attributes[data?.attributes['field']], data?.attributes['type'])}
-                                                        description={data?.attributes['label']}
+                                                        description={translateText(data?.attributes['label'])}
                                                         >
                                                         </CalciteListItem>
                                                     )
@@ -441,7 +441,7 @@ const PanelPropertyDetail = () => {
                                                         <CalciteListItem
                                                         key={data?.attributes['field']}
                                                         label={`$${addCommaSeparator(primaryResultFeature[0]?.attributes[data?.attributes['field']], data?.attributes['type'])}`}
-                                                        description={data?.attributes['label']}
+                                                        description={translateText(data?.attributes['label'])}
                                                         >
                                                         </CalciteListItem>
                                                     )
