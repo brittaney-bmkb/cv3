@@ -244,6 +244,9 @@ const Print = () => {
             const printServiceTemplates = await getPrintLayouts()
 
             console.log("printServiceTemplates: ", printServiceTemplates)
+
+            setAllowedLayouts(printServiceTemplates)
+            setLayout(printServiceTemplates[0].id)
         }
 
         updatePrintTemplates()
@@ -615,7 +618,7 @@ const Print = () => {
                    {translateText("Layout")}
                    <CalciteSelect
                    onCalciteSelectChange={(e) => {
-                       console.log("setting layout: ", e)
+                       console.log("setting layout: ", e.target.value)
                        setLayout(e.target.value)
                    }}
                    >
@@ -623,7 +626,7 @@ const Print = () => {
                    {
                    //Object.entries(allowedLayouts).map(([key, value], i ) => {
                     allowedLayouts?.length > 0 && allowedLayouts.map((value) => {
-                        console.log("layouts: ", value)
+                        //console.log("layouts: ", value)
                        return(
                            <CalciteOption 
                            key={value.id}
