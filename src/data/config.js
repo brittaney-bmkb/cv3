@@ -19,6 +19,8 @@ export const config = {
     //App Logo
     logo:"https://maps.cookcountyil.gov/cdn/cook/cook_logo.png",
     //PRINTS
+    print_group_id:"5626084802334bee87af273eb68c3e83",
+    print_portal: "https://gis.cookcountyil.gov/gisportal",
     reportTemplate: "CookViewerPropertyDetails",
     report_id: "f730c860a5004dd084845988f7e6fb71",
     report_id_comparable: "886e6ba1e4274e2f9d4aa8afde0fc9ff",
