@@ -21,6 +21,7 @@ export const config = {
     //PRINTS
     print_group_id:"5626084802334bee87af273eb68c3e83",
     print_portal: "https://gis.cookcountyil.gov/gisportal",
+    print_group_url:"https://gis.cookcountyil.gov/gisportal/home/group.html?id=5626084802334bee87af273eb68c3e83",
     reportTemplate: "CookViewerPropertyDetails",
     report_id: "f730c860a5004dd084845988f7e6fb71",
     report_id_comparable: "886e6ba1e4274e2f9d4aa8afde0fc9ff",
