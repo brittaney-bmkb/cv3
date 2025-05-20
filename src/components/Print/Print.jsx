@@ -142,6 +142,8 @@ const Print = () => {
 
                const reports = await getPrintReports()
 
+               if(!reports) return;
+
                console.log("print-reports")
    
                const map = arcgisMapRef.current.map
@@ -239,7 +241,7 @@ const Print = () => {
             //portal templates
             const templateItems = await templateGroup.queryItems()
 
-            console.log("print templates: ", templateItems)
+            console.log("report templates: ", templateItems)
 
             const reports = templateItems.results?.filter((item) => {
 
@@ -571,7 +573,6 @@ const Print = () => {
            
            const jobKey = Object.keys(printJobs).length 
 
-           
            let jobDetails = {
             "title": `${printTitle}.${tabSelected === 'report' ? 'pdf' : extractTextInParentheses(format)}`,
             "description": translateText("Download and open in new window"),
@@ -591,12 +592,12 @@ const Print = () => {
              setPrintJobs(job)
            }
            
-           const template  = await preparePrintParams(tabSelected)
-            setPrintExecuting(true)
            try {
+
+                const template  = await preparePrintParams(tabSelected)
                 
                 setTabSelected('prints')
-                
+                setPrintExecuting(true)
                 const result = await printViewModel.current.print(template)
 
                 if(result?.url){
@@ -627,7 +628,7 @@ const Print = () => {
                         }
                     })
                     )
-                 
+
             }
             finally {
 
