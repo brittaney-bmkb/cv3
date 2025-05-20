@@ -38,6 +38,8 @@ import { useEffect, useRef, useState } from "react";
 import Portal from "@arcgis/core/portal/Portal.js";
 import PortalGroup from "@arcgis/core/portal/PortalGroup.js";
 import PortalItem from "@arcgis/core/portal/PortalItem.js";
+import PortalQueryParams from "@arcgis/core/portal/PortalQueryParams.js";
+//update query with portal query params
 
 //print modules & dependencies 
 import PrintVM from "@arcgis/core/widgets/Print/PrintViewModel.js";
@@ -218,8 +220,12 @@ const Print = () => {
 
         const getPrintLayouts = async () => {
 
+            const params = new PortalQueryParams({
+                query: "type: 'Layout'"
+            })
+
             //portal templates
-            const templateItems = await templateGroup.queryItems()
+            const templateItems = await templateGroup.queryItems(params)
 
             const layouts = templateItems.results?.filter((item) => {
 
@@ -238,8 +244,12 @@ const Print = () => {
 
         const getPrintReports = async () => {
 
+            const params = new PortalQueryParams({
+                query: "type: 'Pro Report'"
+            })
+
             //portal templates
-            const templateItems = await templateGroup.queryItems()
+            const templateItems = await templateGroup.queryItems(params)
 
             console.log("report templates: ", templateItems)
 
@@ -409,12 +419,14 @@ const Print = () => {
 
             if(searchFeatures && searchFeatures.length > 0){
             
-            if(includeAllSearchFeatures === true){
-                
+            if(includeAllSearchFeatures){
+                    console.log("including all search features")
                     definitionQuery.current = await createParcelDefinitionExpression(searchFeatures)
                 }
                 else{
+
                     if(primaryResultFeature && primaryResultFeature.length > 0){
+                        console.log("including selected parcel")
                         definitionQuery.current = await createParcelDefinitionExpression(primaryResultFeature)
                 }
                 }
@@ -577,7 +589,8 @@ const Print = () => {
             "title": `${printTitle}.${tabSelected === 'report' ? 'pdf' : extractTextInParentheses(format)}`,
             "description": translateText("Download and open in new window"),
             "link": "",
-            "type": tabSelected
+            "type": tabSelected,
+            "result": null
            }
 
            let job = {}
@@ -595,7 +608,7 @@ const Print = () => {
            try {
 
                 const template  = await preparePrintParams(tabSelected)
-                
+
                 setTabSelected('prints')
                 setPrintExecuting(true)
                 const result = await printViewModel.current.print(template)
@@ -607,7 +620,8 @@ const Print = () => {
                         ...prev,
                         [jobKey]: {
                             ...job[jobKey],
-                            link: result.url
+                            link: result.url,
+                            result: 'success'
                         }
                     })
                     )
@@ -624,7 +638,8 @@ const Print = () => {
                             ...job[jobKey],
                             title: `${updatedTitle} ${translateText("failed")}`,
                             link: null,
-                            description: `${translateText("Print failed to complete. try your print again")}`
+                            description: `${translateText("Print failed to complete. try your print again")}`,
+                            result: 'fail'
                         }
                     })
                     )
@@ -818,7 +833,7 @@ const Print = () => {
                     }}
                     >   
                     {
-                        !printJobs[key].link && (
+                        !printJobs[key].result && (
                             <CalciteLoader 
                             inline
                             scale="s"
