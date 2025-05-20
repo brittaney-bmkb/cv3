@@ -502,14 +502,25 @@ const Print = () => {
             }
       
             if (printJobs[currentPrintJobId.current].type === 'report') {
+
+                //update the url based on language selection
+                let urlReplacement = config.target_layer_urls[language]
+
               webMap.operationalLayers = operationalLayers.map((layer) => {
                 if (layer.id === sourceId && definitionQuery.current) {
                     console.log("setting definition query for ", sourceId, definitionQuery.current)
                     layer.layerDefinition.definitionExpression = definitionQuery.current;
+
+                    //update the url based on language selection
+                    layer.url = urlReplacement
+
                 }
                 if(includeComparbles && layer.id === compareLayerId && definitionQueryComparable.current){
                     console.log("filtering comparable parcel data: ", definitionQueryComparable.current, layer)
                     layer.layerDefinition.definitionExpression = definitionQueryComparable.current;
+
+                    //update the url based on language selection
+                    layer.url = urlReplacement
                 }
                 return layer;
               });
