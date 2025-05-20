@@ -131,7 +131,7 @@ const Print = () => {
                 id: layout
             })
 
-            console.log("portal item Layout: ", portalItemLayout)
+            //console.log("portal item Layout: ", portalItemLayout)
    
            const template = new PrintTemplate({
                layoutItem : portalItemLayout,
@@ -139,6 +139,10 @@ const Print = () => {
            })
 
            if(jobType === 'report'){
+
+               const reports = await getPrintReports()
+
+               console.log("print-reports")
    
                const map = arcgisMapRef.current.map
                const view = arcgisMapRef.current.view
@@ -155,10 +159,11 @@ const Print = () => {
 
                const portalItem = new PortalItem({
                 portal: config.portal_gis,
-                id: includeComparbles ? config.report_id_comparable : config.report_id
+                //id: includeComparbles ? config.report_id_comparable : config.report_id
+                id: reports[0].id
                })
    
-            //    /template.report = config.reportTemplate
+            //  /template.report = config.reportTemplate
                template.reportItem = portalItem
 
 
@@ -227,10 +232,31 @@ const Print = () => {
             console.log("print layout items: ", layouts)
 
             return layouts
-            
-            //return printViewModel.current.printServiceTemplates.items.map((item) => item.layout)
-
        }
+
+        const getPrintReports = async () => {
+
+            //portal templates
+            const templateItems = await templateGroup.queryItems()
+
+            console.log("print templates: ", templateItems)
+
+            const reports = templateItems.results?.filter((item) => {
+
+                console.log("current item: ", language, item.title, item.tags)
+
+                const reportItem = (report_lang) => report_lang.includes(includeComparbles ? `report-comparables-${language}` : `report-${language}`)
+
+                
+                return item.tags.some(reportItem)
+ 
+            })
+
+            console.log("print report items: ", reports)
+
+            return reports
+       }
+
        const getPrintFormats = async () => {
         return printViewModel.current.templatesInfo.format.choiceList.map((format) => format)
 
