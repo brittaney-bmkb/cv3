@@ -1,10 +1,25 @@
 {
     "operationalLayers": [
         {
+            "layerType": "ArcGISImageServiceLayer",
+            "format": "jpgpng",
+            "mosaicRule": {
+                "ascending": true,
+                "mosaicMethod": "esriMosaicNorthwest",
+                "mosaicOperation": "MT_FIRST"
+            },
+            "url": "https://gis.cookcountyil.gov/imagery/rest/services/CookOrtho2024/ImageServer",
+            "id": "CookImagery_2616",
+            "title": "Cook County Aerial Imagery 2024",
+            "opacity": 1,
+            "minScale": 0,
+            "maxScale": 0
+        },
+        {
             "type": "VectorTileLayer",
-            "styleUrl": "https://gis.cookcountyil.gov/hosting/rest/services/Hosted/cookBaseVectorGreyStatePlane/VectorTileServer/resources/styles/root.json",
-            "id": "VectorTile_4560",
-            "title": "State Plane Street and Municipal Basemap - Light Grey",
+            "styleUrl": "https://gis.cookcountyil.gov/hosting/rest/services/Hosted/cookAerialLabelsVectorStatePlane/VectorTileServer/resources/styles/root.json",
+            "id": "VectorTile_6760",
+            "title": "Street and Municipal labels for Aerial Photography",
             "opacity": 1,
             "minScale": 0,
             "maxScale": 0
@@ -17,7 +32,7 @@
             "layerDefinition": {
                 "disableDisplayFilter": false,
                 "displayFilterInfo": null,
-                "definitionExpression": "PIN14 IN ('17204020360000')",
+                "definitionExpression": "PIN14 IN ('16184040210000')",
                 "drawingInfo": {
                     "labelingInfo": [
                         {
@@ -335,141 +350,10 @@
                             "fields": [
                                 {
                                     "alias": "OBJECTID",
-                                    "editable": false,
+                                    "editable": true,
                                     "name": "OBJECTID",
-                                    "nullable": false,
+                                    "nullable": true,
                                     "type": "esriFieldTypeOID"
-                                },
-                                {
-                                    "alias": "GlobalID",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "GlobalID",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "PARID",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "PARID",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "TAXYR",
-                                    "editable": true,
-                                    "name": "TAXYR",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeDouble"
-                                },
-                                {
-                                    "alias": "CUR",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "CUR",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "STATUS",
-                                    "editable": true,
-                                    "name": "STATUS",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeDouble"
-                                },
-                                {
-                                    "alias": "CITYNAME",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "CITYNAME",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "STATECODE",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "STATECODE",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "UNITDESC",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "UNITDESC",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "UNITNO",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "UNITNO",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "LOC2",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "LOC2",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "ZIP1",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "ZIP1",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "ZIP2",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "ZIP2",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "TAXDIST",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "TAXDIST",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "XCOORD",
-                                    "editable": true,
-                                    "name": "XCOORD",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeDouble"
-                                },
-                                {
-                                    "alias": "YCOORD",
-                                    "editable": true,
-                                    "name": "YCOORD",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeDouble"
-                                },
-                                {
-                                    "alias": "USER1",
-                                    "editable": true,
-                                    "name": "USER1",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeDouble"
-                                },
-                                {
-                                    "alias": "DEACTIVAT",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "DEACTIVAT",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
                                 },
                                 {
                                     "alias": "PIN10",
@@ -480,414 +364,6 @@
                                     "type": "esriFieldTypeString"
                                 },
                                 {
-                                    "alias": "street_address",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "street_address",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "township_number",
-                                    "editable": true,
-                                    "name": "township_number",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeDouble"
-                                },
-                                {
-                                    "alias": "township_name",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "township_name",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "latitude",
-                                    "editable": true,
-                                    "name": "latitude",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeDouble"
-                                },
-                                {
-                                    "alias": "longitude",
-                                    "editable": true,
-                                    "name": "longitude",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeDouble"
-                                },
-                                {
-                                    "alias": "PIN14_dash",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "PIN14_dash",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "Shape.STArea()",
-                                    "editable": true,
-                                    "name": "Shape.STArea()",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeDouble"
-                                },
-                                {
-                                    "alias": "Shape.STLength()",
-                                    "editable": true,
-                                    "name": "Shape.STLength()",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeDouble"
-                                },
-                                {
-                                    "alias": "city_state_zip",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "city_state_zip",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "PIN14",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "PIN14",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "find_my_dist_link",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "find_my_dist_link",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "class_info_display",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "class_info_display",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "assessor_link",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "assessor_link",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "current_procname",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "current_procname",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "current_value_desc",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "current_value_desc",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "LANDSF",
-                                    "editable": true,
-                                    "name": "LANDSF",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeDouble"
-                                },
-                                {
-                                    "alias": "CURRENTVALUE_TOTAL",
-                                    "editable": true,
-                                    "name": "CURRENTVALUE_TOTAL",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeDouble"
-                                },
-                                {
-                                    "alias": "CURRENTVALUE_LAND",
-                                    "editable": true,
-                                    "name": "CURRENTVALUE_LAND",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeDouble"
-                                },
-                                {
-                                    "alias": "CURRENTVALUE_BLDG",
-                                    "editable": true,
-                                    "name": "CURRENTVALUE_BLDG",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeDouble"
-                                },
-                                {
-                                    "alias": "CURRENTVALUE_HIE_TOT",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "CURRENTVALUE_HIE_TOT",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "hist_assessval_link",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "hist_assessval_link",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "BLDGSQFT",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "BLDGSQFT",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "bldg_const_desc",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "bldg_const_desc",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "oblique_link",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "oblique_link",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "historical_photo_link",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "historical_photo_link",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "clerk_prop_records_link",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "clerk_prop_records_link",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "property_portal_link",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "property_portal_link",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "hist_sf_mf_imp_chars_link",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "hist_sf_mf_imp_chars_link",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "BCLASS",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "BCLASS",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "major_class_description",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "major_class_description",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "class_description",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "class_description",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "BCONST",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "BCONST",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "NBHD",
-                                    "editable": true,
-                                    "name": "NBHD",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeDouble"
-                                },
-                                {
-                                    "alias": "BLDGAGE",
-                                    "editable": true,
-                                    "name": "BLDGAGE",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeDouble"
-                                },
-                                {
-                                    "alias": "created_date",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "created_date",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "last_edited_date",
-                                    "editable": true,
-                                    "name": "last_edited_date",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeDouble"
-                                },
-                                {
-                                    "alias": "XMin",
-                                    "editable": true,
-                                    "name": "XMin",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeDouble"
-                                },
-                                {
-                                    "alias": "XMax",
-                                    "editable": true,
-                                    "name": "XMax",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeDouble"
-                                },
-                                {
-                                    "alias": "YMin",
-                                    "editable": true,
-                                    "name": "YMin",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeDouble"
-                                },
-                                {
-                                    "alias": "YMax",
-                                    "editable": true,
-                                    "name": "YMax",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeDouble"
-                                },
-                                {
-                                    "alias": "pin",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "pin",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "neighborhood_code",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "neighborhood_code",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "board_of_review_district_num",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "board_of_review_district_num",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "commissioner_district_num",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "commissioner_district_num",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "tax_municipality_name",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "tax_municipality_name",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "tax_school_elem_dist_name",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "tax_school_elem_dist_name",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "tax_school_sec_dist_name",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "tax_school_sec_dist_name",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "tax_school_unified_dist_name",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "tax_school_unified_dist_name",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "tax_comm_college_dist_name",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "tax_comm_college_dist_name",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "tax_library_district_name",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "tax_library_district_name",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "tax_park_district_name",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "tax_park_district_name",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "GlobalID_1",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "GlobalID_1",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
-                                    "alias": "parcelSelectionType",
-                                    "editable": true,
-                                    "length": 255,
-                                    "name": "parcelSelectionType",
-                                    "nullable": true,
-                                    "type": "esriFieldTypeString"
-                                },
-                                {
                                     "alias": "parcelSelectionType",
                                     "editable": true,
                                     "length": 255,
@@ -910,24 +386,40 @@
                                         "rings": [
                                             [
                                                 [
-                                                    1169542.3427415518,
-                                                    1891612.0447044796
+                                                    1131545.6860782974,
+                                                    1896353.300202318
                                                 ],
                                                 [
-                                                    1169507.0772047911,
-                                                    1891611.0651062364
+                                                    1131569.196436138,
+                                                    1896353.300202318
                                                 ],
                                                 [
-                                                    1169503.6486109393,
-                                                    1891735.4740831424
+                                                    1131592.7067939783,
+                                                    1896353.300202318
                                                 ],
                                                 [
-                                                    1169538.4243485783,
-                                                    1891736.4536813856
+                                                    1131600.543579925,
+                                                    1896220.0748412218
                                                 ],
                                                 [
-                                                    1169542.3427415518,
-                                                    1891612.0447044796
+                                                    1131577.0332220846,
+                                                    1896227.9116271685
+                                                ],
+                                                [
+                                                    1131553.5228642442,
+                                                    1896227.9116271685
+                                                ],
+                                                [
+                                                    1131514.33893451,
+                                                    1896227.9116271685
+                                                ],
+                                                [
+                                                    1131514.33893451,
+                                                    1896361.1369882647
+                                                ],
+                                                [
+                                                    1131545.6860782974,
+                                                    1896353.300202318
                                                 ]
                                             ]
                                         ]
@@ -936,29 +428,7 @@
                                     "attributes": {
                                         "parcelSelectionType": "Source Parcel"
                                     }
-                                }
-                            ]
-                        }
-                    }
-                ]
-            },
-            "id": "196913a6ed4-layer-561",
-            "title": "Selected Parcels",
-            "opacity": 1,
-            "minScale": 0,
-            "maxScale": 0
-        },
-        {
-            "featureCollection": {
-                "layers": [
-                    {
-                        "layerDefinition": {
-                            "name": "polygonLayer",
-                            "geometryType": "esriGeometryPolygon"
-                        },
-                        "featureSet": {
-                            "geometryType": "esriGeometryPolygon",
-                            "features": [
+                                },
                                 {
                                     "aggregateGeometries": null,
                                     "geometry": {
@@ -969,48 +439,1774 @@
                                         "rings": [
                                             [
                                                 [
-                                                    1169399.761002108,
-                                                    1891518.6040587623
+                                                    1131850.1800163314,
+                                                    1894105.9201493263
                                                 ],
                                                 [
-                                                    1169399.761002108,
-                                                    1891760.4205002098
+                                                    1131582.5998428315,
+                                                    1894097.8801391572
                                                 ],
                                                 [
-                                                    1169712.6999263342,
-                                                    1891760.4205002098
+                                                    1131568.0001344979,
+                                                    1894555.9399185777
                                                 ],
                                                 [
-                                                    1169712.6999263342,
-                                                    1891518.6040587623
+                                                    1131835.7200714983,
+                                                    1894563.8598502427
                                                 ],
                                                 [
-                                                    1169399.761002108,
-                                                    1891518.6040587623
+                                                    1131850.1800163314,
+                                                    1894105.9201493263
                                                 ]
                                             ]
                                         ]
                                     },
-                                    "symbol": {
-                                        "type": "esriSFS",
-                                        "color": [
-                                            255,
-                                            255,
-                                            255,
-                                            26
-                                        ],
-                                        "outline": {
-                                            "type": "esriSLS",
-                                            "color": [
-                                                0,
-                                                0,
-                                                0,
-                                                179
-                                            ],
-                                            "width": 2,
-                                            "style": "esriSLSLongDash"
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
                                         },
-                                        "style": "esriSFSSolid"
+                                        "rings": [
+                                            [
+                                                [
+                                                    1132483.0399710797,
+                                                    1895224.3401565775
+                                                ],
+                                                [
+                                                    1132485.4399006628,
+                                                    1895149.3800046593
+                                                ],
+                                                [
+                                                    1132359.3400872461,
+                                                    1895145.6398546547
+                                                ],
+                                                [
+                                                    1132358.5398919955,
+                                                    1895170.620119661
+                                                ],
+                                                [
+                                                    1132356.940157663,
+                                                    1895220.5799934939
+                                                ],
+                                                [
+                                                    1132356.1399624124,
+                                                    1895245.1599968225
+                                                ],
+                                                [
+                                                    1132482.2401039116,
+                                                    1895248.900146827
+                                                ],
+                                                [
+                                                    1132483.0399710797,
+                                                    1895224.3401565775
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1132477.7000867464,
+                                                    1895389.8201405779
+                                                ],
+                                                [
+                                                    1132478.4999539144,
+                                                    1895364.8398755714
+                                                ],
+                                                [
+                                                    1132479.3201622479,
+                                                    1895339.8599386588
+                                                ],
+                                                [
+                                                    1132480.1200294122,
+                                                    1895314.8599886596
+                                                ],
+                                                [
+                                                    1132354.019887913,
+                                                    1895311.1398517415
+                                                ],
+                                                [
+                                                    1132352.4201535806,
+                                                    1895361.1200667396
+                                                ],
+                                                [
+                                                    1132351.6399714127,
+                                                    1895386.1200167388
+                                                ],
+                                                [
+                                                    1132350.0399089977,
+                                                    1895436.099903658
+                                                ],
+                                                [
+                                                    1132476.1000243314,
+                                                    1895439.8000274897
+                                                ],
+                                                [
+                                                    1132477.7000867464,
+                                                    1895389.8201405779
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1133133.8001524955,
+                                                    1895759.1599530727
+                                                ],
+                                                [
+                                                    1133134.5800065808,
+                                                    1895734.1600030735
+                                                ],
+                                                [
+                                                    1133135.3798737451,
+                                                    1895709.1800661609
+                                                ],
+                                                [
+                                                    1133009.800072413,
+                                                    1895705.4799423218
+                                                ],
+                                                [
+                                                    1133008.9998771623,
+                                                    1895730.459879242
+                                                ],
+                                                [
+                                                    1133008.2200230807,
+                                                    1895755.4601573274
+                                                ],
+                                                [
+                                                    1133007.4201559126,
+                                                    1895780.44009424
+                                                ],
+                                                [
+                                                    1133132.9999572486,
+                                                    1895784.1398899928
+                                                ],
+                                                [
+                                                    1133133.8001524955,
+                                                    1895759.1599530727
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1131477.1400799975,
+                                                    1895335.1998429894
+                                                ],
+                                                [
+                                                    1131477.9399471618,
+                                                    1895310.2199060768
+                                                ],
+                                                [
+                                                    1131478.7401424125,
+                                                    1895285.2199560776
+                                                ],
+                                                [
+                                                    1131356.3601378314,
+                                                    1895281.5798714906
+                                                ],
+                                                [
+                                                    1131355.5599425808,
+                                                    1895306.580149576
+                                                ],
+                                                [
+                                                    1131354.7600754127,
+                                                    1895331.5600864887
+                                                ],
+                                                [
+                                                    1131353.9798932485,
+                                                    1895356.5600364879
+                                                ],
+                                                [
+                                                    1131476.3598978296,
+                                                    1895360.200121075
+                                                ],
+                                                [
+                                                    1131477.1400799975,
+                                                    1895335.1998429894
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1132653.7601020783,
+                                                    1895895.079956822
+                                                ],
+                                                [
+                                                    1132654.5599692464,
+                                                    1895870.080006823
+                                                ],
+                                                [
+                                                    1132656.1600316651,
+                                                    1895820.1001199111
+                                                ],
+                                                [
+                                                    1132657.7600940801,
+                                                    1895770.1599310786
+                                                ],
+                                                [
+                                                    1132531.6199264117,
+                                                    1895766.4201091602
+                                                ],
+                                                [
+                                                    1132530.0198639967,
+                                                    1895816.399996072
+                                                ],
+                                                [
+                                                    1132529.1999837458,
+                                                    1895841.3999460712
+                                                ],
+                                                [
+                                                    1132526.8000541627,
+                                                    1895916.320071824
+                                                ],
+                                                [
+                                                    1132652.9599068314,
+                                                    1895920.0198675767
+                                                ],
+                                                [
+                                                    1132653.7601020783,
+                                                    1895895.079956822
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1131310.5200064145,
+                                                    1896216.4398784116
+                                                ],
+                                                [
+                                                    1131311.1400839128,
+                                                    1896196.680075407
+                                                ],
+                                                [
+                                                    1131313.5400134958,
+                                                    1896121.6999104097
+                                                ],
+                                                [
+                                                    1131313.919933997,
+                                                    1896109.1999354064
+                                                ],
+                                                [
+                                                    1131188.660013914,
+                                                    1896105.5201527402
+                                                ],
+                                                [
+                                                    1131187.4598850794,
+                                                    1896143.0000646561
+                                                ],
+                                                [
+                                                    1131186.660017915,
+                                                    1896168.0000146553
+                                                ],
+                                                [
+                                                    1131185.8401376642,
+                                                    1896192.999964662
+                                                ],
+                                                [
+                                                    1131184.6600219123,
+                                                    1896229.8601271585
+                                                ],
+                                                [
+                                                    1131310.5200064145,
+                                                    1896216.4398784116
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1133124.6200527474,
+                                                    1896047.280111745
+                                                ],
+                                                [
+                                                    1133127.3398635797,
+                                                    1895961.92004624
+                                                ],
+                                                [
+                                                    1133128.2201111652,
+                                                    1895934.059865743
+                                                ],
+                                                [
+                                                    1133129.8198454976,
+                                                    1895884.0799788237
+                                                ],
+                                                [
+                                                    1133130.6200407483,
+                                                    1895859.100041911
+                                                ],
+                                                [
+                                                    1133131.3998948298,
+                                                    1895834.1000919119
+                                                ],
+                                                [
+                                                    1133132.9999572486,
+                                                    1895784.1398899928
+                                                ],
+                                                [
+                                                    1133007.4201559126,
+                                                    1895780.44009424
+                                                ],
+                                                [
+                                                    1133005.8200934976,
+                                                    1895830.4199811593
+                                                ],
+                                                [
+                                                    1133005.0399113297,
+                                                    1895855.4199311584
+                                                ],
+                                                [
+                                                    1133002.6399817467,
+                                                    1895930.3600699902
+                                                ],
+                                                [
+                                                    1133001.7600622475,
+                                                    1895958.239935495
+                                                ],
+                                                [
+                                                    1133000.9598669969,
+                                                    1895983.3799770772
+                                                ],
+                                                [
+                                                    1132998.4998981617,
+                                                    1896060.720045492
+                                                ],
+                                                [
+                                                    1133124.6200527474,
+                                                    1896047.280111745
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1132851.7800472453,
+                                                    1896217.260086745
+                                                ],
+                                                [
+                                                    1132855.7800392471,
+                                                    1896091.8400619924
+                                                ],
+                                                [
+                                                    1132856.280038245,
+                                                    1896075.8601070717
+                                                ],
+                                                [
+                                                    1132858.5598893315,
+                                                    1896004.3198958263
+                                                ],
+                                                [
+                                                    1132859.3600845784,
+                                                    1895979.199867323
+                                                ],
+                                                [
+                                                    1132861.0398712456,
+                                                    1895926.1999733225
+                                                ],
+                                                [
+                                                    1132861.8400664963,
+                                                    1895901.2200364098
+                                                ],
+                                                [
+                                                    1132862.6399336644,
+                                                    1895876.2200864106
+                                                ],
+                                                [
+                                                    1132863.440128915,
+                                                    1895851.2401494905
+                                                ],
+                                                [
+                                                    1132864.2199829966,
+                                                    1895826.239871405
+                                                ],
+                                                [
+                                                    1132865.8200454116,
+                                                    1895776.2599844933
+                                                ],
+                                                [
+                                                    1132799.8398624137,
+                                                    1895774.3200277388
+                                                ],
+                                                [
+                                                    1132673.740048997,
+                                                    1895770.6199039072
+                                                ],
+                                                [
+                                                    1132657.7600940801,
+                                                    1895770.1599310786
+                                                ],
+                                                [
+                                                    1132656.1600316651,
+                                                    1895820.1001199111
+                                                ],
+                                                [
+                                                    1132654.5599692464,
+                                                    1895870.080006823
+                                                ],
+                                                [
+                                                    1132653.7601020783,
+                                                    1895895.079956822
+                                                ],
+                                                [
+                                                    1132652.9599068314,
+                                                    1895920.0198675767
+                                                ],
+                                                [
+                                                    1132526.8000541627,
+                                                    1895916.320071824
+                                                ],
+                                                [
+                                                    1132524.6599665806,
+                                                    1895982.299926743
+                                                ],
+                                                [
+                                                    1132572.540120162,
+                                                    1895983.6998583227
+                                                ],
+                                                [
+                                                    1132596.4800329134,
+                                                    1895984.4200012386
+                                                ],
+                                                [
+                                                    1132620.4199456647,
+                                                    1895985.1201310754
+                                                ],
+                                                [
+                                                    1132668.3000992462,
+                                                    1895986.5200626552
+                                                ],
+                                                [
+                                                    1132692.2400119975,
+                                                    1895987.2398774922
+                                                ],
+                                                [
+                                                    1132716.179924745,
+                                                    1895987.9400073215
+                                                ],
+                                                [
+                                                    1132740.1198374964,
+                                                    1895988.6401371583
+                                                ],
+                                                [
+                                                    1132792.9599549137,
+                                                    1895990.1998453215
+                                                ],
+                                                [
+                                                    1132790.0800394118,
+                                                    1896081.0398867428
+                                                ],
+                                                [
+                                                    1132789.560027331,
+                                                    1896097.0398547426
+                                                ],
+                                                [
+                                                    1132785.5200091638,
+                                                    1896224.32011199
+                                                ],
+                                                [
+                                                    1132851.7800472453,
+                                                    1896217.260086745
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1132660.9598908313,
+                                                    1895670.20015724
+                                                ],
+                                                [
+                                                    1132534.840064332,
+                                                    1895666.480020322
+                                                ],
+                                                [
+                                                    1132534.0398690812,
+                                                    1895691.4799703285
+                                                ],
+                                                [
+                                                    1132533.2199888304,
+                                                    1895716.4398941547
+                                                ],
+                                                [
+                                                    1132531.6199264117,
+                                                    1895766.4201091602
+                                                ],
+                                                [
+                                                    1132657.7600940801,
+                                                    1895770.1599310786
+                                                ],
+                                                [
+                                                    1132660.9598908313,
+                                                    1895670.20015724
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1130798.1000994965,
+                                                    1895098.9001187384
+                                                ],
+                                                [
+                                                    1130799.7398599982,
+                                                    1895048.9199037403
+                                                ],
+                                                [
+                                                    1130801.359935496,
+                                                    1894998.9600299075
+                                                ],
+                                                [
+                                                    1130802.9800109975,
+                                                    1894948.9801429883
+                                                ],
+                                                [
+                                                    1130804.6200995818,
+                                                    1894898.9999279901
+                                                ],
+                                                [
+                                                    1130806.239846997,
+                                                    1894849.0400541574
+                                                ],
+                                                [
+                                                    1130807.339910414,
+                                                    1894815.0601352379
+                                                ],
+                                                [
+                                                    1130670.2801451646,
+                                                    1894811.0201170743
+                                                ],
+                                                [
+                                                    1130670.1400535814,
+                                                    1894815.0201090723
+                                                ],
+                                                [
+                                                    1130662.120056495,
+                                                    1894814.719912827
+                                                ],
+                                                [
+                                                    1130649.7401599959,
+                                                    1895194.4999931604
+                                                ],
+                                                [
+                                                    1130794.8599484973,
+                                                    1895198.8398794904
+                                                ],
+                                                [
+                                                    1130798.1000994965,
+                                                    1895098.9001187384
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1130656.4399497472,
+                                                    1894744.4798958227
+                                                ],
+                                                [
+                                                    1130657.0600272454,
+                                                    1894725.7601169944
+                                                ],
+                                                [
+                                                    1130519.9799208306,
+                                                    1894721.7200988233
+                                                ],
+                                                [
+                                                    1130519.3598433286,
+                                                    1894740.439877659
+                                                ],
+                                                [
+                                                    1130518.9398966618,
+                                                    1894752.939852655
+                                                ],
+                                                [
+                                                    1130656.0400161631,
+                                                    1894756.979870826
+                                                ],
+                                                [
+                                                    1130656.4399497472,
+                                                    1894744.4798958227
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1130434.86001233,
+                                                    1895304.4800881594
+                                                ],
+                                                [
+                                                    1130436.5001009144,
+                                                    1895254.1399657428
+                                                ],
+                                                [
+                                                    1130299.6401384138,
+                                                    1895250.0399083272
+                                                ],
+                                                [
+                                                    1130298.0200629123,
+                                                    1895299.9800971597
+                                                ],
+                                                [
+                                                    1130296.3999874145,
+                                                    1895349.979997158
+                                                ],
+                                                [
+                                                    1130433.2199237458,
+                                                    1895354.4599750713
+                                                ],
+                                                [
+                                                    1130434.86001233,
+                                                    1895304.4800881594
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1133710.0001155809,
+                                                    1896109.4000662416
+                                                ],
+                                                [
+                                                    1133758.5800709128,
+                                                    1896091.6199180782
+                                                ],
+                                                [
+                                                    1133791.160058245,
+                                                    1896082.0198716596
+                                                ],
+                                                [
+                                                    1133791.3201629147,
+                                                    1896077.3801171556
+                                                ],
+                                                [
+                                                    1133792.1400431618,
+                                                    1896052.3998521566
+                                                ],
+                                                [
+                                                    1133793.080001913,
+                                                    1896024.1600792408
+                                                ],
+                                                [
+                                                    1133666.1399670802,
+                                                    1896032.7000884116
+                                                ],
+                                                [
+                                                    1133665.2200214118,
+                                                    1896060.9398613274
+                                                ],
+                                                [
+                                                    1133662.9201572463,
+                                                    1896130.8800101578
+                                                ],
+                                                [
+                                                    1133710.0001155809,
+                                                    1896109.4000662416
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1132897.6198505796,
+                                                    1896212.3798471615
+                                                ],
+                                                [
+                                                    1132922.4800370783,
+                                                    1896209.7200755775
+                                                ],
+                                                [
+                                                    1132972.2000819966,
+                                                    1896204.43990241
+                                                ],
+                                                [
+                                                    1132997.0599404126,
+                                                    1896201.780130826
+                                                ],
+                                                [
+                                                    1133046.779985331,
+                                                    1896196.4999576584
+                                                ],
+                                                [
+                                                    1133071.159857832,
+                                                    1896193.89989724
+                                                ],
+                                                [
+                                                    1133096.0200443305,
+                                                    1896191.2401256561
+                                                ],
+                                                [
+                                                    1133120.1200617477,
+                                                    1896188.6800914109
+                                                ],
+                                                [
+                                                    1133124.1200537458,
+                                                    1896063.2600666583
+                                                ],
+                                                [
+                                                    1133124.6200527474,
+                                                    1896047.280111745
+                                                ],
+                                                [
+                                                    1132998.4998981617,
+                                                    1896060.720045492
+                                                ],
+                                                [
+                                                    1133000.9598669969,
+                                                    1895983.3799770772
+                                                ],
+                                                [
+                                                    1133001.7600622475,
+                                                    1895958.239935495
+                                                ],
+                                                [
+                                                    1133002.6399817467,
+                                                    1895930.3600699902
+                                                ],
+                                                [
+                                                    1133005.0399113297,
+                                                    1895855.4199311584
+                                                ],
+                                                [
+                                                    1133005.8200934976,
+                                                    1895830.4199811593
+                                                ],
+                                                [
+                                                    1133007.4201559126,
+                                                    1895780.44009424
+                                                ],
+                                                [
+                                                    1132991.439872913,
+                                                    1895779.960108325
+                                                ],
+                                                [
+                                                    1132865.8200454116,
+                                                    1895776.2599844933
+                                                ],
+                                                [
+                                                    1132864.2199829966,
+                                                    1895826.239871405
+                                                ],
+                                                [
+                                                    1132863.440128915,
+                                                    1895851.2401494905
+                                                ],
+                                                [
+                                                    1132862.6399336644,
+                                                    1895876.2200864106
+                                                ],
+                                                [
+                                                    1132861.8400664963,
+                                                    1895901.2200364098
+                                                ],
+                                                [
+                                                    1132861.0398712456,
+                                                    1895926.1999733225
+                                                ],
+                                                [
+                                                    1132859.3600845784,
+                                                    1895979.199867323
+                                                ],
+                                                [
+                                                    1132858.5598893315,
+                                                    1896004.3198958263
+                                                ],
+                                                [
+                                                    1132856.280038245,
+                                                    1896075.8601070717
+                                                ],
+                                                [
+                                                    1132855.7800392471,
+                                                    1896091.8400619924
+                                                ],
+                                                [
+                                                    1132851.7800472453,
+                                                    1896217.260086745
+                                                ],
+                                                [
+                                                    1132897.6198505796,
+                                                    1896212.3798471615
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1129612.4200561643,
+                                                    1896370.0799910724
+                                                ],
+                                                [
+                                                    1129588.4401172474,
+                                                    1896369.379861243
+                                                ],
+                                                [
+                                                    1129564.4398371652,
+                                                    1896368.7000725716
+                                                ],
+                                                [
+                                                    1129560.2400424145,
+                                                    1896493.6000852436
+                                                ],
+                                                [
+                                                    1129608.219933331,
+                                                    1896495.0000168234
+                                                ],
+                                                [
+                                                    1129612.4200561643,
+                                                    1896370.0799910724
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1130662.120056495,
+                                                    1894814.719912827
+                                                ],
+                                                [
+                                                    1130654.1600986645,
+                                                    1894814.4200446606
+                                                ],
+                                                [
+                                                    1130654.299862165,
+                                                    1894810.420052655
+                                                ],
+                                                [
+                                                    1130517.2000707462,
+                                                    1894806.3800344914
+                                                ],
+                                                [
+                                                    1130516.0799942464,
+                                                    1894840.359953411
+                                                ],
+                                                [
+                                                    1130514.5799972452,
+                                                    1894886.3201633245
+                                                ],
+                                                [
+                                                    1130448.60014233,
+                                                    1894884.3398523256
+                                                ],
+                                                [
+                                                    1130448.4600507468,
+                                                    1894888.3398443237
+                                                ],
+                                                [
+                                                    1130446.8399752453,
+                                                    1894938.3200593218
+                                                ],
+                                                [
+                                                    1130443.560126163,
+                                                    1895038.2601481602
+                                                ],
+                                                [
+                                                    1130441.9200375788,
+                                                    1895088.240035072
+                                                ],
+                                                [
+                                                    1130440.299962081,
+                                                    1895138.2199219912
+                                                ],
+                                                [
+                                                    1130438.6598734967,
+                                                    1895188.1801239103
+                                                ],
+                                                [
+                                                    1130504.6200434119,
+                                                    1895190.1601068228
+                                                ],
+                                                [
+                                                    1130649.7401599959,
+                                                    1895194.4999931604
+                                                ],
+                                                [
+                                                    1130662.120056495,
+                                                    1894814.719912827
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1130658.0800383314,
+                                                    1894694.52002199
+                                                ],
+                                                [
+                                                    1130520.97991883,
+                                                    1894690.4800038263
+                                                ],
+                                                [
+                                                    1130519.9799208306,
+                                                    1894721.7200988233
+                                                ],
+                                                [
+                                                    1130657.0600272454,
+                                                    1894725.7601169944
+                                                ],
+                                                [
+                                                    1130658.0800383314,
+                                                    1894694.52002199
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1130440.299962081,
+                                                    1895138.2199219912
+                                                ],
+                                                [
+                                                    1130441.9200375788,
+                                                    1895088.240035072
+                                                ],
+                                                [
+                                                    1130443.560126163,
+                                                    1895038.2601481602
+                                                ],
+                                                [
+                                                    1130446.8399752453,
+                                                    1894938.3200593218
+                                                ],
+                                                [
+                                                    1130448.4600507468,
+                                                    1894888.3398443237
+                                                ],
+                                                [
+                                                    1130448.60014233,
+                                                    1894884.3398523256
+                                                ],
+                                                [
+                                                    1130439.6398584135,
+                                                    1894884.0599972382
+                                                ],
+                                                [
+                                                    1130441.1398554146,
+                                                    1894838.12012849
+                                                ],
+                                                [
+                                                    1130442.2599319145,
+                                                    1894804.099855326
+                                                ],
+                                                [
+                                                    1130451.2399008311,
+                                                    1894804.3800384924
+                                                ],
+                                                [
+                                                    1130451.7599129118,
+                                                    1894788.4000835717
+                                                ],
+                                                [
+                                                    1130455.0400900804,
+                                                    1894688.4599947408
+                                                ],
+                                                [
+                                                    1130456.6598374955,
+                                                    1894638.4801078215
+                                                ],
+                                                [
+                                                    1130458.279912997,
+                                                    1894589.1399834082
+                                                ],
+                                                [
+                                                    1130321.2201477475,
+                                                    1894585.0999652445
+                                                ],
+                                                [
+                                                    1130319.6200853288,
+                                                    1894634.4000634924
+                                                ],
+                                                [
+                                                    1130316.3799343295,
+                                                    1894734.3201392442
+                                                ],
+                                                [
+                                                    1130314.7598588318,
+                                                    1894784.300026156
+                                                ],
+                                                [
+                                                    1130313.1401114129,
+                                                    1894834.2799130753
+                                                ],
+                                                [
+                                                    1130311.520035915,
+                                                    1894884.2401149943
+                                                ],
+                                                [
+                                                    1130309.8799473308,
+                                                    1894934.2400149927
+                                                ],
+                                                [
+                                                    1130308.2598718293,
+                                                    1894984.1998888254
+                                                ],
+                                                [
+                                                    1130306.640124414,
+                                                    1895034.1801038235
+                                                ],
+                                                [
+                                                    1130303.3999734148,
+                                                    1895134.1398776546
+                                                ],
+                                                [
+                                                    1130301.7798979133,
+                                                    1895184.0800664946
+                                                ],
+                                                [
+                                                    1130438.6598734967,
+                                                    1895188.1801239103
+                                                ],
+                                                [
+                                                    1130440.299962081,
+                                                    1895138.2199219912
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1130627.1998507455,
+                                                    1896394.4001524076
+                                                ],
+                                                [
+                                                    1130628.160150662,
+                                                    1896363.4198994115
+                                                ],
+                                                [
+                                                    1130629.1401355788,
+                                                    1896332.4399744943
+                                                ],
+                                                [
+                                                    1130630.1601466648,
+                                                    1896300.2599207386
+                                                ],
+                                                [
+                                                    1130622.1201364957,
+                                                    1896301.120155245
+                                                ],
+                                                [
+                                                    1130619.14015558,
+                                                    1896395.3401111588
+                                                ],
+                                                [
+                                                    1130627.1998507455,
+                                                    1896394.4001524076
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1129652.3999630809,
+                                                    1896371.2400937453
+                                                ],
+                                                [
+                                                    1129636.420008164,
+                                                    1896370.7801209092
+                                                ],
+                                                [
+                                                    1129612.4200561643,
+                                                    1896370.0799910724
+                                                ],
+                                                [
+                                                    1129608.219933331,
+                                                    1896495.0000168234
+                                                ],
+                                                [
+                                                    1129632.2198853306,
+                                                    1896495.7001466602
+                                                ],
+                                                [
+                                                    1129648.1998402476,
+                                                    1896496.1601194888
+                                                ],
+                                                [
+                                                    1129652.3999630809,
+                                                    1896371.2400937453
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1129564.4398371652,
+                                                    1896368.7000725716
+                                                ],
+                                                [
+                                                    1129540.4398851618,
+                                                    1896367.9999427423
+                                                ],
+                                                [
+                                                    1129536.2400904149,
+                                                    1896492.9199684933
+                                                ],
+                                                [
+                                                    1129560.2400424145,
+                                                    1896493.6000852436
+                                                ],
+                                                [
+                                                    1129564.4398371652,
+                                                    1896368.7000725716
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1130659.220127914,
+                                                    1894659.5401050746
+                                                ],
+                                                [
+                                                    1130522.1400214955,
+                                                    1894655.500086911
+                                                ],
+                                                [
+                                                    1130520.97991883,
+                                                    1894690.4800038263
+                                                ],
+                                                [
+                                                    1130658.0800383314,
+                                                    1894694.52002199
+                                                ],
+                                                [
+                                                    1130659.220127914,
+                                                    1894659.5401050746
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1130656.0400161631,
+                                                    1894756.979870826
+                                                ],
+                                                [
+                                                    1130518.9398966618,
+                                                    1894752.939852655
+                                                ],
+                                                [
+                                                    1130517.7200828306,
+                                                    1894790.4000795782
+                                                ],
+                                                [
+                                                    1130654.8198742457,
+                                                    1894794.4400977418
+                                                ],
+                                                [
+                                                    1130656.0400161631,
+                                                    1894756.979870826
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1132486.2601089962,
+                                                    1895124.3800546601
+                                                ],
+                                                [
+                                                    1132487.0599761643,
+                                                    1895099.40011774
+                                                ],
+                                                [
+                                                    1132360.9401496649,
+                                                    1895095.6599677429
+                                                ],
+                                                [
+                                                    1132359.3400872461,
+                                                    1895145.6398546547
+                                                ],
+                                                [
+                                                    1132485.4399006628,
+                                                    1895149.3800046593
+                                                ],
+                                                [
+                                                    1132486.2601089962,
+                                                    1895124.3800546601
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1132561.7999841645,
+                                                    1896248.1399462447
+                                                ],
+                                                [
+                                                    1132586.6598425806,
+                                                    1896245.4998596609
+                                                ],
+                                                [
+                                                    1132611.5200290792,
+                                                    1896242.840088077
+                                                ],
+                                                [
+                                                    1132636.3798874952,
+                                                    1896240.200001493
+                                                ],
+                                                [
+                                                    1132661.2400739975,
+                                                    1896237.5599149093
+                                                ],
+                                                [
+                                                    1132686.0999324135,
+                                                    1896234.9001433253
+                                                ],
+                                                [
+                                                    1132710.9601189122,
+                                                    1896232.2600567415
+                                                ],
+                                                [
+                                                    1132735.819977332,
+                                                    1896229.6199701577
+                                                ],
+                                                [
+                                                    1132760.6801638305,
+                                                    1896226.959870495
+                                                ],
+                                                [
+                                                    1132785.5200091638,
+                                                    1896224.32011199
+                                                ],
+                                                [
+                                                    1132789.560027331,
+                                                    1896097.0398547426
+                                                ],
+                                                [
+                                                    1132790.0800394118,
+                                                    1896081.0398867428
+                                                ],
+                                                [
+                                                    1132792.9599549137,
+                                                    1895990.1998453215
+                                                ],
+                                                [
+                                                    1132740.1198374964,
+                                                    1895988.6401371583
+                                                ],
+                                                [
+                                                    1132716.179924745,
+                                                    1895987.9400073215
+                                                ],
+                                                [
+                                                    1132692.2400119975,
+                                                    1895987.2398774922
+                                                ],
+                                                [
+                                                    1132668.3000992462,
+                                                    1895986.5200626552
+                                                ],
+                                                [
+                                                    1132620.4199456647,
+                                                    1895985.1201310754
+                                                ],
+                                                [
+                                                    1132596.4800329134,
+                                                    1895984.4200012386
+                                                ],
+                                                [
+                                                    1132572.540120162,
+                                                    1895983.6998583227
+                                                ],
+                                                [
+                                                    1132524.6599665806,
+                                                    1895982.299926743
+                                                ],
+                                                [
+                                                    1132520.559909165,
+                                                    1896109.7399605736
+                                                ],
+                                                [
+                                                    1132520.0398970805,
+                                                    1896125.7399285734
+                                                ],
+                                                [
+                                                    1132515.9398396648,
+                                                    1896253.019857742
+                                                ],
+                                                [
+                                                    1132561.7999841645,
+                                                    1896248.1399462447
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1132206.099908162,
+                                                    1896286.0001067445
+                                                ],
+                                                [
+                                                    1132231.1999235786,
+                                                    1896283.3400070742
+                                                ],
+                                                [
+                                                    1132281.3799413294,
+                                                    1896277.9801096618
+                                                ],
+                                                [
+                                                    1132306.479956746,
+                                                    1896275.3200099915
+                                                ],
+                                                [
+                                                    1132331.5799721628,
+                                                    1896272.6398972422
+                                                ],
+                                                [
+                                                    1132356.6799875796,
+                                                    1896269.9601125717
+                                                ],
+                                                [
+                                                    1132381.7800029963,
+                                                    1896267.3000129089
+                                                ],
+                                                [
+                                                    1132406.880018413,
+                                                    1896264.6199001595
+                                                ],
+                                                [
+                                                    1132449.6801296622,
+                                                    1896260.0598699078
+                                                ],
+                                                [
+                                                    1132453.8398982473,
+                                                    1896131.0401148275
+                                                ],
+                                                [
+                                                    1132410.9200365804,
+                                                    1896135.6201581582
+                                                ],
+                                                [
+                                                    1132385.8200211637,
+                                                    1896138.2799297422
+                                                ],
+                                                [
+                                                    1132360.7400188297,
+                                                    1896140.9600424916
+                                                ],
+                                                [
+                                                    1132335.6600164957,
+                                                    1896143.6201421618
+                                                ],
+                                                [
+                                                    1132310.5399879962,
+                                                    1896146.2999268249
+                                                ],
+                                                [
+                                                    1132285.4599856623,
+                                                    1896148.9800395742
+                                                ],
+                                                [
+                                                    1132260.3399571627,
+                                                    1896151.6401392445
+                                                ],
+                                                [
+                                                    1132235.239941746,
+                                                    1896154.3199239075
+                                                ],
+                                                [
+                                                    1132210.1799524985,
+                                                    1896156.9800235778
+                                                ],
+                                                [
+                                                    1132185.0599239953,
+                                                    1896159.6601363271
+                                                ],
+                                                [
+                                                    1132180.9998927452,
+                                                    1896288.6798914075
+                                                ],
+                                                [
+                                                    1132206.099908162,
+                                                    1896286.0001067445
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
+                                    }
+                                },
+                                {
+                                    "aggregateGeometries": null,
+                                    "geometry": {
+                                        "spatialReference": {
+                                            "latestWkid": 3435,
+                                            "wkid": 102671
+                                        },
+                                        "rings": [
+                                            [
+                                                [
+                                                    1129540.4398851618,
+                                                    1896367.9999427423
+                                                ],
+                                                [
+                                                    1129492.4800073318,
+                                                    1896366.600011155
+                                                ],
+                                                [
+                                                    1129491.439983163,
+                                                    1896397.5799360722
+                                                ],
+                                                [
+                                                    1129490.399958998,
+                                                    1896428.5598609895
+                                                ],
+                                                [
+                                                    1129489.3199086636,
+                                                    1896460.5401119888
+                                                ],
+                                                [
+                                                    1129488.2798844986,
+                                                    1896491.520036906
+                                                ],
+                                                [
+                                                    1129536.2400904149,
+                                                    1896492.9199684933
+                                                ],
+                                                [
+                                                    1129540.4398851618,
+                                                    1896367.9999427423
+                                                ]
+                                            ]
+                                        ]
+                                    },
+                                    "symbol": null,
+                                    "attributes": {
+                                        "parcelSelectionType": "Comparable Parcel"
                                     }
                                 }
                             ]
@@ -1018,8 +2214,167 @@
                     }
                 ]
             },
-            "id": "printGraphicsLayer",
+            "id": "196d4b24b6c-layer-205",
+            "title": "Selected Parcels",
+            "opacity": 1,
+            "minScale": 0,
+            "maxScale": 0
+        },
+        {
+            "type": "image",
+            "extent": {
+                "spatialReference": {
+                    "latestWkid": 3435,
+                    "wkid": 102671
+                },
+                "xmin": 1127760.2372827986,
+                "ymin": 1891823.3980704101,
+                "xmax": 1135521.122603613,
+                "ymax": 1898770.642188236
+            },
+            "imageData": "iVBORw0KGgoAAAANSUhEUgAAA+AAAAN4CAYAAABDEoJTAAAAAXNSR0IArs4c6QAAIABJREFUeF7t3G0LNVpXFeBlvouWBoVZBEr+Nf+1BmEJamioWb6z5X7ATS1YH3SxxhzXDYeHBzZnz3mN+WWw9n1+aq31O8sfAgQIECBAgAABAgQIECBA4F9U4KcU8H9RX/9yAgQIECBAgAABAgQIECDwjwIKuEMgQIAAAQIECBAgQIAAAQIXBBTwC8i+ggABAgQIECBAgAABAgQIKOBugAABAgQIECBAgAABAgQIXBBQwC8g+woCBAgQIECAAAECBAgQIKCAuwECBAgQIECAAAECBAgQIHBBQAG/gOwrCBAgQIAAAQIECBAgQICAAu4GCBAgQIAAAQIECBAgQIDABQEF/AKyryBAgAABAgQIECBAgAABAgq4GyBAgAABAgQIECBAgAABAhcEFPALyL6CAAECBAgQIECAAAECBAgo4G6AAAECBAgQIECAAAECBAhcEFDALyD7CgIECBAgQIAAAQIECBAgoIC7AQIECBAgQIAAAQIECBAgcEFAAb+A7CsIECBAgAABAgQIECBAgIAC7gYIECBAgAABAgQIECBAgMAFAQX8ArKvIECAAAECBAgQIECAAAECCrgbIECAAAECBAgQIECAAAECFwQU8AvIvoIAAQIECBAgQIAAAQIECCjgboAAAQIECBAgQIAAAQIECFwQUMAvIPsKAgQIECBAgAABAgQIECCggLsBAgQIECBAgAABAgQIECBwQUABv4DsKwgQIECAAAECBAgQIECAgALuBggQIECAAAECBAgQIECAwAUBBfwCsq8gQIAAAQIECBAgQIAAAQIKuBsgQIAAAQIECBAgQIAAAQIXBBTwC8i+ggABAgQIECBAgAABAgQIKOBugAABAgQIECBAgAABAgQIXBBQwC8g+woCBAgQIECAAAECBAgQIKCAuwECBAgQIECAAAECBAgQIHBBQAG/gOwrCBAgQIAAAQIECBAgQICAAu4GCBAgQIAAAQIECBAgQIDABQEF/AKyryBAgAABAgQIECBAgAABAgq4GyBAgAABAgQIECBAgAABAhcEFPALyL6CAAECBAgQIECAAAECBAgo4G6AAAECBAgQIECAAAECBAhcEFDALyD7CgIECBAgQIAAAQIECBAgoIC7AQIECBAgQIAAAQIECBAgcEFAAb+A7CsIECBAgAABAgQIECBAgIAC7gYIECBAgAABAgQIECBAgMAFAQX8ArKvIECAAAECBAgQIECAAAECCrgbIECAAAECBAgQIECAAAECFwQU8AvIvoIAAQIECBAgQIAAAQIECCjgboAAAQIECBAgQIAAAQIECFwQUMAvIPsKAgQIECBAgAABAgQIECCggLsBAgQIECBAgAABAgQIECBwQUABv4DsKwgQIECAAAECBAgQIECAgALuBggQIECAAAECBAgQIECAwAUBBfwCsq8gQIAAAQIECBAgQIAAAQIKuBsgQIAAAQIECBAgQIAAAQIXBBTwC8i+ggABAgQIECBAgAABAgQIKOBugAABAgQIECBAgAABAgQIXBBQwC8g+woCBAgQIECAAAECBAgQIKCAuwECBAgQIECAAAECBAgQIHBBQAG/gOwrCBAgQIAAAQIECBAgQICAAu4GCBAgQIAAAQIECBAgQIDABQEF/AKyryBAgAABAgQIECBAgAABAgq4GyBAgAABAgQIECBAgAABAhcEFPALyL6CAAECBAgQIECAAAECBAgo4G6AAAECBAgQIECAAAECBAhcEFDALyD7CgIECBAgQIAAAQIECBAgoIC7AQIECBAgQIAAAQIECBAgcEFAAb+A7CsIECBAgAABAgQIECBAgIAC7gYIECBAgAABAgQIECBAgMAFAQX8ArKvIECAAAECBAgQIECAAAECCrgbIECAAAECBAgQIECAAAECFwQU8AvIvoIAAQIECBAgQIAAAQIECCjgboAAAQIECBAgQIAAAQIECFwQUMAvIPsKAgQIECBAgAABAgQIECCggLsBAgQIECBAgAABAgQIECBwQUABv4DsKwgQIECAAAECBAgQIECAgALuBggQIECAAAECBAgQIECAwAUBBfwCsq8gQIAAAQIECBAgQIAAAQIKuBsgQIAAAQIECBAgQIAAAQIXBBTwC8i+ggABAgQIECBAgAABAgQIKOBugAABAgQIECBAgAABAgQIXBBQwC8g+woCBAgQIECAAAECBAgQIKCAuwECBAgQIECAAAECBAgQIHBBQAG/gOwrCBAgQIAAAQIECBAgQICAAu4GCBAgQIAAAQIECBAgQIDABQEF/AKyryBAgAABAgQIECBAgAABAgq4GyBAgAABAgQIECBAgAABAhcEFPALyL6CAAECBAgQIECAAAECBAgo4G6AAAECBAgQIECAAAECBAhcEFDALyD7CgIECBAgQIAAAQIECBAgoIC7AQIECBAgQIAAAQIECBAgcEFAAb+A7CsIECBAgAABAgQIECBAgIAC7gYIECBAgAABAgQIECBAgMAFAQX8ArKvIECAAAECBAgQIECAAAECCrgbIECAAAECBAgQIECAAAECFwQU8AvIvoIAAQIECBAgQIAAAQIECCjgboAAAQIECBAgQIAAAQIECFwQUMAvIPsKAgQIECBAgAABAgQIECCggLsBAgQIECBAgAABAgQIECBwQUABv4DsKwgQIECAAAECBAgQIECAgALuBggQIECAAAECBAgQIECAwAUBBfwCsq8gQIAAAQIECBAgQIAAAQIKuBsgQIAAAQIECBAgQIAAAQIXBBTwC8i+ggABAgQIECBAgAABAgQIKOBugAABAgQIECBAgAABAgQIXBBQwC8g+woCBAgQIECAAAECBAgQIKCAuwECBAgQIECAAAECBAgQIHBBQAG/gOwrCBAgQIAAAQIECBAgQICAAu4GCBAgQIAAAQIECBAgQIDABQEF/AKyryBAgAABAgQIECBAgAABAgq4GyBAgAABAgQIECBAgAABAhcEFPALyL6CAAECBAgQIECAAAECBAgo4G6AAAECBAgQIECAAAECBAhcEFDALyD7CgIECBAgQIAAAQIECBAgoIC7AQIECBAgQIAAAQIECBAgcEFAAb+A7CsIECBAgAABAgQIECBAgIAC7gYIECBAgAABAgQIECBAgMAFAQX8ArKvIECAAAECBAgQIECAAAECCrgbIECAAAECBAgQIECAAAECFwQU8AvIvoIAAQIECBAgQIAAAQIECCjgboAAAQIECBAgQIAAAQIECFwQUMAvIPsKAgQIECBAgAABAgQIECCggLsBAgQIECBAgAABAgQIECBwQUABv4DsKwgQIECAAAECBAgQIECAgALuBggQIECAAAECBAgQIECAwAUBBfwCsq8gQIAAAQIECBAgQIAAAQIKuBsgQIAAAQIECBAgQIAAAQIXBBTwC8i+ggABAgQIECBAgAABAgQIKOBugAABAgQIECBAgAABAgQIXBBQwC8g+woCBAgQIECAAAECBAgQIKCAuwECBAgQIECAAAECBAgQIHBBQAG/gOwrCBAgQIAAAQIECBAgQICAAu4GCBAgQIAAAQIECBAgQIDABQEF/AKyryBAgAABAgQIECBAgAABAgq4GyBAgAABAgQIECBAgAABAhcEFPALyL6CAAECBAgQIECAAAECBAgo4G6AAAECBAgQIECAAAECBAhcEFDALyD7CgIECBAgQIAAAQIECBAgoIC7AQIECBAgQIAAAQIECBAgcEFAAb+A7CsIECBAgAABAgQIECBAgIAC7gYIECBAgAABAgQIECBAgMAFAQX8ArKvIECAAAECBAgQIECAAAECCrgbIECAAAECBAgQIECAAAECFwQU8AvIvoIAAQIECBAgQIAAAQIECCjgboAAAQIECBAgQIAAAQIECFwQUMAvIPsKAgQIECBAgAABAgQIECCggLsBAgQIECBAgAABAgQIECBwQUABv4DsKwgQIECAAAECBAgQIECAgALuBggQIECAAAECBAgQIECAwAUBBfwCsq8gQIAAAQIECBAgQIAAAQIKuBsgQIAAAQIECBAgQIAAAQIXBBTwC8i+ggABAgQIECBAgAABAgQIKOBugAABAgQIECBAgAABAgQIXBBQwC8g+woCBAgQIECAAAECBAgQIKCAuwECBAgQIECAAAECBAgQIHBBQAG/gOwrCBAgQIAAAQIECBAgQICAAu4GCBAgQIAAAQIECBAgQIDABQEF/AKyryBAgAABAgQIECBAgAABAgq4GyBAgAABAgQIECBAgAABAhcEFPALyL6CAAECBAgQIECAAAECBAgo4G6AAAECBAgQIECAAAECBAhcEFDALyD7CgIECBAgQIAAAQIECBAgoIC7AQIECBAgQIAAAQIECBAgcEFAAb+A7CsIECBAgAABAgQIECBAgIAC7gYIECBAgAABAgQIECBAgMAFAQX8ArKvIECAAAECBAgQIECAAAECCrgbIECAAAECBAgQIECAAAECFwQU8AvIvoIAAQIECBAgQIAAAQIECCjgboAAAQIECBAgQIAAAQIECFwQUMAvIPsKAgQIECBAgAABAgQIECCggLsBAgQIECBAgAABAgQIECBwQUABv4DsKwgQIECAAAECBAgQIECAgALuBggQIECAAAECBAgQIECAwAUBBfwCsq8gQIAAAQIECBAgQIAAAQIKuBsgQIAAAQIECBAgQIAAAQIXBBTwC8i+ggABAgQIECBAgAABAgQIKOBugAABAgQIECBAgAAB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AU9P0PwECBAgQIAAAQIECBAgECGggEfEZEgCBAgQIECAAAECBAgQSBdQwNMTND8BAgQIECBAgAABAgQIRAgo4BExGZIAAQIECBAgQIAAAQIE0gUU8PQEzU+AAAECBAgQIECAAAECEQIKeERMhiRAgAABAgQIECBAgACBdAEFPD1B8xMgQIAAAQIECBAgQIBAhIACHhGTIQkQIECAAAECBAgQIEAgXUABT0/Q/AQIECBAgAABAgQIECAQIaCAR8RkSAIECBAgQIAAAQIECBBIF1DA0xM0PwECBAgQIECAAAECBAhECCjgETEZkgABAgQIECBAgAABAgTSBRTw9ATNT4AAAQIECBAgQIAAAQIRAgp4REyGJECAAAECBAgQIECAAIF0AQU8PUHzEyBAgAABAgQIECBAgECEgAIeEZMhCRAgQIAAAQIECBAgQCBdQAFPT9D8BAgQIECAAAECBAgQIBAhoIBHxGRIAgQIECBAgAABAgQIEEgXUMDTEzQ/AQIECBAgQIAAAQIECEQIKOARMRmSAAECBAgQIECAAAECBNIFFPD0BM1PgAABAgQIECBAgAABAhECCnhETIYkQIAAAQIECBAgQIAAgXQBBTw9QfMTIECAAAECBAgQIECAQISAAh4RkyEJECBAgAABAgQIECBAIF1AAU9P0PwECBAgQIAAAQIECBAgECGggEfEZEgCBAgQIECAAAECBAgQSBdQwNMTND8BAgQIECBAgAABAgQIRAgo4BExGZIAAQIECBAgQIAAAQIE0gUU8PQEzU+AAAECBAgQIECAAAECEQIKeERMhiRAgAABAgQIECBAgACBdAEFPD1B8xMgQIAAAQIECBAgQIBAhIACHhGTIQkQIECAAAECBAgQIEAgXUABT0/Q/AQIECBAgAABAgQIECAQIaCAR8RkSAIECBAgQIAAAQIECBBIF1DA0xM0PwECBAgQIECAAAECBAhECCjgETEZkgABAgQIECBAgAABAgTSBRTw9ATNT4AAAQIECBAgQIAAAQIRAgp4REyGJECAAAECBAgQIECAAIF0AQU8PUHzEyBAgAABAgQIECBAgECEgAIeEZMhCRAgQIAAAQIECBAgQCBdQAFPT9D8BAgQIECAAAECBAgQIBAhoIBHxGRIAgQIECBAgAABAgQIEEgXUMDTEzQ/AQIECBAgQIAAAQIECEQIKOARMRmSAAECBAgQIECAAAECBNIFFPD0BM1PgAABAgQIECBAgAABAhECCnhETIYkQIAAAQIECBAgQIAAgXQBBTw9QfMTIECAAAECBAgQIECAQISAAh4RkyEJECBAgAABAgQIECBAIF1AAU9P0PwECBAgQIAAAQIECBAgECGggEfEZEgCBAgQIECAAAECBAgQSBdQwNMTND8BAgQIECBAgAABAgQIRAgo4BExGZIAAQIECBAgQIAAAQIE0gUU8PQEzU+AAAECBAgQIECAAAECEQIKeERMhiRAgAABAgQIECBAgACBdAEFPD1B8xMgQIAAAQIECBAgQIBAhIACHhGTIQkQIECAAAECBAgQIEAgXUABT0/Q/AQIECBAgAABAgQIECAQIaCAR8RkSAIECBAgQIAAAQIECBBIF1DA0xM0PwECBAgQIECAAAECBAhECCjgETEZkgABAgQIECBAgAABAgTSBRTw9ATNT4AAAQIECBAgQIAAAQIRAgp4REyGJECAAAECBAgQIECAAIF0AQU8PUHzEyBAgAABAgQIECBAgECEgAIeEZMhCRAgQIAAAQIECBAgQCBdQAFPT9D8BAgQIECAAAECBAgQIBAhoIBHxGRIAgQIECBAgAABAgQIEEgXUMDTEzQ/AQIECBAgQIAAAQIECEQIKOARMRmSAAECBAgQIECAAAECBNIFFPD0BM1PgAABAgQIECBAgAABAhECCnhETIYkQIAAAQIECBAgQIAAgXQBBTw9QfMTIECAAAECBAgQIECAQISAAh4RkyEJECBAgAABAgQIECBAIF1AAU9P0PwECBAgQIAAAQIECBAgECGggEfEZEgCBAgQIECAAAECBAgQSBdQwNMTND8BAgQIECBAgAABAgQIRAgo4BExGZIAAQIECBAgQIAAAQIE0gUU8PQEzU+AAAECBAgQIECAAAECEQIKeERMhiRAgAABAgQIECBAgACBdAEFPD1B8xMgQIAAAQIECBAgQIBAhIACHhGTIQkQIECAAAECBAgQIEAgXUABT0/Q/AQIECBAgAABAgQIECAQIaCAR8RkSAIECBAgQIAAAQIECBBIF1DA0xM0PwECBAgQIECAAAECBAhECCjgETEZkgABAgQIECBAgAABAgTSBRTw9ATNT4AAAQIECBAgQIAAAQIRAgp4REyGJECAAAECBAgQIECAAIF0AQU8PUHzEyBAgAABAgQIECBAgECEgAIeEZMhCRAgQIAAAQIECBAgQCBdQAFPT9D8BAgQIECAAAECBAgQIBAhoIBHxGRIAgQIECBAgAABAgQIEEgXUMDTEzQ/AQIECBAgQIAAAQIECEQIKOARMRmSAAECBAgQIECAAAECBNIFFPD0BM1PgAABAgQIECBAgAABAhECCnhETIYkQIAAAQIECBAgQIAAgXQBBTw9QfMTIECAAAECBAgQIECAQISAAh4RkyEJECBAgAABAgQIECBAIF1AAU9P0PwECBAgQIAAAQIECBAgECGggEfEZEgCBAgQIECAAAECBAgQSBdQwNMTND8BAgQIECBAgAABAgQIRAgo4BExGZIAAQIECBAgQIAAAQIE0gUU8PQEzU+AAAECBAgQIECAAAECEQIKeERMhiRAgAABAgQIECBAgACBdAEFPD1B8xMgQIAAAQIECBAgQIBAhIACHhGTIQkQIECAAAECBAgQIEAgXUABT0/Q/AQIECBAgAABAgQIECAQIaCAR8RkSAIECBAgQIAAAQIECBBIF1DA0xM0PwECBAgQIECAAAECBAhECCjgETEZkgABAgQIECBAgAABAgTSBRTw9ATNT4AAAQIECBAgQIAAAQIRAgp4REyGJECAAAECBAgQIECAAIF0AQU8PUHzEyBAgAABAgQIECBAgECEgAIeEZMhCRAgQIAAAQIECBAgQCBdQAFPT9D8BAgQIECAAAECBAgQIBAhoIBHxGRIAgQIECBAgAABAgQIEEgXUMDTEzQ/AQIECBAgQIAAAQIECEQIKOARMRmSAAECBAgQIECAAAECBNIFFPD0BM1PgAABAgQIECBAgAABAhECCnhETIYkQIAAAQIECBAgQIAAgXQBBTw9QfMTIECAAAECBAgQIECAQISAAh4RkyEJECBAgAABAgQIECBAIF1AAU9P0PwECBAgQIAAAQIECBAgECGggEfEZEgCBAgQIECAAAECBAgQSBdQwNMTND8BAgQIECBAgAABAgQIRAgo4BExGZIAAQIECBAgQIAAAQIE0gUU8PQEzU+AAAECBAgQIECAAAECEQIKeERMhiRAgAABAgQIECBAgACBdAEFPD1B8xMgQIAAAQIECBAgQIBAhIACHhGTIQkQIECAAAECBAgQIEAgXUABT0/Q/AQIECBAgAABAgQIECAQIaCAR8RkSAIECBAgQIAAAQIECBBIF1DA0xM0PwECBAgQIECAAAECBAhECCjgETEZkgABAgQIECBAgAABAgTSBRTw9ATNT4AAAQIECBAgQIAAAQIRAgp4REyGJECAAAECBAgQIECAAIF0AQU8PUHzEyBAgAABAgQIECBAgECEgAIeEZMhCRAgQIAAAQIECBAgQCBdQAFPT9D8BAgQIECAAAECBAgQIBAhoIBHxGRIAgQIECBAgAABAgQIEEgXUMDTEzQ/AQIECBAgQIAAAQIECEQIKOARMRmSAAECBAgQIECAAAECBNIFFPD0BM1PgAABAgQIECBAgAABAhECCnhETIYkQIAAAQIECBAgQIAAgXQBBTw9QfMTIECAAAECBAgQIECAQISAAh4RkyEJECBAgAABAgQIECBAIF1AAU9P0PwECBAgQIAAAQIECBAgECGggEfEZEgCBAgQIECAAAECBAgQSBdQwNMTND8BAgQIECBAgAABAgQIRAgo4BExGZIAAQIECBAgQIAAAQIE0gUU8PQEzU+AAAECBAgQIECAAAECEQIKeERMhiRAgAABAgQIECBAgACBdAEFPD1B8xMgQIAAAQIECBAgQIBAhIACHhGTIQkQIECAAAECBAgQIEAgXUABT0/Q/AQIECBAgAABAgQIECAQIaCAR8RkSAIECBAgQIAAAQIECBBIF1DA0xM0PwECBAgQIECAAAECBAhECCjgETEZkgABAgQIECBAgAABAgTSBRTw9ATNT4AAAQIECBAgQIAAAQIRAgp4REyGJECAAAECBAgQIECAAIF0AQU8PUHzEyBAgAABAgQIECBAgECEgAIeEZMhCRAgQIAAAQIECBAgQCBdQAFPT9D8BAgQIECAAAECBAgQIBAhoIBHxGRIAgQIECBAgAABAgQIEEgXUMDTEzQ/AQIECBAgQIAAAQIECEQIKOARMRmSAAECBAgQIECAAAECBNIFFPD0BM1PgAABAgQIECBAgAABAhECCnhETIYkQIAAAQIECBAgQIAAgXQBBTw9QfMTIECAAAECBAgQIECAQISAAh4RkyEJECBAgAABAgQIECBAIF1AAU9P0PwECBAgQIAAAQIECBAgECGggEfEZEgCBAgQIECAAAECBAgQSBdQwNMTND8BAgQIECBAgAABAgQIRAgo4BExGZIAAQIECBAgQIAAAQIE0gUU8PQEzU+AAAECBAgQIECAAAECEQIKeERMhiRAgAABAgQIECBAgACBdAEFPD1B8xMgQIAAAQIECBAgQIBAhIACHhGTIQkQIECAAAECBAgQIEAgXUABT0/Q/AQIECBAgAABAgQIECAQIaCAR8RkSAIECBAgQIAAAQIECBBIF1DA0xM0PwECBAgQIECAAAECBAhECCjgETEZkgABAgQIECBAgAABAgTSBRTw9ATNT4AAAQIECBAgQIAAAQIRAgp4REyGJECAAAECBAgQIECAAIF0gX8AV64yKsezA6YAAAAASUVORK5CYII=",
+            "id": "196d4b35c19-layer-479",
             "title": null,
+            "opacity": 1,
+            "minScale": 0,
+            "maxScale": 0
+        },
+        {
+            "id": "compare-layer",
+            "title": "Parcels Current",
+            "url": "https://test-gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/0",
+            "layerType": "ArcGISFeatureLayer",
+            "layerDefinition": {
+                "disableDisplayFilter": false,
+                "displayFilterInfo": null,
+                "definitionExpression": "PIN14 IN ('16184230010000','16184170190000','16184100350000','16184110480000','16184070310000','16184110020000','16184030080000','16184110470000','16184110160000','16184110030000','16183210080000','16183210030000','16183130290000','16184130280000','16184110310000','16183030350000','16183210010000','16183210040000','16183200210000','16183060190000','16183030360000','16183030060000','16183210050000','16183210020000','16184170200000','16184110010000','16184060010000','16183030050000')",
+                "drawingInfo": {
+                    "labelingInfo": [
+                        {
+                            "name": "Class 1",
+                            "allowOverrun": true,
+                            "labelExpressionInfo": {
+                                "expression": "n                var label = ""nn                if($feature.YMax-$feature.YMin < $feature.XMax-$feature.XMin-20){n                    label = Mid($feature.PIN10, 0, 2) + "-" + Mid($feature.PIN10, 2, 2) + "-" + Mid($feature.PIN10, 4, 3) + "-" + Mid($feature.PIN10, 7, 3)n                }n                else{n                    label= Mid($feature.PIN10, 0, 2) + "-" + Mid($feature.PIN10, 2, 2) + TextFormatting.NewLine + Mid($feature.PIN10, 4, 3) + "-"  + Mid($feature.PIN10, 7, 3)n                }n                return labeln                n                ",
+                                "title": "Custom"
+                            },
+                            "labelPlacement": "esriServerPolygonPlacementAlwaysHorizontal",
+                            "labelPosition": "curved",
+                            "maxScale": 0,
+                            "minScale": 8978.252315,
+                            "repeatLabel": false,
+                            "symbol": {
+                                "type": "esriTS",
+                                "color": [
+                                    255,
+                                    255,
+                                    255,
+                                    255
+                                ],
+                                "font": {
+                                    "family": "Arial Unicode MS",
+                                    "size": 11,
+                                    "weight": "bold"
+                                },
+                                "horizontalAlignment": "center",
+                                "kerning": true,
+                                "haloColor": [
+                                    0,
+                                    0,
+                                    0,
+                                    255
+                                ],
+                                "haloSize": 1.5,
+                                "rotated": false,
+                                "text": "",
+                                "verticalAlignment": "baseline",
+                                "xoffset": 0,
+                                "yoffset": 0,
+                                "angle": 0
+                            },
+                            "useCodedValues": true
+                        }
+                    ],
+                    "renderer": {
+                        "type": "simple",
+                        "visualVariables": [
+                            {
+                                "type": "sizeInfo",
+                                "valueExpression": "$view.scale",
+                                "valueExpressionTitle": "Custom",
+                                "stops": [
+                                    {
+                                        "size": 2,
+                                        "value": 820
+                                    },
+                                    {
+                                        "size": 1,
+                                        "value": 2563
+                                    },
+                                    {
+                                        "size": 0.5,
+                                        "value": 10253
+                                    },
+                                    {
+                                        "size": 0,
+                                        "value": 20506
+                                    }
+                                ],
+                                "target": "outline"
+                            }
+                        ],
+                        "symbol": {
+                            "type": "CIMSymbolReference",
+                            "symbol": {
+                                "type": "CIMPolygonSymbol",
+                                "symbolLayers": [
+                                    {
+                                        "type": "CIMSolidStroke",
+                                        "effects": [
+                                            {
+                                                "type": "CIMGeometricEffectDashes",
+                                                "dashTemplate": [
+                                                    6.75,
+                                                    4.5
+                                                ],
+                                                "lineDashEnding": "NoConstraint",
+                                                "controlPointEnding": "NoConstraint"
+                                            }
+                                        ],
+                                        "enable": true,
+                                        "colorLocked": true,
+                                        "capStyle": "Butt",
+                                        "joinStyle": "Round",
+                                        "lineStyle3D": "Strip",
+                                        "miterLimit": 10,
+                                        "width": 2.25,
+                                        "height3D": 1,
+                                        "anchor3D": "Center",
+                                        "color": [
+                                            0,
+                                            206,
+                                            209,
+                                            255
+                                        ]
+                                    },
+                                    {
+                                        "type": "CIMSolidFill",
+                                        "enable": true,
+                                        "color": [
+                                            0,
+                                            0,
+                                            0,
+                                            0
+                                        ]
+                                    }
+                                ],
+                                "angleAlignment": "Map"
+                            }
+                        }
+                    }
+                }
+            },
+            "credits": "",
+            "showLabels": true,
             "opacity": 1,
             "minScale": 0,
             "maxScale": 0
@@ -1031,23 +2386,27 @@
                 "latestWkid": 3435,
                 "wkid": 102671
             },
-            "xmin": 1169399.761002108,
-            "ymin": 1891518.6040587623,
-            "xmax": 1169712.6999263342,
-            "ymax": 1891760.4205002098
+            "xmin": 1129137.1685493945,
+            "ymin": 1893362.4885977416,
+            "xmax": 1134144.1913370166,
+            "ymax": 1897231.551660904
         },
         "spatialReference": {
             "latestWkid": 3435,
             "wkid": 102671
         },
         "showAttribution": true,
-        "scale": 563.2900636074938
+        "scale": 9012.641017719901
     },
     "reportOptions": {
         "reportSectionOverrides": {
             "Parcels Current": {
                 "name": "Parcels Current",
                 "sourceId": "1922088cfbf-layer-6"
+            },
+            "Parcels Current 1": {
+                "name": "Comparable Parcels",
+                "sourceId": "compare-layer"
             }
         }
     },
@@ -1057,16 +2416,15 @@
     "layoutOptions": {
         "customTextElements": [
             {
-                "date": "5/2/2025"
+                "date": "5/15/2025"
             }
         ],
         "legendOptions": {
             "operationalLayers": [
+                null,
+                null,
                 {
-                    "id": "1922088cfbf-layer-6"
-                },
-                {
-                    "id": "196913a6ed4-layer-561"
+                    "id": "196d4b24b6c-layer-205"
                 }
             ]
         }

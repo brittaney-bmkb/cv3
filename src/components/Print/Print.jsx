@@ -36,13 +36,16 @@ import { config } from "../../data/config";
 import { useEffect, useRef, useState } from "react";
 
 import Portal from "@arcgis/core/portal/Portal.js";
+import PortalGroup from "@arcgis/core/portal/PortalGroup.js";
 import PortalItem from "@arcgis/core/portal/PortalItem.js";
+import PortalQueryParams from "@arcgis/core/portal/PortalQueryParams.js";
+//update query with portal query params
 
 //print modules & dependencies 
 import PrintVM from "@arcgis/core/widgets/Print/PrintViewModel.js";
 import PrintTemplate from "@arcgis/core/rest/support/PrintTemplate.js";
 import "@arcgis/map-components/components/arcgis-print";
-import { findTargetLayer } from "../Map/Map";
+import { findTargetLayer, SELECTED_PARCEL } from "../Map/Map";
 import PrintAreaBox from "./PrintAreaBox";
 import CustomMaskLayer from "./CustomMaskLayer";
 
@@ -62,7 +65,7 @@ const Print = () => {
            mapView,
            primaryResultFeature,
            searchFeatures,
-           selectPanelClosed,
+           language,
            comparableParcels
        } = UseAppContext()
        
@@ -99,203 +102,20 @@ const Print = () => {
        const includeSearchFeaturesRef = useRef(null)
        const includeComparablesRef = useRef(null)
 
-       useEffect(() => {
+       const gisPortal = new Portal({
+            url: config.print_portal
+        })
 
-        if(printPanelClosed){
-            console.log("removing print area")
-            if(maskLayer.current){
-                maskLayer.current = null
-            }
+        //Portal group with print templates
+        const templateGroup = new PortalGroup({
+            portal: gisPortal,
+            id: config.print_group_id,
+        })
 
-            if(boxExtent.current){
-                boxExtent.current = null
-            }
-
-            if(showPrintArea){
-                setShowPrintArea(false)
-            }
-        }
-
-       }, [printPanelClosed, showPrintArea])
-   
-       const handleClosePrintPanel = () => {
-   
-           setPrintPanel(true)
-
-           if(printViewModel.current){
-   
-               setShowPrintArea(false)
-               maskLayer.current = null
-               boxExtent.current = null
-               //printViewModel.current.showPrintAreaEnabled = false
-           }
-       }
-
-       //revisit custom mask layer
-        useEffect(() => {
-        if (printPanelClosed || !arcgisMapRef.current || !showPrintArea || !boxExtent.current) return;
-        const map  = arcgisMapRef.current.map
-        const view = arcgisMapRef.current.view
-        const mapElement = arcgisMapRef?.current;
-        
-        if(!map || !view) return;
-
-        const removeMaskLayer = () => {
-            map.remove(maskLayer.current);
-            maskLayer.current = null;
-        }
-
-        const createCustomMaskLayer = () => {
-            
-        console.log("Creating custom mask layer")
-        try {
-
-            const printArea = Polygon.fromExtent(boxExtent.current)
-            maskLayer.current = new CustomMaskLayer({
-                geometry: printArea,
-                spatialReference: view.spatialReference,
-                distance: 10,
-                color: [0, 0, 0, 0.4]
-            });
-            
-            map.add(maskLayer.current);
-            } catch (e) {
-            console.error("Failed to add CustomMaskLayer:", e);
-            }
-        
-        console.log("custom mask layer: ", maskLayer.current)
-        
-        }
-
-        if (!maskLayer.current) {
-            createCustomMaskLayer()
-        }
-        const listener = () => {
-            if (maskLayer.current) {
-                removeMaskLayer()
-            }
-            createCustomMaskLayer()
-    
-        }
-        mapElement.addEventListener("arcgisViewChange", listener);
-
-        return () => {
-            mapElement.removeEventListener("arcgisViewChange", listener);
-            if (maskLayer.current) {
-                removeMaskLayer()
-            }
-        }
-    
-        }, [arcgisMapRef.current, mapView, showPrintArea, boxExtent.current, printPanelClosed]);
-
-   
-       useEffect(() => {
-   
-           const setupPrintVM = async () => {
-
-               if(!mapView?.ready) return;
-
-   
-               if(!printViewModel.current && !printPanelClosed){
-                   
-                   //console.log("setting up print view model. showarea: ", )
-                   printViewModel.current = new PrintVM({
-                       view: mapView,
-                       printServiceUrl : config.print_service_url
-                   })
-
-                   setPrintLoading(true)
-                   await printViewModel.current.load()
-
-                   const printServiceTemplates = await getPrintLayouts()
-                   //console.log("print service templates: ", printServiceTemplates)
-                   setAllowedLayouts(printServiceTemplates)
-                   setLayout(printServiceTemplates[0])
-
-                   const formats = await getPrintFormats()
-                   setAllowedFormats(formats)
-                   setFormat(formats[0])
-
-                   setPrintLoading(false)
-               }
-               
-           }
-   
-           setupPrintVM();
-   
-       }, [mapView, printViewModel.current, printPanelClosed])
-       
-
-       const getPrintLayouts = async () => {
-        return printViewModel.current.printServiceTemplates.items.map((item) => item.layout)
-
-       }
-       const getPrintFormats = async () => {
-        return printViewModel.current.templatesInfo.format.choiceList.map((format) => format)
-
-       }
-   
-       useEffect(() => {
-           console.log("includeSearchFeatures: ", includeAllSearchFeatures)
-           const getDefitionQuery = async () => {
-
-            if(searchFeatures && searchFeatures.length > 0){
-            
-            if(includeAllSearchFeatures === true){
-                
-                    definitionQuery.current = await createParcelDefinitionExpression(searchFeatures)
-                }
-                else{
-                    if(primaryResultFeature && primaryResultFeature.length > 0){
-                        definitionQuery.current = await createParcelDefinitionExpression(primaryResultFeature)
-                }
-                }
-            }
-
-            else{
-                setIncludeAllSearchFeatures(false)
-                definitionQuery.current = null
-            }
+        console.log("templateGroup: ", templateGroup)
 
 
-
-            console.log("definition query set: ", includeAllSearchFeatures, definitionQuery.current)
-               
-           }
-           getDefitionQuery()
-           
-       },  [searchFeatures, primaryResultFeature, includeAllSearchFeatures])
-
-
-               useEffect(() => {
-
-           const getDefitionQuery = async () => {
-            
-            console.log("Include comparables: ", includeComparbles)
-
-            if(!definitionQueryComparable) return
-
-             if(comparableParcels && comparableParcels.length > 0){                          
-                if(includeComparbles === true){
-                        definitionQueryComparable.current = await createParcelDefinitionExpression(comparableParcels)
-                } 
-                else{
-                        definitionQueryComparable.current = null
-                }    
-                     
-            }
-            else{
-                setIncludeComparables(false)
-                definitionQueryComparable.current = null
-            }
-            console.log("definition query set: ", includeComparbles, definitionQueryComparable?.current)
-               
-           }
-           getDefitionQuery()
-           
-       },  [comparableParcels, includeComparbles])
-   
-       const createParcelDefinitionExpression = async (feature) => {
+        const createParcelDefinitionExpression = async (feature) => {
    
            const pins14 = feature?.map((feature) => feature.attributes[config.target_layer_unique_id])
    
@@ -307,13 +127,26 @@ const Print = () => {
        const preparePrintParams = async (jobType) => {
    
            if(!arcgisMapRef.current) return;
+
+           const portalItemLayout = new PortalItem({
+                portal: config.portal_gis,
+                id: layout
+            })
+
+            //console.log("portal item Layout: ", portalItemLayout)
    
            const template = new PrintTemplate({
-               layout: layout,
+               layoutItem : portalItemLayout,
                format: jobType === 'report' ? 'pdf' : format,
            })
 
            if(jobType === 'report'){
+
+               const reports = await getPrintReports()
+
+               if(!reports) return;
+
+               console.log("print-reports: ", reports)
    
                const map = arcgisMapRef.current.map
                const view = arcgisMapRef.current.view
@@ -328,13 +161,14 @@ const Print = () => {
 
                setSourceId(sourceId)
 
-               const portalItem = new PortalItem({
-                portal: config.portal_gis,
-                id: includeComparbles ? config.report_id_comparable : config.report_id
-               })
+            //    const portalItem = new PortalItem({
+            //     portal: config.portal_gis,
+            //     //id: includeComparbles ? config.report_id_comparable : config.report_id
+            //     id: reports[0].id
+            //    })
    
-            //    /template.report = config.reportTemplate
-               template.reportItem = portalItem
+            //  /template.report = config.reportTemplate
+               template.reportItem = reports[0]
 
 
                if(includeComparbles){
@@ -368,6 +202,279 @@ const Print = () => {
            
            return template
        }
+
+
+       const handleClosePrintPanel = () => {
+   
+           setPrintPanel(true)
+
+           if(printViewModel.current){
+   
+               setShowPrintArea(false)
+               maskLayer.current = null
+               boxExtent.current = null
+               //printViewModel.current.showPrintAreaEnabled = false
+           }
+       }
+
+
+        const getPrintLayouts = async () => {
+
+            const params = new PortalQueryParams({
+                query: "type: 'Layout'"
+            })
+
+            //portal templates
+            const templateItems = await templateGroup.queryItems(params)
+
+            const layouts = templateItems.results?.filter((item) => {
+
+                console.log("current language: ", language)
+
+                const template = (template_lang) => template_lang.includes(`layout-${language}`)
+                
+                return item.tags.some(template)
+ 
+            })
+
+            console.log("print layout items: ", layouts)
+
+            return layouts
+       }
+
+        const getPrintReports = async () => {
+
+            const params = new PortalQueryParams({
+                query: "type: 'Pro Report'"
+            })
+
+            //portal templates
+            const templateItems = await templateGroup.queryItems(params)
+
+            console.log("report templates: ", templateItems)
+
+            const reports = templateItems.results?.filter((item) => {
+
+                console.log("current item: ", language, item.title, item.tags)
+
+                const reportItem = (report_lang) => report_lang.includes(includeComparbles ? `report-comparables-${language}` : `report-${language}`)
+
+                
+                return item.tags.some(reportItem)
+ 
+            })
+
+            console.log("print report items: ", reports)
+
+            return reports
+       }
+
+       const getPrintFormats = async () => {
+        return printViewModel.current.templatesInfo.format.choiceList.map((format) => format)
+
+       }
+
+       //update print templates based on language
+       useEffect(() => {
+
+        const updatePrintTemplates = async () => {
+
+            const printServiceTemplates = await getPrintLayouts()
+
+            console.log("printServiceTemplates: ", printServiceTemplates)
+
+            setAllowedLayouts(printServiceTemplates)
+            setLayout(printServiceTemplates[0].id)
+        }
+
+        updatePrintTemplates()
+
+       }, [language])
+
+        useEffect(() => {
+
+            if(printPanelClosed){
+                console.log("removing print area")
+                if(maskLayer.current){
+                    maskLayer.current = null
+                }
+
+                if(boxExtent.current){
+                    boxExtent.current = null
+                }
+
+                if(showPrintArea){
+                    setShowPrintArea(false)
+                }
+            }
+
+       }, [printPanelClosed, showPrintArea])
+   
+
+       //revisit custom mask layer
+        useEffect(() => {
+            if (printPanelClosed || !arcgisMapRef.current || !showPrintArea || !boxExtent.current) return;
+            const map  = arcgisMapRef.current.map
+            const view = arcgisMapRef.current.view
+            const mapElement = arcgisMapRef?.current;
+            
+            if(!map || !view) return;
+
+            const removeMaskLayer = () => {
+                map.remove(maskLayer.current);
+                maskLayer.current = null;
+            }
+
+        const createCustomMaskLayer = () => {
+            
+            console.log("Creating custom mask layer")
+            try {
+
+                const printArea = Polygon.fromExtent(boxExtent.current)
+                maskLayer.current = new CustomMaskLayer({
+                    geometry: printArea,
+                    spatialReference: view.spatialReference,
+                    distance: 10,
+                    color: [0, 0, 0, 0.4]
+                });
+                
+                map.add(maskLayer.current);
+                } catch (e) {
+                console.error("Failed to add CustomMaskLayer:", e);
+                }
+            
+            console.log("custom mask layer: ", maskLayer.current)
+            
+            }
+
+            if (!maskLayer.current) {
+                createCustomMaskLayer()
+            }
+            const listener = () => {
+                if (maskLayer.current) {
+                    removeMaskLayer()
+                }
+                createCustomMaskLayer()
+        
+            }
+            mapElement.addEventListener("arcgisViewChange", listener);
+
+        return () => {
+            mapElement.removeEventListener("arcgisViewChange", listener);
+            if (maskLayer.current) {
+                removeMaskLayer()
+            }
+        }
+    
+        }, [arcgisMapRef.current, mapView, showPrintArea, boxExtent.current, printPanelClosed]);
+
+
+        //print templates from portal
+       useEffect(() => {
+   
+           const setupPrintVM = async () => {
+
+               if(!mapView?.ready) return;
+
+   
+               if(!printViewModel.current && !printPanelClosed){
+
+                    const printServiceTemplates = await getPrintLayouts()
+
+                    console.log("printServiceTemplates: ", printServiceTemplates)
+
+                   //console.log("setting up print view model. showarea: ", )
+                   printViewModel.current = new PrintVM({
+                       view: mapView,
+                       printServiceUrl : config.print_service_url
+                   })
+
+                   setPrintLoading(true)
+                   await printViewModel.current.load()
+
+                   
+                   //console.log("print service templates: ", printServiceTemplates)
+                   setAllowedLayouts(printServiceTemplates)
+                   setLayout(printServiceTemplates[0].id)
+
+                   const formats = await getPrintFormats()
+                   setAllowedFormats(formats)
+                   setFormat(formats[0])
+
+                   setPrintLoading(false)
+               }
+               
+           }
+   
+           setupPrintVM();
+   
+       }, [mapView, printViewModel.current, printPanelClosed])
+       
+
+
+   
+       useEffect(() => {
+           console.log("includeSearchFeatures: ", includeAllSearchFeatures)
+           const getDefitionQuery = async () => {
+
+            if(searchFeatures && searchFeatures.length > 0){
+            
+                if(includeAllSearchFeatures){
+                    console.log("including all search features")
+                    definitionQuery.current = await createParcelDefinitionExpression(searchFeatures)
+                }
+                else{
+                    if(primaryResultFeature && primaryResultFeature.length > 0){
+                        console.log("including selected parcel")
+                        definitionQuery.current = await createParcelDefinitionExpression(primaryResultFeature)
+                }
+                }
+            }
+
+            else{
+                setIncludeAllSearchFeatures(false)
+                definitionQuery.current = null
+            }
+
+
+
+            console.log("definition query set: ", includeAllSearchFeatures, definitionQuery.current)
+               
+           }
+           getDefitionQuery()
+           
+       },  [searchFeatures, primaryResultFeature, includeAllSearchFeatures])
+
+
+        useEffect(() => {
+
+            const getDefitionQuery = async () => {
+            
+            console.log("Include comparables: ", includeComparbles)
+
+            if(!definitionQueryComparable) return
+
+             if(comparableParcels && comparableParcels.length > 0){                          
+                if(includeComparbles === true){
+                        definitionQueryComparable.current = await createParcelDefinitionExpression(comparableParcels)
+                } 
+                else{
+                        definitionQueryComparable.current = null
+                }    
+                     
+            }
+            else{
+                setIncludeComparables(false)
+                definitionQueryComparable.current = null
+            }
+            console.log("definition query set: ", includeComparbles, definitionQueryComparable?.current)
+               
+           }
+           getDefitionQuery()
+           
+       },  [comparableParcels, includeComparbles])
+   
+
 
        useEsriInterceptor("printInterceptor", {
         urls: config.print_service_url,
@@ -408,14 +515,25 @@ const Print = () => {
             }
       
             if (printJobs[currentPrintJobId.current].type === 'report') {
+
+                //update the url based on language selection
+                let urlReplacement = config.target_layer_urls[language]
+
               webMap.operationalLayers = operationalLayers.map((layer) => {
                 if (layer.id === sourceId && definitionQuery.current) {
                     console.log("setting definition query for ", sourceId, definitionQuery.current)
                     layer.layerDefinition.definitionExpression = definitionQuery.current;
+
+                    //update the url based on language selection
+                    layer.url = urlReplacement
+
                 }
                 if(includeComparbles && layer.id === compareLayerId && definitionQueryComparable.current){
                     console.log("filtering comparable parcel data: ", definitionQueryComparable.current, layer)
                     layer.layerDefinition.definitionExpression = definitionQueryComparable.current;
+
+                    //update the url based on language selection
+                    layer.url = urlReplacement
                 }
                 return layer;
               });
@@ -433,19 +551,52 @@ const Print = () => {
             }
 
             webMap.layoutOptions.legendOptions.operationalLayers = legendLayers.map((layer) => {
-
-                if(!layer) return;
-
-                let layerId = layer.id
-                if(!layerId.includes('CookImagery')){
+                let layerId = layer?.id
+                if(!layerId?.includes('CookImagery')){
                     return layer
                 }
-              })
+            })
 
 
-            webMap.operationalLayers = operationalLayers.filter(
-                (layer) => layer.id !== "printGraphicsLayer"
-              );
+            webMap.operationalLayers = operationalLayers
+            .map((layer) => {
+                if (!layer.title) return layer;
+
+                layer.title = translateText(layer.title, true);
+
+                if (layer.title === SELECTED_PARCEL && layer.featureCollection?.layers) {
+                layer.featureCollection.layers.forEach((featLayer) => {
+                    const def = featLayer.layerDefinition;
+                    def.name = translateText(def.name, true);
+
+                    const renderer = def.drawingInfo?.renderer;
+
+                    if (renderer?.uniqueValueGroups) {
+                    renderer.uniqueValueGroups.forEach((group) => {
+                        group.classes?.forEach((cls) => {
+                        cls.label = translateText(cls.label, true);
+                        });
+                    });
+                    }
+
+                    if (renderer?.uniqueValueInfos) {
+                    renderer.uniqueValueInfos.forEach((info) => {
+                        info.label = translateText(info.label, true);
+                    });
+                    }
+                });
+                }
+
+                return layer;
+            })
+            .filter((layer) => layer.id !== "printGraphicsLayer");
+
+
+            webMap.operationalLayers.map((layer) => {
+                console.log("layer title: ", layer.title)
+            })
+
+
       
             query.Web_Map_as_JSON = JSON.stringify(webMap);
           }
@@ -466,12 +617,12 @@ const Print = () => {
            
            const jobKey = Object.keys(printJobs).length 
 
-           
            let jobDetails = {
             "title": `${printTitle}.${tabSelected === 'report' ? 'pdf' : extractTextInParentheses(format)}`,
             "description": translateText("Download and open in new window"),
             "link": "",
-            "type": tabSelected
+            "type": tabSelected,
+            "result": null
            }
 
            let job = {}
@@ -486,12 +637,12 @@ const Print = () => {
              setPrintJobs(job)
            }
            
-           const template  = await preparePrintParams(tabSelected)
-            setPrintExecuting(true)
            try {
-                
+
+                const template  = await preparePrintParams(tabSelected)
+
                 setTabSelected('prints')
-                
+                setPrintExecuting(true)
                 const result = await printViewModel.current.print(template)
 
                 if(result?.url){
@@ -501,7 +652,8 @@ const Print = () => {
                         ...prev,
                         [jobKey]: {
                             ...job[jobKey],
-                            link: result.url
+                            link: result.url,
+                            result: 'success'
                         }
                     })
                     )
@@ -518,20 +670,17 @@ const Print = () => {
                             ...job[jobKey],
                             title: `${updatedTitle} ${translateText("failed")}`,
                             link: null,
-                            description: `${translateText("Print failed to complete. try your print again")}`
+                            description: `${translateText("Print failed to complete. try your print again")}`,
+                            result: 'fail'
                         }
                     })
                     )
-                 
+
             }
             finally {
 
                 setPrintExecuting(false); 
-
-
             }
-           
-
        }
    
        const layoutDiv = () => ((
@@ -558,12 +707,13 @@ const Print = () => {
                    {
                    //Object.entries(allowedLayouts).map(([key, value], i ) => {
                     allowedLayouts?.length > 0 && allowedLayouts.map((value) => {
+                        //console.log("layouts: ", value)
                        return(
                            <CalciteOption 
-                           key={value}
-                           value={value}
+                           key={value.id}
+                           value={value.id}
                            >
-                               {value}
+                               {value.title}
                            </CalciteOption>
                        )
                    })
@@ -711,7 +861,7 @@ const Print = () => {
                     }}
                     >   
                     {
-                        !printJobs[key].link && (
+                        !printJobs[key].result && (
                             <CalciteLoader 
                             inline
                             scale="s"

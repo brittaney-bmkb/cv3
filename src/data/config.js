@@ -19,6 +19,9 @@ export const config = {
     //App Logo
     logo:"https://maps.cookcountyil.gov/cdn/cook/cook_logo.png",
     //PRINTS
+    print_group_id:"5626084802334bee87af273eb68c3e83",
+    print_portal: "https://gis.cookcountyil.gov/gisportal",
+    print_group_url:"https://gis.cookcountyil.gov/gisportal/home/group.html?id=5626084802334bee87af273eb68c3e83",
     reportTemplate: "CookViewerPropertyDetails",
     report_id: "f730c860a5004dd084845988f7e6fb71",
     report_id_comparable: "886e6ba1e4274e2f9d4aa8afde0fc9ff",
@@ -57,6 +60,11 @@ export const config = {
     target_layer_name: "Parcels Current", // Name of the target layer in LayerSources
     target_layer_url: "https://test-gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/0",
     target_layer_out_fields: ["PIN10","PIN14","PIN14_dash","street_address","city_state_zip","OBJECTID"],// Fields to display in the results pane (array of strings).
+    //Translated service
+    target_layer_urls: {
+        "english": "https://test-gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/0",
+        "spanish": "https://test-gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/0"
+    },
     //FIELD TO REFERENCE FOR CREATING URL PARAM WHEN CLICKING IN MAP
     target_layer_id_field: "PIN10",
     target_layer_unique_id: "PIN14",

@@ -1249,7 +1249,7 @@ export const AppProvider = ({children}) => {
         //////console.log("target features returned: ", targetFeatures)
         //////console.log("results returned: ", results)
 
-        setPrimaryResultFeature(targetFeatures, true)
+        setPrimaryResultFeature([targetFeatures[0]], true)
 
 
         //////console.log("seting previous feature: ", targetFeatures)
