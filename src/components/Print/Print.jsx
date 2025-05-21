@@ -45,7 +45,7 @@ import PortalQueryParams from "@arcgis/core/portal/PortalQueryParams.js";
 import PrintVM from "@arcgis/core/widgets/Print/PrintViewModel.js";
 import PrintTemplate from "@arcgis/core/rest/support/PrintTemplate.js";
 import "@arcgis/map-components/components/arcgis-print";
-import { findTargetLayer } from "../Map/Map";
+import { findTargetLayer, SELECTED_PARCEL } from "../Map/Map";
 import PrintAreaBox from "./PrintAreaBox";
 import CustomMaskLayer from "./CustomMaskLayer";
 
@@ -146,7 +146,7 @@ const Print = () => {
 
                if(!reports) return;
 
-               console.log("print-reports")
+               console.log("print-reports: ", reports)
    
                const map = arcgisMapRef.current.map
                const view = arcgisMapRef.current.view
@@ -161,14 +161,14 @@ const Print = () => {
 
                setSourceId(sourceId)
 
-               const portalItem = new PortalItem({
-                portal: config.portal_gis,
-                //id: includeComparbles ? config.report_id_comparable : config.report_id
-                id: reports[0].id
-               })
+            //    const portalItem = new PortalItem({
+            //     portal: config.portal_gis,
+            //     //id: includeComparbles ? config.report_id_comparable : config.report_id
+            //     id: reports[0].id
+            //    })
    
             //  /template.report = config.reportTemplate
-               template.reportItem = portalItem
+               template.reportItem = reports[0]
 
 
                if(includeComparbles){
@@ -419,12 +419,11 @@ const Print = () => {
 
             if(searchFeatures && searchFeatures.length > 0){
             
-            if(includeAllSearchFeatures){
+                if(includeAllSearchFeatures){
                     console.log("including all search features")
                     definitionQuery.current = await createParcelDefinitionExpression(searchFeatures)
                 }
                 else{
-
                     if(primaryResultFeature && primaryResultFeature.length > 0){
                         console.log("including selected parcel")
                         definitionQuery.current = await createParcelDefinitionExpression(primaryResultFeature)
@@ -552,19 +551,52 @@ const Print = () => {
             }
 
             webMap.layoutOptions.legendOptions.operationalLayers = legendLayers.map((layer) => {
-
-                if(!layer) return;
-
-                let layerId = layer.id
-                if(!layerId.includes('CookImagery')){
+                let layerId = layer?.id
+                if(!layerId?.includes('CookImagery')){
                     return layer
                 }
-              })
+            })
 
 
-            webMap.operationalLayers = operationalLayers.filter(
-                (layer) => layer.id !== "printGraphicsLayer"
-              );
+            webMap.operationalLayers = operationalLayers
+            .map((layer) => {
+                if (!layer.title) return layer;
+
+                layer.title = translateText(layer.title, true);
+
+                if (layer.title === SELECTED_PARCEL && layer.featureCollection?.layers) {
+                layer.featureCollection.layers.forEach((featLayer) => {
+                    const def = featLayer.layerDefinition;
+                    def.name = translateText(def.name, true);
+
+                    const renderer = def.drawingInfo?.renderer;
+
+                    if (renderer?.uniqueValueGroups) {
+                    renderer.uniqueValueGroups.forEach((group) => {
+                        group.classes?.forEach((cls) => {
+                        cls.label = translateText(cls.label, true);
+                        });
+                    });
+                    }
+
+                    if (renderer?.uniqueValueInfos) {
+                    renderer.uniqueValueInfos.forEach((info) => {
+                        info.label = translateText(info.label, true);
+                    });
+                    }
+                });
+                }
+
+                return layer;
+            })
+            .filter((layer) => layer.id !== "printGraphicsLayer");
+
+
+            webMap.operationalLayers.map((layer) => {
+                console.log("layer title: ", layer.title)
+            })
+
+
       
             query.Web_Map_as_JSON = JSON.stringify(webMap);
           }
@@ -648,11 +680,7 @@ const Print = () => {
             finally {
 
                 setPrintExecuting(false); 
-
-
             }
-           
-
        }
    
        const layoutDiv = () => ((
