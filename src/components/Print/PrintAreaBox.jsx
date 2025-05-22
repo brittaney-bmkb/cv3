@@ -76,8 +76,8 @@ const PrintAreaBox = ({ mapView, selectedLayout, active, boxExtent, vm }) => {
     // Try to get actual layout size from template
     console.log("looking for layout: ", layoutName)
     const selectedTemplate = vm?.printServiceTemplates?.items.find((t ) =>{
-      console.log("layouts: ", t.layout)
-      return  t.layout === layoutName
+      console.log("layouts: ", t)
+      return `${t.layout}.pagx` === layoutName.name
     }
       
     );
