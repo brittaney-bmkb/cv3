@@ -128,15 +128,15 @@ const Print = () => {
    
            if(!arcgisMapRef.current) return;
 
-           const portalItemLayout = new PortalItem({
-                portal: config.portal_gis,
-                id: layout
-            })
+        //    const portalItemLayout = new PortalItem({
+        //         portal: config.portal_gis,
+        //         id: layout
+        //     })
 
             //console.log("portal item Layout: ", portalItemLayout)
    
            const template = new PrintTemplate({
-               layoutItem : portalItemLayout,
+               layoutItem : layout,
                format: jobType === 'report' ? 'pdf' : format,
            })
 
@@ -284,7 +284,7 @@ const Print = () => {
             console.log("printServiceTemplates: ", printServiceTemplates)
 
             setAllowedLayouts(printServiceTemplates)
-            setLayout(printServiceTemplates[0].id)
+            setLayout(printServiceTemplates[0])
         }
 
         updatePrintTemplates()
@@ -395,7 +395,7 @@ const Print = () => {
                    
                    //console.log("print service templates: ", printServiceTemplates)
                    setAllowedLayouts(printServiceTemplates)
-                   setLayout(printServiceTemplates[0].id)
+                   setLayout(printServiceTemplates[0])
 
                    const formats = await getPrintFormats()
                    setAllowedFormats(formats)
@@ -711,7 +711,7 @@ const Print = () => {
                        return(
                            <CalciteOption 
                            key={value.id}
-                           value={value.id}
+                           value={value}
                            >
                                {value.title}
                            </CalciteOption>

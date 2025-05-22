@@ -109,6 +109,7 @@ const Map = () => {
     const [parcelLayer, setParcelLayer] = useState(null)
     const [ removeParcel, setRemoveParcel] = useState([])
     const [ bufferGraphicsLayer, setBufferGraphicsLayer ] = useState(null)
+    const [ openNotificatoin, setOpenNotification ] = useState(null)
 
     const highlightHandlesRef = useRef({});
     
@@ -761,6 +762,7 @@ const Map = () => {
                 })
 
                 setBufferGraphicsLayer(newGraphicsLayer)
+                setOpenNotification(true)
 
                 newGraphicsLayer.addMany(allGraphics)
 
@@ -797,8 +799,8 @@ const Map = () => {
               if(!bufferGraphicsLayer){
                   return
               }
-  
-              if(searchBufferGeometry || searchResultPoint){
+              setOpenNotification(false)
+              //if(searchBufferGeometry || searchResultPoint){
 
                   let foundBufferGraphic = map.allLayers.find((layer) => layer.title === "bufferGraphics")
                   
@@ -807,8 +809,9 @@ const Map = () => {
                       foundBufferGraphic.removeAll()
                       map.remove(foundBufferGraphic)
                       setSearchBufferGeometry(null, null)
+                      
                   }
-              }
+              //}
           }
           removeSearchBufferGraphics()
   
@@ -844,7 +847,7 @@ const Map = () => {
 
         </arcgis-map>
 
-        <CalciteNotice open={searchBufferGeometry ? true : false} icon='cluster-radius' closable>
+        <CalciteNotice open={openNotificatoin} icon='cluster-radius' closable>
         <div slot="title">{`${translateText("Showing properties near")} ${searchTerm}`}</div>
         <div slot="message">{translateText("You’re seeing multiple properties because the search used an address to find a nearby location, not a specific property. This means properties within about 60 feet of that address may appear in the results.")}</div>
         </CalciteNotice>
