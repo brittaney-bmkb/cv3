@@ -158,6 +158,10 @@ const Layers = () => {
                 showFilter
                 filterPlaceholder={translateText("Search for layers")}
                 onClick={() => {handleLayerChanges()}}
+                listItemCreatedFunction={ (event) => {
+                    let item = event.item
+                    item.title = translateText(item.title, true)
+                }}
                 />
              </CalciteBlock> 
             : null
