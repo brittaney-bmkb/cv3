@@ -59,41 +59,59 @@ const PanelInfo = () => {
                 </CalciteBlockSection>
                 </CalciteBlock>
                 <CalciteBlock open heading={translateText("What's New")}>
-                <CalciteBlockSection className='info-section-header' open text={"CookViewer 3.0.2"}>
+                <CalciteBlockSection className='info-section-header' open text={"CookViewer 3.1.0"}>
                     <CalciteLabel scale="s">
-                    {translateText("Release: February 27 2025", true)}
+                    {translateText("Release: June 05 2025", true)}
                     </CalciteLabel>
                     <CalciteList interactionMode="static" selectionMode="none">
                         <CalciteListItemGroup heading={translateText("Enhancements")}>
                             <CalciteListItem 
-                            label={translateText("Unincorporated Zoning Layer")}
-                            description={translateText("The Unincorporated Zoning layer is now viewable for more zoom levels.")}
-                            >
+                                label={translateText("Parcel Symbology")}
+                                description={translateText("Increased contrast between parcel symbology and aerial imagery for better visibility.")}>
                             </CalciteListItem>
+                            <CalciteListItem 
+                                label={translateText("Mobile UI Improvements")}
+                                description={translateText("Updated the mobile experience for enhanced usability across devices.")}>
+                            </CalciteListItem>
+                            <CalciteListItem 
+                                label={translateText("UI Consistency")}
+                                description={translateText("Standardized panel and modal close buttons for a unified user experience.")}>
+                            </CalciteListItem>
+                            <CalciteListItem 
+                                label={translateText("Language Support")}
+                                description={translateText("Added support for a locale URL parameter and Spanish intersection connectors in the locator.")}>
+                            </CalciteListItem>     
+                            <CalciteListItem 
+                                label={translateText("Map Measure Tool")}
+                                description={translateText("Updated the Measure component with improved UI and functionality.")}>
+                            </CalciteListItem>     
+                            <CalciteListItem 
+                                label={translateText("PDF Property Reports")}
+                                description={translateText("Added the ability to generate a printable PDF report for property information.")}>
+                            </CalciteListItem>                                                                                                                                            
                         </CalciteListItemGroup>
                         <CalciteListItemGroup heading={translateText("Bug Fixes")}>
                             <CalciteListItem 
-                            label={translateText("Missing Translations")}
-                            description={translateText("Spanish translations are now enabled for the search bar, including search sources and placeholder text.")}
-                            >
+                                label={translateText("Parcel Labeling")}
+                                description={translateText("Fixed issues with parcel label classifications.")}>
                             </CalciteListItem>
                             <CalciteListItem 
-                            label={translateText("URL Parameter Fix")}
-                            description={translateText("Search results now correctly generate pin10 and/or pin14 values in the application URL, allowing users to save search settings and return to their results. Previously, multiple parcel searches could return address=0 when parcel address data was unavailable, preventing users from navigating back to their search results.")}
-                            >
+                                label={translateText("Print Widget")}
+                                description={translateText("Resolved a bug where selecting an output from the print tool downloaded multiple PDFs instead of one.")}>
                             </CalciteListItem>
                             <CalciteListItem 
-                            label={translateText("Select Multiple Parcels")}
-                            description={translateText("Draw polygon tool “start new” button now triggers a restart.")}
-                            >
+                                label={translateText("Select Multiple Parcels")}
+                                description={translateText("Corrected behavior to ensure only one polygon can be drawn at a time when using Select Multiple Parcels tool.")}>
                             </CalciteListItem>
                             <CalciteListItem 
-                            label={translateText("Comparable Search")}
-                            description={translateText("Search radius option will now filter results based on distance set by the user. Prior to this fix, the search distance set by the user was not impacting the number of results.")}
-                            >
+                                label={translateText("Comparable Pane Navigation")}
+                                description={translateText("Fixed the issue where the comparable back button closed the entire pane.")}>
                             </CalciteListItem>
+                            <CalciteListItem 
+                                label={translateText("Print Area Selection")}
+                                description={translateText("Added a rectangle to illustrate area of map that will be printed.")}>
+                            </CalciteListItem>                            
                         </CalciteListItemGroup>
-      
                         <CalciteListItem label={translateText("Release Notes")}>
                             <div slot="content">
                                 {`${translateText("Read detailed ")} `}
