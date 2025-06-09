@@ -1,0 +1,847 @@
+<div style="overflow: hidden">
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .main {
+      display: flex;
+      gap: 20px;
+      padding: 16px;
+    }
+
+    .toc {
+      width: 240px;
+      flex-shrink: 0;
+      position: fixed;
+      background-color: #f8f8f8;
+      padding: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .toc h2 {
+      font-size: 1.25rem;
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+
+    .toc ol {
+      padding-left: 20px;
+    }
+
+    .toc li {
+      margin-bottom: 10px;
+    }
+
+    .toc a {
+      text-decoration: none;
+      color: #005e95;
+      font-weight: 500;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    .content {
+      flex-grow: 1;
+      padding-right: 16px;
+      margin-left: 280px;
+    }
+
+    .help-section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      align-items: flex-start;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #cacaca;
+    }
+
+    .help-section-container {
+        display: flex;
+        gap: 24px;
+    }
+
+    .help-section video {
+      flex: 1 1 75%;
+      max-width: 800px;
+      height: auto;
+      border-radius: 4px;
+    }
+
+    .help-intro {
+      margin-bottom: 40px;
+      padding: 0 8px;
+    }
+
+    .help-intro h1 {
+      font-size: 2em;
+      margin-bottom: 8px;
+      color: #1a1a1a;
+    }
+
+    .help-intro p {
+      font-size: 1.1em;
+      color: #444;
+      line-height: 1.6;
+      max-width: 800px;
+    }
+
+    .help-text {
+      flex: 1 2 25%;
+      padding: 10px;
+    }
+
+    .help-text-description{
+      width: 100%;
+      padding: 10px;
+    }
+
+    .help-text h2 {
+      font-size: 1.5em;
+      margin: 0 0 8px;
+      color: #222;
+    }
+
+    .help-text h3 {
+      font-size: 1.25em;
+      margin: 0 0 8px;
+      color: #222;
+    }
+
+    .help-text p {
+      font-size: 1em;
+      color: #444;
+      line-height: 1.5;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    
+
+    @media (max-width: 768px) {
+      .main {
+        flex-direction: column;
+      }
+
+      .toc {
+        position: relative;
+        width: 100%;
+        margin-bottom: 16px;
+      }
+
+      .content {
+        margin-left: 0;
+        padding-right: 0;
+      }
+
+      .help-section {
+        flex-direction: column;
+      }
+
+      .help-section-container {
+        flex-direction: column;
+      }
+
+      .help-text {
+        padding-left: 0;
+      }
+
+      .help-section video {
+        width: 100%;
+      }
+    }
+  </style>
+
+  <div class="main">
+    <div class="toc">
+      <h2>Help Topics</h2>
+      <ol>
+        <li><a href="#search">Search for Properties</a></li>
+        <li><a href="#map">Select Properties on the Map</a></li>
+        <li><a href="#select-tool">Select Parcels using the Select Tool</a></li>
+        <li><a href="#search-results">View Search Results</a></li>
+        <li><a href="#property-details">View Property Details</a></li>
+        <li><a href="#compare">Find Comparable Properties</a></li>
+        <li><a href="#nearby">Find Nearby Properties</a></li>
+        <li><a href="#measure">Measure Tool</a></li>
+        <li><a href="#history">Compare Historical Parcels</a></li>
+        <li><a href="#imagery">View Aerial Imagery</a></li>
+        <li><a href="#layers">Toggle Map Layers</a></li>
+        <li><a href="#print">Print Maps and Reports</a></li>
+      </ol>
+    </div>
+
+    <div class="content">
+      <div class="help-intro">
+        <h1>CookViewer Help Guide</h1>
+        <p>This guide walks you through the most common workflows in CookViewer 3.1. Each section matches a feature in the app and includes tips, visuals, and video walkthroughs to help you make the most of the tools.</p>
+      </div>
+
+      <div id="search" class="help-section">
+          <div class="help-text-description">
+            <h2>Search for Properties</h2>
+            <p>There are several ways to search in CookViewer using the search bar at the top of the screen. You can enter a 10-digit PIN, 14-digit PIN, a PIN with dashes, a property address, or a street intersection.</p>
+          </div>
+          <div id="search-by-pin-14" class="help-section-container">
+            <video controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/search-pin14.png" muted="" loop="" aria-label="Demonstration of how to search for properties using a 14 digit PIN">
+              <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/search-pin14.webm" type="video/webm" />
+            </video>
+            <div class="sr-only">
+              This video demonstrates how to search for a property by entering a 14 digit PIN into the search bar. The search results populate below with interactive parcel details.
+            </div>
+            <div class="help-text">
+              <h3>Searching with a 14-digit PIN</h3>
+              <p>To look up a property using its full 14-digit Property Index Number (PIN), simply enter the number into the search bar at the top of the screen. You can either click one of the suggested results or press Enter to begin your search.</p>
+              <p>If the PIN matches a property in our system, that property will appear in the search results panel. The map will automatically zoom to the location and highlight the parcel with a yellow outline so you can easily find it.</p>
+            </div>
+        </div>
+        <div id="search-by-pin" class="help-section-container">
+            <video  controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/search-pin-partial.png"  muted="" loop="" aria-label="Demonstration of how to search for properties using a 10 digit or partial PIN">
+              <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/search-pin-partial.webm" type="video/webm" />
+            </video>
+            <div class="sr-only">
+              This video demonstrates how to search for a property by entering a 10 digit or partial PIN into the search bar. The search results populate below with interactive parcel details.
+            </div>
+            <div class="help-text">
+              <h3>Searching with a 10-digit PIN or partial PIN</h3>
+              <p>You can also search using a 10-digit PIN or a partial PIN. Type the digits into the search bar and press Enter.</p>
+              <p>Any properties that match your entry will appear as a list in the search results panel. The map will zoom out to show all matching parcels, each outlined in yellow. Click on any result in the panel or on the map to view more details about that property.</p>
+              <p>To return to your full list of search results, click the <strong>Results</strong> button at the top of the left panel.</p>
+            </div>
+        </div>
+        <div id="search-by-address" class="help-section-container">
+            <video controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/search-address.png"  muted="" loop="" aria-label="Demonstration of how to search for properties using an address">
+              <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/search-address.webm" type="video/webm" />
+            </video>
+            <div class="sr-only">
+              This video demonstrates how to search for a property by entering an address into the search bar. The search results populate below with interactive parcel details.
+            </div>
+            <div class="help-text">
+              <h3>Searching with an Address</h3>
+              <p>You can search for a property by typing a full or partial address into the search bar at the top of the screen. As you type, suggested matches may appear—click a suggestion or press Enter to run the search.</p>
+              
+              <p>If the CookViewer finds one or more exact matches based on a parcel address, the results will appear in the search panel, and the map will automatically zoom out to highlight those properties in yellow.</p>
+              
+              <p>In some cases, the search may return nearby parcels instead of an exact match. This happens when the address you entered refers to a street location, such as a general building address or intersection. In these cases, CookViewer highlights all parcels within 60 feet of that location using a yellow outline, and also displays a dot and buffer area showing the search point and surrounding range.</p>
+              
+              <p>Click on any highlighted parcel on the map or select a result from the list to view detailed property information.</p>
+              
+              <p>To go back to your full list of search results, click the <strong>Results</strong> button at the top of the left-hand panel.</p>
+            </div>
+        </div>
+      </div>
+
+
+      <div id="map" class="help-section">
+        <div class="help-text-description">
+          <h2>Selecting properties on the map</h2>
+          <p>You can click directly on the map to select a parcel or use the Select Tool draw a shape to select multiple properties at once.</p>
+        </div>
+
+        <div id="select-by-click" class="help-section-container">
+          <video controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/map-select.png"  muted="" loop="" aria-label="Selecting properties on the map">
+            <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/map-select.webm" type="video/webm" />
+          </video>
+          <div class="sr-only">
+            This video demonstrates how to click a parcel on the map one or more properties.
+          </div>
+        <div class="help-text">
+            <h2>Select Properties on the Map</h2>
+            <p>You can click directly on a parcel in the map to select it. Once selected, the parcel will be outlined in yellow, and its information will appear in the Search Results panel.</p>
+            <p>In cases where multiple parcels exist in the same location—such as condominiums or high-rise buildings—the Search Results panel will list all matching units so you can choose the one you want to explore in detail.</p>
+        </div>
+
+        </div>
+
+
+      </div>
+
+      <div id="select-tool" class="help-section">
+            <div class="help-text-description">
+            <h2>Select Parcels Using the Select Tool</h2>
+                <p>The Select Tool gives you greater control when interacting with the map. You can click individual parcels, draw a shape to select multiple parcels at once, or remove selected parcels with a second click.</p>
+                <p>To activate the <strong>Select Tool</strong>, click the button on the right-hand panel (hint: it's the second button from the bottom).</p>
+            </div>
+            <div id="select-tool-cursor" class="help-section-container">
+                <video  controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/map-select-multiple.png"  muted="" loop="" aria-label="Selecting properties on the map">
+                    <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/map-select-multiple.webm" type="video/webm" />
+                </video>
+                <div class="sr-only">
+                    This video demonstrates how to use the selection tool to choose one or more properties.
+                </div>
+                    <div class="help-text">
+                    <h3>Cursor Selection Tool</h3>
+                    <p>By default, the Cursor Selection tool is active. This lets you click directly on parcels in the map to select them. To deselect a parcel, simply click it again. You can continue clicking to select or deselect as many parcels as needed.</p>
+                </div>
+            </div>
+            <div id="select-tool-polygon" class="help-section-container">
+                <video   controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/map-select-multiple-polygon.png"   muted="" loop="" aria-label="Selecting properties on the map">
+                    <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/map-select-multiple-polygon.webm" type="video/webm" />
+                </video>
+                <div class="sr-only">
+                    This video demonstrates how to use the selection tool to choose one or more properties.
+                </div>
+                    <div class="help-text">
+                    <h3>Polygon Selection Tool</h3>
+                    <p>The Polygon Selection tool allows you to draw a custom shape and select all parcels that fall within or intersect that shape.</p>
+                    <p>To use it, click the <strong>Polygon Selection</strong> button (middle button in the selection tools group), then move your cursor over the map. The cursor will change to crosshairs with a central dot.</p>
+                    <p>Click once to start your shape, then continue clicking to add points along the desired boundary. To finish, double-click your final point. All parcels inside or touching your shape will be selected and appear in the Search Results panel.</p>
+                    <h3>Modify Your Selection</h3>
+                    <p>If you’ve selected too many or missed a parcel using the Polygon or Rectangle tool, switch back to the Cursor Selection tool to fine-tune your selection. Click parcels to add or remove them as needed.</p>
+                </div>
+            </div>
+            <div id="select-tool-rectangle" class="help-section-container">
+                <video controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/map-select-multiple-rectangle.png"   muted="" loop="" aria-label="Selecting properties on the map">
+                    <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/map-select-multiple-rectangle.webm" type="video/webm" />
+                </video>
+                <div class="sr-only">
+                    This video demonstrates how to use the selection tool to choose one or more properties.
+                </div>
+                    <div class="help-text">
+                    <h3>Rectangle Selection Tool</h3>
+                    <p>Use the Rectangle Selection tool to quickly select parcels within a rectangular area.</p>
+                    <p>Click the <strong>Rectangle Selection</strong> button (the last selection tool button), then hover over the map. The cursor will switch to crosshairs.</p>
+                    <p>Click and hold the left mouse button, drag to create your rectangle, and release to complete the selection. All parcels within the rectangle will be selected and shown in the Search Results panel.</p>
+
+                    <h3>Modify Your Selection</h3>
+                    <p>If you’ve selected too many or missed a parcel using the Polygon or Rectangle tool, switch back to the Cursor Selection tool to fine-tune your selection. Click parcels to add or remove them as needed.</p>
+                </div>
+            </div>
+      </div>
+
+
+      <div id="search-results" class="help-section">
+        <div class="help-text-description">
+            <h2>View Search Results</h2>
+            <p>After you run a search, matching properties will appear in the Search Results panel. Each result shows the property’s PIN and address. From this panel, you can click a result to see more details and zoom directly to that property on the map.</p>
+            <p>You can also clear results, export the list to a spreadsheet, or provide feedback if something doesn’t look right.</p>
+        </div>
+
+        <div id="view-results" class="help-section-container">
+            <video controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/search-results.png"  muted="" loop="" aria-label="View Search Results panel after running a search">
+            <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/search-results.webm" type="video/webm" />
+            </video>
+            <div class="sr-only">
+            This video shows the list of matching properties that appears in the Search Results panel.
+            </div>
+            <div class="help-text">
+            <h3>Search Results</h3>
+            <p>After you perform a search or select a parcel on the map, matching results will appear as a list in the Search Results panel.</p>
+            <p>Click any item in the list to open full property details. You can close the Search Results panel using the <strong>X</strong> button in the upper-right corner, and reopen it anytime by clicking the <strong>Results</strong> button located at the top of the left toolbar.</p>
+            </div>
+
+        </div>
+
+        <div id="clear-results" class="help-section-container">
+            <video controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/search-results.png" muted="" loop="" aria-label="View Search Results panel after running a search">
+            <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/search-results-clear.webm" type="video/webm" />
+            </video>
+            <div class="sr-only">
+            This video shows the list of matching properties that appears in the Search Results panel and the map being cleared using the <strong>Clear Results</strong> button.
+            </div>
+            <div class="help-text">
+            <h3>Clear Results</h3>
+            <p>The Clear Results button removes all selected parcels from both the map and the Search Results panel. This also clears any nearby or comparable properties that were selected.</p>
+            <p>To clear your search results, click the "Clear Results" button in the toolbar at the top of the Search Results panel.</p>
+            </div>
+        </div>
+
+        <div id="export-results" class="help-section-container">
+            <video controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/search-results-export.png"  muted="" loop="" aria-label="Export search results">
+            <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/search-results-export.webm" type="video/webm" />
+            </video>
+            <div class="sr-only">
+            This video shows the list of matching properties that appears in the Search Results panel being exported to CSV and Excel using the <strong>Export</strong> button.
+            </div>
+            <div class="help-text">
+            <h3>Export Results</h3>
+            <p>You can download your search results as a CSV or Excel file. Each file includes basic property information such as PIN, address, and other relevant data.</p>
+            <p>Click the <strong>Export</strong> button in the toolbar at the top of the Search Results panel to begin. You’ll be asked to enter a file name and choose your preferred format (CSV or Excel).</p>
+            <p>Once exported, the file will automatically download to your computer’s default Downloads folder.</p>
+            </div>
+        </div>
+
+        <div id="feedback-results" class="help-section-container">
+            <video  controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/search-results-feedback.png"  muted="" loop="" aria-label="Submit feedback for search results">
+            <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/search-results-feedback.webm" type="video/webm" />
+            </video>
+            <div class="sr-only">
+            This video shows how feedback on the results returned in the Search Results panel is submitted.
+            </div>
+            <div class="help-text">
+            <h3>Provide Feedback on Search Results</h3>
+            <p>If something doesn’t look right, or you expected different results, you can send feedback directly from the Search Results panel. Your input helps us improve CookViewer for everyone.</p>
+            <p>Click the <strong>Feedback</strong> button in the toolbar at the top of the panel to open the feedback form. You’ll be asked a few quick questions and can leave a comment describing your issue.</p>
+            <p>When you're ready, click <strong>Submit Feedback</strong>to submit your message. Then click <strong>Done</strong> or close the window to return to the app.</p>
+            <p>All feedback is reviewed by the Cook County GIS team and considered in future updates to CookViewer.</p>
+
+            <h3>Questions About Property Information?</h3>
+            <p>If you have questions about assessments, parcel maps, or recorded documents, please contact the appropriate department below:</p>
+
+            <div id="contact-info-container">
+                <div id="assessor-contact">
+                <p><strong>Assessment Information</strong></p>
+                <p>
+                    Contact the
+                    <a href="https://www.cookcountyassessor.com/contact" target="_blank" rel="noopener">Cook County Assessor's Office</a><br />
+                    118 North Clark Street, Room #320<br />
+                    Chicago, Illinois 60602<br />
+                    (312) 443-7550
+                </p>
+                </div>
+
+                <div id="parcel-maps-contact">
+                <p><strong>Parcel Maps & Legal Descriptions</strong></p>
+                <p>
+                    Email the Cook County Clerk’s Office at
+                    <a href="mailto:clerk.maps@cookcountyil.gov">clerk.maps@cookcountyil.gov</a><br />
+                    118 North Clark Street, Room #434<br />
+                    Chicago, Illinois 60602<br />
+                    (312) 603-5640
+                </p>
+                </div>
+
+                <div id="plat-request-contact">
+                <p><strong>Plat Requests or Recorded Documents</strong></p>
+                <p>
+                    Email the Clerk's Recordings Division at
+                    <a href="mailto:clerk.recordings@cookcountyil.gov">clerk.recordings@cookcountyil.gov</a><br />
+                    118 North Clark Street, Room #120<br />
+                    Chicago, Illinois 60602<br />
+                    (312) 603-5050
+                </p>
+                </div>
+            </div>
+            </div>
+        </div>
+      </div>
+
+      
+      <div id="property-details" class="help-section">
+        <div class="help-text-description">
+            <h2>View Property Details</h2>
+            <p>When you select a property from the Search Results panel, the Property Details panel opens automatically. This panel provides in-depth information, including ownership, zoning, tax assessments, building characteristics, political districts, and more. Use the filter bar at the top of the panel to quickly jump to the section you're interested in.</p>
+        </div>
+
+        <div id="property-details-filter" class="help-section-container">
+            <video  controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/property-detail.png" muted="" loop="" aria-label="Demonstration of the new Property Details Filter in CookViewer 3.1">
+                <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/property-detail-filter.webm" type="video/webm" />
+            </video>
+            <div class="sr-only">
+                This video demonstrates how to use the Property Details Filter to customize which panels and tools appear when viewing parcel details.
+            </div>
+
+            <div class="help-text">
+                <h2>Customize Your View with the Property Details Filter</h2>
+                <p>New in CookViewer 3.1, the <strong>Property Details Filter</strong> allows you to control which sections are visible in the Property Details panel. This is especially useful when navigating on smaller screens or reviewing complex records.</p>
+                <p>To use the filter, click the search bar near the top of the Property Details panel. Begin typing a keyword—such as "value"—to instantly narrow down the display to related fields like land, building, and total assessed value.</p>
+                <p>Your filter is applied immediately, helping you focus on the information that matters most. To return to the full view, simply clear the filter.</p>
+                <p>This feature was introduced in response to user feedback about difficulty finding key tools and data in earlier versions of CookViewer.</p>
+
+            </div>
+        </div>
+
+
+        <div id="view-property-details" class="help-section-container">
+            <video  controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/property-detail.png" muted="" loop="" aria-label="Viewing detailed information about a selected property">
+            <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/property-detail-link-outs.webm" type="video/webm" />
+            </video>
+            <div class="sr-only">
+            Video demonstration of opening a property detail panel and reviewing attributes like tax details, assessed value, and district info.
+            </div>
+
+            <div class="help-text">
+            <h2>Location, Assessor, and Property Tax Data</h2>
+            <p>The Property Details panel shows which political and taxing districts your parcel belongs to, including school, township, and municipal boundaries. It also displays data from the Cook County Assessor and Treasurer, such as assessed values and property characteristics.</p>
+            <p>For the most complete information, direct links to the <a href="https://www.cookcountyassessor.com/" target="_blank">Cook County Assessor’s website</a> and <a href="https://www.cookcountytreasurer.com/setsearchparameters.aspx" target="_blank">Cook County Treasurer's Tax Portal</a> are provided, taking you directly to the property’s page on each site.</p>
+            <p>You'll also find links to helpful Cook County GIS tools like <a href="https://maps.cookcountyil.gov/findmydistrict/" target="_blank">Find My District</a> (to view elected official contact info and district boundaries), the <a href="https://maps.cookcountyil.gov/taxmapviewer/" target="_blank">Tax Map Viewer</a> (to see unofficial tax maps), and the <a href="https://maps.cookcountyil.gov/unincorporatedzoning/" target="_blank">Unincorporated Zoning Map</a> (to check zoning information for unincorporated areas).</p>
+            </div>
+        </div>
+        
+        <div id="property-details-imagery" class="help-section-container">
+            <video  controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/property-detail.png"  muted="" loop="" aria-label="Viewing imagery options for a selected property">
+                <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/property-detail-imagery.webm" type="video/webm" />
+            </video>
+            <div class="sr-only">
+                Video demonstration of opening the property detail panel and accessing available imagery tools.
+            </div>
+
+            <div class="help-text">
+                <h2>View Oblique and Historical Imagery</h2>
+                <p>CookViewer offers access to oblique (angled) aerial imagery and historical property photos for many parcels. These tools are available in the Imagery section of the Property Details panel.</p>
+                <p>To view angled aerial views, click the <strong>Oblique Imagery Viewer</strong> button. A new window will open, showing your property from the north, south, east, and west. You can also choose from available years to compare how the property looked in the past.</p>
+                <p>To see older still photos of the property, click the <strong>Historical Parcel</strong> button. This will open a gallery of one or more historic images, if available for the selected property.</p>
+                <p>These tools help users explore how a property has changed over time or better understand its surroundings from multiple angles.</p>
+            </div>
+        </div>
+
+      </div>
+
+
+      <div id="compare" class="help-section">
+        <div class="help-text-description">
+            <h2>Comparable Properties</h2>
+            <p>The <strong>Compare</strong> tool helps you find similar properties based on characteristics like neighborhood, construction type, and property size or age. You can launch the tool from either the map toolbar or directly from the Property Details panel. Use the built-in filters to refine your search and focus on the most relevant comparables. If no results are returned, try increasing the search radius or adjusting filters for size, building age, or property class to expand your search criteria.</p>
+        
+            <div class="help-text">
+                <h2>How Comparable Property Ranges Are Calculated</h2>
+                <p>When you search for <strong>comparable properties</strong>, CookViewer automatically calculates default ranges based on the selected property’s characteristics. These values help you find properties with similar traits in your neighborhood.</p>
+
+                <h3><strong>Building Square Footage</strong></h3>
+                <p>CookViewer uses the total building size (in square feet) of the selected parcel and builds a range that is <strong>±10%</strong>. For example, a property with 2,000 sq ft will have a comparison range of <strong>1,800–2,200 sq ft</strong>.</p>
+
+                <h3><strong>Land Square Footage</strong></h3>
+                <p>Land area is also calculated with a <strong>±10%</strong> buffer. If the land area is 5,000 sq ft, the comparison range becomes <strong>4,500–5,500 sq ft</strong>.</p>
+
+                <h3><strong>Building Age</strong></h3>
+                <p>CookViewer compares building age using a <strong>±15 year</strong> range. A home built 30 years ago will return comparables that are between <strong>15 and 45 years old</strong>.</p>
+
+                <h3><strong>Construction Type</strong></h3>
+                <p>The tool also filters by <strong>construction type</strong> (e.g., masonry or frame) if this information is available. If not, a general default is used.</p>
+
+                <p>You can adjust these ranges before submitting your search to fine-tune the results. The default settings help you quickly find parcels that are similar in size, age, and structure.</p>
+            </div>
+        </div>
+        
+        <div id="compare-search" class="help-section-container">
+            <video  controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/compare-search.png"   muted="" loop="" aria-label="Using the Compare tool to find similar properties">
+                <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/compare-search.webm" type="video/webm" />
+            </video>
+            <div class="sr-only">Video showing the Compare Properties search tool used to generate a list of similar parcels.</div>
+            <div class="help-text">
+                <h2>Search for Comparable Properties</h2>
+                <p>To begin searching for comparable properties, first select a source parcel—this can be your property or any parcel you want to use as the basis for comparison.</p>
+                <p>Once a parcel is selected, open the <strong>Comparable Properties</strong> tool by clicking the <strong>Comparable Properties</strong> button inside the <strong>Property Details</strong> panel, or use the <strong>Compare</strong> button located in the top right toolbar.</p>
+                <p>This will open the <strong>Comparable Property Search</strong> view, which automatically fills in default search criteria based on the selected parcel.</p>
+                <p>Click the <strong>Search</strong> button at the bottom of the panel to run your comparison. If matches are found, the panel will switch to the <strong>Comparable Results</strong> view, displaying your results.</p>
+                <p>The map will update and display matching parcels outlined in purple.</p>
+                <p>If no results are returned, click the <strong>Search</strong> tab at the top of the panel to go back and adjust your filters. Try increasing the search radius to find more matching properties.</p>
+
+                <p><strong>New in CookViewer 3.1</strong>, you can now close the Comparable Properties panel without loosing your results.</p>
+            </div>
+        </div>
+
+        <div id="compare-results" class="help-section-container">
+            <video  controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/compare-search.png" muted="" loop="" aria-label="Using the Compare tool to find similar properties">
+                <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/compare-results.webm" type="video/webm" />
+            </video>
+            <div class="sr-only">Video showing the Compare Properties list and map view of similar parcels.</div>
+            <div class="help-text">
+            <h2>Viewing Comparable Property Results</h2>
+                <p>Once your search is complete, comparable results are shown in the <strong>Results</strong> view of the <strong>Comparable Properties</strong> panel.</p>
+                <p>Each result appears as a list item displaying the parcel's <strong>PIN</strong> and <strong>address</strong>.</p>
+                <p>Click on any result in the list to open the full Property Details panel. You can also click directly on a comparable parcel on the map—these are highlighted with a <strong>purple outline</strong>.</p>
+                <p>To return to the search results view, click the <strong>Results</strong> tab (hint: it's the middle tab) at the top of the Comparable Properties panel.</p>
+            </div>
+        </div>
+
+        <div id="compare-details" class="help-section-container">
+            <video   controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/compare-search.png" muted="" loop="" aria-label="Using the Compare tool to find similar properties">
+                <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/compare-details.webm" type="video/webm" />
+            </video>
+            <div class="sr-only">Video showing the Compare Properties list and map view of similar parcels.</div>
+            <div class="help-text">
+                <h2>Viewing Comparable Property Details</h2>
+                <p>When you click on a comparable parcel—either from the list in the <strong>Comparable Results</strong> view or directly on the map—the Property Details panel updates to show information for that selected property.</p>
+                
+                <p>Comparable property details include data such as <strong>building characteristics</strong>, <strong>assessed values</strong>, <strong>land and building square footage</strong>, and <strong>tax district information</strong>. These help you evaluate how the comparable property compares to your original selection.</p>
+            </div>
+        </div>
+
+        <div id="compare-export" class="help-section-container">
+            <video controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/compare-search.png"  muted="" loop="" aria-label="Using the Compare tool to find similar properties">
+                <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/compare-export.webm" type="video/webm" />
+            </video>
+            <div class="sr-only">Video showing how to clear Compare Properties list and map view of similar parcels.</div>
+            <div class="help-text">
+            <h3>Export Results</h3>
+            <p>You can download your comparable results as a CSV or Excel file. Each file includes property information such as PIN, address, and other relevant data.</p>
+            <p>Click the <strong>Export</strong> button in the toolbar at the top of the Results panel to export <strong>all comparables</strong> or click the export button in the <strong>Property</strong> panel to export a single comparable property. You’ll be asked to enter a file name and choose your preferred format (CSV or Excel).</p>
+            <p>Once exported, the file will automatically download to your computer’s default Downloads folder.</p>
+            </div>
+        </div>
+
+        <div id="compare-clear" class="help-section-container">
+            <video  controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/compare-search.png" muted="" loop="" aria-label="Using the Compare tool to find similar properties">
+                <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/compare-clear.webm" type="video/webm" />
+            </video>
+            <div class="sr-only">Video showing how to clear Compare Properties list and map view of similar parcels.</div>
+            <div class="help-text">
+            <h3>Clear Results</h3>
+            <p>The <strong>Clear Results</strong> button removes all comparable parcels from both the map and the <strong>Results</strong> panel.</p>
+            <p>To clear your comparable results, click the <strong>Clear Results</strong> button in the toolbar at the top of the <strong>Results</strong> or <strong>Property</strong> panel.</p>
+            </div>
+        </div>
+      </div>
+
+      <div id="nearby" class="help-section">
+        <div class="help-text-description">
+            <h2>Nearby Properties</h2>
+            <p>The <strong>Nearby</strong> tool helps you identify properties located within a specific distance from a selected parcel. This is useful for reviewing nearby development, adjacent properties, or parcels within walking distance. You can launch the tool from the map toolbar or directly from the Property Details panel.</p>
+
+            <div class="help-text">
+            <h2>How Nearby Properties Are Selected</h2>
+            <p>When you search for <strong>nearby properties</strong>, CookViewer creates a buffer area around your selected parcel. All parcels within this buffer are returned as results.</p>
+
+            <h3><strong>Distance Criteria</strong></h3>
+            <p>You can specify how far out to search using a <strong>distance input</strong>, with a maximum distance of 1 mile. Supported units include <strong>feet</strong>, <strong>miles</strong>, <strong>meters</strong>, and <strong>kilometers</strong>. The default unit is feet, but you can change it based on your needs.</p>
+
+           <p>Only properties <strong>within the distance you select</strong> will be included in the results. If many parcels fall within that range, it may take a few extra moments for your results to load.</p>
+
+            </div>
+        </div>
+
+        <div id="nearby-search" class="help-section-container">
+            <video  controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/nearby-search.png"   muted loop aria-label="Using the Nearby tool to find parcels near a selected property">
+            <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/nearby-search.webm" type="video/webm" />
+            </video>
+            <div class="sr-only">Video showing the Nearby Properties search tool used to identify adjacent parcels within a selected distance.</div>
+            <div class="help-text">
+            <h2>Search for Nearby Properties</h2>
+            <p>Start by selecting a parcel—this can be your property or any parcel of interest. Open the <strong>Nearby Properties</strong> tool by clicking the <strong>Nearby</strong> button inside the <strong>Property Details</strong> panel or use the <strong>Nearby</strong> icon in the right toolbar.</p>
+            <p>The <strong>Nearby Property Search</strong> view will open, allowing you to enter a distance value and choose a unit (feet, meters, miles, or kilometers).</p>
+            <p>Click <strong>Search</strong> to begin. Matching parcels will appear in the <strong>Results</strong> panel and be outlined in <strong>purple</strong> on the map.</p>
+            <p>If no results are returned, try increasing the distance and running the search again.</p>
+            </div>
+        </div>
+
+        <div id="nearby-results" class="help-section-container">
+            <video  controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/nearby-search.png"   muted loop aria-label="Viewing nearby parcels on the map and in the results list">
+            <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/nearby-results.webm" type="video/webm" />
+            </video>
+            <div class="sr-only">Video showing the Nearby Properties list and how results are highlighted on the map.</div>
+            <div class="help-text">
+            <h2>Viewing Nearby Property Results</h2>
+            <p>After running a nearby search, the <strong>Results</strong> view will display all parcels found within your specified distance.</p>
+            <p>Each result lists the <strong>PIN</strong> and <strong>address</strong>. Click on a parcel in the list or on the map (highlighted in <strong>purple</strong>) to open the Property Details panel for that property.</p>
+            <p>To return to the Results view, click the <strong>Results</strong> tab at the top of the Nearby Properties panel.</p>
+            </div>
+        </div>
+
+        <div id="nearby-details" class="help-section-container">
+            <video  controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/nearby-search.png"   muted loop aria-label="Opening property details for a nearby property">
+            <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/nearby-details.webm" type="video/webm" />
+            </video>
+            <div class="sr-only">Video showing the Nearby Properties result details for a selected parcel.</div>
+            <div class="help-text">
+            <h2>Viewing Nearby Property Details</h2>
+            <p>Clicking on a parcel in the Nearby results—either on the list or the map—opens the <strong>Property Details</strong> panel.</p>
+            <p>This panel displays the same detailed property information as for any parcel in CookViewer, including assessed values, land and building size, zoning, and tax districts.</p>
+            <p>You can return to your nearby property at any time by selecting the <strong>Property</strong> tab in the Nearby Properties panel, clicking the nearby parcel in the Results panel, or clicking the parcel on the map.</p>
+            </div>
+        </div>
+
+        <div id="nearby-export" class="help-section-container">
+            <video  controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/nearby-search.png"   muted loop aria-label="Exporting nearby property results">
+            <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/nearby-export.webm" type="video/webm" />
+            </video>
+            <div class="sr-only">Video showing how to export nearby property results.</div>
+            <div class="help-text">
+            <h3>Export Results</h3>
+            <p>You can download your nearby property results as a CSV or Excel file. The export includes information like parcel PIN, address, and other relevant data.</p>
+            <p>Click the <strong>Export</strong> button in the toolbar at the top of the Results panel to download <strong>all nearby properties</strong>, or export an individual result from the <strong>Property</strong> panel.</p>
+            </div>
+        </div>
+
+        <div id="nearby-clear" class="help-section-container">
+            <video  controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/nearby-search.png"   muted loop aria-label="Clearing nearby property search results">
+            <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/nearby-clear.webm" type="video/webm" />
+            </video>
+            <div class="sr-only">Video showing how to clear nearby search results and remove highlighted parcels from the map.</div>
+            <div class="help-text">
+            <h3>Clear Results</h3>
+            <p>The <strong>Clear Results</strong> button removes all nearby parcels from both the map and the <strong>Results</strong> panel.</p>
+            <p>To clear your nearby search results, click the <strong>Clear Results</strong> button at the top of the <strong>Results</strong> or <strong>Property</strong> panel.</p>
+            </div>
+        </div>
+      </div>
+
+      <div id="measure" class="help-section">
+        
+        <div class="help-text-description">
+          <h2>Measure Tool</h2>
+          <p>The Measure Tool is great for quickly estimating distances or areas—whether you're checking property boundaries, evaluating infrastructure, or planning routes.</p>
+          <p>When measuring <strong>distance</strong>, you can choose from the following units: <strong>feet</strong>, <strong>yards</strong>, <strong>miles</strong>, <strong>meters</strong>, or <strong>kilometers</strong>.</p>
+          <p>When measuring <strong>area</strong>, supported units include: <strong>square feet</strong>, <strong>square meters</strong>, <strong>square yards</strong>, <strong>acres</strong>, <strong>square kilometers</strong>, and <strong>square miles</strong>.</p>
+            
+        </div>
+
+        <div id="measure-area" class="help-section-container">
+            <video   controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/measure-area.png"  muted loop aria-label="Using the meausure tool to measure area">
+            <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/measure-area.webm" type="video/webm" />
+            </video>
+            <div class="sr-only">Video showing the Measure tool used to measure area.</div>
+            <div class="help-text">
+            <h2>Measuring Area</h2>
+            <p>If you want to measure land, parcels, or larger spaces, use the <strong>Area</strong> tool.</p>
+            <p>To get started, open the Measure Tool from the right-side panel by clicking the <strong>Measure</strong> button. When the panel opens, you'll see two tool options: <strong>Distance</strong> and <strong>Area</strong>. Select <strong>New Measurement</strong> under the <strong>Area</strong> section to begin measuring an area.</p>
+
+            <p>After clicking <strong>New Measurement</strong>, hover your mouse over the map. The cursor will change to crosshairs with a central point. Click once to set your starting point on the map. Continue clicking to add points and outline the area you want to measure.</p>
+
+            <p>To finish the measurement, double-click your final point. The completed shape will display the <strong>total area</strong> in the <strong>Measurement panel</strong>.</p>
+
+            <p>By default, the area is shown in <strong>square feet</strong>, but you can change the unit using the <strong>Unit</strong> dropdown menu. Select a different unit to display the result in the measurement system that works best for your needs.</p>
+
+            <p>To take another measurement, just click the New Measurement button again. Each new measurement will replace the previous one. Exiting the tool will automatically clear your results.</p>
+          </div>
+        </div>
+
+        <div id="measure-distance" class="help-section-container">
+            <video controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/measure-distance.png"  muted loop aria-label="Using the measure tool to measure distance">
+            <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/measure-distance.webm" type="video/webm" />
+            </video>
+            <div class="sr-only">Video showing the Measure tool used to measure distance.</div>
+            <div class="help-text">
+            <h2>Measuring Distance</h2>
+            <p>If you want to measure how long something is like a road, sidewalk, or property line you can measure using the <strong>Distance</strong> tool.</p>
+            <p>To get started, open the Measure Tool from the right-side panel by clicking the <strong>Measure</strong> button. When the panel opens, you'll see two tool options: <strong>Distance</strong> and <strong>Area</strong>. Select <strong>New Measurement</strong> under the <strong>Distance</strong> section to begin measuring.</p>
+
+            <p>After clicking <strong>New Measurement</strong>, hover your mouse over the map. The cursor will change to crosshairs with a central point. Click once to set your starting point on the map. Continue clicking to add points along the perimeter or area want to measure.</p>
+
+            <p>To finish the measurement, double-click your final point. The completed length will display the <strong>total distance</strong> in the <strong>Measurement panel</strong>.</p>
+
+            <p>By default, the distance is shown in <strong>feet</strong>, but you can change the unit using the <strong>Unit</strong> dropdown menu. Select a different unit to display the result in the measurement system that works best for your needs.</p>
+
+            <p>To take another measurement, just click the New Measurement button again. Each new measurement will replace the previous one. Exiting the tool will automatically clear your results.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="history" class="help-section">
+        <div class="sr-only">Video showing user enabling historical parcel layers by year to see changes over time.</div>
+        <div class="help-text-description">
+          <h2>Parcel Archive</h2>
+          <p>Access parcel boundary data for previous years using the <strong>Parcel Archive</strong> layers section in the <strong>Layers</strong> panel. Each layer reflects boundaries from a specific year (2000–present). This is useful for identifying consolidations, subdivisions, or zoning changes over time. Toggle multiple years to compare differences visually using unique color outlines.</p>
+        </div>
+        <div id="layer-historical-parcels" class="help-section-container">
+          <video  controls="" poster="https://maps.cookcountyil.gov/files/apps/cookviewer/test/images/hub/poster/layers-compare-historical.png" muted="" loop="" aria-label="Activating historical parcel layers to compare past boundaries">
+          <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/layers-compare-historical.webm" type="video/webm" />
+        </video>
+        <div class="help-text">
+          <h2>Comparing Historical Parcels</h2>
+          <p>To explore how parcel boundaries have changed over time, use the <strong>Parcel Archive</strong> layers group to toggle historical parcel layers on or off from different years.</p>
+
+          <p>To begin, open the Layers panel by clicking the <strong>Layers</strong> button in the right-hand toolbar. You'll see a list of expandable layer groups, each containing individual map layers. At the top of the panel is a search bar—type in a keyword like "Parcel" to quickly filter the list.</p>
+
+          <p>Find the <strong>Parcel Archive</strong> group in the list and click it to expand. This will reveal parcel boundary layers from 2000 to the present.</p>
+
+          <p>To turn a layer on, simply click the corresponding item. A checkmark will appear next to the layer name when it is active and visible on the map.</p>
+
+          <p>If a layer appears greyed out, try zooming in further on the map. Some layers only become visible at closer zoom levels due to the large number of features they contain.</p>
+
+          <p>To turn off a layer, click it again. The checkmark will disappear, and the layer will be removed from the map view.</p>
+        </div>
+
+        </div>
+      </div>
+
+      <div id="imagery" class="help-section">
+        <video autoplay="" muted="" loop="" aria-label="Using the Imagery tool to view aerial photos of parcels">
+          <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/aerial-imagery.webm" type="video/webm" />
+        </video>
+        <div class="sr-only">Video walkthrough of switching to aerial imagery to evaluate building footprints and surroundings.</div>
+        <div class="help-text">
+          <h2>View Aerial Imagery</h2>
+          <p>The Imagery tool provides aerial photos from current and past years to help you assess land use changes, verify structures, and understand surroundings. Combine imagery with other layers such as zoning or parcels for more insights. Use the Measure tool to estimate distances or identify changes in building footprints over time.</p>
+        </div>
+      </div>
+
+      <div id="layers" class="help-section">
+        <video autoplay="" muted="" loop="" aria-label="Toggling layers on and off from the Layers panel">
+          <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/search-for-address.webm" type="video/webm" />
+        </video>
+        <div class="sr-only">Video showing user enabling and disabling layers like tax districts and zoning.</div>
+        <div class="help-text">
+          <h2>Toggle Map Layers</h2>
+          <p>Use the Layers tool to customize the map display. You can turn groups like political districts, environmental features, and parcel archives on or off. Expand a layer group to manage individual items. Some layers appear only at certain zoom levels, so zoom in if something doesn't load. Use this feature to focus the map on what's relevant to your work.</p>
+        </div>
+      </div>
+
+      <div id="print" class="help-section">
+            <h2>Printing Maps and Reports</h2>
+        <div class="help-text-description">
+            <p>The <strong>Print</strong> tool lets you export either your current map view or a property report. Map exports include selected layers and imagery, while Reports provide a formatted summary with parcel data and comparables. You can preview the print area on the map, choose from multiple layouts and file types, and track download progress within the <strong>Prints</strong> tab.</p>
+        </div>
+
+        <div id="print-map" class="help-section-container">
+            <video autoplay muted loop aria-label="Printing maps or reports from the Print panel">
+            <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/search-for-address.webm" type="video/webm" />
+            </video>
+            <div class="sr-only">Video demonstrating how to open the Print panel, configure settings, and export maps.</div>
+            <div class="help-text">
+            <h2>Printing Maps</h2>
+            <p>To print a map, click the <strong>Print</strong> button on the right-hand toolbar. The <strong>Map</strong> tab will open by default.</p>
+            <p>Within the Map tab, you can add a <strong>title</strong>, choose a <strong>layout</strong> (letter or tabloid, in portrait or landscape), and enable the <strong>Print Area</strong> toggle to preview the area that will be included.</p>
+            <p>Select a <strong>file format</strong> for your print. Available formats include: PDF, PNG32, PNG8, JPG, GIF, EPS, SVG, SVGZ, AIX, and TIFF.</p>
+            <p>Once your options are set, click <strong>Print</strong>. The panel will switch to the <strong>Prints</strong> tab, where you can track the progress of your job.</p>
+            <p>When your print is ready, it will appear in the list below. Click the item to open or download your map. Files are saved to your device's default Downloads folder.</p>
+            </div>
+        </div>
+
+        <div id="print-report" class="help-section-container">
+            <video autoplay muted loop aria-label="Printing maps or reports from the Print panel">
+            <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/search-for-address.webm" type="video/webm" />
+            </video>
+            <div class="sr-only">Video demonstrating how to open the Print panel, configure settings, and export reports as PDFs.</div>
+            <div class="help-text">
+            <h2>Printing Reports</h2>
+            <p>To print a report, open the <strong>Print</strong> tool and click the <strong>Report</strong> tab at the top of the panel.</p>
+            <p>From there, you can add a <strong>title</strong>, select a <strong>layout</strong> (letter or tabloid, in portrait or landscape), and toggle the <strong>Print Area</strong> setting if you’d like to preview the included map extent.</p>
+            <p>Each report includes a map and a one-page summary of your selected parcel’s property details.</p>
+
+            <p>All reports are exported in PDF format.</p>
+            <p>Once you’ve configured your settings, click <strong>Print</strong> to begin. The panel will shift to the <strong>Prints</strong> tab where you can view the job's progress.</p>
+            <p>When your report is complete, it will appear in the list. Click it to view or download. Files are saved to your default Downloads folder.</p>
+            </div>
+        </div>
+
+            <div id="print-report-results" class="help-section-container">
+                <video autoplay muted loop aria-label="Printing maps or reports from the Print panel">
+                <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/search-for-address.webm" type="video/webm" />
+                </video>
+                <div class="sr-only">Video demonstrating how to open the Print panel, configure settings, and export reports as PDFs.</div>
+                <div class="help-text">
+
+                <h3>Printing Reports for Multiple Parcels</h3>
+                <p>If your search results contain more than one parcel, you can include them all in a single report by toggling on the <strong>Include search results</strong> switch. This generates a multi-page report with a summary page for each property.</p>
+
+                <p>All reports are exported in PDF format.</p>
+                <p>Once you’ve configured your settings, click <strong>Print</strong> to begin. The panel will shift to the <strong>Prints</strong> tab where you can view the job's progress.</p>
+                <p>When your report is complete, it will appear in the list. Click it to view or download. Files are saved to your default Downloads folder.</p>
+                </div>
+        </div>
+            <div id="print-report-comparables" class="help-section-container">
+                <video autoplay muted loop aria-label="Printing maps or reports from the Print panel">
+                <source src="https://maps.cookcountyil.gov/files/apps/cookviewer/test/videos/search-for-address.webm" type="video/webm" />
+                </video>
+                <div class="sr-only">Video demonstrating how to open the Print panel, configure settings, and export reports as PDFs.</div>
+                <div class="help-text">
+
+                <h3>Printing Comparable Parcel Reports</h3>
+                <p>To include comparable properties in your report, enable the <strong>Include comparables</strong> switch. This creates a report that includes a map, a summary of your selected (source) parcel, and a table of details for each comparable. Note: reports with many comparables may take additional time to generate. You can close the panel and continue using CookViewer while the report is being prepared.</p>
+
+                <p>All reports are exported in PDF format.</p>
+                <p>Once you’ve configured your settings, click <strong>Print</strong> to begin. The panel will shift to the <strong>Prints</strong> tab where you can view the job's progress.</p>
+                <p>When your report is complete, it will appear in the list. Click it to view or download. Files are saved to your default Downloads folder.</p>
+                </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>
