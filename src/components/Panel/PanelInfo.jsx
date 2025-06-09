@@ -8,6 +8,7 @@ import {
     CalciteList,
     CalciteListItem,
     CalciteListItemGroup,
+    CalciteNotice,
     CalcitePanel, 
 } from "@esri/calcite-components-react"
 import UseAppContext from "../../contexts/AppContext";
@@ -59,7 +60,7 @@ const PanelInfo = () => {
                 </CalciteBlockSection>
                 </CalciteBlock>
                 <CalciteBlock open heading={translateText("What's New")}>
-                <CalciteBlockSection className='info-section-header' open text={"CookViewer 3.1.0"}>
+                    <CalciteBlockSection className='info-section-header' open text={"CookViewer 3.1.0"}>
                     <CalciteLabel scale="s">
                     {translateText("Release: June 05 2025", true)}
                     </CalciteLabel>
@@ -131,9 +132,78 @@ const PanelInfo = () => {
         
                         
                     </CalciteList>
-                </CalciteBlockSection>
-            
-            </CalciteBlock>
+                    </CalciteBlockSection>
+                </CalciteBlock>
+                <CalciteBlock
+                open
+                heading={translateText("Contact Us")}
+                >
+                    <CalciteBlockSection 
+                    expanded 
+                    text={translateText("For questions about issues with using CookViewer or other GIS inquiries")}
+                    >
+                        <CalciteNotice open>
+                            <div slot="message">
+                                <span>{translateText("Please email the Cook County GIS Department at ")}
+                                    <a href="mailto:gis@cookcountyil.gov">gis@cookcountyil.gov</a>
+                                </span><br/><br/>
+                                <span>161 North Clark Street, Suite 500
+                                <br /><span>Chicago, Illinois 60601</span>
+                                </span>
+                            </div>
+                            
+                        </CalciteNotice>
+                    </CalciteBlockSection>
+                    <CalciteBlockSection
+                    expanded
+                    text={translateText("For questions about Assessment Information")}
+                    >
+                        <CalciteNotice open>
+                            <div slot="message">
+                                <span>{translateText("Please contact the ")}
+                                <a href="https://www.cookcountyassessor.com/contact" target="_blank">{translateText("Cook County Assessor's Office")}</a>
+                            </span><br/><br/>
+                            <span>118 North Clark Street, Room #320
+                            <br /><span>Chicago, Illinois 60602</span>
+                            <br /><span>(312) 443-7550</span>
+                            </span>
+                            </div>
+                        </CalciteNotice>
+                    </CalciteBlockSection>
+                    <CalciteBlockSection
+                    expanded
+                    text={translateText("For questions about Parcel maps, Legal Descriptions & Taxing Districts")}
+                    >
+                        <CalciteNotice open>
+                            <div slot="message">
+                                <span>{translateText("Please email the Cook County Clerk’s Office at ")}
+                                <a href="mailto:clerk.maps@cookcountyil.gov">clerk.maps@cookcountyil.gov</a>
+                            </span><br/><br/>
+                            <span>118 North Clark Street, Room #434
+                            <br /><span>Chicago, Illinois 60602</span>
+                            <br /><span>(312) 603-5640</span>
+                            </span>
+                            </div>
+                        </CalciteNotice>
+                    </CalciteBlockSection>
+                                        <CalciteBlockSection
+                    expanded
+                    text={translateText("For Plat requests or for other recorded documents")}
+                    >
+                        <CalciteNotice open>
+                            <div slot="message">
+                                <span>{translateText("Please email the Cook County Clerk's Recordings Division at ")}
+                                <a href="mailto:clerk.recordings@cookcountyil.gov">clerk.recordings@cookcountyil.gov</a>
+                            </span><br/><br/>
+                            <span>118 North Clark Street, Room #120
+                            <br /><span>Chicago, Illinois 60602</span>
+                            <br /><span>(312) 603-5050</span>
+                            </span>
+                            </div>
+                        </CalciteNotice>
+                    </CalciteBlockSection>
+
+                </CalciteBlock>
         </CalcitePanel>
         
     )
