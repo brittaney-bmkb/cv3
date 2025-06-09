@@ -386,7 +386,7 @@ const PanelPropertyDetail = () => {
                                                         return(
                                                             <CalciteListItem
                                                                 key={data?.attributes['field']}
-                                                                label={primaryResultFeature[0]?.attributes[data?.attributes['field']]}
+                                                                label={translateText(primaryResultFeature[0]?.attributes[data?.attributes['field']], true)}
                                                                 description={translateText(data?.attributes['label'])}
                                                                 >
                                                             </CalciteListItem>
@@ -464,7 +464,7 @@ const PanelPropertyDetail = () => {
                                                                     <CalciteListItem
                                                                     key={data?.attributes['field']}
                                                                     label={calculatedValues[data?.attributes['field']]['label']}
-                                                                    description={calculatedValues[data?.attributes['field']]['description']}
+                                                                    description={translateText(calculatedValues[data?.attributes['field']]['description'])}
                                                                     open
                                                                     >
                                                                         <div slot="content">
@@ -479,7 +479,7 @@ const PanelPropertyDetail = () => {
                                                                                 {calculatedValues[data?.attributes['field']]['label']}
                                                                             </CalciteButton>
                                                                             <CalciteLabel scale='s' className='description'>
-                                                                                {calculatedValues[data?.attributes['field']]['description']}
+                                                                                {translateText(calculatedValues[data?.attributes['field']]['description'])}
                                                                             </CalciteLabel>
                                                                         </div>
                                                                     </CalciteListItem>
@@ -493,7 +493,7 @@ const PanelPropertyDetail = () => {
                                                                 id={data?.attributes['field']}
                                                                 key={data?.attributes['field']}
                                                                 label={calculatedValues[data?.attributes['field']]['label']}
-                                                                description={calculatedValues[data?.attributes['field']]['description']}
+                                                                description={translateText(calculatedValues[data?.attributes['field']]['description'])}
                                                                 open
                                                                 >
                                                                     <div slot="content">
@@ -506,10 +506,10 @@ const PanelPropertyDetail = () => {
                                                                         scale='m'
                                                                         onClick={() => {handleClick(data?.attributes['field'])}}
                                                                         >
-                                                                            {calculatedValues[data?.attributes['field']]['label']}
+                                                                            {translateText(calculatedValues[data?.attributes['field']]['label'])}
                                                                         </CalciteButton>
                                                                         <CalciteLabel scale='s' className='description'>
-                                                                            {calculatedValues[data?.attributes['field']]['description']}
+                                                                            {translateText(calculatedValues[data?.attributes['field']]['description'])}
                                                                         </CalciteLabel>
                                                                     </div>
                                                                 </CalciteListItem>
@@ -519,8 +519,8 @@ const PanelPropertyDetail = () => {
                                                             return(
                                                                 <CalciteListItem
                                                                 key={data?.attributes['field']}
-                                                                label={calculatedValues[data?.attributes['field']]['label']}
-                                                                description={calculatedValues[data?.attributes['field']]['description']}
+                                                                label={translateText(calculatedValues[data?.attributes['field']]['label'])}
+                                                                description={translateText(calculatedValues[data?.attributes['field']]['description'])}
                                                                 >
                                                                 </CalciteListItem>
                                                             )

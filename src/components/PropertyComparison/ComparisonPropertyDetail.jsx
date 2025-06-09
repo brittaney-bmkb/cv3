@@ -304,38 +304,38 @@ const ComparisonPropertyDetail = () => {
                                                         return(
                                                             <CalciteListItem
                                                                 key={data?.attributes['field']}
-                                                                label={feature?.attributes[data?.attributes['field']]}
-                                                                description={data?.attributes['label']}
+                                                                label={translateText(feature?.attributes[data?.attributes['field']])}
+                                                                description={translateText(data?.attributes['label'])}
                                                                 >
                                                             </CalciteListItem>
                                                         )
                                                     }
 
                                                     //TODO REMOVE HARD CODED VALUE
-                                                    else if(data?.attributes['field'] === 'View District Details'){
-                                                        return(
-                                                            <CalciteListItem
-                                                            key={data?.attributes['field']}
-                                                            label={translateText(data?.attributes['field'])}
-                                                            >
-                                                                <div slot="content">
-                                                                    <CalciteButton
-                                                                    className='hyperlink-button' 
-                                                                    label={translateText(data?.attributes['field'])}
-                                                                    iconStart="launch"
-                                                                    //href={hyperlink} 
-                                                                    target="_blank"
-                                                                    scale='m'
-                                                                    >
-                                                                        {translateText(data?.attributes['field'])}
-                                                                    </CalciteButton>
-                                                                    <CalciteLabel scale='s' className='description'>
-                                                                        {data?.attributes['label']}
-                                                                    </CalciteLabel>
-                                                                </div>
-                                                            </CalciteListItem>
-                                                        )
-                                                    }
+                                                    // else if(data?.attributes['field'] === 'View District Details'){
+                                                    //     return(
+                                                    //         <CalciteListItem
+                                                    //         key={data?.attributes['field']}
+                                                    //         label={translateText(data?.attributes['field'])}
+                                                    //         >
+                                                    //             <div slot="content">
+                                                    //                 <CalciteButton
+                                                    //                 className='hyperlink-button' 
+                                                    //                 label={translateText(data?.attributes['field'])}
+                                                    //                 iconStart="launch"
+                                                    //                 //href={hyperlink} 
+                                                    //                 target="_blank"
+                                                    //                 scale='m'
+                                                    //                 >
+                                                    //                     {translateText(data?.attributes['field'])}
+                                                    //                 </CalciteButton>
+                                                    //                 <CalciteLabel scale='s' className='description'>
+                                                    //                     {translateText(data?.attributes['label'])}
+                                                    //                 </CalciteLabel>
+                                                    //             </div>
+                                                    //         </CalciteListItem>
+                                                    //     )
+                                                    // }
                                                     
                                                 }
 
@@ -345,7 +345,7 @@ const ComparisonPropertyDetail = () => {
                                                         <CalciteListItem
                                                         key={data?.attributes['field']}
                                                         label={addCommaSeparator(feature?.attributes[data?.attributes['field']], data?.attributes['type'])}
-                                                        description={data?.attributes['label']}
+                                                        description={translateText(data?.attributes['label'])}
                                                         >
                                                         </CalciteListItem>
                                                     )
@@ -357,7 +357,7 @@ const ComparisonPropertyDetail = () => {
                                                         <CalciteListItem
                                                         key={data?.attributes['field']}
                                                         label={`$${addCommaSeparator(feature?.attributes[data?.attributes['field']], data?.attributes['type'])}`}
-                                                        description={data?.attributes['label']}
+                                                        description={translateText(data?.attributes['label'])}
                                                         >
                                                         </CalciteListItem>
                                                     )
@@ -379,8 +379,8 @@ const ComparisonPropertyDetail = () => {
                                                                 return(
                                                                     <CalciteListItem
                                                                     key={data?.attributes['field']}
-                                                                    label={calculatedValues[data?.attributes['field']]['label']}
-                                                                    description={calculatedValues[data?.attributes['field']]['description']}
+                                                                    label={translateText(calculatedValues[data?.attributes['field']]['label'])}
+                                                                    description={translateText(calculatedValues[data?.attributes['field']]['description'])}
                                                                     open
                                                                     >
                                                                         <div slot="content">
@@ -392,10 +392,10 @@ const ComparisonPropertyDetail = () => {
                                                                             target="_blank"
                                                                             scale='m'
                                                                             >
-                                                                                {calculatedValues[data?.attributes['field']]['label']}
+                                                                                {translateText(calculatedValues[data?.attributes['field']]['label'])}
                                                                             </CalciteButton>
                                                                             <CalciteLabel scale='s' className='description'>
-                                                                                {calculatedValues[data?.attributes['field']]['description']}
+                                                                                {translateText(calculatedValues[data?.attributes['field']]['description'])}
                                                                             </CalciteLabel>
                                                                         </div>
                                                                     </CalciteListItem>
@@ -407,8 +407,8 @@ const ComparisonPropertyDetail = () => {
                                                             return(
                                                                 <CalciteListItem
                                                                 key={data?.attributes['field']}
-                                                                label={calculatedValues[data?.attributes['field']]['label']}
-                                                                description={calculatedValues[data?.attributes['field']]['description']}
+                                                                label={translateText(calculatedValues[data?.attributes['field']]['label'])}
+                                                                description={translateText(calculatedValues[data?.attributes['field']]['description'])}
                                                                 open
                                                                 >
                                                                     <div slot="content">
@@ -420,10 +420,10 @@ const ComparisonPropertyDetail = () => {
                                                                         scale='m'
                                                                         onClick={() => {handleClick(data?.attributes['field'])}}
                                                                         >
-                                                                            {calculatedValues[data?.attributes['field']]['label']}
+                                                                            {translateText(calculatedValues[data?.attributes['field']]['label'])}
                                                                         </CalciteButton>
                                                                         <CalciteLabel scale='s' className='description'>
-                                                                            {calculatedValues[data?.attributes['field']]['description']}
+                                                                            {translateText(calculatedValues[data?.attributes['field']]['description'])}
                                                                         </CalciteLabel>
                                                                     </div>
                                                                 </CalciteListItem>
@@ -433,8 +433,8 @@ const ComparisonPropertyDetail = () => {
                                                             return(
                                                                 <CalciteListItem
                                                                 key={data?.attributes['field']}
-                                                                label={calculatedValues[data?.attributes['field']]['label']}
-                                                                description={calculatedValues[data?.attributes['field']]['description']}
+                                                                label={translateText(calculatedValues[data?.attributes['field']]['label'])}
+                                                                description={translateText(calculatedValues[data?.attributes['field']]['description'])}
                                                                 >
                                                                 </CalciteListItem>
                                                             )
