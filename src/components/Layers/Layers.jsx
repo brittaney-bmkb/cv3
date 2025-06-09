@@ -82,7 +82,7 @@ const Layers = () => {
                 let color = null
                 if(layer.title !== config.target_layer_name){
                     console.log(layer.renderer.symbol.data.symbol.symbolLayers)
-                    color = layer.renderer.symbol.data.symbol.symbolLayers[0].markerGraphics[0].symbol.symbolLayers[0].color
+                    color = layer.renderer.symbol.data.symbol.symbolLayers[0].color
                 }
                 
                 console.log("layer", layer)
