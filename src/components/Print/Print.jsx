@@ -112,7 +112,7 @@ const Print = () => {
             id: config.print_group_id,
         })
 
-        console.log("templateGroup: ", templateGroup)
+        //console.log("templateGroup: ", templateGroup)
 
 
         const createParcelDefinitionExpression = async (feature) => {
@@ -279,6 +279,8 @@ const Print = () => {
 
         const updatePrintTemplates = async () => {
 
+            if(printPanelClosed) return;
+
             const printServiceTemplates = await getPrintLayouts()
 
             console.log("printServiceTemplates: ", printServiceTemplates)
@@ -289,12 +291,12 @@ const Print = () => {
 
         updatePrintTemplates()
 
-       }, [language])
+       }, [language, printPanelClosed])
 
         useEffect(() => {
 
             if(printPanelClosed){
-                console.log("removing print area")
+                
                 if(maskLayer.current){
                     maskLayer.current = null
                 }
@@ -304,6 +306,7 @@ const Print = () => {
                 }
 
                 if(showPrintArea){
+                    console.log("removing print area")
                     setShowPrintArea(false)
                 }
             }
@@ -414,11 +417,13 @@ const Print = () => {
 
    
        useEffect(() => {
-           console.log("includeSearchFeatures: ", includeAllSearchFeatures)
+           
            const getDefitionQuery = async () => {
 
+            if(printPanelClosed) return;
+
             if(searchFeatures && searchFeatures.length > 0){
-            
+                console.log("includeSearchFeatures: ", includeAllSearchFeatures)
                 if(includeAllSearchFeatures){
                     console.log("including all search features")
                     definitionQuery.current = await createParcelDefinitionExpression(searchFeatures)
@@ -443,14 +448,17 @@ const Print = () => {
            }
            getDefitionQuery()
            
-       },  [searchFeatures, primaryResultFeature, includeAllSearchFeatures])
+       },  [searchFeatures, primaryResultFeature, includeAllSearchFeatures, printPanelClosed])
 
 
         useEffect(() => {
 
             const getDefitionQuery = async () => {
+
+            if(printPanelClosed) return;
             
             console.log("Include comparables: ", includeComparbles)
+            
 
             if(!definitionQueryComparable) return
 
@@ -472,7 +480,7 @@ const Print = () => {
            }
            getDefitionQuery()
            
-       },  [comparableParcels, includeComparbles])
+       },  [comparableParcels, includeComparbles, printPanelClosed])
    
 
 
