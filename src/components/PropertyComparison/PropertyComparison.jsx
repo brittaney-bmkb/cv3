@@ -98,7 +98,7 @@ const PropertyComparison = () => {
             closed={comparablePanelClosed} 
             closable 
             className={isMobile ? 'panel-end' : 'panel-start' }
-            heading={translateText(title)} 
+            heading={translateText(title, true)} 
 
             onCalcitePanelClose={() => {
                 setComparablePanel(true)
