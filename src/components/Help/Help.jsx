@@ -4,6 +4,7 @@ import "@esri/calcite-components/dist/components/calcite-autocomplete-item"
 import { CalciteAccordion, CalciteAccordionItem, CalciteAutocomplete, CalciteAutocompleteItem, CalciteBlock, CalcitePanel, CalciteTab, CalciteTabNav, CalciteTabs, CalciteTabTitle } from "@esri/calcite-components-react"
 import UseAppContext from "../../contexts/AppContext"
 import { useEffect, useState } from "react"
+import { config } from "../../data/config"
 
 const Help = () => {
 
@@ -31,7 +32,7 @@ const Help = () => {
               <p>{translateText("Once you enter your search, matching properties will appear in the Property Results panel. Click on a result to view its details — the map will automatically zoom to that location.")}</p>
             </div>
           ),
-          // link: "/help#search"
+           link: `${config.hub_site_url_resources}#${config.hub_site_resources_bookmarks["search"]}`,
         },
         {
           id: "map",
@@ -77,7 +78,7 @@ const Help = () => {
               </p>
             </div>
           ),
-          // link: "/help#search"
+           link: `${config.hub_site_url_resources}#${config.hub_site_resources_bookmarks["map"]}`,
         },
         {
           id: "search-results",
@@ -123,7 +124,7 @@ const Help = () => {
               </p>
             </div>
           ),
-          // link: "/help#search-results"
+           link: `${config.hub_site_url_resources}#${config.hub_site_resources_bookmarks["search-results"]}`,
         },
         {
           id: "property-details",
@@ -240,7 +241,7 @@ const Help = () => {
             </ul>
           </div>
           ),
-          // link: "/help#property-details"
+           link: `${config.hub_site_url_resources}#${config.hub_site_resources_bookmarks["property-details"]}`,
         },
         {
           id: "compare",
@@ -285,7 +286,7 @@ const Help = () => {
 
             </div>
           ),
-          // link: "/help#compare"
+           link: `${config.hub_site_url_resources}#${config.hub_site_resources_bookmarks["compare"]}`,
         },
         {
           id: "history",
@@ -326,7 +327,7 @@ const Help = () => {
             </div>
           )
           ,
-          // link: "/help#historical-parcels"
+           link: `${config.hub_site_url_resources}#${config.hub_site_resources_bookmarks["history"]}`,
         },
         {
           id: "imagery",
@@ -374,7 +375,7 @@ const Help = () => {
             </div>
           )
           ,
-          // link: "/help#layers"
+           link: `${config.hub_site_url_resources}#${config.hub_site_resources_bookmarks["imagery"]}`,
         },
         {
           id: "layers",
@@ -419,7 +420,7 @@ const Help = () => {
               </p>
             </div>
           ),
-          // link: "/help#layers"
+           link: `${config.hub_site_url_resources}#${config.hub_site_resources_bookmarks["layers"]}`,
         },
         {
           id: "print",
@@ -461,7 +462,7 @@ const Help = () => {
 
             </div>
           ),
-          // link: "/help#print"
+           link: `${config.hub_site_url_resources}#${config.hub_site_resources_bookmarks["print"]}`,
         }
       ];
       const buildFilteredHelpSuggestions = (helpSections, input) => {
@@ -571,11 +572,11 @@ const Help = () => {
             >
               {section.content}
               {/* Enable links here. */}
-              {/* <p>
+              <p>
                 <a href={section.link} target="_blank" rel="noopener noreferrer">
-                  View full {section.heading} Help
+                  View full help guide
                 </a>
-              </p> */}
+              </p>
             </CalciteBlock>
           ))}
         </CalcitePanel>
