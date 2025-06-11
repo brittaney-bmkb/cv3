@@ -17,6 +17,7 @@ import ComparisonForm from "./ComparisonForm"
 import ListComparisonResults from "./ListComparisonResults"
 import ComparisonPropertyDetail from "./ComparisonPropertyDetail"
 import Inactive from "../Inactive/Inactive"
+import { config } from "../../data/config";
 
 
 const PropertyComparison = () => {
@@ -105,7 +106,15 @@ const PropertyComparison = () => {
                 setCurrentStep(0)
             }}
             style={{display: comparablePanelClosed ? 'none': 'flex'}}
-            >   
+            > 
+            <CalciteAction 
+            slot="header-actions-start" 
+            icon="question" 
+            text="help" 
+            onClick={() => {
+                window.open(`${config.hub_site_url_resources}#${config.hub_site_resources_bookmarks["compare"]}`, '_blank')
+            }}>
+                </CalciteAction>  
 
             {
                 currentStep > 0 ?
