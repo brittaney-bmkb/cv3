@@ -304,7 +304,14 @@ const PanelPropertyDetail = () => {
                 //KEEP THIS SO PANELS CANT TAKE UP THE WHOLE SPACE OF THE SHELL
                 style={{display: propertyDetailPanelClosed ? 'none': 'flex'}}
                 >   
-                    
+                    <CalciteAction 
+                        slot="header-actions-start" 
+                        icon="question" 
+                        text="help" 
+                        onClick={() => {
+                            window.open(`${config.hub_site_url_resources}#${config.hub_site_resources_bookmarks["property-details"]}`, '_blank')
+                        }}>
+                    </CalciteAction> 
                         
                     
                     {/* SEARCH RESULT ACTIONS */}
