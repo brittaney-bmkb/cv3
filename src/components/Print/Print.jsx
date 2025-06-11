@@ -983,7 +983,7 @@ const Print = () => {
                         <CalciteBlock
                             open
                             collapsible
-                            heading="Maps"
+                            heading={translateText("Maps")}
                         >
                         <CalciteList>
                             {updateJobsList('map')}
@@ -995,7 +995,7 @@ const Print = () => {
                         <CalciteBlock
                         open
                         collapsible
-                        heading="Reports"
+                        heading={translateText("Reports")}
                         >
                         <CalciteList>
                             {updateJobsList('report')}
