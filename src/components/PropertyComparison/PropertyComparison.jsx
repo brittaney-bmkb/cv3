@@ -73,6 +73,11 @@ const PropertyComparison = () => {
             setTitle(translateText('Comparable Property Search'))
         }
 
+        if(!comparableParcels || comparableParcels.length === 0){
+            setCurrentStep(0)
+            setTitle(translateText('Comparable Property Search'))
+        }
+
     }, [currentStep, comparableParcels, secondaryResultFeature])
 
     useEffect(() => {
@@ -114,7 +119,7 @@ const PropertyComparison = () => {
             onClick={() => {
                 window.open(`${config.hub_site_url_resources}#${config.hub_site_resources_bookmarks["compare"]}`, '_blank')
             }}>
-                </CalciteAction>  
+            </CalciteAction>  
 
             {
                 currentStep > 0 ?
