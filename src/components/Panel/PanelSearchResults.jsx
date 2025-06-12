@@ -49,7 +49,15 @@ const PanelSearchResults = () => {
                     setSearchResultsPanel(true)
                 }}
                 style={{display: searchResultsPanelClosed ? 'none': 'flex'}}
-                >   
+                >  
+                    <CalciteAction 
+                    slot="header-actions-start" 
+                    icon="question" 
+                    text="help" 
+                    onClick={() => {
+                        window.open(`${config.hub_site_url_resources}#${config.hub_site_resources_bookmarks["search-results"]}`, '_blank')
+                    }}>
+        </CalciteAction>  
                     {/* SEARCH RESULT ACTIONS */}
                     <CalciteActionBar slot="action-bar" layout="horizontal" expandDisabled> 
                         <CalciteAction 

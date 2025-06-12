@@ -1,6 +1,6 @@
 import "@arcgis/map-components/components/arcgis-sketch";
 
-import { CalciteBlock, CalciteButton, CalciteNotice, CalcitePanel } from "@esri/calcite-components-react";
+import { CalciteAction, CalciteBlock, CalciteButton, CalciteNotice, CalcitePanel } from "@esri/calcite-components-react";
 import UseAppContext from "../../contexts/AppContext";
 import { useEffect, useRef, useState } from "react";
 import GraphicsLayer from "@arcgis/core/layers/GraphicsLayer";
@@ -148,6 +148,14 @@ const Select = () => {
                 setSelectPanel(true)
             }}
             >
+                <CalciteAction 
+                    slot="header-actions-start" 
+                    icon="question" 
+                    text="help" 
+                    onClick={() => {
+                        window.open(`${config.hub_site_url_resources}#${config.hub_site_resources_bookmarks["select-tool"]}`, '_blank')
+                    }}>
+                </CalciteAction> 
                 {
                     arcgisMapRef.current ? 
                     <CalciteBlock

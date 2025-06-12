@@ -1,3 +1,5 @@
+import { map } from "../arcgis/webmap/webmap";
+
 export const config = {
     //show alert banner
     showBanner: true,
@@ -19,6 +21,23 @@ export const config = {
     // PORTAL URL: Provide the URL to your ArcGIS Online organization or Portal for ArcGIS.
     portal:"https://cookcountyil.maps.arcgis.com/",
     portal_gis: "https://gis.cookcountyil.gov/gisportal",
+    //HUB SITE URL: Provide the URL to your ArcGIS Hub site.
+    hub_site_url: "https://cookviewer3-info-cookcountyil.hub.arcgis.com/",
+    hub_site_url_resources: "https://cookviewer3-info-cookcountyil.hub.arcgis.com/pages/resources",
+    hub_site_resources_bookmarks: {
+       "search": "search",
+       "map": "map",
+       "select-tool": "select-tool",
+       "print": "print",
+       "property-details": "property-details",
+       "search-results": "search-results",
+       "compare":"compare",
+       "nearby":"nearby",
+       "measure":"measure",
+       "history":"history",
+       "imagery":"imagery",
+       "layers":"layers",    
+    },
     //PRINT URL
     print_service_url: "https://gis.cookcountyil.gov/hosting/rest/services/CookviewerPrintService/GPServer/Export%20Web%20Map",
     // BASEMAP ID: Provide the ID of the basemap you want to use in the application.

@@ -1,5 +1,5 @@
 import PortalBasemapsSource from "@arcgis/core/widgets/BasemapGallery/support/PortalBasemapsSource.js";
-import { CalciteBlock, CalcitePanel } from "@esri/calcite-components-react"
+import { CalciteAction, CalciteBlock, CalcitePanel } from "@esri/calcite-components-react"
 import UseAppContext from "../../contexts/AppContext"
 import "@arcgis/map-components/components/arcgis-basemap-gallery";
 import { config } from "../../data/config";
@@ -60,6 +60,14 @@ const Imagery = () => {
             setImageryPanel(true)
         }}
         >
+        <CalciteAction 
+            slot="header-actions-start" 
+            icon="question" 
+            text="help" 
+            onClick={() => {
+                window.open(`${config.hub_site_url_resources}#${config.hub_site_resources_bookmarks["imagery"]}`, '_blank')
+            }}>
+        </CalciteAction>  
             {
                 arcgisMapRef.current ? 
                 <CalciteBlock

@@ -17,6 +17,7 @@ import ComparisonForm from "./ComparisonForm"
 import ListComparisonResults from "./ListComparisonResults"
 import ComparisonPropertyDetail from "./ComparisonPropertyDetail"
 import Inactive from "../Inactive/Inactive"
+import { config } from "../../data/config";
 
 
 const PropertyComparison = () => {
@@ -72,6 +73,11 @@ const PropertyComparison = () => {
             setTitle(translateText('Comparable Property Search'))
         }
 
+        if(!comparableParcels || comparableParcels.length === 0){
+            setCurrentStep(0)
+            setTitle(translateText('Comparable Property Search'))
+        }
+
     }, [currentStep, comparableParcels, secondaryResultFeature])
 
     useEffect(() => {
@@ -97,7 +103,7 @@ const PropertyComparison = () => {
             closed={comparablePanelClosed} 
             closable 
             className={isMobile ? 'panel-end' : 'panel-start' }
-            heading={translateText(title)} 
+            heading={translateText(title, true)} 
 
             onCalcitePanelClose={() => {
                 setComparablePanel(true)
@@ -105,7 +111,15 @@ const PropertyComparison = () => {
                 setCurrentStep(0)
             }}
             style={{display: comparablePanelClosed ? 'none': 'flex'}}
-            >   
+            > 
+            <CalciteAction 
+            slot="header-actions-start" 
+            icon="question" 
+            text="help" 
+            onClick={() => {
+                window.open(`${config.hub_site_url_resources}#${config.hub_site_resources_bookmarks["compare"]}`, '_blank')
+            }}>
+            </CalciteAction>  
 
             {
                 currentStep > 0 ?

@@ -1,5 +1,6 @@
 
 import { 
+    CalciteAction,
     CalciteBlock, 
     CalciteButton, 
     CalciteDropdown, 
@@ -906,6 +907,14 @@ const Print = () => {
                style={{display: printPanelClosed ? 'none': 'flex'}}
                onCalcitePanelClose={handleClosePrintPanel}
            >
+            <CalciteAction 
+                slot="header-actions-start" 
+                icon="question" 
+                text="help" 
+                onClick={() => {
+                    window.open(`${config.hub_site_url_resources}#${config.hub_site_resources_bookmarks["print"]}`, '_blank')
+                }}>
+            </CalciteAction> 
                {
                    printLoading && 
                    (
@@ -994,7 +1003,7 @@ const Print = () => {
                         <CalciteBlock
                             open
                             collapsible
-                            heading="Maps"
+                            heading={translateText("Maps")}
                         >
                         <CalciteList>
                             {updateJobsList('map')}
@@ -1006,7 +1015,7 @@ const Print = () => {
                         <CalciteBlock
                         open
                         collapsible
-                        heading="Reports"
+                        heading={translateText("Reports")}
                         >
                         <CalciteList>
                             {updateJobsList('report')}

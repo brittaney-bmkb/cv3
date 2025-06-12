@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import Inactive from "../Inactive/Inactive"
 import ListComparisonResults from "../PropertyComparison/ListComparisonResults"
 import ComparisonPropertyDetail from "../PropertyComparison/ComparisonPropertyDetail"
+import { config } from "../../data/config"
 
 export const linearUnitOptions = {
     "feet": {
@@ -119,6 +120,14 @@ const NearbyPanel = () => {
             }}
             style={{display: nearbyPanelClosed ? 'none': 'flex'}}
         > 
+            <CalciteAction 
+            slot="header-actions-start" 
+            icon="question" 
+            text="help" 
+            onClick={() => {
+                window.open(`${config.hub_site_url_resources}#${config.hub_site_resources_bookmarks["nearby"]}`, '_blank')
+            }}>
+            </CalciteAction>  
 
         {
             currentStep > 0 ?

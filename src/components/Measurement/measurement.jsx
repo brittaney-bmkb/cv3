@@ -1,6 +1,6 @@
 import Portal from "@arcgis/core/portal/Portal.js";
 import { Box, MenuItem, Select, Typography, Stack, TextField } from "@mui/material"
-import { CalciteBlock, CalcitePanel, CalciteButton  } from "@esri/calcite-components-react";
+import { CalciteBlock, CalcitePanel, CalciteButton, CalciteAction  } from "@esri/calcite-components-react";
 import UseAppContext from "../../contexts/AppContext";
 import "@arcgis/map-components/components/arcgis-area-measurement-2d";
 import "@arcgis/map-components/components/arcgis-distance-measurement-2d";
@@ -44,6 +44,14 @@ const Measure = () => {
             style={{display: measurePanelClosed ? 'none': 'flex'}}
             onCalcitePanelClose={() => { setMeasurePanel(true) }}
         >
+            <CalciteAction 
+                slot="header-actions-start" 
+                icon="question" 
+                text="help" 
+                onClick={() => {
+                    window.open(`${config.hub_site_url_resources}#${config.hub_site_resources_bookmarks["measure"]}`, '_blank')
+                }}>
+            </CalciteAction> 
             <CalciteBlock
                 open
                 heading={translateText("Area")}

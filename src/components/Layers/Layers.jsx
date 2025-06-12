@@ -1,4 +1,4 @@
-import { CalciteBlock, CalcitePanel } from "@esri/calcite-components-react"
+import { CalciteAction, CalciteBlock, CalcitePanel } from "@esri/calcite-components-react"
 import UseAppContext from "../../contexts/AppContext"
 import "@arcgis/map-components/components/arcgis-layer-list";
 import LabelClass from "@arcgis/core/layers/support/LabelClass.js";
@@ -142,6 +142,15 @@ const Layers = () => {
         }}
         scale={isMobile ? "s" : "m"}
         >
+
+            <CalciteAction 
+            slot="header-actions-start" 
+            icon="question" 
+            text="help" 
+            onClick={() => {
+                window.open(`${config.hub_site_url_resources}#${config.hub_site_resources_bookmarks["layers"]}`, '_blank')
+            }}>
+            </CalciteAction>  
             {
                 arcgisMapRef.current ? 
                 <CalciteBlock
