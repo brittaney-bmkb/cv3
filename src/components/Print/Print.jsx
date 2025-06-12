@@ -84,7 +84,7 @@ const Print = () => {
        const [ format, setFormat ] = useState([])
 
        //const [ boxExtent, setBoxExtent ]  = useState(null)
-       const [ showPrintArea, setShowPrintArea ] = useState(false)
+       const [ showPrintArea, setShowPrintArea ] = useState(true)
        const [ printLoading, setPrintLoading ] = useState(false)
        const [ includeAllSearchFeatures, setIncludeAllSearchFeatures ] = useState(null)
        const [ includeComparbles, setIncludeComparables] = useState(null)
@@ -205,7 +205,8 @@ const Print = () => {
 
 
        const handleClosePrintPanel = () => {
-   
+        
+          if(printPanelClosed) return;
            setPrintPanel(true)
 
            if(printViewModel.current){
@@ -403,6 +404,7 @@ const Print = () => {
                    const formats = await getPrintFormats()
                    setAllowedFormats(formats)
                    setFormat(formats[0])
+                   setShowPrintArea(true)
 
                    setPrintLoading(false)
                }
