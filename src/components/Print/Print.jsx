@@ -206,14 +206,23 @@ const Print = () => {
 
        const handleClosePrintPanel = () => {
         
-          if(printPanelClosed) return;
            setPrintPanel(true)
+
 
            if(printViewModel.current){
    
                setShowPrintArea(false)
-               maskLayer.current = null
+               
                boxExtent.current = null
+
+               if(!arcgisMapRef.current) return;
+
+                const map  = arcgisMapRef.current.map
+                
+                if(!map) return;
+
+                map.remove(maskLayer.current);
+                maskLayer.current = null
                //printViewModel.current.showPrintAreaEnabled = false
            }
        }
@@ -311,6 +320,7 @@ const Print = () => {
                     setShowPrintArea(false)
                 }
             }
+            
 
        }, [printPanelClosed, showPrintArea])
    
@@ -318,6 +328,7 @@ const Print = () => {
        //revisit custom mask layer
         useEffect(() => {
             if (printPanelClosed || !arcgisMapRef.current || !showPrintArea || !boxExtent.current) return;
+
             const map  = arcgisMapRef.current.map
             const view = arcgisMapRef.current.view
             const mapElement = arcgisMapRef?.current;
@@ -333,7 +344,6 @@ const Print = () => {
             
             console.log("Creating custom mask layer")
             try {
-
                 const printArea = Polygon.fromExtent(boxExtent.current)
                 maskLayer.current = new CustomMaskLayer({
                     geometry: printArea,
