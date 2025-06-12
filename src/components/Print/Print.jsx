@@ -84,7 +84,7 @@ const Print = () => {
        const [ format, setFormat ] = useState([])
 
        //const [ boxExtent, setBoxExtent ]  = useState(null)
-       const [ showPrintArea, setShowPrintArea ] = useState(false)
+       const [ showPrintArea, setShowPrintArea ] = useState(true)
        const [ printLoading, setPrintLoading ] = useState(false)
        const [ includeAllSearchFeatures, setIncludeAllSearchFeatures ] = useState(null)
        const [ includeComparbles, setIncludeComparables] = useState(null)
@@ -112,7 +112,7 @@ const Print = () => {
             id: config.print_group_id,
         })
 
-        console.log("templateGroup: ", templateGroup)
+        //console.log("templateGroup: ", templateGroup)
 
 
         const createParcelDefinitionExpression = async (feature) => {
@@ -205,14 +205,24 @@ const Print = () => {
 
 
        const handleClosePrintPanel = () => {
-   
+        
            setPrintPanel(true)
+
 
            if(printViewModel.current){
    
                setShowPrintArea(false)
-               maskLayer.current = null
+               
                boxExtent.current = null
+
+               if(!arcgisMapRef.current) return;
+
+                const map  = arcgisMapRef.current.map
+                
+                if(!map) return;
+
+                map.remove(maskLayer.current);
+                maskLayer.current = null
                //printViewModel.current.showPrintAreaEnabled = false
            }
        }
@@ -279,6 +289,8 @@ const Print = () => {
 
         const updatePrintTemplates = async () => {
 
+            if(printPanelClosed) return;
+
             const printServiceTemplates = await getPrintLayouts()
 
             console.log("printServiceTemplates: ", printServiceTemplates)
@@ -289,12 +301,12 @@ const Print = () => {
 
         updatePrintTemplates()
 
-       }, [language])
+       }, [language, printPanelClosed])
 
         useEffect(() => {
 
             if(printPanelClosed){
-                console.log("removing print area")
+                
                 if(maskLayer.current){
                     maskLayer.current = null
                 }
@@ -304,9 +316,11 @@ const Print = () => {
                 }
 
                 if(showPrintArea){
+                    console.log("removing print area")
                     setShowPrintArea(false)
                 }
             }
+            
 
        }, [printPanelClosed, showPrintArea])
    
@@ -314,6 +328,7 @@ const Print = () => {
        //revisit custom mask layer
         useEffect(() => {
             if (printPanelClosed || !arcgisMapRef.current || !showPrintArea || !boxExtent.current) return;
+
             const map  = arcgisMapRef.current.map
             const view = arcgisMapRef.current.view
             const mapElement = arcgisMapRef?.current;
@@ -329,7 +344,6 @@ const Print = () => {
             
             console.log("Creating custom mask layer")
             try {
-
                 const printArea = Polygon.fromExtent(boxExtent.current)
                 maskLayer.current = new CustomMaskLayer({
                     geometry: printArea,
@@ -400,6 +414,7 @@ const Print = () => {
                    const formats = await getPrintFormats()
                    setAllowedFormats(formats)
                    setFormat(formats[0])
+                   setShowPrintArea(true)
 
                    setPrintLoading(false)
                }
@@ -414,11 +429,13 @@ const Print = () => {
 
    
        useEffect(() => {
-           console.log("includeSearchFeatures: ", includeAllSearchFeatures)
+           
            const getDefitionQuery = async () => {
 
+            if(printPanelClosed) return;
+
             if(searchFeatures && searchFeatures.length > 0){
-            
+                console.log("includeSearchFeatures: ", includeAllSearchFeatures)
                 if(includeAllSearchFeatures){
                     console.log("including all search features")
                     definitionQuery.current = await createParcelDefinitionExpression(searchFeatures)
@@ -443,14 +460,17 @@ const Print = () => {
            }
            getDefitionQuery()
            
-       },  [searchFeatures, primaryResultFeature, includeAllSearchFeatures])
+       },  [searchFeatures, primaryResultFeature, includeAllSearchFeatures, printPanelClosed])
 
 
         useEffect(() => {
 
             const getDefitionQuery = async () => {
+
+            if(printPanelClosed) return;
             
             console.log("Include comparables: ", includeComparbles)
+            
 
             if(!definitionQueryComparable) return
 
@@ -472,7 +492,7 @@ const Print = () => {
            }
            getDefitionQuery()
            
-       },  [comparableParcels, includeComparbles])
+       },  [comparableParcels, includeComparbles, printPanelClosed])
    
 
 

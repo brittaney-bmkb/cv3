@@ -6,64 +6,42 @@ export const config = {
     bannerLinkText: "The previous version of CookViewer",
     bannerLinkHtml:"https://maps.cookcountyil.gov/cookviewerv2/", 
     bannerColor:"#F0F4F8",
-    // bannerHeader:"Intermittent Downtime",
-    // bannerMessage:"CookViewer will have intermittent downtime between November 19 and November 22 due to system updates. Users may experience issues viewing parcels and using CookViewer tools.",
-    // // bannerLinkText: "The previous version of CookViewer",
-    // // bannerLinkHtml:"https://maps.cookcountyil.gov/cookviewerv2/", 
-    // bannerColor:"#edbe1c",
-    //IMAGES ROOT DIRECTORY
-    image_directory: "https://maps.cookcountyil.gov/files/apps/cookviewer/images",
     //NAVBAR
     title: "CookViewer",
     description: "Cook County Parcel Viewer",
     //App Logo
     logo:"https://maps.cookcountyil.gov/cdn/cook/cook_logo.png",
     //PRINTS
-    print_group_id:"5626084802334bee87af273eb68c3e83",
+    print_group_id:"186f6ddb783349b19f3f3b5b1f42c817",
     print_portal: "https://gis.cookcountyil.gov/gisportal",
-    print_group_url:"https://gis.cookcountyil.gov/gisportal/home/group.html?id=5626084802334bee87af273eb68c3e83",
-    reportTemplate: "CookViewerPropertyDetails",
-    report_id: "f730c860a5004dd084845988f7e6fb71",
-    report_id_comparable: "886e6ba1e4274e2f9d4aa8afde0fc9ff",
     //App Pages
     // pages: ['Home','Data','Help'], // removed for now. 
     // PORTAL URL: Provide the URL to your ArcGIS Online organization or Portal for ArcGIS.
     portal:"https://cookcountyil.maps.arcgis.com/",
     portal_gis: "https://gis.cookcountyil.gov/gisportal",
     //PRINT URL
-    //print_service_url: "https://gis.cookcountyil.gov/hosting/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task",
-    //working print_service_url:"https://gis.cookcountyil.gov/hosting/rest/services/CookViewerPropertyDetails/GPServer/Export%20Web%20Map",
-    print_service_url: "https://gis.cookcountyil.gov/hosting/rest/services/CookViewerPrintServiceTEST/GPServer/Export%20Web%20Map",
+    print_service_url: "https://gis.cookcountyil.gov/hosting/rest/services/CookviewerPrintService/GPServer/Export%20Web%20Map",
     // BASEMAP ID: Provide the ID of the basemap you want to use in the application.
     basemap_item_id:"7d31919b0623451ea7e576c85c48f52a",
     // BASEMAP GROUP ID: Provide the ID of the group you want to use for basemaps
     basemap_group_id: '6ce214380e7144acb42d348cef7985d7',
-    //MAP selection colors
-    //Primary Color:
-    primary_color:'',
-    //Secondayr Color:
-    secondary_color:'',
-    //PRINT OPTIONS
-    print_orientation_options : ['Landscape', 'Portrait'],
     //FEEDBACK URLS
     feedback_general:'//survey123.arcgis.com/share/ba8f1d610701420abc33612ef1d3378a?hide=navbar,footer',
     feedback_extended:'//survey123.arcgis.com/share/640dd8fd0d064eb880b65cc3d238f87f?hide=navbar,footer',
     feedback_search:'//survey123.arcgis.com/share/6c24e84d3ac24024a311b7e81045c382?hide=navbar,footer',
     //DATA DICTIONARY SERVICE
     data_dictionary: "https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/arcgis/rest/services/cookviewer_data_dictionary/FeatureServer/0",
-    // TARGET LAYER CONFIGURATION: Specify the name of the target layer and the fields to display in results.
-    //PARCEL LABELS LAYER
-    parcel_label_layer: "Labels",
     //PARCEL ARCHIVE LAYER GROUP
     historical_group_name: "Parcel Archive",
+    // TARGET LAYER CONFIGURATION: Specify the name of the target layer and the fields to display in results.
     // MAKE SURE THE NAME OF THIS LAYER IS EXACTLY THE SAME IN THE LAYERSOURCES ARRAY
     target_layer_name: "Parcels Current", // Name of the target layer in LayerSources
-    target_layer_url: "https://test-gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/0",
+    target_layer_url: "https://gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/0",
     target_layer_out_fields: ["PIN10","PIN14","PIN14_dash","street_address","city_state_zip","OBJECTID"],// Fields to display in the results pane (array of strings).
     //Translated service
     target_layer_urls: {
-        "english": "https://test-gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/0",
-        "spanish": "https://test-gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/0"
+        "english": "https://gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/0",
+        "spanish": "https://gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/0"
     },
     //FIELD TO REFERENCE FOR CREATING URL PARAM WHEN CLICKING IN MAP
     target_layer_id_field: "PIN10",
@@ -74,8 +52,6 @@ export const config = {
     // NEARBY SEARCH SETTINGS: Configure the buffer distance and unit for nearby searches.
     buffer_distance: 60,
     buffer_unit: "feet",
-    //No results Message
-    no_results_message: "Try a new search using the search bar or by clicking in the map",
     //LANGUAGES
     defaultLanguage: "english",
     languages:["english","spanish"],
@@ -93,7 +69,7 @@ export const config = {
        {
            layerName: "Parcels Current", // Name of the layer source.
            description:"",
-           url: "https://test-gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/", // URL to the layer service.
+           url: "https://gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/", // URL to the layer service.
            type: 'mapImageLayer',
            index: 0,
            outFields: ["*"], // Fields to return in the search results (array of strings).
