@@ -1,7 +1,13 @@
+// This file exports a backup JSON definition for the "Parcels Current" feature layer.
+// It provides a static configuration for the layer's properties, rendering, and labeling,
+// used as a fallback or reference within the Print workflow of CookViewer.
+// This ensures consistent rendering and labeling of parcel data in printed maps,
+// even if the layer is not visible when zoomed out in the map.
+// The id and url are updated in the Print component to match the current layer in the map.
 export const parcelCurrent = {
             "id": "1922088cfbf-layer-6",
             "title": "Parcels Current",
-            "url": "https://test-gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/0",
+            "url": "https://gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/0",
             "layerType": "ArcGISFeatureLayer",
             "layerDefinition": {
                 "disableDisplayFilter": false,
