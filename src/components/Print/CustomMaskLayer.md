@@ -2,6 +2,9 @@
 
 The `CustomMaskLayer` is a custom ArcGIS JS API 2D tile layer for CookViewer that visually masks the map, revealing only a specified geometry (such as a polygon) with a configurable blurred edge. This is useful for highlighting a print area or focus region while dimming the rest of the map.
 
+## Reference
+[Masking effect using a custom layer view](https://developers.arcgis.com/javascript/latest/sample-code/custom-lv-masking/)
+
 ## Features
 
 - **Custom Mask Rendering**: Masks the map with a semi-transparent color, revealing only the specified geometry.
