@@ -16,14 +16,14 @@ Import and use the component in your application:
 ### Props & Context
 This component relies on the following context values from UseAppContext:
 
-- printPanelClosed, setPrintPanel
-- translateText
-- arcgisMapRef
-- mapView
-- primaryResultFeature
-- searchFeatures
-- language
-- comparableParcels
+- **printPanelClosed, setPrintPanel**
+- **translateText**
+- **arcgisMapRef**
+- **mapView**
+- **primaryResultFeature**
+- **searchFeatures**
+- **language**
+- **comparableParcels**
 ### Key Dependencies
 - @esri/calcite-components-react
 - @arcgis/core
@@ -33,12 +33,12 @@ This component relies on the following context values from UseAppContext:
     - Inactive
 - App-specific config: config from ../../data/config
 ## Main Functional Areas
-- Print Templates: Loads available print layouts and formats from ArcGIS Portal based on language.
-- Print Area: Allows users to toggle and adjust the print area on the map.
-- Report Options: Toggle inclusion of all search results or comparable parcels.
-- Print Execution: Handles print requests, manages print jobs, and provides download links.
-- Legend and Layer Filtering: Dynamically updates operational layers and legend entries for print output.
-- Help: Header action opens help documentation in a new tab.
+- **Print Templates**: Loads available print layouts and formats from ArcGIS Portal based on language.
+- **Print Area**: Allows users to toggle and adjust the print area on the map.
+- **Report Options**: Toggle inclusion of all search results or comparable parcels.
+- **Print Execution**: Handles print requests, manages print jobs, and provides download links.
+- **Legend and Layer Filtering**: Dynamically updates operational layers and legend entries for print output.
+- **Help**: Header action opens help documentation in a new tab.
 ## Example Workflow
 1) Open the Print panel.
 2) Select "Map" or "Report" tab.
