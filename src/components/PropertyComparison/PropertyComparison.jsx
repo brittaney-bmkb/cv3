@@ -73,10 +73,10 @@ const PropertyComparison = () => {
             setTitle(translateText('Comparable Property Search'))
         }
 
-        if(!comparableParcels || comparableParcels.length === 0){
-            setCurrentStep(0)
-            setTitle(translateText('Comparable Property Search'))
-        }
+        // if(!comparableParcels || comparableParcels.length === 0){
+        //     setCurrentStep(0)
+        //     setTitle(translateText('Comparable Property Search'))
+        // }
 
     }, [currentStep, comparableParcels, secondaryResultFeature])
 
