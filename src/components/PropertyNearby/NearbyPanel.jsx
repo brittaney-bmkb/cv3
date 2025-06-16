@@ -111,7 +111,7 @@ const NearbyPanel = () => {
             closed={nearbyPanelClosed} 
             closable 
             className={isMobile ? 'panel-start' : 'panel-end' }
-            heading={translateText(title)} 
+            heading={translateText(title, true)} 
             //description= {translateText("Search for similar properties")}
             onCalcitePanelClose={() => {
                 setNearbyPanel(true)
