@@ -478,7 +478,7 @@ const PanelPropertyDetail = () => {
                                                                             <CalciteButton 
                                                                             className='hyperlink-button' 
                                                                             label={translateText(calculatedValues[data?.attributes['field']]['label'])}
-                                                                            iconStart="launch"
+                                                                            iconStart= "launch"
                                                                             href={hyperlink} 
                                                                             target="_blank"
                                                                             scale='m'
@@ -508,7 +508,7 @@ const PanelPropertyDetail = () => {
                                                                         id={`${data?.attributes['field']}-button`}
                                                                         className='hyperlink-button' 
                                                                         label={calculatedValues[data?.attributes['field']]['label']}
-                                                                        iconStart="launch"
+                                                                        iconStart={data?.attributes['field']=== 'nearby_properties' ? "rings-largest" : data?.attributes['field']=== 'comparable_properties' ? "compare" : "launch"}
                                                                         target="_blank"
                                                                         scale='m'
                                                                         onClick={() => {handleClick(data?.attributes['field'])}}
