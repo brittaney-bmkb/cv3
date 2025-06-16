@@ -470,20 +470,20 @@ const PanelPropertyDetail = () => {
                                                                 return(
                                                                     <CalciteListItem
                                                                     key={data?.attributes['field']}
-                                                                    label={calculatedValues[data?.attributes['field']]['label']}
+                                                                    label={translateText(calculatedValues[data?.attributes['field']]['label'])}
                                                                     description={translateText(calculatedValues[data?.attributes['field']]['description'])}
                                                                     open
                                                                     >
                                                                         <div slot="content">
                                                                             <CalciteButton 
                                                                             className='hyperlink-button' 
-                                                                            label={calculatedValues[data?.attributes['field']]['label']}
+                                                                            label={translateText(calculatedValues[data?.attributes['field']]['label'])}
                                                                             iconStart="launch"
                                                                             href={hyperlink} 
                                                                             target="_blank"
                                                                             scale='m'
                                                                             >
-                                                                                {calculatedValues[data?.attributes['field']]['label']}
+                                                                                {translateText(calculatedValues[data?.attributes['field']]['label'])}
                                                                             </CalciteButton>
                                                                             <CalciteLabel scale='s' className='description'>
                                                                                 {translateText(calculatedValues[data?.attributes['field']]['description'])}
