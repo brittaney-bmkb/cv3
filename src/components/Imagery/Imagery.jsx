@@ -22,7 +22,7 @@ const Imagery = () => {
 
         if(!basemapRef.current) return;
 
-        console.log("Imagery component mounted, arcgisMapRef: ", arcgisMapRef.current)
+        //console.log("Imagery component mounted, arcgisMapRef: ", arcgisMapRef.current)
         
         const basemapSource = new PortalBasemapsSource({
         portal: config.portal,
