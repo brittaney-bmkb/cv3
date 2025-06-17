@@ -3,6 +3,8 @@ import AppReducer, { initialState } from '../reducers/AppReducer'
 import { config } from "../data/config";
 import { theme } from "../theme";
 import { useSearchParams } from "react-router-dom";
+import * as intl from "@arcgis/core/intl.js";
+
 
 
 export const AppContext = createContext(initialState)
@@ -1594,6 +1596,16 @@ export const AppProvider = ({children}) => {
         suppressTourDialog: state.suppressTourDialog
 
     }
+
+useEffect(() => {
+        // Get the locale code for the current language
+        const locale_code = config.language_codes[state.language] || "en";
+        intl.setLocale(locale_code);
+        // Optionally, set the HTML lang attribute for Calcite components
+        document.documentElement.lang = locale_code;
+        console.log("Esri locale set to:", locale_code);
+    }, [state.language]);
+        //console.log("AppContext mounted"  )
 
     useEffect(() => {
         const handleResize = () => {
