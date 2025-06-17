@@ -34,12 +34,12 @@ const Imagery = () => {
             // Update the label of the basemap gallery
             for (const basemap of basemaps) {
                 await basemap.load()
-                console.log("Basemap title: ", basemap.title)
+                //console.log("Basemap title: ", basemap.title)
                 basemap.title = translateText(basemap.title);
 
             }
 
-            console.log("Basemaps updated: ", basemaps)
+            //console.log("Basemaps updated: ", basemaps)
             return basemaps;    
             }
         }) 
