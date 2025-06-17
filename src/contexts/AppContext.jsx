@@ -1453,6 +1453,9 @@ export const AppProvider = ({children}) => {
             
             return translation;
         }
+        else{
+            return text
+        }
     }
 
 
