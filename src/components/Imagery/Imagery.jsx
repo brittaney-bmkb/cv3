@@ -14,7 +14,8 @@ const Imagery = () => {
     const basemapRef = useRef(null)
     const [source, setSource] = useState(null)
 
-
+    // Only render when the panel is open
+    if (imageryPanelClosed) return null;
 
     useEffect(() => {
         if(!arcgisMapRef.current) return;
