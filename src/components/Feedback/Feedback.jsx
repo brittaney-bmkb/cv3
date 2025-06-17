@@ -347,7 +347,7 @@ export const Feedback = () => {
             className='hyperlink-button' 
             onClick={() => handleClose()}
             >
-                Done
+                {translateText('Done')}
             </CalciteButton>
         </div>
             
