@@ -1416,18 +1416,25 @@ export const AppProvider = ({children}) => {
         const {language, textTranslationDictionary} = state
 
         if (text === null || text === undefined) {
-            console.log("translateText: text is null or undefined, skipping translation", text)
+            //console.log("translateText: text is null or undefined, skipping translation", text)
             return; // Skip null/undefined
         }
 
-        if(textTranslationDictionary === null || textTranslationDictionary === undefined) return;
+        if(textTranslationDictionary === null || textTranslationDictionary === undefined){
+            return ''
+        };
 
         // If text is a string
-        else if (typeof text === 'string') {
+        if (typeof text === 'string') {
             //console.log("translateText: text is a string", text)
             let translation = text;
 
-            if(!/\d/.test(text)){
+            //if value match without splitting strings
+            const foundText = Object.values(textTranslationDictionary).find(textReplace => textReplace[config.defaultLanguage] === text)
+            if(foundText){
+                translation = foundText[language]
+            }
+            else if(!/\d/.test(text)){
                 // String does not contain numbers
                 const foundText = Object.values(textTranslationDictionary).find(textReplace => textReplace[config.defaultLanguage] === text)
                 if(foundText){

@@ -14,14 +14,15 @@ const Imagery = () => {
     const basemapRef = useRef(null)
     const [source, setSource] = useState(null)
 
-
+    // Only render when the panel is open
+    if (imageryPanelClosed) return null;
 
     useEffect(() => {
         if(!arcgisMapRef.current) return;
 
         if(!basemapRef.current) return;
 
-        console.log("Imagery component mounted, arcgisMapRef: ", arcgisMapRef.current)
+        //console.log("Imagery component mounted, arcgisMapRef: ", arcgisMapRef.current)
         
         const basemapSource = new PortalBasemapsSource({
         portal: config.portal,

@@ -1,6 +1,8 @@
 
 
 import { 
+    CalciteLoader,
+    CalciteScrim,
     CalciteShell, 
     CalciteShellPanel 
 } from "@esri/calcite-components-react"
@@ -50,7 +52,8 @@ const Layout = () => {
         imageryPanelClosed,
         measurePanelClosed,
         selectPanelClosed,
-        isMobile
+        isMobile,
+        translateText
     } = UseAppContext()
 
 
@@ -78,10 +81,20 @@ const Layout = () => {
 
     }, [selectPanelClosed, printPanelClosed, imageryPanelClosed, layersPanelClosed, nearbyPanelClosed, comparablePanelClosed, comparisonResultsClosed, measurePanelClosed, comparisonDetailPanelClosed])
 
+
+    const isTranslationsLoading = !translateText("test") || translateText("test") === "loading....";
+
     return(
         <CalciteShell contentBehind ={isMobile}>
 
-            {!isMobile && (<GuidedTour/>)}
+            {
+                isTranslationsLoading && (
+                    <CalciteScrim loading />
+                )
+            }
+
+
+            {!isMobile && isTranslationsLoading ? null : <GuidedTour/>}
             
             {/* HEADER */}
             <Header/>
