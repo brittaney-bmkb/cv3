@@ -393,7 +393,7 @@ const PanelPropertyDetail = () => {
                                                         return(
                                                             <CalciteListItem
                                                                 key={data?.attributes['field']}
-                                                                label={translateText(primaryResultFeature[0]?.attributes[data?.attributes['field']], true)}
+                                                                label={translateText(primaryResultFeature[0]?.attributes[data?.attributes['field']])}
                                                                 description={translateText(data?.attributes['label'])}
                                                                 >
                                                             </CalciteListItem>
@@ -526,7 +526,7 @@ const PanelPropertyDetail = () => {
                                                             return(
                                                                 <CalciteListItem
                                                                 key={data?.attributes['field']}
-                                                                label={translateText(calculatedValues[data?.attributes['field']]['label'])}
+                                                                label={translateText(calculatedValues[data?.attributes['field']]['label'], true)}
                                                                 description={translateText(calculatedValues[data?.attributes['field']]['description'])}
                                                                 >
                                                                 </CalciteListItem>
