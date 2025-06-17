@@ -155,7 +155,7 @@ const Layers = () => {
                 arcgisMapRef.current ? 
                 <CalciteBlock
                 open
-                heading="Add a layer to the map"
+                heading={translateText("Add a layer to the map")}
                 description={translateText("Toggle layers to show/hide them in the map")}
                 scale={isMobile ? "s" : "m"}
                 style={{height: '100%', overflow:'clip'}}
