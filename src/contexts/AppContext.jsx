@@ -1427,7 +1427,12 @@ export const AppProvider = ({children}) => {
             //console.log("translateText: text is a string", text)
             let translation = text;
 
-            if(!/\d/.test(text)){
+            //if value match without splitting strings
+            const foundText = Object.values(textTranslationDictionary).find(textReplace => textReplace[config.defaultLanguage] === text)
+            if(foundText){
+                translation = foundText[language]
+            }
+            else if(!/\d/.test(text)){
                 // String does not contain numbers
                 const foundText = Object.values(textTranslationDictionary).find(textReplace => textReplace[config.defaultLanguage] === text)
                 if(foundText){
