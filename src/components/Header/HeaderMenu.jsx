@@ -13,6 +13,10 @@ import { useRef, useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 
 export function titleCase(s) {
+    if(!s || typeof s !== 'string') {
+        console.warn("titleCase: Invalid input, expected a string but received:", s);
+        return '';
+    }
     return s.toLowerCase()
             .split(' ')
             .map(word => word.charAt(0).toUpperCase() + word.slice(1))

@@ -1411,70 +1411,40 @@ export const AppProvider = ({children}) => {
      * @param {number} skipNum - The flag to skip number translation if necessary.
      * @returns {string} - The translated text.
      */
-    const translateText = (text, skipNum) => {
+    const translateText =  (text, skipNum) => {
 
         const {language, textTranslationDictionary} = state
 
-        //////console.log(textTranslationDictionary)
-        const textIsNotNumber = Number.isNaN(parseInt(text))
-
-        if(text && textTranslationDictionary && textIsNotNumber){
-            
-            if(Object.keys(textTranslationDictionary).includes(text)){
-
-                //////console.log("TRANSLATED TEXT: ", text, textTranslationDictionary[text][language])
-                return textTranslationDictionary[text][language]
-            }
-
-            else{
-                ////////console.log("text to translate: ", text)
-                let numericValues
-                let textToReplace = text
-                if(text.match(/\d+/g) && !text.includes("-") && !skipNum){
-                //&& text.match(/[()]/g)){
-                    numericValues = text.match(/\d+/g)
-
-                    //replace numeric and parentheses 
-                    textToReplace = text.replace(numericValues, "").replace(/[()]/g, "").trim()
-
-                    ////////console.log("Found numeric values: ", numericValues, textToReplace)
-                }
-
-                let translation = Object.values(textTranslationDictionary).filter(textReplace => 
-                    textReplace[config.defaultLanguage] === textToReplace)
-                    .map((textReplace)=> {
-                        return textReplace[language]
-                    })
-
-                //////console.log("TRANSLATED TEXT: ", translation)
-                if(translation && translation.length){
-                    if(numericValues && text !== config.bannerHeader){
-                        if(text.match(/[()]/g)){
-                            return `${numericValues} (${ translation[0]})`
-                        }
-                        
-                        else {
-                            return `${numericValues} ${translation[0]}`
-                        }
-                        
-                    }
-                    else{
-                        return translation[0]
-                    }
-
-                }
-                else{
-                    return text
-                }
-                
-
-                //return translation && translation.length > 0 ? translation[0] : text
-            }
-    
-            
+        if (text === null || text === undefined) {
+            console.log("translateText: text is null or undefined, skipping translation", text)
+            return; // Skip null/undefined
         }
-        else{
-            return text
+
+        if(textTranslationDictionary === null || textTranslationDictionary === undefined) return;
+
+        // If text is a string
+        else if (typeof text === 'string') {
+            //console.log("translateText: text is a string", text)
+            let translation = text;
+
+            if(!/\d/.test(text)){
+                // String does not contain numbers
+                const foundText = Object.values(textTranslationDictionary).find(textReplace => textReplace[config.defaultLanguage] === text)
+                if(foundText){
+                    translation = foundText[language]
+                } 
+            }
+            else if(/\d/.test(text)){
+                // String contains both letters and numbers
+                // Handle alphanumeric
+                const numericValues = text.match(/\d+/g)
+                const strings = text.replace(numericValues, "").replace(/[()]/g, "").trim()
+                const foundText = Object.values(textTranslationDictionary).find(textReplace => textReplace[config.defaultLanguage] === strings)
+
+                translation =  foundText ? text.replace(strings, foundText[language]) : text
+            }
+            
+            return translation;
         }
     }
 

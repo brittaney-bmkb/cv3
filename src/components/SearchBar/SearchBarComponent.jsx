@@ -56,7 +56,7 @@ const SearchBarComponent = () => {
         let lang = routeParams.get('lang')
 
         setSearchParams({
-            'search': refSearch.current.searchTerm,
+            'search': refSearch.current?.searchTerm,
             'lang': lang ? lang : config.defaultLanguage
         })
     }

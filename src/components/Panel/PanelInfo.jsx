@@ -33,7 +33,7 @@ const PanelInfo = () => {
             <CalciteBlock open collapsible={false}>
                 {/* SEARCH RESULTS LABEL*/}
                 <div>
-                    {translateText("Welcome to CookViewer 3.0 - your ultimate source for Cook County property information! Access detailed property insights with ease, now with a modernized user experience, enhanced features, and expanded language support. Dive into the 'What's New' section to explore the latest updates. We value your feedback, which helps us continue improving to better serve you.")}
+                    {translateText("Welcome to CookViewer 3.1 - your ultimate source for Cook County property information! Access detailed property insights with ease, now with a modernized user experience, enhanced features, and expanded language support. Dive into the 'What's New' section to explore the latest updates. We value your feedback, which helps us continue improving to better serve you.")}
                 </div>
 
                 <CalciteBlockSection className='info-section-header' open text={translateText("To get started you can:")}>
