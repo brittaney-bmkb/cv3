@@ -187,7 +187,7 @@ const Export = () => {
         
         <div slot="footer-end" style={{display: "flex", gap: '20px'}}>
             <CalciteButton appearance="outline" onClick={() => {handleClose()}}>
-                Cancel
+                {translateText('Cancel')}
             </CalciteButton>
             <CalciteButton 
             loading={isExporting}
