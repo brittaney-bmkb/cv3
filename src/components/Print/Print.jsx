@@ -639,7 +639,7 @@ const Print = () => {
            const jobKey = Object.keys(printJobs).length 
 
            let jobDetails = {
-            "title": `${printTitle}.${tabSelected === 'report' ? 'pdf' : extractTextInParentheses(format)}`,
+            "title": `${translateText(printTitle)}.${tabSelected === 'report' ? 'pdf' : extractTextInParentheses(format)}`,
             "description": translateText("Download and open in new window"),
             "link": "",
             "type": tabSelected,
@@ -683,7 +683,7 @@ const Print = () => {
             } catch (error) {
                  console.error("Printing failed: ", error)
                 
-                const updatedTitle = `${printTitle}.${tabSelected === 'report' ? 'pdf' : extractTextInParentheses(format)}`
+                const updatedTitle = `${translateText(printTitle)}.${tabSelected === 'report' ? 'pdf' : extractTextInParentheses(format)}`
 
                 setPrintJobs( (prev) => ({
                         ...prev,
@@ -711,7 +711,7 @@ const Print = () => {
                     {translateText("File name")}
                     <CalciteInput
                     placeholder="untitled"
-                    value={printTitle}
+                    value={translateText(printTitle)}
                     onCalciteInputChange={(e) => setPrintTitle(e.target.value)}
                     />
                 </CalciteLabel>

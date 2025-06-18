@@ -60,11 +60,11 @@ const Export = () => {
                 break;
                 case 'property':
                 setParcelSource(primaryResultFeature)
-                setDataTitle(translateText(`Parcel PIN ${primaryResultFeature[0].attributes[config.target_layer_display_field]}`));
+                setDataTitle(`${translateText('Parcel PIN')} ${primaryResultFeature[0].attributes[config.target_layer_display_field]}`);
                 break;
                 case 'comparable-property':
                 setParcelSource(secondaryResultFeature)
-                setDataTitle(translateText(`Parcel PIN ${secondaryResultFeature[0].attributes[config.target_layer_display_field]}`));
+                setDataTitle(`${translateText('Parcel PIN')} ${secondaryResultFeature[0].attributes[config.target_layer_display_field]}`);
                 break;
                 case 'comparable-search':
                 setParcelSource(comparableParcels)
@@ -141,7 +141,7 @@ const Export = () => {
             required
             status={inputStatus}
             scale="m" 
-            placeholder="filename"
+            placeholder={translateText("filename")}
             value={fileName}
             validationIcon="frown"
             validationMessage={translateText('Please enter filename')}
@@ -154,7 +154,7 @@ const Export = () => {
                     slot="trigger" 
                     className='hyperlink-button'
                     iconEnd="chevron-down"
-                    >{fileType}</CalciteButton>
+                    >{translateText(fileType)}</CalciteButton>
                     <CalciteDropdownGroup selection-mode="single">
                     {
                         exportFileTypes.map((fileType, i) => {
@@ -187,14 +187,14 @@ const Export = () => {
         
         <div slot="footer-end" style={{display: "flex", gap: '20px'}}>
             <CalciteButton appearance="outline" onClick={() => {handleClose()}}>
-                Cancel
+                {translateText('Cancel')}
             </CalciteButton>
             <CalciteButton 
             loading={isExporting}
             className='hyperlink-button' 
             onClick={() => handleExport()}
             >
-                Export
+                {translateText('Export')}
             </CalciteButton>
         </div>
 

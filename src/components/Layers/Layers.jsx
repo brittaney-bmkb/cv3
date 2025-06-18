@@ -129,6 +129,21 @@ const Layers = () => {
         })                                 
  }
 
+ const [layersVersion, setLayersVersion] = useState(0);
+
+useEffect(() => {
+    if (!arcgisMapRef.current) return;
+    const map = arcgisMapRef.current.map;
+    if (!map) return;
+
+    // Listen for changes to the map's layers collection
+    const handleChange = () => setLayersVersion(v => v + 1);
+
+    const handle = map.layers.on("change", handleChange);
+
+    // Clean up listener on unmount
+    return () => handle.remove();
+}, [arcgisMapRef, mapView]);
 
 
     return(
@@ -161,6 +176,7 @@ const Layers = () => {
                 style={{height: '100%', overflow:'clip'}}
                 >   
                 <arcgis-layer-list
+                key={layersVersion}
                 ref={layerListRef}
                 referenceElement={arcgisMapRef.current}
                 visibilityAppearance="checkbox"
@@ -170,6 +186,10 @@ const Layers = () => {
                 listItemCreatedFunction={ (event) => {
                     let item = event.item
                     item.title = translateText(item.title, true)
+
+                    if(item.title !== 'Untitled layer'){
+                        return item
+                    }
                 }}
                 />
              </CalciteBlock> 

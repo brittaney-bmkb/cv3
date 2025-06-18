@@ -275,10 +275,10 @@ const NearbyPanel = () => {
             currentStep === 0 ?
                 <div slot="footer-end" style={{display: "flex", gap: '20px'}}>
                     <CalciteButton disabled={primaryResultFeature?false:true} iconStart="reset" appearance="outline" onClick={() => {handleReset()}}>
-                        Reset
+                        {translateText('Reset')}
                     </CalciteButton>
                     <CalciteButton disabled={primaryResultFeature?false:true} className='hyperlink-button' onClick={() => handleSearchRadius()}>
-                        Search
+                        {translateText('Search')}
                     </CalciteButton>
                 </div> : null
             }
