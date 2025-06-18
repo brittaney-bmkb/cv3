@@ -94,7 +94,7 @@ const Layout = () => {
             }
 
 
-            {!isMobile && isTranslationsLoading ? null : <GuidedTour/>}
+            {isMobile ? null : <GuidedTour/>}
             
             {/* HEADER */}
             <Header/>
