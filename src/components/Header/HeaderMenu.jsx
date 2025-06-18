@@ -139,8 +139,30 @@ export const HeaderMenuMobile = () => {
         translateText,
         setLanguage,
         setFeedbackDialog,
-        setSearchParams
+        setSearchParams,
+        refTranslate,
     } = UseAppContext();
+
+        const menuItems = {
+        Help: {
+            icon: "question",
+            subMenuItems: null,
+            id:"help",
+            ref: null
+        },
+        Feedback:{
+            icon:"speech-bubble-exclamation",
+            subMenuItems: null,
+            id:"feedback-expanded",
+            ref: null
+        },
+        Translate: {
+            icon: "language-translate",
+            subMenuItems: config.language_codes,
+            id: "translate",
+            ref: refTranslate
+        }
+    }
 
     const [menuOpen, setMenuOpen] = useState(false);
     const flowRef = useRef(null);
@@ -191,18 +213,23 @@ export const HeaderMenuMobile = () => {
         if (flowRef.current) {
             const existingFlowItems = flowRef.current.children;
             Array.from(existingFlowItems).forEach((item) => {
+                if(!item) return;
                 item.style.display = "none"; // Hide previous flow items
             });
         }
 
         newFlowItemElement.addEventListener("calciteFlowItemBack", () => {
 
-            newFlowItemElement.remove();
+            //newFlowItemElement.remove();
+            if (newFlowItemElement) {
+                newFlowItemElement.remove();
+            }
 
              // Restore display for all previous flow items when the new one is removed
             if (flowRef.current) {
                 const remainingFlowItems = flowRef.current.children;
                 Array.from(remainingFlowItems).forEach((item) => {
+                    if(!item) return;
                     item.style.display = ""; // Reset to default display
                 });
             }

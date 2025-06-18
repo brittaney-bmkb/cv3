@@ -685,15 +685,18 @@ const Map = () => {
             return
         }
 
+
         const view = arcgisMapRef.current.view
 
-        // Append ActionBarMap using ref
+        if(!view) return;
+
+        // // Append ActionBarMap using ref
         if (actionRef.current && isMobile) {
             view.ui.add(actionRef.current, "top-right");
         }
         if(actionRef.current & !isMobile){
             view.ui.remove(actionRef.current);
-    }
+        }
 
     }, [isMobile, actionRef, arcgisMapRef])
 
@@ -820,12 +823,9 @@ const Map = () => {
 
     return(
         <>
-        {
-            isMobile ?
-            <div ref={actionRef} className="esri-widget">
+        <div ref={actionRef} className="esri-widget" style={{display: isMobile ? 'flex' : 'none'}}>
                 <ActionBarMap />
-            </div> : null
-        }
+        </div>
         
 
         {/* ArcGIS Map Component */}
