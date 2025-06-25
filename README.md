@@ -123,9 +123,13 @@ In addition to the direct application customization that can be accompolished by
 **CookViewer3Parcels** - Referenced Map Service that contains parcel data and parcel geometries displayed in the webmap. This service is included in the `config.json` file for 2 config props: 
 - `target_layer_url` - Parcel feature layer url is used to identify the Current Parcel layer in the AGO webmap to allow the user to click and select parcels within the webmap
 - `layer_sources url` - Parcel feature layer is used as search layer source for the `Search.jsx` component
-Service URLS:
-- **PROD**: https://gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer
-- **TEST**: https://test-gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer
+Service URLS: There is a parcel service in English and Spanish to support the app core target_layer data variable and printing reports in english and spanish
+**English**
+- **PROD**: https://gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/0
+- **TEST**: https://test-gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/0
+**Spanish**
+- **PROD**: https://gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/1
+- **TEST**: https://test-gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/1
 
 **Data Dictionary** - Hosted table that controls the data display in the PropertyDetails.jsx component and Property Detail Panel in the application. This table includes fields that are referenced from the CookViewer3Parcels service and injects the field values into the the application. The data value, display label, data category, display order, and hyperlinked text are all controlled by this table. The data dictionary service url is an input to the `data_dictionary` prop in `config.json`
 - **PROD**: https://services2.arcgis.com/I5Or36sMcO7Y9vQ3/arcgis/rest/services/cookviewer_data_dictionary/FeatureServer/0
@@ -145,13 +149,21 @@ Service URLS:
 - Cook Address Multirole Locator: https://gis.cookcountyil.gov/traditional/rest/services/Locator/CookAddressMultirole/GeocodeServer
 
 **Web Map** - Cookviewer consumes a webmap hosted in ArcGIS online that allows the user to view/interact with parcels and cookviewer dynamic data layers
-- **PROD**: https://cookcountyil.maps.arcgis.com/apps/mapviewer/index.html?webmap=779a9643c58f4a48a002a9b277a8bcc7
-    - AGO ITEM: https://cookcountyil.maps.arcgis.com/home/item.html?id=779a9643c58f4a48a002a9b277a8bcc7
-- **TEST**: https://cookcountyil.maps.arcgis.com/apps/mapviewer/index.html?webmap=15c4eb52c7bb468d93c5946cb8e9d6ce
+- **PROD**: https://cookcountyil.maps.arcgis.com/apps/mapviewer/index.html?webmap=15c4eb52c7bb468d93c5946cb8e9d6ce
     - AGO ITEM: https://cookcountyil.maps.arcgis.com/home/item.html?id=15c4eb52c7bb468d93c5946cb8e9d6ce
+- **TEST**: https://cookcountyil.maps.arcgis.com/apps/mapviewer/index.html?webmap=779a9643c58f4a48a002a9b277a8bcc7
+    - AGO ITEM: https://cookcountyil.maps.arcgis.com/home/item.html?id=779a9643c58f4a48a002a9b277a8bcc7
   
 **ArcGIS Pro Project** - References webmap, data dictionary, and translated text services listed above to view/edit in one place.
 **PROD & TEST**: \\gisfsp2\gisanalysts\portalServices\service_maps\Application_Services\cookviewer3  
+
+**Print Service** - CookViewer references a custom print service published to our GIS Enterprise portal. There is also a group of print templates referenced in the app.
+- **CookviewerPrintService**:
+    - PROD: https://gis.cookcountyil.gov/hosting/rest/services/CookviewerPrintService/GPServer/Export%20Web%20Map
+    - TEST: https://gis.cookcountyil.gov/hosting/rest/services/CookViewerPrintServiceTEST/GPServer/Export%20Web%20Map
+-**Print Templates for CookViewer**
+    - PROD: https://gis.cookcountyil.gov/gisportal/home/group.html?id=186f6ddb783349b19f3f3b5b1f42c817#overview
+    - TEST:  https://gis.cookcountyil.gov/gisportal/home/group.html?id=5626084802334bee87af273eb68c3e83#overview
 
 ## TODOS
 [Insert details on parts of the project that are still in progress/development. These could be future enhancements, plans to migrate to newer versions of a code base, future deprecation of a code base etc.]
