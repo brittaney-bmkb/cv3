@@ -162,8 +162,7 @@ Service URLS:
 - **CookviewerPrintService**:
     - PROD: https://gis.cookcountyil.gov/hosting/rest/services/CookviewerPrintService/GPServer/Export%20Web%20Map
     - TEST: https://gis.cookcountyil.gov/hosting/rest/services/CookViewerPrintServiceTEST/GPServer/Export%20Web%20Map
-    - 
--**Print Templates for CookViewer**
+- **Print Templates for CookViewer**
     - PROD: https://gis.cookcountyil.gov/gisportal/home/group.html?id=186f6ddb783349b19f3f3b5b1f42c817#overview
     - TEST:  https://gis.cookcountyil.gov/gisportal/home/group.html?id=5626084802334bee87af273eb68c3e83#overview
 
