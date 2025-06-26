@@ -4,7 +4,7 @@ export const config = {
     //show alert banner
     showBanner: true,
     bannerHeader:"Performance Issues",
-    bannerMessage:"Cookviewer data services are being impacted due to Esri maintenance. We hope to have these issues resolved soon.",
+    bannerMessage:"CookViewer data services are being impacted due to Esri maintenance. We hope to have these issues resolved soon.",
     bannerLinkText: "The previous version of CookViewer",
     bannerLinkHtml:"https://maps.cookcountyil.gov/cookviewerv2/", 
     bannerColor:"#F0F4F8",
