@@ -3,8 +3,8 @@ import { map } from "../arcgis/webmap/webmap";
 export const config = {
     //show alert banner
     showBanner: true,
-    bannerHeader:"Welcome to CookViewer 3.0!",
-    bannerMessage:"We hope you enjoy the modernized user experience. The previous version of CookViewer will still be available for a limited time.",
+    bannerHeader:"Performance Issues",
+    bannerMessage:"Cookviewer data services are being impacted due to Esri maintenance. We hope to have these issues resolved soon.",
     bannerLinkText: "The previous version of CookViewer",
     bannerLinkHtml:"https://maps.cookcountyil.gov/cookviewerv2/", 
     bannerColor:"#F0F4F8",
