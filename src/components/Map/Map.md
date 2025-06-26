@@ -215,16 +215,6 @@ const {
 
 ---
 
-## Summary
-
-The `Map` component is a sophisticated integration of React, ArcGIS JS API, and global application state via AppContext. It is responsible for all map rendering, feature selection, and spatial operations, and is designed to be responsive, extensible, and fully localized. All interactions and state changes are coordinated through the context, ensuring a seamless user experience across the application.
-
-brittaneyharkness: add a could be better section
-
-GitHub Copilot: Certainly! Here’s a **Could Be Better** section for your `Map.jsx` documentation:
-
----
-
 ## Could Be Better
 
 - **Separation of Concerns:**  
