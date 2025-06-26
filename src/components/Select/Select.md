@@ -1,34 +1,46 @@
 # Select.jsx Component Documentation
 
-## 1. Overview
+## Overview
 
-The `Select` component is CookViewer’s primary parcel‐selection interface. It wraps the ArcGIS Sketch widget (`<arcgis-sketch>`) to let users click, draw rectangles, or draw polygons on the map, then queries parcels inside that geometry. It also displays contextual help, resets selections, and synchronizes everything with the global `AppContext`.
+The `Select` component is CookViewer’s parcel-selection interface. It renders an ArcGIS Sketch widget for drawing or clicking to select parcels on the map, manages sketch graphics, displays contextual help, and synchronizes everything with the global `AppContext`. It leverages the [ArcGIS Maps SDK for JavaScript](https://developers.arcgis.com/javascript/) via the `<arcgis-sketch>` web component and uses Esri’s Core APIs for geometry operations.
 
 ---
 
-## 2. Integration with AppContext
+## Key Responsibilities
+
+- **Rendering the Sketch Widget** (`<arcgis-sketch>`) within a `CalcitePanel`.  
+- **Managing GraphicsLayer** for sketch graphics and clearing or resetting it as needed.  
+- **Handling User Interactions** for “cursor,” “rectangle,” and “polygon” selection tools.  
+- **Executing Spatial Queries** by unioning drawn geometries and calling `queryPolygon`.  
+- **Toggling Panels** (`search` or `property`) based on query results.  
+- **Displaying Contextual Help** via `CalciteNotice`, updating dynamically per tool.  
+- **Localization** of all UI text through `translateText`.
+
+---
+
+## Integration with AppContext
 
 ```jsx
 const {
-  arcgisMapRef,               // Ref to the ArcGIS Map instance
-  selectPanelClosed,          // Controls panel visibility
-  setSelectPanel,             // Toggles the Select panel
-  translateText,              // Localization helper
-  queryPolygon,               // Executes parcel queries
-  clearResults,               // Clears previous search results
-  propertyDetailPanelClosed,  // Tracks detail panel state
-  togglePanel,                // Opens “search” or “property” panel
+  arcgisMapRef,               // Ref to <arcgis-map> instance
+  selectPanelClosed,          // Boolean: is the Select panel closed?
+  setSelectPanel,             // Function to open/close the Select panel
+  translateText,              // (key) => localized string
+  queryPolygon,               // (geometry, refresh) => Promise<features>
+  clearResults,               // () => void, clears search results
+  propertyDetailPanelClosed,  // Boolean: is the property detail panel closed?
+  togglePanel,                // (panelName) => void, opens “search” or “property”
 } = UseAppContext();
 ```
 
-- **Map Attachments**: `arcgisMapRef.current` → used to add `GraphicsLayer` and anchor `<arcgis-sketch>`.
-- **UI Control**: `selectPanelClosed` & `setSelectPanel` manage panel open/close and trigger resets.
-- **Spatial Logic**: `queryPolygon` + `togglePanel` implement the parcel search → result-panel pipeline.
-- **Localization**: `translateText` wraps all UI strings for i18n.
+- **Refs:** `arcgisMapRef` supplies the map for adding layers and anchoring the sketch widget.  
+- **Panel Control:** `selectPanelClosed` & `setSelectPanel` manage panel visibility and trigger resets.  
+- **Spatial Logic:** `queryPolygon` runs parcel queries; `togglePanel` chooses which downstream panel to show.  
+- **Localization:** `translateText` wraps every user-facing string.
 
 ---
 
-## 3. Imports & Dependencies
+## Imports & Dependencies
 
 ```tsx
 import "@arcgis/map-components/components/arcgis-sketch";
@@ -48,91 +60,31 @@ import UseAppContext from "../../contexts/AppContext";
 import { config } from "../../data/config";
 ```
 
-- **ArcGIS Sketch**: Web component for map drawing tools.  
-- **Calcite Components**: UI primitives for panel, notice, buttons, and actions.  
-- **ArcGIS Core**: `GraphicsLayer` for graphics; `unionOperator` to merge geometries.  
-- **AppContext & Config**: Global state and resource URLs.
-
 ---
 
-## 4. State & References
+## Main Functional Sections
 
-| Name               | Type                                | Purpose                                               |
-| ------------------ | ----------------------------------- | ----------------------------------------------------- |
-| `sketchRef`        | `RefObject<HTMLElement>`            | To call `.cancel()` on the sketch widget.             |
-| `graphicsLayer`    | `RefObject<GraphicsLayer>`          | Holds the graphics layer added to the map.            |
-| `selectedFeatures` | `RefObject<Array<any>>`             | Temp storage for drawn geometries (currently unused). |
-| `activeTool`       | `"polygon" \| "rectangle" \| "cursor" \| null` | Current drawing mode.              |
-| `title`            | `string`                            | Help panel title based on active tool.                |
-| `message`          | `string`                            | Help panel message based on active tool.              |
+### 1. State and References
 
----
+- **Refs:**  
+  - `sketchRef`: `<arcgis-sketch>` DOM reference for calling `.cancel()`.  
+  - `graphicsLayer`: Holds the `GraphicsLayer` instance added to the map.  
+  - `selectedFeatures`: Temporary storage for drawn geometries (unused currently).  
+- **State:**  
+  - `activeTool`: `"polygon" | "rectangle" | "cursor" | null` – current sketch tool.  
+  - `title`, `message`: Strings for the help notice, updated per `activeTool`.
 
-## 5. Lifecycle & Effects
+### 2. Sketch Initialization & Layer Setup
 
-1. **Initialize GraphicsLayer**  
-   ```js
-   useEffect(() => {
-     if (arcgisMapRef.current && !graphicsLayer.current) {
-       graphicsLayer.current = new GraphicsLayer();
-       arcgisMapRef.current.map.add(graphicsLayer.current);
-     }
-   }, [arcgisMapRef]);
-   ```
-2. **Reset on Panel Close**  
-   ```js
-   useEffect(() => {
-     if (selectPanelClosed && sketchRef.current) {
-       sketchRef.current.cancel();
-       selectedFeatures.current = [];
-     }
-   }, [selectPanelClosed]);
-   ```
-3. **Update Help Text**  
-   ```js
-   useEffect(() => {
-     const updateHelp = async () => {
-       const { title, message } = await getSelectionTip(activeTool);
-       setTitle(title);
-       setMessage(message);
-     };
-     updateHelp();
-   }, [activeTool]);
-   ```
+- **GraphicsLayer Creation:** On mount, when `arcgisMapRef.current.map` exists, instantiate a `GraphicsLayer` and add it to the map.  
+- **Sketch Widget Attachment:** Render `<arcgis-sketch>` with that layer and the map reference, hiding unused tools via props.
 
----
+### 3. Parcel Selection Workflow
 
-## 6. Event Handlers
-
-### 6.1 onarcgisPropertyChange  
-Tracks sketch state transitions to set the `activeTool`.
-
-```ts
-onarcgisPropertyChange={(e) => {
-  if (e.target.state === "active") {
-    setActiveTool(e.target.activeTool);
-  }
-  if (e.target.state === "ready" && !e.target.activeTool) {
-    setActiveTool("cursor");
-  }
-}}
-```
-
-### 6.2 onarcgisCreate  
-When a sketch completes (`detail.state === "complete"`), it calls `handleSelection()`:
-
-```ts
-onarcgisCreate={(e) => {
-  if (e.detail.state === "complete") {
-    handleSelection();
-  }
-}}
-```
-
-**`handleSelection` implementation:**
-
-```ts
-const handleSelection = async () => {
+- **Drawing Completion:**  
+  - `onarcgisCreate` listens for `detail.state === "complete"` and calls `handleSelection()`.  
+- **handleSelection():**  
+  ```ts
   const geometries = graphicsLayer.current.graphics.map(g => g.geometry);
   const queryGeometry = unionOperator.executeMany(geometries.toArray());
   const features = await queryPolygon(queryGeometry, true);
@@ -140,24 +92,58 @@ const handleSelection = async () => {
   togglePanel(
     propertyDetailPanelClosed && features.length === 1 ? "property" : "search"
   );
-};
-```
+  ```
 
-### 6.3 Reset Button  
-Clears both the `GraphicsLayer` and your external results:
+### 4. UI Widgets & Localization
+
+- **CalcitePanel:** Container for the sketch UI; toggles open/closed via `selectPanelClosed`.  
+- **CalciteAction (“help”):** Opens external help doc from `config`.  
+- **CalciteBlock:** Holds the sketch widget and help notice.  
+- **CalciteNotice:** Shows dynamic `title`/`message` based on the selected tool.  
+- **CalciteButton (“Reset”):** Calls `handleReset()` to clear graphics and search results.
+
+_All text is passed through `translateText` for internationalization._
+
+### 5. Event Handlers
+
+#### 5.1 onarcgisPropertyChange  
+Sets `activeTool` when the sketch becomes active or ready:
 
 ```ts
+if (e.target.state === "active") {
+  setActiveTool(e.target.activeTool);
+}
+if (e.target.state === "ready" && !e.target.activeTool) {
+  setActiveTool("cursor");
+}
+```
+
+#### 5.2 onarcgisCreate  
+Triggers `handleSelection()` on draw completion.
+
+#### 5.3 Reset Button  
+```ts
 const handleReset = () => {
-  if (graphicsLayer.current) {
-    graphicsLayer.current.removeAll();
-  }
+  graphicsLayer.current?.removeAll();
   clearResults();
 };
 ```
 
+### 6. Effect Hooks
+
+- **GraphicsLayer Init:** Adds the layer when `arcgisMapRef` is ready.  
+- **Reset on Panel Close:** Cancels sketch and clears `selectedFeatures` when `selectPanelClosed` changes to `true`.  
+- **Help Text Updates:** Calls `getSelectionTip(activeTool)` on every change to update the help notice.
+
+### 7. Accessibility & Responsiveness
+
+- **Keyboard Navigation:** Calcite components are keyboard-friendly; ensure focus order.  
+- **ARIA Labels:** Confirm or add `aria-label` on `<arcgis-sketch>` for screen readers.  
+- **Contrast:** Check WCAG 2.1 AA color ratios for notices and buttons.
+
 ---
 
-## 7. Rendering Structure
+## Rendering Structure
 
 ```jsx
 <CalcitePanel
@@ -167,83 +153,45 @@ const handleReset = () => {
   onCalcitePanelClose={() => setSelectPanel(true)}
   style={{ display: selectPanelClosed ? "none" : "flex" }}
 >
-  <CalciteAction
-    slot="header-actions-start"
-    icon="question"
-    text="help"
-    onClick={() =>
-      window.open(`${config.hub_site_url_resources}#${config.hub_site_resources_bookmarks["select-tool"]}`, "_blank")
-    }
-  />
-  <CalciteBlock
-    open
-    heading={translateText("Select Multiple Parcels")}
-    description={translateText("...")}
-    style={{ display: "flex", flexDirection: "column", gap: "10px", height: "97%" }}
-  >
-    <arcgis-sketch
-      ref={sketchRef}
-      layer={graphicsLayer.current}
-      referenceElement={arcgisMapRef.current}
-      hideCreateToolsPoint
-      hideCreateToolsCircle
-      hideCreateToolsPolyline
-      hideDuplicateButton
-      hideLabelsToggle
-      hideCustomSelectionTool
-      hideSettingsMenu
-      hideUndoRedoMenu
-      hideSnappingControls
-      hideSelectionCountLabel
-      hideSelectionToolsLassoSelection
-      hideSelectionToolsRectangleSelection
-      autoDestroyDisabled={false}
-      hideDeleteButton={false}
-      scale="l"
-      onarcgisPropertyChange={/* see above */}
-      onarcgisCreate={/* see above */}
-    />
-    <CalciteNotice open={!!activeTool} style={{ paddingTop: "15px" }}>
-      <div slot="title">{title}</div>
-      <div slot="message">{message}</div>
-    </CalciteNotice>
+  <CalciteAction …/>           {/* Help */}
+  <CalciteBlock …>             {/* Sketch + Notice */}
+    <arcgis-sketch …/>        
+    <CalciteNotice …/>         
   </CalciteBlock>
-  <CalciteButton slot="footer-end" iconStart="reset" appearance="outline" onClick={handleReset}>
-    Reset
-  </CalciteButton>
+  <CalciteButton …>Reset</CalciteButton>
 </CalcitePanel>
 ```
 
 ---
 
-## 8. Key Points for Developers
+## Key Points for Developers
 
-- **Panel Lifecycle**: Closing the panel not only hides it but also cancels active sketches.  
-- **Tool Switching**: Only polygon, rectangle, and cursor modes are available; others are hidden via props.  
-- **Context Reliance**: No props—everything comes from `UseAppContext`. Ensure all required context values/functions exist.  
-- **Help Messaging**: Centralized in `getSelectionTip()` for easy updates.
-
----
-
-## 9. Extending or Modifying
-
-- **Add Lasso Tool**: Remove `hideSelectionToolsLassoSelection` and handle `activeTool === "lasso"`.  
-- **Debounce Queries**: Wrap `handleSelection` with a debounce to prevent rapid-fire queries.  
-- **Externalize Tooltips**: Move strings in `getSelectionTip()` to a JSON/translation file.
+- **Panel Lifecycle:** Closing hides the panel and cancels active sketches.  
+- **Tool Management:** Only polygon, rectangle, and cursor tools; others are hidden.  
+- **Context Reliance:** No props; all data and callbacks via `UseAppContext`.  
+- **Help Messaging:** Centralized in `getSelectionTip()` for easy updates.
 
 ---
 
-## 10. Troubleshooting
+## Extending or Modifying
 
-- **`GraphicsLayer` not initialized**: Ensure `arcgisMapRef.current` is set before the initialization effect runs.  
-- **No parcels returned**: Inspect the union geometry and network calls in DevTools.  
-- **Help notice not updating**: Verify that `onarcgisPropertyChange` fires and updates `activeTool`.
+- **Add Lasso Tool:** Remove `hideSelectionToolsLassoSelection` prop and handle `activeTool === "lasso"`.  
+- **Debounce Queries:** Wrap `handleSelection` in a debounce.  
+- **Externalize Tooltips:** Move strings from `getSelectionTip()` into translation files.
 
 ---
 
-## 11. Could Be Better
+## Troubleshooting
 
-- **Unused Refs**: `selectedFeatures` is declared but never read—either remove it or use it for multistage selection feedback.  
-- **Error Handling**: Wrap `queryPolygon` in `try/catch` and display errors in a `CalciteNotice`.  
-- **Performance**: Instead of clearing all graphics on each draw, remove only the last graphic.  
-- **Accessibility**: Add `aria-label` to `<arcgis-sketch>` to describe the drawing tools for screen readers.
+- **Layer Not Added:** Verify `arcgisMapRef.current.map` is set before the init effect runs.  
+- **No Results:** Inspect union geometry and API calls in DevTools.  
+- **Notice Not Updating:** Check `onarcgisPropertyChange` events.  
+
+---
+
+## Could Be Better
+
+- **Remove Unused Refs:** Drop `selectedFeatures` or use it for multi-stage workflows.  
+- **Error Handling:** Wrap `queryPolygon` in `try/catch`, show errors in `CalciteNotice`.  
+- **Performance:** Clear only the latest sketch graphic instead of all.  
+- **Accessibility:** Ensure `<arcgis-sketch>` exposes proper ARIA roles.
