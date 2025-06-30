@@ -2,7 +2,7 @@ import { map } from "../arcgis/webmap/webmap";
 
 export const config = {
     //show alert banner
-    showBanner: true,
+    showBanner: false,
     bannerHeader:"Performance Issues",
     bannerMessage:"CookViewer data services are being impacted due to Esri maintenance. We hope to have these issues resolved soon.",
     bannerLinkText: "The previous version of CookViewer",
