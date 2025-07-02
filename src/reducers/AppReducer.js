@@ -11,8 +11,8 @@ export const initialState = {
     searchTerm: null, //a global variable that stores the user input from the `SearchbarComponent`. This input is used as the value for the search url parameter value. 
     searchSources: null, //a global variable that stores the [searchSource](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search-SearchSource.html) object returned from the `createSearchSources` function. Required for the `SearchBar` component.
     searchFeatures: null,
-    searchBufferGeometry:null,
-    searchResultPoint:null,
+    searchBufferGeometry:null, //a global variable used in combination with the searchResultPoint to display the search radius when an address locator result is returned. This is consumed as the polygon geometry for the graphics layer in the `Map` component.
+    searchResultPoint:null, //a global variable used in combination with the searchBufferGeometery to display the search radius when an address locator result is returned. This is consumed as the point geometry for the graphics layer in the `Map` component.
     panelDisplay:null,
     panelDisplaySecondary:null,
     panelDisplayWidget:null,
