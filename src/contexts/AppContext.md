@@ -139,9 +139,9 @@ const MyComponent = () => {
 - [ ] ~~searchResults~~ - deprecated 3.0.2. a global variable that stores the state of the [searchResults](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search-types.html#SearchResult) object returned from the `returnSearchResultFeatures` function and set using the `setSearchResults` function. 
 - [ ] ~~prevSearchFeatures~~ - deprecated 3.1 with the implementation of the hittest to set the primaryResultFeature without overwriting the searchFeatures. 
 - [ ] searchTerm - a global variable that stores the user input from the `SearchbarComponent`. This input is used as the value for the search url parameter value. set using the `setSearchResults` function. 
-- [ ] searchResultPoint - a global variable used in combination with the searchBufferGeometery to display the search radius when an address locator result is returned. This is consumed as the point geometry for the graphics layer in the `Map` component. 
-- [ ] searchBufferGeometry - a global variable used in combination with the searchResultPoint to display the search radius when an address locator result is returned. This is consumed as the polygon geometry for the graphics layer in the `Map` component.
-- [ ] searchFeatures
+- [ ] searchResultPoint - a global variable used in combination with the searchBufferGeometery to display the search radius when an address locator result is returned. this stores the result geometry from the search result object in the `setSearchBufferGeometry` function and is set using the `setSearchBufferGeometry` function. This is consumed as the point geometry for the graphics layer in the `Map` component. 
+- [ ] searchBufferGeometry - a global variable used in combination with the searchResultPoint to display the search radius when an address locator result is returned. this stores the result geometry from the search result object in the `setSearchBufferGeometry` function and is set using the `setSearchBufferGeometry` function. This is consumed as the polygon geometry for the graphics layer in the `Map` component.
+- [ ] searchFeatures - a global variable to store 
 - [ ] panelDisplay
 - [ ] panelSecondaryVisible
 - [ ] panelDisplaySecondary
@@ -190,8 +190,8 @@ const MyComponent = () => {
 - [ ]  setMapView - function to set the global state of the mapView variable.
 - [ ] ~~setMapViewScale~~ - deprecated in 3.1
 - [ ] setPrimaryResultFeature - A global state setter function used to update the value of `primaryResultFeature`. It accepts an array of [feature objects](https://developers.arcgis.com/rest/services-reference/enterprise/feature-object/) and replaces the current state with the new set of primary query results.
-- [ ] setSearchResults
-- [ ] setSearchBufferGeometry
+- [ ] setSearchResults - A global state setter used to update the searchFeatures and searchTerm variables.
+- [ ] setSearchBufferGeometry - A global state setter used to update the searchResultPoint and searchBufferGeometry variables.
 - [ ] setSearchSources - A global state setter used to update the searchSources variable. Used in the `createSearchSources` function and updated in the `translateSearchSources` function to update state when the language variable changes. 
 - [ ] renderSearchResults
 - [ ] clearResults
