@@ -527,15 +527,6 @@ export const AppProvider = ({children}) => {
         })
     }
 
-    const setMeasureWidgetState = (state) => {
-        dispatch({
-            type:"SET_MEASURE_WIDGET_STATE",
-             payload: {
-                measureWidgetState: state,
-            }
-        })
-    }
-
     const setLanguage = (language) => {
         dispatch({
             type:"SET_LANGUAGE",
@@ -568,15 +559,6 @@ export const AppProvider = ({children}) => {
             type:"SET_SHOW_MAP_MOBILE",
              payload: {
                 showMapMobile: show,
-            }
-        })
-    }
-
-    const setMeasureWidget = (widget) => {
-        dispatch({
-            type:"SET_MEASURE_WIDGET",
-             payload: {
-                measureWidget: widget,
             }
         })
     }
@@ -1219,8 +1201,6 @@ export const AppProvider = ({children}) => {
         setSecondaryResultFeature,
         clearResultsComparables,
         addSecondaryFeatureToMap,
-        setMeasureWidgetState,
-        measureWidgetState: state.measureWidgetState,
         toggleMapLayer,
         setLanguage,
         language: state.language,
@@ -1231,8 +1211,6 @@ export const AppProvider = ({children}) => {
         translateText,
         showMapMobile: state.showMapMobile,
         setShowMapMoblie,
-        setMeasureWidget,
-        measureWidget: state.measureWidget,
         isQuerying: state.isQuerying,
         setIsQuerying,
         setMapPrintProps,
@@ -1393,44 +1371,6 @@ useEffect(() => {
          initializeTranslationText();
 
       }, []);
-
-
-
-
-    //   useEffect(() => {
-
-    //     if(state.panelDisplayWidget !== "measureWidget" || state.panelWidgetVisible === false){
-    //         ////////console.log("Measure Widget: ", state.measureWidget)
-    //         if(state.measureWidgetState && state.measureWidget){
-    //             await setMeasureWidgetState(null)
-    //             await state.measureWidget.when()
-    //             await state.measureWidget.clear()
-    //         }
-            
-            
-    //     }
-    
-    //   }, [state.panelDisplayWidget, state.panelWidgetVisible])
-
-    // useEffect(() => {
-    //     const clearMeasureWidget = async () => {
-    //         if (state.panelDisplayWidget !== "measureWidget" || state.panelWidgetVisible === false) {
-    //             //////////console.log("Measure Widget: ", state.measureWidget);
-    //             if (state.measureWidget) {
-    //                 ////////console.log("Measure Widget: ", state.measureWidget);
-    //                 // await state.measureWidget.when();
-    //                 state.measureWidget.clear();
-    //                 ////////console.log("Destroying Measure Widget: ");
-    //                 state.measureWidget.destroy();
-    //                 //setMeasureWidget(null)
-    //                 setMeasureWidgetState(null);
-    //             }
-    //         }
-    //     };
-    
-    //     clearMeasureWidget();
-    // }, [state.panelDisplayWidget, state.panelWidgetVisible, state.measureWidget]);
-    
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 

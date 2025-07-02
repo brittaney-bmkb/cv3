@@ -21,12 +21,10 @@ export const initialState = {
     newSearch:null,
     comparableParcels: null,
     nearbyParcels:null,
-    measureWidgetState:null,
     language: config.defaultLanguage,
     translateDialogOpen: false,
     textTranslationDictionary: null,
     showMapMobile: false,
-    measureWidget: null,
     isQuerying: null,
     mapLayout: null,
     mapFormat: null,
@@ -303,13 +301,6 @@ const AppReducer = (state, action) => {
                 nearbyParcels: payload.nearbyParcels,
             }
 
-        case "SET_MEASURE_WIDGET_STATE":
-            //console.log("SET_MEASURE_WIDGET_STATE: ", payload.measureWidgetState)
-            return {
-                ...state,
-                measureWidgetState: payload.measureWidgetState,
-            }
-
         case "SET_LANGUAGE":
             //console.log("SET_LANGUAGE")
             return {
@@ -333,12 +324,6 @@ const AppReducer = (state, action) => {
             return {
                 ...state,
                 showMapMobile: payload.showMapMobile,
-            }
-        case "SET_MEASURE_WIDGET":
-            //console.log("SET_MEASURE_WIDGET")
-            return {
-                ...state,
-                measureWidget: payload.measureWidget,
             }
         case "SET_IS_QUERYING":
             //console.log("SET_IS_QUERYING")

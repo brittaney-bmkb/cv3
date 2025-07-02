@@ -153,12 +153,12 @@ const MyComponent = () => {
 - [ ] **comparableParcels** - a global state variable that stores an array of features queried from the comparable search and nearby search tools. 
    - **Could be better** - separate these two variables
 - [ ] **secondaryResultFeature** - a global state variables that stores an array with a single item - the comparable or nearby parcel that is selected by the user
-- [ ] measureWidgetState
+- [ ] ~~measureWidgetState~~ - deprecated in 3.1 and replaced with measurePanelClosed to prevent clicks in the map from triggering click events. 
 - [ ] language
 - [ ] translateDialogOpen
 - [ ] textTranslationDictionary
 - [ ] showMapMobile
-- [ ] measureWidget
+- [ ] ~~measureWidget~~ - deprecated in 3.1 and replaced with measurePanelClosed to prevent clicks in the map from triggering click events. 
 - [ ] isQuerying
 - [ ] mapTitle
 - [ ] mapLayout
