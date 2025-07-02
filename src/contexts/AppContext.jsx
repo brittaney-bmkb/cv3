@@ -181,14 +181,14 @@ export const AppProvider = ({children}) => {
         })
     }
 
-    const setVisibleParcelYears = (list) => {
-        dispatch({
-            type: "SET_VISIBLE_PARCEL_YEARS",
-            payload: {
-                visibleParcelYears: list,
-            }
-        })
-    }
+    // const setVisibleParcelYears = (list) => {
+    //     dispatch({
+    //         type: "SET_VISIBLE_PARCEL_YEARS",
+    //         payload: {
+    //             visibleParcelYears: list,
+    //         }
+    //     })
+    // }
 
     const togglePanel = (panelName) => {
 
@@ -675,31 +675,6 @@ export const AppProvider = ({children}) => {
                 selectMultiple: select,
             }
         })
-    }
-
-    /**
-     * Initializes the map by setting up the map container, search sources,
-     * and zooming to the appropriate extent based on selected features.
-     */
-
-    const loadMap = async () => {
-
-        const {initializeMap, zoomToExtent} = await import('../arcgis/webmap/webmap')
-        const {mapContainer, primaryResultFeature, comparableParcels} = state
-
-        let view, searchSources = await initializeMap(mapContainer)
-
-        //await loadDataDictionary()
-
-        setMapView(view)
-        setSearchSources(searchSources)
-        if(!primaryResultFeature){
-            setPrimaryResultFeature(null, true)
-        }
-        else{
-            zoomToExtent(comparableParcels? comparableParcels: [primaryResultFeature])
-        }
-        
     }
 
     /**
@@ -1463,7 +1438,6 @@ export const AppProvider = ({children}) => {
 
     const value = {
         mapContainer: state.mapContainer,
-        loadMap,
         setMapContainer,
         setMapView,
         setMapViewScale,

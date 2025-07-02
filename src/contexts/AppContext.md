@@ -130,5 +130,135 @@ const MyComponent = () => {
 };
 ```
 
+**State Variables**
+- [ ] mapContainer
+- [ ] mapViewScale 
+- [ ] mapView
+- [ ] primaryResultFeature
+- [ ] searchSources
+- [ ] searchResults
+- [ ] prevSearchFeatures
+- [ ] searchTerm
+- [ ] searchResultPoint
+- [ ] searchBufferGeometry
+- [ ] searchFeatures
+- [ ] panelDisplay
+- [ ] panelSecondaryVisible
+- [ ] panelDisplaySecondary
+- [ ] panelPrimaryVisible
+- [ ] dataDictionary
+- [ ] parcelQueryFields
+- [ ] screenWidth
+- [ ] newSearch
+- [ ] comparableParcels
+- [ ] secondaryResultFeature
+- [ ] measureWidgetState
+- [ ] language
+- [ ] translateDialogOpen
+- [ ] textTranslationDictionary
+- [ ] showMapMobile
+- [ ] measureWidget
+- [ ] isQuerying
+- [ ] mapTitle
+- [ ] mapLayout
+- [ ] mapFormat
+- [ ] x
+- [ ] y
+- [ ] openHelpDialog
+- [ ] panelWidgetVisible
+- [ ] panelDisplayWidget
+- [ ] selectMultiple
+- [ ] comparableType
+- [ ] infoPanelClosed
+- [ ] searchResultsPanelClosed
+- [ ] propertyDetailPanelClosed
+- [ ] comparablePanelClosed
+- [ ] nearbyPanelClosed
+- [ ] comparisonResultsClosed
+- [ ] comparisonDetailPanelClosed
+- [ ] layersPanelClosed
+- [ ] imageryPanelClosed
+- [ ] printPanelClosed
+- [ ] measurePanelClosed
+- [ ] selectPanelClosed
+- [ ] helpPanelClosed
+
+**Functions**
+- [ ]  ~~loadMap~~ - Function that initializes the map by setting up the map container, search sources, and zooming to extent of selected features. Deprecated in 3.1 and replaced with argis-map component. 
+    - initializeMap() - Called from webmap.js is also deprectated in 3.1 and replaced with the the arcgis-map component
+- [ ]  setMapContainer
+- [ ]  setMapView
+- [ ]  setMapViewScale
+- [ ] setPrimaryResultFeature
+- [ ] setSearchResults
+- [ ] setSearchBufferGeometry
+- [ ] setSearchSources
+- [ ] renderSearchResults
+- [ ] clearResults
+- [ ] setPanelDisplay
+- [ ] setPanelSecondaryVisibility
+- [ ] setPanelDisplaySecondary,
+- [ ] selectResultFromList,
+- [ ] searchComparableProperties,
+- [ ] setPanelPrimaryVisibility
+- [ ] loadDataDictionary
+- [ ] setParcelQueryFields
+- [ ] setScreenWidth
+- [ ] searchNearbyProperties
+- [ ] setSecondaryResultFeature
+- [ ] clearResultsComparables
+- [ ] addSecondaryFeatureToMap
+- [ ] setMeasureWidgetState
+- [ ] toggleMapLayer
+- [ ] setLanguage
+- [ ] setTranslateDialogOpen
+- [ ] setTranslationDictionary
+- [ ] translateText
+- [ ] setShowMapMoblie
+- [ ] setMeasureWidget
+- [ ] setIsQuerying
+- [ ] setMapPrintProps
+- [ ] setCoordinates
+- [ ] returnLocationFeatures
+- [ ] setOpenHelpDialog
+- [ ] setPanelWidgetVisibility
+- [ ] setPanelDisplayWidget
+- [ ] queryMapPoint
+- [ ] setComparableParcels
+- [ ] initalizeSearchSources
+- [ ] returnSearchResultFeatures
+- [ ] anyAttributesIncluded
+- [ ] setSelectMultiple
+- [ ] queryPolygon
+- [ ] setComparableType
+- [ ] returnFeaturesByPin10Pin14
+- [ ] returnSearchParam
+- [ ] setInfoPanel
+- [ ] setSearchResultsPanel
+- [ ] setPropertyDetailPanel
+- [ ] setComparablePanel
+- [ ] setNearbyPanel
+- [ ] setComparisonResultsPanel
+- [ ] setComparisonDetailPanel
+- [ ] togglePanel
+- [ ] setLayersPanel
+- [ ] setImageryPanel
+- [ ] setPrintPanel
+- [ ] setMeasurePanel
+- [ ] setSelectPanel
+- [ ] setHelpPanel
+- [ ] deselectParcel
+- [ ] setExportOpen
+- [ ] setFeedbackDialog
+- [ ] setIsMobile
+- [ ] setTourDialogOpen
+- [ ] setSuppressTourDialog
+
+**Refs**
+arcgisMapRef
+refSearch
+
+**Hooks**
+
 
 
