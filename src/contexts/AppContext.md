@@ -136,7 +136,7 @@ const MyComponent = () => {
 - [ ] mapView - a global state variable for mapView object: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html.
 - [ ] primaryResultFeature - a global state variable that stores an array of [feature objects](https://developers.arcgis.com/rest/services-reference/enterprise/feature-object/). These objects represent the primary features returned from a query (locator search results or spatial query) and are used throughout the app to manage and display parcel selection results.
 - [ ] searchSources - a global variable that stores the [searchSource](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search-SearchSource.html) object returned from the `createSearchSources` function. Required for the `SearchBar` component.
-- [ ] searchResults
+- [ ] ~~searchResults~~ - deprecated 3.0.2. a global variable that stores the state of the [searchResults](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search-types.html#SearchResult) object returned from the `returnSearchResultFeatures` function and set using the `setSearchResults` function. 
 - [ ] prevSearchFeatures
 - [ ] searchTerm
 - [ ] searchResultPoint

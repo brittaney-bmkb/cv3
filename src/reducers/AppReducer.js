@@ -9,7 +9,6 @@ export const initialState = {
     primaryResultFeature: null, //a global state variable that stores an array of feature objects. These objects represent the primary features returned from a query (locator search results or spatial query) and are used throughout the app to manage and display parcel selection results.
     secondaryResultFeature:null,
     searchTerm: null,
-    searchResults: null,
     searchSources: null, //a global variable that stores the [searchSource](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search-SearchSource.html) object returned from the `createSearchSources` function. Required for the `SearchBar` component.
     searchFeatures: null,
     searchBufferGeometry:null,

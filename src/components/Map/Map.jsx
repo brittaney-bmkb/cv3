@@ -182,7 +182,7 @@ const Map = () => {
       })
 
       //consolelog("New search features: ", filterSearchFeatures)
-      setSearchResults(null, filterSearchFeatures, searchTerm, filterSearchFeatures)
+      setSearchResults(filterSearchFeatures, searchTerm, filterSearchFeatures)
     }
 
     const handleViewClick = async (event) => {

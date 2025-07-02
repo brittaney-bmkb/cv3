@@ -442,11 +442,10 @@ export const AppProvider = ({children}) => {
 
     
 
-    const setSearchResults = (results, features, searchTerm, prevSearchFeatures) => {
+    const setSearchResults = (features, searchTerm, prevSearchFeatures) => {
         dispatch({
             type:"SET_SEARCH_RESULT",
              payload: {
-                searchResults: results,
                 searchFeatures: features,
                 searchTerm: searchTerm,
                 prevSearchFeatures: prevSearchFeatures
@@ -842,7 +841,7 @@ export const AppProvider = ({children}) => {
         // Update parcel selection and search result variables
         setPrimaryResultFeature(filteredParcels)
         
-        setSearchResults(null, filteredParcels)
+        setSearchResults(filteredParcels)
 
         const  param = await returnSearchParam(filteredParcels)
         setSearchParams(param)
@@ -888,7 +887,7 @@ export const AppProvider = ({children}) => {
                 }
                 else{
                     //console.log("Select panel is open")
-                    setSearchResults(null, allFeatures, searchTerm, allFeatures)
+                    setSearchResults(allFeatures, searchTerm, allFeatures)
 
                     if(!primaryResultFeature){
                         setPrimaryResultFeature(features, true)
@@ -902,7 +901,7 @@ export const AppProvider = ({children}) => {
 
                 ////console.log("setting new primary result features: ", allFeatures, newSelection)
                 setPrimaryResultFeature(allFeatures, newSelection)
-                setSearchResults(null, allFeatures, searchTerm, allFeatures)
+                setSearchResults(allFeatures, searchTerm, allFeatures)
             }
 
              //update url parameters
@@ -995,7 +994,7 @@ export const AppProvider = ({children}) => {
             }
 
             setPrimaryResultFeature(resultFeatures, false)
-            setSearchResults(null, resultFeatures)
+            setSearchResults(resultFeatures)
             //createGraphic(selectedFeatures, "primary", theme.palette.primary.main)
             //zoomToExtent(selectedFeatures)
 
@@ -1037,7 +1036,7 @@ export const AppProvider = ({children}) => {
         ////////console.log("target features from x/y: ", features)
 
         setPrimaryResultFeature(features, true)
-        setSearchResults(null, features, null)
+        setSearchResults(features, null)
 
         if(!panelDisplay || panelDisplay !== "resultsList"){
             setPanelDisplay("resultsList")
@@ -1063,7 +1062,7 @@ export const AppProvider = ({children}) => {
         let features = await queryTargeLayerWithPin10Pin14(pin10, pin14)
 
         setPrimaryResultFeature([features[0]], true)
-        setSearchResults(null, features, null)
+        setSearchResults(features, null)
 
         if(!panelDisplay || panelDisplay !== "resultsList"){
             setPanelDisplay("resultsList")
@@ -1137,7 +1136,7 @@ export const AppProvider = ({children}) => {
 
         setPrimaryResultFeature(selectedFeature, false)
         
-        setSearchResults(null, searchFeatures, searchTerm, searchFeatures)
+        setSearchResults(searchFeatures, searchTerm, searchFeatures)
 
         if(!selectedFeature || !selectedFeature[0]) return;
         
@@ -1220,7 +1219,7 @@ export const AppProvider = ({children}) => {
 
 
         ////////console.log("seting previous feature: ", targetFeatures)
-        setSearchResults(results, targetFeatures, newSearchTerm, targetFeatures)
+        setSearchResults(targetFeatures, newSearchTerm, targetFeatures)
         //}
 
         //created buffer graphic here
@@ -1267,7 +1266,7 @@ export const AppProvider = ({children}) => {
         const features = await querySearchResults(searchWidgetResults, fields)
 
         ////////console.log("queried features: ", features)
-        setSearchResults(searchWidgetResults, features)
+        setSearchResults(features)
 
         //if(!primaryResultFeature){
             setPrimaryResultFeature(features, true)
@@ -1289,7 +1288,7 @@ export const AppProvider = ({children}) => {
         const {panelDisplaySecondary} = state
 
         setPrimaryResultFeature(null, true)
-        setSearchResults(null, null)
+        setSearchResults(null)
         setSearchParams({})
         setPanelDisplay("resultsList")
         setSearchBufferGeometry(null, null)
@@ -1434,7 +1433,6 @@ export const AppProvider = ({children}) => {
         setPrimaryResultFeature,
         setSearchResults,
         searchSources: state.searchSources,
-        searchResults: state.searchResults,
         prevSearchFeatures: state.prevSearchFeatures,
         searchTerm: state.searchTerm,
         searchResultPoint: state.searchResultPoint,
