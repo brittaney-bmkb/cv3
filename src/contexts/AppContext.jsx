@@ -394,14 +394,6 @@ export const AppProvider = ({children}) => {
     //get url parameters
     const [routeParams, setSearchParams] = useSearchParams();
 
-    const setMapContainer = (ref) => {
-        dispatch({
-            type:"SET_MAP_CONTAINER",
-             payload: {
-                mapContainer: ref,
-            }
-        })
-    } 
 
     const setMapViewScale= (view) => {
         dispatch({
@@ -1437,8 +1429,7 @@ export const AppProvider = ({children}) => {
 
 
     const value = {
-        mapContainer: state.mapContainer,
-        setMapContainer,
+
         setMapView,
         setMapViewScale,
         mapViewScale: state.mapViewScale,

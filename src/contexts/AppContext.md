@@ -131,7 +131,7 @@ const MyComponent = () => {
 ```
 
 **State Variables**
-- [ ] mapContainer
+- [ ] ~~mapContainer~~ - variable for global mapContainer ref element for map DOM. deprecated and replaced with arcMapRef
 - [ ] mapViewScale 
 - [ ] mapView
 - [ ] primaryResultFeature
@@ -185,8 +185,8 @@ const MyComponent = () => {
 
 **Functions**
 - [ ]  ~~loadMap~~ - Function that initializes the map by setting up the map container, search sources, and zooming to extent of selected features. Deprecated in 3.1 and replaced with argis-map component. 
-    - initializeMap() - Called from webmap.js is also deprectated in 3.1 and replaced with the the arcgis-map component
-- [ ]  setMapContainer
+    - ~~initializeMap~~ - Called from webmap.js is also deprectated in 3.1 and replaced with the the arcgis-map component
+- [ ]  ~~setMapContainer~~ - function to set state of the mapContainer variable. Deprecated in 3.1
 - [ ]  setMapView
 - [ ]  setMapViewScale
 - [ ] setPrimaryResultFeature

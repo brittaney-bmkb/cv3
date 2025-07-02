@@ -7,7 +7,6 @@ export const initialState = {
     //MAP
     mapView:null,
     mapViewScale:null,
-    mapContainer:null,
     primaryResultFeature: null,
     secondaryResultFeature:null,
     searchTerm: null,
@@ -203,13 +202,6 @@ const AppReducer = (state, action) => {
             ...state, 
             visibleParcelYears: payload.visibleParcelYears
         }  
-
-        case "SET_MAP_CONTAINER":
-        //console.log("SET_MAP_CONTAINER")
-        return {
-            ...state, 
-            mapContainer: payload.mapContainer
-        }
         
         case "SET_MAP":
         console.log("SET_MAP: ", payload.map)
