@@ -133,20 +133,20 @@ const MyComponent = () => {
 **State Variables**
 - [ ] ~~mapContainer~~ - variable for global mapContainer ref element for map DOM. deprecated and replaced with arcMapRef
 - [ ] ~~mapViewScale~~ - deprecated in 3.1. duplicate of the mapView. Was used to keep the scale property from the mapView object current. Variable was a dependency in the LayerListCustomComponent which was deprecated 3.1. 
-- [ ] mapView - a global state variable for mapView object: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html.
-- [ ] primaryResultFeature - a global state variable that stores an array of [feature objects](https://developers.arcgis.com/rest/services-reference/enterprise/feature-object/). These objects represent the primary features selected from the map or the search results pane.
-- [ ] searchSources - a global variable that stores the [searchSource](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search-SearchSource.html) object returned from the `createSearchSources` function. Required for the `SearchBar` component.
+- [ ] **mapView** - a global state variable for mapView object: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html.
+- [ ] **primaryResultFeature** - a global state variable that stores an array of [feature objects](https://developers.arcgis.com/rest/services-reference/enterprise/feature-object/). These objects represent the primary features selected from the map or the search results pane.
+- [ ] **searchSources** - a global variable that stores the [searchSource](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search-SearchSource.html) object returned from the `createSearchSources` function. Required for the `SearchBar` component.
 - [ ] ~~searchResults~~ - deprecated 3.0.2. a global variable that stores the state of the [searchResults](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search-types.html#SearchResult) object returned from the `returnSearchResultFeatures` function and set using the `setSearchResults` function. 
 - [ ] ~~prevSearchFeatures~~ - deprecated 3.1 with the implementation of the hittest to set the primaryResultFeature without overwriting the searchFeatures. 
-- [ ] searchTerm - a global variable that stores the user input from the `SearchbarComponent`. This input is used as the value for the search url parameter value. set using the `setSearchResults` function. 
-- [ ] searchResultPoint - a global variable used in combination with the searchBufferGeometery to display the search radius when an address locator result is returned. this stores the result geometry from the search result object in the `setSearchBufferGeometry` function and is set using the `setSearchBufferGeometry` function. This is consumed as the point geometry for the graphics layer in the `Map` component. 
-- [ ] searchBufferGeometry - a global variable used in combination with the searchResultPoint to display the search radius when an address locator result is returned. this stores the result geometry from the search result object in the `setSearchBufferGeometry` function and is set using the `setSearchBufferGeometry` function. This is consumed as the polygon geometry for the graphics layer in the `Map` component.
-- [ ] searchFeatures - a global state variable that stores an array of [feature objects](https://developers.arcgis.com/rest/services-reference/enterprise/feature-object/). These objects represent the result features returned from a query (locator search results or spatial query Select) and are used throughout the app to manage and display parcel selection results.
+- [ ] **searchTerm** - a global variable that stores the user input from the `SearchbarComponent`. This input is used as the value for the search url parameter value. set using the `setSearchResults` function. 
+- [ ] **searchResultPoint** - a global variable used in combination with the searchBufferGeometery to display the search radius when an address locator result is returned. this stores the result geometry from the search result object in the `setSearchBufferGeometry` function and is set using the `setSearchBufferGeometry` function. This is consumed as the point geometry for the graphics layer in the `Map` component. 
+- [ ] **searchBufferGeometry** - a global variable used in combination with the searchResultPoint to display the search radius when an address locator result is returned. this stores the result geometry from the search result object in the `setSearchBufferGeometry` function and is set using the `setSearchBufferGeometry` function. This is consumed as the polygon geometry for the graphics layer in the `Map` component.
+- [ ] **searchFeatures** - a global state variable that stores an array of [feature objects](https://developers.arcgis.com/rest/services-reference/enterprise/feature-object/). These objects represent the result features returned from a query (locator search results or spatial query Select) and are used throughout the app to manage and display parcel selection results.
 - [ ] ~~panelDisplay~~ - deprecated in 3.1. Previously stored a value representing the content in the left panel. Used in a switch statement to update the ui between search results and property details.
 - [ ] ~~panelSecondaryVisible~~ - deprecated 3.1. Replaced with individual global states for each panel content type ie, results, comparables, nearby, etc
 - [ ] ~~panelDisplaySecondary~~ - deprecated 3.1. Replaced with individual global states for each panel content type ie, results, comparables, nearby, etc
 - [ ] ~~panelPrimaryVisible~~ - deprecated 3.1. Replaced with individual global states for each panel content type ie, results, comparables, nearby, etc
-- [ ] dataDictionary
+- [ ] **dataDictionary** - a global state variable that stores a feature table with all the fields, field types, and hyperlinks for all the data displayed in the property details panel. 
 - [ ] parcelQueryFields
 - [ ] screenWidth
 - [ ] newSearch
@@ -187,12 +187,12 @@ const MyComponent = () => {
 - [ ]  ~~loadMap~~ - Function that initializes the map by setting up the map container, search sources, and zooming to extent of selected features. Deprecated in 3.1 and replaced with argis-map component. 
     - ~~initializeMap~~ - Called from webmap.js is also deprectated in 3.1 and replaced with the the arcgis-map component
 - [ ]  ~~setMapContainer~~ - A global state setter used to update the mapContainer variable. Deprecated in 3.1
-- [ ]  setMapView - function to set the global state of the mapView variable.
+- [ ]  **setMapView** - function to set the global state of the mapView variable.
 - [ ] ~~setMapViewScale~~ - deprecated in 3.1
-- [ ] setPrimaryResultFeature - A global state setter function used to update the value of `primaryResultFeature`. It accepts an array of [feature objects](https://developers.arcgis.com/rest/services-reference/enterprise/feature-object/) and replaces the current state with the new set of primary query results.
-- [ ] setSearchResults - A global state setter used to update the searchFeatures and searchTerm variables.
-- [ ] setSearchBufferGeometry - A global state setter used to update the searchResultPoint and searchBufferGeometry variables.
-- [ ] setSearchSources - A global state setter used to update the searchSources variable. Used in the `createSearchSources` function and updated in the `translateSearchSources` function to update state when the language variable changes. 
+- [ ] **setPrimaryResultFeature** - A global state setter function used to update the value of `primaryResultFeature`. It accepts an array of [feature objects](https://developers.arcgis.com/rest/services-reference/enterprise/feature-object/) and replaces the current state with the new set of primary query results.
+- [ ] **setSearchResults** - A global state setter used to update the searchFeatures and searchTerm variables.
+- [ ] **setSearchBufferGeometry** - A global state setter used to update the searchResultPoint and searchBufferGeometry variables.
+- [ ] **setSearchSources** - A global state setter used to update the searchSources variable. Used in the `createSearchSources` function and updated in the `translateSearchSources` function to update state when the language variable changes. 
 - [ ] ~~renderSearchResults~~ - deprecated 3.1. function that previously accepted the search result geometry and rendered them in the map widget. Replaced with `createSelectedParcelsLayer` and `updateSelectedParcelsLayer`functions in `Map` component
 - [ ] clearResults
 - [ ] ~~setPanelDisplay~~ - deprecated 3.1. Replaced with individual global state setters for each panel content type ie, results, comparables, nearby, etc,
@@ -201,7 +201,7 @@ const MyComponent = () => {
 - [ ] selectResultFromList,
 - [ ] searchComparableProperties,
 - [ ] ~~setPanelPrimaryVisibility~~ - deprecated 3.1. Replaced with individual global states for each panel content type ie, results, comparables, nearby, etc
-- [ ] loadDataDictionary
+- [ ] **loadDataDictionary** - a global state setter used to updated the dataDictionary variable by querying the table data in the dataDictionary feature table service stored in AGO
 - [ ] setParcelQueryFields
 - [ ] setScreenWidth
 - [ ] searchNearbyProperties
