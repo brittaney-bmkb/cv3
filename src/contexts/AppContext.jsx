@@ -917,33 +917,6 @@ export const AppProvider = ({children}) => {
     }
 
 
-
-    /**
-     * Queries parcel features based on coordinates.
-     * @param {Object} coordinates - The x/y coordinates.
-     */
-    //Function to return parcel features using x/x coordinates
-    //in use [v3.0.0-beta.2]
-    //deprecated in [v3.0.0-beta-3]
-    const returnLocationFeatures = async (coordinates) => {
-
-        ////////console.log("Returning location features")
-        const { queryTargetLayerWithCoordinates } = await import("../arcgis/search/queryTargetLayer")
-
-        const { panelDisplay, panelPrimaryVisible } = state
-
-        let features = await queryTargetLayerWithCoordinates(coordinates)
-        ////////console.log("target features from x/y: ", features)
-
-        setPrimaryResultFeature(features, true)
-        setSearchResults(features, null)
-
-        
-        if(!panelPrimaryVisible || panelPrimaryVisible === false){
-            setPanelPrimaryVisibility(true)
-        }
-    }
-
     /**
      * Queries features based on PIN10 and PIN14 values.
      * @param {string} pin10 - The PIN10 value.
@@ -1348,7 +1321,6 @@ export const AppProvider = ({children}) => {
         setCoordinates,
         x: state.x,
         y: state.y,
-        returnLocationFeatures, 
         setOpenHelpDialog,
         openHelpDialog: state.openHelpDialog,
         setPanelWidgetVisibility,

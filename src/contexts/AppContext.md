@@ -219,7 +219,7 @@ const MyComponent = () => {
 - [ ] setIsQuerying
 - [ ] setMapPrintProps
 - [ ] setCoordinates
-- [ ] returnLocationFeatures
+- [ ] ~~returnLocationFeatures~~ - deprecated in v3.0.0-beta-3. Global setter function to return parcel features using x/y coordinates
 - [ ] setOpenHelpDialog
 - [ ] setPanelWidgetVisibility
 - [ ] setPanelDisplayWidget
