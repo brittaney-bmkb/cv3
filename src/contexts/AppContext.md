@@ -133,8 +133,8 @@ const MyComponent = () => {
 **State Variables**
 - [ ] ~~mapContainer~~ - variable for global mapContainer ref element for map DOM. deprecated and replaced with arcMapRef
 - [ ] ~~mapViewScale~~ - deprecated in 3.1. duplicate of the mapView. Was used to keep the scale property from the mapView object current. Variable was a dependency in the LayerListCustomComponent which was deprecated 3.1. 
-- [ ] mapView - //global state variable for mapView object: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html.
-- [ ] primaryResultFeature
+- [ ] mapView - a global state variable for mapView object: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html.
+- [ ] primaryResultFeature - a global state variable that stores an array of [feature objects](https://developers.arcgis.com/rest/services-reference/enterprise/feature-object/). These objects represent the primary features returned from a query (locator search results or spatial query) and are used throughout the app to manage and display parcel selection results.
 - [ ] searchSources
 - [ ] searchResults
 - [ ] prevSearchFeatures
