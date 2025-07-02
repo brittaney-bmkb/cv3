@@ -395,15 +395,6 @@ export const AppProvider = ({children}) => {
     const [routeParams, setSearchParams] = useSearchParams();
 
 
-    const setMapViewScale= (view) => {
-        dispatch({
-            type:"SET_MAP_VIEW_SCALE",
-            payload: {
-                mapViewScale: view
-            }
-        })
-    }
-
 // ************************************************************************
 // Map Functions
 // ************************************************************************
@@ -1438,8 +1429,6 @@ export const AppProvider = ({children}) => {
     const value = {
 
         setMapView,
-        setMapViewScale,
-        mapViewScale: state.mapViewScale,
         mapView: state.mapView,
         primaryResultFeature: state.primaryResultFeature,
         setPrimaryResultFeature,

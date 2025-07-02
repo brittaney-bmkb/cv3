@@ -6,7 +6,6 @@ export const initialState = {
 
     //MAP
     mapView:null, //global state variable for mapView object: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html.
-    mapViewScale:null,
     primaryResultFeature: null,
     secondaryResultFeature:null,
     searchTerm: null,

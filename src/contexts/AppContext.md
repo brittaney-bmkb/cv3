@@ -132,8 +132,8 @@ const MyComponent = () => {
 
 **State Variables**
 - [ ] ~~mapContainer~~ - variable for global mapContainer ref element for map DOM. deprecated and replaced with arcMapRef
-- [ ] mapViewScale 
-- [ ] mapView
+- [ ] ~~mapViewScale~~ - deprecated in 3.1. duplicate of the mapView. Was used to keep the scale property from the mapView object current. Variable was a dependency in the LayerListCustomComponent which was deprecated 3.1. 
+- [ ] mapView - //global state variable for mapView object: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html.
 - [ ] primaryResultFeature
 - [ ] searchSources
 - [ ] searchResults
