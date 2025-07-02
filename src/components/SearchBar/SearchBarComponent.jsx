@@ -16,7 +16,6 @@ const SearchBarComponent = () => {
         translateText,  
         newSearch, 
         setPanelPrimaryVisibility,
-        setPanelDisplay, 
         searchSources, 
         clearResults, 
         panelPrimaryVisible, 
@@ -50,7 +49,6 @@ const SearchBarComponent = () => {
 
         if(!panelPrimaryVisible || panelPrimaryVisible === false){
             setPanelPrimaryVisibility(true)
-            setPanelDisplay("resultsList")
         } 
 
         let lang = routeParams.get('lang')
