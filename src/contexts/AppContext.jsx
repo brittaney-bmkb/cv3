@@ -1140,40 +1140,6 @@ export const AppProvider = ({children}) => {
 
     }
 
-    /**
-     * Renders search results on the map based on the widget results.
-     * @param {Array} searchWidgetResults - Array of search results from the widget.
-     * @returns {void} - No return value.
-     */
-    const renderSearchResults = async (searchWidgetResults) => {
-
-        ////////console.log("FUNCTION: renderSearchResults" )
-        let fields
-        const { querySearchResults } = await import('../arcgis/webmap/webmap')
-        const { parcelQueryFields, panelDisplay, primaryResultFeature } = state
-
-        ////////console.log("Query Fields: ", parcelQueryFields)
-        if(!parcelQueryFields){
-            fields = await loadDataDictionary()
-        }
-        else{
-            fields = parcelQueryFields
-        }
-
-        const features = await querySearchResults(searchWidgetResults, fields)
-
-        ////////console.log("queried features: ", features)
-        setSearchResults(features)
-
-        //if(!primaryResultFeature){
-            setPrimaryResultFeature(features, true)
-        //}
-
-        if(panelDisplay !== "resultsList"){
-            setPanelDisplay("resultsList")
-        }
-        
-    }
 
     /**
      * Clears all search results, graphics, and resets relevant states.
@@ -1323,7 +1289,6 @@ export const AppProvider = ({children}) => {
 
 
     const value = {
-
         setMapView,
         mapView: state.mapView,
         primaryResultFeature: state.primaryResultFeature,
@@ -1335,7 +1300,6 @@ export const AppProvider = ({children}) => {
         searchBufferGeometry: state.searchBufferGeometry,
         setSearchBufferGeometry,
         setSearchSources,
-        renderSearchResults,
         clearResults,
         searchFeatures: state.searchFeatures,
         setPanelDisplay,
