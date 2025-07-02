@@ -483,15 +483,6 @@ export const AppProvider = ({children}) => {
         })
     }
 
-    const setPanelDisplaySecondary = (state) => {
-        dispatch({
-            type:"SET_PANEL_SECONDARY_DISPLAY",
-             payload: {
-                panelDisplaySecondary: state,
-            }
-        })
-    }
-
     const setPanelWidgetVisibility = (visible) => {
         dispatch({
             type:"SET_PANEL_WIDGET_VISIBILTIY",
@@ -1101,16 +1092,11 @@ export const AppProvider = ({children}) => {
     const clearResults = async () => {
         //const { removeGraphics } = await import('../arcgis/webmap/webmap')
         
-        const {panelDisplaySecondary} = state
-
         setPrimaryResultFeature(null, true)
         setSearchResults(null)
         setSearchParams({})
         setSearchBufferGeometry(null, null)
 
-        if(["comparablePropertySearch", "nearbyProperties", "resultsListComparables", "resultsListNearby", "propertyDetailComparable", "propertyDetailNearby"].includes(panelDisplaySecondary)){
-            setPanelSecondaryVisibility(false)
-        }
         const updatedUrl = `${window.location.pathname}`;
 
         // Use history.pushState to update the URL without refreshing the page
@@ -1252,9 +1238,6 @@ export const AppProvider = ({children}) => {
         setSearchSources,
         clearResults,
         searchFeatures: state.searchFeatures,
-        setPanelSecondaryVisibility,
-        panelDisplaySecondary: state.panelDisplaySecondary,
-        setPanelDisplaySecondary,
         selectResultFromList,
         searchComparableProperties,
         setPanelPrimaryVisibility,

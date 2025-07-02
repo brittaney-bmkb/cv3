@@ -144,7 +144,7 @@ const MyComponent = () => {
 - [ ] searchFeatures - a global state variable that stores an array of [feature objects](https://developers.arcgis.com/rest/services-reference/enterprise/feature-object/). These objects represent the result features returned from a query (locator search results or spatial query Select) and are used throughout the app to manage and display parcel selection results.
 - [ ] ~~panelDisplay~~ - deprecated in 3.1. Previously stored a value representing the content in the left panel. Used in a switch statement to update the ui between search results and property details.
 - [ ] ~~panelSecondaryVisible~~ - deprecated 3.1. Replaced with individual global states for each panel content type ie, results, comparables, nearby, etc
-- [ ] panelDisplaySecondary
+- [ ] ~~panelDisplaySecondary~~ - deprecated 3.1. Replaced with individual global states for each panel content type ie, results, comparables, nearby, etc
 - [ ] panelPrimaryVisible
 - [ ] dataDictionary
 - [ ] parcelQueryFields
@@ -195,9 +195,9 @@ const MyComponent = () => {
 - [ ] setSearchSources - A global state setter used to update the searchSources variable. Used in the `createSearchSources` function and updated in the `translateSearchSources` function to update state when the language variable changes. 
 - [ ] ~~renderSearchResults~~ - deprecated 3.1. function that previously accepted the search result geometry and rendered them in the map widget. Replaced with `createSelectedParcelsLayer` and `updateSelectedParcelsLayer`functions in `Map` component
 - [ ] clearResults
-- [ ] setPanelDisplay
-- [ ] setPanelSecondaryVisibility
-- [ ] setPanelDisplaySecondary,
+- [ ] ~~setPanelDisplay~~ - deprecated 3.1. Replaced with individual global state setters for each panel content type ie, results, comparables, nearby, etc,
+- [ ] ~~setPanelSecondaryVisibility~~-  - deprecated 3.1. Replaced with individual global state setters for each panel content type ie, results, comparables, nearby, etc,
+- [ ] ~~setPanelDisplaySecondary~~ - deprecated 3.1. Replaced with individual global state setters for each panel content type ie, results, comparables, nearby, etc,
 - [ ] selectResultFromList,
 - [ ] searchComparableProperties,
 - [ ] setPanelPrimaryVisibility
