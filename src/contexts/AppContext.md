@@ -192,7 +192,7 @@ const MyComponent = () => {
 - [ ] setPrimaryResultFeature
 - [ ] setSearchResults
 - [ ] setSearchBufferGeometry
-- [ ] setSearchSources
+- [ ] setSearchSources - function to set the global state of the searchSources variable. Used in the `createSearchSources` function and updated in the `translateSearchSources` function to update state when the language variable changes. 
 - [ ] renderSearchResults
 - [ ] clearResults
 - [ ] setPanelDisplay
