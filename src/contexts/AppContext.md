@@ -138,7 +138,7 @@ const MyComponent = () => {
 - [ ] searchSources - a global variable that stores the [searchSource](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search-SearchSource.html) object returned from the `createSearchSources` function. Required for the `SearchBar` component.
 - [ ] ~~searchResults~~ - deprecated 3.0.2. a global variable that stores the state of the [searchResults](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search-types.html#SearchResult) object returned from the `returnSearchResultFeatures` function and set using the `setSearchResults` function. 
 - [ ] ~~prevSearchFeatures~~ - deprecated 3.1 with the implementation of the hittest to set the primaryResultFeature without overwriting the searchFeatures. 
-- [ ] searchTerm
+- [ ] searchTerm - a global variable that stores the user input from the `SearchbarComponent`. This input is used as the value for the search url parameter value. 
 - [ ] searchResultPoint
 - [ ] searchBufferGeometry
 - [ ] searchFeatures
