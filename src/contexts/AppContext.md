@@ -147,7 +147,7 @@ const MyComponent = () => {
 - [ ] ~~panelDisplaySecondary~~ - deprecated 3.1. Replaced with individual global states for each panel content type ie, results, comparables, nearby, etc
 - [ ] ~~panelPrimaryVisible~~ - deprecated 3.1. Replaced with individual global states for each panel content type ie, results, comparables, nearby, etc
 - [ ] **dataDictionary** - a global state variable that stores a feature table with all the fields, field types, and hyperlinks for all the data displayed in the property details panel. 
-- [ ] parcelQueryFields - deprecated 3.1. Was previously used as a parameter in the `compareProperties` function to set the fields returned from a feature query. Replaced with "*" to return all fields.
+- [ ] ~~parcelQueryFields~~ - deprecated 3.1. Was previously used as a parameter in the `compareProperties` function to set the fields returned from a feature query. Replaced with "*" to return all fields.
 - [ ] screenWidth
 - [ ] newSearch
 - [ ] comparableParcels
@@ -202,7 +202,7 @@ const MyComponent = () => {
 - [ ] searchComparableProperties,
 - [ ] ~~setPanelPrimaryVisibility~~ - deprecated 3.1. Replaced with individual global states for each panel content type ie, results, comparables, nearby, etc
 - [ ] **loadDataDictionary** - a global state setter used to updated the dataDictionary variable by querying the table data in the dataDictionary feature table service stored in AGO
-- [ ] setParcelQueryFields - deprecated 3.1  with global state variable parcelQueryFields
+- [ ] ~~setParcelQueryFields~~ - deprecated 3.1  with global state variable parcelQueryFields
 - [ ] setScreenWidth
 - [ ] searchNearbyProperties
 - [ ] setSecondaryResultFeature
