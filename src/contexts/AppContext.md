@@ -145,7 +145,7 @@ const MyComponent = () => {
 - [ ] ~~panelDisplay~~ - deprecated in 3.1. Previously stored a value representing the content in the left panel. Used in a switch statement to update the ui between search results and property details.
 - [ ] ~~panelSecondaryVisible~~ - deprecated 3.1. Replaced with individual global states for each panel content type ie, results, comparables, nearby, etc
 - [ ] ~~panelDisplaySecondary~~ - deprecated 3.1. Replaced with individual global states for each panel content type ie, results, comparables, nearby, etc
-- [ ] panelPrimaryVisible
+- [ ] ~~panelPrimaryVisible~~ - deprecated 3.1. Replaced with individual global states for each panel content type ie, results, comparables, nearby, etc
 - [ ] dataDictionary
 - [ ] parcelQueryFields
 - [ ] screenWidth
@@ -200,7 +200,7 @@ const MyComponent = () => {
 - [ ] ~~setPanelDisplaySecondary~~ - deprecated 3.1. Replaced with individual global state setters for each panel content type ie, results, comparables, nearby, etc,
 - [ ] selectResultFromList,
 - [ ] searchComparableProperties,
-- [ ] setPanelPrimaryVisibility
+- [ ] ~~setPanelPrimaryVisibility~~ - deprecated 3.1. Replaced with individual global states for each panel content type ie, results, comparables, nearby, etc
 - [ ] loadDataDictionary
 - [ ] setParcelQueryFields
 - [ ] setScreenWidth

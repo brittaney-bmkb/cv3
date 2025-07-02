@@ -473,16 +473,6 @@ export const AppProvider = ({children}) => {
         })
     }
 
-
-    const setPanelPrimaryVisibility = (visible) => {
-        dispatch({
-            type:"SET_PANEL_PRIMARY_VISIBILTIY",
-             payload: {
-                panelPrimaryVisible: visible,
-            }
-        })
-    }
-
     const setPanelWidgetVisibility = (visible) => {
         dispatch({
             type:"SET_PANEL_WIDGET_VISIBILTIY",
@@ -908,10 +898,6 @@ export const AppProvider = ({children}) => {
         setPrimaryResultFeature([features[0]], true)
         setSearchResults(features, null)
 
-        
-        if(!panelPrimaryVisible || panelPrimaryVisible === false){
-            setPanelPrimaryVisibility(true)
-        }
 
         return features
     }
@@ -1140,12 +1126,6 @@ export const AppProvider = ({children}) => {
 
         ////////console.log("New Comparable features: ", state.comparableParcels)
 
-        if(screenWidth < theme.breakpoints.values.lg){
-            setPanelPrimaryVisibility(true)
-        }
-        else if (screenWidth >= theme.breakpoints.values.lg){
-            setPanelSecondaryVisibility(true)
-        }
     }
 
     /**
@@ -1240,8 +1220,6 @@ export const AppProvider = ({children}) => {
         searchFeatures: state.searchFeatures,
         selectResultFromList,
         searchComparableProperties,
-        setPanelPrimaryVisibility,
-        panelPrimaryVisible: state.panelPrimaryVisible,
         loadDataDictionary,
         dataDictionary: state.dataDictionary,
         parcelQueryFields: state.parcelQueryFields, 
@@ -1371,12 +1349,6 @@ useEffect(() => {
         };
       }, [window.innerWidth]);
 
-    useEffect(() => {
-        //on initial load display info panel
-
-        setPanelPrimaryVisibility(true)
-        
-    }, [])
 
     useEffect(() => {
         const loadParcelFields = async () => {
