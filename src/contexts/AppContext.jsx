@@ -917,102 +917,6 @@ export const AppProvider = ({children}) => {
     }
 
 
-    /**
-     * Queries parcels based on a map click point.
-     * @param {Object} point - The point geometry from the map click.
-     */
-    //Function to query parcels based on mouse click point
-    //in use [v3.0.0-beta.2]
-    const queryMapPoint = async (point) => {
-        
-        // let fields 
-        ////////console.log("Point from click: ", point)
-        setCoordinates(point.x, point.y)
-        ////////console.log("x/y", point.x, point.y)
-
-        const { selectMultiple, 
-            panelDisplaySecondary, 
-            screenWidth, 
-            panelSecondaryVisible, 
-            panelPrimaryVisible, 
-            panelDisplay, 
-            parcelQueryFields, 
-            comparableParcels, 
-            searchFeatures
-        } = state
-        //const { peformQueryFeatures, createGraphic, zoomToExtent, removeGraphics } = await import('../arcgis/webmap/webmap')
-        const { queryTargetLayerWithPointFeatures } = await import('../arcgis/search/queryTargetLayer')
-
-        ////////console.log("Passing query fields: ", parcelQueryFields)
-
-        // if(!parcelQueryFields){
-        //     fields = await loadDataDictionary()
-        // }
-        // else{
-        //     fields = parcelQueryFields
-        // }
-
-        //let selectedFeatures = await peformQueryFeatures(point, fields)
-        let selectedFeatures = await queryTargetLayerWithPointFeatures(point)
-
-        ////////console.log("Queried Features: ", selectedFeatures)
-
-        //check if queried features are secondary comparables
-        ////////console.log("comparableParcels: ", comparableParcels)
-
-        let secondaryFeatures = []
-        if(comparableParcels){
-            secondaryFeatures = comparableParcels.filter((feature) => feature.attributes['PIN14'] === selectedFeatures[0].attributes['PIN14'])
-            ////////console.log("Secondary feature selected: ", secondaryFeatures) 
-        }
-
-        if(secondaryFeatures?.length > 0){
-            ////////console.log("found comparable features from mouse click: ", selectedFeatures)
-            setSecondaryResultFeature(secondaryFeatures[0])
-
-            if(screenWidth < theme.breakpoints.values.lg){
-                setPanelDisplay("propertyDetailNearby")
-            }
-            else{
-                setPanelDisplaySecondary("propertyDetailNearby")
-            }
-            
-            //createGraphic(secondaryFeatures, "secondarySelected", theme.palette.secondary.main)
-            //zoomToExtent([secondaryFeatures[0], primaryResultFeature])
-        }
-    
-
-        else{
-
-            let resultFeatures = selectedFeatures
-
-            if(selectMultiple && primaryResultFeature){
-                ////////console.log("multiple features selected")
-                let features = Array.isArray(primaryResultFeature) ? primaryResultFeature : [primaryResultFeature]
-                resultFeatures = [...features, ...selectedFeatures]
-            }
-
-            setPrimaryResultFeature(resultFeatures, false)
-            setSearchResults(resultFeatures)
-            //createGraphic(selectedFeatures, "primary", theme.palette.primary.main)
-            //zoomToExtent(selectedFeatures)
-
-        
-            
-            if(!panelPrimaryVisible || panelPrimaryVisible === false){
-                setPanelPrimaryVisibility(true)
-            }
-
-            if(panelSecondaryVisible === true && ["propertyDetailNearby","propertyDetailComparable","resultsListNearby","resultsListComparables","nearbyProperties","comparablePropertySearch"].includes(panelDisplaySecondary)){
-                setPanelSecondaryVisibility(false)
-            }
-            
-            if(comparableParcels){
-                clearResultsComparables()
-            } 
-        }
-
-    }
 
     /**
      * Queries parcel features based on coordinates.
@@ -1487,7 +1391,6 @@ export const AppProvider = ({children}) => {
         setPanelDisplayWidget,
         panelWidgetVisible: state.panelWidgetVisible,
         panelDisplayWidget: state.panelDisplayWidget,
-        queryMapPoint,
         setComparableParcels,
         initalizeSearchSources,
         returnSearchResultFeatures,
