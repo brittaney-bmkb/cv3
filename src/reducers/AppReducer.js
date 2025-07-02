@@ -13,7 +13,6 @@ export const initialState = {
     searchFeatures: null,
     searchBufferGeometry:null, //a global variable used in combination with the searchResultPoint to display the search radius when an address locator result is returned. This is consumed as the polygon geometry for the graphics layer in the `Map` component.
     searchResultPoint:null, //a global variable used in combination with the searchBufferGeometery to display the search radius when an address locator result is returned. This is consumed as the point geometry for the graphics layer in the `Map` component.
-    panelDisplay:null,
     panelDisplaySecondary:null,
     panelDisplayWidget:null,
     panelPrimaryVisible:true,
@@ -257,14 +256,7 @@ const AppReducer = (state, action) => {
                 searchResultPoint: payload.searchResultPoint,
                 searchBufferGeometry: payload.searchBufferGeometry,
             }
-
-        case "SET_PANEL_DISPLAY":
-            //console.log("SET_PANEL_DISPLAY")
-            return {
-                ...state,
-                panelDisplay: payload.panelDisplay,
-            }
-
+            
         case "SET_PANEL_SECONDARY_DISPLAY":
             //console.log("SET_PANEL_SECONDARY_DISPLAY")
             return {

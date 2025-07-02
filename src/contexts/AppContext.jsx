@@ -473,15 +473,6 @@ export const AppProvider = ({children}) => {
         })
     }
 
-    const setPanelDisplay = (state) => {
-        dispatch({
-            type:"SET_PANEL_DISPLAY",
-             payload: {
-                panelDisplay: state,
-            }
-        })
-    }
-
     const setPanelSecondaryVisibility = (visible) => {
         dispatch({
             type:"SET_PANEL_SECONDARY_VISIBILTIY",
@@ -1123,7 +1114,6 @@ export const AppProvider = ({children}) => {
         setPrimaryResultFeature(null, true)
         setSearchResults(null)
         setSearchParams({})
-        setPanelDisplay("resultsList")
         setSearchBufferGeometry(null, null)
 
         if(["comparablePropertySearch", "nearbyProperties", "resultsListComparables", "resultsListNearby", "propertyDetailComparable", "propertyDetailNearby"].includes(panelDisplaySecondary)){
@@ -1174,11 +1164,9 @@ export const AppProvider = ({children}) => {
 
         if(screenWidth < theme.breakpoints.values.lg){
             setPanelPrimaryVisibility(true)
-            setPanelDisplay("resultsListComparables")
         }
         else if (screenWidth >= theme.breakpoints.values.lg){
             setPanelSecondaryVisibility(true)
-            setPanelDisplaySecondary("resultsListComparables")
         }
     }
 
@@ -1272,8 +1260,6 @@ export const AppProvider = ({children}) => {
         setSearchSources,
         clearResults,
         searchFeatures: state.searchFeatures,
-        setPanelDisplay,
-        panelDisplay: state.panelDisplay,
         setPanelSecondaryVisibility,
         panelSecondaryVisible: state.panelSecondaryVisible,
         panelDisplaySecondary: state.panelDisplaySecondary,
@@ -1415,7 +1401,6 @@ useEffect(() => {
         //on initial load display info panel
 
         setPanelPrimaryVisibility(true)
-        setPanelDisplay("info")
         
     }, [])
 
@@ -1473,14 +1458,6 @@ useEffect(() => {
 
             setTranslationDictionary(text)
             
-
-            // setPanelDisplay("info")
-            // if(!state.primaryResultFeature){
-            //     setPanelDisplay("info")
-            // }
-            // else{
-            //     setPanelDisplay("resultsList")
-            // }
             
         }
     
