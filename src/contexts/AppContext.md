@@ -147,7 +147,7 @@ const MyComponent = () => {
 - [ ] ~~panelDisplaySecondary~~ - deprecated 3.1. Replaced with individual global states for each panel content type ie, results, comparables, nearby, etc
 - [ ] ~~panelPrimaryVisible~~ - deprecated 3.1. Replaced with individual global states for each panel content type ie, results, comparables, nearby, etc
 - [ ] **dataDictionary** - a global state variable that stores a feature table with all the fields, field types, and hyperlinks for all the data displayed in the property details panel. 
-- [ ] parcelQueryFields
+- [ ] parcelQueryFields - deprecated 3.1. Was previously used as a parameter in the `compareProperties` function to set the fields returned from a feature query. Replaced with "*" to return all fields.
 - [ ] screenWidth
 - [ ] newSearch
 - [ ] comparableParcels
@@ -202,7 +202,7 @@ const MyComponent = () => {
 - [ ] searchComparableProperties,
 - [ ] ~~setPanelPrimaryVisibility~~ - deprecated 3.1. Replaced with individual global states for each panel content type ie, results, comparables, nearby, etc
 - [ ] **loadDataDictionary** - a global state setter used to updated the dataDictionary variable by querying the table data in the dataDictionary feature table service stored in AGO
-- [ ] setParcelQueryFields
+- [ ] setParcelQueryFields - deprecated 3.1  with global state variable parcelQueryFields
 - [ ] setScreenWidth
 - [ ] searchNearbyProperties
 - [ ] setSecondaryResultFeature
@@ -219,7 +219,7 @@ const MyComponent = () => {
 - [ ] setIsQuerying
 - [ ] setMapPrintProps
 - [ ] setCoordinates
-- [ ] ~~returnLocationFeatures~~ - deprecated in v3.0.0-beta-3. Global setter function to return parcel features using x/y coordinates
+- [ ] ~~returnLocationFeatures~~ - deprecated in v3.0.0-beta-3. Global setter function to return parcel features usingx/y coordinates
 - [ ] setOpenHelpDialog
 - [ ] setPanelWidgetVisibility
 - [ ] setPanelDisplayWidget

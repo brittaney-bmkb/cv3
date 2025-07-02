@@ -500,15 +500,6 @@ export const AppProvider = ({children}) => {
         })
     }
 
-    const setParcelQueryFields = (fields) => {
-        dispatch({
-            type:"SET_PARCEL_QUERY_FIELDS",
-             payload: {
-                parcelQueryFields: fields,
-            }
-        })
-    }
-
     const setScreenWidth = (width) => {
         dispatch({
             type:"SET_SCREEN_WIDTH",
@@ -928,7 +919,6 @@ export const AppProvider = ({children}) => {
 
         const { readFeatureLayerData } = await import('../arcgis/layers/layers')
 
-        //const { parcelQueryFields } = state
 
         let { features } = await readFeatureLayerData(config.data_dictionary, ["*"], "field IS NOT NULL")
 
@@ -945,9 +935,7 @@ export const AppProvider = ({children}) => {
                                           .map((feature) => feature.attributes['hyperlink_params'].trim()))]
 
         //////////console.log("Query Fields: ", queryFields)
-        //setParcelQueryFields(queryFields)
 
-        //////////console.log("loadDataDictionary - parcel query fields: ", parcelQueryFields)
         return queryFields
     }
 
@@ -1118,9 +1106,9 @@ export const AppProvider = ({children}) => {
 
         const { compareProperities } = await import('../arcgis/search/queryTargetLayer')
 
-        const { primaryResultFeature, parcelQueryFields, screenWidth, comparableParcels } = state     
+        const { primaryResultFeature, screenWidth, comparableParcels } = state     
 
-        let features = await compareProperities(whereQuery, searchDistance, primaryResultFeature, parcelQueryFields)
+        let features = await compareProperities(whereQuery, searchDistance, primaryResultFeature)
 
         setComparableParcels(features)
 
@@ -1139,11 +1127,11 @@ export const AppProvider = ({children}) => {
     const searchNearbyProperties = async (searchDistance, units) => {
         setIsQuerying(true)
         const { nearbyProperties } = await import('../arcgis/search/queryTargetLayer')
-        const { primaryResultFeature, parcelQueryFields } = state  
+        const { primaryResultFeature } = state  
         ////////console.log(`Searching for properties within ${searchDistance}`)
 
         
-        let nearbyParcels = await nearbyProperties( searchDistance, units, primaryResultFeature, parcelQueryFields)
+        let nearbyParcels = await nearbyProperties( searchDistance, units, primaryResultFeature)
         
         ////console.log("nearbyParcels")
         setComparableParcels(nearbyParcels)
@@ -1222,8 +1210,6 @@ export const AppProvider = ({children}) => {
         searchComparableProperties,
         loadDataDictionary,
         dataDictionary: state.dataDictionary,
-        parcelQueryFields: state.parcelQueryFields, 
-        setParcelQueryFields,
         screenWidth: state.screenWidth,
         setScreenWidth,
         newSearch: state.newSearch,
@@ -1353,12 +1339,9 @@ useEffect(() => {
     useEffect(() => {
         const loadParcelFields = async () => {
             let fields = await loadDataDictionary()
-            setParcelQueryFields(fields)
-            ////////console.log("Parcel query fields: ", fields)
         }
 
         loadParcelFields();
-        ////////console.log("Parcel query fields: ", state.parcelQueryFields)
       },[])
 
 

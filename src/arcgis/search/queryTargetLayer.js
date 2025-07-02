@@ -327,7 +327,7 @@ export const queryTargeLayerWithPin10Pin14 = async (pin10, pin14) => {
     
 }
 
-export async function compareProperities(whereQuery, searchDistance, feature, queryFields){
+export async function compareProperities(whereQuery, searchDistance, feature){
 
     let query = new Query()
     query.where = whereQuery
@@ -348,7 +348,7 @@ export async function compareProperities(whereQuery, searchDistance, feature, qu
     return features
     }
 
-  export async function nearbyProperties(searchDistance, units, feature, queryFields){
+  export async function nearbyProperties(searchDistance, units, feature){
 
     //console.log("nearby primary result feature:", feature)
 
