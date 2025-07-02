@@ -186,13 +186,13 @@ const MyComponent = () => {
 **Functions**
 - [ ]  ~~loadMap~~ - Function that initializes the map by setting up the map container, search sources, and zooming to extent of selected features. Deprecated in 3.1 and replaced with argis-map component. 
     - ~~initializeMap~~ - Called from webmap.js is also deprectated in 3.1 and replaced with the the arcgis-map component
-- [ ]  ~~setMapContainer~~ - function to set state of the mapContainer variable. Deprecated in 3.1
+- [ ]  ~~setMapContainer~~ - A global state setter used to update the mapContainer variable. Deprecated in 3.1
 - [ ]  setMapView - function to set the global state of the mapView variable.
 - [ ] ~~setMapViewScale~~ - deprecated in 3.1
-- [ ] setPrimaryResultFeature
+- [ ] setPrimaryResultFeature - A global state setter function used to update the value of `primaryResultFeature`. It accepts an array of [feature objects](https://developers.arcgis.com/rest/services-reference/enterprise/feature-object/) and replaces the current state with the new set of primary query results.
 - [ ] setSearchResults
 - [ ] setSearchBufferGeometry
-- [ ] setSearchSources - function to set the global state of the searchSources variable. Used in the `createSearchSources` function and updated in the `translateSearchSources` function to update state when the language variable changes. 
+- [ ] setSearchSources - A global state setter used to update the searchSources variable. Used in the `createSearchSources` function and updated in the `translateSearchSources` function to update state when the language variable changes. 
 - [ ] renderSearchResults
 - [ ] clearResults
 - [ ] setPanelDisplay
