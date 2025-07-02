@@ -13,7 +13,6 @@ export const initialState = {
     searchFeatures: null,
     searchBufferGeometry:null,
     searchResultPoint:null,
-    prevSearchFeatures: null,
     panelDisplay:null,
     panelDisplaySecondary:null,
     panelDisplayWidget:null,
@@ -242,9 +241,7 @@ const AppReducer = (state, action) => {
             return {
                 ...state,
                 searchTerm: payload.searchTerm,
-                searchResults: payload.searchResults,
                 searchFeatures: payload.searchFeatures,
-                prevSearchFeatures: payload.prevSearchFeatures
             }
 
         case "SET_SEARCH_SOURCES":

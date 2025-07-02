@@ -192,7 +192,7 @@ export const AppProvider = ({children}) => {
 
     const togglePanel = (panelName) => {
 
-        const { prevSearchFeatures, searchFeatures, primaryResultFeature, searchTerm, newSearch, isMobile } = state
+        const { searchFeatures, primaryResultFeature, searchTerm, newSearch, isMobile } = state
 
         switch (panelName) {
             case 'all':
@@ -442,13 +442,12 @@ export const AppProvider = ({children}) => {
 
     
 
-    const setSearchResults = (features, searchTerm, prevSearchFeatures) => {
+    const setSearchResults = (features, searchTerm) => {
         dispatch({
             type:"SET_SEARCH_RESULT",
              payload: {
                 searchFeatures: features,
                 searchTerm: searchTerm,
-                prevSearchFeatures: prevSearchFeatures
             }
         })
     }
@@ -887,7 +886,7 @@ export const AppProvider = ({children}) => {
                 }
                 else{
                     //console.log("Select panel is open")
-                    setSearchResults(allFeatures, searchTerm, allFeatures)
+                    setSearchResults(allFeatures, searchTerm)
 
                     if(!primaryResultFeature){
                         setPrimaryResultFeature(features, true)
@@ -901,7 +900,7 @@ export const AppProvider = ({children}) => {
 
                 ////console.log("setting new primary result features: ", allFeatures, newSelection)
                 setPrimaryResultFeature(allFeatures, newSelection)
-                setSearchResults(allFeatures, searchTerm, allFeatures)
+                setSearchResults(allFeatures, searchTerm)
             }
 
              //update url parameters
@@ -1136,7 +1135,7 @@ export const AppProvider = ({children}) => {
 
         setPrimaryResultFeature(selectedFeature, false)
         
-        setSearchResults(searchFeatures, searchTerm, searchFeatures)
+        setSearchResults(searchFeatures, searchTerm)
 
         if(!selectedFeature || !selectedFeature[0]) return;
         
@@ -1219,7 +1218,7 @@ export const AppProvider = ({children}) => {
 
 
         ////////console.log("seting previous feature: ", targetFeatures)
-        setSearchResults(targetFeatures, newSearchTerm, targetFeatures)
+        setSearchResults(targetFeatures, newSearchTerm)
         //}
 
         //created buffer graphic here
@@ -1433,7 +1432,6 @@ export const AppProvider = ({children}) => {
         setPrimaryResultFeature,
         setSearchResults,
         searchSources: state.searchSources,
-        prevSearchFeatures: state.prevSearchFeatures,
         searchTerm: state.searchTerm,
         searchResultPoint: state.searchResultPoint,
         searchBufferGeometry: state.searchBufferGeometry,
