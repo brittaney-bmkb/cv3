@@ -150,8 +150,9 @@ const MyComponent = () => {
 - [ ] ~~parcelQueryFields~~ - deprecated 3.1. Was previously used as a parameter in the `compareProperties` function to set the fields returned from a feature query. Replaced with "*" to return all fields.
 - [ ] **screenWidth** - a global state variable that stores the screenWidth by watching for changes using an 'resize' even listener in AppContext.
 - [ ] **newSearch** - a global state variable that stores the state of the search if its a brand new search to determine if map should be cleared of all existing selected parcels or modified (features added/removed). this is set in the `setPrimaryResultFeature` global setter function
-- [ ] comparableParcels
-- [ ] secondaryResultFeature
+- [ ] **comparableParcels** - a global state variable that stores an array of features queried from the comparable search and nearby search tools. 
+   - **Could be better** - separate these two variables
+- [ ] **secondaryResultFeature** - a global state variables that stores an array with a single item - the comparable or nearby parcel that is selected by the user
 - [ ] measureWidgetState
 - [ ] language
 - [ ] translateDialogOpen
