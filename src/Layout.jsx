@@ -33,6 +33,8 @@ import "@esri/calcite-components/dist/components/calcite-dropdown-item"
 import { Feedback } from "./components/Feedback/Feedback";
 import GuidedTour from "./components/GuidedTour/GuidedTour";
 import Help from "./components/Help/Help";
+import { config } from "./data/config";
+import Notifications from "./components/Notifications/Notifications";
 
 
 
@@ -92,6 +94,9 @@ const Layout = () => {
                     <CalciteScrim loading />
                 )
             }
+
+            <Notifications/>
+
 
 
             {isMobile ? null : <GuidedTour/>}
