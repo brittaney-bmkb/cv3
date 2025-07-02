@@ -5,7 +5,7 @@ const hideWelcome = localStorage.getItem("hideWelcomeDialog") === "true";
 export const initialState = {
 
     //MAP
-    mapView:null,
+    mapView:null, //global state variable for mapView object: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html.
     mapViewScale:null,
     primaryResultFeature: null,
     secondaryResultFeature:null,

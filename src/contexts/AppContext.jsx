@@ -404,6 +404,13 @@ export const AppProvider = ({children}) => {
         })
     }
 
+// ************************************************************************
+// Map Functions
+// ************************************************************************
+
+
+//SetMapView - function to set the global state of the mapView variable. 
+
     const setMapView = (view) => {
         dispatch({
             type:"SET_MAP_VIEW",
