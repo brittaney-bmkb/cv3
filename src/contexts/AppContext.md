@@ -188,7 +188,7 @@ const MyComponent = () => {
     - ~~initializeMap~~ - Called from webmap.js is also deprectated in 3.1 and replaced with the the arcgis-map component
 - [ ]  ~~setMapContainer~~ - function to set state of the mapContainer variable. Deprecated in 3.1
 - [ ]  setMapView - function to set the global state of the mapView variable.
-- [ ]  setMapViewScale
+- [ ] ~~setMapViewScale~~ - deprecated in 3.1
 - [ ] setPrimaryResultFeature
 - [ ] setSearchResults
 - [ ] setSearchBufferGeometry
