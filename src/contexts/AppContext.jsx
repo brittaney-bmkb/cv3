@@ -997,9 +997,6 @@ export const AppProvider = ({children}) => {
             //createGraphic(selectedFeatures, "primary", theme.palette.primary.main)
             //zoomToExtent(selectedFeatures)
 
-            if(!panelDisplay || panelDisplay !== "resultsList"){
-                setPanelDisplay("resultsList")
-            }
         
             
             if(!panelPrimaryVisible || panelPrimaryVisible === false){
@@ -1037,9 +1034,6 @@ export const AppProvider = ({children}) => {
         setPrimaryResultFeature(features, true)
         setSearchResults(features, null)
 
-        if(!panelDisplay || panelDisplay !== "resultsList"){
-            setPanelDisplay("resultsList")
-        }
         
         if(!panelPrimaryVisible || panelPrimaryVisible === false){
             setPanelPrimaryVisibility(true)
