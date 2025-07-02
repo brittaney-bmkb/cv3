@@ -927,16 +927,13 @@ export const AppProvider = ({children}) => {
 
         const { queryTargeLayerWithPin10Pin14 } = await import("../arcgis/search/queryTargetLayer")
 
-        const { panelDisplay, panelPrimaryVisible } = state
+        const { panelPrimaryVisible } = state
 
         let features = await queryTargeLayerWithPin10Pin14(pin10, pin14)
 
         setPrimaryResultFeature([features[0]], true)
         setSearchResults(features, null)
 
-        if(!panelDisplay || panelDisplay !== "resultsList"){
-            setPanelDisplay("resultsList")
-        }
         
         if(!panelPrimaryVisible || panelPrimaryVisible === false){
             setPanelPrimaryVisibility(true)

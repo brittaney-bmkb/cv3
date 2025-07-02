@@ -231,7 +231,7 @@ const MyComponent = () => {
 - [ ] setSelectMultiple
 - [ ] queryPolygon
 - [ ] setComparableType
-- [ ] returnFeaturesByPin10Pin14
+- [ ] **returnFeaturesByPin10Pin14** - function that queries the target layer using PIN10 and PIN14 values and returns features. Used to update the state of the `primaryResultFeatures` and `searchFeatures` from url param value.
 - [ ] returnSearchParam
 - [ ] setInfoPanel
 - [ ] setSearchResultsPanel
