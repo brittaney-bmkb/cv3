@@ -143,7 +143,7 @@ const MyComponent = () => {
 - [ ] searchBufferGeometry - a global variable used in combination with the searchResultPoint to display the search radius when an address locator result is returned. this stores the result geometry from the search result object in the `setSearchBufferGeometry` function and is set using the `setSearchBufferGeometry` function. This is consumed as the polygon geometry for the graphics layer in the `Map` component.
 - [ ] searchFeatures - a global state variable that stores an array of [feature objects](https://developers.arcgis.com/rest/services-reference/enterprise/feature-object/). These objects represent the result features returned from a query (locator search results or spatial query Select) and are used throughout the app to manage and display parcel selection results.
 - [ ] ~~panelDisplay~~ - deprecated in 3.1. Previously stored a value representing the content in the left panel. Used in a switch statement to update the ui between search results and property details.
-- [ ] panelSecondaryVisible
+- [ ] ~~panelSecondaryVisible~~ - deprecated 3.1. Replaced with individual global states for each panel content type ie, results, comparables, nearby, etc
 - [ ] panelDisplaySecondary
 - [ ] panelPrimaryVisible
 - [ ] dataDictionary

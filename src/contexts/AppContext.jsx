@@ -473,14 +473,6 @@ export const AppProvider = ({children}) => {
         })
     }
 
-    const setPanelSecondaryVisibility = (visible) => {
-        dispatch({
-            type:"SET_PANEL_SECONDARY_VISIBILTIY",
-             payload: {
-                panelSecondaryVisible: visible,
-            }
-        })
-    }
 
     const setPanelPrimaryVisibility = (visible) => {
         dispatch({
@@ -1261,7 +1253,6 @@ export const AppProvider = ({children}) => {
         clearResults,
         searchFeatures: state.searchFeatures,
         setPanelSecondaryVisibility,
-        panelSecondaryVisible: state.panelSecondaryVisible,
         panelDisplaySecondary: state.panelDisplaySecondary,
         setPanelDisplaySecondary,
         selectResultFromList,

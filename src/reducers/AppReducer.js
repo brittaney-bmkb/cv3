@@ -16,7 +16,6 @@ export const initialState = {
     panelDisplaySecondary:null,
     panelDisplayWidget:null,
     panelPrimaryVisible:true,
-    panelSecondaryVisible:null,
     panelWidgetVisible:null,
     dataDictionary:null,
     parcelQueryFields: null,
@@ -256,7 +255,7 @@ const AppReducer = (state, action) => {
                 searchResultPoint: payload.searchResultPoint,
                 searchBufferGeometry: payload.searchBufferGeometry,
             }
-            
+
         case "SET_PANEL_SECONDARY_DISPLAY":
             //console.log("SET_PANEL_SECONDARY_DISPLAY")
             return {
@@ -269,13 +268,6 @@ const AppReducer = (state, action) => {
             return {
                 ...state,
                 panelPrimaryVisible: payload.panelPrimaryVisible,
-            }
-
-        case "SET_PANEL_SECONDARY_VISIBILTIY":
-            //console.log("SET_PANEL_SECONDARY_VISIBILTIY")
-            return {
-                ...state,
-                panelSecondaryVisible: payload.panelSecondaryVisible,
             }
 
         case "SET_PANEL_WIDGET_VISIBILTIY":
