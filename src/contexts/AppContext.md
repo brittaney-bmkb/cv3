@@ -149,7 +149,7 @@ const MyComponent = () => {
 - [ ] **dataDictionary** - a global state variable that stores a feature table with all the fields, field types, and hyperlinks for all the data displayed in the property details panel. 
 - [ ] ~~parcelQueryFields~~ - deprecated 3.1. Was previously used as a parameter in the `compareProperties` function to set the fields returned from a feature query. Replaced with "*" to return all fields.
 - [ ] **screenWidth** - a global state variable that stores the screenWidth by watching for changes using an 'resize' even listener in AppContext.
-- [ ] newSearch
+- [ ] **newSearch** - a global state variable that stores the state of the search if its a brand new search to determine if map should be cleared of all existing selected parcels or modified (features added/removed). this is set in the `setPrimaryResultFeature` global setter function
 - [ ] comparableParcels
 - [ ] secondaryResultFeature
 - [ ] measureWidgetState
