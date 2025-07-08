@@ -536,14 +536,6 @@ export const AppProvider = ({children}) => {
         })
     }
 
-    const setTranslateDialogOpen = (open) => {
-        dispatch({
-            type:"SET_TRANSLATE_DIALOG_OPEN",
-             payload: {
-                translateDialogOpen: open,
-            }
-        })
-    }
 
     const setTranslationDictionary = (dictionary) => {
         dispatch({
@@ -1204,8 +1196,6 @@ export const AppProvider = ({children}) => {
         toggleMapLayer,
         setLanguage,
         language: state.language,
-        setTranslateDialogOpen,
-        translateDialogOpen: state.translateDialogOpen,
         textTranslationDictionary: state.textTranslationDictionary,
         setTranslationDictionary,
         translateText,

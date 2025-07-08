@@ -22,7 +22,6 @@ export const initialState = {
     comparableParcels: null,
     nearbyParcels:null,
     language: config.defaultLanguage,
-    translateDialogOpen: false,
     textTranslationDictionary: null,
     showMapMobile: false,
     isQuerying: null,
@@ -306,12 +305,6 @@ const AppReducer = (state, action) => {
             return {
                 ...state,
                 language: payload.language,
-            }
-        case "SET_TRANSLATE_DIALOG_OPEN":
-            //console.log("SET_TRANSLATE_DIALOG_OPEN")
-            return {
-                ...state,
-                translateDialogOpen: payload.translateDialogOpen,
             }
         case "SET_TRANSLATE_DICTIONARY":
             //console.log("SET_TRANSLATE_DICTIONARY")
