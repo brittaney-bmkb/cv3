@@ -5,44 +5,24 @@ const hideWelcome = localStorage.getItem("hideWelcomeDialog") === "true";
 export const initialState = {
 
     //MAP
-    mapView:null,
-    mapViewScale:null,
-    mapContainer:null,
-    primaryResultFeature: null,
+    mapView:null, //global state variable for mapView object: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html.
+    primaryResultFeature: null, //a global state variable that stores an array of feature objects. These objects represent the primary features returned from a query (locator search results or spatial query) and are used throughout the app to manage and display parcel selection results.
     secondaryResultFeature:null,
-    searchTerm: null,
-    searchResults: null,
-    searchSources: null,
+    searchTerm: null, //a global variable that stores the user input from the `SearchbarComponent`. This input is used as the value for the search url parameter value. 
+    searchSources: null, //a global variable that stores the [searchSource](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search-SearchSource.html) object returned from the `createSearchSources` function. Required for the `SearchBar` component.
     searchFeatures: null,
-    searchBufferGeometry:null,
-    searchResultPoint:null,
-    prevSearchFeatures: null,
-    panelDisplay:null,
-    panelDisplaySecondary:null,
-    panelDisplayWidget:null,
-    panelPrimaryVisible:true,
-    panelSecondaryVisible:null,
-    panelWidgetVisible:null,
+    searchBufferGeometry:null, //a global variable used in combination with the searchResultPoint to display the search radius when an address locator result is returned. This is consumed as the polygon geometry for the graphics layer in the `Map` component.
+    searchResultPoint:null, //a global variable used in combination with the searchBufferGeometery to display the search radius when an address locator result is returned. This is consumed as the point geometry for the graphics layer in the `Map` component.
     dataDictionary:null,
     parcelQueryFields: null,
     screenWidth: null,
     newSearch:null,
     comparableParcels: null,
     nearbyParcels:null,
-    measureWidgetState:null,
     language: config.defaultLanguage,
-    translateDialogOpen: false,
     textTranslationDictionary: null,
-    showMapMobile: false,
-    measureWidget: null,
-    isQuerying: null,
-    mapLayout: null,
-    mapFormat: null,
-    mapTitle: null,
     x: null,
     y: null, 
-    openHelpDialog: false,
-    selectMultiple: null,
     comparableType: null,
     //PANEL STATES
     infoPanelClosed: false,
@@ -203,13 +183,6 @@ const AppReducer = (state, action) => {
             ...state, 
             visibleParcelYears: payload.visibleParcelYears
         }  
-
-        case "SET_MAP_CONTAINER":
-        //console.log("SET_MAP_CONTAINER")
-        return {
-            ...state, 
-            mapContainer: payload.mapContainer
-        }
         
         case "SET_MAP":
         console.log("SET_MAP: ", payload.map)
@@ -252,9 +225,7 @@ const AppReducer = (state, action) => {
             return {
                 ...state,
                 searchTerm: payload.searchTerm,
-                searchResults: payload.searchResults,
                 searchFeatures: payload.searchFeatures,
-                prevSearchFeatures: payload.prevSearchFeatures
             }
 
         case "SET_SEARCH_SOURCES":
@@ -271,33 +242,6 @@ const AppReducer = (state, action) => {
                 searchBufferGeometry: payload.searchBufferGeometry,
             }
 
-        case "SET_PANEL_DISPLAY":
-            //console.log("SET_PANEL_DISPLAY")
-            return {
-                ...state,
-                panelDisplay: payload.panelDisplay,
-            }
-
-        case "SET_PANEL_SECONDARY_DISPLAY":
-            //console.log("SET_PANEL_SECONDARY_DISPLAY")
-            return {
-                ...state,
-                panelDisplaySecondary: payload.panelDisplaySecondary,
-            }
-
-        case "SET_PANEL_PRIMARY_VISIBILTIY":
-            //console.log("SET_PANEL_PRIMARY_VISIBILTIY")
-            return {
-                ...state,
-                panelPrimaryVisible: payload.panelPrimaryVisible,
-            }
-
-        case "SET_PANEL_SECONDARY_VISIBILTIY":
-            //console.log("SET_PANEL_SECONDARY_VISIBILTIY")
-            return {
-                ...state,
-                panelSecondaryVisible: payload.panelSecondaryVisible,
-            }
 
         case "SET_PANEL_WIDGET_VISIBILTIY":
             //console.log("SET_PANEL_WIDGET_VISIBILTIY")
@@ -347,24 +291,11 @@ const AppReducer = (state, action) => {
                 nearbyParcels: payload.nearbyParcels,
             }
 
-        case "SET_MEASURE_WIDGET_STATE":
-            //console.log("SET_MEASURE_WIDGET_STATE: ", payload.measureWidgetState)
-            return {
-                ...state,
-                measureWidgetState: payload.measureWidgetState,
-            }
-
         case "SET_LANGUAGE":
             //console.log("SET_LANGUAGE")
             return {
                 ...state,
                 language: payload.language,
-            }
-        case "SET_TRANSLATE_DIALOG_OPEN":
-            //console.log("SET_TRANSLATE_DIALOG_OPEN")
-            return {
-                ...state,
-                translateDialogOpen: payload.translateDialogOpen,
             }
         case "SET_TRANSLATE_DICTIONARY":
             //console.log("SET_TRANSLATE_DICTIONARY")
@@ -372,50 +303,13 @@ const AppReducer = (state, action) => {
                 ...state,
                 textTranslationDictionary: payload.textTranslationDictionary,
             }
-        case "SET_SHOW_MAP_MOBILE":
-            //console.log("SET_SHOW_MAP_MOBILE")
-            return {
-                ...state,
-                showMapMobile: payload.showMapMobile,
-            }
-        case "SET_MEASURE_WIDGET":
-            //console.log("SET_MEASURE_WIDGET")
-            return {
-                ...state,
-                measureWidget: payload.measureWidget,
-            }
-        case "SET_IS_QUERYING":
-            //console.log("SET_IS_QUERYING")
-            return {
-                ...state,
-                isQuerying: payload.isQuerying,
-            }
-        case "SET_MAP_PRINT_PROPS":
-            //console.log("SET_MAP_PRINT_PROPS")
-            return {
-                ...state,
-                mapLayout: payload.mapLayout,
-                mapFormat: payload.mapFormat,
-                mapTitle: payload.mapTitle
-            }
+
         case "SET_COORDINATES":
             //console.log("SET_COORDINATES")
             return {
                 ...state,
                 x: payload.x,
                 y: payload.y,
-            }
-        case "SET_OPEN_HELP_DIALOG":
-            //console.log("SET_OPEN_HELP_DIALOG")
-            return {
-                ...state, 
-                openHelpDialog: payload.openHelpDialog
-            }
-        case "SET_SELECT_MULTIPLE":
-            //console.log("SET_SELECT_MULTIPLE")
-            return {
-                ...state, 
-                selectMultiple: payload.selectMultiple
             }
             
         default:

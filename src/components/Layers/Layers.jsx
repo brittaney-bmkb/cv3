@@ -183,6 +183,9 @@ useEffect(() => {
                 showFilter
                 filterPlaceholder={translateText("Search for layers")}
                 onClick={() => {handleLayerChanges()}}
+                hideStatusIndicators={true}
+                showCollapseButton={false}
+                hideFlow={true}
                 listItemCreatedFunction={ (event) => {
                     let item = event.item
                     item.title = translateText(item.title, true)

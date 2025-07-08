@@ -130,5 +130,136 @@ const MyComponent = () => {
 };
 ```
 
+**State Variables**
+- [ ] ~~mapContainer~~ - variable for global mapContainer ref element for map DOM. deprecated and replaced with arcMapRef
+- [ ] ~~mapViewScale~~ - deprecated in 3.1. duplicate of the mapView. Was used to keep the scale property from the mapView object current. Variable was a dependency in the LayerListCustomComponent which was deprecated 3.1. 
+- [ ] **mapView** - a global state variable for mapView object: https://developers.arcgis.com/javascript/latest/api-reference/esri-views-MapView.html.
+- [ ] **primaryResultFeature** - a global state variable that stores an array of [feature objects](https://developers.arcgis.com/rest/services-reference/enterprise/feature-object/). These objects represent the primary features selected from the map or the search results pane.
+- [ ] **searchSources** - a global variable that stores the [searchSource](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search-SearchSource.html) object returned from the `createSearchSources` function. Required for the `SearchBar` component.
+- [ ] ~~searchResults~~ - deprecated 3.0.2. a global variable that stores the state of the [searchResults](https://developers.arcgis.com/javascript/latest/api-reference/esri-widgets-Search-types.html#SearchResult) object returned from the `returnSearchResultFeatures` function and set using the `setSearchResults` function. 
+- [ ] ~~prevSearchFeatures~~ - deprecated 3.1 with the implementation of the hittest to set the primaryResultFeature without overwriting the searchFeatures. 
+- [ ] **searchTerm** - a global variable that stores the user input from the `SearchbarComponent`. This input is used as the value for the search url parameter value. set using the `setSearchResults` function. 
+- [ ] **searchResultPoint** - a global variable used in combination with the searchBufferGeometery to display the search radius when an address locator result is returned. this stores the result geometry from the search result object in the `setSearchBufferGeometry` function and is set using the `setSearchBufferGeometry` function. This is consumed as the point geometry for the graphics layer in the `Map` component. 
+- [ ] **searchBufferGeometry** - a global variable used in combination with the searchResultPoint to display the search radius when an address locator result is returned. this stores the result geometry from the search result object in the `setSearchBufferGeometry` function and is set using the `setSearchBufferGeometry` function. This is consumed as the polygon geometry for the graphics layer in the `Map` component.
+- [ ] **searchFeatures** - a global state variable that stores an array of [feature objects](https://developers.arcgis.com/rest/services-reference/enterprise/feature-object/). These objects represent the result features returned from a query (locator search results or spatial query Select) and are used throughout the app to manage and display parcel selection results.
+- [ ] ~~panelDisplay~~ - deprecated in 3.1. Previously stored a value representing the content in the left panel. Used in a switch statement to update the ui between search results and property details.
+- [ ] ~~panelSecondaryVisible~~ - deprecated 3.1. Replaced with individual global states for each panel content type ie, results, comparables, nearby, etc
+- [ ] ~~panelDisplaySecondary~~ - deprecated 3.1. Replaced with individual global states for each panel content type ie, results, comparables, nearby, etc
+- [ ] ~~panelPrimaryVisible~~ - deprecated 3.1. Replaced with individual global states for each panel content type ie, results, comparables, nearby, etc
+- [ ] **dataDictionary** - a global state variable that stores a feature table with all the fields, field types, and hyperlinks for all the data displayed in the property details panel. 
+- [ ] ~~parcelQueryFields~~ - deprecated 3.1. Was previously used as a parameter in the `compareProperties` function to set the fields returned from a feature query. Replaced with "*" to return all fields.
+- [ ] **screenWidth** - a global state variable that stores the screenWidth by watching for changes using an 'resize' even listener in AppContext.
+- [ ] **newSearch** - a global state variable that stores the state of the search if its a brand new search to determine if map should be cleared of all existing selected parcels or modified (features added/removed). this is set in the `setPrimaryResultFeature` global setter function
+- [ ] **comparableParcels** - a global state variable that stores an array of features queried from the comparable search and nearby search tools. 
+   - **Could be better** - separate these two variables
+- [ ] **secondaryResultFeature** - a global state variable that stores an array with a single item - the comparable or nearby parcel that is selected by the user
+- [ ] ~~measureWidgetState~~ - deprecated in 3.1 and replaced with measurePanelClosed to prevent clicks in the map from triggering click events. 
+- [ ] **language** -  a global state variable that stores a string with the default or selected language
+- [ ] ~~translateDialogOpen~~ - deprecated in 3.1 and replaced with translate button dropdown
+- [ ] **textTranslationDictionary** - a global state variable that stores the translationg text from the CookViewer Translated Text service. This variable is only used in AppContext within the `translateText` function.
+- [ ] ~~showMapMobile~~ - deprecated in 3.1 since map is always displayed in mobile view
+- [ ] ~~measureWidget~~ - deprecated in 3.1 and replaced with measurePanelClosed to prevent clicks in the map from triggering click events. 
+- [ ] ~~isQuerying~~ - deprecated in 3.1 with the resultsList MUI component. A global state variable used to hide/display a loader component while parcel results were queried. 
+- [ ] ~~mapTitle~~ - deprecated 3.1 and replaced with internal state variables to the Print Component 
+- [ ] ~~mapLayout~~ - deprecated 3.1 and replaced with internal state variables to the Print Component 
+- [ ] ~~mapFormat~~ - deprecated 3.1 and replaced with internal state variables to the Print Component 
+- [ ] x
+- [ ] y
+- [ ] ~~openHelpDialog~~ - deprecated 3.1 and replaced with calcite help panel open state variable
+- [ ] ~~panelWidgetVisible~~ - deprecated 3.1 and replaced with individual global states for each map tool
+- [ ] ~~panelDisplayWidget~~ - deprecated 3.1 and replaced with individual global states for each map tool
+- [ ] ~~selectMultiple~~ - deprecated 3.1 and replaced with selectPanelClosed to detect if the select tool is in use
+- [ ] comparableType
+- [ ] infoPanelClosed
+- [ ] searchResultsPanelClosed
+- [ ] propertyDetailPanelClosed
+- [ ] comparablePanelClosed
+- [ ] nearbyPanelClosed
+- [ ] comparisonResultsClosed
+- [ ] comparisonDetailPanelClosed
+- [ ] layersPanelClosed
+- [ ] imageryPanelClosed
+- [ ] printPanelClosed
+- [ ] measurePanelClosed
+- [ ] selectPanelClosed
+- [ ] helpPanelClosed
+
+**Functions**
+- [ ]  ~~loadMap~~ - Function that initializes the map by setting up the map container, search sources, and zooming to extent of selected features. Deprecated in 3.1 and replaced with argis-map component. 
+    - ~~initializeMap~~ - Called from webmap.js is also deprectated in 3.1 and replaced with the the arcgis-map component
+- [ ]  ~~setMapContainer~~ - A global state setter used to update the mapContainer variable. Deprecated in 3.1
+- [ ]  **setMapView** - function to set the global state of the mapView variable.
+- [ ] ~~setMapViewScale~~ - deprecated in 3.1
+- [ ] **setPrimaryResultFeature** - A global state setter function used to update the value of `primaryResultFeature`. It accepts an array of [feature objects](https://developers.arcgis.com/rest/services-reference/enterprise/feature-object/) and replaces the current state with the new set of primary query results.
+- [ ] **setSearchResults** - A global state setter used to update the searchFeatures and searchTerm variables.
+- [ ] **setSearchBufferGeometry** - A global state setter used to update the searchResultPoint and searchBufferGeometry variables.
+- [ ] **setSearchSources** - A global state setter used to update the searchSources variable. Used in the `createSearchSources` function and updated in the `translateSearchSources` function to update state when the language variable changes. 
+- [ ] ~~renderSearchResults~~ - deprecated 3.1. function that previously accepted the search result geometry and rendered them in the map widget. Replaced with `createSelectedParcelsLayer` and `updateSelectedParcelsLayer`functions in `Map` component
+- [ ] clearResults
+- [ ] ~~setPanelDisplay~~ - deprecated 3.1. Replaced with individual global state setters for each panel content type ie, results, comparables, nearby, etc,
+- [ ] ~~setPanelSecondaryVisibility~~-  - deprecated 3.1. Replaced with individual global state setters for each panel content type ie, results, comparables, nearby, etc,
+- [ ] ~~setPanelDisplaySecondary~~ - deprecated 3.1. Replaced with individual global state setters for each panel content type ie, results, comparables, nearby, etc,
+- [ ] selectResultFromList,
+- [ ] searchComparableProperties,
+- [ ] ~~setPanelPrimaryVisibility~~ - deprecated 3.1. Replaced with individual global states for each panel content type ie, results, comparables, nearby, etc
+- [ ] **loadDataDictionary** - a global state setter used to updated the dataDictionary variable by querying the table data in the dataDictionary feature table service stored in AGO
+- [ ] ~~setParcelQueryFields~~ - deprecated 3.1  with global state variable parcelQueryFields
+- [ ] **setScreenWidth** - a global state setter to update the screenWidth variable by passing the window.innerWidth when it changes (AppContext)
+- [ ] searchNearbyProperties
+- [ ] setSecondaryResultFeature
+- [ ] clearResultsComparables
+- [ ] addSecondaryFeatureToMap
+- [ ] setMeasureWidgetState
+- [ ] toggleMapLayer
+- [ ] **setLanguage** - a global setter used to update the language variable based on the user selection
+- [ ] ~~setTranslateDialogOpen~~ - deprecated 3.1 a global setter for setting the open state of the translation dialog
+- [ ] setTranslationDictionary
+- [ ] translateText
+- [ ] ~~setShowMapMoblie~~ - deprecated in 3.1 a global setter for setting the display state of the web map for mobile devices
+- [ ] setMeasureWidget
+- [ ] ~~setIsQuerying~~ - deprecated in 3.1 a global setter for updating the display a loader component in the deprecated resultsList component.
+- [ ] ~~setMapPrintProps~~ - deprecated 3.1 and replaced with internal state setter inside the Print Component 
+- [ ] setCoordinates
+- [ ] ~~returnLocationFeatures~~ - deprecated in v3.0.0-beta-3. Global setter function to return parcel features usingx/y coordinates
+- [ ] ~~setOpenHelpDialog~~ - deprecated 3.1 replaced with setter to open calcite help panel
+- [ ] ~~setPanelWidgetVisibility~~ - deprecated 3.1 and replaced with individual global states for each map tool
+- [ ] ~~setPanelDisplayWidget~~ - deprecated 3.1 and replaced with individual global states for each map tool
+- [ ] queryMapPoint - deprecated 3.1 replaced with `hitTest` in the `Map` component
+- [ ] setComparableParcels
+- [ ] initalizeSearchSources
+- [ ] returnSearchResultFeatures
+- [ ] anyAttributesIncluded
+- [ ] ~~setSelectMultiple~~ - deprecated 3.1 and replaced with setSelectPanel to update state of the select tool panel
+- [ ] queryPolygon
+- [ ] setComparableType
+- [ ] **returnFeaturesByPin10Pin14** - function that queries the target layer using PIN10 and PIN14 values and returns features. Used to update the state of the `primaryResultFeatures` and `searchFeatures` from url param value.
+- [ ] returnSearchParam
+- [ ] setInfoPanel
+- [ ] setSearchResultsPanel
+- [ ] setPropertyDetailPanel
+- [ ] setComparablePanel
+- [ ] setNearbyPanel
+- [ ] setComparisonResultsPanel
+- [ ] setComparisonDetailPanel
+- [ ] togglePanel
+- [ ] setLayersPanel
+- [ ] setImageryPanel
+- [ ] setPrintPanel
+- [ ] setMeasurePanel
+- [ ] setSelectPanel
+- [ ] setHelpPanel
+- [ ] deselectParcel
+- [ ] setExportOpen
+- [ ] setFeedbackDialog
+- [ ] setIsMobile
+- [ ] setTourDialogOpen
+- [ ] setSuppressTourDialog
+
+**Refs**
+arcgisMapRef
+refSearch
+
+**Hooks**
+
 
 
