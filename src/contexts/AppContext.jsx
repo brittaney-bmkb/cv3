@@ -546,14 +546,6 @@ export const AppProvider = ({children}) => {
         })
     }
 
-    const setIsQuerying = (quering) => {
-        dispatch({
-            type:"SET_IS_QUERYING",
-            payload: {
-                isQuerying: quering 
-            }
-        })
-    }
 
     const setMapPrintProps = (mapLayout, mapFormat, mapTitle) => {
         dispatch({
@@ -1190,8 +1182,6 @@ export const AppProvider = ({children}) => {
         textTranslationDictionary: state.textTranslationDictionary,
         setTranslationDictionary,
         translateText,
-        isQuerying: state.isQuerying,
-        setIsQuerying,
         setMapPrintProps,
         mapTitle: state.mapTitle,
         mapLayout: state.mapLayout,

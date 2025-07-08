@@ -159,7 +159,7 @@ const MyComponent = () => {
 - [ ] **textTranslationDictionary** - a global state variable that stores the translationg text from the CookViewer Translated Text service. This variable is only used in AppContext within the `translateText` function.
 - [ ] ~~showMapMobile~~ - deprecated in 3.1 since map is always displayed in mobile view
 - [ ] ~~measureWidget~~ - deprecated in 3.1 and replaced with measurePanelClosed to prevent clicks in the map from triggering click events. 
-- [ ] isQuerying
+- [ ] ~~isQuerying~~ - deprecated in 3.1 with the resultsList MUI component. A global state variable used to hide/display a loader component while parcel results were queried. 
 - [ ] mapTitle
 - [ ] mapLayout
 - [ ] mapFormat
@@ -217,7 +217,7 @@ const MyComponent = () => {
 - [ ] translateText
 - [ ] ~~setShowMapMoblie~~ - deprecated in 3.1 a global setter for setting the display state of the web map for mobile devices
 - [ ] setMeasureWidget
-- [ ] setIsQuerying
+- [ ] ~~setIsQuerying~~ - deprecated in 3.1 a global setter for updating the display a loader component in the deprecated resultsList component.
 - [ ] setMapPrintProps
 - [ ] setCoordinates
 - [ ] ~~returnLocationFeatures~~ - deprecated in v3.0.0-beta-3. Global setter function to return parcel features usingx/y coordinates

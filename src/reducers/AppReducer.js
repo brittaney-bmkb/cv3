@@ -23,7 +23,6 @@ export const initialState = {
     nearbyParcels:null,
     language: config.defaultLanguage,
     textTranslationDictionary: null,
-    isQuerying: null,
     mapLayout: null,
     mapFormat: null,
     mapTitle: null,
@@ -311,12 +310,7 @@ const AppReducer = (state, action) => {
                 ...state,
                 textTranslationDictionary: payload.textTranslationDictionary,
             }
-        case "SET_IS_QUERYING":
-            //console.log("SET_IS_QUERYING")
-            return {
-                ...state,
-                isQuerying: payload.isQuerying,
-            }
+
         case "SET_MAP_PRINT_PROPS":
             //console.log("SET_MAP_PRINT_PROPS")
             return {
