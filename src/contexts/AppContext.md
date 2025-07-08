@@ -165,9 +165,9 @@ const MyComponent = () => {
 - [ ] ~~mapFormat~~ - deprecated 3.1 and replaced with internal state variables to the Print Component 
 - [ ] x
 - [ ] y
-- [ ] openHelpDialog
-- [ ] panelWidgetVisible
-- [ ] panelDisplayWidget
+- [ ] ~~openHelpDialog~~ - deprecated 3.1 and replaced with calcite help panel open state variable
+- [ ] ~~panelWidgetVisible~~ - deprecated 3.1 and replaced with individual global states for each map tool
+- [ ] ~~panelDisplayWidget~~ - deprecated 3.1 and replaced with individual global states for each map tool
 - [ ] selectMultiple
 - [ ] comparableType
 - [ ] infoPanelClosed
@@ -218,12 +218,12 @@ const MyComponent = () => {
 - [ ] ~~setShowMapMoblie~~ - deprecated in 3.1 a global setter for setting the display state of the web map for mobile devices
 - [ ] setMeasureWidget
 - [ ] ~~setIsQuerying~~ - deprecated in 3.1 a global setter for updating the display a loader component in the deprecated resultsList component.
-- [ ] setMapPrintProps - deprecated 3.1 and replaced with internal state setter inside the Print Component 
+- [ ] ~~setMapPrintProps~~ - deprecated 3.1 and replaced with internal state setter inside the Print Component 
 - [ ] setCoordinates
 - [ ] ~~returnLocationFeatures~~ - deprecated in v3.0.0-beta-3. Global setter function to return parcel features usingx/y coordinates
-- [ ] setOpenHelpDialog
-- [ ] setPanelWidgetVisibility
-- [ ] setPanelDisplayWidget
+- [ ] ~~setOpenHelpDialog~~ - deprecated 3.1 replaced with setter to open calcite help panel
+- [ ] ~~setPanelWidgetVisibility~~ - deprecated 3.1 and replaced with individual global states for each map tool
+- [ ] ~~setPanelDisplayWidget~~ - deprecated 3.1 and replaced with individual global states for each map tool
 - [ ] queryMapPoint - deprecated 3.1 replaced with `hitTest` in the `Map` component
 - [ ] setComparableParcels
 - [ ] initalizeSearchSources

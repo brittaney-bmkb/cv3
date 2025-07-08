@@ -473,24 +473,6 @@ export const AppProvider = ({children}) => {
         })
     }
 
-    const setPanelWidgetVisibility = (visible) => {
-        dispatch({
-            type:"SET_PANEL_WIDGET_VISIBILTIY",
-             payload: {
-                panelWidgetVisible: visible,
-            }
-        })
-    }
-
-    const setPanelDisplayWidget = (state) => {
-        dispatch({
-            type:"SET_PANEL_WIDGET_DISPLAY",
-             payload: {
-                panelDisplayWidget: state,
-            }
-        })
-    }
-
     const setDataDictionary = (features) => {
         dispatch({
             type:"SET_DATA_DICTIONARY",
@@ -542,15 +524,6 @@ export const AppProvider = ({children}) => {
             type:"SET_TRANSLATE_DICTIONARY",
              payload: {
                 textTranslationDictionary: dictionary,
-            }
-        })
-    }
-
-    const setOpenHelpDialog = (open) => {
-        dispatch({
-            type:"SET_OPEN_HELP_DIALOG",
-            payload:{
-                openHelpDialog: open,
             }
         })
     }
@@ -1172,12 +1145,6 @@ export const AppProvider = ({children}) => {
         setCoordinates,
         x: state.x,
         y: state.y,
-        setOpenHelpDialog,
-        openHelpDialog: state.openHelpDialog,
-        setPanelWidgetVisibility,
-        setPanelDisplayWidget,
-        panelWidgetVisible: state.panelWidgetVisible,
-        panelDisplayWidget: state.panelDisplayWidget,
         setComparableParcels,
         initalizeSearchSources,
         returnSearchResultFeatures,

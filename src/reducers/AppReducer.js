@@ -13,8 +13,6 @@ export const initialState = {
     searchFeatures: null,
     searchBufferGeometry:null, //a global variable used in combination with the searchResultPoint to display the search radius when an address locator result is returned. This is consumed as the polygon geometry for the graphics layer in the `Map` component.
     searchResultPoint:null, //a global variable used in combination with the searchBufferGeometery to display the search radius when an address locator result is returned. This is consumed as the point geometry for the graphics layer in the `Map` component.
-    panelDisplayWidget:null,
-    panelWidgetVisible:null,
     dataDictionary:null,
     parcelQueryFields: null,
     screenWidth: null,
@@ -25,7 +23,6 @@ export const initialState = {
     textTranslationDictionary: null,
     x: null,
     y: null, 
-    openHelpDialog: false,
     selectMultiple: null,
     comparableType: null,
     //PANEL STATES
@@ -314,12 +311,6 @@ const AppReducer = (state, action) => {
                 ...state,
                 x: payload.x,
                 y: payload.y,
-            }
-        case "SET_OPEN_HELP_DIALOG":
-            //console.log("SET_OPEN_HELP_DIALOG")
-            return {
-                ...state, 
-                openHelpDialog: payload.openHelpDialog
             }
         case "SET_SELECT_MULTIPLE":
             //console.log("SET_SELECT_MULTIPLE")
