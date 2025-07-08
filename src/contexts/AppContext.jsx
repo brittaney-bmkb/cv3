@@ -528,15 +528,6 @@ export const AppProvider = ({children}) => {
         })
     }
 
-    const setSelectMultiple = (select) => {
-        dispatch({
-            type:"SET_SELECT_MULTIPLE",
-            payload:{
-                selectMultiple: select,
-            }
-        })
-    }
-
     /**
      * Translates search source names and placeholders into the current language.
      * @param {Array} searchSources - List of search source objects to translate.
@@ -1149,8 +1140,6 @@ export const AppProvider = ({children}) => {
         initalizeSearchSources,
         returnSearchResultFeatures,
         anyAttributesIncluded,
-        setSelectMultiple,
-        selectMultiple: state.selectMultiple,
         queryPolygon,
         setComparableType,
         comparableType: state.comparableType,

@@ -168,7 +168,7 @@ const MyComponent = () => {
 - [ ] ~~openHelpDialog~~ - deprecated 3.1 and replaced with calcite help panel open state variable
 - [ ] ~~panelWidgetVisible~~ - deprecated 3.1 and replaced with individual global states for each map tool
 - [ ] ~~panelDisplayWidget~~ - deprecated 3.1 and replaced with individual global states for each map tool
-- [ ] selectMultiple
+- [ ] ~~selectMultiple~~ - deprecated 3.1 and replaced with selectPanelClosed to detect if the select tool is in use
 - [ ] comparableType
 - [ ] infoPanelClosed
 - [ ] searchResultsPanelClosed
@@ -229,7 +229,7 @@ const MyComponent = () => {
 - [ ] initalizeSearchSources
 - [ ] returnSearchResultFeatures
 - [ ] anyAttributesIncluded
-- [ ] setSelectMultiple
+- [ ] ~~setSelectMultiple~~ - deprecated 3.1 and replaced with setSelectPanel to update state of the select tool panel
 - [ ] queryPolygon
 - [ ] setComparableType
 - [ ] **returnFeaturesByPin10Pin14** - function that queries the target layer using PIN10 and PIN14 values and returns features. Used to update the state of the `primaryResultFeatures` and `searchFeatures` from url param value.

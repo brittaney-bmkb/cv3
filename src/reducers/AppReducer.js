@@ -23,7 +23,6 @@ export const initialState = {
     textTranslationDictionary: null,
     x: null,
     y: null, 
-    selectMultiple: null,
     comparableType: null,
     //PANEL STATES
     infoPanelClosed: false,
@@ -311,12 +310,6 @@ const AppReducer = (state, action) => {
                 ...state,
                 x: payload.x,
                 y: payload.y,
-            }
-        case "SET_SELECT_MULTIPLE":
-            //console.log("SET_SELECT_MULTIPLE")
-            return {
-                ...state, 
-                selectMultiple: payload.selectMultiple
             }
             
         default:
