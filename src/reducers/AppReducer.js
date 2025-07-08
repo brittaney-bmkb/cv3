@@ -23,7 +23,6 @@ export const initialState = {
     nearbyParcels:null,
     language: config.defaultLanguage,
     textTranslationDictionary: null,
-    showMapMobile: false,
     isQuerying: null,
     mapLayout: null,
     mapFormat: null,
@@ -311,12 +310,6 @@ const AppReducer = (state, action) => {
             return {
                 ...state,
                 textTranslationDictionary: payload.textTranslationDictionary,
-            }
-        case "SET_SHOW_MAP_MOBILE":
-            //console.log("SET_SHOW_MAP_MOBILE")
-            return {
-                ...state,
-                showMapMobile: payload.showMapMobile,
             }
         case "SET_IS_QUERYING":
             //console.log("SET_IS_QUERYING")

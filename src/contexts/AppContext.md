@@ -157,7 +157,7 @@ const MyComponent = () => {
 - [ ] **language** -  a global state variable that stores a string with the default or selected language
 - [ ] ~~translateDialogOpen~~ - deprecated in 3.1 and replaced with translate button dropdown
 - [ ] **textTranslationDictionary** - a global state variable that stores the translationg text from the CookViewer Translated Text service. This variable is only used in AppContext within the `translateText` function.
-- [ ] showMapMobile
+- [ ] showMapMobile - deprecated in 3.1 since map is always displayed in mobile view
 - [ ] ~~measureWidget~~ - deprecated in 3.1 and replaced with measurePanelClosed to prevent clicks in the map from triggering click events. 
 - [ ] isQuerying
 - [ ] mapTitle

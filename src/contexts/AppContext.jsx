@@ -546,15 +546,6 @@ export const AppProvider = ({children}) => {
         })
     }
 
-    const setShowMapMoblie = (show) => {
-        dispatch({
-            type:"SET_SHOW_MAP_MOBILE",
-             payload: {
-                showMapMobile: show,
-            }
-        })
-    }
-
     const setIsQuerying = (quering) => {
         dispatch({
             type:"SET_IS_QUERYING",
@@ -1199,8 +1190,6 @@ export const AppProvider = ({children}) => {
         textTranslationDictionary: state.textTranslationDictionary,
         setTranslationDictionary,
         translateText,
-        showMapMobile: state.showMapMobile,
-        setShowMapMoblie,
         isQuerying: state.isQuerying,
         setIsQuerying,
         setMapPrintProps,
