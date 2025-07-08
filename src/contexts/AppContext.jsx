@@ -546,19 +546,6 @@ export const AppProvider = ({children}) => {
         })
     }
 
-
-    const setMapPrintProps = (mapLayout, mapFormat, mapTitle) => {
-        dispatch({
-            type:"SET_MAP_PRINT_PROPS",
-            payload: {
-                mapLayout: mapLayout,
-                mapFormat: mapFormat,
-                mapTitle: mapTitle
-
-            }
-        })
-    }
-
     const setOpenHelpDialog = (open) => {
         dispatch({
             type:"SET_OPEN_HELP_DIALOG",
@@ -1182,10 +1169,6 @@ export const AppProvider = ({children}) => {
         textTranslationDictionary: state.textTranslationDictionary,
         setTranslationDictionary,
         translateText,
-        setMapPrintProps,
-        mapTitle: state.mapTitle,
-        mapLayout: state.mapLayout,
-        mapFormat: state.mapFormat,
         setCoordinates,
         x: state.x,
         y: state.y,

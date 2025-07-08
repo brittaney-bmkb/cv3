@@ -23,9 +23,6 @@ export const initialState = {
     nearbyParcels:null,
     language: config.defaultLanguage,
     textTranslationDictionary: null,
-    mapLayout: null,
-    mapFormat: null,
-    mapTitle: null,
     x: null,
     y: null, 
     openHelpDialog: false,
@@ -311,14 +308,6 @@ const AppReducer = (state, action) => {
                 textTranslationDictionary: payload.textTranslationDictionary,
             }
 
-        case "SET_MAP_PRINT_PROPS":
-            //console.log("SET_MAP_PRINT_PROPS")
-            return {
-                ...state,
-                mapLayout: payload.mapLayout,
-                mapFormat: payload.mapFormat,
-                mapTitle: payload.mapTitle
-            }
         case "SET_COORDINATES":
             //console.log("SET_COORDINATES")
             return {
