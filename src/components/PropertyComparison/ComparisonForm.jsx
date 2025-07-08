@@ -328,7 +328,13 @@ const ComparisonForm = ({refElement, setCurrentStep}) => {
                         onCalciteDropdownSelect={(e) => { console.log(e ); 
                             setConstructionType(e.target.selectedItems[0].textContent)}}
                     >
-                        <CalciteButton form='comparable-search' className="hyperlink-button" width="full" slot="trigger">{translateText(constructionType)}</CalciteButton>
+                        <CalciteButton 
+                        form='comparable-search' 
+                        className="hyperlink-button" 
+                        width="full" 
+                        slot="trigger"
+                        iconEnd="chevron-down"
+                        >{translateText(constructionType)}</CalciteButton>
                         <CalciteDropdownGroup selection-mode="single">
                         {constructionTypes.map((constructionType, i) => {
                             return(
@@ -381,7 +387,13 @@ const ComparisonForm = ({refElement, setCurrentStep}) => {
                         onCalciteDropdownSelect={(e) => { console.log(e ); 
                             setRadiusTypeValue(e.target.selectedItems[0].textContent)}}
                     >
-                        <CalciteButton form='comparable-search' className="hyperlink-button" width="full" slot="trigger">{translateText(radiusTypeValue)}</CalciteButton>
+                        <CalciteButton 
+                        form='comparable-search' 
+                        className="hyperlink-button"
+                         width="full" 
+                         slot="trigger"
+                         iconEnd="chevron-down"
+                         >{translateText(radiusTypeValue)}</CalciteButton>
                         <CalciteDropdownGroup selection-mode="single">
                         {Object.entries(radiusTypes).map(([label, value]) => {
                             return(
