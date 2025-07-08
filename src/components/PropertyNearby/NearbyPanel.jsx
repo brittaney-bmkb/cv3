@@ -216,7 +216,9 @@ const NearbyPanel = () => {
                                 form="nearby-search"
                                 slot="trigger" 
                                 className="hyperlink-button"
-                                width="full">
+                                width="full"
+                                iconEnd="chevron-down"
+                                >
                                     {translateText(selectedUnit)}
                                 </CalciteButton>
                                 <CalciteDropdownGroup selection-mode="single">
