@@ -152,11 +152,11 @@ const MyComponent = () => {
 - [ ] **newSearch** - a global state variable that stores the state of the search if its a brand new search to determine if map should be cleared of all existing selected parcels or modified (features added/removed). this is set in the `setPrimaryResultFeature` global setter function
 - [ ] **comparableParcels** - a global state variable that stores an array of features queried from the comparable search and nearby search tools. 
    - **Could be better** - separate these two variables
-- [ ] **secondaryResultFeature** - a global state variables that stores an array with a single item - the comparable or nearby parcel that is selected by the user
+- [ ] **secondaryResultFeature** - a global state variable that stores an array with a single item - the comparable or nearby parcel that is selected by the user
 - [ ] ~~measureWidgetState~~ - deprecated in 3.1 and replaced with measurePanelClosed to prevent clicks in the map from triggering click events. 
-- [ ] language
-- [ ] translateDialogOpen
-- [ ] textTranslationDictionary
+- [ ] **language** -  a global state variable that stores a string with the default or selected language
+- [ ] ~~translateDialogOpen~~ - deprecated in 3.1 and replaced with translate button dropdown
+- [ ] **textTranslationDictionary** - a global state variable that stores the translationg text from the CookViewer Translated Text service. This variable is only used in AppContext within the `translateText` function.
 - [ ] showMapMobile
 - [ ] ~~measureWidget~~ - deprecated in 3.1 and replaced with measurePanelClosed to prevent clicks in the map from triggering click events. 
 - [ ] isQuerying
@@ -212,7 +212,7 @@ const MyComponent = () => {
 - [ ] setMeasureWidgetState
 - [ ] toggleMapLayer
 - [ ] setLanguage
-- [ ] setTranslateDialogOpen
+- [ ] ~~setTranslateDialogOpen~~ - deprecated 3.1 a lobal setter for setting the open state of the translation dialog
 - [ ] setTranslationDictionary
 - [ ] translateText
 - [ ] setShowMapMoblie
