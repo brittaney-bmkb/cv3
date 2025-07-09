@@ -60,7 +60,7 @@ export const config = {
     //Translated service
     target_layer_urls: {
         "english": "https://gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/0",
-        "spanish": "https://gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/0"
+        "spanish": "https://gis.cookcountyil.gov/traditional/rest/services/CookViewer3Parcels/MapServer/1"
     },
     //FIELD TO REFERENCE FOR CREATING URL PARAM WHEN CLICKING IN MAP
     target_layer_id_field: "PIN10",
