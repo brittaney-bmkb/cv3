@@ -268,11 +268,25 @@ export default FeedbackDialog
 
 export const Feedback = () => {
 
-    const { feedbackOpen, feedbackSource, setFeedbackDialog, translateText, language, deviceType } = UseAppContext()
+    const { feedbackOpen, feedbackSource, setFeedbackDialog, translateText, language, isMobile } = UseAppContext()
     const [dialogTitle, setDialogTitle] = useState(null)
     const [dialogDescription, setDialogDescription] = useState(null)
     const [feedbackUrl, setFeedbackUrl] = useState(null)
     const [locale, setLocale] = useState(null)
+
+    const [ deviceType, setDeviceType ] = useState()
+
+
+    useEffect(() => {
+
+        if(isMobile){
+            setDeviceType("mobile")
+        }
+        else{
+            setDeviceType("desktop")
+        }
+
+    }, [isMobile])
 
     useEffect(() => {
         if(language === "english"){
