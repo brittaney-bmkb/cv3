@@ -24,9 +24,12 @@ The PR workflow runs `npm test` against the `working` branch to catch issues bef
 ```
 tests/
   export-feedback-workflow.test.js
+  map-geometry-workflow.test.js
   map-selection-workflow.test.js
   panel-layout-workflow.test.js
+  comparison-workflow.test.js
   search-workflow.test.js
+  search-to-property-details-workflow.test.js
   translation-workflow.test.js
 ```
 
@@ -41,12 +44,23 @@ tests/
 - Confirms the map component registers click handling for parcel selection.
 - Ensures the WebMap ID hook-up exists (current behavior before the planned migration).
 
+### `map-geometry-workflow.test.js`
+- Confirms primary and comparable parcel geometry hooks exist in the map component.
+
 ### `panel-layout-workflow.test.js`
 - Verifies the Calcite shell panels render in the layout.
 - Confirms the main panel components are included.
 
+### `comparison-workflow.test.js`
+- Ensures the Property Comparison action is wired from property details.
+- Verifies the stepper flow and result selection behavior for comparisons.
+
 ### `export-feedback-workflow.test.js`
 - Validates the export and feedback components are wired into the layout.
+
+### `search-to-property-details-workflow.test.js`
+- Verifies URL-based searches route through the search component.
+- Confirms search results are shown and clicking a result opens property details.
 
 ### `translation-workflow.test.js`
 - Checks that `translateText` is used in UI components.
