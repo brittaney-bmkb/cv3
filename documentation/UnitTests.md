@@ -3,7 +3,7 @@
 ## Overview
 The unit test suite focuses on **application requirements and architecture contracts** that should always be true:
 - Core configuration values exist for map, search, and translation services.
-- App state updates correctly when key reducer actions are dispatched.
+- Core workflows are wired in the layout and feature components (search, map selection, panels, export, translations).
 
 These tests are intentionally lightweight and fast so they can run on every commit. Some checks read source files as plain text to avoid loading ArcGIS modules in a Node-only test environment.
 
@@ -17,28 +17,41 @@ Watch mode (local development):
 npm run test:watch
 ```
 
+## CI
+The PR workflow runs `npm test` against the `working` branch to catch issues before merge.
+
 ## Test Structure
 ```
-src/__tests__/
-  appReducer.test.js
-  config.test.js
+tests/
+  export-feedback-workflow.test.js
+  map-selection-workflow.test.js
+  panel-layout-workflow.test.js
+  search-workflow.test.js
+  translation-workflow.test.js
 ```
 
 ## What Each Test Covers
 
-### `appReducer.test.js`
-- **Action handler presence** for panel, search, and language actions in the reducer.
-- **Unknown action safety** via the default error branch.
+### `search-workflow.test.js`
+- Ensures the header renders the search bar.
+- Confirms the ArcGIS search element and completion handler are present.
+- Validates locator sources exist in configuration.
 
-These cover key UI requirements (panel visibility, search behavior, localization) by ensuring the reducer supports the required actions.
+### `map-selection-workflow.test.js`
+- Confirms the map component registers click handling for parcel selection.
+- Ensures the WebMap ID hook-up exists (current behavior before the planned migration).
 
-### `config.test.js`
-- **Map and layer config** must include `webmap_id`, `target_layer_url`, and `target_layer_id_field`.
-- **Translation services** must include both English and Spanish with service URLs.
-- **Search locators** must be defined.
+### `panel-layout-workflow.test.js`
+- Verifies the Calcite shell panels render in the layout.
+- Confirms the main panel components are included.
 
-These checks protect against broken deployments caused by missing configuration.
+### `export-feedback-workflow.test.js`
+- Validates the export and feedback components are wired into the layout.
+
+### `translation-workflow.test.js`
+- Checks that `translateText` is used in UI components.
+- Confirms translation service configuration keys exist.
 
 ## Notes for Junior Developers
-- We stub `localStorage` in the reducer tests because the reducer reads from it during module import.
-- When you add new critical features, consider adding a new reducer test or config contract test to keep the suite meaningful.
+- These tests intentionally avoid importing ArcGIS browser-only modules by scanning files as text.
+- When you add new workflows, create a dedicated test file that asserts the wiring for that feature.
