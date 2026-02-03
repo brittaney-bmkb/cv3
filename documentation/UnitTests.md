@@ -20,6 +20,9 @@ npm run test:watch
 ## CI
 The PR workflow runs `npm test` against the `working` branch to catch issues before merge.
 
+## E2E Testing (Playwright/Cypress)
+For real ArcGIS interactions, see `documentation/E2ETesting.md`. Those tests run in a browser and validate the actual map/search/compare flows.
+
 ## Test Structure
 ```
 tests/
